@@ -44,6 +44,7 @@
     "framer-motion": "^10.17.4",
     "front-matter": "^4.0.2",
     "next": "^14.0.4",
+    "next-mdx-remote": "^4.4.1",
     "next-themes": "^0.2.1",
     "postcss": "^8",
     "react": "^18.2.0",

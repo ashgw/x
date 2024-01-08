@@ -4,8 +4,8 @@ export type MetaDataAttributes = {
   title: string;
   seoTitle: string;
   summary: string;
-  lastModDate: string;
   firstModDate: string;
+  lastModDate: string;
   isPublic: boolean;
 };
 

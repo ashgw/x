@@ -4,13 +4,7 @@ import fm from 'front-matter';
 import { MDXData, BlogData } from './types';
 
 function parseMDX(content: string): MDXData {
-  try {
-    return fm(content) as MDXData;
-  } catch (err) {
-    console.error(err);
-    // TODO: fix this shit here
-    throw err;
-  }
+  return fm(content) as MDXData;
 }
 
 function getMDXFiles(dir: string): Array<string> {
@@ -27,8 +21,8 @@ function getMDXData(dir: string): Array<BlogData> {
   return mdxFiles.map((file) => {
     let parsedContent: MDXData = readMDXFile(path.join(dir, file));
     let filenameSlug: string = path.basename(file, path.extname(file));
-    console.log(parsedContent);
-    console.log(filenameSlug);
+    // console.log(parsedContent);
+    // console.log(filenameSlug);
     return {
       parsedContent, // will be used to layout the content just right
       filenameSlug, // to be used in automatic routing
@@ -37,18 +31,5 @@ function getMDXData(dir: string): Array<BlogData> {
 }
 
 export function getBlogPosts(): Array<BlogData> {
-  return getMDXData(path.join(process.cwd(), 'content'));
+  return getMDXData(path.join(process.cwd(), 'public/content'));
 }
-
-let blogPosts = getBlogPosts();
-
-// Use map to transform each element in the array
-let transformedPosts = blogPosts.map((post) => {
-  let zz = post.parsedContent;
-  let aa = post.filenameSlug;
-  // Your transformation logic here
-  return { zz, aa };
-});
-
-// You can now use transformedPosts as needed
-console.log(transformedPosts);

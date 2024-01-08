@@ -3,11 +3,11 @@
 import { NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
-interface Props {
+type ReactProps = {
   children: React.ReactNode;
-}
+};
 
-export default function Providers({ children }: Props) {
+export default function Providers({ children }: ReactProps) {
   return (
     <NextThemesProvider>
       <NextUIProvider>{children}</NextUIProvider>
