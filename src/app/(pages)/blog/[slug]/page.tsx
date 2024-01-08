@@ -5,7 +5,7 @@ import { getBlogPosts } from '@/app/(pages)/blog/content';
 import { MetaDataAttributes } from '@/app/(pages)/blog/types';
 
 type Slug = {
-  pathSlug: string;
+  slug: string;
 };
 
 export async function generateMetadata({
