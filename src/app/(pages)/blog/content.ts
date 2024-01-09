@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import fm from 'front-matter';
-import { MDXData, BlogData } from './types';
+import { MDXData, BlogData } from './_types';
+import { BLOG_CONTENT_PATH } from '@/constants';
 
 function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
@@ -31,5 +32,5 @@ function getMDXData(dir: string): Array<BlogData> {
 }
 
 export function getBlogPosts(): Array<BlogData> {
-  return getMDXData(path.join(process.cwd(), 'public/content'));
+  return getMDXData(path.join(process.cwd(), BLOG_CONTENT_PATH));
 }

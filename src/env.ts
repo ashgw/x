@@ -10,7 +10,9 @@ const env = {
   },
   prod: {},
   dev: {},
-  public: {},
+  public: {
+    SITE_URL: process.env.SITE_URL as string,
+  },
 };
 
 export default env;

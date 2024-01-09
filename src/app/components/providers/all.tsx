@@ -9,7 +9,12 @@ type ReactProps = {
 
 export default function Providers({ children }: ReactProps) {
   return (
-    <NextThemesProvider>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
       <NextUIProvider>{children}</NextUIProvider>
     </NextThemesProvider>
   );

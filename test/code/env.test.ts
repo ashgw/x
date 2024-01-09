@@ -8,5 +8,7 @@ test('Environment variables should actually load', async () => {
   expect(env.nextjs.NEXT_DEV_URL).toBeDefined();
 
   // rest envs
+  expect(env.public.SITE_URL).toBeDefined();
+
   // not yet implemented
 });

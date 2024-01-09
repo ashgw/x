@@ -4,7 +4,7 @@ import { getBlogPosts } from '@/app/(pages)/blog/content';
 
 export const metadata = {
   title: 'Blog',
-  description: 'Read my thoughts on software development, design, and more.',
+  description: 'Here is a list of all my blogs.',
 };
 
 export default function BlogPage() {
@@ -13,7 +13,7 @@ export default function BlogPage() {
   return (
     <section>
       <h1 className="font-medium text-2xl mb-8 tracking-tighter">
-        read my blog
+        All my blogs are here, unclassified, raw
       </h1>
       {allBlogs
         .sort((a, b) => {
@@ -32,11 +32,11 @@ export default function BlogPage() {
             href={`/blog/${post.filenameSlug}`}
           >
             <div className="w-full flex flex-col">
-              <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
+              <h3 className="text-neutral-900 dark:text-neutral-100 tracking-tight">
                 {post.parsedContent.attributes.title}
-              </p>
+              </h3>
               <Suspense fallback={<p className="h-6" />}>
-                <h1>it was supposed to be views here</h1>
+                <p>69 views</p>
               </Suspense>
             </div>
           </Link>

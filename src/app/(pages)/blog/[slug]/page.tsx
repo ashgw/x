@@ -2,58 +2,8 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
-import { MetaDataAttributes } from '@/app/(pages)/blog/types';
-
-type Slug = {
-  slug: string;
-};
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<MetaDataAttributes | undefined> {
-  let post = getBlogPosts().find((post) => post.filenameSlug === params.slug);
-  if (!post) {
-    return;
-  }
-
-  let { title, seoTitle, summary, firstModDate, lastModDate, isPublic } =
-    post.parsedContent.attributes;
-  return post.parsedContent.attributes;
-}
-
-function formatDate(date: string) {
-  let currentDate = new Date();
-  if (!date.includes('T')) {
-    date = `${date}T00:00:00`;
-  }
-  let targetDate = new Date(date);
-
-  let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  let daysAgo = currentDate.getDate() - targetDate.getDate();
-
-  let formattedDate = '';
-
-  if (yearsAgo > 0) {
-    formattedDate = `${yearsAgo}y ago`;
-  } else if (monthsAgo > 0) {
-    formattedDate = `${monthsAgo}mo ago`;
-  } else if (daysAgo > 0) {
-    formattedDate = `${daysAgo}d ago`;
-  } else {
-    formattedDate = 'Today';
-  }
-
-  let fullDate = targetDate.toLocaleString('en-us', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-
-  return `${fullDate} (${formattedDate})`;
-}
+import formatDate from '@/lib/funcs/form-date';
+import env from '@/env';
 
 export default function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
@@ -75,10 +25,10 @@ export default function Blog({ params }: { params: { slug: string } }) {
             datePublished: post.parsedContent.attributes.firstModDate,
             dateModified: post.parsedContent.attributes.lastModDate,
             description: post.parsedContent.attributes.summary,
-            url: `https://ashgw.io/blog/${post.filenameSlug}`,
+            url: env.public.SITE_URL + `/blog/${post.filenameSlug}`,
             author: {
               '@type': 'Person',
-              name: 'AshGw',
+              name: 'ashgw',
             },
           }),
         }}
