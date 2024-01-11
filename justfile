@@ -3,18 +3,21 @@
     just --list
 
 @setup:
-    set -e && set -x 
-    echo "installing dependencies"
+    #!/bin/zsh
+    source ~/.zshrc 
+    nvm install 18.17.0 && nvm use 18.17.0
     pnpm i
-    echo "installing playwright browsers"
-    chmod +x ./scripts/install/playwright-browsers
-    ./scripts/install/playwright-browsers
-    # post setup configurations
-    chmod +x ./scripts/dev-container/post-start
-    ./scripts/dev-container/post-start
+    pnpm exec playwright install
+    pnpm hooks
+    pnpm dev
+
 
 @serve:
     pnpm dev
+
+@serve-prod:
+    pnpm build 
+    pnpm start 
 
 @build:
     pnpm build 

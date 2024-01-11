@@ -8,7 +8,7 @@
     "start": "next start",
     "test": "npx jest; cd test/e2e && npx playwright test",
     "lint": "next lint",
-    "set-git-hooks": "husky install",
+    "hooks": "husky install",
     "format-check": "prettier --check .",
     "format": "prettier . --write"
   },

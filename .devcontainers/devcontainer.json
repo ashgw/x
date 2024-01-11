@@ -1,9 +1,8 @@
 {
-  "name": "ashgw site",
+  "name": "AG site",
   "dockerFile": "Dockerfile",
-  "postCreateCommand": "chmod +x ./scripts/dev-container/post-create && ./scripts/dev-container/post-create",
-  "postStartCommand": "chmod +x ./scripts/dev-container/post-start && ./scripts/dev-container/post-start",
-  // this below just allows to access browsers from within the container
+  "postCreateCommand": "sudo apt-get update",
+  "postStartCommand": "just setup",
   "runArgs": [
     "--net",
     "host",

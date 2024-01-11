@@ -1,7 +1,0 @@
-#!/bin/bash
-
-chmod +x .husky/pre-commit
-chmod +x .husky/commit-msg
-chmod +x .husky/pre-push
-pnpm set-git-hooks
-pnpm dev
