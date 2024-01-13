@@ -38,7 +38,6 @@ alias rn := reincarnate
 
 @reincarnate:
     rm -rf node_modules
-    rm -rf pnpm-lock.yaml 
     rm -rf .next
     echo 'done cleaning up..'
     echo 'reincarnating..'
