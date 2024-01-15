@@ -1,14 +1,14 @@
-/** @type {import('tailwindcss').Config} */
 import { nextui } from '@nextui-org/react';
 
-module.exports = {
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
   darkMode: ['class'],
   content: [
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     container: {
@@ -20,7 +20,7 @@ module.exports = {
     },
     extend: {
       fontWeight: {
-        base: 400,
+        base: '400',
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -64,12 +64,12 @@ module.exports = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: 0 },
+          from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: 0 },
+          to: { height: '0' },
         },
       },
       animation: {
@@ -97,3 +97,5 @@ module.exports = {
     }),
   ],
 };
+
+export default config;
