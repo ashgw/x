@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 config({ path: '.env.local' });
 
 export const pub = {
-  SITE_URL_PROD: process.env.SITE_URL as string,
+  SITE_URL_PROD: process.env.SITE_URL_PROD as string,
   SITE_URL_DEV: process.env.SITE_URL_DEV as string,
 };
 
