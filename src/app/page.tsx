@@ -2,7 +2,6 @@
 
 import ThemeModeToggler from './components/reusables/theme-toggler';
 import { Button } from './components/ui/button';
-import { redirect } from 'next/navigation';
 
 export default function Home() {
   return (
@@ -13,7 +12,7 @@ export default function Home() {
             window.location.href = '/blog';
           }}
         >
-          Check out my blog here
+          Check out my blog
         </Button>
         <div className="px-5">
           <ThemeModeToggler></ThemeModeToggler>

@@ -3,7 +3,7 @@ import './styles/loading-dots.scss';
 function LoadingScreen() {
   return (
     <div
-      className="d-flex align-items-center justify-content-center"
+      className="flex items-center justify-center h-screen"
       style={{ height: '100vh' }}
     >
       <div className="loader">
