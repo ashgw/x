@@ -45,6 +45,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
             <h3>Views are supposed to be here</h3>
           </Suspense>
         </div>
+
         <article className="prose prose-quoteless prose-neutral dark:prose-invert">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
         </article>
