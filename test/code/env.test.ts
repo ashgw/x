@@ -1,4 +1,4 @@
-import { pub, nextJS } from '@/env';
+import { pub, nextJS } from '@/lib/env';
 
 test('Environment variables should actually load', async () => {
   // NextJS configs

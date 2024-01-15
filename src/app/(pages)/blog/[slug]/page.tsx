@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
 import formatDate from '@/lib/funcs/form-date';
-import { pub } from '@/env';
+import { pub } from '@/lib/env';
 
 export default function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
