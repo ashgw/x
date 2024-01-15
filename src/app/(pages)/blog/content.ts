@@ -22,8 +22,6 @@ function getMDXData(dir: string): Array<BlogData> {
   return mdxFiles.map((file) => {
     let parsedContent: MDXData = readMDXFile(path.join(dir, file));
     let filenameSlug: string = path.basename(file, path.extname(file));
-    // console.log(parsedContent);
-    // console.log(filenameSlug);
     return {
       parsedContent, // will be used to layout the content just right
       filenameSlug, // to be used in automatic routing

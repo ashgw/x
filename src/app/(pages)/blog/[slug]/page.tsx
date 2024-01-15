@@ -13,7 +13,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <section>
+    <main>
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -24,7 +24,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
             headline: post.parsedContent.attributes.title,
             datePublished: post.parsedContent.attributes.firstModDate,
             dateModified: post.parsedContent.attributes.lastModDate,
-            description: post.parsedContent.attributes.summary,
+            description: post.parsedContent.attributes.seoTitle,
             url: pub.SITE_URL_PROD + `/blog/${post.filenameSlug}`,
             author: {
               '@type': 'Person',
@@ -33,20 +33,22 @@ export default function Blog({ params }: { params: { slug: string } }) {
           }),
         }}
       />
-      <h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">
-        {post.parsedContent.attributes.title}
-      </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.parsedContent.attributes.firstModDate)}
-        </p>
-        <Suspense fallback={<p className="h-5" />}>
-          <h3>Views are supposed to be here</h3>
-        </Suspense>
-      </div>
-      <article className="prose prose-quoteless prose-neutral dark:prose-invert">
-        <StyledMDX source={post.parsedContent.body}></StyledMDX>
-      </article>
-    </section>
+      <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
+        <h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">
+          {post.parsedContent.attributes.title}
+        </h1>
+        <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            {formatDate(post.parsedContent.attributes.firstModDate)}
+          </p>
+          <Suspense fallback={<p className="h-5" />}>
+            <h3>Views are supposed to be here</h3>
+          </Suspense>
+        </div>
+        <article className="prose prose-quoteless prose-neutral dark:prose-invert">
+          <StyledMDX source={post.parsedContent.body}></StyledMDX>
+        </article>
+      </section>
+    </main>
   );
 }
