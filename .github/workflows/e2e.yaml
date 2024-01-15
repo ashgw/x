@@ -1,0 +1,30 @@
+name: playright
+on:
+  push:
+    branches: [main, prod-preview]
+  pull_request:
+    branches: [main, prod-preview]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set up .env
+        run: |
+          echo '${{ secrets.ENV_VARS }}' >> .env.local
+      - name: Install dependencies
+        run: npm install -g pnpm &&  pnpm install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: npx playwright install  # issue not resolved with pnpm 
+      - name: Run Playwright tests
+        run: cd test/e2e &&  npx playwright test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
