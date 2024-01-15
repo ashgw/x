@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
 import formatDate from '@/lib/funcs/form-date';
-import env from '@/env';
+import { pub } from '@/env';
 
 export default function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
@@ -25,7 +25,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
             datePublished: post.parsedContent.attributes.firstModDate,
             dateModified: post.parsedContent.attributes.lastModDate,
             description: post.parsedContent.attributes.summary,
-            url: env.public.SITE_URL + `/blog/${post.filenameSlug}`,
+            url: pub.SITE_URL_PROD + `/blog/${post.filenameSlug}`,
             author: {
               '@type': 'Person',
               name: 'ashgw',
