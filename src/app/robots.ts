@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
-import env from '@/env';
-
-const BASE_URL = env.public.SITE_URL;
+import { pub } from '@/env';
+const BASE_URL = pub.SITE_URL_PROD;
 
 export default function robots(): MetadataRoute.Robots {
   return {
