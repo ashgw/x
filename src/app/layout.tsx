@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Providers from '@/app/components/providers/all';
-
+import { pub } from '@/lib/env';
 import './styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  // TODO: figure out SEO when finished
+  metadataBase: new URL(pub.SITE_URL_PROD),
   title: 'ashgw',
-  description: '...', // figure out SEO later
+  description: '...',
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({
