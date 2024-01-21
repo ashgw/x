@@ -15,15 +15,17 @@ First you might want to yeet the `Server` & `X-Powered-By` headers (the latter b
 
 To test that you've removed this entirely you can use curl:
 
+<Code>
 ```bash
 
-➜  ~ curl -IsL https://https://www.google.com/ | grep -i server
+➜ ~ curl -IsL https://https://www.google.com/ | grep -i server
 
 server: gws
 
 server: gws
 
-```
+````
+</Code>
 
 Google doesn't hide this info, but guess who does ?
 
@@ -35,7 +37,7 @@ The feds
 
 ➜  ~
 
-```
+````
 
 ### Content Security Policy
 

@@ -7,39 +7,69 @@ lastModDate: 2019-04-20T09:15:00-0400
 firstModDate: 2019-04-20T09:15:00-0400
 ---
 
-<div className="flex justify-center items-center h-screen">
-  There's been massive innovation in the database and backend space for
-  developers building applications with serverless and edge compute. There are
-  new tools, companies, and even programming models that simplify how developers
-  store data.
-</div>
-This post will be an overview of databases that pair well with modern application
-and compute providers.
+# Captionize 📷
+
+### Web application that automatically generates descriptive captions for images using a Blind Language-Image Pre-training (BLIP) model.
+
+## Overview 🎥
+
+https://github.com/AshGw/Captionize/assets/126174609/81840a72-2b9d-4a48-a56e-e19d8f5fb14c
+
+## Installation 🛠️
+
+To install and run the app on any machine, you can choose from two methods:
+
+Using Docker for isolation or, if you already have Python installed, the latter option.
+
+**During the installation process, you will receive instructions on how to re-run the app if needed.**
+
+> **NOTE: The installation may take some time as the dependencies are quite heavy.**
+
+### Docker 🐳
+
+1. Install **[Docker](https://www.docker.com/get-started/)** If you don't have it already.
+2. Next, run this command in an empty directory using your terminal or **[Git Bash](https://git-scm.com/downloads)** for windows.
+
+```shell
+curl -sSfl https://raw.githubusercontent.com/AshGw/Captionize/main/setup/docker-auto-run.sh | bash
+```
+
+That's it, the app should now be up and running at:
+
+> _http://localhost:7854_
+
+### Python 🐍
+
+1. Install **[Python](https://www.python.org/downloads)** (3.10+) if you don't have it already.
+2. Next, run this command in an empty directory using your terminal or **[Git Bash](https://git-scm.com/downloads)** for windows.
+
+```shell
+curl -sSfl https://raw.githubusercontent.com/AshGw/Captionize/main/setup/install.sh | bash
+```
+
+This command will install the entire project, sets up the virtual environment, installs dependencies and then runs the app.
+
+You can view it at:
+
+> _http://localhost:8000_
+
+## Keynote 📝
+
+The app includes the model directly on your machine, which means you can use the app **offline**, no need for an internet connection.
+
+During the initial image captioning process, there will be a delay as additional dependencies are installed.
 
 <br />
-## Criteria
-<br />
 
-I'll focus on **transactional¹** workloads instead of analytical² workloads.
+It should work smoothly after, if:
 
-The “backend” space is vast: search, analytics, data science, and more – so I'll niche down here. The primary criteria of this overview is:
+- For Docker: Subsequent runs of the container.
+- For Python: Keeping the same virtual environment activated.
 
-1. Services that work exceptionally well when paired with serverless and edge compute
-2. Services that work with JavaScript and TypeScript codebases
+## License 📜
 
-> **Disclaimer:** I work at Vercel, which partners with companies in this post. I also have personally used many of these tools for my own personal projects. My site currently uses PlanetScale and I'm also an angel investor in Supabase (mentioned below).
+This project is licensed under the [MIT License](https://github.com/AshGw/Captionize/blob/main/LICENSE).
 
-## A new programming model
+## Acknowledgments 🙌
 
-Relational databases have been around for 25+ years.
-
-While there are new companies creating _serverless-first_ storage solutions, a new programming model is required for workloads to be compatible with serverless compute and modern runtimes.
-
-These solutions must be:
-
-- **Connectionless:** Developers don't want to think about manual connection management. Traditional database protocols are stateful, whereas HTTP is mostly stateless, making it easier to use with scale to zero compute. Exposed through an SDK or HTTP API, “connectionless” solutions provide an **abstraction over connection pooling**.
-- **Web native:** Browser data-fetching APIs (e.g. Web `fetch`) and protocols are eating the world. New databases use HTTP APIs or WebSockets, rather than opening direct connections to the database. This makes them compatible with all forms of compute (including the lighter runtime used in edge compute).
-- **Lightweight:** Client libraries (and drivers) are becoming thin. Complexity is shifting to the database vendor, taking on the burden as part of their global infrastructure. For example, their gateway might handle connection pooling or provide caching infrastructure. This has led to a new wave of ORMs (i.e. abstractions to query data) both as standalone libraries and as integrated database SDKs.
-- **(Bonus) Type-safe:** TypeScript developers are favoring databases or libraries which provide tooling to enable type-safe access to your data. For example: [Prisma](https://www.prisma.io/), [Kysely](https://github.com/koskimas/kysely), [Drizzle](https://github.com/drizzle-team/drizzle-orm), [Contentlayer](https://www.contentlayer.dev/), and [Zapatos](https://jawj.github.io/zapatos/).
-
-Consider databases like Postgres. New solutions like Neon and Supabase abstract connection management, providing you with a simple way to query and mutate data. In the case of Supabase, there's a client library that uses an HTTP API [built on PostgREST](https://supabase.com/docs/guides/api):
+This project was made possible by the pre-trained BLIP model provided by **[Hugging Face](https://huggingface.co/Salesforce/blip-image-captioning-large).**
