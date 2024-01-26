@@ -9,7 +9,7 @@
     pnpm i
     pnpm exec playwright install
     pnpm hooks
-    pnpm dev
+    # pnpm dev
 
 
 @serve:
