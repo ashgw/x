@@ -1,5 +1,7 @@
 name: Feature request
 labels: ['⭐ feature']
+description: Features & such
+assignees: me
 body:
   - type: textarea
     attributes:
