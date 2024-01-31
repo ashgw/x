@@ -164,6 +164,9 @@ table {
 .title {
   text-wrap: balance;
 }
+.dimmed {
+  opacity: 0.65;
+}
 
 @layer base {
   * {

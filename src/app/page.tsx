@@ -1,6 +1,7 @@
 'use client';
 
 import ThemeModeToggler from '@/app/components/reusables/theme-toggler';
+import CopyRight from '@/app/components/footer/copyright';
 import { Button } from '@/app/components/ui/button';
 import { Navbar } from '@/app/components/reusables/nav';
 import { Badge } from '@/app/components/ui/badge';
@@ -22,9 +23,10 @@ export default function Home() {
             <ThemeModeToggler></ThemeModeToggler>
           </div>
           <br></br>
-          <Badge variant="success">Active</Badge>
+          <Badge variant="success">New</Badge>
         </div>
       </div>
+      <CopyRight></CopyRight>
     </>
   );
 }

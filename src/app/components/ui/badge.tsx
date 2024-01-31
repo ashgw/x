@@ -16,7 +16,7 @@ const badgeVariants = cva(
           'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
         outline: 'text-foreground',
         success:
-          'border-transparent bg-green-400 text-secondary hover:bg-green-300 font-light',
+          'border-transparent bg-green-400 text-secondary hover:bg-green-300 font-bold',
       },
     },
     defaultVariants: {
@@ -35,7 +35,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
       className={cn(badgeVariants({ variant }), className)}
       style={{
         padding: '8px',
-        borderRadius: '50px',
+        borderRadius: '20px',
       }}
       {...props}
     />
