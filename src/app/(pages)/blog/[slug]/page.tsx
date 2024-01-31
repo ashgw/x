@@ -1,40 +1,15 @@
+import StyledMDX from '@/app/components/mdx/styled-mdx';
+import formatDate from '@/lib/funcs/form-date';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import StyledMDX from '@/app/components/mdx/styled-mdx';
-import { getBlogPosts } from '@/app/(pages)/blog/content';
-import formatDate from '@/lib/funcs/form-date';
 import { pub } from '@/lib/env';
-
-import { serialize } from 'next-mdx-remote/serialize';
-import gfm from 'remark-gfm';
-import slug from 'rehype-slug';
-
-// @ts-ignore
-import toc from 'markdown-toc';
-import rehypePrism from '@mapbox/rehype-prism';
-import fs from 'fs';
+import { getBlogPosts } from '@/app/(pages)/blog/content';
 
 export default async function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
   if (!post) {
     notFound();
   }
-
-  let content = post.parsedContent.body;
-  let metaData = post.parsedContent.attributes;
-
-  const mdxPost = await serialize(content, {
-    scope: metaData,
-    mdxOptions: {
-      remarkPlugins: [gfm],
-      rehypePlugins: [slug, rehypePrism],
-    },
-  });
-
-  const contentToWrite = mdxPost.compiledSource;
-
-  fs.writeFileSync('output.txt', contentToWrite);
-  console.log('File has been written.');
 
   return (
     <main>
@@ -69,9 +44,8 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             <h3>Views are supposed to be here</h3>
           </Suspense>
         </div>
-
         <article className="prose prose-quoteless prose-neutral dark:prose-invert">
-          <StyledMDX source={mdxPost.compiledSource}></StyledMDX>
+          <StyledMDX source={post.parsedContent.body}></StyledMDX>
         </article>
       </section>
     </main>
