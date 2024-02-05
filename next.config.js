@@ -2,6 +2,16 @@
 const withMDX = require('@next/mdx')();
 
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
   async headers() {
     return [
       {
@@ -23,12 +33,6 @@ const nextConfig = {
     ];
   },
   productionBrowserSourceMaps: process.env.NODE_ENV !== 'production',
-  images: {
-    domains: [
-      'lh3.googleusercontent.com',
-      'github-production-user-asset-6210df.s3.amazonaws.com',
-    ],
-  },
   pageExtensions: ['js', 'ts', 'jsx', 'tsx', 'mdx'],
 };
 

@@ -1,4 +1,3 @@
 ```shell
-g clone git@github.com:AshGw/mysite.git
-mysite && g branch -M dev && j setup && e .
+g cl git@github.com:AshGw/mysite.git && mysite && g branch -M dev && j s && e .
 ```

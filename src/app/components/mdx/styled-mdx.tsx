@@ -1,21 +1,55 @@
 import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
-import { Navbar } from '../reusables/nav';
+import { Image, Skeleton } from '@nextui-org/react';
+import { Navbar } from '@/app/components/reusables/nav';
+import { cn } from '@/lib/utils';
 import { highlight } from 'sugar-high';
-import React from 'react';
-
-interface CodeProps {
-  children: string;
-}
-export const Code: React.FC<CodeProps> = ({ children, ...props }) => {
-  let codeHTML = highlight(children);
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
-};
-
-export function _StyledMDX({ components, ...props }: MDXRemoteProps) {
-  return <MDXRemote {...props} components={{ ...components }} />;
-}
-const cc = { Code: Code, Nav: Navbar };
+import NextImage from 'next/image';
 
 export default function StyledMDX({ source }: { source: string }) {
-  return <_StyledMDX source={source} components={cc}></_StyledMDX>;
+  return (
+    <_StyledMDX
+      source={source}
+      components={{ Code: Code, Nav: Navbar, Image: StyledImage }}
+    ></_StyledMDX>
+  );
+}
+
+interface StyledImageProps {
+  width: string;
+  height: string;
+  src: string;
+  className?: string;
+}
+
+function StyledImage(p: StyledImageProps) {
+  return (
+    <Skeleton>
+      <Image
+        isLoading
+        isBlurred
+        as={NextImage}
+        className={cn('rounded-lg', p.className || '')}
+        src={p.src}
+        alt="..."
+        height={p.height}
+        width={p.width}
+      />
+      ;
+    </Skeleton>
+  );
+}
+
+export const Code: React.FC<{
+  children: string;
+}> = ({ children, ...props }) => {
+  return (
+    <code
+      dangerouslySetInnerHTML={{ __html: highlight(children) }}
+      {...props}
+    />
+  );
+};
+
+function _StyledMDX({ components, ...props }: MDXRemoteProps) {
+  return <MDXRemote {...props} components={{ ...components }} />;
 }
