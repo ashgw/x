@@ -1,4 +1,4 @@
-import './styles/loading-dots.scss';
+import Loader from '@/app/components/reusables/loader';
 
 function LoadingScreen() {
   return (
@@ -6,11 +6,7 @@ function LoadingScreen() {
       className="flex items-center justify-center h-screen"
       style={{ height: '100vh' }}
     >
-      <div className="loader">
-        <div className="one"></div>
-        <div className="two"></div>
-        <div className="three"></div>
-      </div>
+      <Loader></Loader>
     </div>
   );
 }

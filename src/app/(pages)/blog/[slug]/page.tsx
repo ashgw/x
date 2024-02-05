@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
-
+import { Badge } from '@/app/components/ui/badge';
 export default async function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
   if (!post) {
@@ -41,7 +41,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
           <Suspense fallback={<p className="h-5" />}>
-            <h3>Views are supposed to be here</h3>
+            <Badge variant={'outline'}>New</Badge>
           </Suspense>
         </div>
         <article className="prose prose-quoteless prose-neutral dark:prose-invert">

@@ -20,14 +20,15 @@ export default function StyledMDX({ source }: { source: string }) {
   );
 }
 
-interface StyledImageProps {
+type _StyledImageProps = {
+  alt: string;
   width: string;
   height: string;
   src: string;
   className?: string;
-}
+};
 
-function StyledImage(props: StyledImageProps) {
+export function StyledImage(props: _StyledImageProps) {
   return (
     <Skeleton className="flex items-center justify-center">
       <Image
@@ -36,7 +37,7 @@ function StyledImage(props: StyledImageProps) {
         as={NextImage}
         className={cn('rounded-lg', props.className || '')}
         src={props.src}
-        alt="..."
+        alt={props.alt}
         height={props.height}
         width={props.width}
       />
@@ -44,10 +45,10 @@ function StyledImage(props: StyledImageProps) {
   );
 }
 
-export async function Heading({ children }: { children: React.ReactNode }) {
-  return <div className="text-4xl font-bold">{children}</div>;
+export function Heading({ children }: { children: React.ReactNode }) {
+  return <div className="text-4xl font-bold my-5">{children}</div>;
 }
-export async function Spacer({ children }: { children: React.ReactNode }) {
+export function Spacer({ children }: { children: React.ReactNode }) {
   return <div className="my-5">{children}</div>;
 }
 
