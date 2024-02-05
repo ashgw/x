@@ -1,5 +1,14 @@
+alias h:= help
+alias s:= setup
+alias sv:= serve
+alias svp:= serve-prod
+alias t:= test
+alias f:= format
+alias l:= lint
+alias b:= build
+alias rn := reincarnate
+
 @help:
-    echo "each recipe is a command"
     just --list
 
 @setup:
@@ -9,7 +18,7 @@
     pnpm i
     pnpm exec playwright install
     pnpm hooks
-    # pnpm dev
+
 
 
 @serve:
@@ -34,7 +43,6 @@
 @deploy:
     echo 'this command is not set yet'
 
-alias rn := reincarnate
 
 @reincarnate:
     rm -rf node_modules
