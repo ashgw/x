@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
 import { Badge } from '@/app/components/ui/badge';
+import Loader from '@/app/components/reusables/loader';
 export default async function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
   if (!post) {
@@ -40,8 +41,14 @@ export default async function Blog({ params }: { params: { slug: string } }) {
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
-          <Suspense fallback={<p className="h-5" />}>
-            <Badge variant={'outline'}>New</Badge>
+          <Suspense
+            fallback={
+              <Badge variant={'outline'}>
+                <Loader />
+              </Badge>
+            }
+          >
+            <Badge variant={'success'}>New</Badge>
           </Suspense>
         </div>
         <article className="prose prose-quoteless prose-neutral dark:prose-invert">
