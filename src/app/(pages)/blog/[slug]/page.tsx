@@ -41,13 +41,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
-          <Suspense
-            fallback={
-              <Badge variant={'outline'}>
-                <Loader />
-              </Badge>
-            }
-          >
+          <Suspense fallback={<Loader />}>
             <Badge variant={'success'}>New</Badge>
           </Suspense>
         </div>

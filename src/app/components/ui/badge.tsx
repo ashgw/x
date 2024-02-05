@@ -32,11 +32,7 @@ export interface BadgeProps
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
     <div
-      className={cn(badgeVariants({ variant }), className)}
-      style={{
-        padding: '8px',
-        borderRadius: '20px',
-      }}
+      className={cn(badgeVariants({ variant }), 'px-3 py-1.5', className)}
       {...props}
     />
   );
