@@ -2,7 +2,6 @@ import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
 import { Image, Skeleton } from '@nextui-org/react';
 import { Navbar } from '@/app/components/reusables/nav';
 import { cn } from '@/lib/utils';
-import { highlight } from 'sugar-high';
 import NextImage from 'next/image';
 import CodeBlock from '@/app/components/reusables/syntax-highlighter';
 
@@ -11,12 +10,14 @@ export default function StyledMDX({ source }: { source: string }) {
     <_StyledMDX
       source={source}
       components={{
-        Code: Code,
-        CodeBlock: CodeBlock,
+        Code: CodeBlock,
         Nav: Navbar,
         Image: StyledImage,
         H: Heading,
+        H2: Heading2,
+        H3: Heading3,
         S: Spacer,
+        C: Content,
       }}
     ></_StyledMDX>
   );
@@ -48,22 +49,21 @@ export function StyledImage(props: _StyledImageProps) {
 }
 
 export function Heading({ children }: { children: React.ReactNode }) {
-  return <div className="text-4xl font-bold my-5">{children}</div>;
+  return <h2 className="text-4xl font-bold my-5">{children}</h2>;
+}
+export function Heading2({ children }: { children: React.ReactNode }) {
+  return <h2 className="text-3xl font-bold my-5">{children}</h2>;
+}
+export function Heading3({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-xl font-bold my-2">{children}</h3>;
+}
+
+export function Content({ children }: { children: React.ReactNode }) {
+  return <p className="row p-2 mx-2 font-normal ease-on-eye">{children}</p>;
 }
 export function Spacer({ children }: { children: React.ReactNode }) {
   return <div className="my-5">{children}</div>;
 }
-
-export const Code: React.FC<{
-  children: string;
-}> = ({ children, ...props }) => {
-  return (
-    <code
-      dangerouslySetInnerHTML={{ __html: highlight(children) }}
-      {...props}
-    />
-  );
-};
 
 function _StyledMDX({ components, ...props }: MDXRemoteProps) {
   return <MDXRemote {...props} components={{ ...components }} />;

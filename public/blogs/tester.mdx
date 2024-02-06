@@ -6,17 +6,13 @@ isPublic: true
 lastModDate: 2018-04-20T09:15:00-0400
 firstModDate: 2017-04-20T09:15:00-0400
 ---
-
-            <h2 className="text-2xl font-bold">Privacy Policy</h2>
-            <br/>
-            <div className="px-2 font-normal">
-                Rovxr ("we" or "us") is committed to protecting the privacy of our users. This Privacy Policy outlines how we collect, use, and safeguard your personal information. By using our services, you consent to the practices described in this policy.
-                Our guiding principle is to collect only what we need. Here's what that means in practice.
-            </div>
-            <br/>
-            <br/>
-
-<CodeBlock
+<H3>Privacy Policy</H3>
+<S/>
+<C>
+    Rovxr ("we" or "us") is committed to protecting the privacy of our users. This Privacy Policy outlines how we collect, use, and safeguard your personal information. By using our services, you consent to the practices described in this policy.
+    Our guiding principle is to collect only what we need. Here's what that means in practice.
+</C>
+<Code
   code=
 {`use std::marker::Copy;
 use wasm_bindgen::prelude::*;
@@ -37,20 +33,17 @@ pub struct NoiseMap {
 language="rust"
 showLineNumbers={true}
 
-> </CodeBlock>
-
-<h3 className="text-xl font-bold mt-4 mb-2">Your Information</h3>
-
-<div className="row p-2 mx-2 font-normal">
+> </Code>
+<H3>Your Information</H3>
+<C>
   When you sign up for our product or service, we may request certain
   identifying information, such as your name and email address. This allows us
   to personalize your new account. It's important to note that none of this
   information is stored in our database. Instead, for the purposes of managing
   your plan, subscription, or purchase, we securely hash and encrypt your email
   address, ensuring a high level of privacy and security.
-</div>
-<br />
-<CodeBlock
+</C>
+<Code
   code=
 {`@pytest.mark.asyncio
 async def test_valid_token_acquisition(valid_token_response, op, google) -> None:
@@ -70,9 +63,9 @@ async def test_valid_token_acquisition(valid_token_response, op, google) -> None
 language="python"
 showLineNumbers={true}
 
-> </CodeBlock>
+> </Code>
 <br />
-<CodeBlock language="bash" showLineNumbers={true} code={`
+<Code language="bash" showLineNumbers={true} code={`
 declare -A dotfiles=(
   [".zshrc"]="$REPO/.zshrc"
   [".dircolors"]="$REPO/.dircolors"
@@ -99,34 +92,27 @@ for file in "\${!dotfiles[@]}"; do
 done
 `}>
 
-</CodeBlock>
+</Code>
 
-
-
-            <h3 className="text-xl font-bold mt-4 mb-2">Authentication</h3>
-            <div className="row p-2 mx-2 font-normal">
+            <H3>Authentication</H3>
+            <C>
                 As part of our authentication process, we exclusively employ OAuth2 with trusted providers like Google. This enables us to access your name and profile image session data stored securely in your browser. Please rest assured that these specific details are not permanently stored in our database infrastructure. They serve their purpose solely for the duration of your active session on our platform.
-            </div>
-            <br/>
-            <br/>
-            <h3 className="text-xl font-bold mt-4 mb-2">Cookies</h3>
-            <div className="row p-2 mx-2 font-normal">
+            </C>
+            <H3>Cookies</H3>
+            <C >
                 We do use persistent first-party cookies to store certain preferences, making it easier for you to use our applications. A cookie is a piece of text stored by your browser to help it remember your login information, site preferences, and more. You can adjust cookie retention settings in your own browser.
-            </div>
-
-            <h3 className="text-xl font-bold mt-4 mb-2">User-Generated Requests</h3>
-            <div className="row p-2 mx-2 font-normal">
+            </C>
+            <H3>User-Generated Requests</H3>
+            <C>
                 When you use our service to generate AI images based on a word or phrase, we collect the input provided. This information is used solely to generate the requested image and is not stored or associated with your personal information.
-            </div>
-            <br/>
-            <br/>
-            <h3 className="text-xl font-bold mt-4 mb-2">Security</h3>
-            <div className="row p-2 mx-2 font-normal">
+            </C>
+            <H3>Security</H3>
+            <C>
                 All data is encrypted via SSL/TLS when transmitted from our servers to your browser.
-            </div>
+            </C>
 
-            <h3 class="text-xl font-bold mt-4 mb-2">Changes</h3>
-            <div class="row p-2 mx-2 font-normal">
+            <H3>Changes</H3>
+            <C>
                 We may update this policy as needed to comply with relevant regulations and reflect any new practices.
                 Should you have any questions, comments, or concerns regarding this privacy policy, your data, or your rights in regard to your information, please don't hesitate to reach out. You can <a href="/contact" className="text-blue-500">contact us</a> and we'll be more than happy to assist you!
-            </div>
+            </C>

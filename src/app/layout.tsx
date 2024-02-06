@@ -4,7 +4,7 @@ import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], weight: '500' });
+const inter = Inter({ subsets: ['latin'], weight: '400' });
 
 export const metadata: Metadata = {
   // TODO: figure out SEO when finished
