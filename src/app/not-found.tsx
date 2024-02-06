@@ -10,8 +10,8 @@ export default function FeaturedBlogPost({ blogData }: FeaturedBlogPostProps) {
 
   return (
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
-      <div className="group grid gap-4 rounded-[2rem] border border-black/10 p-5 transition-all duration-300 hover:shadow-[0px_4px_88px_0px_rgba(252,84,12,0.25)] dark:border-white/10 md:grid-cols-2 md:items-center md:gap-5 md:p-8">
-        <div className="grid gap-4 lg:gap-6">
+      <div className="group flex flex-col gap-4 rounded-[2rem] p-5 transition-all duration-300 hover:shadow-[0px_4px_88px_0px_rgba(252,84,12,0.25)] border border-white/10 md:flex-row md:items-center md:gap-5 md:p-8">
+        <div className="flex flex-col gap-4 lg:gap-6">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <li className="list-disc dimmed0">
               {formatDate(blogData.parsedContent.attributes.firstModDate)}
