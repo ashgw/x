@@ -27,7 +27,11 @@ export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
                 {tag}
               </div>
             ))}
-            <div className="dimmed-1">{'13 minutes'}</div>
+            <div className="dimmed-1">
+              {blogData.parsedContent.attributes.minutesToRead
+                ? blogData.parsedContent.attributes.minutesToRead + ' minutes'
+                : '\u221e' + ' minutes'}
+            </div>
           </div>
         </div>
         <Link

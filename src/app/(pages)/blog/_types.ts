@@ -7,6 +7,7 @@ export type MetaDataAttributes = {
   firstModDate: string;
   lastModDate: string;
   isPublic: boolean;
+  minutesToRead: string | number;
   tags: string[];
 };
 
