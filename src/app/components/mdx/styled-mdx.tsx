@@ -20,6 +20,8 @@ export default function StyledMDX({ source }: { source: string }) {
         H2: Heading2,
         H3: Heading3,
         S: Spacer,
+        S2: Spacer2,
+        S3: Spacer3,
         C: Content,
         L: Link,
       }}
@@ -105,7 +107,13 @@ export function Content({ children }: { children: React.ReactNode }) {
   return <p className="row p-2 mx-2 font-normal ease-on-eye">{children}</p>;
 }
 export function Spacer({ children }: { children: React.ReactNode }) {
-  return <div className="my-5">{children}</div>;
+  return <div className="my-1">{children}</div>;
+}
+export function Spacer2({ children }: { children: React.ReactNode }) {
+  return <div className="my-2">{children}</div>;
+}
+export function Spacer3({ children }: { children: React.ReactNode }) {
+  return <div className="my-4">{children}</div>;
 }
 
 function _StyledMDX({ components, ...props }: MDXRemoteProps) {
