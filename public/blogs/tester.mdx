@@ -1,52 +1,164 @@
 ---
 title: Tester
-seoTitle: Web application that automatically generates descriptive captions for images using a Blind Language-Image Pre-training (BLIP) model.
-summary: idk what here frfr
+seoTitle: This is how to migrate from vercel to AWS
+summary: This is how to migrate from vercel to AWS
 isPublic: true
 lastModDate: 2018-04-20T09:15:00-0400
 firstModDate: 2017-04-20T09:15:00-0400
+tags:
+  - 'aws'
+  - 'vercel'
+  - 'serverless'
 ---
+<H3>Privacy Policy</H3>
+<C>
+   First we might talk about <L href={'/blog/simple'}>how to run in parallel</L> and run the app on any machine, you can choose from two methods:
+<S3/>
+Using **``getStaticQueryParams()``** for isolation or, you can use  <L href={'https://google.com'}>Google</L> if already have Python installed, the latter option.
+**During the installation process, you will receive instructions on how to re-run the app if needed, one can mention:**
+<S2/>
+*  \- **Referrer**: Static site generation 
+<S/>
+*  \- **Oppenheimer**: Beatle public asssessment
+<S/>
+*  \- **Crunch**: Shuttle is new
+<S3/>
 
-            <h2 className="text-2xl font-bold mb-4">Privacy Policy</h2>
-            <div className="row p-2 mx-2 font-normal">
-                Rovxr ("we" or "us") is committed to protecting the privacy of our users. This Privacy Policy outlines how we collect, use, and safeguard your personal information. By using our services, you consent to the practices described in this policy.
-                Our guiding principle is to collect only what we need. Here's what that means in practice.
-            </div>
-            <br/>
-            <br/>
+>> *NOTE: The installation may take some time as the dependencies are quite heavy.*
 
-            <h3 className="text-xl font-bold mt-4 mb-2">Your Information</h3>
-            <div className="row p-2 mx-2 font-normal">
-                When you sign up for our product or service, we may request certain identifying information, such as your name and email address. This allows us to personalize your new account.
-                It's important to note that none of this information is stored in our database. Instead, for the purposes of managing your plan, subscription, or purchase, we securely hash and encrypt your email address, ensuring a high level of privacy and security.
-            </div>
-            <br/>
-            <br/>
+</C>
+<Code
+  code=
+{`use std::marker::Copy;
+use wasm_bindgen::prelude::*;
 
-            <h3 className="text-xl font-bold mt-4 mb-2">Authentication</h3>
-            <div className="row p-2 mx-2 font-normal">
+#[wasm_bindgen]
+pub struct NoiseMap {
+    pub width: usize,
+    pub height: usize,
+    pub scale: f64,
+    pub octaves: u8,
+    pub lacunarity: f64,
+    pub persistence: f64,
+    pub max_value: f64,
+    pub min_value: f64, #[wasm_bindgen(skip)]
+    pub map: Vec<f64>,
+}
+`}
+language="rust"
+showLineNumbers={true}
+
+> </Code>
+<H3>Your Information</H3>
+<C>
+  When you sign up for our product or service, we may request certain
+  identifying information, such as your name and email address. This allows us
+  to personalize your new account. It's important to note that none of this
+  information is stored in our database. Instead, for the purposes of managing
+  your plan, subscription, or purchase, we securely hash and encrypt your email
+  address, ensuring a high level of privacy and security.
+</C>
+<Code
+  code=
+{`@pytest.mark.asyncio
+async def test_valid_token_acquisition(valid_token_response, op, google) -> None:
+    with patch(
+        "fastauth.providers.google.google.Google._request_access_token"
+    ) as mock_token_request:
+        mock_response = AsyncMock()
+        mock_response.status_code = StatusCode.OK
+        mock_response.json = valid_token_response
+        mock_token_request.return_value = mock_response
+        _result = await google._request_access_token(
+            state=op.state,
+            code_verifier=op.code_verifier,
+            code="...",
+        )
+`}
+language="python"
+showLineNumbers={true}
+
+> </Code>
+<br />
+<Code language="bash" showLineNumbers={true} code={`
+declare -A dotfiles=(
+  [".zshrc"]="$REPO/.zshrc"
+  [".dircolors"]="$REPO/.dircolors"
+  [".bashrc"]="$REPO/.bashrc"
+  [".nanorc"]="$REPO/.nanorc"
+  [".tmux.conf"]="$REPO/.tmux.conf"
+  [".gitconfig"]="$REPO/.gitconfig"
+  [".hushlogin"]="$REPO/.hushlogin"
+  [".config/nvim/init.vim"]="$REPO/.config/nvim/init.vim"
+  [".config/zathura/zathurarc"]="$REPO/.config/zathura/zathurarc"
+  [".config/i3/config"]="$REPO/.config/i3/config"
+  [".config/polybar/colors.ini"]="$REPO/.config/polybar/colors.ini"
+  [".config/polybar/config.ini"]="$REPO/.config/polybar/config.ini"
+  [".config/polybar/launch.sh"]="$REPO/.config/polybar/launch.sh"
+  [".config/polybar/uptime.sh"]="$REPO/.config/polybar/uptime.sh"
+  [".config/neofetch/config.conf"]="$REPO/.config/neofetch/config.conf"
+  [".config/picom/picom.conf"]="$REPO/.config/picom/picom.conf"
+  [".ssh/_gh_gen.sh"]="$REPO/.ssh/_gh_gen.sh"
+  [".ssh/config"]="$REPO/.ssh/config"
+)
+
+for file in "\${!dotfiles[@]}"; do
+  curl -o "\$HOME/\$file" "\${dotfiles[\$file]}"
+done
+`}>
+
+</Code>
+
+            <H3>Authentication</H3>
+            <C>
                 As part of our authentication process, we exclusively employ OAuth2 with trusted providers like Google. This enables us to access your name and profile image session data stored securely in your browser. Please rest assured that these specific details are not permanently stored in our database infrastructure. They serve their purpose solely for the duration of your active session on our platform.
-            </div>
-            <br/>
-            <br/>
-            <h3 className="text-xl font-bold mt-4 mb-2">Cookies</h3>
-            <div className="row p-2 mx-2 font-normal">
+            </C>
+            <H3>Cookies</H3>
+            <C >
                 We do use persistent first-party cookies to store certain preferences, making it easier for you to use our applications. A cookie is a piece of text stored by your browser to help it remember your login information, site preferences, and more. You can adjust cookie retention settings in your own browser.
-            </div>
-
-            <h3 className="text-xl font-bold mt-4 mb-2">User-Generated Requests</h3>
-            <div className="row p-2 mx-2 font-normal">
+            </C>
+            <H3>User-Generated Requests</H3>
+            <C>
                 When you use our service to generate AI images based on a word or phrase, we collect the input provided. This information is used solely to generate the requested image and is not stored or associated with your personal information.
-            </div>
-            <br/>
-            <br/>
-            <h3 className="text-xl font-bold mt-4 mb-2">Security</h3>
-            <div className="row p-2 mx-2 font-normal">
-                All data is encrypted via SSL/TLS when transmitted from our servers to your browser.
-            </div>
+            </C>
+            <H3>Security</H3>
+<Code
+  code=
+{`import { Suspense } from 'react'
+import { list } from '@vercel/blob'
+ 
+export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading video...</p>}>
+      <VideoComponent fileName="my-video.mp4" />
+    </Suspense>
+  )
+}
+ 
+async function VideoComponent({ fileName }) {
+  const { blobs } = await list({
+    prefix: fileName,
+    limit: 1,
+  })
+  const { url } = blobs[0]
+ 
+  return (
+    <video controls preload="none" aria-label="Video player">
+      <source src={url} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  )
+}`}
+language="typescript"
+showLineNumbers={true}
 
-            <h3 class="text-xl font-bold mt-4 mb-2">Changes</h3>
-            <div class="row p-2 mx-2 font-normal">
+> </Code>
+            <C>
+                All data is encrypted via SSL/TLS when transmitted from our servers to your browser.
+            </C>
+
+            <H3>Changes</H3>
+            <C>
                 We may update this policy as needed to comply with relevant regulations and reflect any new practices.
                 Should you have any questions, comments, or concerns regarding this privacy policy, your data, or your rights in regard to your information, please don't hesitate to reach out. You can <a href="/contact" className="text-blue-500">contact us</a> and we'll be more than happy to assist you!
-            </div>
+            </C>

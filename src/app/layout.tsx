@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Atkinson_Hyperlegible } from 'next/font/google';
 import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
-import './styles/globals.css';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Atkinson_Hyperlegible({ subsets: ['latin'], weight: '400' });
 
 export const metadata: Metadata = {
   // TODO: figure out SEO when finished
