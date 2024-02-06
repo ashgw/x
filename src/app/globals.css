@@ -52,6 +52,13 @@
 .dimmed {
   opacity: 0.65;
 }
+.dimmed0 {
+  color: hsl(0, 0%, 48%);
+}
+
+.dimmed2 {
+  color: hsl(0, 0%, 90%);
+}
 
 .ease-on-eye {
   opacity: 0.8;

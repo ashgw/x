@@ -37,7 +37,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
       <section className="mx-auto container sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
         <H1>{post.parsedContent.attributes.title}</H1>
         <div className="flex justify-between items-center mb-8 text-sm sm:max-w-[450px]  md:max-w-[550px]  lg:max-w-[650px] xl:max-w-[750px] ">
-          <p className="text-sm dimmed">
+          <p className="text-sm dimmed0">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
           <Suspense fallback={<Loader />}>
