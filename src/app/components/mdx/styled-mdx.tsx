@@ -100,7 +100,7 @@ export function Heading2({ children }: { children: React.ReactNode }) {
   return <h2 className="text-3xl font-bold">{children}</h2>;
 }
 export function Heading3({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-2xl font-extrabold dimmed2">{children}</h3>;
+  return <h3 className="text-2xl font-extrabold dimmed-2">{children}</h3>;
 }
 
 export function Content({ children }: { children: React.ReactNode }) {
