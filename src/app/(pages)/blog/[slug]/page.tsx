@@ -33,9 +33,9 @@ export default async function Blog({ params }: { params: { slug: string } }) {
           }),
         }}
       />
-      <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
+      <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl">
         <H1>{post.parsedContent.attributes.title}</H1>
-        <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
+        <div className="flex justify-between items-center mb-8 text-sm md:max-w-[650px]  lg:max-w-[750px] xl:max-w-[850px] ">
           <p className="text-sm dimmed">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
@@ -43,7 +43,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             <Badge variant={'success'}>New</Badge>
           </Suspense>
         </div>
-        <article className=" text-wrap text-base">
+        <article className=" text-wrap">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
         </article>
       </section>

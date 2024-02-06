@@ -58,7 +58,7 @@
 }
 
 .average-transition {
-  transition: ease-in-out 0.2s;
+  transition: ease-in-out 0.15s;
 }
 
 @layer base {
