@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
-import FeaturedBlogPost from '@/app/not-found';
+import BlogPostCard from '@/app/components/blog/blog-card';
 export const metadata = {
   title: 'Blog',
   description: 'Here is a list of all my blogs.',
@@ -15,20 +15,17 @@ export default function BlogPage() {
         Unclassified, raw
       </h1>
       {allBlogs
-        .sort((a, b) => {
+        .sort((b1, b2) => {
           if (
-            new Date(a.parsedContent.attributes.firstModDate) >
-            new Date(b.parsedContent.attributes.firstModDate)
+            new Date(b1.parsedContent.attributes.firstModDate) >
+            new Date(b2.parsedContent.attributes.firstModDate)
           ) {
             return -1;
           }
           return 1;
         })
         .map((post) => (
-          <FeaturedBlogPost
-            key={post.filenameSlug}
-            blogData={post}
-          ></FeaturedBlogPost>
+          <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
         ))}
     </section>
   );
