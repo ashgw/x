@@ -4,6 +4,7 @@ import { Navbar } from '@/app/components/reusables/nav';
 import { cn } from '@/lib/utils';
 import { highlight } from 'sugar-high';
 import NextImage from 'next/image';
+import CodeBlock from '@/app/components/reusables/syntax-highlighter';
 
 export default function StyledMDX({ source }: { source: string }) {
   return (
@@ -11,6 +12,7 @@ export default function StyledMDX({ source }: { source: string }) {
       source={source}
       components={{
         Code: Code,
+        CodeBlock: CodeBlock,
         Nav: Navbar,
         Image: StyledImage,
         H: Heading,

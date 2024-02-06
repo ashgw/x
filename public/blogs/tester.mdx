@@ -16,13 +16,41 @@ firstModDate: 2017-04-20T09:15:00-0400
             <br/>
             <br/>
 
-            <h3 className="text-xl font-bold mt-4 mb-2">Your Information</h3>
-            <div className="row p-2 mx-2 font-normal">
-                When you sign up for our product or service, we may request certain identifying information, such as your name and email address. This allows us to personalize your new account.
-                It's important to note that none of this information is stored in our database. Instead, for the purposes of managing your plan, subscription, or purchase, we securely hash and encrypt your email address, ensuring a high level of privacy and security.
-            </div>
-            <br/>
-            <br/>
+<CodeBlock
+  code=
+{`use std::marker::Copy;
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub struct NoiseMap {
+    pub width: usize,
+    pub height: usize,
+    pub scale: f64,
+    pub octaves: u8,
+    pub lacunarity: f64,
+    pub persistence: f64,
+    pub max_value: f64,
+    pub min_value: f64, #[wasm_bindgen(skip)]
+    pub map: Vec<f64>,
+}
+`}
+language="rust"
+showLineNumbers={true}
+
+> </CodeBlock>
+
+<h3 className="text-xl font-bold mt-4 mb-2">Your Information</h3>
+
+<div className="row p-2 mx-2 font-normal">
+  When you sign up for our product or service, we may request certain
+  identifying information, such as your name and email address. This allows us
+  to personalize your new account. It's important to note that none of this
+  information is stored in our database. Instead, for the purposes of managing
+  your plan, subscription, or purchase, we securely hash and encrypt your email
+  address, ensuring a high level of privacy and security.
+</div>
+<br />
+<br />
 
             <h3 className="text-xl font-bold mt-4 mb-2">Authentication</h3>
             <div className="row p-2 mx-2 font-normal">

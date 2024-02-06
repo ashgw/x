@@ -1,5 +1,6 @@
 # local env files
 .env*.local
+*.mdx
 
 # dependencies
 /node_modules
