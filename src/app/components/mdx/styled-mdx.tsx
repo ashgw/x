@@ -1,9 +1,12 @@
+import { ArrowUpRightSquare } from 'lucide-react';
 import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
 import { Image, Skeleton } from '@nextui-org/react';
 import { Navbar } from '@/app/components/reusables/nav';
 import { cn } from '@/lib/utils';
+import NextLink from 'next/link';
 import NextImage from 'next/image';
 import CodeBlock from '@/app/components/reusables/syntax-highlighter';
+import React from 'react';
 
 export default function StyledMDX({ source }: { source: string }) {
   return (
@@ -18,20 +21,19 @@ export default function StyledMDX({ source }: { source: string }) {
         H3: Heading3,
         S: Spacer,
         C: Content,
+        L: Link,
       }}
     ></_StyledMDX>
   );
 }
 
-type _StyledImageProps = {
+export function StyledImage(props: {
   alt: string;
   width: string;
   height: string;
   src: string;
   className?: string;
-};
-
-export function StyledImage(props: _StyledImageProps) {
+}) {
   return (
     <Skeleton className="flex items-center justify-center">
       <Image
@@ -45,6 +47,41 @@ export function StyledImage(props: _StyledImageProps) {
         width={props.width}
       />
     </Skeleton>
+  );
+}
+
+function Link({ href, ...props }: { href: string; children: React.ReactNode }) {
+  const linkStyle = {
+    display: 'inline-block',
+    marginLeft: '2px',
+  };
+  if (href.startsWith('/')) {
+    return (
+      <NextLink className=" font-bold" href={href} {...props}>
+        {props.children}
+      </NextLink>
+    );
+  }
+
+  if (href.startsWith('#')) {
+    return <NextLink href={href} {...props} />;
+  }
+
+  return (
+    <NextLink
+      href={href}
+      className=" font-bold text-pink-700"
+      target="_blank"
+      rel="noopener noreferrer"
+      {...props}
+    >
+      {props.children}
+      <ArrowUpRightSquare
+        strokeWidth={'1.25px'}
+        size={'20px'}
+        style={linkStyle}
+      />
+    </NextLink>
   );
 }
 
