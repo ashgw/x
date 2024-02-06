@@ -51,20 +51,12 @@ export function StyledImage(props: {
 }
 
 function Link({ href, ...props }: { href: string; children: React.ReactNode }) {
-  const linkStyle = {
-    display: 'inline-block',
-    marginLeft: '2px',
-  };
-  if (href.startsWith('/')) {
+  if (href.startsWith('#') || href.startsWith('/')) {
     return (
-      <NextLink className=" font-bold" href={href} {...props}>
+      <NextLink href={href} className=" font-bold text-fuchsia-400" {...props}>
         {props.children}
       </NextLink>
     );
-  }
-
-  if (href.startsWith('#')) {
-    return <NextLink href={href} {...props} />;
   }
 
   return (
@@ -77,9 +69,13 @@ function Link({ href, ...props }: { href: string; children: React.ReactNode }) {
     >
       {props.children}
       <ArrowUpRightSquare
-        strokeWidth={'1.25px'}
+        strokeWidth={'1.5px'}
         size={'20px'}
-        style={linkStyle}
+        style={{
+          display: 'inline-block',
+          marginLeft: '2px',
+          marginBottom: '3px',
+        }}
       />
     </NextLink>
   );
