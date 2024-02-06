@@ -4,6 +4,9 @@ import formatDate from '@/lib/funcs/form-date';
 import { BLOG_URI } from '@/lib/constants';
 
 export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
+  if (!blogData.parsedContent.attributes.isReleased) {
+    return;
+  }
   return (
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
       <div className="group flex flex-col gap-4 rounded-[2rem] p-5 transition-all duration-300 shadow hover:shadow-[0px_4px_88px_0px_rgba(255,46,200,0.25)] border border-white/10 ">
