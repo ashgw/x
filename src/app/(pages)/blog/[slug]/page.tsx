@@ -45,7 +45,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             <Badge variant={'success'}>New</Badge>
           </Suspense>
         </div>
-        <article className=" text-wrap">
+        <article className=" text-wrap text-base">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
         </article>
       </section>

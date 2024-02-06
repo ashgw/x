@@ -50,7 +50,58 @@ showLineNumbers={true}
   address, ensuring a high level of privacy and security.
 </div>
 <br />
+<CodeBlock
+  code=
+{`@pytest.mark.asyncio
+async def test_valid_token_acquisition(valid_token_response, op, google) -> None:
+    with patch(
+        "fastauth.providers.google.google.Google._request_access_token"
+    ) as mock_token_request:
+        mock_response = AsyncMock()
+        mock_response.status_code = StatusCode.OK
+        mock_response.json = valid_token_response
+        mock_token_request.return_value = mock_response
+        _result = await google._request_access_token(
+            state=op.state,
+            code_verifier=op.code_verifier,
+            code="...",
+        )
+`}
+language="python"
+showLineNumbers={true}
+
+> </CodeBlock>
 <br />
+<CodeBlock language="bash" showLineNumbers={true} code={`
+declare -A dotfiles=(
+  [".zshrc"]="$REPO/.zshrc"
+  [".dircolors"]="$REPO/.dircolors"
+  [".bashrc"]="$REPO/.bashrc"
+  [".nanorc"]="$REPO/.nanorc"
+  [".tmux.conf"]="$REPO/.tmux.conf"
+  [".gitconfig"]="$REPO/.gitconfig"
+  [".hushlogin"]="$REPO/.hushlogin"
+  [".config/nvim/init.vim"]="$REPO/.config/nvim/init.vim"
+  [".config/zathura/zathurarc"]="$REPO/.config/zathura/zathurarc"
+  [".config/i3/config"]="$REPO/.config/i3/config"
+  [".config/polybar/colors.ini"]="$REPO/.config/polybar/colors.ini"
+  [".config/polybar/config.ini"]="$REPO/.config/polybar/config.ini"
+  [".config/polybar/launch.sh"]="$REPO/.config/polybar/launch.sh"
+  [".config/polybar/uptime.sh"]="$REPO/.config/polybar/uptime.sh"
+  [".config/neofetch/config.conf"]="$REPO/.config/neofetch/config.conf"
+  [".config/picom/picom.conf"]="$REPO/.config/picom/picom.conf"
+  [".ssh/_gh_gen.sh"]="$REPO/.ssh/_gh_gen.sh"
+  [".ssh/config"]="$REPO/.ssh/config"
+)
+
+for file in "\${!dotfiles[@]}"; do
+  curl -o "\$HOME/\$file" "\${dotfiles[\$file]}"
+done
+`}>
+
+</CodeBlock>
+
+
 
             <h3 className="text-xl font-bold mt-4 mb-2">Authentication</h3>
             <div className="row p-2 mx-2 font-normal">

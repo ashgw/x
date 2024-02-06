@@ -3,21 +3,18 @@
 import clsx from 'clsx';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rust from 'react-syntax-highlighter/dist/cjs/languages/prism/rust';
+import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python';
+import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
+import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
+import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
+
 import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark';
 
 SyntaxHighlighter.registerLanguage('rust', rust);
-
-cargo.displayName = 'cargo';
-
-cargo.aliases = [];
-
-function cargo(Prism: any) {
-  Prism.languages.cargo = {
-    builtin: /\b(?:Packaging|Archiving|Compiling|Finished)\b/,
-  };
-}
-
-SyntaxHighlighter.registerLanguage('cargo', cargo);
+SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('typescript', typescript);
+SyntaxHighlighter.registerLanguage('go', go);
 
 interface Props {
   readonly language: string;
