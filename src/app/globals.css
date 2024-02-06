@@ -49,20 +49,24 @@
   }
 }
 
-.dimmed {
-  opacity: 0.65;
-}
-
 .dimmed-0 {
   color: hsl(0, 0%, 48%);
 }
 
-.dimmed-2 {
+.dimmed-1 {
+  color: hsl(0, 0%, 65%);
+}
+
+.dimmed-3 {
+  color: hsl(0, 0%, 75%);
+}
+
+.dimmed-4 {
   color: hsl(0, 0%, 90%);
 }
 
-.ease-on-eye {
-  opacity: 0.8;
+.dimmed-5 {
+  color: hsl(0, 0%, 95%);
 }
 
 .ease-on-eye-reserve {

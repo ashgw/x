@@ -14,20 +14,20 @@ export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
             </li>
           </div>
           <Link href={`${BLOG_URI}/${blogData.filenameSlug}`}>
-            <h2 className="text-2xl font-bold dimmed-2 lg:text-[2.5rem]">
+            <h2 className="text-2xl font-bold dimmed-4 lg:text-[2.5rem]">
               {blogData.parsedContent.attributes.title}
             </h2>
-            <p className="mt-3 dimmed lg:text-xl">
+            <p className="mt-3 dimmed-3 lg:text-xl">
               {blogData.parsedContent.attributes.summary}
             </p>
           </Link>
-          <div className="flex flex-wrap items-center gap-[0.625rem] text-sm ease-on-eye">
+          <div className="flex flex-wrap items-center gap-[0.625rem] text-sm dimmed-4">
             {blogData.parsedContent.attributes.tags.map((tag) => (
               <div key={tag} className="relative rounded-full px-2 py-1">
                 {tag}
               </div>
             ))}
-            <div className="dimmed-0">{'13 minutes'}</div>
+            <div className="dimmed-1">{'13 minutes'}</div>
           </div>
         </div>
         <Link

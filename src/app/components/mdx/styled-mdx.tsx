@@ -100,11 +100,11 @@ export function Heading2({ children }: { children: React.ReactNode }) {
   return <h2 className="text-3xl font-bold">{children}</h2>;
 }
 export function Heading3({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-2xl font-extrabold dimmed-2">{children}</h3>;
+  return <h3 className="text-2xl font-extrabold dimmed-4">{children}</h3>;
 }
 
 export function Content({ children }: { children: React.ReactNode }) {
-  return <p className="row p-2 mx-2 font-normal ease-on-eye">{children}</p>;
+  return <p className="row p-2 mx-2 font-normal dimmed-3">{children}</p>;
 }
 export function Spacer({ children }: { children: React.ReactNode }) {
   return <div className="my-1">{children}</div>;
