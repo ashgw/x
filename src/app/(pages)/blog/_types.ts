@@ -7,6 +7,7 @@ export type MetaDataAttributes = {
   firstModDate: string;
   lastModDate: string;
   isPublic: boolean;
+  tags: string[];
 };
 
 export type MDXData = {
