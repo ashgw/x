@@ -7,7 +7,7 @@ export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
 
   return (
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
-      <div className="group flex flex-col gap-4 rounded-[2rem] p-5 transition-all duration-300 shadow hover:shadow-[0px_4px_88px_0px_rgba(245,65,12,0.25)] border border-white/10 ">
+      <div className="group flex flex-col gap-4 rounded-[2rem] p-5 transition-all duration-300 shadow hover:shadow-[0px_4px_88px_0px_rgba(255,46,255,0.25)] border border-white/10 ">
         <div className="flex flex-col gap-4 lg:gap-6">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <li className="list-disc ml-5 dimmed0">
