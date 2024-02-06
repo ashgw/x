@@ -11,6 +11,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
   if (!post) {
     notFound();
   }
+  // TODO: use NEXT-SEO
 
   return (
     <main>

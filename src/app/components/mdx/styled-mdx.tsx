@@ -94,10 +94,10 @@ export function Link({
 }
 
 export function Heading({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-4xl font-extrabold my-2">{children}</h2>;
+  return <h1 className="text-4xl font-extrabold my-2">{children}</h1>;
 }
 export function Heading2({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-3xl font-bold my-5">{children}</h2>;
+  return <h2 className="text-3xl font-bold">{children}</h2>;
 }
 export function Heading3({ children }: { children: React.ReactNode }) {
   return <h3 className="text-2xl font-extrabold">{children}</h3>;

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
-
+import FeaturedBlogPost from '@/app/not-found';
 export const metadata = {
   title: 'Blog',
   description: 'Here is a list of all my blogs.',
@@ -25,20 +25,10 @@ export default function BlogPage() {
           return 1;
         })
         .map((post) => (
-          <Link
+          <FeaturedBlogPost
             key={post.filenameSlug}
-            className="flex flex-col space-y-1 mb-4"
-            href={`/blog/${post.filenameSlug}`}
-          >
-            <div className="w-full flex flex-col">
-              <h3 className="text-neutral-900 dark:text-neutral-100 tracking-tight">
-                {post.parsedContent.attributes.title}
-              </h3>
-              <Suspense fallback={<p className="h-6" />}>
-                <p>69 views</p>
-              </Suspense>
-            </div>
-          </Link>
+            blogData={post}
+          ></FeaturedBlogPost>
         ))}
     </section>
   );
