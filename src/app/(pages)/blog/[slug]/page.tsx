@@ -1,4 +1,4 @@
-import StyledMDX from '@/app/components/mdx/styled-mdx';
+import StyledMDX, { Heading as H1 } from '@/app/components/mdx/styled-mdx';
 import formatDate from '@/lib/funcs/form-date';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
@@ -34,9 +34,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
         }}
       />
       <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
-        <h1 className="text-4xl font-extrabold">
-          {post.parsedContent.attributes.title}
-        </h1>
+        <H1>{post.parsedContent.attributes.title}</H1>
         <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
           <p className="text-sm dimmed">
             {formatDate(post.parsedContent.attributes.firstModDate)}
