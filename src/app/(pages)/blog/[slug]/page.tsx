@@ -34,18 +34,18 @@ export default async function Blog({ params }: { params: { slug: string } }) {
         }}
       />
       <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
-        <h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">
+        <h1 className="text-4xl font-extrabold">
           {post.parsedContent.attributes.title}
         </h1>
         <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          <p className="text-sm dimmed">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
           <Suspense fallback={<Loader />}>
             <Badge variant={'success'}>New</Badge>
           </Suspense>
         </div>
-        <article className="prose prose-quoteless prose-neutral dark:prose-invert">
+        <article className=" text-wrap">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
         </article>
       </section>

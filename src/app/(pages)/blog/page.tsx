@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
+import CodeBlock from '@/app/components/reusables/syntax-highlighter';
 
 export const metadata = {
   title: 'Blog',
@@ -14,6 +15,11 @@ export default function BlogPage() {
       <h1 className="font-medium text-2xl mb-8 tracking-tighter">
         All my blogs are here, unclassified, raw
       </h1>
+      <CodeBlock
+        code="pub fn main(){}"
+        language="rust"
+        showLineNumbers={true}
+      ></CodeBlock>
       {allBlogs
         .sort((a, b) => {
           if (
