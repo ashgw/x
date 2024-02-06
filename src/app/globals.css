@@ -57,6 +57,10 @@
   opacity: 0.8;
 }
 
+.average-transition {
+  transition: ease-in-out 0.2s;
+}
+
 @layer base {
   * {
     @apply border-border;

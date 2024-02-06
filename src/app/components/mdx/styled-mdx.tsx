@@ -1,11 +1,11 @@
 import { ArrowUpRightSquare } from 'lucide-react';
 import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
-import { Image, Skeleton } from '@nextui-org/react';
+import { Image as _Image, Skeleton } from '@nextui-org/react';
 import { Navbar } from '@/app/components/reusables/nav';
 import { cn } from '@/lib/utils';
 import NextLink from 'next/link';
 import NextImage from 'next/image';
-import CodeBlock from '@/app/components/reusables/syntax-highlighter';
+import CodeBlock from '@/app/components/reusables/code-block';
 import React from 'react';
 
 export default function StyledMDX({ source }: { source: string }) {
@@ -15,7 +15,7 @@ export default function StyledMDX({ source }: { source: string }) {
       components={{
         Code: CodeBlock,
         Nav: Navbar,
-        Image: StyledImage,
+        Image: BlogImage,
         H: Heading,
         H2: Heading2,
         H3: Heading3,
@@ -27,7 +27,7 @@ export default function StyledMDX({ source }: { source: string }) {
   );
 }
 
-export function StyledImage(props: {
+export function BlogImage(props: {
   alt: string;
   width: string;
   height: string;
@@ -36,7 +36,7 @@ export function StyledImage(props: {
 }) {
   return (
     <Skeleton className="flex items-center justify-center">
-      <Image
+      <_Image
         isLoading
         isBlurred
         as={NextImage}
@@ -50,10 +50,20 @@ export function StyledImage(props: {
   );
 }
 
-function Link({ href, ...props }: { href: string; children: React.ReactNode }) {
+export function Link({
+  href,
+  ...props
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
   if (href.startsWith('#') || href.startsWith('/')) {
     return (
-      <NextLink href={href} className=" font-bold text-fuchsia-400" {...props}>
+      <NextLink
+        href={href}
+        className="average-transition  font-bold text-fuchsia-400 hover:text-fuchsia-700"
+        {...props}
+      >
         {props.children}
       </NextLink>
     );
@@ -62,7 +72,7 @@ function Link({ href, ...props }: { href: string; children: React.ReactNode }) {
   return (
     <NextLink
       href={href}
-      className=" font-bold text-pink-700"
+      className="average-transition font-bold text-pink-700 hover:text-pink-800 "
       target="_blank"
       rel="noopener noreferrer"
       {...props}

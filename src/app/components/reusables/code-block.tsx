@@ -1,4 +1,4 @@
-// Ignore typescript errors for now
+// react-syntax-highlighter has no types
 // @ts-nocheck
 import clsx from 'clsx';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -7,7 +7,6 @@ import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python';
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
-
 import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark';
 
 SyntaxHighlighter.registerLanguage('rust', rust);
@@ -16,12 +15,12 @@ SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('typescript', typescript);
 SyntaxHighlighter.registerLanguage('go', go);
 
-interface Props {
-  readonly language: string;
-  readonly code: string;
-  readonly showLineNumbers?: boolean;
-  readonly className?: string;
-}
+type Props = {
+  language: string;
+  code: string;
+  showLineNumbers?: boolean;
+  className?: string;
+};
 
 export default function CodeBlock({
   code,
