@@ -1,4 +1,4 @@
-import formatDate from '@/lib/funcs/form-date';
+import formatDate from '@/lib/funcs/dates';
 
 const defaultTestDate = new Date(2024, 3, 7);
 

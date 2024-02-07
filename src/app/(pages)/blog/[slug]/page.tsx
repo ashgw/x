@@ -1,12 +1,12 @@
 import StyledMDX, { Heading as H1 } from '@/app/components/mdx/styled-mdx';
-import formatDate from '@/lib/funcs/form-date';
-import { Suspense } from 'react';
+import formatDate from '@/lib/funcs/dates';
+
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
 import { Badge } from '@/app/components/ui/badge';
-import Loader from '@/app/components/reusables/loader';
-export default async function Blog({ params }: { params: { slug: string } }) {
+
+export default function Blog({ params }: { params: { slug: string } }) {
   let post = getBlogPosts().find((post) => post?.filenameSlug === params.slug);
   if (!post) {
     notFound();
@@ -40,9 +40,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
           <p className="text-sm dimmed-0">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
-          <Suspense fallback={<Loader />}>
-            <Badge variant={'success'}>New</Badge>
-          </Suspense>
+          <Badge variant={'success'}>New</Badge>
         </div>
         <article className="text-wrap">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
