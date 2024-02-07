@@ -31,7 +31,7 @@ export default function CodeBlock({
   return (
     <div
       className={clsx(
-        'relative rounded-2xl !bg-black p-4 shadow-lg',
+        'mx-2 relative rounded-2xl !bg-black p-4 shadow-lg',
         className
       )}
     >

@@ -100,7 +100,7 @@ type HeaderProps = {
 };
 export function Heading({ children, id }: HeaderProps) {
   return (
-    <h1 id={id} className="border-gradient font-bold my-2 text-[3.0rem]">
+    <h1 id={id} className="font-bold my-2 text-[3.0rem]">
       {children}
     </h1>
   );
@@ -121,7 +121,7 @@ export function Heading3({ children, id }: HeaderProps) {
 }
 
 export function Content({ children }: { children: React.ReactNode }) {
-  return <p className="row p-2 mx-2 font-normal dimmed-3">{children}</p>;
+  return <p className="p-2 mx-2 font-normal dimmed-3">{children}</p>;
 }
 export function Spacer({ children }: { children: React.ReactNode }) {
   return <div className="my-1">{children}</div>;
