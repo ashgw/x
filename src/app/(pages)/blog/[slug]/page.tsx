@@ -1,5 +1,5 @@
 import StyledMDX, { Heading as H1 } from '@/app/components/mdx/styled-mdx';
-import formatDate from '@/lib/funcs/dates';
+import { formatDate } from '@/lib/funcs/dates';
 
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';

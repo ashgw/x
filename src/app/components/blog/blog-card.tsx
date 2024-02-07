@@ -1,6 +1,6 @@
 import { BlogData } from '@/app/(pages)/blog/_types';
 import Link from 'next/link';
-import formatDate from '@/lib/funcs/dates';
+import { formatDate } from '@/lib/funcs/dates';
 import { BLOG_URI } from '@/lib/constants';
 
 export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
