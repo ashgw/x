@@ -1,6 +1,7 @@
 import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
+import { MediumSection } from '@/app/components/reusables/sections';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 import { notFound } from 'next/navigation';
@@ -36,7 +37,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
           }),
         }}
       />
-      <section className="dimmed-5 mx-auto container sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
+      <MediumSection>
         <H1>{post.parsedContent.attributes.title}</H1>
         <div className="flex justify-between items-center mb-8 text-sm sm:max-w-[450px]  md:max-w-[550px]  lg:max-w-[650px] xl:max-w-[750px] ">
           <p className="text-sm dimmed-0">
@@ -58,7 +59,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
         <article className="text-wrap">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
         </article>
-      </section>
+      </MediumSection>
     </main>
   );
 }
