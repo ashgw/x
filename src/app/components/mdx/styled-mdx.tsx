@@ -29,13 +29,14 @@ export default function StyledMDX({ source }: { source: string }) {
   );
 }
 
-export function BlogImage(props: {
+type BlogImageProps = {
   alt: string;
   width: string;
   height: string;
   src: string;
   className?: string;
-}) {
+};
+export function BlogImage(props: BlogImageProps) {
   return (
     <Skeleton className="flex items-center justify-center">
       <_Image
@@ -93,18 +94,34 @@ export function Link({
   );
 }
 
-export function Heading({ children }: { children: React.ReactNode }) {
-  return <h1 className="font-bold my-2 text-[3.0rem]">{children}</h1>;
+type HeaderProps = {
+  children: React.ReactNode;
+  id?: string;
+};
+export function Heading({ children, id }: HeaderProps) {
+  return (
+    <h1 id={id} className="font-bold my-2 text-[3.0rem]">
+      {children}
+    </h1>
+  );
 }
-export function Heading2({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-3xl font-bold">{children}</h2>;
+export function Heading2({ children, id }: HeaderProps) {
+  return (
+    <h2 id={id} className="text-3xl font-extrabold dimmed-5">
+      {children}
+    </h2>
+  );
 }
-export function Heading3({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-2xl font-extrabold dimmed-4">{children}</h3>;
+export function Heading3({ children, id }: HeaderProps) {
+  return (
+    <h3 id={id} className="text-2xl font-extrabold dimmed-4">
+      {children}
+    </h3>
+  );
 }
 
 export function Content({ children }: { children: React.ReactNode }) {
-  return <p className="row p-2 mx-2 font-normal dimmed-3">{children}</p>;
+  return <p className="p-2 mx-2 font-normal dimmed-3">{children}</p>;
 }
 export function Spacer({ children }: { children: React.ReactNode }) {
   return <div className="my-1">{children}</div>;

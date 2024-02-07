@@ -6,14 +6,14 @@ const navItems = {
   '/': {
     name: 'Home',
   },
-  '/work': {
-    name: 'Work',
+  '/contact': {
+    name: 'Contact',
   },
   '/blog': {
     name: 'Blog',
   },
-  '/yap': {
-    name: 'Yap',
+  '/about': {
+    name: 'About',
   },
 };
 

@@ -48,43 +48,73 @@
     --ring: 0 0% 83.1%;
   }
 }
+@layer utilities {
+  .dimmed-0 {
+    color: hsl(0, 0%, 48%);
+  }
 
-.dimmed-0 {
-  color: hsl(0, 0%, 48%);
-}
+  .dimmed-1 {
+    color: hsl(0, 0%, 65%);
+  }
 
-.dimmed-1 {
-  color: hsl(0, 0%, 65%);
-}
+  .dimmed-3 {
+    color: hsl(0, 0%, 75%);
+  }
 
-.dimmed-3 {
-  color: hsl(0, 0%, 75%);
-}
+  .dimmed-4 {
+    color: hsl(0, 0%, 90%);
+  }
 
-.dimmed-4 {
-  color: hsl(0, 0%, 90%);
-}
+  .dimmed-5 {
+    color: hsl(0, 0%, 95%);
+  }
 
-.dimmed-5 {
-  color: hsl(0, 0%, 95%);
-}
+  .average-transition {
+    transition: ease-in-out 0.15s;
+  }
 
-.ease-on-eye-reserve {
-  opacity: 0.8;
-}
+  .bg-gradient::after {
+    content: '';
+    position: fixed;
+    left: -1px;
+    top: -1px;
+    z-index: -1;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
 
-.dimmed-reserve {
-  opacity: 0.65;
-}
+  .bg-gradient::after {
+    /*If i change my mind abouut the theme I'll use this for inidividual components*/
+    background-image: linear-gradient(
+      84.16deg,
+      rgba(150, 46, 200, 0.15),
+      rgba(255, 215, 111, 0.042),
+      rgba(30, 17, 224, 0.1)
+    );
+  }
 
-.average-transition {
-  transition: ease-in-out 0.15s;
+  .bg-gradient:hover::after {
+    opacity: 1;
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  html,
+  body {
+    scroll-behavior: smooth;
+    background: linear-gradient(
+      84.16deg,
+      rgba(150, 46, 200, 0.15),
+      rgba(255, 215, 111, 0.042),
+      rgba(30, 17, 224, 0.1)
+    );
+  }
+
   body {
     @apply bg-background text-foreground text-xl;
   }

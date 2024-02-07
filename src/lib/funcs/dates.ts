@@ -1,4 +1,4 @@
-export default function formatDate(date: string) {
+export function formatDate(date: string): string {
   let currentDate = new Date();
   if (!date.includes('T')) {
     date = `${date}T00:00:00`;
@@ -28,4 +28,17 @@ export default function formatDate(date: string) {
   });
 
   return `${fullDate} (${formattedDate})`;
+}
+
+export function isSameMonthAndYear(inputDate: string): boolean {
+  let currentDate = new Date();
+  let inputDateObj = new Date(inputDate);
+
+  let currentYear = currentDate.getFullYear();
+  let currentMonth = currentDate.getMonth();
+
+  let inputYear = inputDateObj.getFullYear();
+  let inputMonth = inputDateObj.getMonth();
+
+  return currentYear === inputYear && currentMonth === inputMonth;
 }
