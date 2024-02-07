@@ -1,5 +1,6 @@
 import StyledMDX, { Heading as H1 } from '@/app/components/mdx/styled-mdx';
 import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
+import type { Metadata, ResolvingMetadata } from 'next';
 
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';

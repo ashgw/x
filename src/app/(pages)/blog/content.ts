@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import fm from 'front-matter';
-import type { MDXData, BlogData } from './types';
+import type { MDXData, BlogData } from './_types';
 import { BLOG_CONTENT_PATH } from '@/lib/constants';
 
 function parseMDX(content: string): MDXData {
