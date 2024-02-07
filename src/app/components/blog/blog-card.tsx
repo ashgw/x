@@ -1,4 +1,4 @@
-import { BlogData } from '@/app/(pages)/blog/_types';
+import { BlogData } from '@/app/(pages)/blog/types';
 import Link from 'next/link';
 import { formatDate } from '@/lib/funcs/dates';
 import { BLOG_URI } from '@/lib/constants';
