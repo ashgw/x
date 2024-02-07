@@ -11,7 +11,7 @@ export default function BlogPage() {
   let allBlogs = getBlogPosts();
   return (
     <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
-      <h1 className="font-medium text-2xl mb-8 tracking-tighter">
+      <h1 className="font-medium text-2xl mb-8 tracking-tighter hidden">
         Unclassified, raw
       </h1>
       {allBlogs

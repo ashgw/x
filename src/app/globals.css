@@ -99,6 +99,40 @@
     opacity: 1;
   }
 }
+.nav-link-shadow {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .nav-link-shadow::before {
+    content: '';
+    position: absolute;
+    height: 33px;
+    width: 70px;
+    z-index: -1;
+    background: linear-gradient(
+      86.87deg,
+      rgba(255, 0, 255, 0.3),
+      rgba(150, 255, 30, 0.2)
+    );
+    filter: blur(25px);
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .nav-link-shadow:hover::before {
+    opacity: 0.8;
+  }
+}
+
+@keyframes nav-link-shadow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
 
 @layer base {
   * {
