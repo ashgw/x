@@ -100,7 +100,7 @@ type HeaderProps = {
 };
 export function Heading({ children, id }: HeaderProps) {
   return (
-    <h1 id={id} className="font-bold my-2 text-[3.0rem]">
+    <h1 id={id} className="border-gradient font-bold my-2 text-[3.0rem]">
       {children}
     </h1>
   );

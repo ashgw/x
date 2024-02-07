@@ -30,7 +30,10 @@ export default function CodeBlock({
 }: Props) {
   return (
     <div
-      className={clsx('relative rounded !bg-black p-4 shadow-lg', className)}
+      className={clsx(
+        'relative rounded-2xl !bg-black p-4 shadow-lg',
+        className
+      )}
     >
       <SyntaxHighlighter
         className="!m-0 overflow-auto !p-0 text-sm dark:!bg-black dark:[&>*]:!bg-black"
