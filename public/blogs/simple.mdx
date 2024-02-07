@@ -10,11 +10,15 @@ tags:
   - 'journey'
   - 'career'
 ---
-<H3 id="prop-drils">Prop drills</H3>
+
+
+<H3>Server</H3>
 <C>
-Finally, the RTK package also includes "RTK Query", a full data fetching and caching solution for Redux apps, as a separate optional entry point. It lets you define endpoints (REST, GraphQL, or any async function), and generates a reducer and middleware that fully manage fetching data, updating loading state, and caching results. It also automatically generates React hooks that can be used in components to fetch data, like const
-<S2/>
-Each of these APIs is completely optional and designed for specific use cases, and you can pick and choose which APIs you actually use in your app. But, all of them are highly recommended to help with those tasks.
-<S2/>
-Note that Redux Toolkit is still "Redux"! There's still a single store, with dispatched action objects for updates, and reducers that immutably update state, plus the ability to write thunks for async logic, manage normalized state, type your code with TypeScript, and use the DevTools. There's just way less code you have to write for the same results!
+  First you might want to yeet the **`Server`** & **`X-Powered-By`** headers (the latter being
+  unofficial), preferably through the server configs, or check `no_srv.go`. I have metioned this actually <L href='#using-go'>here</L> before
+<S/>
+> _Security through obscurity ain’t all that chief, but it's just a good complementary security measure._
+
+To test that you've removed this entirely you can use curl:
 </C>
+

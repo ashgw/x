@@ -72,38 +72,33 @@
   .average-transition {
     transition: ease-in-out 0.15s;
   }
-}
 
-/*
-  These are not specific
-*/
+  .bg-gradient::after {
+    content: '';
+    position: fixed;
+    left: -1px;
+    top: -1px;
+    z-index: -1;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
 
-.border-gradient::after {
-  content: '';
-  position: fixed;
-  left: -1px;
-  top: -1px;
-  z-index: -1;
-  width: calc(100% + 2px);
-  height: calc(100% + 2px);
-  opacity: 0;
-  transition: opacity 0.5s;
-}
+  .bg-gradient::after {
+    /*If i change my mind abouut the theme I'll use this for inidividual components*/
+    background-image: linear-gradient(
+      84.16deg,
+      rgba(150, 46, 200, 0.15),
+      rgba(255, 215, 111, 0.042),
+      rgba(30, 17, 224, 0.1)
+    );
+  }
 
-.border-gradient::after {
-  background-image: linear-gradient(
-    84.16deg,
-    rgba(150, 46, 200, 0.2) -7.25%,
-    rgba(255, 215, 111, 0.042) 35.45%,
-    rgba(30, 17, 224, 0.1) 97%
-  );
+  .bg-gradient:hover::after {
+    opacity: 1;
+  }
 }
-
-.border-gradient:hover::after {
-  opacity: 1;
-}
-/*
-*/
 
 @layer base {
   * {
@@ -112,6 +107,12 @@
   html,
   body {
     scroll-behavior: smooth;
+    background: linear-gradient(
+      84.16deg,
+      rgba(150, 46, 200, 0.15),
+      rgba(255, 215, 111, 0.042),
+      rgba(30, 17, 224, 0.1)
+    );
   }
 
   body {

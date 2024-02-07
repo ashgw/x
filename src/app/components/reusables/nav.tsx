@@ -21,7 +21,7 @@ export function Navbar() {
   return (
     <nav className="p-4">
       <div className="container mx-auto flex items-center justify-between">
-        <div className="font-bold text-xl border-gradient">A S H G W</div>
+        <div className="font-bold text-xl">A S H G W</div>
         <div className="space-x-4">
           {Object.entries(navItems).map(([path, { name }]) => (
             <Button key={path}>
