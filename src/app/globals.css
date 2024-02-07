@@ -69,14 +69,6 @@
   color: hsl(0, 0%, 95%);
 }
 
-.ease-on-eye-reserve {
-  opacity: 0.8;
-}
-
-.dimmed-reserve {
-  opacity: 0.65;
-}
-
 .average-transition {
   transition: ease-in-out 0.15s;
 }

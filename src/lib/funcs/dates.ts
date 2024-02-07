@@ -42,4 +42,3 @@ export function isSameMonthAndYear(inputDate: string): boolean {
 
   return currentYear === inputYear && currentMonth === inputMonth;
 }
-

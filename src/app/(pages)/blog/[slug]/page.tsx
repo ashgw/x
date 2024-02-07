@@ -1,5 +1,5 @@
 import StyledMDX, { Heading as H1 } from '@/app/components/mdx/styled-mdx';
-import { formatDate } from '@/lib/funcs/dates';
+import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
 
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
@@ -40,7 +40,15 @@ export default function Blog({ params }: { params: { slug: string } }) {
           <p className="text-sm dimmed-0">
             {formatDate(post.parsedContent.attributes.firstModDate)}
           </p>
-          <Badge variant={'success'}>New</Badge>
+          <div>
+            {isSameMonthAndYear(post.parsedContent.attributes.firstModDate) ? (
+              <Badge variant={'outlineSuccess'}>New</Badge>
+            ) : (
+              <Badge variant={'outlineSuccess'} className="opacity-0">
+                New
+              </Badge>
+            )}
+          </div>
         </div>
         <article className="text-wrap">
           <StyledMDX source={post.parsedContent.body}></StyledMDX>
