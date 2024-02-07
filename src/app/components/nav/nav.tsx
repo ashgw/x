@@ -1,4 +1,5 @@
 import { Button } from '../ui/button';
+import { OutLineButton } from './buttons';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -33,13 +34,11 @@ const Nav = () => {
         </div>
         <div className="mt-10 xl:ml-auto xl:mt-0 xl:flex xl:items-center xl:gap-5">
           <div className="mt-10 flex flex-wrap items-center gap-5 xl:mt-0">
-            <Button variant={'outline'}>
-              <Link href={'https://github.com/ashgw/mysite'} target="_blank">
-                Source Code
-              </Link>
-            </Button>
+            <OutLineButton href={'https://github.com/ashgw/mysite'}>
+              Source
+            </OutLineButton>
             <div>
-              <Button> Business</Button>
+              <Button>Contact</Button>
             </div>
           </div>
         </div>
