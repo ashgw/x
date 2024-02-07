@@ -1,5 +1,5 @@
 import { Navbar } from '@/app/components/reusables/nav';
-
+import Nav from '@/app/components/nav/nav';
 export default async function BlogsLayout({
   children,
 }: {
@@ -7,7 +7,7 @@ export default async function BlogsLayout({
 }) {
   return (
     <>
-      <Navbar></Navbar>
+      <Nav></Nav>
       <main>{children}</main>
     </>
   );

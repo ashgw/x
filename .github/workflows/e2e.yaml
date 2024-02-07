@@ -1,4 +1,4 @@
-name: playright
+name: playwright
 on:
   push:
     branches: [main, prod-preview]
