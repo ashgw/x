@@ -1,4 +1,5 @@
-import StyledMDX, { Heading as H1 } from '@/app/components/mdx/styled-mdx';
+import StyledMDX from '@/app/components/mdx/styled-mdx';
+import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -12,7 +13,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
   if (!post) {
     notFound();
   }
-  // TODO: use NEXT-SEO
+  // TODO: configure metadata
 
   return (
     <main>
@@ -43,7 +44,10 @@ export default function Blog({ params }: { params: { slug: string } }) {
           </p>
           <div>
             {isSameMonthAndYear(post.parsedContent.attributes.firstModDate) ? (
-              <Badge variant={'outlineSuccess'}>New</Badge>
+              // TODO: replace with views
+              <Badge variant={'outlineSuccess'} className="opacity-0">
+                New
+              </Badge>
             ) : (
               <Badge variant={'outlineSuccess'} className="opacity-0">
                 New

@@ -36,8 +36,8 @@ const Nav = () => {
         <div className="mt-10 xl:ml-auto xl:mt-0 xl:flex xl:items-center xl:gap-5">
           <div className="mt-10 flex flex-wrap items-center gap-5 xl:mt-0">
             <Button variant={'outline'}>
-              <Link href={'https://github.com/ashgw/mysite'}>
-                Edit on GitHub
+              <Link href={'https://github.com/ashgw/mysite'} target="_blank">
+                Source Code
               </Link>
             </Button>
             <div>

@@ -3,13 +3,13 @@
 import ThemeModeToggler from '@/app/components/reusables/theme-toggler';
 import CopyRight from '@/app/components/footer/copyright';
 import { Button } from '@/app/components/ui/button';
-import { Navbar } from '@/app/components/reusables/nav';
+import Nav from '@/app/components/nav/nav';
 import { Badge } from '@/app/components/ui/badge';
 
 export default function Home() {
   return (
     <>
-      <Navbar></Navbar>
+      <Nav></Nav>
       <div className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
         <div className="flex items-center justify-center h-screen">
           <Button
