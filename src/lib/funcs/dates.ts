@@ -1,4 +1,4 @@
-export function formatDate(date: string) {
+export function formatDate(date: string): string {
   let currentDate = new Date();
   if (!date.includes('T')) {
     date = `${date}T00:00:00`;
@@ -30,19 +30,16 @@ export function formatDate(date: string) {
   return `${fullDate} (${formattedDate})`;
 }
 
-function isSameMonthAndYear(inputDate: string): boolean {
-  const currentDate = new Date();
-  const inputDateObj = new Date(inputDate);
+export function isSameMonthAndYear(inputDate: string): boolean {
+  let currentDate = new Date();
+  let inputDateObj = new Date(inputDate);
 
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+  let currentYear = currentDate.getFullYear();
+  let currentMonth = currentDate.getMonth();
 
-  const inputMonth = inputDateObj.getMonth();
-  const inputYear = inputDateObj.getFullYear();
+  let inputYear = inputDateObj.getFullYear();
+  let inputMonth = inputDateObj.getMonth();
 
-  return currentMonth === inputMonth && currentYear === inputYear;
+  return currentYear === inputYear && currentMonth === inputMonth;
 }
 
-const inputDateString = '2024-02-20T09:15:00-0400';
-const result = isSameMonthAndYear(inputDateString);
-console.log(result);

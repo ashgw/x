@@ -1,27 +1,17 @@
-import { formatDate } from '@/lib/funcs/dates';
+import { isSameMonthAndYear } from '@/lib/funcs/dates';
 
-const defaultTestDate = new Date(2024, 3, 7);
+const defaultTestDate = new Date(2024, 3, 7, 1, 1, 1);
 
 beforeEach(() => {
   Date.now = jest.fn(() => defaultTestDate.getTime());
 });
 
-test('formatDate - past year', () => {
-  const result = formatDate('2023-01-15');
-  expect(result).toEqual('January 15, 2023 (1y ago)');
+test('isSameMonthAndYear - same year not month', () => {
+  const result = isSameMonthAndYear('2024-01-20T09:15:00-0400');
+  expect(result).toEqual(false);
 });
 
-test('formatDate - today is a new day', () => {
-  const result = formatDate('2024-03-07');
-  expect(result).toEqual('March 7, 2024 (Today)');
-});
-
-test('formatDate - past months', () => {
-  const result = formatDate('2024-01-01');
-  expect(result).toEqual('January 1, 2024 (1mo ago)');
-});
-
-test('formatDate - Same month', () => {
-  const result = formatDate('2024-02-01');
-  expect(result).toEqual('February 1, 2024 (6d ago)');
+test('isSameMonthAndYear - same month not year', () => {
+  const result = isSameMonthAndYear('2020-03-20T09:15:00-0400');
+  expect(result).toEqual(false);
 });
