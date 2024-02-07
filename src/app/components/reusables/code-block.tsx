@@ -8,6 +8,7 @@ import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typesc
 import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark';
+import CopyButton from './copy-code';
 
 SyntaxHighlighter.registerLanguage('rust', rust);
 SyntaxHighlighter.registerLanguage('python', python);
@@ -20,6 +21,7 @@ type Props = {
   code: string;
   showLineNumbers?: boolean;
   className?: string;
+  copy?: boolean;
 };
 
 export default function CodeBlock({
@@ -27,6 +29,7 @@ export default function CodeBlock({
   language,
   showLineNumbers,
   className,
+  copy = true,
 }: Props) {
   return (
     <div
@@ -35,6 +38,12 @@ export default function CodeBlock({
         className
       )}
     >
+      {copy && (
+        <CopyButton
+          code={code}
+          className="absolute right-2 top-2 inline-flex items-center"
+        />
+      )}
       <SyntaxHighlighter
         className="!m-0 overflow-auto !p-0 text-sm dark:!bg-black dark:[&>*]:!bg-black"
         language={language}

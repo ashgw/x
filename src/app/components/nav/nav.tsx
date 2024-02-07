@@ -12,10 +12,7 @@ const Nav = () => {
         )}
       >
         <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-          <Link
-            className="nav-link-shadow dimmed-4 hover:text-white"
-            href="/"
-          >
+          <Link className="nav-link-shadow dimmed-4 hover:text-white" href="/">
             Home
           </Link>
           <Link
