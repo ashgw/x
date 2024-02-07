@@ -1,2 +1,10 @@
 import LoadingScreen from '@/app/loading';
-export default LoadingScreen;
+import Nav from '@/app/components/nav/nav';
+export default function Fun() {
+  return (
+    <>
+      <Nav></Nav>
+      <LoadingScreen></LoadingScreen>
+    </>
+  );
+}

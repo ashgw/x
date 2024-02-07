@@ -1,4 +1,4 @@
-import { Code2 } from 'lucide-react';
+import { GitBranch } from 'lucide-react';
 import { Image as _Image } from '@nextui-org/react';
 import NextLink from 'next/link';
 import { Button } from '../ui/button';
@@ -19,7 +19,7 @@ export function OutLineButton({
         {...props}
       >
         {props.children}
-        <Code2
+        <GitBranch
           strokeWidth={'1.5px'}
           size={'20px'}
           style={{
