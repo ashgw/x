@@ -50,22 +50,27 @@
 }
 @layer utilities {
   .dimmed-0 {
+    /* blog dates */
     color: hsl(0, 0%, 48%);
   }
 
   .dimmed-1 {
+    /* blog after 'x' minutes */
     color: hsl(0, 0%, 65%);
   }
 
   .dimmed-3 {
+    /* content reading */
     color: hsl(0, 0%, 75%);
   }
 
   .dimmed-4 {
+    /*H2s  */
     color: hsl(0, 0%, 90%);
   }
 
   .dimmed-5 {
+    /* H1s */
     color: hsl(0, 0%, 95%);
   }
 

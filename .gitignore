@@ -45,5 +45,5 @@ next-env.d.ts
 # hushhh
 .env.local
 .env
-
+src/app/components/protos/
 *playground
