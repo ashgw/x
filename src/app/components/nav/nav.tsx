@@ -38,7 +38,7 @@ const Nav = () => {
               {' '}
             </OutLineButton>
             <div>
-              <Button>Contact</Button>
+              <Button variant={'navbar'}>Contact</Button>
             </div>
           </div>
         </div>
