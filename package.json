@@ -19,6 +19,7 @@
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",
     "@playwright/test": "^1.40.1",
+    "@tailwindcss/typography": "^0.5.10",
     "@types/eslint": "^8.56.1",
     "@types/jest": "^29.5.11",
     "@types/mdx": "^2.0.10",

@@ -130,6 +130,17 @@
   }
 }
 
+.gradient-text-purple {
+  @apply bg-gradient-to-r from-pink-500 to-purple-500;
+  background-clip: text;
+  color: rgba(0, 0, 0, 0);
+}
+.gradient-text-purple-hovered {
+  @apply bg-gradient-to-r from-pink-100 to-purple-500;
+  background-clip: text;
+  color: rgba(0, 0, 0, 0);
+}
+
 @keyframes nav-link-shadow {
   0% {
     opacity: 0;
@@ -150,7 +161,7 @@
       84.16deg,
       rgba(150, 46, 200, 0.15),
       rgba(255, 215, 111, 0.042),
-      rgba(30, 17, 224, 0.1)
+      rgba(150, 0, 100, 0.1)
     );
   }
 
