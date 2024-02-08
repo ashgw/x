@@ -28,7 +28,7 @@ export function Link({
       {...props}
     >
       {props.children}
-      <span className="pl-1">&#x2197;</span>
+      <span className="pl-1 ">&#x2197;</span>
     </NextLink>
   );
 }

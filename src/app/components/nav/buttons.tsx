@@ -11,7 +11,10 @@ export function OutLineButton({
   children: React.ReactNode;
 }) {
   return (
-    <Button variant={'outline'}>
+    <Button
+      variant={'outline'}
+      className="hover:-translate-y-1 average-transition"
+    >
       <NextLink
         href={href}
         target="_blank"

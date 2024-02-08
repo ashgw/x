@@ -49,6 +49,9 @@
   }
 }
 @layer utilities {
+  .average-translate {
+    @apply -translate-y-1;
+  }
   .dimmed-0 {
     /* blog dates */
     color: hsl(0, 0%, 48%);
@@ -131,14 +134,16 @@
 }
 
 .gradient-text-purple {
+  /*
+    Usually used for links
+  */
   @apply bg-gradient-to-r from-pink-500 to-purple-500;
   background-clip: text;
   color: rgba(0, 0, 0, 0);
 }
-.gradient-text-purple-hovered {
-  @apply bg-gradient-to-r from-pink-100 to-purple-500;
-  background-clip: text;
-  color: rgba(0, 0, 0, 0);
+
+.glow:hover {
+  transform: translateY(-2px);
 }
 
 @keyframes nav-link-shadow {

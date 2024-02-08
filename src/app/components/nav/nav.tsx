@@ -12,18 +12,21 @@ const Nav = () => {
         )}
       >
         <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-          <Link className="nav-link-shadow dimmed-4 hover:text-white" href="/">
+          <Link
+            className="nav-link-shadow dimmed-4 average-transition  hover:average-translate hover:text-white"
+            href="/"
+          >
             Home
           </Link>
           <Link
-            className="nav-link-shadow dimmed-4  hover:text-white"
+            className="nav-link-shadow dimmed-4 average-transition  hover:average-translate  hover:text-white"
             href="/blog"
           >
             Blog
           </Link>
 
           <Link
-            className="nav-link-shadow  dimmed-4 hover:text-white"
+            className="nav-link-shadow  dimmed-4 average-transition  hover:average-translate hover:text-white"
             href="/About"
           >
             About
