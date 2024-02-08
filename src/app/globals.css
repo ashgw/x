@@ -52,6 +52,9 @@
   .average-translate {
     @apply -translate-y-1;
   }
+  .average-transition {
+    transition: ease-in-out 0.15s;
+  }
   .dimmed-0 {
     /* blog dates */
     color: hsl(0, 0%, 48%);
@@ -75,10 +78,6 @@
   .dimmed-5 {
     /* H1s */
     color: hsl(0, 0%, 95%);
-  }
-
-  .average-transition {
-    transition: ease-in-out 0.15s;
   }
 
   .bg-gradient::after {
@@ -135,15 +134,10 @@
 
 .gradient-text-purple {
   /*
-    Usually used for links
+     for links
   */
-  @apply bg-gradient-to-r from-pink-500 to-purple-500;
-  background-clip: text;
-  color: rgba(0, 0, 0, 0);
-}
-
-.glow:hover {
-  transform: translateY(-2px);
+  @apply bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text;
+  -webkit-background-clip: text; /* older browsers can get this too */
 }
 
 @keyframes nav-link-shadow {
