@@ -52,9 +52,14 @@
   .average-translate {
     @apply -translate-y-1;
   }
+  .slower-transition {
+    transition: ease-in-out 0.2s;
+  }
+
   .average-transition {
     transition: ease-in-out 0.15s;
   }
+
   .dimmed-0 {
     /* blog dates */
     color: hsl(0, 0%, 48%);
