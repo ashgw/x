@@ -1,4 +1,6 @@
-import fs from 'fs';
+'use server';
+import { promises as fsPromises } from 'fs';
+
 import path from 'path';
 import fm from 'front-matter';
 import type { MDXData, BlogData } from './_types';
@@ -8,27 +10,43 @@ function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
 }
 
-function getMDXFiles(dir: string): Array<string> {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx');
+async function getMDXFiles(dir: string): Promise<string[]> {
+  try {
+    const files = await fsPromises.readdir(dir);
+    const mdxFiles = files.filter((file) => path.extname(file) === '.mdx');
+    return mdxFiles;
+  } catch (error) {
+    console.error('Error reading directory:', error);
+    // TODO: handle error
+    throw error;
+  }
 }
 
-function readMDXFile(filePath: string): MDXData {
-  let rawContent = fs.readFileSync(filePath, 'utf-8');
-  return parseMDX(rawContent);
+async function readMDXFile(filePath: string): Promise<MDXData> {
+  try {
+    let rawContent = await fsPromises.readFile(filePath, 'utf-8');
+    return parseMDX(rawContent);
+  } catch (error) {
+    // TODO: hadnle err
+    console.error('Error reading MDX file:', error);
+    throw error;
+  }
 }
+async function getMDXData(dir: string): Promise<BlogData[]> {
+  let mdxFiles = await getMDXFiles(dir);
 
-function getMDXData(dir: string): Array<BlogData> {
-  let mdxFiles = getMDXFiles(dir);
-  return mdxFiles.map((file) => {
-    let parsedContent: MDXData = readMDXFile(path.join(dir, file));
-    let filenameSlug: string = path.basename(file, path.extname(file));
+  const blogDataPromises = mdxFiles.map(async (file) => {
+    const parsedContent = await readMDXFile(path.join(dir, file));
+    const filenameSlug: string = path.basename(file, path.extname(file));
     return {
-      parsedContent, // will be used to layout the content just right
-      filenameSlug, // to be used in automatic routing
+      parsedContent,
+      filenameSlug,
     };
   });
+
+  return Promise.all(blogDataPromises);
 }
 
-export function getBlogPosts(): Array<BlogData> {
+export async function getBlogPosts(): Promise<BlogData[]> {
   return getMDXData(path.join(process.cwd(), BLOG_CONTENT_PATH));
 }

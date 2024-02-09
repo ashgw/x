@@ -1,4 +1,3 @@
-import { Navbar } from '@/app/components/reusables/nav';
 import Nav from '@/app/components/nav/nav';
 export default async function BlogsLayout({
   children,
