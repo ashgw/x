@@ -1,36 +1,13 @@
-import type { BlogData } from '@/lib/types/mdx';
 import { Suspense } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
 import { MediumSection } from '@/app/components/reusables/sections';
-import { Maybe } from '@/lib/types/global';
 import { notFound } from 'next/navigation';
-import { pub, nextJS } from '@/lib/env';
+import { pub } from '@/lib/env';
 import { Badge } from '@/app/components/ui/badge';
-
-const SITE_URL =
-  nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
-
-async function getPost(slug: string): Promise<Maybe<BlogData>> {
-  try {
-    const response = await fetch(SITE_URL + '/api/blogs', {
-      next: { revalidate: 7200 },
-    });
-    if (response.status == 200) {
-      const result: { blogs: BlogData[] } = await response.json();
-      let blogPost = result.blogs.find((p) => p?.filenameSlug === slug);
-      return blogPost;
-    } else {
-      console.error('Error fetching data:', response.status);
-      return;
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return;
-  }
-}
+import { getPost } from '@/app/actions/blog';
 
 export default async function Blog({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
@@ -49,7 +26,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
                 datePublished: post.parsedContent.attributes.firstModDate,
                 dateModified: post.parsedContent.attributes.lastModDate,
                 description: post.parsedContent.attributes.seoTitle,
-                url: SITE_URL + `/blog/${post.filenameSlug}`,
+                url: pub.SITE_URL_PROD + `/blog/${post.filenameSlug}`,
                 author: {
                   '@type': 'Person',
                   name: 'ashgw',

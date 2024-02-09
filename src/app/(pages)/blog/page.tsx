@@ -1,31 +1,8 @@
 import { Suspense } from 'react';
-import { pub, nextJS } from '@/lib/env';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import { ChevronDown } from 'lucide-react';
-import type { BlogData } from '@/lib/types/mdx';
-import { notFound } from 'next/navigation';
 import BlogPostCard from '@/app/components/blog/blog-card';
-import { Maybe } from '@/lib/types/global';
-
-async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
-  const SITE_URL =
-    nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
-  try {
-    const response = await fetch(SITE_URL + '/api/blogs', {
-      next: { revalidate: 7200 },
-    });
-    if (response.status == 200) {
-      const result: { blogs: BlogData[] } = await response.json();
-      return result.blogs;
-    } else {
-      console.error('Error fetching data:', response.status);
-      return;
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return;
-  }
-}
+import { getBlogPosts } from '@/app/actions/blog';
 
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();
