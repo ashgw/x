@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { getBlogPosts } from '@/app/(pages)/blog/content';
 import BlogPostCard from '@/app/components/blog/blog-card';
 export const metadata = {
@@ -27,6 +28,10 @@ export default function BlogPage() {
         .map((post) => (
           <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
         ))}
+      <div className="flex items-center justify-center animate-bounce m-14 cursor-pointer">
+        <ChevronDown />
+      </div>
+      <div className="w-6 h-2"></div>
     </section>
   );
 }
