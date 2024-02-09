@@ -24,7 +24,7 @@ export function Link({
   return (
     <NextLink
       href={href}
-      className="average-transition font-bold gradient-text-purple hover:text-white"
+      className="average-transition font-bold gradient-text-purple hover:text-white hover:bright "
       {...props}
     >
       {props.children}

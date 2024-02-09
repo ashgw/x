@@ -13,7 +13,7 @@ export function OutLineButton({
   return (
     <Button
       variant={'outline'}
-      className="average-transition  hover:average-translate"
+      className="average-transition hover:average-translate"
     >
       <NextLink
         href={href}

@@ -17,6 +17,7 @@
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
+    --deeper-purple: rgba(255, 46, 200, 0.25);
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -85,7 +86,7 @@
     color: hsl(0, 0%, 95%);
   }
 
-  .bg-gradient::after {
+  .turn-bg-gradient::after {
     content: '';
     position: fixed;
     left: -1px;
@@ -97,7 +98,7 @@
     transition: opacity 0.5s;
   }
 
-  .bg-gradient::after {
+  .turn-bg-gradient::after {
     /*If i change my mind abouut the theme I'll use this for inidividual components*/
     background-image: linear-gradient(
       84.16deg,
@@ -107,7 +108,7 @@
     );
   }
 
-  .bg-gradient:hover::after {
+  .turn-bg-gradient:hover::after {
     opacity: 1;
   }
 }
@@ -152,6 +153,12 @@
   100% {
     opacity: 0.8;
   }
+}
+.glowsup {
+}
+
+.glowsup:hover {
+  filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
 }
 
 @layer base {

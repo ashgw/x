@@ -48,7 +48,7 @@ type MDXImageProps = {
 };
 export function MDXImage(props: MDXImageProps) {
   return (
-    <Skeleton className="flex items-center justify-center">
+    <Skeleton className="flex items-center justify-center brightness-50">
       <Image
         as={NextImage}
         className={cn('rounded-lg', props.className || '')}
