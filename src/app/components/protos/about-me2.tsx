@@ -1,0 +1,92 @@
+/* eslint-disable */
+
+export default function Component() {
+  return (
+    <div className="w-full py-12 lg:py-24">
+      <div className="container grid gap-6 px-4 md:gap-10 md:px-6 lg:grid-cols-2 xl:gap-16">
+        <div className="flex flex-col gap-4 lg:order-last lg:gap-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+              About Me
+            </h1>
+            <p className="max-w-[600px] text-gray-500 dark:text-gray-400">
+              Hi, I'm a passionate software engineer with a love for creating
+              elegant solutions to complex problems. My experience spans various
+              domains, from web development to cloud computing. I'm always eager
+              to learn new technologies and frameworks to stay ahead in the
+              ever-evolving tech landscape.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tighter">Skills</h2>
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                JavaScript
+              </span>
+              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                React
+              </span>
+              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                Node.js
+              </span>
+              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                TypeScript
+              </span>
+              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                AWS
+              </span>
+              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                Docker
+              </span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tighter">Experience</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-xl font-bold">Senior Frontend Engineer</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Leading the development of a next-generation customer
+                  engagement platform.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold">Cloud Architect</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Designing scalable and secure cloud infrastructure for
+                  enterprise clients.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tighter">Education</h2>
+            <div className="space-y-2">
+              <div className="font-semibold">Bachelor of Computer Science</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                University of Science and Technology
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="font-semibold">
+                Certified AWS Solutions Architect
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Amazon Web Services
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <img
+            alt="Profile Picture"
+            className="rounded-full w-60 border aspect-square object-cover object-center justify-self-start"
+            height="300"
+            src="/placeholder.svg"
+            width="300"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

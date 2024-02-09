@@ -17,6 +17,7 @@
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
+    --deeper-purple: rgba(255, 46, 200, 0.25);
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -49,31 +50,50 @@
   }
 }
 @layer utilities {
-  .dimmed-0 {
-    color: hsl(0, 0%, 48%);
+  .average-translate {
+    @apply -translate-y-1;
   }
-
-  .dimmed-1 {
-    color: hsl(0, 0%, 65%);
-  }
-
-  .dimmed-3 {
-    color: hsl(0, 0%, 75%);
-  }
-
-  .dimmed-4 {
-    color: hsl(0, 0%, 90%);
-  }
-
-  .dimmed-5 {
-    color: hsl(0, 0%, 95%);
+  .slower-transition {
+    transition: ease-in-out 0.2s;
   }
 
   .average-transition {
     transition: ease-in-out 0.15s;
   }
 
-  .bg-gradient::after {
+  .dimmed-0 {
+    /* blog dates */
+    color: hsl(0, 0%, 48%);
+  }
+
+  .dimmed-1 {
+    /* blog after 'x' minutes */
+    color: hsl(0, 0%, 65%);
+  }
+
+  .dimmed-3 {
+    /* content reading */
+    color: hsl(0, 0%, 75%);
+  }
+
+  .dimmed-4 {
+    /*H2s  */
+    color: hsl(0, 0%, 90%);
+  }
+
+  .dimmed-5 {
+    /* H1s */
+    color: hsl(0, 0%, 95%);
+  }
+  .glowsup:hover {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
+
+  .glowsup-res:hover {
+    filter: drop-shadow(0 0 0.75rem rebeccapurple);
+  }
+
+  .turn-bg-gradient::after {
     content: '';
     position: fixed;
     left: -1px;
@@ -85,7 +105,7 @@
     transition: opacity 0.5s;
   }
 
-  .bg-gradient::after {
+  .turn-bg-gradient::after {
     /*If i change my mind abouut the theme I'll use this for inidividual components*/
     background-image: linear-gradient(
       84.16deg,
@@ -95,42 +115,46 @@
     );
   }
 
-  .bg-gradient:hover::after {
+  .turn-bg-gradient:hover::after {
     opacity: 1;
   }
-}
-.nav-link-shadow {
-  position: relative;
-}
-
-@media (min-width: 1024px) {
-  .nav-link-shadow::before {
-    content: '';
-    position: absolute;
-    height: 33px;
-    width: 70px;
-    z-index: -1;
-    background: linear-gradient(
-      86.87deg,
-      rgba(255, 0, 255, 0.3),
-      rgba(150, 255, 30, 0.2)
-    );
-    filter: blur(25px);
-    opacity: 0;
-    transition: opacity 0.3s ease-out;
+  .nav-link-shadow {
+    position: relative;
   }
 
-  .nav-link-shadow:hover::before {
-    opacity: 0.8;
-  }
-}
+  @media (min-width: 1024px) {
+    .nav-link-shadow::before {
+      content: '';
+      position: absolute;
+      height: 33px;
+      width: 70px;
+      z-index: -1;
+      background: var(--deeper-purple);
+      filter: blur(25px);
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+    }
 
-@keyframes nav-link-shadow {
-  0% {
-    opacity: 0;
+    .nav-link-shadow:hover::before {
+      opacity: 0.8;
+    }
   }
-  100% {
-    opacity: 0.8;
+
+  .gradient-text-purple {
+    /*
+       for links
+    */
+    @apply bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text;
+    -webkit-background-clip: text; /* older browsers can get this too */
+  }
+
+  @keyframes nav-link-shadow {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0.8;
+    }
   }
 }
 
@@ -145,7 +169,7 @@
       84.16deg,
       rgba(150, 46, 200, 0.15),
       rgba(255, 215, 111, 0.042),
-      rgba(30, 17, 224, 0.1)
+      rgba(150, 0, 100, 0.1)
     );
   }
 

@@ -9,8 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        navbar:
+          'glowsup average-transition hover:average-translate rounded-[1.1rem] bg-primary/95 opacity-95 text-primary-foreground hover:bg-primary hover:opacity-100',
         default:
-          'rounded-[1.1rem] bg-primary/95 opacity-95 text-primary-foreground hover:bg-primary hover:opacity-100 transition-all duration-300 ease-in-out',
+          'rounded-[1.1rem] average-transition bg-primary/95 opacity-95 text-primary-foreground hover:bg-primary hover:opacity-100',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:

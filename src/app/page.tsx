@@ -1,17 +1,17 @@
-'use client';
-
-import ThemeModeToggler from '@/app/components/reusables/theme-toggler';
 import CopyRight from '@/app/components/footer/copyright';
-import { Button } from '@/app/components/ui/button';
 import Nav from '@/app/components/nav/nav';
-import { Badge } from '@/app/components/ui/badge';
 import { TextContent } from './components/reusables/content';
 import { MediumSection } from './components/reusables/sections';
+import HeroSection from './components/protos/hero-section';
+import OurServices from './components/protos/our-services';
 
 export default function Home() {
   return (
     <>
       <Nav></Nav>
+      <HeroSection />
+      <OurServices />
+      <CopyRight></CopyRight>
       <MediumSection>
         <TextContent>
           If youd like to preserve the default values for a theme option but

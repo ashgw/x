@@ -13,7 +13,7 @@ export function Link({
     return (
       <NextLink
         href={href}
-        className="average-transition  font-bold text-fuchsia-400 hover:text-fuchsia-700"
+        className="average-transition font-bold gradient-text-purple hover:text-white"
         {...props}
       >
         {props.children}
@@ -24,21 +24,11 @@ export function Link({
   return (
     <NextLink
       href={href}
-      className="average-transition font-bold text-pink-700 hover:text-pink-800 "
-      target="_blank"
-      rel="noopener noreferrer"
+      className="average-transition font-bold gradient-text-purple hover:text-white hover:bright "
       {...props}
     >
       {props.children}
-      <ArrowUpRightSquare
-        strokeWidth={'1.5px'}
-        size={'20px'}
-        style={{
-          display: 'inline-block',
-          marginLeft: '2px',
-          marginBottom: '3px',
-        }}
-      />
+      <span className="pl-1 ">&#x2197;</span>
     </NextLink>
   );
 }
