@@ -5,8 +5,7 @@ import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
 import { MediumSection } from '@/app/components/reusables/sections';
 
 import { notFound } from 'next/navigation';
-import { pub } from '@/lib/env';
-import { getBlogPosts } from '@/app/(pages)/blog/content';
+import { pub, nextJS } from '@/lib/env';
 import { Badge } from '@/app/components/ui/badge';
 
 enum _Result {
@@ -18,9 +17,11 @@ enum _Result {
 
 // TODO: metadata
 export default async function Blog({ params }: { params: { slug: string } }) {
+  const SITE_URL =
+    nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
   let post;
   try {
-    const response = await fetch('http://localhost:3000/api/blogs', {
+    const response = await fetch(SITE_URL + '/api/blogs', {
       next: { revalidate: 7200 },
     });
     if (response.status == 200) {
@@ -50,7 +51,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
             datePublished: post.parsedContent.attributes.firstModDate,
             dateModified: post.parsedContent.attributes.lastModDate,
             description: post.parsedContent.attributes.seoTitle,
-            url: pub.SITE_URL_PROD + `/blog/${post.filenameSlug}`,
+            url: SITE_URL + `/blog/${post.filenameSlug}`,
             author: {
               '@type': 'Person',
               name: 'ashgw',

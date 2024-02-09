@@ -67,6 +67,10 @@ export default function BlogPage() {
         .map((post) => (
           <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
         ))}
+      <div className="flex items-center justify-center animate-bounce m-14 cursor-pointer">
+        <ChevronDown className="mt-5" />
+      </div>
+      <div className="w-auto h-1"></div>
     </section>
   );
 }
