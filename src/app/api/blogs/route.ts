@@ -1,7 +1,7 @@
 // api/me/route.ts
 import { z } from 'zod';
 import { NextResponse, NextRequest } from 'next/server';
-import { getBlogPosts } from '@/app/(pages)/blog/content';
+import { getBlogPosts } from '@/app/api/blogs/content';
 
 const ageSchema = z.number().min(5).max(10);
 

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import { ChevronDown } from 'lucide-react';
-import type { BlogData } from './_types';
+import type { BlogData } from '@/lib/types/mdx';
 import { notFound } from 'next/navigation';
 import BlogPostCard from '@/app/components/blog/blog-card';
 
