@@ -4,7 +4,7 @@ import { Image, Skeleton } from '@nextui-org/react';
 import { cn } from '@/lib/utils';
 import NextImage from 'next/image';
 import { Divider as _Divider } from '@nextui-org/react';
-import CodeBlock from '@/app/components/reusables/code-block';
+import CodeBlock from '@/app/components/reusables/code/code-block';
 import {
   Heading2,
   Heading3,
