@@ -1,4 +1,3 @@
-
 import Loader from '@/app/components/reusables/loader';
 
 function LoadingScreen() {

@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import { ChevronDown } from 'lucide-react';
@@ -40,7 +39,7 @@ export default function BlogPage() {
     };
 
     fetchData();
-  }, []);
+  }, [loaded]);
 
   if (loaded === _Result.Loading) {
     return <LoadingScreen />;
@@ -54,20 +53,20 @@ export default function BlogPage() {
       <h1 className="font-medium text-2xl mb-8 tracking-tighter hidden">
         Unclassified, raw
       </h1>
-      {allBlogs!
-        .sort(
-          // @ts-ignore
-          (b1, b2) =>
-            new Date(b2.parsedContent.attributes.firstModDate) >
-            new Date(b1.parsedContent.attributes.firstModDate)
-        )
+      {/* @ts-ignore */}
+      {allBlogs
+        .sort((b1, b2) => {
+          if (
+            new Date(b1.parsedContent.attributes.firstModDate) >
+            new Date(b2.parsedContent.attributes.firstModDate)
+          ) {
+            return -1;
+          }
+          return 1;
+        })
         .map((post) => (
           <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
         ))}
-      <div className="flex items-center justify-center animate-bounce m-14 cursor-pointer">
-        <ChevronDown />
-      </div>
-      <div className="w-6 h-2"></div>
     </section>
   );
 }
