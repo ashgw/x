@@ -11,11 +11,9 @@ export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
     <div className="glowsup slower-transition hover:slower-translate mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
       <div className=" group flex flex-col gap-4 rounded-[2rem] p-5 hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
         <div className="flex flex-col gap-4 lg:gap-6">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <li className="list-disc ml-5 dimmed-0">
-              {formatDate(blogData.parsedContent.attributes.firstModDate)}
-            </li>
-          </div>
+          <li className="list-disc ml-5 dimmed-0">
+            {formatDate(blogData.parsedContent.attributes.firstModDate)}
+          </li>
           <Link href={`${BLOG_URI}/${blogData.filenameSlug}`}>
             <h2 className="text-2xl font-bold dimmed-4 lg:text-[2.5rem]">
               {blogData.parsedContent.attributes.title}
