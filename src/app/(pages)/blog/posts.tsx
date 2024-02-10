@@ -10,15 +10,15 @@ const NoMoreImTiredBoss: React.FC<
   ButtonHTMLAttributes<HTMLButtonElement>
 > = () => {
   return (
-    <button>
-      <CheckCheck className="mt-5 cursor-default" />
+    <button className="cursor-default">
+      <CheckCheck className="mt-5" />
     </button>
   );
 };
 
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
   let [numVisible, setNumVisible] = useState<number>(2);
-  const loadMore = numVisible !== 4;
+  const loadMore = numVisible !== blogPosts.length;
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
           <button>
             <ChevronDown
               onClick={() => setNumVisible(numVisible + 1)}
-              className="mt-5 animate-bounce  cursor-pointer"
+              className="mt-5 animate-bounce cursor-pointer"
             />
           </button>
         ) : (
