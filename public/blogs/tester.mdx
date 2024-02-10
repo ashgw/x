@@ -11,6 +11,7 @@ tags:
   - 'vercel'
   - 'serverless'
 ---
+
 <H3>Privacy Policy</H3>
 <C>
    First we might talk about <L href={'/blog/simple'}>how to run in parallel</L> and run the app on any machine, you can choose from two methods:
@@ -20,12 +21,19 @@ Using **``getStaticQueryParams()``** for isolation or, you can use  <L href={'ht
 <S2/>
 *  \- **Referrer**: Static site generation 
 <S/>
-*  \- **Oppenheimer**: Beatle public asssessment
-<S/>
-*  \- **Crunch**: Shuttle is new
-<S3/>
 
->> *NOTE: The installation may take some time as the dependencies are quite heavy.*
+- \- **Oppenheimer**: Beatle public asssessment
+
+  {' '}
+
+  {' '}
+
+  <S />
+
+- \- **Crunch**: Shuttle is new
+  <S3 />
+
+> > _NOTE: The installation may take some time as the dependencies are quite heavy._
 
 </C>
 <Code
@@ -35,21 +43,22 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub struct NoiseMap {
-    pub width: usize,
-    pub height: usize,
-    pub scale: f64,
-    pub octaves: u8,
-    pub lacunarity: f64,
-    pub persistence: f64,
-    pub max_value: f64,
-    pub min_value: f64, #[wasm_bindgen(skip)]
-    pub map: Vec<f64>,
+pub width: usize,
+pub height: usize,
+pub scale: f64,
+pub octaves: u8,
+pub lacunarity: f64,
+pub persistence: f64,
+pub max_value: f64,
+pub min_value: f64, #[wasm_bindgen(skip)]
+pub map: Vec<f64>,
 }
 `}
 language="rust"
 showLineNumbers={true}
 
 > </Code>
+
 <H3>Your Information</H3>
 <C>
   When you sign up for our product or service, we may request certain
@@ -104,7 +113,7 @@ declare -A dotfiles=(
 )
 
 for file in "\${!dotfiles[@]}"; do
-  curl -o "\$HOME/\$file" "\${dotfiles[\$file]}"
+curl -o "\$HOME/\$file" "\${dotfiles[\$file]}"
 done
 `}>
 
@@ -123,9 +132,9 @@ done
                 When you use our service to generate AI images based on a word or phrase, we collect the input provided. This information is used solely to generate the requested image and is not stored or associated with your personal information.
             </C>
             <H3>Security</H3>
+
 <Code
-  code=
-{`import { Suspense } from 'react'
+  code={`import { Suspense } from 'react'
 import { list } from '@vercel/blob'
  
 export default function Page() {
@@ -150,13 +159,16 @@ async function VideoComponent({ fileName }) {
     </video>
   )
 }`}
-language="typescript"
-showLineNumbers={true}
-copy={false}
-> </Code>
-            <C>
-                All data is encrypted via SSL/TLS when transmitted from our servers to your browser.
-            </C>
+  language="typescript"
+  showLineNumbers={true}
+  copy={false}
+>
+  {' '}
+</Code>
+<C>
+  All data is encrypted via SSL/TLS when transmitted from our servers to your
+  browser.
+</C>
 
             <H3>Changes</H3>
             <C>

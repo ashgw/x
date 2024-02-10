@@ -1,7 +1,7 @@
 ---
 title: Middlewares
 seoTitle: Middlewares & shit
-summary: A walkthrough over security headers setup with middlewares 
+summary: A walkthrough over security headers setup with middlewares
 isReleased: true
 lastModDate: 2021-04-20T09:15:00-0400
 firstModDate: 2024-02-01T09:15:00-0400
@@ -20,6 +20,7 @@ tags:
 > _Security through obscurity ain’t all that chief, but it's just a good complementary security measure._
 
 To test that you've removed this entirely you can use curl:
+
 </C>
 
 <Code
@@ -41,19 +42,21 @@ showLineNumbers={true}
 Google doesn't hide this info, but guess who does ?
 
 The feds
+
 </C>
 <Code
   code=
 
 {`
-➜  ~ curl -IsL https://cia.gov/ | grep -i server
+➜ ~ curl -IsL https://cia.gov/ | grep -i server
 
-➜  ~
+➜ ~
 `}
 language="bash"
 showLineNumbers={true}
 
 > </Code>
+
 <H3>Content Security Policy</H3>
 <C>
 Don't use `unsafe-inline` directive.
