@@ -1,3 +1,4 @@
+'use server';
 import { pub, nextJS } from '@/lib/env';
 import type { BlogData } from '@/lib/types/mdx';
 import { Maybe } from '@/lib/types/global';

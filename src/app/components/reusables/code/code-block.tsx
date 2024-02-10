@@ -1,6 +1,6 @@
 // react-syntax-highlighter has no types
 // @ts-nocheck
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rust from 'react-syntax-highlighter/dist/cjs/languages/prism/rust';
 import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python';
@@ -33,7 +33,7 @@ export default function CodeBlock({
 }: Props) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'mx-2 relative rounded-2xl !bg-black p-4 shadow-lg',
         className
       )}

@@ -1,13 +1,13 @@
 import { Button } from '../ui/button';
 import { OutLineButton } from './buttons';
 import Link from 'next/link';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 const Nav = () => {
   return (
     <nav className="mx-auto flex h-[5.5rem] w-full max-w-[1344px] items-center px-5 sm:px-10">
       <div
-        className={clsx(
+        className={cn(
           'relative left-0 top-[4.375rem] z-20 h-[calc(100vh-4.375rem)] w-full overflow-y-auto  p-5  sm:px-10 xl:static xl:ml-10 xl:flex xl:h-auto xl:items-center xl:overflow-y-visible xl:bg-transparent xl:p-0 xl:dark:bg-transparent'
         )}
       >
