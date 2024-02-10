@@ -6,7 +6,7 @@ import { getBlogPosts } from '@/app/actions/blog';
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();
 
-  if (blogPosts) {
+  if (blogPosts !== undefined) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">

@@ -2,18 +2,12 @@
 import { z } from 'zod';
 import { NextResponse, NextRequest } from 'next/server';
 import { getBlogPosts } from '@/app/api/blogs/content';
-
+import type { BlogData } from '@/lib/types/mdx';
 const ageSchema = z.number().min(5).max(10); // later, no time now
 
 export async function GET() {
   try {
-    const blogs = await getBlogPosts();
-    if (blogs === undefined) {
-      return NextResponse.json(
-        { error: 'simply does not exist' },
-        { status: 404 }
-      );
-    }
+    const blogs: BlogData[] = await getBlogPosts();
     return NextResponse.json(
       { blogs },
       {
