@@ -13,11 +13,11 @@ export type _MaybeBlogData = {
   filenameSlug: string;
 };
 
-function parseMDX(content: string): MDXData {
+function parseMDX(content: string) {
   return fm(content) as MDXData;
 }
 
-async function getMDXFileNames(dir: string): Promise<Maybe<string[]>> {
+async function getMDXFileNames(dir: string) {
   try {
     const files = await fsPromises.readdir(dir);
     const names = files.filter((file) => path.extname(file) === '.mdx');
@@ -29,7 +29,7 @@ async function getMDXFileNames(dir: string): Promise<Maybe<string[]>> {
   }
 }
 
-async function readMDXFile(filePath: string): Promise<Maybe<MDXData>> {
+async function readMDXFile(filePath: string) {
   try {
     let rawContent = await fsPromises.readFile(filePath, 'utf-8');
     return parseMDX(rawContent);
@@ -39,7 +39,7 @@ async function readMDXFile(filePath: string): Promise<Maybe<MDXData>> {
   }
 }
 
-async function getMDXData(dir: string): Promise<Maybe<_MaybeBlogData[]>> {
+async function getMDXData(dir: string) {
   let mdxFiles = await getMDXFileNames(dir);
   if (mdxFiles === undefined) {
     return;
@@ -56,6 +56,6 @@ async function getMDXData(dir: string): Promise<Maybe<_MaybeBlogData[]>> {
   return Promise.all(blogDataPromises);
 }
 
-export async function getBlogPosts(): Promise<Maybe<_MaybeBlogData[]>> {
+export async function getBlogPosts() {
   return getMDXData(MDX_DIR);
 }

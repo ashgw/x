@@ -26,7 +26,7 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
     return;
   }
 }
-export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
+export async function getBlogPosts() {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
       cache: 'force-cache',
