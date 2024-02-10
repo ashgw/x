@@ -22,3 +22,5 @@ export type BlogData = {
   parsedContent: MDXData;
   filenameSlug: string;
 };
+
+

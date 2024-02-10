@@ -86,11 +86,8 @@
     color: hsl(0, 0%, 95%);
   }
   .glowsup:hover {
+    /* major text */
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
-  }
-
-  .glowsup-res:hover {
-    filter: drop-shadow(0 0 0.75rem rebeccapurple);
   }
 
   .turn-bg-gradient::after {

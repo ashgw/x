@@ -10,8 +10,9 @@ const SITE_URL =
 export async function getPost(slug: string): Promise<Maybe<BlogData>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      next: { revalidate: VALIDATE_EVERY_SECS },
+      cache: 'force-cache',
     });
+
     if (response.status == 200) {
       const result: { blogs: BlogData[] } = await response.json();
       let blogPost = result.blogs.find((p) => p?.filenameSlug === slug);
@@ -28,8 +29,9 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
 export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      next: { revalidate: VALIDATE_EVERY_SECS },
+      cache: 'force-cache',
     });
+
     if (response.status == 200) {
       const result: { blogs: BlogData[] } = await response.json();
       return result.blogs;

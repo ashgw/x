@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
 import { Badge } from '@/app/components/ui/badge';
 import { getPost } from '@/app/actions/blog';
+import { BLOG_URI } from '@/lib/constants';
 import Link from 'next/link';
 
 export default async function Blog({ params }: { params: { post: string } }) {
@@ -28,7 +29,7 @@ export default async function Blog({ params }: { params: { post: string } }) {
                 datePublished: post.parsedContent.attributes.firstModDate,
                 dateModified: post.parsedContent.attributes.lastModDate,
                 description: post.parsedContent.attributes.seoTitle,
-                url: pub.SITE_URL_PROD + `/blog/${post.filenameSlug}`,
+                url: pub.SITE_URL_PROD + BLOG_URI + `/${post.filenameSlug}`,
                 author: {
                   '@type': 'Person',
                   name: 'ashgw',

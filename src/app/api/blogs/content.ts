@@ -1,12 +1,17 @@
 'use server';
 import { promises as fsPromises } from 'fs';
-
 import path from 'path';
 import fm from 'front-matter';
-import type { MDXData, BlogData } from '@/lib/types/mdx';
+import type { MDXData } from '@/lib/types/mdx';
 import { BLOG_CONTENT_PATH } from '@/lib/constants';
 import { Maybe } from '@/lib/types/global';
+
 const MDX_DIR = path.join(process.cwd(), BLOG_CONTENT_PATH);
+
+export type _MaybeBlogData = {
+  parsedContent: Maybe<MDXData>;
+  filenameSlug: string;
+};
 
 function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
@@ -20,7 +25,6 @@ async function getMDXFiles(dir: string): Promise<Maybe<string[]>> {
   } catch (error) {
     console.error('Error reading directory:', error);
     // TODO: handle error
-    //throw error;
     return;
   }
 }
@@ -32,16 +36,16 @@ async function readMDXFile(filePath: string): Promise<Maybe<MDXData>> {
   } catch (error) {
     // TODO: hadnle err
     console.error('Error reading MDX file:', error);
-    // throw error;
     return;
   }
 }
-async function getMDXData(dir: string): Promise<Maybe<BlogData[]>> {
+
+async function getMDXData(dir: string): Promise<Maybe<_MaybeBlogData[]>> {
   let mdxFiles = await getMDXFiles(dir);
-  if (!mdxFiles) {
+  if (mdxFiles === undefined) {
     return;
   }
-  mdxFiles.map(async (file) => {
+  const blogDataPromises = mdxFiles.map(async (file) => {
     const parsedContent = await readMDXFile(path.join(dir, file));
     const filenameSlug: string = path.basename(file, path.extname(file));
     return {
@@ -49,8 +53,10 @@ async function getMDXData(dir: string): Promise<Maybe<BlogData[]>> {
       filenameSlug,
     };
   });
+
+  return Promise.all(blogDataPromises);
 }
 
-export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
+export async function getBlogPosts(): Promise<Maybe<_MaybeBlogData[]>> {
   return getMDXData(MDX_DIR);
 }
