@@ -64,7 +64,7 @@ export default async function Blog({ params }: { params: { post: string } }) {
             </article>
             <Link
               href={`#${post.parsedContent.attributes.title}`}
-              className="fixed max-w-3 opacity-0 max-h-3 average-transition animate-bounce bottom-1 right-1 mx-12 md:px-18 lg:mx-24 xl:mx-[200px] my-12 hover:opacity-100"
+              className="fixed max-w-3 max-h-3 opacity-0 average-transition animate-bounce bottom-1 right-1 mx-12 md:px-18 lg:mx-24 xl:mx-[200px] my-12 hover:opacity-100"
             >
               <ChevronUp className="average-transition hover:scale-150" />
             </Link>
