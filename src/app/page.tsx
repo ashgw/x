@@ -8,7 +8,6 @@ import OurServices from './components/protos/our-services';
 export default function Home() {
   return (
     <>
-      <Nav></Nav>
       <HeroSection />
       <OurServices />
       <CopyRight></CopyRight>

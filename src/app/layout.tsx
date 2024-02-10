@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import { Atkinson_Hyperlegible } from 'next/font/google';
 import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
+import Nav from './components/nav/nav';
+
 import './globals.css';
 
 const inter = Atkinson_Hyperlegible({ subsets: ['latin'], weight: '400' });
@@ -26,7 +28,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Nav />
+          {children}
+        </Providers>
       </body>
     </html>
   );

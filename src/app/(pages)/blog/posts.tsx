@@ -4,21 +4,20 @@ import BlogPostCard from '@/app/components/blog/blog-card';
 import { ChevronDown } from 'lucide-react';
 import { CheckCheck } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 import type { ButtonHTMLAttributes } from 'react';
 
 const NoMoreImTiredBoss: React.FC<
   ButtonHTMLAttributes<HTMLButtonElement>
 > = () => {
-  return (
-    <button className="cursor-default">
-      <CheckCheck className="mt-5" />
-    </button>
-  );
+  return <CheckCheck className="mt-5 cursor-default" />;
 };
 
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
-  let [numVisible, setNumVisible] = useState<number>(2);
-  const loadMore = numVisible !== blogPosts.length;
+  const firstLoadVisibleNum = 2;
+  const perLoadVisibleNum = 1;
+  let [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
+  const loadMore = visibleNum <= blogPosts.length;
 
   return (
     <>
@@ -32,18 +31,20 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
           }
           return 1;
         })
-        .slice(0, numVisible)
+        .slice(0, visibleNum)
         .map((post) => (
           <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
         ))}
-      <div className="flex items-center justify-center m-14">
+      <div id="more" className="flex items-center justify-center m-14">
         {loadMore ? (
-          <button>
+          <Link href={'#more'}>
             <ChevronDown
-              onClick={() => setNumVisible(numVisible + 1)}
+              onClick={() => {
+                setVisibleNum(visibleNum + perLoadVisibleNum);
+              }}
               className="mt-5 animate-bounce cursor-pointer"
             />
-          </button>
+          </Link>
         ) : (
           <NoMoreImTiredBoss />
         )}

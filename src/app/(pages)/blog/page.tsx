@@ -14,7 +14,7 @@ export default async function BlogPage() {
             Unclassified, raw
           </h1>
           <BlogPosts blogPosts={blogPosts} />
-          <div className="w-auto h-1"></div>
+          <div className="w-auto h-full"></div>
         </section>
       </Suspense>
     );
