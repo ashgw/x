@@ -6,6 +6,8 @@ import fm from 'front-matter';
 import type { MDXData, BlogData } from '@/lib/types/mdx';
 import { BLOG_CONTENT_PATH } from '@/lib/constants';
 
+const MDX_DIR = path.join(process.cwd(), BLOG_CONTENT_PATH);
+
 function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
 }
@@ -17,6 +19,17 @@ async function getMDXFiles(dir: string): Promise<string[]> {
     return mdxFiles;
   } catch (error) {
     console.error('Error reading directory:', error);
+    // TODO: handle error
+    throw error;
+  }
+}
+
+async function doesMDXFileExist(filename: string): Promise<boolean> {
+  try {
+    const mdxFiles = await getMDXFiles(MDX_DIR);
+    return mdxFiles.includes(filename);
+  } catch (error) {
+    console.error('Error checking file existence:', error);
     // TODO: handle error
     throw error;
   }
@@ -48,5 +61,5 @@ async function getMDXData(dir: string): Promise<BlogData[]> {
 }
 
 export async function getBlogPosts(): Promise<BlogData[]> {
-  return getMDXData(path.join(process.cwd(), BLOG_CONTENT_PATH));
+  return getMDXData(MDX_DIR);
 }

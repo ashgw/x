@@ -9,8 +9,8 @@ import { pub } from '@/lib/env';
 import { Badge } from '@/app/components/ui/badge';
 import { getPost } from '@/app/actions/blog';
 
-export default async function Blog({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+export default async function Blog({ params }: { params: { post: string } }) {
+  const post = await getPost(params.post);
   if (post) {
     return (
       <Suspense fallback={<LoadingScreen />}>
