@@ -1,4 +1,3 @@
-import { ArrowUpRightSquare } from 'lucide-react';
 import { Image as _Image } from '@nextui-org/react';
 import NextLink from 'next/link';
 
@@ -13,7 +12,7 @@ export function Link({
     return (
       <NextLink
         href={href}
-        className="average-transition font-bold gradient-text-purple hover:text-white"
+        className=" average-transition font-bold gradient-text-purple hover:text-white"
         {...props}
       >
         {props.children}
