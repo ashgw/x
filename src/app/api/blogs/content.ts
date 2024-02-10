@@ -5,14 +5,14 @@ import path from 'path';
 import fm from 'front-matter';
 import type { MDXData, BlogData } from '@/lib/types/mdx';
 import { BLOG_CONTENT_PATH } from '@/lib/constants';
-
+import { Maybe } from '@/lib/types/global';
 const MDX_DIR = path.join(process.cwd(), BLOG_CONTENT_PATH);
 
 function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
 }
 
-async function getMDXFiles(dir: string): Promise<string[]> {
+async function getMDXFiles(dir: string): Promise<Maybe<string[]>> {
   try {
     const files = await fsPromises.readdir(dir);
     const mdxFiles = files.filter((file) => path.extname(file) === '.mdx');
@@ -20,35 +20,28 @@ async function getMDXFiles(dir: string): Promise<string[]> {
   } catch (error) {
     console.error('Error reading directory:', error);
     // TODO: handle error
-    throw error;
+    //throw error;
+    return;
   }
 }
 
-async function doesMDXFileExist(filename: string): Promise<boolean> {
-  try {
-    const mdxFiles = await getMDXFiles(MDX_DIR);
-    return mdxFiles.includes(filename);
-  } catch (error) {
-    console.error('Error checking file existence:', error);
-    // TODO: handle error
-    throw error;
-  }
-}
-
-async function readMDXFile(filePath: string): Promise<MDXData> {
+async function readMDXFile(filePath: string): Promise<Maybe<MDXData>> {
   try {
     let rawContent = await fsPromises.readFile(filePath, 'utf-8');
     return parseMDX(rawContent);
   } catch (error) {
     // TODO: hadnle err
     console.error('Error reading MDX file:', error);
-    throw error;
+    // throw error;
+    return;
   }
 }
-async function getMDXData(dir: string): Promise<BlogData[]> {
+async function getMDXData(dir: string): Promise<Maybe<BlogData[]>> {
   let mdxFiles = await getMDXFiles(dir);
-
-  const blogDataPromises = mdxFiles.map(async (file) => {
+  if (!mdxFiles) {
+    return;
+  }
+  mdxFiles.map(async (file) => {
     const parsedContent = await readMDXFile(path.join(dir, file));
     const filenameSlug: string = path.basename(file, path.extname(file));
     return {
@@ -56,10 +49,8 @@ async function getMDXData(dir: string): Promise<BlogData[]> {
       filenameSlug,
     };
   });
-
-  return Promise.all(blogDataPromises);
 }
 
-export async function getBlogPosts(): Promise<BlogData[]> {
+export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
   return getMDXData(MDX_DIR);
 }

@@ -11,7 +11,7 @@ import { getPost } from '@/app/actions/blog';
 
 export default async function Blog({ params }: { params: { post: string } }) {
   const post = await getPost(params.post);
-  if (post) {
+  if (post !== undefined) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <main>

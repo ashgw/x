@@ -8,6 +8,12 @@ const ageSchema = z.number().min(5).max(10);
 export async function GET(req: NextRequest) {
   try {
     const blogs = await getBlogPosts(); // TODO: implement it
+    if (!blogs) {
+      return NextResponse.json(
+        { error: 'simply does not exist' },
+        { status: 404 }
+      );
+    }
     return NextResponse.json(
       { blogs },
       {
