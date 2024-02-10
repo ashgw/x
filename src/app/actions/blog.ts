@@ -3,6 +3,8 @@ import { pub, nextJS } from '@/lib/env';
 import type { BlogData } from '@/lib/types/mdx';
 import { Maybe } from '@/lib/types/global';
 import { BLOG_API_URI } from '@/lib/constants';
+
+
 const VALIDATE_EVERY_SECS = 7200;
 const SITE_URL =
   nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
@@ -10,9 +12,8 @@ const SITE_URL =
 export async function getPost(slug: string): Promise<Maybe<BlogData>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      cache: 'force-cache',
+      next: { revalidate: VALIDATE_EVERY_SECS },
     });
-
     if (response.status == 200) {
       const result: { blogs: BlogData[] } = await response.json();
       let blogPost = result.blogs.find((p) => p?.filenameSlug === slug);
@@ -29,9 +30,8 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
 export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      cache: 'force-cache',
+      next: { revalidate: VALIDATE_EVERY_SECS },
     });
-
     if (response.status == 200) {
       const result: { blogs: BlogData[] } = await response.json();
       return result.blogs;
