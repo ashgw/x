@@ -9,11 +9,7 @@ import type { ButtonHTMLAttributes } from 'react';
 const NoMoreImTiredBoss: React.FC<
   ButtonHTMLAttributes<HTMLButtonElement>
 > = () => {
-  return (
-    <button className="cursor-default">
-      <CheckCheck className="mt-5" />
-    </button>
-  );
+  return <CheckCheck className="mt-5 cursor-default" />;
 };
 
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
@@ -40,12 +36,10 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
         ))}
       <div className="flex items-center justify-center m-14">
         {loadMore ? (
-          <button>
-            <ChevronDown
-              onClick={() => setVisibleNum(visibleNum + perLoadVisibleNum)}
-              className="mt-5 animate-bounce cursor-pointer"
-            />
-          </button>
+          <ChevronDown
+            onClick={() => setVisibleNum(visibleNum + perLoadVisibleNum)}
+            className="mt-5 animate-bounce cursor-pointer"
+          />
         ) : (
           <NoMoreImTiredBoss />
         )}
