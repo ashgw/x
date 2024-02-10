@@ -1,16 +1,15 @@
 'use server';
 import { pub, nextJS } from '@/lib/env';
 import type { BlogData } from '@/lib/types/mdx';
-import { Maybe } from '@/lib/types/global';
 import { BLOG_API_URI } from '@/lib/constants';
 const VALIDATE_EVERY_SECS = 7200;
 const SITE_URL =
   nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
 
-export async function getPost(slug: string): Promise<Maybe<BlogData>> {
+export async function getPost(slug: string) {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      cache: 'force-cache',
+        cache: 'no-store',
     });
 
     if (response.status == 200) {
@@ -26,10 +25,10 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
     return;
   }
 }
-export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
+export async function getBlogPosts() {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      cache: 'force-cache',
+      cache: 'no-store',
     });
 
     if (response.status == 200) {

@@ -2,11 +2,13 @@ import { Suspense } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogPosts from './posts';
 import { getBlogPosts } from '@/app/actions/blog';
-
+import { notFound } from 'next/navigation';
+import type { BlogData } from '@/lib/types/mdx';
+import type { Maybe } from '@/lib/types/global';
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();
 
-  if (blogPosts !== undefined) {
+  if (blogPosts) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <section className="mx-auto container sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
@@ -18,5 +20,7 @@ export default async function BlogPage() {
         </section>
       </Suspense>
     );
+  } else {
+    return notFound();
   }
 }
