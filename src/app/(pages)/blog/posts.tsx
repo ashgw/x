@@ -17,8 +17,9 @@ const NoMoreImTiredBoss: React.FC<
 };
 
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
-  let [numVisible, setNumVisible] = useState<number>(2);
-  const loadMore = numVisible !== blogPosts.length;
+  const perLoadNumVisible = 3;
+  let [numVisible, setNumVisible] = useState<number>(perLoadNumVisible);
+  const loadMore = numVisible <= blogPosts.length;
 
   return (
     <>
@@ -40,7 +41,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
         {loadMore ? (
           <button>
             <ChevronDown
-              onClick={() => setNumVisible(numVisible + 1)}
+              onClick={() => setNumVisible(numVisible + perLoadNumVisible)}
               className="mt-5 animate-bounce cursor-pointer"
             />
           </button>
