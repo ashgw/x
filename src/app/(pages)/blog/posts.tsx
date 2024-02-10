@@ -17,9 +17,10 @@ const NoMoreImTiredBoss: React.FC<
 };
 
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
-  const perLoadNumVisible = 3;
-  let [numVisible, setNumVisible] = useState<number>(perLoadNumVisible);
-  const loadMore = numVisible <= blogPosts.length;
+  const firstLoadVisibleNum = 3;
+  const perLoadVisibleNum = 1;
+  let [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
+  const loadMore = visibleNum <= blogPosts.length;
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
           }
           return 1;
         })
-        .slice(0, numVisible)
+        .slice(0, visibleNum)
         .map((post) => (
           <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
         ))}
@@ -41,7 +42,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
         {loadMore ? (
           <button>
             <ChevronDown
-              onClick={() => setNumVisible(numVisible + perLoadNumVisible)}
+              onClick={() => setVisibleNum(visibleNum + perLoadVisibleNum)}
               className="mt-5 animate-bounce cursor-pointer"
             />
           </button>
