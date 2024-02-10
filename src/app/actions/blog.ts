@@ -9,7 +9,7 @@ const SITE_URL =
 export async function getPost(slug: string) {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-        cache: 'no-store',
+      cache: 'no-store',
     });
 
     if (response.status == 200) {
@@ -25,6 +25,7 @@ export async function getPost(slug: string) {
     return;
   }
 }
+
 export async function getBlogPosts() {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
