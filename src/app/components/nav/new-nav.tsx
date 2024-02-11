@@ -4,10 +4,11 @@ import React from 'react';
 import SourceCodeButton from '@/app/components/nav/buttons';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 import HamburgerButton from '@/app/components/nav/hamburger';
 import { useState } from 'react';
 
-const NavBar: React.FC = () => {
+export default function NavBar() {
   const [isOpened, setIsOpened] = useState(false);
 
   const toggleMenu = () => {
@@ -36,14 +37,16 @@ const NavBar: React.FC = () => {
       </div>
     </nav>
   );
-};
+}
 
-export default NavBar;
 export function Logo() {
   return (
-    <img
+    <Image
+      width={25}
+      height={25}
       src="https://avatars.githubusercontent.com/u/126174609?v=4"
       className="h-8 w-auto rounded-full invisible"
+      alt="..."
     />
   );
 }
