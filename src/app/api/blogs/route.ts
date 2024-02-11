@@ -1,6 +1,5 @@
-// api/me/route.ts
 import { z } from 'zod';
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getBlogPosts } from '@/app/api/blogs/content';
 import type { BlogData } from '@/lib/types/mdx';
 import type { AsyncResponse } from '@/lib/types/global';

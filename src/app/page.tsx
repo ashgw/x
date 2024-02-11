@@ -1,5 +1,4 @@
 import CopyRight from '@/app/components/footer/copyright';
-import Nav from '@/app/components/nav/nav';
 import { TextContent } from './components/reusables/content';
 import { MediumSection } from './components/reusables/sections';
 import HeroSection from './components/protos/hero-section';

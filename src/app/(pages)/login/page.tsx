@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/app/components/ui/button';
 import { Separator } from '@/app/components/ui/separator';
-import NewNav from '@/app/components/nav/new-nav';
+import NewNav from '@/app/components/nav/nav';
 
 export default function Component() {
   return (

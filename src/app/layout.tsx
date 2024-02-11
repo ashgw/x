@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { Atkinson_Hyperlegible } from 'next/font/google';
 import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
-import NavBar from './components/nav/new-nav';
+import NavBar from './components/nav/nav';
 
 import './styles/globals.css';
 

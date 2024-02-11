@@ -1,50 +1,117 @@
-import { Button } from '../ui/button';
-import SourceCodeButton from './buttons';
+'use client';
+
+import React from 'react';
+import SourceCodeButton from '@/app/components/nav/buttons';
+import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import HamburgerButton from '@/app/components/nav/hamburger';
+import { useState } from 'react';
 
-const Nav = () => {
+export default function NavBar() {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpened(!isOpened);
+  };
   return (
-    <nav className="mx-auto flex h-[5.5rem] w-full max-w-[1344px] items-center px-5 sm:px-10">
-      <div
-        className={cn(
-          'relative left-0 top-[4.375rem] z-20 h-[calc(100vh-4.375rem)] w-full overflow-y-auto  p-5  sm:px-10 xl:static xl:ml-10 xl:flex xl:h-auto xl:items-center xl:overflow-y-visible xl:bg-transparent xl:p-0 xl:dark:bg-transparent'
-        )}
-      >
-        <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-          <Link
-            className="nav-link-shadow dimmed-4 average-transition  hover:average-translate hover:text-white"
-            href="/"
-          >
-            Home
-          </Link>
-          <Link
-            className="nav-link-shadow dimmed-4 average-transition  hover:average-translate  hover:text-white"
-            href="/blog"
-          >
-            Blog
-          </Link>
-
-          <Link
-            className="nav-link-shadow  dimmed-4 average-transition  hover:average-translate hover:text-white"
-            href="/About"
-          >
-            About
-          </Link>
-        </div>
-        <div className="mt-10 xl:ml-auto xl:mt-0 xl:flex xl:items-center xl:gap-5">
-          <div className="mt-10 flex flex-wrap items-center gap-5 xl:mt-0">
-            <SourceCodeButton href="https://github.com/ashgw/mysite" />
-            <div>
-              <Button variant={'navbar'}>Contact</Button>
-            </div>
+    <nav className="pt-3">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="absolute inset-y-0 left-2 flex items-center sm:hidden">
+            <HamburgerButton isOpened={isOpened} onClick={toggleMenu} />
           </div>
+          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div className="flex flex-shrink-0 items-center">
+              <Logo />
+            </div>
+            <LeftNav />
+          </div>
+          <RightNav />
         </div>
       </div>
-
-      <button className="ml-auto dark:text-[#D8D8D8] xl:hidden"></button>
+      <div
+        className={`mx-2 sm:hidden translate-all duration-150 ease-in-out ${isOpened ? 'scale-100' : 'scale-0'}`}
+      >
+        {isOpened ? <DropDownNav /> : null}
+      </div>
     </nav>
   );
-};
+}
 
-export default Nav;
+export function Logo() {
+  return (
+    <Image
+      width={25}
+      height={25}
+      src="https://avatars.githubusercontent.com/u/126174609?v=4"
+      className="h-8 w-auto rounded-full invisible"
+      alt="..."
+    />
+  );
+}
+
+export function LeftNav() {
+  return (
+    <div className="hidden sm:ml-6 sm:block">
+      <div className="flex space-x-12">
+        <Link
+          className="nav-link-shadow dimmed-3 font-semibold average-transition  hover:average-translate  hover:text-white"
+          href="/blog"
+        >
+          Blog
+        </Link>
+
+        <Link
+          className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
+          href="/About"
+        >
+          About
+        </Link>
+      </div>
+    </div>
+  );
+}
+export function RightNav() {
+  return (
+    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
+      <div className="average-transition hover:average-translate">
+        <SourceCodeButton href="https://github.com/ashgw/mysite" />
+      </div>
+      <div className=" glowsup hidden sm:block">
+        <Button className="w-full" variant={'navbar'}>
+          Contact
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export function DropDownNav() {
+  return (
+    <div className="space-y-3 px-2 pb-3 pt-2">
+      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <Link
+          href="/blog"
+          className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
+        >
+          Blog
+        </Link>
+      </div>
+
+      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <Link
+          href="/about"
+          className="dimmed-3  px-5 py-2 hover:text-white block rounded-4xl border-green-400 text-base"
+        >
+          About
+        </Link>
+      </div>
+      <div className=" glowsup">
+        <Button className="w-full" variant={'navbarMin'}>
+          Contact
+        </Button>
+      </div>
+    </div>
+  );
+}

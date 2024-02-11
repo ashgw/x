@@ -4,7 +4,7 @@ import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
 import { MediumSection } from '@/app/components/reusables/sections';
-import BackUpTop from './back-top';
+import BackUpTop from '@/app/components/reusables/back-up-top';
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
 import { Badge } from '@/app/components/ui/badge';

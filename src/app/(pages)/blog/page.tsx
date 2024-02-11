@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
-import BlogPosts from './posts';
+import BlogPosts from '@/app/components/blog/blog-posts';
 import { getBlogPosts } from '@/app/actions/blog';
 import { notFound } from 'next/navigation';
 
