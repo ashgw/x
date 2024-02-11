@@ -1,4 +1,6 @@
 'use client';
+import { Check } from 'lucide-react';
+import React, { useState } from 'react';
 import { FC } from 'react';
 import { Copy } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,9 +23,30 @@ const CopyButton: FC<CopyButtonProps> = ({ code, className }) => {
         copyToClipboard(code);
       }}
     >
-      <Copy size={'24px'} strokeWidth={'2px'} />
+      <AnimatedCopyButton />
     </button>
   );
 };
 
 export default CopyButton;
+
+const AnimatedCopyButton: React.FC = () => {
+  const [copied, setCopied] = useState(false);
+
+  const handleClick = () => {
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 300);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className={`average-transition ${copied ? 'scale-0' : 'scale-100'}`}
+    >
+      {copied ? <Check /> : <Copy />}
+    </button>
+  );
+};

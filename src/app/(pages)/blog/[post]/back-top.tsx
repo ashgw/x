@@ -13,7 +13,7 @@ export default function BackUpTop() {
         backUpTop && backUpTop.classList.remove('opacity-0');
       }
     });
-  }, [window.scrollY]);
+  }, []);
 
   return (
     <button className="fixed max-w-3 max-h-3 average-transition animate-bounce bottom-1 right-1 mx-12 md:px-18 lg:mx-24 xl:mx-[200px] my-12 hover:opacity-100">
