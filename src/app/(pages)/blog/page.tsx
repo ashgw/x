@@ -3,8 +3,7 @@ import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogPosts from './posts';
 import { getBlogPosts } from '@/app/actions/blog';
 import { notFound } from 'next/navigation';
-import type { BlogData } from '@/lib/types/mdx';
-import type { Maybe } from '@/lib/types/global';
+
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();
 

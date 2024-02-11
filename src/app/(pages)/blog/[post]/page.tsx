@@ -49,13 +49,13 @@ export default async function Blog({ params }: { params: { post: string } }) {
                   post.parsedContent.attributes.firstModDate
                 ) ? (
                   // TODO: replace with views
-                  <Badge variant={'outlineSuccess'} className="opacity-0">
-                    New
-                  </Badge>
+                  <div className="average-transition opacity-0 hover:opacity-100">
+                    <Badge variant={'outlineUpdated'}>Recent</Badge>
+                  </div>
                 ) : (
-                  <Badge variant={'outlineSuccess'} className="opacity-0">
-                    New
-                  </Badge>
+                  <div className="average-transition opacity-0 hover:opacity-100">
+                    <Badge variant={'outlineArchive'}>Archive</Badge>
+                  </div>
                 )}
               </div>
             </div>

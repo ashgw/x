@@ -4,7 +4,7 @@ const SplitLayout: React.FC = () => {
   return (
     <>
       <div className="mx-auto w-full px-5 h-[400px] max-w-[1165px] rounded-[16rem] glowsup slower-transition hover:slower-translate ">
-        <div className="flex  gap-4  h-[400px] rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <div className="flex gap-4  h-[400px] rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
           <div className="flex flex-row flex-wrap items-center gap-2">
             <div className=" flex-auto max-w-[720px] h-72 p-2 m-6 space-y-3 sm:space-y-5 md:space-y-8 xl:space-y-7 ">
               <li className=" list-disc ml-5 no-wrap">Jan 2nd 2023</li>
