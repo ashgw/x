@@ -1,17 +1,16 @@
-'use client';
-import React, { useState } from 'react';
+interface HamburgerButtonProps {
+  isOpened: boolean;
+  onClick: () => void;
+}
 
-export default function HamburgerButton() {
-  const [isOpened, setIsOpened] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpened(!isOpened);
-  };
-
+const HamburgerButton: React.FC<HamburgerButtonProps> = ({
+  isOpened,
+  onClick,
+}) => {
   return (
     <button
       className={`p-0 flex bg-transparent cursor-pointer ${isOpened ? 'ham-opened' : ''}`}
-      onClick={toggleMenu}
+      onClick={onClick}
     >
       <svg width="40" height="40" color="white" viewBox="0 0 100 100">
         <path
@@ -26,4 +25,6 @@ export default function HamburgerButton() {
       </svg>
     </button>
   );
-}
+};
+
+export default HamburgerButton;

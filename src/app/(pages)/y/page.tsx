@@ -1,16 +1,24 @@
+'use client';
+
 import React from 'react';
 import SourceCodeButton from '@/app/components/nav/buttons';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import HamburgerButton from '@/app/components/nav/hamburger';
+import { useState } from 'react';
 
 const Page: React.FC = () => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpened(!isOpened);
+  };
   return (
     <nav className="">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-2 flex items-center sm:hidden">
-            <HamburgerButton />
+            <HamburgerButton isOpened={isOpened} onClick={toggleMenu} />
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
@@ -22,7 +30,7 @@ const Page: React.FC = () => {
         </div>
       </div>
       <div className="average-transition scale-100">
-        <DropDownNav />
+        {isOpened ? <DropDownNav /> : null}
       </div>
     </nav>
   );
