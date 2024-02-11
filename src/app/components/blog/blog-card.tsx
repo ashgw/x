@@ -4,7 +4,10 @@ import { formatDate } from '@/lib/funcs/dates';
 import { BLOG_URI } from '@/lib/constants';
 
 export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
-  if (!blogData.parsedContent.attributes.isReleased) {
+  if (
+    !blogData.parsedContent.attributes.isReleased ||
+    blogData.parsedContent.attributes.isSequel
+  ) {
     return;
   }
   return (
