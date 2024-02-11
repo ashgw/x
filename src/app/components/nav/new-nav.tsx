@@ -29,7 +29,9 @@ const NavBar: React.FC = () => {
           <RightNav />
         </div>
       </div>
-      <div className="average-transition scale-100">
+      <div
+        className={`mx-2 sm:hidden translate-all duration-150 ease-in-out ${isOpened ? 'scale-100' : 'scale-0'}`}
+      >
         {isOpened ? <DropDownNav /> : null}
       </div>
     </nav>
@@ -84,30 +86,28 @@ export function RightNav() {
 
 export function DropDownNav() {
   return (
-    <div className="mx-2 sm:hidden" id="mobile-menu">
-      <div className="space-y-3 px-2 pb-3 pt-2">
-        <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
-          <Link
-            href="/blog"
-            className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
-          >
-            Blog
-          </Link>
-        </div>
+    <div className="space-y-3 px-2 pb-3 pt-2">
+      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <Link
+          href="/blog"
+          className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
+        >
+          Blog
+        </Link>
+      </div>
 
-        <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
-          <Link
-            href="/about"
-            className="dimmed-3  px-5 py-2 hover:text-white block rounded-4xl border-green-400 text-base"
-          >
-            About
-          </Link>
-        </div>
-        <div className=" glowsup">
-          <Button className="w-full" variant={'navbarMin'}>
-            Contact
-          </Button>
-        </div>
+      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <Link
+          href="/about"
+          className="dimmed-3  px-5 py-2 hover:text-white block rounded-4xl border-green-400 text-base"
+        >
+          About
+        </Link>
+      </div>
+      <div className=" glowsup">
+        <Button className="w-full" variant={'navbarMin'}>
+          Contact
+        </Button>
       </div>
     </div>
   );
