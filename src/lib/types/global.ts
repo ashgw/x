@@ -3,15 +3,11 @@ import { NextResponse } from 'next/server';
 export type Optional<T> = T | null;
 export type Maybe<T> = T | undefined;
 
-interface ErrorResponse {
+export interface Err {
   error: string;
 }
-interface SuccessResponse<T> {
+export interface Ok<T> {
   data: T;
 }
 
-type AsyncResponse<
-  T,
-  Ok extends SuccessResponse<T>,
-  Err extends ErrorResponse,
-> = Promise<NextResponse<Ok> | NextResponse<Maybe<Err>>>;
+export type AsyncResponse<T> = Promise<NextResponse<Ok<T>> | NextResponse<Err>>;

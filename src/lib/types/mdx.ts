@@ -22,7 +22,3 @@ export type BlogData = {
   parsedContent: MDXData;
   filenameSlug: string;
 };
-
-export type BlogsJSON = {
-  blogs: BlogData[];
-};

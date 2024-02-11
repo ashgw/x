@@ -3,25 +3,13 @@ import { z } from 'zod';
 import { NextResponse, NextRequest } from 'next/server';
 import { getBlogPosts } from '@/app/api/blogs/content';
 import type { BlogData } from '@/lib/types/mdx';
-import type { Maybe } from '@/lib/types/global';
-const ageSchema = z.number().min(5).max(10); // later, no time now
+import type { AsyncResponse } from '@/lib/types/global';
 
-type BlogsJSON = {
-  blogs: BlogData[];
-};
-type Err = {
-  error: string;
-};
-
-type AsyncResponse<Ok, Err> = Promise<
-  NextResponse<Ok> | NextResponse<Maybe<Err>>
->;
-
-export async function GET(): AsyncResponse<BlogsJSON, Err> {
+export async function GET(): AsyncResponse<BlogData[]> {
   try {
-    const blogs: BlogData[] = await getBlogPosts();
+    const data: BlogData[] = await getBlogPosts();
     return NextResponse.json(
-      { blogs },
+      { data },
       {
         status: 200,
       }

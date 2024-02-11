@@ -4,7 +4,6 @@ import type { BlogData } from '@/lib/types/mdx';
 import { BLOG_API_URI } from '@/lib/constants';
 import type { Maybe } from '@/lib/types/global';
 
-const VALIDATE_EVERY_SECS = 7200;
 const SITE_URL =
   nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
 
@@ -15,8 +14,8 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
     });
 
     if (response.status == 200) {
-      const result: { blogs: BlogData[] } = await response.json();
-      let blogPost = result.blogs.find((p) => p?.filenameSlug === slug);
+      const result: { data: BlogData[] } = await response.json();
+      let blogPost = result.data.find((p) => p?.filenameSlug === slug);
       return blogPost;
     } else {
       console.error('Error fetching data:', response.status);
@@ -35,8 +34,8 @@ export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
     });
 
     if (response.status == 200) {
-      const result: { blogs: BlogData[] } = await response.json();
-      return result.blogs;
+      const result: { data: BlogData[] } = await response.json();
+      return result.data;
     } else {
       console.error('Error fetching data:', response.status);
       return;
