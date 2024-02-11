@@ -39,8 +39,12 @@
     color: hsl(0, 0%, 95%);
   }
   .glowsup:hover {
-    /* major text */
+    /* Major text I */
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
+  .glowsup-dimmed:hover {
+    /* Major text II */
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
 
   .turn-bg-gradient::after {
