@@ -5,7 +5,7 @@ import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
 import Nav from './components/nav/nav';
 
-import './globals.css';
+import './styles/globals.css';
 
 const inter = Atkinson_Hyperlegible({
   subsets: ['latin-ext'],

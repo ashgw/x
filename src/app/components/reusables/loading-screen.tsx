@@ -1,4 +1,4 @@
-import Loader from '@/app/components/reusables/loader';
+import Loader from '@/app/components/reusables/loader/loader';
 
 function LoadingScreen() {
   return (
