@@ -2,11 +2,13 @@
 import { pub, nextJS } from '@/lib/env';
 import type { BlogData } from '@/lib/types/mdx';
 import { BLOG_API_URI } from '@/lib/constants';
+import type { Maybe } from '@/lib/types/global';
+
 const VALIDATE_EVERY_SECS = 7200;
 const SITE_URL =
   nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
 
-export async function getPost(slug: string) {
+export async function getPost(slug: string): Promise<Maybe<BlogData>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
       cache: 'no-store',
@@ -26,7 +28,7 @@ export async function getPost(slug: string) {
   }
 }
 
-export async function getBlogPosts() {
+export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
       cache: 'no-store',
