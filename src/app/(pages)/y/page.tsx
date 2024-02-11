@@ -1,36 +1,121 @@
-import Link from 'next/link';
+'use client';
+import './styles.mod.scss';
+import React from 'react';
+import { useEffect } from 'react';
+const Component: React.FC = () => {
+  useEffect(() => {
+    var header = document.getElementById('myHeader');
+    var page = document.getElementById('page');
+    var openMenuButton = document.getElementById('openmenu');
 
-export default function Component() {
+    window.addEventListener('scroll', function () {
+      page && page.classList.remove('menuopen');
+      if (window.scrollY >= 100) {
+        header && header.classList.add('sticky');
+      } else {
+        header && header.classList.remove('sticky');
+      }
+    });
+
+    // Event listener to remove the sticky class when the button is clicked
+    openMenuButton &&
+      openMenuButton.addEventListener('click', function () {
+        header && header.classList.remove('sticky');
+        page && page.classList.add('menuopen');
+      });
+
+    var links = document.querySelectorAll('a[href^="#"]');
+
+    links.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        // Prevent the default action
+        event.preventDefault();
+
+        // Get the target element
+        // @ts-ignore
+        var targetId = this.getAttribute('href');
+        var targetElement = document.querySelector(targetId);
+
+        // Smooth scroll to target
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+          });
+        }
+      });
+    });
+  }, []);
+
   return (
-    <nav className="flex h-14 w-full items-center px-4 md:px-6 border-b border-gray-200 dark:border-gray-800">
-      <Link className="font-semibold" href="#">
-        Acme Inc
-      </Link>
-      <nav className="flex-1 mx-4">
-        <Link className="mx-1" href="#">
-          Page1
-        </Link>
-        <Link className="mx-1" href="#">
-          Page2
-        </Link>
-        <Link className="mx-1" href="#">
-          Page3
-        </Link>
-      </nav>
-      <div className="space-x-2">
-        <Link
-          className="inline-flex h-8 items-center rounded-md border  border-gray-200 bg-white px-3 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-100/50"
-          href="#"
+    <div>
+      <header id="myHeader" className="">
+        <svg
+          id="logo"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 714.6 401.1"
         >
-          buttonx
-        </Link>
-        <Link
-          className="inline-flex h-8 items-center rounded-md bg-gray-200 px-3 text-sm font-medium transition-colors hover:bg-gray-300 hover:text-gray-900 focus:bg-gray-300 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-100/50"
-          href="#"
+          <path
+            fill="#fff"
+            fillRule="evenodd"
+            d="M502.8 0h211.8l-23 39.7-138.5 240L483 401H342.7L413 279.6 251.4 0h140.3L483 158.1 538.6 62 502.8 0Zm-201 279.6L140.1 0H0l231.7 401 70-121.4Z"
+          />
+        </svg>
+        <nav>
+          <a href="#vision">Vision</a>
+          <a href="#knowledge">Knowledge</a>
+          <a href="#space">Space</a>
+          <a href="#future">Future</a>
+          <button id="openmenu">
+            <span></span>
+            <span></span>
+          </button>
+        </nav>
+      </header>
+      <div id="page" className="">
+        <section
+          id="vision"
+          style={{
+            backgroundImage: 'url(https://assets.codepen.io/214624/vision.jpg)',
+          }}
         >
-          buttony
-        </Link>
+          <h1>Vision.</h1>
+        </section>
+        <section
+          id="knowledge"
+          style={{
+            backgroundImage:
+              'url(https://assets.codepen.io/214624/knowledge.jpg)',
+          }}
+        >
+          <h1>Knowledge.</h1>
+        </section>
+        <section
+          id="space"
+          style={{
+            backgroundImage: 'url(https://assets.codepen.io/214624/space.jpg)',
+          }}
+        >
+          <h1>Space.</h1>
+        </section>
+        <section
+          id="future"
+          style={{
+            backgroundImage: 'url(https://assets.codepen.io/214624/future.jpg)',
+          }}
+        >
+          <h1>Future.</h1>
+        </section>
       </div>
-    </nav>
+      <a
+        id="fixedlink"
+        target="_blank"
+        rel="nofollow noopener"
+        href="https://wyld.studio/"
+      >
+        » See this solution in real usage
+      </a>
+    </div>
   );
-}
+};
+
+export default Component;
