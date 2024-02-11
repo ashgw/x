@@ -6,11 +6,10 @@ export default function BackUpTop() {
   useEffect(() => {
     let backUpTop = document.getElementById('back-up-top');
 
-    const hideUpTop = () => {
-      backUpTop && backUpTop.classList.add('opacity-0');
-    };
     window.addEventListener('scroll', () => {
-      setTimeout(hideUpTop, 20);
+      setTimeout(() => {
+        backUpTop && backUpTop.classList.add('opacity-0');
+      }, 20);
     });
   }, []);
 

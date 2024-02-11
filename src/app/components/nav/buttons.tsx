@@ -1,27 +1,11 @@
 import { GitBranch } from 'lucide-react';
-import { Image as _Image } from '@nextui-org/react';
 import NextLink from 'next/link';
 import { Button } from '../ui/button';
 
-export function OutLineButton({
-  href,
-  ...props
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+export default function SourceCodeButton({ href }: { href: string }) {
   return (
-    <Button
-      variant={'outline'}
-      className="average-transition hover:average-translate"
-    >
-      <NextLink
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        {...props}
-      >
-        {props.children}
+    <Button variant={'outline'}>
+      <NextLink href={href} target="_blank" rel="noopener noreferrer">
         <GitBranch
           strokeWidth={'1.5px'}
           size={'20px'}
