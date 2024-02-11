@@ -77,7 +77,7 @@ const config = {
   },
   plugins: [
     require('tailwindcss-animate'),
-    require('@tailwindcss/typography'), // only render any mdx that's a non blog
+    require('@tailwindcss/typography'),
     nextui({
       layout: {
         disabledOpacity: '0.3',

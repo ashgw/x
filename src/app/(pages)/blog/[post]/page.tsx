@@ -4,13 +4,12 @@ import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
 import { MediumSection } from '@/app/components/reusables/sections';
-import { ChevronUp } from 'lucide-react';
+import BackUpTop from './back-top';
 import { notFound } from 'next/navigation';
 import { pub } from '@/lib/env';
 import { Badge } from '@/app/components/ui/badge';
 import { getPost } from '@/app/actions/blog';
 import { BLOG_URI } from '@/lib/constants';
-import Link from 'next/link';
 
 export default async function Blog({ params }: { params: { post: string } }) {
   const post = await getPost(params.post);
@@ -50,25 +49,20 @@ export default async function Blog({ params }: { params: { post: string } }) {
                   post.parsedContent.attributes.firstModDate
                 ) ? (
                   // TODO: replace with views
-                  <Badge variant={'outlineSuccess'} className="opacity-0">
-                    New
-                  </Badge>
+                  <div className="average-transition opacity-0 hover:opacity-100">
+                    <Badge variant={'outlineUpdated'}>Recent</Badge>
+                  </div>
                 ) : (
-                  <Badge variant={'outlineSuccess'} className="opacity-0">
-                    New
-                  </Badge>
+                  <div className="average-transition opacity-0 hover:opacity-100">
+                    <Badge variant={'outlineArchive'}>Archive</Badge>
+                  </div>
                 )}
               </div>
             </div>
             <article className="text-wrap">
               <StyledMDX source={post.parsedContent.body}></StyledMDX>
             </article>
-            <Link
-              href={`#${post.parsedContent.attributes.title}`}
-              className="fixed max-w-3 max-h-3 opacity-0 average-transition animate-bounce bottom-1 right-1 mx-12 md:px-18 lg:mx-24 xl:mx-[200px] my-12 hover:opacity-100"
-            >
-              <ChevronUp className="average-transition hover:scale-150" />
-            </Link>
+            <BackUpTop />
           </MediumSection>
         </main>
       </Suspense>

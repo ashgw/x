@@ -7,7 +7,10 @@ import Nav from './components/nav/nav';
 
 import './globals.css';
 
-const inter = Atkinson_Hyperlegible({ subsets: ['latin'], weight: '400' });
+const inter = Atkinson_Hyperlegible({
+  subsets: ['latin-ext'],
+  weight: ['400', '700'],
+});
 
 export const metadata: Metadata = {
   // TODO: figure out SEO when finished

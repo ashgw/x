@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogPosts from './posts';
 import { getBlogPosts } from '@/app/actions/blog';
+import { notFound } from 'next/navigation';
 
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();
@@ -18,5 +19,7 @@ export default async function BlogPage() {
         </section>
       </Suspense>
     );
+  } else {
+    return notFound();
   }
 }
