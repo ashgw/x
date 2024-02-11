@@ -34,10 +34,10 @@ const AnimatedCopyButton: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const handleClick = () => {
-    setCopied(true);
+    setCopied(!copied);
 
     setTimeout(() => {
-      setCopied(false);
+      setCopied(copied);
     }, 300);
   };
 
@@ -46,7 +46,7 @@ const AnimatedCopyButton: React.FC = () => {
       onClick={handleClick}
       className={`average-transition ${copied ? 'scale-0' : 'scale-100'}`}
     >
-      {copied ? <Check /> : <Copy />}
+      {copied ? <Check color="#4ade80" /> : <Copy />}
     </button>
   );
 };
