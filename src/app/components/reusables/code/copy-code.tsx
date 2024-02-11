@@ -16,7 +16,7 @@ const CopyButton: FC<CopyButtonProps> = ({ code, className }) => {
   return (
     <button
       className={cn(
-        'rounded-xl border-2 border-[#191919] p-2 px-3 py-2 average-transition  hover:average-translate  hover:border-[#340929]   active:bg-[#340929]',
+        'rounded-xl border-2 border-[#191919] p-2 px-3 py-2 average-transition  hover:average-translate  hover:border-[#340929]',
         className
       )}
       onClick={() => {
@@ -34,10 +34,10 @@ const AnimatedCopyButton: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const handleClick = () => {
-    setCopied(true);
+    setCopied(!copied);
 
     setTimeout(() => {
-      setCopied(false);
+      setCopied(copied);
     }, 300);
   };
 
@@ -46,7 +46,7 @@ const AnimatedCopyButton: React.FC = () => {
       onClick={handleClick}
       className={`average-transition ${copied ? 'scale-0' : 'scale-100'}`}
     >
-      {copied ? <Check /> : <Copy />}
+      {copied ? <Check color="#4ade80" /> : <Copy />}
     </button>
   );
 };

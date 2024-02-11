@@ -16,7 +16,7 @@ export default async function Blog({ params }: { params: { post: string } }) {
   if (post !== undefined) {
     return (
       <Suspense fallback={<LoadingScreen />}>
-        <main>
+        <main className="pt-5">
           <script
             type="application/ld+json"
             suppressHydrationWarning

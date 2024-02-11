@@ -1,5 +1,4 @@
 $circle-size: 8px;
-$animation-duration: 1.5s;
 
 .loader {
   div {
@@ -8,21 +7,21 @@ $animation-duration: 1.5s;
     border-radius: 50%;
     display: inline-block;
     margin: 0.5rem;
-    animation: loading $animation-duration ease-in-out infinite;
+    animation: loading 1.5s ease-in-out infinite;
   }
 
   @keyframes loading {
     0%,
     100% {
       transform: scale(0.2);
-      background-color: #0ddcf8;
+      background-color: rgb(130, 13, 247);
     }
     42% {
-      background-color: hwb(277 0% 0%);
+      background-color: rgb(157, 0, 255);
     }
     50% {
       transform: scale(1);
-      background-color: #4fb9ffed;
+      background-color: rgba(79, 185, 255, 0.929);
     }
   }
 

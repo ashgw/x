@@ -7,11 +7,9 @@ export default function BackUpTop() {
     let backUpTop = document.getElementById('back-up-top');
 
     window.addEventListener('scroll', () => {
-      if (window.scrollY >= 700) {
+      setTimeout(() => {
         backUpTop && backUpTop.classList.add('opacity-0');
-      } else {
-        backUpTop && backUpTop.classList.remove('opacity-0');
-      }
+      }, 20);
     });
   }, []);
 

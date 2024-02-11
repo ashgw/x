@@ -4,11 +4,14 @@ import { formatDate } from '@/lib/funcs/dates';
 import { BLOG_URI } from '@/lib/constants';
 
 export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
-  if (!blogData.parsedContent.attributes.isReleased) {
+  if (
+    !blogData.parsedContent.attributes.isReleased ||
+    blogData.parsedContent.attributes.isSequel
+  ) {
     return;
   }
   return (
-    <div className="glowsup slower-transition hover:slower-translate mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
+    <div className="glowsup-dimmed slower-transition hover:slower-translate mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
       <div className=" group flex flex-col gap-4 rounded-[2rem] p-5 hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
         <div className="flex flex-col gap-4 lg:gap-6">
           <li className="list-disc ml-5 dimmed-0">
