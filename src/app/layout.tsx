@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import { Atkinson_Hyperlegible } from 'next/font/google';
 import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
-import Nav from './components/nav/nav';
+import NavBar from './components/nav/new-nav';
 
 import './styles/globals.css';
 
@@ -31,6 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NavBar />
         <Providers>{children}</Providers>
       </body>
     </html>
