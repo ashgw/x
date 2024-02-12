@@ -1,4 +1,3 @@
-import { Image as _Image } from '@nextui-org/react';
 import NextLink from 'next/link';
 
 export function Link({

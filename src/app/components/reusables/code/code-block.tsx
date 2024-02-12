@@ -1,4 +1,5 @@
 // react-syntax-highlighter has no types
+/* eslint-disable */
 // @ts-nocheck
 import { cn } from '@/lib/utils';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
