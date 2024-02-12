@@ -1,13 +1,13 @@
 export function formatDate(date: string): string {
-  let currentDate = new Date();
+  const currentDate = new Date();
   if (!date.includes('T')) {
     date = `${date}T00:00:00`;
   }
-  let targetDate = new Date(date);
+  const targetDate = new Date(date);
 
-  let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  let daysAgo = currentDate.getDate() - targetDate.getDate();
+  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
+  const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
+  const daysAgo = currentDate.getDate() - targetDate.getDate();
 
   let formattedDate = '';
 
@@ -21,7 +21,7 @@ export function formatDate(date: string): string {
     formattedDate = 'Today';
   }
 
-  let fullDate = targetDate.toLocaleString('en-us', {
+  const fullDate = targetDate.toLocaleString('en-us', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
@@ -31,14 +31,14 @@ export function formatDate(date: string): string {
 }
 
 export function isSameMonthAndYear(inputDate: string): boolean {
-  let currentDate = new Date();
-  let inputDateObj = new Date(inputDate);
+  const currentDate = new Date();
+  const inputDateObj = new Date(inputDate);
 
-  let currentYear = currentDate.getFullYear();
-  let currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
 
-  let inputYear = inputDateObj.getFullYear();
-  let inputMonth = inputDateObj.getMonth();
+  const inputYear = inputDateObj.getFullYear();
+  const inputMonth = inputDateObj.getMonth();
 
   return currentYear === inputYear && currentMonth === inputMonth;
 }

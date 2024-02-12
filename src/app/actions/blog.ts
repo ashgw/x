@@ -1,4 +1,5 @@
 'use server';
+
 import { pub, nextJS } from '@/lib/env';
 import type { BlogData } from '@/lib/types/mdx';
 import { BLOG_API_URI } from '@/lib/constants';
@@ -14,8 +15,8 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
     });
 
     if (response.status == 200) {
-      const result: { data: BlogData[] } = await response.json();
-      let blogPost = result.data.find((p) => p?.filenameSlug === slug);
+      const result = (await response.json()) as { data: BlogData[] };
+      const blogPost = result.data.find((p) => p?.filenameSlug === slug);
       return blogPost;
     } else {
       console.error('Error fetching data:', response.status);
@@ -34,7 +35,7 @@ export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
     });
 
     if (response.status == 200) {
-      const result: { data: BlogData[] } = await response.json();
+      const result = (await response.json()) as { data: BlogData[] };
       return result.data;
     } else {
       console.error('Error fetching data:', response.status);

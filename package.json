@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "test": "npx jest; cd test/e2e && npx playwright test",
-    "lint": "echo ''",
+    "lint": "tsc --noEmit; eslint .",
     "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
     "hooks": "husky install",
     "format-check": "prettier --check .",

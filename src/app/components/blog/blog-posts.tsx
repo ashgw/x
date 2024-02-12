@@ -17,7 +17,7 @@ const NoMoreImTiredBoss: React.FC<
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
   const firstLoadVisibleNum = 2;
   const perLoadVisibleNum = 1;
-  let [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
+  const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
   const loadMore = visibleNum <= blogPosts.length;
 
   return (

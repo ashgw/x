@@ -12,7 +12,7 @@ interface CopyButtonProps {
 }
 
 const CopyButton: FC<CopyButtonProps> = ({ code, className }) => {
-  const [_, copyToClipboard] = useCopyToClipboard();
+  const [, copyToClipboard] = useCopyToClipboard();
   return (
     <button
       className={cn(

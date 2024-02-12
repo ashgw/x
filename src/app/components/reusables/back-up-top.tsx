@@ -4,7 +4,7 @@ import { ChevronUp } from 'lucide-react';
 
 export default function BackUpTop() {
   useEffect(() => {
-    let backUpTop = document.getElementById('back-up-top');
+    const backUpTop = document.getElementById('back-up-top');
 
     window.addEventListener('scroll', () => {
       setTimeout(() => {

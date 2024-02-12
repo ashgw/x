@@ -24,7 +24,7 @@ async function getMDXFiles(dir: string): Promise<string[]> {
 
 async function readMDXFile(filePath: string): Promise<MDXData> {
   try {
-    let rawContent = await fsPromises.readFile(filePath, 'utf-8');
+    const rawContent = await fsPromises.readFile(filePath, 'utf-8');
     return parseMDX(rawContent);
   } catch (error) {
     // TODO: hadnle err
@@ -33,7 +33,7 @@ async function readMDXFile(filePath: string): Promise<MDXData> {
   }
 }
 async function getMDXData(dir: string): Promise<BlogData[]> {
-  let mdxFiles = await getMDXFiles(dir);
+  const mdxFiles = await getMDXFiles(dir);
 
   const blogDataPromises = mdxFiles.map(async (file) => {
     const parsedContent = await readMDXFile(path.join(dir, file));
