@@ -4,6 +4,7 @@ import { pub, nextJS } from '@/lib/env';
 import type { BlogData } from '@/lib/types/mdx';
 import { BLOG_API_URI } from '@/lib/constants';
 import type { Maybe } from '@/lib/types/global';
+import { Status } from '@/lib/constants';
 
 const SITE_URL =
   nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
@@ -14,7 +15,7 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
       cache: 'no-store',
     });
 
-    if (response.status == 200) {
+    if (response.status == Status.OK) {
       const result = (await response.json()) as { data: BlogData[] };
       const blogPost = result.data.find((p) => p?.filenameSlug === slug);
       return blogPost;
@@ -23,7 +24,7 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
       return;
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Fix your schema', error);
     return;
   }
 }
@@ -31,10 +32,10 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
 export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
-      cache: 'no-store',
+      cache: 'no-store', // somehow Next bugs on caches
     });
 
-    if (response.status == 200) {
+    if (response.status == Status.OK) {
       const result = (await response.json()) as { data: BlogData[] };
       return result.data;
     } else {
@@ -42,7 +43,7 @@ export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
       return;
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Fix your schema', error);
     return;
   }
 }

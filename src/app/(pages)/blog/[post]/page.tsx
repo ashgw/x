@@ -7,7 +7,7 @@ import BlogSection from './_blog-section';
 
 export default async function Blog({ params }: { params: { post: string } }) {
   const post = await getPost(params.post);
-  if (post !== undefined) {
+  if (post) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <main className="pt-5">
