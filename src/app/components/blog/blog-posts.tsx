@@ -33,18 +33,21 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
           return 1;
         })
         .slice(0, visibleNum)
-        .map((post) => (
+        .map((post, index) => (
           <motion.div
             key={post.filenameSlug}
             initial={{
               opacity: 0,
-              y: -70,
+              y: -200, // y: index % 2 == 0 ? -200 : 200 , push for 5 wehn blogs are 20+
             }}
             animate={{
               opacity: 1,
               y: 0,
             }}
-            transition={{}}
+            transition={{
+              duration: 0.4,
+              delay: index * 0.1,
+            }}
           >
             <BlogPostCard blogData={post}></BlogPostCard>
           </motion.div>
