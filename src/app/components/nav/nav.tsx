@@ -31,7 +31,7 @@ export default function NavBar() {
         </div>
       </div>
       <div
-        className={`mx-2 sm:hidden translate-all duration-150 ease-in-out ${isOpened ? 'scale-100' : 'scale-0'}`}
+        className={`mx-2 sm:hidden translate-all duration-200 ease-in-out ${isOpened ? 'scale-100' : 'scale-0'}`}
       >
         {isOpened ? <DropDownNav /> : null}
       </div>
