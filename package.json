@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "test": "npx jest; cd test/e2e && npx playwright test",
-    "lint": "tsc --noEmit; eslint .",
-    "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
+    "lint": "pnpm lint:ts",
+    "lint:ts": "tsc --noEmit; eslint .",
+    "lint:fix": "tsc --noEmit; eslint . --fix",
+    "lint:knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
     "hooks": "husky install",
     "format-check": "prettier --check .",
     "format": "prettier . --write"
