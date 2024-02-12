@@ -1,9 +1,23 @@
 /* eslint-disable */
+'use client';
 import { Button } from '../ui/button';
+import { motion } from 'framer-motion';
 import { TextContent } from '../reusables/content';
 export default function HeroSection() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <motion.section
+      initial={{
+        opacity: 0,
+      }}
+      whileInView={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.3,
+        ease: 'easeInOut',
+      }}
+      className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
@@ -21,6 +35,6 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

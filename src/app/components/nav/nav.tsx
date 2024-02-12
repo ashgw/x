@@ -90,19 +90,19 @@ export function DropDownNav() {
   return (
     <motion.div
       initial={{
-        scale: 0,
+        opacity: 0,
       }}
       animate={{
-        scale: 1,
+        opacity: 1,
       }}
       transition={{
-        duration: 0.2,
+        duration: 0.3,
         ease: 'easeInOut',
       }}
       exit={{
-        scale: 0,
+        opacity: 0,
       }}
-      className="absolute z-50 backdrop-blur-2xl w-full space-y-3 px-5 pb-3 pt-2"
+      className="absolute rounded-3xl z-50 backdrop-blur-md  w-full space-y-3 px-5 pb-3 pt-2"
     >
       <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
         <Link
