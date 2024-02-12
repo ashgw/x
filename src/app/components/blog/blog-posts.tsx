@@ -6,6 +6,7 @@ import { CheckCheck } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes } from 'react';
+import { motion } from 'framer-motion';
 
 const NoMoreImTiredBoss: React.FC<
   ButtonHTMLAttributes<HTMLButtonElement>
@@ -20,7 +21,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
   const loadMore = visibleNum <= blogPosts.length;
 
   return (
-    <>
+    <main>
       {blogPosts
         .sort((b1, b2) => {
           if (
@@ -33,7 +34,20 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
         })
         .slice(0, visibleNum)
         .map((post) => (
-          <BlogPostCard key={post.filenameSlug} blogData={post}></BlogPostCard>
+          <motion.div
+            key={post.filenameSlug}
+            initial={{
+              opacity: 0,
+              y: -70,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{}}
+          >
+            <BlogPostCard blogData={post}></BlogPostCard>
+          </motion.div>
         ))}
       <div id="more" className="flex items-center justify-center m-14">
         {loadMore ? (
@@ -49,6 +63,6 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
           <NoMoreImTiredBoss />
         )}
       </div>
-    </>
+    </main>
   );
 }

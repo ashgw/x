@@ -27,7 +27,7 @@ const FadeInView: React.FC = () => {
         observer.unobserve(target.current);
       }
     };
-  }, []);
+  },);
 
   return (
     <div className="flex items-center justify-center">
