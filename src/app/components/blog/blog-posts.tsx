@@ -38,7 +38,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
             key={post.filenameSlug}
             initial={{
               opacity: 0,
-              y: -200,
+              y: -200, // y: index % 2 == 0 ? -200 : 200 , push for 5 wehn blogs are 20+
             }}
             animate={{
               opacity: 1,

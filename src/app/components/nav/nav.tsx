@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import HamburgerButton from '@/app/components/nav/hamburger';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function NavBar() {
   const [isOpened, setIsOpened] = useState(false);
@@ -30,10 +31,8 @@ export default function NavBar() {
           <RightNav />
         </div>
       </div>
-      <div
-        className={`mx-2 sm:hidden translate-all duration-200 ease-in-out ${isOpened ? 'scale-100' : 'scale-0'}`}
-      >
-        {isOpened ? <DropDownNav /> : null}
+      <div className="mx-2 sm:hidden">
+        <AnimatePresence>{isOpened && <DropDownNav />}</AnimatePresence>
       </div>
     </nav>
   );
@@ -89,7 +88,22 @@ export function RightNav() {
 
 export function DropDownNav() {
   return (
-    <div className="space-y-3 px-2 pb-3 pt-2">
+    <motion.div
+      initial={{
+        scale: 0,
+      }}
+      animate={{
+        scale: 1,
+      }}
+      transition={{
+        duration: 0.2,
+        ease: 'easeInOut',
+      }}
+      exit={{
+        scale: 0,
+      }}
+      className="absolute z-50 backdrop-blur-2xl w-full space-y-3 px-5 pb-3 pt-2"
+    >
       <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
         <Link
           href="/blog"
@@ -112,6 +126,6 @@ export function DropDownNav() {
           Contact
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 }
