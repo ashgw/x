@@ -17,7 +17,7 @@ export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
           <li className="list-disc ml-5 dimmed-0">
             {formatDate(blogData.parsedContent.attributes.firstModDate)}
           </li>
-          <Link href={`${BLOG_URI}/${blogData.filenameSlug}`}>
+          <Link href={`${BLOG_URI}/${blogData.filename}`}>
             <h2 className="text-2xl font-bold dimmed-4 lg:text-[2.5rem]">
               {blogData.parsedContent.attributes.title}
             </h2>
@@ -39,7 +39,7 @@ export default function BlogPostCard({ blogData }: { blogData: BlogData }) {
           </div>
         </div>
         <Link
-          href={`${BLOG_URI}/${blogData.filenameSlug}`}
+          href={`${BLOG_URI}/${blogData.filename}`}
           className="relative h-full overflow-hidden rounded-[2rem]"
         ></Link>
       </div>

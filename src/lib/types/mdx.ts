@@ -21,5 +21,5 @@ export type MDXData = {
 
 export type BlogData = {
   parsedContent: MDXData;
-  filenameSlug: string;
+  filename: string;
 };
