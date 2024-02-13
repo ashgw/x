@@ -1,6 +1,6 @@
 'use server';
-import { promises as fsPromises } from 'fs';
 
+import { promises as fsPromises } from 'fs';
 import path from 'path';
 import fm from 'front-matter';
 import type { MDXData, BlogData } from '@/lib/types/mdx';
@@ -38,10 +38,10 @@ async function getMDXData(dir: string): Promise<BlogData[]> {
 
   const blogDataPromises = mdxFiles.map(async (file) => {
     const parsedContent = await readMDXFile(path.join(dir, file));
-    const filenameSlug: string = path.basename(file, path.extname(file));
+    const filename: string = path.basename(file, path.extname(file));
     return {
       parsedContent,
-      filenameSlug,
+      filename,
     };
   });
 
@@ -55,6 +55,6 @@ export async function getBlogPosts(): Promise<BlogData[]> {
 export async function getBlogPost(slug: string): Promise<Maybe<BlogData>> {
   // TODO: optimize
   const blogs = await getBlogPosts();
-  const blogPost = blogs.find((p) => p?.filenameSlug === slug);
+  const blogPost = blogs.find((p) => p?.filename === slug);
   return blogPost;
 }

@@ -35,7 +35,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
         .slice(0, visibleNum)
         .map((post, index) => (
           <motion.div
-            key={post.filenameSlug}
+            key={post.filename}
             initial={{
               opacity: 0,
               y: -200, // y: index % 2 == 0 ? -200 : 200 , push for 5 wehn blogs are 20+

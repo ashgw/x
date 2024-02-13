@@ -12,7 +12,7 @@ type RouteParams = {
 
 export const generateStaticParams = async () => {
   const posts = await getBlogPosts();
-  return posts.map((post) => ({ post: post.filenameSlug }));
+  return posts.map((post) => ({ post: post.filename }));
 };
 
 export async function generateMetadata({
@@ -25,7 +25,7 @@ export async function generateMetadata({
   const postAttrs = post.parsedContent.attributes;
   const title = postAttrs.seoTitle;
   const description = postAttrs.summary;
-  const url = pub.SITE_URL_PROD + '/' + post.filenameSlug;
+  const url = pub.SITE_URL_PROD + '/' + post.filename;
 
   const postImageWidth = 1200;
   const postImageHeight = 630;
