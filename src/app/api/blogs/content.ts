@@ -29,7 +29,7 @@ async function readMDXFile(filePath: string): Promise<MDXData> {
   } catch (error) {
     // TODO: hadnle err
     console.error('Error reading MDX file:', error);
-    throw error;
+    throw new Error();
   }
 }
 async function getMDXData(dir: string): Promise<BlogData[]> {

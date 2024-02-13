@@ -6,20 +6,22 @@ import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import HamburgerButton from '@/app/components/nav/hamburger';
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenue';
 
 export default function NavBar() {
-  const [isOpened, setIsOpened] = useState(false);
+  const [isOpened, toggleMenu] = useToggleDropDownMenu({
+    menuId: 'dropdown-menue',
+  });
 
-  const toggleMenu = () => {
-    setIsOpened(!isOpened);
-  };
   return (
-    <nav className="pt-3">
+    <nav id="dropdown-menue" className="pt-3">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
         <div className="relative flex h-16 items-center justify-between">
-          <div className="absolute inset-y-0 left-2 flex items-center sm:hidden">
+          <div
+            id="hamburger"
+            className="absolute inset-y-0 left-2 flex items-center sm:hidden"
+          >
             <HamburgerButton isOpened={isOpened} onClick={toggleMenu} />
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
