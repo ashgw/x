@@ -11,11 +11,11 @@ import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenue';
 
 export default function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({
-    menuId: 'dropdown-menue',
+    menuId: 'nav-menue',
   });
 
   return (
-    <nav id="dropdown-menue" className="pt-3">
+    <nav id="nav-menue" className="pt-3">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
         <div className="relative flex h-16 items-center justify-between">
           <div
@@ -47,7 +47,7 @@ export function Logo() {
       height={25}
       src="https://avatars.githubusercontent.com/u/126174609?v=4"
       className="h-8 w-auto rounded-full invisible"
-      alt="..."
+      alt="The logo"
     />
   );
 }

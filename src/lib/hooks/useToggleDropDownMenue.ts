@@ -8,7 +8,8 @@ const useToggleDropDownMenu = ({
 }: {
   menuId: string;
 }): [boolean, () => void] => {
-  const [isOpened, setIsOpened] = useState(false);
+  const initialState = false;
+  const [isOpened, setIsOpened] = useState(initialState);
 
   const toggleMenu: () => void = () => {
     setIsOpened(!isOpened);
@@ -17,7 +18,7 @@ const useToggleDropDownMenu = ({
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (!document.getElementById(menuId)?.contains(e.target as Node)) {
-        setIsOpened(false);
+        setIsOpened(initialState);
       }
     };
     // @ts-expect-error it just works, no time to set types
