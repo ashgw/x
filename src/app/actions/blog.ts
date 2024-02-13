@@ -9,7 +9,7 @@ import { Status } from '@/lib/constants';
 const SITE_URL =
   nextJS.NEXT_NODE_ENV == 'production' ? pub.SITE_URL_PROD : pub.SITE_URL_DEV;
 
-export async function getPost(slug: string): Promise<Maybe<BlogData>> {
+export async function getBlogPost(slug: string): Promise<Maybe<BlogData>> {
   try {
     const response = await fetch(SITE_URL + BLOG_API_URI, {
       cache: 'no-store',
@@ -29,21 +29,10 @@ export async function getPost(slug: string): Promise<Maybe<BlogData>> {
   }
 }
 
-export async function getBlogPosts(): Promise<Maybe<BlogData[]>> {
-  try {
-    const response = await fetch(SITE_URL + BLOG_API_URI, {
-      cache: 'no-store', // somehow Next bugs on caches
-    });
-
-    if (response.status == Status.OK) {
-      const result = (await response.json()) as { data: BlogData[] };
-      return result.data;
-    } else {
-      console.error('Error fetching data:', response.status);
-      return;
-    }
-  } catch (error) {
-    console.error('Fix your schema', error);
-    return;
-  }
+export async function getBlogPosts(): Promise<BlogData[]> {
+  const response = await fetch(SITE_URL + BLOG_API_URI, {
+    cache: 'no-store', // somehow Next bugs on caches
+  });
+  const result = (await response.json()) as { data: BlogData[] };
+  return result.data;
 }

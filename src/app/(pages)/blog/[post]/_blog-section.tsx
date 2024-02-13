@@ -6,6 +6,9 @@ import BackUpTop from '@/app/components/reusables/back-up-top';
 import type { BlogData } from '@/lib/types/mdx';
 import { Badge } from '@/app/components/ui/badge';
 
+
+
+
 export default function BlogSection({ post }: { post: BlogData }) {
   return (
     <MediumSection>
