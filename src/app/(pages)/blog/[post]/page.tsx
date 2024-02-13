@@ -5,7 +5,7 @@ import { getBlogPost } from '@/app/actions/blog';
 import { getBlogPosts } from '@/app/api/blogs/content';
 import { pub } from '@/lib/env';
 import LoadingScreen from '../loading';
-import BlogSection from './_blog-section';
+import BlogSection from '@/app/components/blog/blog-section';
 
 type RouteParams = {
   params: { post: string };
