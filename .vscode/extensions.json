@@ -1,11 +1,8 @@
 {
   "recommendations": [
     "esbenp.prettier-vscode",
-    "mhutchie.git-graph",
     "ms-vscode.vscode-typescript-next",
     "Prisma.prisma",
-    "PulkitGangwar.nextjs-snippets",
-    "ritwickdey.LiveServer",
     "unifiedjs.vscode-mdx",
     "Zignd.html-css-class-completion",
     "csstools.postcss",
