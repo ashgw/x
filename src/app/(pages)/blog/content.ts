@@ -5,6 +5,7 @@ import path from 'path';
 import fm from 'front-matter';
 import type { MDXData, BlogData } from '@/lib/types/mdx';
 import { BLOG_CONTENT_PATH } from '@/lib/constants';
+import type { Maybe } from '@/lib/types/global';
 
 function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
@@ -49,4 +50,11 @@ async function getMDXData(dir: string): Promise<BlogData[]> {
 
 export async function getBlogPosts(): Promise<BlogData[]> {
   return getMDXData(path.join(process.cwd(), BLOG_CONTENT_PATH));
+}
+
+export async function getBlogPost(slug: string): Promise<Maybe<BlogData>> {
+  // TODO: optimize
+  const blogs = await getBlogPosts();
+  const blogPost = blogs.find((p) => p?.filenameSlug === slug);
+  return blogPost;
 }

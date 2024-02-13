@@ -1,10 +1,9 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getBlogPost } from '@/app/actions/blog';
-import { getBlogPosts } from '@/app/api/blogs/content';
+import { getBlogPosts, getBlogPost } from '../content';
 import { pub } from '@/lib/env';
-import LoadingScreen from '../loading';
+import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogSection from '@/app/components/blog/blog-section';
 
 type RouteParams = {

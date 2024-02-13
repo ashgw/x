@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogPosts from '@/app/components/blog/blog-posts';
-import { getBlogPosts } from '@/app/actions/blog';
+import { getBlogPosts } from './content';
 import { notFound } from 'next/navigation';
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();
