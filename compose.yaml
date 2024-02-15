@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  main_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mysite
+    ports:
+      - '6969:3000'
+    restart: always

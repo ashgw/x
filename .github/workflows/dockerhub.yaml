@@ -1,0 +1,20 @@
+name: push
+
+on:
+  push:
+    branches: main
+
+jobs:
+  dockerhub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up .env
+        run: echo '${{ secrets.ENV_VARS }}' >> .env.local
+      - name: Building & tagging
+        run: docker build -t ashgw/mysite:latest .
+      - name: Login
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ashgw --password-stdin
+      - name: Pushing
+        run: docker push ashgw/mysite:latest
