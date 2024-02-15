@@ -43,6 +43,10 @@ alias rn := reincarnate
 @deploy:
     echo 'this command is not set yet'
 
+@u:
+    docker-compose up
+@d:
+    docker-compose down
 
 @reincarnate:
     rm -rf node_modules

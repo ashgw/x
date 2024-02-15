@@ -1,4 +1,7 @@
-FROM node:20-slim AS base
+ARG NODE_VERSION=18
+ARG PORT=3000
+
+FROM node:${NODE_VERSION}-alpine AS base 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -15,5 +18,5 @@ RUN pnpm run build
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/.next /app/.next
-EXPOSE 3000
+EXPOSE ${PORT}
 CMD [ "pnpm", "start" ]
