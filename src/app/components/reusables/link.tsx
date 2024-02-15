@@ -22,6 +22,8 @@ export function Link({
   return (
     <NextLink
       href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="average-transition gradient-text-purple hover:text-white hover:bright "
       {...props}
     >

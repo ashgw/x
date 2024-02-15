@@ -4,19 +4,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/app/components/ui/button';
 import { Separator } from '@/app/components/ui/separator';
-import NewNav from '@/app/components/nav/nav';
 
 export default function Component() {
   return (
     <>
-      <NewNav></NewNav>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2">
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto w-[350px] space-y-6">
             <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold">Login</h1>
+              <h1 className="text-3xl font-bold">Signin</h1>
               <p className="text-gray-500 dark:text-gray-400">
-                Enter your email below to login to your account
+                Enter your email below to signin or create your account
               </p>
             </div>
             <div className="space-y-4">
@@ -42,23 +40,17 @@ export default function Component() {
                 <Input id="password" required type="password" />
               </div>
               <Button className="w-full" type="submit">
-                Login
+                Signin
               </Button>
             </div>
             <Separator className="my-8" />
             <div className="space-y-4">
               <Button className="w-full" variant="outline">
-                Login with Google
+                Signin with Google
               </Button>
               <Button className="w-full" variant="outline">
-                Login with Facebook
+                Signin with Facebook
               </Button>
-              <Button className="w-full" variant="outline">
-                Login with Apple
-              </Button>
-              <Link className="inline-block w-full underline" href="#">
-                Sign up
-              </Link>
             </div>
           </div>
         </div>
@@ -76,6 +68,7 @@ export default function Component() {
           />
         </div>
       </div>
+      <div className="w-full h-14 "></div>
     </>
   );
 }

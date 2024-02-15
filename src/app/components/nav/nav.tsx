@@ -62,10 +62,15 @@ export function LeftNav() {
         >
           Blog
         </Link>
-
         <Link
           className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
-          href="/About"
+          href="/books"
+        >
+          Books
+        </Link>
+        <Link
+          className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
+          href="/about"
         >
           About
         </Link>
@@ -115,6 +120,14 @@ export function DropDownNav() {
         </Link>
       </div>
 
+      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <Link
+          href="/about"
+          className="dimmed-3  px-5 py-2 hover:text-white block rounded-4xl border-green-400 text-base"
+        >
+          Books
+        </Link>
+      </div>
       <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
         <Link
           href="/about"

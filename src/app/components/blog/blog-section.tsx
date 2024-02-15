@@ -1,10 +1,11 @@
 import StyledMDX from '@/app/components/mdx/styled-mdx';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
-import { formatDate, isSameMonthAndYear } from '@/lib/funcs/dates';
+import { isSameMonthAndYear } from '@/lib/funcs/dates';
 import { MediumSection } from '@/app/components/reusables/sections';
 import BackUpTop from '@/app/components/reusables/back-up-top';
 import type { BlogData } from '@/lib/types/mdx';
 import { Badge } from '@/app/components/ui/badge';
+import { CreationDate } from './creation-date';
 
 export default function BlogSection({ post }: { post: BlogData }) {
   return (
@@ -13,9 +14,7 @@ export default function BlogSection({ post }: { post: BlogData }) {
         {post.parsedContent.attributes.title}
       </H1>
       <div className="flex justify-between items-center mb-8 text-sm sm:max-w-[450px]  md:max-w-[550px]  lg:max-w-[650px] xl:max-w-[750px] ">
-        <p className="text-sm dimmed-0">
-          {formatDate(post.parsedContent.attributes.firstModDate)}
-        </p>
+        <CreationDate date={post.parsedContent.attributes.firstModDate} />
         <div>
           {isSameMonthAndYear(post.parsedContent.attributes.firstModDate) ? (
             // TODO: replace with views

@@ -9,7 +9,7 @@ const useToggleDropDownMenu = ({
   menuId: string;
 }): [boolean, () => void] => {
   const initialState = false;
-  const [isOpened, setIsOpened] = useState(initialState);
+  const [isOpened, setIsOpened] = useState<boolean>(initialState);
 
   const toggleMenu: () => void = () => {
     setIsOpened(!isOpened);
@@ -28,7 +28,7 @@ const useToggleDropDownMenu = ({
       // @ts-expect-error it just works, no time to set types
       window.removeEventListener('click', handleClickOutside);
     };
-  }, [menuId]);
+  }, [menuId, initialState]);
 
   return [isOpened, toggleMenu];
 };
