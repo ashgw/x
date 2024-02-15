@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies w/ setup
         run: pnpm i
       - name: Running code tests
-        run: pnpm test
+        run: npx jest
 
   playwright:
     timeout-minutes: 60
