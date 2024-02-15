@@ -1,4 +1,4 @@
-name: test
+name: check
 
 on:
   push:
@@ -13,7 +13,34 @@ on:
       - opened
       - synchronize
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: Release
+  cancel-in-progress: false
+
 jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Set up .env
+        run: echo '${{ secrets.ENV_VARS }}' >> .env.local
+      - name: Install dependencies w/ setup
+        run: pnpm i
+      - name: lint
+        run: pnpm lint
   test:
     runs-on: ubuntu-20.04
     strategy:
@@ -59,3 +86,16 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  all-good:
+    if: always()
+    needs:
+      - lint
+      - test
+      - playwright
+    runs-on: ubuntu-latest
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        id: all-green
+        with:
+          jobs: ${{ toJSON(needs)}}
