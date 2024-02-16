@@ -27,25 +27,6 @@ module.exports = nextConfig;
 
 const securityHeaders = [
   {
-    key: 'Content-Security-Policy',
-    value: `
-      frame-ancestors 'none';
-      default-src 'self';
-      img-src 'self' blob: data: avatars.githubusercontent.com;
-      script-src 'self';
-      font-src 'self';
-      style-src 'self';
-      media-src 'none';
-      connect-src 'self';
-      base-uri 'self';
-			form-action 'self';
-      frame-src 'self' *.codesandbox.io *.x.com;
-      block-all-mixed-content;
-			upgrade-insecure-requests;
-      object-src 'none';
-  `,
-  },
-  {
     key: 'Referrer-Policy',
     value: 'no-referrer, strict-origin-when-cross-origin',
   },

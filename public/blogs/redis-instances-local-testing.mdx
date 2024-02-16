@@ -1,0 +1,289 @@
+---
+title: Redis
+seoTitle: Redis Local Containerized Testing Approaches for Rate Limiting with FastAPI
+summary: Redis Local Containerized Testing Approaches (Rate Limiting)
+isReleased: true
+isSequel: false
+firstModDate: 2022-08-12T09:15:00-0400
+lastModDate: 2022-08-12T09:15:00-0400
+minutesToRead: 4
+tags:
+  - 'redis'
+  - 'docker'
+  - 'fastapi'
+---
+
+<H2>Problem</H2>
+<C>
+  So, you're using Redis to keep your API's rate in check and you're trying to
+  test your app logic using local instances
+</C>
+<H2>Solution</H2>
+<C>
+  I'll be using Python for this demo with FastAPI as a framework
+  <S />
+  pre-requisites: -/- Python -/- Docker & Compose
+  <S2 />
+  Here's the basic API endpoints we want limited
+</C>
+
+<Code
+  code={`RATE_LIMITED_PATHS = [
+    "/limited-1",
+    "/limited-2",
+    "/limited-3",
+    "/limited-4",
+    "/limited-5",
+]
+`}
+  language="python"
+  showLineNumbers={false}
+/>
+<C>where if you curl any of these endpoints once a minute you should get </C>
+<Code
+  code={`➜  curl http://localhost:8000/limited-2
+{"detail":"you'll see me once a minute"}  
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>Whereas if you curl any of these endpoints twice a minute you should get</C>
+<Code
+  code={`➜  curl http://localhost:8000/limited-2
+{"detail":"Too Many Requests"}  
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+
+<S3 />
+<C>However if you curl any of these endpoints twice a minute you should get</C>
+<Code
+  code={`➜  curl http://localhost:8000/limited-2
+{"detail":"you'll see me once a minute"}  
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>
+  For the rate limiting logic, we'll use **`fastapi-limiter`**. Though you can
+  roll out your own, the core concept remains the same.
+</C>
+<C>Here's a raw dogged setup for some fake service</C>
+<Code
+  code={`from __future__ import annotations
+import redis.asyncio as raio  # type: ignore # missing stubs
+from typing import AsyncGenerator
+from os import getenv
+from dataclasses import dataclass
+from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+from fastapi import FastAPI, Request, Response, Depends
+from fastapi.responses import JSONResponse
+from fastapi_limiter import FastAPILimiter  # type: ignore # missing stubs
+from fastapi_limiter.depends import RateLimiter  # type: ignore # missing stubs
+from uvicorn import run
+load_dotenv()
+RATE_LIMITED_PATHS = [
+    "/limited-1",
+    "/limited-2",
+    "/limited-3",
+    "/limited-4",
+    "/limited-5",
+]
+PORT = 8000
+@dataclass
+class RedisData:
+    PORT = getenv("REDIS_PORT")
+    USERNAME = getenv("REDIS_USERNAME")
+    PASSWORD = getenv("REDIS_PASSWORD")
+async def redis_connection() -> raio.Redis:
+    return await raio.from_url(
+        url=f"redis://{RedisData.USERNAME}:{RedisData.PASSWORD}@localhost:{RedisData.PORT}",
+        encoding="utf-8",
+        decode_responses=True,
+    )
+@asynccontextmanager
+async def on_start(_app: FastAPI) -> AsyncGenerator[None, None]:
+    await FastAPILimiter.init(await redis_connection())
+    yield
+    await FastAPILimiter.close()
+async def limiter_dependency(req: Request, res: Response) -> None:
+    if req.url.path in RATE_LIMITED_PATHS:
+        await RateLimiter(times=2, minutes=1).__call__(req, res)
+api = FastAPI(
+    dependencies=[Depends(limiter_dependency)],
+    lifespan=on_start,
+)
+for path in RATE_LIMITED_PATHS:
+    @api.get(path, tags=["rate_limited"])
+    def rate_limited() -> JSONResponse:
+        return JSONResponse({"detail":"you'll see me once a minute"})
+if __name__ == "__main__":
+    run(api, host="0.0.0.0", port=PORT)
+`}
+  language="python"
+  showLineNumbers={false}
+/>
+<C>The current project structure:</C>
+
+<Code
+  code={`.
+├── api.py
+├── compose.yaml
+├── poetry.lock
+├── pyproject.toml
+├── redis.conf
+├── redis.dockerfile
+├── test.sh
+└── test.py
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>here's the **`redis.conf`** file</C>
+<Code
+  code={`bind 0.0.0.0
+requirepass be1bd008f6f7d353bdf4d941c3ee6ed2
+port 40185
+maxmemory 100MB
+maxmemory-policy volatile-lru
+protected-mode no
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+
+<C>
+  This is the most basic config you can use for testing purposes. you can read
+  more about all the config options
+  <L href="https://redis.io/docs/management/config-file">here</L>
+  <S3 />
+  and to actually run it we need a Dockerfile:
+</C>
+
+<Code
+  code={`FROM redis:6.2.7
+
+WORKDIR .
+COPY redis.conf redis.conf
+
+# disable THP support
+
+RUN echo "echo never > /sys/kernel/mm/transparent_hugepage/enabled" > /etc/rc.local \
+
+&& chmod +x /etc/rc.local
+
+# resolve latency memory issues
+
+RUN echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf \
+ && cat /etc/sysctl.conf
+
+CMD ["redis-server", "redis.conf"]
+`}
+language="docker"
+showLineNumbers={false}
+/>
+
+<C>you can run this directly with docker but I prefer to use compose instead</C>
+
+<Code
+  code={`version: "3"
+services:
+  redis_limiter:
+    build:
+      context: .
+      dockerfile: redis.dockerfile
+    container_name: redis_limiter_test
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+    volumes:
+      - redis_limiter_volume_data:/volumes/limiter
+    ports:
+      - 40185:40185
+volumes:
+  redis_limiter_volume_data:
+`}
+  language="yaml"
+  showLineNumbers={false}
+/>
+<C>if your run compose now with</C>
+<Code
+  code={`docker-compose up 
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+
+<C>
+  You'll have Redis running, but how do you coordinate with the app you're
+  trying to run? To ensure it only starts when Redis is up and running, one way
+  is to curl the Redis server. If the curl operation is successful, proceed to
+  run the app and conduct tests, though attempting to curl Redis will likely
+  result in receiving
+</C>
+<Code
+  code={`(venv) ➜  redis-limiter git:(main) curl http://localhost:40185 --verbose 
+*   Trying [::1]:40185...
+* Connected to localhost (::1) port 40185
+> GET / HTTP/1.1
+> Host: localhost:40185
+> User-Agent: curl/7.81.0
+> Accept: */*
+> 
+* Received HTTP/0.9 when not allowed
+* Closing connection
+curl: (1) Received HTTP/0.9 when not allowed 
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>
+  To work around this, you could either run your API with Compose as well.
+  However, for testing purposes, this might be totally unnecessary. Another
+  workaround is to have a service act as a trigger that you can curl. This
+  service depends on Redis, ensuring that it only runs if Redis is functioning
+  correctly. An example of such a service could be based on NGINX. The modified
+  **`compose.yaml`** file is updated as follows:
+</C>
+
+<C>now if you run compose again:</C>
+<Code
+  code={`➜  redis-limiter git:(main) docker-compose up  
+[+] Building 0.0s (0/0)                                                                                                                 docker:default
+[+] Running 3/3
+ ✔ Network redis-limiter_default      Created                                                                                                     0.1s 
+ ✔ Container redis_limiter_test       Created                                                                                                     0.1s 
+ ✔ Container nginx_trigger_container  Created     
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>Use this bash script to test your service </C>
+<Code
+  code={`#!/usr/bin/bash
+docker-compose up -d
+until curl http://localhost:8001 &>/dev/null; do
+  sleep 1
+done
+python -m api & 
+server_pid=$!
+## 
+pytest
+##
+kill $server_pid 
+docker-compose down 
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>
+  This script orchestrates the Docker Compose setup, waits for the NGINX trigger
+  to be accessible, runs your FastAPI app, executes tests, shuts down the
+  server, and tears down the Docker containers. You can implement your own
+  testing logic , using any test runner.
+</C>
