@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: securityHeaders,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -16,3 +24,65 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value: `
+      frame-ancestors 'none';
+      default-src 'self';
+      img-src 'self' blob: data: avatars.githubusercontent.com;
+      script-src 'self';
+      font-src 'self';
+      style-src 'self';
+      media-src 'none';
+      connect-src 'self';
+      base-uri 'self';
+			form-action 'self';
+      frame-src 'self' *.codesandbox.io *.x.com;
+      block-all-mixed-content;
+			upgrade-insecure-requests;
+      object-src 'none';
+  `,
+  },
+  {
+    key: 'Referrer-Policy',
+    value: 'no-referrer, strict-origin-when-cross-origin',
+  },
+  {
+    key: 'X-Frame-Options', // for older browsers
+    value: 'DENY',
+  },
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    key: 'X-DNS-Prefetch-Control',
+    value: 'on',
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+  {
+    key: 'Permissions-Policy', // even tho I won't need em, prolly
+    value: 'camera=(), speaker=(), microphone=(), geolocation=()',
+  },
+  {
+    key: 'Server',
+    value: 'deez nuts v69.0.1',
+  },
+  {
+    key: 'X-Powered-By',
+    value: 'deez nuts v69.0.1',
+  },
+  {
+    key: 'Cross-Origin-Opener-Polic',
+    value: 'same-origin',
+  },
+  {
+    key: 'Cross-Origin-Resource-Policy',
+    value: 'require-corp',
+  },
+];
