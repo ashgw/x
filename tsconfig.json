@@ -29,8 +29,9 @@
     ".next/types/**/*.ts",
     "test",
     "postcss.config.js",
-    "src/app/components/mdx/styled-mdx.tsx"
-, "next.config.js"  ],
+    "src/app/components/mdx/styled-mdx.tsx",
+    "next.config.js"
+  ],
   "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
