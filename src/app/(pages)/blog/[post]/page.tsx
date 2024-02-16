@@ -72,6 +72,8 @@ export async function generateMetadata({
         'max-snippet': -1,
       },
     },
+    manifest: pub.SITE_URL_PROD + '/manifest.json',
+    category: 'everything',
   };
 }
 
