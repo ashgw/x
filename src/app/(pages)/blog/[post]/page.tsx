@@ -34,6 +34,8 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
+      siteName: 'Next.js',
+      locale: 'en_US',
       title,
       description,
       type: 'article',
@@ -53,6 +55,8 @@ export async function generateMetadata({
       description,
       images: [postImageUrl],
     },
+    creator: 'Ashref Gwader',
+    keywords: postAttrs.tags,
   };
 }
 
