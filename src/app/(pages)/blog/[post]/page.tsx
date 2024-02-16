@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBlogPosts, getBlogPost } from '../content';
+import { getSiteName } from '@/lib/funcs/site-name';
 import { pub } from '@/lib/env';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogSection from '@/app/components/blog/blog-section';
@@ -34,8 +35,9 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
-      siteName: 'Next.js',
+      siteName: getSiteName(pub.SITE_URL_PROD) || pub.SITE_URL_PROD,
       locale: 'en_US',
+      publishedTime: postAttrs.firstModDate,
       title,
       description,
       type: 'article',
@@ -57,6 +59,19 @@ export async function generateMetadata({
     },
     creator: 'Ashref Gwader',
     keywords: postAttrs.tags,
+    robots: {
+      index: false,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: false,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 
