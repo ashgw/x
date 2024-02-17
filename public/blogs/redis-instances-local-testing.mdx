@@ -1,7 +1,7 @@
 ---
-title: Redis
-seoTitle: Redis Local Containerized Testing Approaches for Rate Limiting with FastAPI
-summary: Redis Local Containerized Testing Approaches (Rate Limiting)
+title: Test Redis with Docker
+seoTitle: How to use Docker to to test Redis connections without resorting to mocks
+summary: A containerized approach for testing Redis connections instead resorting to mocks
 isReleased: true
 isSequel: false
 firstModDate: 2022-08-12T09:15:00-0400
@@ -10,19 +10,26 @@ minutesToRead: 4
 tags:
   - 'redis'
   - 'docker'
-  - 'fastapi'
+  - 'compose'
 ---
+  
 
 <H2>Problem</H2>
 <C>
-  So, you're using Redis to keep your API's rate in check and you're trying to
-  test your app logic using local instances
+  So, you're using <L href="https://redis.com/">Redis</L> to keep your API's rate in check , you're probably using cloud instances for prod and you're trying to
+  test your app logic, the natural inclination is to mock these connections and call it a day, don't! Mocking should be reserved for situations where absolute
+   necessity dictates or when replication of specific conditions proves unattainable. So here's a brief solution that should be language/Framework/Lib agnostic
 </C>
 <H2>Solution</H2>
 <C>
-  I'll be using Python for this demo with FastAPI as a framework
+  I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a 
+  framework and <L href="https://python-poetry.org/">Poetry</L> as the package manager, 
+  but it doesn't matter, the core concept remains the same regardless of the stack being used.
   <S />
-  pre-requisites: -/- Python -/- Docker & Compose
+  pre-requisites: 
+  - \-  Python 
+  - \-  Docker & Compose 
+
   <S2 />
   Here's the basic API endpoints we want limited
 </C>
@@ -57,22 +64,16 @@ tags:
 />
 
 <S3 />
-<C>However if you curl any of these endpoints twice a minute you should get</C>
-<Code
-  code={`➜  curl http://localhost:8000/limited-2
-{"detail":"you'll see me once a minute"}  
-`}
-  language="bash"
-  showLineNumbers={false}
-/>
 <C>
-  For the rate limiting logic, we'll use **`fastapi-limiter`**. Though you can
-  roll out your own, the core concept remains the same.
+  For the rate limiting logic, we'll use <L href="https://github.com/long2ice/fastapi-limiter/">``fastapi_limiter``</L>. Though you can
+  roll out your own.
 </C>
-<C>Here's a raw dogged setup for some fake service</C>
+<C>Here's a state of the art, robust, elegant and 120% prod ready service</C>
 <Code
   code={`from __future__ import annotations
+
 import redis.asyncio as raio  # type: ignore # missing stubs
+
 from typing import AsyncGenerator
 from os import getenv
 from dataclasses import dataclass
@@ -83,7 +84,10 @@ from fastapi.responses import JSONResponse
 from fastapi_limiter import FastAPILimiter  # type: ignore # missing stubs
 from fastapi_limiter.depends import RateLimiter  # type: ignore # missing stubs
 from uvicorn import run
+
+
 load_dotenv()
+
 RATE_LIMITED_PATHS = [
     "/limited-1",
     "/limited-2",
@@ -91,36 +95,49 @@ RATE_LIMITED_PATHS = [
     "/limited-4",
     "/limited-5",
 ]
-PORT = 8000
+
+
 @dataclass
 class RedisData:
     PORT = getenv("REDIS_PORT")
     USERNAME = getenv("REDIS_USERNAME")
     PASSWORD = getenv("REDIS_PASSWORD")
-async def redis_connection() -> raio.Redis:
+
+# You probably have some logic to switch between prod & dev environments.
+async def local_redis_connection() -> raio.Redis:
     return await raio.from_url(
         url=f"redis://{RedisData.USERNAME}:{RedisData.PASSWORD}@localhost:{RedisData.PORT}",
         encoding="utf-8",
         decode_responses=True,
     )
+
+
 @asynccontextmanager
-async def on_start(_app: FastAPI) -> AsyncGenerator[None, None]:
-    await FastAPILimiter.init(await redis_connection())
+async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
+    await FastAPILimiter.init(await local_redis_connection()) # run when: app starts
     yield
-    await FastAPILimiter.close()
+    await FastAPILimiter.close()                        # run when: app shuts down
+
+
 async def limiter_dependency(req: Request, res: Response) -> None:
     if req.url.path in RATE_LIMITED_PATHS:
         await RateLimiter(times=2, minutes=1).__call__(req, res)
+
+
 api = FastAPI(
     dependencies=[Depends(limiter_dependency)],
-    lifespan=on_start,
+    lifespan=lifespan,
 )
+
+
 for path in RATE_LIMITED_PATHS:
     @api.get(path, tags=["rate_limited"])
     def rate_limited() -> JSONResponse:
         return JSONResponse({"detail":"you'll see me once a minute"})
+
+
 if __name__ == "__main__":
-    run(api, host="0.0.0.0", port=PORT)
+    run(api, host="0.0.0.0", port=8000)
 `}
   language="python"
   showLineNumbers={false}
@@ -131,11 +148,12 @@ if __name__ == "__main__":
   code={`.
 ├── api.py
 ├── compose.yaml
+├── .env
 ├── poetry.lock
 ├── pyproject.toml
 ├── redis.conf
 ├── redis.dockerfile
-├── test.sh
+├── test # shell script 
 └── test.py
 `}
   language="bash"
@@ -159,7 +177,7 @@ protected-mode no
   more about all the config options
   <L href="https://redis.io/docs/management/config-file">here</L>
   <S3 />
-  and to actually run it we need a Dockerfile:
+  To actually run it we need a Dockerfile:
 </C>
 
 <Code
@@ -185,7 +203,7 @@ language="docker"
 showLineNumbers={false}
 />
 
-<C>you can run this directly with docker but I prefer to use compose instead</C>
+<C>you can run this directly with Docker but I prefer to use **``docker-compose``** instead</C>
 
 <Code
   code={`version: "3"
@@ -201,11 +219,12 @@ services:
         limits:
           cpus: "0.1"
           memory: 100M
-    volumes:
+    volumes: # optional 
       - redis_limiter_volume_data:/volumes/limiter
     ports:
       - 40185:40185
-volumes:
+
+volumes: # optional 
   redis_limiter_volume_data:
 `}
   language="yaml"
@@ -247,9 +266,45 @@ curl: (1) Received HTTP/0.9 when not allowed
   However, for testing purposes, this might be totally unnecessary. Another
   workaround is to have a service act as a trigger that you can curl. This
   service depends on Redis, ensuring that it only runs if Redis is functioning
-  correctly. An example of such a service could be based on NGINX. The modified
+  correctly. An example of such a service could be an **NGINX** server (~48MB image), that returns
+   a non null response upon curling. The modified
   **`compose.yaml`** file is updated as follows:
 </C>
+<Code
+  code={`version: "3"
+services:
+  redis_limiter:
+    build:
+      context: .
+      dockerfile: redis.dockerfile
+    container_name: redis_limiter_test
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 250M
+    volumes: # optional 
+      - redis_limiter_volume_data:/volumes/limiter
+    ports:
+      - 40185:40185
+
+  nginx_trigger:
+    image: nginx:latest
+    container_name: nginx_trigger_container
+    restart: always
+    depends_on:
+      - redis_limiter
+    ports:
+      - 8001:80
+
+
+volumes: # optional 
+  redis_limiter_volume_data:
+`}
+  language="yaml"
+  showLineNumbers={false}
+/>
 
 <C>now if you run compose again:</C>
 <Code
@@ -263,7 +318,7 @@ curl: (1) Received HTTP/0.9 when not allowed
   language="bash"
   showLineNumbers={false}
 />
-<C>Use this bash script to test your service </C>
+<C>Use this **``test``** script to test your service </C>
 <Code
   code={`#!/usr/bin/bash
 docker-compose up -d
@@ -273,7 +328,7 @@ done
 python -m api & 
 server_pid=$!
 ## 
-pytest
+pytest # or any testing tool or scripts to use 
 ##
 kill $server_pid 
 docker-compose down 
@@ -282,8 +337,58 @@ docker-compose down
   showLineNumbers={false}
 />
 <C>
-  This script orchestrates the Docker Compose setup, waits for the NGINX trigger
-  to be accessible, runs your FastAPI app, executes tests, shuts down the
-  server, and tears down the Docker containers. You can implement your own
-  testing logic , using any test runner.
+ This script orchestrates the **Docker-Compose** configs, runs it in the background, 
+  waits for the **NGINX** trigger
+  to be accessible, runs the **FastAPI** app, executes tests, shuts down the
+  server, and tears down the **Docker** containers.
 </C>
+<S3 />
+<C>You can implement your own testing logic , using any test runner.</C>
+<S/>
+<C>Now since I'm using **FastAPI**  I will omit the server running step from the test script
+, as **FastAPI** provides a **``TestClient``** class  you can use to test your app logic 
+without having to actually run the server. Also if you're using **``Pytest``** you can skip/ignore tests if a 
+condition is not met, in this case, if no conatiners are spun up, skip. The idea might be like</C>
+<Code
+  code={`import pytest
+import requests
+
+from _pytest.mark import MarkDecorator
+from fastapi.testclient import TestClient
+from api import api
+
+client = TestClient(app=api)
+
+might_skip: MarkDecorator = pytest.mark.skipif(
+    not requests.get("http://localhost:8001").ok, reason="Containers not spinning"
+)
+
+
+@might_skip
+async def do_some_tests(): ...  # use the test client
+`}
+  language="python"
+  showLineNumbers={false}
+/>
+<C>If you use **Go** for example an abstract setup might be like</C>
+<Code
+  code={`.
+├── api
+│   └── main.go
+├── docker-compose.yaml
+├── .env
+├── go.mod
+├── go.sum
+├── redis.conf
+├── redis.dockerfile
+├── scripts
+│   └── test.sh
+└── test
+    └── test.go
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+
+<C>But the idea remains the same, scale redis container(s) before tests and scale down and clean up after, the only part changing in the script 
+is the test runner, instead of Python's **``pyest``** it'll be **`go test`**, if you use rust then it's  **`cargo test`** and so on...</C>

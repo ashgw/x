@@ -23,7 +23,7 @@ export function Heading1({ children, id }: HeadingProps) {
         ease: 'easeInOut',
       }}
       id={id}
-      className="font-extrabold my-2 text-[2.5rem]"
+      className=" leading-10 font-extrabold my-2 text-[2.5rem]"
     >
       {children}
     </motion.h1>

@@ -13,6 +13,7 @@ import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
 import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import docker from 'react-syntax-highlighter/dist/cjs/languages/prism/docker';
+import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
 import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark';
 import CopyButton from './copy-code';
 import { Skeleton } from '../../ui/skeleton';
@@ -26,6 +27,7 @@ SyntaxHighlighter.registerLanguage('go', go);
 SyntaxHighlighter.registerLanguage('tsx', tsx);
 SyntaxHighlighter.registerLanguage('css', css);
 SyntaxHighlighter.registerLanguage('docker', docker);
+SyntaxHighlighter.registerLanguage('yaml', yaml);
 
 export type CodeBlockProps = {
   language: string;

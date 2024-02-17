@@ -1,12 +1,12 @@
 ---
 title: Framer Motion
 seoTitle: Streamlining Animations with Framer Motion in React
-summary: Changed the way I handle animations in React
+summary: Supercharging animations in React
 isReleased: true
 isSequel: false
 lastModDate: 2020-04-19T09:15:00-0401
 firstModDate: 2020-04-19T09:15:00-0401
-minutesToRead: 18
+minutesToRead: 5
 tags:
   - 'react'
   - 'framer-motion'
@@ -75,7 +75,9 @@ showLineNumbers={true}
 <Code
   code=
 {`const Component: React.FC = () => {
+
   const [isVisible, setIsVisible] = useState(false);
+
   return (
     <div className="flex items-center justify-center py-2">
       <div
@@ -99,12 +101,15 @@ showLineNumbers={true}
 
 <Code
   code={`const Component: React.FC = () => {
+
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // Handle it when in view
     setIsVisible(!isVisible);
   }, [ref]);
+
   return (
     <div className="flex items-center justify-center py-2">
       <div
@@ -148,9 +153,11 @@ showLineNumbers={true}
   code={`
 import React, { useEffect, useRef, useState } from 'react';
 import './styles.css';
+
 const Component: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const current = ref.current;
     const observer = new IntersectionObserver(
@@ -171,6 +178,7 @@ const Component: React.FC = () => {
       }
     };
   }, [ref]);
+
   return (
     <div className="flex items-center justify-center py-2">
       <div
@@ -182,6 +190,7 @@ const Component: React.FC = () => {
     </div>
   );
 };
+
 export default Component;
 const FadingText: React.FC = () => {
   return (
@@ -206,6 +215,7 @@ const FadingText: React.FC = () => {
   code={`
 import React from 'react';
 import { motion } from 'framer-motion';
+
 const FramerMotionFadeInComponent: React.FC = () => {
   return (
     <div className="flex justify-center items-center py-2">
@@ -227,6 +237,7 @@ const FramerMotionFadeInComponent: React.FC = () => {
   code={`
 import React from 'react';
 import { motion } from 'framer-motion';
+
 const FramerMotionFadeInComponent: React.FC = () => {
   return (
      <div className="flex justify-center items-center py-2">
@@ -265,6 +276,7 @@ const FramerMotionFadeInComponent: React.FC = () => {
 <C>Here's the code for it </C>
 <Code
   code={`import { motion } from 'framer-motion';
+
 export default function YeetMe() {
   const initial = {
     opacity: 0,
@@ -272,6 +284,7 @@ export default function YeetMe() {
     scale: 0,
     rotate: 360,
   };
+
   const animate = {
     opacity: 1,
     width: 160,
@@ -281,17 +294,21 @@ export default function YeetMe() {
     boxShadow: '10px 10px 0 rgba(255, 46, 199, 0.2)',
     rotate: 0,
   };
+
   const transition = {
     duration: 1,
     type: 'keyframes',
     ease: 'easeInOut',
   };
+
   const whileHover = {
     cursor: 'grab',
   };
+
   const whileDrag = {
     cursor: 'grabbing',
   };
+  
   return (
     <motion.button
       layout
