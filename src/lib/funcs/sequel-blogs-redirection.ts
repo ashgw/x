@@ -1,4 +1,5 @@
-import { matchURL } from './parsers';
+import { matchURL } from './matchers';
+
 export type Where = 'next' | 'previous';
 
 /*
@@ -9,7 +10,8 @@ export function whereToGo(href: string, where: Where): string {
   if (!matchURL(href)) {
     return '#';
   }
-  const match = href.match(/-part-(\d+)/);
+  const regex: RegExp = /-part-(\d+)/;
+  const match: RegExpMatchArray | null = href.match(regex);
   if (match) {
     let goTo = parseInt(match[1]) + 1;
     if (where === 'previous') {
@@ -20,11 +22,3 @@ export function whereToGo(href: string, where: Where): string {
   return '#';
 }
 
-console.log(whereToGo('http://localhost-part-5', 'previous')); // http://localhostpart-4
-console.log(whereToGo('http://localhost-part-5', 'next')); // http://localhostpart-6
-console.log(whereToGo('https://localhost-part-69', 'previous')); // # https://localhostpart-68
-console.log(whereToGo('http://localhost-part98', 'previous')); // #
-console.log(whereToGo('http//localhost-part98', 'previous')); // #
-console.log(whereToGo('ht-art-5', 'previous')); // #
-console.log(whereToGo('httppart5', 'next')); // #
-console.log(whereToGo('httppart-5', 'next')); // #
