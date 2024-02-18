@@ -1,7 +1,7 @@
 ---
 title: GSAP
 seoTitle: Using the newly added useGSAP() hook as a drop-in replacement for UseEffect()
-summary: GSAP just added the useGSAP() hook
+summary: My thoughts on the newly added useGSAP() hook
 isReleased: true
 isSequel: false
 lastModDate: 2024-01-19T09:15:00-0401
@@ -18,7 +18,7 @@ Over the past few years, I've primarily relied on <L href="https://framer.com/mo
 
 But, check this out, yesterday **GSAP** introduced the **``useGSAP()``** hook, an addition to easily integrate **GSAP** with **React**. 
 <S/>
-Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``** cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of.
+Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``**'s cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of.
     <S3/>
     To do something like
 </C>

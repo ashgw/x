@@ -7,11 +7,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes } from 'react';
 import { motion } from 'framer-motion';
+import Footer from '@/app/components/footer/footer';
 
 const NoMoreImTiredBoss: React.FC<
   ButtonHTMLAttributes<HTMLButtonElement>
 > = () => {
-  return <CheckCheck className="mt-5 cursor-default" />;
+  return (
+    <div className="flex flex-col items-center justify-center -mb-12">
+      <CheckCheck className="mt-5 cursor-default" />
+      <div className="py-10"></div>
+      <Footer />
+    </div>
+  );
 };
 
 export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {

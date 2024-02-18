@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import SourceCodeButton from '@/app/components/nav/buttons';
+import SourceCodeButton from '@/app/components/nav/git-button';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-export default function Component() {
+export default function AboutMe2() {
   return (
     <div className="w-full py-12 lg:py-24">
       <div className="container grid gap-6 px-4 md:gap-10 md:px-6 lg:grid-cols-2 xl:gap-16">

@@ -6,7 +6,7 @@ import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Button } from '@/app/components/ui/button';
 
-export default function Component() {
+export default function AboutMe1() {
   return (
     <div className="w-full py-10 lg:py-20">
       <div className="container grid items-start gap-4 px-4 text-center md:gap-6 lg:grid-cols-3 lg:items-center lg:px-6 xl:gap-10 xl:max-w-6xl xl:mx-auto">

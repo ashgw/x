@@ -6,6 +6,7 @@ import { getSiteName } from '@/lib/funcs/site-name';
 import { pub } from '@/lib/env';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import BlogSection from '@/app/components/blog/blog-section';
+import Footer from '@/app/components/footer/footer';
 
 type RouteParams = {
   params: { post: string };
@@ -85,6 +86,8 @@ export default async function Blog({ params }: RouteParams) {
         <main className="pt-5">
           <BlogSection post={post} />
         </main>
+        <div className="py-10"></div>
+        <Footer />
       </Suspense>
     );
   } else {
