@@ -14,6 +14,7 @@ import {
   YeetMe,
   FramerMotionFadeInComponent,
 } from '@/app/components/blog-mentions/framer-motion';
+import { ThreeTrafficLightsMovingObjects } from '@/app/components/blog-mentions/gsap';
 
 export default function StyledMDX({ source }: { source: string }) {
   return (
@@ -43,4 +44,5 @@ function _StyledMDX({ components, ...props }: MDXRemoteProps) {
 const featuredComponents = {
   FramerMotionFadeInComponent: FramerMotionFadeInComponent,
   YeetMe: YeetMe,
+  TTLMO: ThreeTrafficLightsMovingObjects,
 };

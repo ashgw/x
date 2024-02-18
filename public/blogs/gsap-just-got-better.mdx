@@ -6,8 +6,133 @@ isReleased: true
 isSequel: false
 lastModDate: 2024-01-19T09:15:00-0401
 firstModDate: 2024-01-19T09:15:00-0401
-minutesToRead: 18
+minutesToRead: 3
 tags:
   - 'react'
   - 'gsap'
 ---
+
+<H2>The Update</H2>
+<C>
+Over the past few years, I've primarily relied on <L href="https://framer.com/motion">Framer Motion</L> for handling my animations, while incorporating <L href="https://gsap.com/">GSAP</L> from time to time, I found it to be somewhat verbose compared to **Framer**, especially in a **React** context.
+
+But, check this out, yesterday **GSAP** introduced the **``useGSAP()``** hook, an addition to easily integrate **GSAP** with **React**. 
+<S/>
+Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``** cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of.
+    <S3/>
+    To do something like
+</C>
+<TTLMO/>
+<C>You'd probably need to</C>
+<Code
+  code={`import React, { useRef, useEffect, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+
+const useIsoLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+const Component: React.FC = () => {
+  const container = useRef<HTMLDivElement>(null);
+
+  useIsoLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
+
+      tl.to('.x', {
+        rotation: 360,
+        duration: 2,
+        borderRadius: 16,
+        translateX: -150,
+        ease: 'power1.inOut',
+      });
+      tl.to('.x', {
+        rotation: -360,
+        duration: 2,
+        borderRadius: 0,
+        translateX: 150,
+        ease: 'power1.inOut',
+      });
+      tl.to('.x', {
+        rotation: 360,
+        duration: 2,
+        borderRadius: 16,
+        translateX: 0,
+        ease: 'power1.inOut',
+      });
+    }, container);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div>
+      <div
+        ref={container}
+        className="flex flex-col items-center justify-center gap-10"
+      >
+        <div className="x w-10 h-10 bg-red-400 rounded-2xl animate-pulse"></div>
+        <div className="x w-10 h-10 bg-yellow-400 rounded-2xl animate-pulse"></div>
+        <div className="x w-10 h-10 bg-green-500 rounded-2xl animate-pulse"></div>
+      </div>
+    </div>
+  );
+};
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+<C>This new hook abstracts away these inconveniences, and obviates the need for explicit cleanup. 
+   So the same Logic above can be written as </C>
+<Code
+  code={`import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+export const ThreeTrafficLightsMovingObjects: React.FC = () => {
+  const container = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
+      tl.to('.x', {
+        rotation: 360,
+        duration: 2,
+        borderRadius: 16,
+        translateX: -150,
+        ease: 'power1.inOut',
+      });
+      tl.to('.x', {
+        rotation: -360,
+        duration: 2,
+        borderRadius: 0,
+        translateX: 150,
+        ease: 'power1.inOut',
+      });
+      tl.to('.x', {
+        rotation: 360,
+        duration: 2,
+        borderRadius: 16,
+        translateX: 0,
+        ease: 'power1.inOut',
+      });
+    },
+    { scope: container}
+  );
+  return (
+    <div>
+      <div
+        ref={container}
+        className="flex flex-col items-center justify-center gap-10"
+      >
+        <div className="x w-10 h-10 bg-red-400 rounded-2xl animate-pulse  "></div>
+        <div className="x w-10 h-10 bg-yellow-400 rounded-2xl animate-pulse "></div>
+        <div className="x w-10 h-10 bg-green-500 rounded-2xl animate-pulse "></div>
+      </div>
+    </div>
+  );
+};
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+<C>I like this update. I might start using **GSAP** even more now</C>
