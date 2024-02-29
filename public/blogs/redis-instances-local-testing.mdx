@@ -12,26 +12,36 @@ tags:
   - 'docker'
   - 'compose'
 ---
-  
+
 
 <H2>Problem</H2>
 <C>
   So, you're using <L href="https://redis.com/">Redis</L> to keep your API's rate in check , you're probably using cloud instances for prod and you're trying to
   test your app logic, the natural inclination is to mock these connections and call it a day, don't! Mocking should be reserved for situations where absolute
-   necessity dictates or when replication of specific conditions proves unattainable. So here's a brief solution that should be language/Framework/Lib agnostic
+   necessity dictates or when replication of specific conditions proves unattainable. So here's a brief solution that should be stack agnostic.
 </C>
 <H2>Solution</H2>
 <C>
-  I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a 
-  framework,  
-  but it doesn't matter, the core concept remains the same regardless of the stack being used.
-  <S />
-  pre-requisites: 
-  - \-  Python 
-  - \-  Docker & Compose 
+There need to be a mechanism that can switch between local development Redis connections and production ones,
+if the application is in a development environment, it can be configured to connect to a local Redis server managed via Docker.
 
+
+This local Redis server should closely resemble the real production server, while keeping the code that consumes these connections consistent.
+
+While this concept can apply to any database really, it is particularly straightforward with Redis,
+given its predominant use for predictable one-way tasks such as caching or rate limiting, where prior data in the database is often unnecessary
+for testing purposes.
+
+ During testing, you would spin up one or more Redis containers, perform the tests, and then tear down the containers.
+
+
+<S3/>
+  Below is a simple rate limited service.
+  I'll be using Python for this with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a
+  framework,
+  but it doesn't matter, the core concept remains the same regardless of the stack being used.
   <S2 />
-  These are the basic rate limited endpoints
+  These are some rate limited endpoints
 </C>
 
 <Code
@@ -46,18 +56,18 @@ tags:
   language="python"
   showLineNumbers={false}
 />
-<C>where if you curl any of these endpoints once a minute you should get </C>
+<C>where if you curl any of these endpoints once every 20 secs you should get </C>
 <Code
   code={`➜  curl http://localhost:8000/limited-2
-{"detail":"you'll see me once a minute"}  
+{"detail":"you'll see me once every 20 seconds"}
 `}
   language="bash"
   showLineNumbers={false}
 />
-<C>Whereas if you curl any of these endpoints twice a minute you should get</C>
+<C>Whereas if you curl any of these endpoints twice per 20s you should get</C>
 <Code
   code={`➜  curl http://localhost:8000/limited-2
-{"detail":"Too Many Requests"}  
+{"detail":"Too Many Requests"}
 `}
   language="bash"
   showLineNumbers={false}
@@ -121,7 +131,7 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
 
 async def limiter_dependency(req: Request, res: Response) -> None:
     if req.url.path in RATE_LIMITED_PATHS:
-        await RateLimiter(times=2, minutes=1).__call__(req, res)
+        await RateLimiter(times=1, seconds=20).__call__(req, res)
 
 
 api = FastAPI(
@@ -133,7 +143,7 @@ api = FastAPI(
 for path in RATE_LIMITED_PATHS:
     @api.get(path, tags=["rate_limited"])
     def rate_limited() -> JSONResponse:
-        return JSONResponse({"detail":"you'll see me once a minute"})
+        return JSONResponse({"detail":"you'll see me once every 20 seconds"})
 
 
 if __name__ == "__main__":
@@ -153,7 +163,7 @@ if __name__ == "__main__":
 ├── pyproject.toml
 ├── redis.conf
 ├── redis.dockerfile
-├── test # shell script 
+├── test # shell script
 └── test.py
 `}
   language="bash"
@@ -219,12 +229,12 @@ services:
         limits:
           cpus: "0.1"
           memory: 100M
-    volumes: # optional 
+    volumes: # optional
       - redis_limiter_volume_data:/volumes/limiter
     ports:
       - 40185:40185
 
-volumes: # optional 
+volumes: # optional
   redis_limiter_volume_data:
 `}
   language="yaml"
@@ -232,7 +242,7 @@ volumes: # optional
 />
 <C>if your run compose now with</C>
 <Code
-  code={`docker-compose up 
+  code={`docker-compose up
 `}
   language="bash"
   showLineNumbers={false}
@@ -246,17 +256,17 @@ volumes: # optional
   result in receiving
 </C>
 <Code
-  code={`(venv) ➜  redis-limiter git:(main) curl http://localhost:40185 --verbose 
+  code={`(venv) ➜  redis-limiter git:(main) curl http://localhost:40185 --verbose
 *   Trying [::1]:40185...
 * Connected to localhost (::1) port 40185
 > GET / HTTP/1.1
 > Host: localhost:40185
 > User-Agent: curl/7.81.0
 > Accept: */*
-> 
+>
 * Received HTTP/0.9 when not allowed
 * Closing connection
-curl: (1) Received HTTP/0.9 when not allowed 
+curl: (1) Received HTTP/0.9 when not allowed
 `}
   language="bash"
   showLineNumbers={false}
@@ -284,7 +294,7 @@ services:
         limits:
           cpus: "0.25"
           memory: 250M
-    volumes: # optional 
+    volumes: # optional
       - redis_limiter_volume_data:/volumes/limiter
     ports:
       - 40185:40185
@@ -299,7 +309,7 @@ services:
       - 8001:80
 
 
-volumes: # optional 
+volumes: # optional
   redis_limiter_volume_data:
 `}
   language="yaml"
@@ -308,12 +318,12 @@ volumes: # optional
 
 <C>now if you run compose again:</C>
 <Code
-  code={`➜  redis-limiter git:(main) docker-compose up  
+  code={`➜  redis-limiter git:(main) docker-compose up
 [+] Building 0.0s (0/0)                                                                                                                 docker:default
 [+] Running 3/3
- ✔ Network redis-limiter_default      Created                                                                                                     0.1s 
- ✔ Container redis_limiter_test       Created                                                                                                     0.1s 
- ✔ Container nginx_trigger_container  Created     
+ ✔ Network redis-limiter_default      Created                                                                                                     0.1s
+ ✔ Container redis_limiter_test       Created                                                                                                     0.1s
+ ✔ Container nginx_trigger_container  Created
 `}
   language="bash"
   showLineNumbers={false}
@@ -325,19 +335,19 @@ docker-compose up -d
 until curl http://localhost:8001 &>/dev/null; do
   sleep 1
 done
-python -m api & 
+python -m api &
 server_pid=$!
-## 
-pytest # or any testing tool or scripts to use 
 ##
-kill $server_pid 
-docker-compose down 
+pytest # or any testing tool or scripts to use
+##
+kill $server_pid
+docker-compose down
 `}
   language="bash"
   showLineNumbers={false}
 />
 <C>
- This script orchestrates the **Docker-Compose** configs, runs it in the background, 
+ This script orchestrates the **Docker-Compose** configs, runs it in the background,
   waits for the **NGINX** trigger
   to be accessible, runs the **FastAPI** app, executes tests, shuts down the
   server, and tears down the **Docker** containers.
@@ -346,8 +356,8 @@ docker-compose down
 <C>You can implement your own testing logic , using any test runner.</C>
 <S/>
 <C>Now since I'm using **FastAPI**  I will omit the server running step from the test script
-, as **FastAPI** provides a **``TestClient``** class  you can use to test your app logic 
-without having to actually run the server. Also if you're using **``Pytest``** you can skip/ignore tests if a 
+, as **FastAPI** provides a **``TestClient``** class  you can use to test your app logic
+without having to actually run the server. Also if you're using **``Pytest``** you can skip/ignore tests if a
 condition is not met, in this case, if no conatiners are spun up, skip. The idea might be like</C>
 <Code
   code={`import pytest
@@ -390,5 +400,5 @@ async def do_some_tests(): ...  # use the test client
   showLineNumbers={false}
 />
 
-<C>But the idea remains the same, scale redis container(s) before tests and scale down and clean up after, the only part changing in the script 
+<C>But the idea remains the same, scale redis container(s) before tests and scale down and clean up after, the only part changing in the script
 is the test runner, instead of Python's **``pyest``** it'll be **`go test`**, if you use rust then it's  **`cargo test`** and so on...</C>
