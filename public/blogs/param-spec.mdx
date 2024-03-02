@@ -1,0 +1,183 @@
+---
+title: ParamSpec for @decorators
+seoTitle: Refresher over of how to use ParamSpec for annotating decorators.
+summary: Refresher over of how to use ParamSpec for annotating decorators.
+isReleased: true
+isSequel: false
+lastModDate: 2021-10-02T09:15:00-0401
+firstModDate: 2021-10-02T09:15:00-0401
+minutesToRead: 3
+tags:
+  - 'python'
+  - 'typing'
+---
+
+<H2>Raw</H2>
+<C>
+    <L href="https://peps.python.org/pep-0612/">PEP 612</L>
+    introduced ``ParamSpec``, which you may have encountered.
+    This blog post provides a concise refresher over of how to use ``ParamSpec``
+    for annotating decorators.
+    This will be very short, so I won't explain what it is,  as the information already exists in the official docs
+<S/>
+Here's a simple decorator
+</C>
+<Code
+  code=
+{`from functools import wraps 
+
+def decorator(f):
+    @wraps(f)
+    def wrap(*args, **kwargs) -> _T:
+        return f(*args, **kwargs)
+    return wrap
+
+@decorator
+def foo(*args, **kwargs):
+    ...
+`}
+language="python"
+showLineNumbers={true}
+
+/>
+<C>How would you type that ?</C>
+<Code
+  code=
+{`from typing import  Callable, Any
+from functools import wraps 
+
+def decorator(f: Callable[..., Any]) -> Callable[..., Any]:
+    @wraps(f)
+    def wrap(*args: Any, **kwargs: Any) -> Any:
+        return f(*args, **kwargs)
+    return wrap
+`}
+language="python"
+showLineNumbers={true}
+
+/>
+
+<C>
+ But I'm highly allergic to `Any` this callable can take any arbitrary number of
+ arguments we do not specify if args or kwargs, it retruns anything,
+ this anything is not bound to any type, not very type safe if you ask me.
+ <S3/>
+I'll use a generic `T` as the return type of the function `f` 
+``f`` takes an arbitrary number of arguments and keyword arguments
+typed as `_PSpec` , this allows us to capture the structure of arguments
+ and keyword arguments.  where if you split it you get the ``args`` and ``kwargs``
+</C>
+<Code
+  code=
+{`from typing import ParamSpec, TypeVar, Callable
+from functools import wraps 
+
+
+_T = TypeVar("_T")
+_PSpec = ParamSpec("_PSpec")
+
+def decorator(f: Callable[_PSpec, _T]) -> Callable[_PSpec, _T]:
+    @wraps(f)
+    def wrap(*args: _PSpec.args, **kwargs: _PSpec.kwargs) -> _T:
+        return f(*args, **kwargs)
+    return wrap
+
+@decorator
+def foo(*args,**kwargs):
+    ...
+`}
+language="python"
+showLineNumbers={true}
+
+/>
+
+
+<C>
+  Ok but what if the foo function 
+  is not so broad and perhaps takes a known positional typed argument maybe bar like: 
+</C>
+<Code
+  code=
+{`class Bar:
+	...
+	
+@decorator
+def foo(bar: Bar, /, *args: bool, **kwargs: str) -> None:
+    pass
+`}
+language="python"
+showLineNumbers={false}
+
+/>
+
+<C>
+  How would you type that ?
+you'll need concatenate the argument type with the rest of the ``args`` and ``kwargs``,
+ where `f` as in `foo` in this context is typed as follows
+</C>
+<Code
+  code=
+{`f: Callable[Concatenate[Bar, _PSpec], _T]) 
+`}
+language="python"
+showLineNumbers={false}
+
+/>
+<C>
+  So  the decorator function becomes 
+</C>
+<Code
+  code=
+{`def decorator(f: Callable[Concatenate[Bar, _PSpec], _T]) -> Callable[_PSpec, _T]:
+    @wraps(f)
+    def wrap(*args: _PSpec.args, **kwargs: _PSpec.kwargs) -> _T:
+        return f(Bar(), *args, **kwargs)
+    return wrap
+`}
+language="python"
+showLineNumbers={false}
+
+/>
+<C>
+Between the wrapper and the return function you can use the params as you like,
+ log an action ,send metrics anything,
+ ok but what if your function requires more parameters ? 
+ simply add it inside `Concatenate`
+</C>
+<Code
+  code=
+{` class X:
+    ...
+def decorator(f: Callable[Concatenate[X,Bar, _PSpec], _T]) -> Callable[_PSpec, _T]:
+    @wraps(f)
+    def wrap(*args: _PSpec.args, **kwargs: _PSpec.kwargs) -> _T:
+        x = X()
+        bar = Bar()
+        print(f'here is x:{x}')
+        return f(x,bar, *args, **kwargs)
+    return wrap
+`}
+language="python"
+showLineNumbers={false}
+
+/>
+<C>
+So ``f`` becomes 
+</C>
+<Code
+  id="IntersectionObserver"
+  code={`@decorator
+def foo(x: X,bar: Bar,/, *args: bool, **kwargs: str) -> None:
+    pass
+`}
+  language="python"
+  showLineNumbers={false}
+/>
+
+<C>Might be called with.</C>
+<Code
+  code={`foo(X(),Bar(),True,kwarg1='...')
+`}
+  language="python"
+  showLineNumbers={false}
+/>
