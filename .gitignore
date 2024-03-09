@@ -1,3 +1,6 @@
+.vim
+
+
 # dependencies
 /node_modules
 /.pnp
@@ -32,10 +35,10 @@ next-env.d.ts
 
 *boss_moves.txt
 
-# For Rust 
+# For Rust
 *target/
 
-# For Playwright 
+# For Playwright
 /test-results/
 /playwright-report/
 /blob-report/
