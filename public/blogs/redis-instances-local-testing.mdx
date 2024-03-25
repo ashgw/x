@@ -4,19 +4,19 @@ seoTitle: How to use Docker to to test Redis connections without resorting to mo
 summary: A containerized approach for testing Redis connections instead resorting to mocks
 isReleased: true
 isSequel: false
-firstModDate: 2022-08-12T09:15:00-0400
-lastModDate: 2022-08-12T09:15:00-0400
+firstModDate: 2020-04-12T09:15:00-0400
+lastModDate: 2020-04-12T09:15:00-0400
 minutesToRead: 4
 tags:
   - 'redis'
   - 'docker'
-  - 'compose'
+  - 'testing'
 ---
   
 
 <H2>Problem</H2>
 <C>
-  So, you're using <L href="https://redis.com/">Redis</L> to keep your API's rate in check , you're probably using cloud instances for prod and you're trying to
+  So, you're using <L href="https://redis.com/">Redis</L> to keep your API's rate in check, you're probably using cloud instances for prod and you're trying to
   test your app logic, the natural inclination is to mock these connections and call it a day, don't! Mocking should be reserved for situations where absolute
    necessity dictates or when replication of specific conditions proves unattainable. So here's a brief solution that should be language/Framework/Lib agnostic
 </C>
@@ -24,13 +24,13 @@ tags:
 <C>
 It's obvious right, have a mechanism that switches between 
 testing instances and real instances, of course, this is not
- hard, the thing is how do you automate these tests?
+ hard to implement, the thing is how do you automate these tests?
 <S/>well the short answer is a shell a script that spins these
  containers up and tears them down later, and cleanup after.
   <S3/>I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a framework, but it doesn't matter, the core concept remains the same regardless of the stack being used.
 
 <S />
-  pre-requisites: 
+  Pre-requisites: 
   - \-  Python 
   - \-  Docker & Compose 
 
@@ -347,11 +347,11 @@ docker-compose down
   server, and tears down the **Docker** containers.
 </C>
 <S3 />
-<C>You can implement your own testing logic , using any test runner.</C>
+<C>You can implement your own testing logic, using any test runner.</C>
 <S/>
 <C>Now since I'm using **FastAPI**  I will omit the server running step from the test script
 , as **FastAPI** provides a **``TestClient``** class  you can use to test your app logic 
-without having to actually run the server. Also if you're using **``Pytest``** you can skip/ignore tests if a 
+without having to actually run the server. Also if you're using <L href='https://www;pytest.org'>**``Pytest``**</L> you can skip/ignore tests if a 
 condition is not met, in this case, if no conatiners are spun up, skip. The idea might be like</C>
 <Code
   code={`import pytest

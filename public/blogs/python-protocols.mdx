@@ -10,6 +10,7 @@ minutesToRead: 5
 tags:
   - 'python'
   - 'typing'
+  - 'protocols'
 ---
 
 <H2>Intro</H2>
@@ -131,8 +132,7 @@ Consider a scenario where you have various classes representing different reques
 </C>
 <Code
   code=
-{`import typing
-from typing import Optional, Dict, Protocol, runtime_checkable
+{`from typing import Optional, Dict, Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -263,7 +263,7 @@ instead of </C>
   showLineNumbers={false}
 />
 <C>
-If you annotate the protocol with `@runtime_checkable` protocol, you're allowed access to `isinstance()` and `issubclass()` functions to check the type at runtime
+If you annotate the protocol with `@runtime_checkable`, you're allowed access to `isinstance()` and `issubclass()` functions to check the type at runtime
 </C>
 <Code
   code={`def f(bar: Bar) -> Any:
@@ -273,8 +273,8 @@ If you annotate the protocol with `@runtime_checkable` protocol, you're allowed 
   showLineNumbers={false}
 />
 <C>
-And if you're trying to check the signature you can create a function that checks
- the signature of a given function if it adheres to the protocol or not, and provide helpful error messages why the given object does not adhere to the protocol
+You can also create a function that checks
+ the signature of another function, if it adheres to the protocol or not, and provide helpful error messages why the given object does not adhere to the protocol
 </C>
 <Code
   code={`import inspect 
