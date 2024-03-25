@@ -48,6 +48,16 @@ alias rn := reincarnate
 @d:
     docker-compose down
 
+
+@patch:
+    npx changelogen@latest --release --push --patch 
+
+@minor:
+    npx changelogen@latest --release --push --minor 
+
+@major:
+    npx changelogen@latest --release --push --major 
+
 @reincarnate:
     rm -rf node_modules
     rm -rf .next
