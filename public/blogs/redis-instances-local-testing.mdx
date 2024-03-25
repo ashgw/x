@@ -22,18 +22,14 @@ tags:
 </C>
 <H2>Solution</H2>
 <C>
-  The whole idea is: you need to have some 
-   global singleton object or  a settings loading class that loads configs or whatever 
-   you deem fit for your app to determine 
-   if you're running in dev or prod whatever you do, just have it switch between
-   local development redis connections and prod ones, for local redis you'd need Docker
-   , no one runs redis servers directly anyway
-   
-  <S3/>
-  I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a 
-  framework,  
-  but it doesn't matter, the core concept remains the same regardless of the stack being used.
-  <S />
+It's obvious right, have a mechanism that switches between 
+testing instances and real instances, of course, this is not
+ hard, the thing is how do you automate these tests?
+<S/>well the short answer is a shell a script that spins these
+ containers up and tears them down later, and cleanup after.
+  <S3/>I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a framework, but it doesn't matter, the core concept remains the same regardless of the stack being used.
+
+<S />
   pre-requisites: 
   - \-  Python 
   - \-  Docker & Compose 
@@ -185,7 +181,7 @@ protected-mode no
   more about all the config options
   <L href="https://redis.io/docs/management/config-file">here</L>
   <S3 />
-  To actually run it you'll need a Dockerfile:
+  To actually run it you'll need a **Dockerfile**
 </C>
 
 <Code
@@ -270,7 +266,7 @@ curl: (1) Received HTTP/0.9 when not allowed
   showLineNumbers={false}
 />
 <C>
-  To work around this, you could either run your API with Compose as well.
+  To work around this, you could either run your API with **``Compose``** as well.
   However, for testing purposes, this might be totally unnecessary. Another
   workaround is to have a service act as a trigger that you can curl. This
   service depends on Redis, ensuring that it only runs if Redis is functioning

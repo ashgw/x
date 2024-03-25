@@ -60,12 +60,11 @@ showLineNumbers={true}
 <C>
  But I'm highly allergic to `Any` this callable can take any arbitrary number of
  arguments we do not specify if args or kwargs, it retruns anything,
- this anything is not bound to any type, not very type safe if you ask me.
+ this anything is not bound to any type, this is so confusing.
  <S3/>
-I'll use a generic `T` as the return type of the function `f` 
+I'll use a generic `T` as the return type of the function `f`, where
 ``f`` takes an arbitrary number of arguments and keyword arguments
-typed as `_PSpec` , this allows us to capture the structure of arguments
- and keyword arguments.  where if you split it you get the ``args`` and ``kwargs``
+typed as `_PSpec` , this allows us to capture the structure of both args and kwargs.
 </C>
 <Code
   code=
@@ -93,8 +92,8 @@ showLineNumbers={true}
 
 
 <C>
-  Ok but what if the foo function 
-  is not so broad and perhaps takes a known positional typed argument maybe bar like: 
+  But what if the ``foo`` function 
+  is not so broad and perhaps takes a known positional typed argument maybe ``bar`` like: 
 </C>
 <Code
   code=
@@ -140,8 +139,8 @@ showLineNumbers={false}
 />
 <C>
 Between the wrapper and the return function you can use the params as you like,
- log an action ,send metrics anything,
- ok but what if your function requires more parameters ? 
+ log an action , send metrics anything.
+ But what if your function requires more parameters ? 
  simply add it inside `Concatenate`
 </C>
 <Code
