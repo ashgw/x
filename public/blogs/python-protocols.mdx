@@ -4,9 +4,9 @@ seoTitle: How to Use Python's "Protocol" Type For Structural Subtyping.
 summary: The Use Of "Protocol" Type For Structural Subtyping.
 isReleased: true
 isSequel: false
-lastModDate: 2021-10-02T09:15:00-0401
-firstModDate: 2021-10-02T09:15:00-0401
-minutesToRead: 3
+lastModDate: 2020-01-02T09:15:00-0401
+firstModDate: 2020-01-02T09:15:00-0401
+minutesToRead: 5
 tags:
   - 'python'
   - 'typing'
@@ -21,13 +21,9 @@ In the world of Rust, you might be familiar with traits. They share the same ess
 </C>
 <H2>Structural Subtyping</H2>
 <C>
-Traditional type systems rely on the relationship between classes, 
-often determined by inheritance. Python, however, <L href="https://peps.python.org/pep-0544/">PEP 544</L>
- introduces
- the notion of structural subtyping or static duck typing.
-  We often say if an object looks like a duck, swims like a duck, 
-  and quacks like a duck; well, it's considered a duck,
- or in this case, it adheres to a particular duck protocol .
+<L href="https://peps.python.org/pep-0544/">PEP 544</L>
+ introduces the notion of <L href="https://en.wikipedia.org/wiki/Structural_type_system">structural subtyping</L> or static duck typing to Python.
+ Here's how it works: 
 </C>
 <Code
   code=
@@ -64,7 +60,7 @@ language="python"
 showLineNumbers={true}
 
 />
-<C>Type checking this with ``MyPy`` shows complaints  </C>
+<C>Type checking this with <L href='https://mypy.readthedocs.io/en/stable/'>``MyPy``</L>  shows complaints  </C>
 <Code
   code=
 {`(.venv) ➜ mypy main.py 
@@ -77,7 +73,7 @@ showLineNumbers={false}
 />
 
 <C>
-But when you fix it with 
+But when you fix it 
 </C>
 <Code
   code=
@@ -109,6 +105,7 @@ How about a plant
 <Code
   code=
 {`class Plant:
+
     def grows(self) -> None: pass
 
     def reproduces(self) -> None: pass
@@ -130,16 +127,7 @@ showLineNumbers={false}
 </C>
 <H3>Ok we know all that, what's special</H3>
 <C>
-Now, let's explore a practical use case. Imagine a case where you have different classes representing different Request objects or responses
- maybe from different libraries, and you're 
- trying to create a common class (adapter) that
-  groups all these different objects and their
-   methods in one , you might expect these
-    classes to inherit from a common base class. 
-However, with protocols, you can define a protocol 
-representing the expected Response object behavior
- with abstracted behavior, allowing disparate classes
-  to adhere to the same structure without a shared ancestry.
+Consider a scenario where you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or adapter. Traditionally, you might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with abstracted behavior. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
 </C>
 <Code
   code=
@@ -217,7 +205,7 @@ class RequestY(Request):
   showLineNumbers={false}
 />
 
-<C>As you can see these different libraries/frameworks
+<C>As you can see these different libraries
  have different implementation over how they access 
  different request attributes/methods, but with a protocol 
  you can define a unified way hat all these different objects 
@@ -228,15 +216,16 @@ class RequestY(Request):
 <Code
   code={`def process_request(req: RequestProtocol) -> None:
 
-    # do some anything with the shared methods/attributes
+    # do anything with the shared methods
     process_request(req=RequestX(...)) # OK, no type issues 
     process_request(req=RequestX(...)) # OK, no type issues
 `}
   language="python"
   showLineNumbers={false}
 />
-<C>Another use case is using `Protocol` to type function signatures
-check this out</C>
+<C>
+Another use case is using `Protocol` to type function signatures
+</C>
 <Code
   code={`class Foo:
     ...
