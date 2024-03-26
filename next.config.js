@@ -59,7 +59,7 @@ const securityHeaders = [
     value: 'deez nuts v69.0.1',
   },
   {
-    key: 'Cross-Origin-Opener-Polic',
+    key: 'Cross-Origin-Opener-Policy',
     value: 'same-origin',
   },
   {

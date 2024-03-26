@@ -7,15 +7,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import HamburgerButton from '@/app/components/nav/hamburger';
 import { motion, AnimatePresence } from 'framer-motion';
-import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenue';
+import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenu';
 
 export default function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({
-    menuId: 'nav-menue',
+    menuId: 'nav-menu',
   });
 
   return (
-    <nav id="nav-menue" className="pt-3">
+    <nav id="nav-menu" className="pt-3">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
         <div className="relative flex h-16 items-center justify-between">
           <div

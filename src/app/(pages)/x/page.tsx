@@ -18,7 +18,7 @@ export default function Freelance() {
                   <C>
                     I&apos;m available for consulting, code auditing, business
                     inquiries, and new opportunities. Feel free to reach out
-                    thorught email. I will get back to you as soon as possible.
+                    through email. I will get back to you as soon as possible.
                   </C>
                 </div>
               </div>

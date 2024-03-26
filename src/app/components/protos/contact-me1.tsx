@@ -17,7 +17,7 @@ export default function Freelance() {
                 <div className="mx-auto max-w-[600px]">
                   <C>
                     I'm available for freelance work, business inquiries, and
-                    new opportunities. Feel free to reach out thorught email. I
+                    new opportunities. Feel free to reach out through email. I
                     will get back to you as soon as possible.
                   </C>
                 </div>

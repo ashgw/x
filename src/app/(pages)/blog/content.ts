@@ -28,7 +28,7 @@ async function readMDXFile(filePath: string): Promise<MDXData> {
     const rawContent = await fsPromises.readFile(filePath, 'utf-8');
     return parseMDX(rawContent);
   } catch (error) {
-    // TODO: hadnle err
+    // TODO: handle err
     console.error('Error reading MDX file:', error);
     throw new Error();
   }
