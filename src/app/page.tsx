@@ -20,57 +20,57 @@ export default function Home() {
           existing theme values and automatically become available as new
           classes that you can use. As an example, here we extend the fontFamily
           property to add the font-display class that can change the font used
-          on an element: If you&apos;d like to preserve the default values for a theme
-          option but also add new values, add your extensions under the
+          on an element: If you&apos;d like to preserve the default values for a
+          theme option but also add new values, add your extensions under the
           theme.extend key in your configuration file. Values under this key are
           merged with existing theme values and automatically become available
           as new classes that you can use. As an example, here we extend the
           fontFamily property to add the font-display class that can change the
-          font used on an element: If you&apos;d like to preserve the default values
-          for a theme option but also add new values, add your extensions under
-          the theme.extend key in your configuration file. Values under this key
-          are merged with existing theme values and automatically become
-          available as new classes that you can use. As an example, here we
-          extend the fontFamily property to add the font-display class that can
-          change the font used on an element: If you&apos;d like to preserve the
-          default values for a theme option but also add new values, add your
-          extensions under the theme.extend key in your configuration file.
+          font used on an element: If you&apos;d like to preserve the default
+          values for a theme option but also add new values, add your extensions
+          under the theme.extend key in your configuration file. Values under
+          this key are merged with existing theme values and automatically
+          become available as new classes that you can use. As an example, here
+          we extend the fontFamily property to add the font-display class that
+          can change the font used on an element: If you&apos;d like to preserve
+          the default values for a theme option but also add new values, add
+          your extensions under the theme.extend key in your configuration file.
           Values under this key are merged with existing theme values and
           automatically become available as new classes that you can use. As an
           example, here we extend the fontFamily property to add the
           font-display class that can change the font used on an element: If
-          you&apos;d like to preserve the default values for a theme option but also
-          add new values, add your extensions under the theme.extend key in your
-          configuration file. Values under this key are merged with existing
-          theme values and automatically become available as new classes that
-          you can use. As an example, here we extend the fontFamily property to
-          add the font-display class that can change the font used on an
-          element: If you&apos;d like to preserve the default values for a theme
-          option but also add new values, add your extensions under the
+          you&apos;d like to preserve the default values for a theme option but
+          also add new values, add your extensions under the theme.extend key in
+          your configuration file. Values under this key are merged with
+          existing theme values and automatically become available as new
+          classes that you can use. As an example, here we extend the fontFamily
+          property to add the font-display class that can change the font used
+          on an element: If you&apos;d like to preserve the default values for a
+          theme option but also add new values, add your extensions under the
           theme.extend key in your configuration file. Values under this key are
           merged with existing theme values and automatically become available
           as new classes that you can use. As an example, here we extend the
           fontFamily property to add the font-display class that can change the
-          font used on an element: If you&apos;d like to preserve the default values
-          for a theme option but also add new values, add your extensions under
-          the theme.extend key in your configuration file. Values under this key
-          are merged with existing theme values and automatically become
-          available as new classes that you can use. As an example, here we
-          extend the fontFamily property to add the font-display class that can
-          change the font used on an element: If you&apos;d like to preserve the
-          default values for a theme option but also add new values, add your
-          extensions under the theme.extend key in your configuration file.
+          font used on an element: If you&apos;d like to preserve the default
+          values for a theme option but also add new values, add your extensions
+          under the theme.extend key in your configuration file. Values under
+          this key are merged with existing theme values and automatically
+          become available as new classes that you can use. As an example, here
+          we extend the fontFamily property to add the font-display class that
+          can change the font used on an element: If you&apos;d like to preserve
+          the default values for a theme option but also add new values, add
+          your extensions under the theme.extend key in your configuration file.
           Values under this key are merged with existing theme values and
           automatically become available as new classes that you can use. As an
           example, here we extend the fontFamily property to add the
           font-display class that can change the font used on an element: If
-          yo&apos;ud like to preserve the default values for a theme option but also
-          add new values, add your extensions under the theme.extend key in your
-          configuration file. Values under this key are merged with existing
-          theme values and automatically become available as new classes that
-          you can use. As an example, here we extend the fontFamily property to
-          add the font-display class that can change the font used on an
-          element:
+          yo&apos;ud like to preserve the default values for a theme option but
+          also add new values, add your extensions under the theme.extend key in
+          your configuration file. Values under this key are merged with
+          existing theme values and automatically become available as new
+          classes that you can use. As an example, here we extend the fontFamily
+          property to add the font-display class that can change the font used
+          on an element:
         </TextContent>
 
         <CopyRight></CopyRight>

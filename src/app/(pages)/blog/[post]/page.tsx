@@ -11,6 +11,7 @@ import Footer from '@/app/components/footer/footer';
 type RouteParams = {
   params: { post: string };
 };
+type NoMetadata = Record<never, never>; // the only available solution to type it
 
 export const generateStaticParams = async () => {
   const posts = await getBlogPosts();
@@ -19,7 +20,7 @@ export const generateStaticParams = async () => {
 
 export async function generateMetadata({
   params,
-}: RouteParams): Promise<Metadata> {
+}: RouteParams): Promise<Metadata | NoMetadata> {
   const post = await getBlogPost(params.post);
   if (!post) {
     return {};
@@ -29,7 +30,7 @@ export async function generateMetadata({
   const description = postAttrs.summary;
   const url = pub.SITE_URL_PROD + '/' + post.filename;
 
-  const postImageWidth = 1200;
+  const postImageWidth = 1200; // in pixels
   const postImageHeight = 630;
   const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${title}`;
   return {

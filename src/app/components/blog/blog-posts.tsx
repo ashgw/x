@@ -1,11 +1,11 @@
 'use client';
 import type { BlogData } from '@/lib/types/mdx';
+import type { ButtonHTMLAttributes } from 'react';
 import BlogPostCard from '@/app/components/blog/blog-card';
 import { ChevronDown } from 'lucide-react';
 import { CheckCheck } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
-import type { ButtonHTMLAttributes } from 'react';
 import { motion } from 'framer-motion';
 import Footer from '@/app/components/footer/footer';
 

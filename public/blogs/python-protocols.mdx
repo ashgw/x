@@ -128,7 +128,7 @@ showLineNumbers={false}
 </C>
 <H3>Ok we know all that, what's special</H3>
 <C>
-Consider a scenario where you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or adapter. Traditionally, you might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with abstracted behavior. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
+Consider a scenario where you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or adapter. You might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with abstracted behavior. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
 </C>
 <Code
   code=
@@ -208,7 +208,7 @@ class RequestY(Request):
 <C>As you can see these different libraries
  have different implementation over how they access 
  different request attributes/methods, but with a protocol 
- you can define a unified way hat all these different objects 
+ you can define a unified way that all these different objects 
  adhere to, now for example if you want to create a function 
  that processes a given request you can annotate the request 
  parameter with ``RequestProtocol``, this means that his function
@@ -240,7 +240,7 @@ class Bar(Protocol):
 />
 
 <C>Any function that is asynchronous, accepts an argument called `foo` of 
-type  `Foo` and returns nothing , adheres to this protocol, a given function might be</C>
+type  `Foo` and returns nothing, adheres to this protocol, a given function might be</C>
 <Code
   code={`async def bar(foo: Foo): pass
 `}
@@ -274,7 +274,7 @@ If you annotate the protocol with `@runtime_checkable`, you're allowed access to
 />
 <C>
 You can also create a function that checks
- the signature of another function, if it adheres to the protocol or not, and provide helpful error messages why the given object does not adhere to the protocol
+ the signature of another function, if it adheres to the protocol or not, and provide helpful error messages over why the given object does not adhere to the protocol
 </C>
 <Code
   code={`import inspect 
