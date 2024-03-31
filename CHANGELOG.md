@@ -1,6 +1,5 @@
 ## v0.8.1
 
-
 ### 🚀 Enhancements
 
 - Error UI component added ([f15f780](https://github.com/AshGw/mysite/commit/f15f780))
@@ -86,7 +85,7 @@
 - Add updated/archived bage ([090d0c2](https://github.com/AshGw/mysite/commit/090d0c2))
 - Add `AsyncResponse` type ([53aded1](https://github.com/AshGw/mysite/commit/53aded1))
 - Add `Ok` & `Err` types ([75977b0](https://github.com/AshGw/mysite/commit/75977b0))
-- Add `AsyncResponse<T>`  as base for all NextJS responses ([#61](https://github.com/AshGw/mysite/pull/61))
+- Add `AsyncResponse<T>` as base for all NextJS responses ([#61](https://github.com/AshGw/mysite/pull/61))
 - Make `AnimatedCopyButton` for code blocks ([4a3d5f9](https://github.com/AshGw/mysite/commit/4a3d5f9))
 - Make `AnimatedCopyButton` for code blocks ([#63](https://github.com/AshGw/mysite/pull/63))
 - Add light grid ([700ef2a](https://github.com/AshGw/mysite/commit/700ef2a))
@@ -125,7 +124,7 @@
 - Solve `blogData.filenameSlug` not found ([c082dd1](https://github.com/AshGw/mysite/commit/c082dd1))
 - Blog date margin not responsive ([6dd1611](https://github.com/AshGw/mysite/commit/6dd1611))
 - Load more cursor set default ([33fc7e7](https://github.com/AshGw/mysite/commit/33fc7e7))
-- Make blog cards rendering  stop when the slice fills ([3ff79d9](https://github.com/AshGw/mysite/commit/3ff79d9))
+- Make blog cards rendering stop when the slice fills ([3ff79d9](https://github.com/AshGw/mysite/commit/3ff79d9))
 - Lacking type `_MaybeBlogData` ([c432cfa](https://github.com/AshGw/mysite/commit/c432cfa))
 - Blogs not showing fixed ([2b860ee](https://github.com/AshGw/mysite/commit/2b860ee))
 - Blogs not showing ([#60](https://github.com/AshGw/mysite/pull/60))
@@ -152,7 +151,7 @@
 - Make `formDate` non default ([ecb4072](https://github.com/AshGw/mysite/commit/ecb4072))
 - Remove private identifier from `types.ts` ([ae6b686](https://github.com/AshGw/mysite/commit/ae6b686))
 - Mdx inclusive components into their own files ([1e1bf87](https://github.com/AshGw/mysite/commit/1e1bf87))
-- Move all actions to  `actions` folder ([99b94ec](https://github.com/AshGw/mysite/commit/99b94ec))
+- Move all actions to `actions` folder ([99b94ec](https://github.com/AshGw/mysite/commit/99b94ec))
 - Code block & copy componnets into their own dirs ([d371d1b](https://github.com/AshGw/mysite/commit/d371d1b))
 - Rename `slug` folder to `post` ([a963887](https://github.com/AshGw/mysite/commit/a963887))
 - Come up with better names G ([f7b0c08](https://github.com/AshGw/mysite/commit/f7b0c08))
@@ -167,14 +166,14 @@
 
 - Initial project setup ([e2593be](https://github.com/AshGw/mysite/commit/e2593be))
 - Use node 18 ([4a309cc](https://github.com/AshGw/mysite/commit/4a309cc))
-- Container's  set right ([0a73bc5](https://github.com/AshGw/mysite/commit/0a73bc5))
+- Container's set right ([0a73bc5](https://github.com/AshGw/mysite/commit/0a73bc5))
 - Brand new ui setup ([7e17ccc](https://github.com/AshGw/mysite/commit/7e17ccc))
-- Add more Just  aliases ([c8604c5](https://github.com/AshGw/mysite/commit/c8604c5))
+- Add more Just aliases ([c8604c5](https://github.com/AshGw/mysite/commit/c8604c5))
 - **prettier:** Don't ignore ([2e0d72b](https://github.com/AshGw/mysite/commit/2e0d72b))
 - Cleanup unused deps will be running cleanup jobs rn ([1bbc08b](https://github.com/AshGw/mysite/commit/1bbc08b))
-- Add  to eslint's ignored patterns ([9108b6c](https://github.com/AshGw/mysite/commit/9108b6c))
+- Add to eslint's ignored patterns ([9108b6c](https://github.com/AshGw/mysite/commit/9108b6c))
 - **eslint:** Extend next core ([05e1fd8](https://github.com/AshGw/mysite/commit/05e1fd8))
-- Containerize the app  & separate workflow runs  closes ([#85](https://github.com/AshGw/mysite/pull/85), [#86](https://github.com/AshGw/mysite/pull/86), [#87](https://github.com/AshGw/mysite/pull/87))
+- Containerize the app & separate workflow runs closes ([#85](https://github.com/AshGw/mysite/pull/85), [#86](https://github.com/AshGw/mysite/pull/86), [#87](https://github.com/AshGw/mysite/pull/87))
 - Use v18 ([07adf63](https://github.com/AshGw/mysite/commit/07adf63))
 - Add changelog gen ([65b2f27](https://github.com/AshGw/mysite/commit/65b2f27))
 - Fix linters in `package.json` ([cca421f](https://github.com/AshGw/mysite/commit/cca421f))
@@ -213,7 +212,7 @@
 - Add testing for `isSameMonthAndYear()` ([dd7848e](https://github.com/AshGw/mysite/commit/dd7848e))
 - Done for `getSiteName` func ([6471473](https://github.com/AshGw/mysite/commit/6471473))
 - Does testing for matchers ([6844fc2](https://github.com/AshGw/mysite/commit/6844fc2))
-- Does testing for  blog redirections ([0b38c29](https://github.com/AshGw/mysite/commit/0b38c29))
+- Does testing for blog redirections ([0b38c29](https://github.com/AshGw/mysite/commit/0b38c29))
 
 ### 🤖 CI
 

@@ -14,7 +14,7 @@
   "parserOptions": {
     "project": ["./tsconfig.json"]
   },
-  "ignorePatterns": ["/playground/", "/next.config.js"],
+  "ignorePatterns": ["/playground/", "/next.config.js", "coverage"],
   "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-empty-function": "error",
