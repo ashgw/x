@@ -1,3 +1,19 @@
+## v0.8.2
+
+[compare changes](https://github.com/AshGw/mysite/compare/v0.8.1...v0.8.2)
+
+### 🚀 Enhancements
+
+- Add  "bootcamps are a ripoff" blog ([8d1c2e7](https://github.com/AshGw/mysite/commit/8d1c2e7))
+
+### 🩹 Fixes
+
+- Ignore `coverage` directory for `EsLint` ([32309cd](https://github.com/AshGw/mysite/commit/32309cd))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v0.8.1
 
 ### 🚀 Enhancements

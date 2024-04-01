@@ -14,6 +14,7 @@ import {
   YeetMe,
   FramerMotionFadeInComponent,
 } from '@/app/components/blog-mentions/framer-motion';
+import CrossedOff from '../reusables/crossed-off';
 import { ThreeTrafficLightsMovingObjects } from '@/app/components/blog-mentions/gsap';
 
 export default function StyledMDX({ source }: { source: string }) {
@@ -32,6 +33,7 @@ export default function StyledMDX({ source }: { source: string }) {
         C: TextContent,
         L: Link,
         D: Divider,
+        Crossed: CrossedOff,
         ...featuredComponents,
       }}
     ></_StyledMDX>
