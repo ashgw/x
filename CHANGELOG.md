@@ -1,10 +1,10 @@
-## v0.8.2
+## v1.70.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v0.8.1...v0.8.2)
 
 ### 🚀 Enhancements
 
-- Add  "bootcamps are a ripoff" blog ([8d1c2e7](https://github.com/AshGw/mysite/commit/8d1c2e7))
+- Add "bootcamps are a ripoff" blog ([8d1c2e7](https://github.com/AshGw/mysite/commit/8d1c2e7))
 
 ### 🩹 Fixes
 
@@ -14,7 +14,7 @@
 
 - AshGw ([@AshGw](http://github.com/AshGw))
 
-## v0.8.1
+## 1.69.0
 
 ### 🚀 Enhancements
 
