@@ -20,7 +20,7 @@ But, check this out, yesterday **GSAP** introduced the **``useGSAP()``** hook, a
 <S/>
 Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``**'s cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of.
     <S3/>
-    To do something like
+    To do something silly like
 </C>
 <TTLMO/>
 <C>You'd probably need to</C>
