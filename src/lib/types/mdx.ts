@@ -19,7 +19,7 @@ export type MDXData = {
   frontMatter: string;
 };
 
-export type BlogData = {
+export type PostData = {
   parsedContent: MDXData;
   filename: string;
 };

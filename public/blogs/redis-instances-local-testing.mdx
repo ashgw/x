@@ -6,7 +6,7 @@ isReleased: true
 isSequel: false
 firstModDate: 2020-04-12T09:15:00-0400
 lastModDate: 2020-04-12T09:15:00-0400
-minutesToRead: 4
+minutesToRead: 5
 tags:
   - 'redis'
   - 'docker'
@@ -17,14 +17,13 @@ tags:
 <H2>Problem</H2>
 <C>
   So, you're using <L href="https://redis.com/">Redis</L> to keep your API's rate in check, you're probably using cloud instances for prod and you're trying to
-  test your app logic, the natural inclination is to mock these connections and call it a day, don't! Mocking should be reserved for situations where absolute
-   necessity dictates or when replication of specific conditions proves unattainable. So here's a brief solution that should be language/Framework/Lib agnostic
+  test your app logic, assuming you resisted your natural inclination to <L href="/blog/mock-async-python">mock</L> these connections and call it a day, so how do you test them ? 
 </C>
 <H2>Solution</H2>
 <C>
 It's obvious right, have a mechanism that switches between 
 testing instances and real instances, of course, this is not
- hard to implement, the thing is how do you automate these tests?
+ hard to implement, the thing is: how do you automate these tests with one command?
 <S/>well the short answer is a shell a script that spins these
  containers up and tears them down later, and cleanup after.
   <S3/>I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a framework, but it doesn't matter, the core concept remains the same regardless of the stack being used.
@@ -395,4 +394,4 @@ async def do_some_tests(): ...  # use the test client
 />
 
 <C>But the idea remains the same, scale redis container(s) before tests and scale down and clean up after, the only part changing in the script 
-is the test runner, instead of Python's **``pytest``** it'll be **`go test`**, if you use rust then it's  **`cargo test`** and so on...</C>
+is the test runner, instead of Python's **``pytest``** it'll be **`go test`**, if you use rust then it's  **`cargo test`** and so on.</C>

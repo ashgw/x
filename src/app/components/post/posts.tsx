@@ -1,7 +1,7 @@
 'use client';
-import type { BlogData } from '@/lib/types/mdx';
+import type { PostData } from '@/lib/types/mdx';
 import type { ButtonHTMLAttributes } from 'react';
-import BlogPostCard from '@/app/components/blog/blog-card';
+import PostCard from '@/app/components/post/post-card';
 import { ChevronDown } from 'lucide-react';
 import { CheckCheck } from 'lucide-react';
 import { useState } from 'react';
@@ -9,27 +9,15 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Footer from '@/app/components/footer/footer';
 
-const NoMoreImTiredBoss: React.FC<
-  ButtonHTMLAttributes<HTMLButtonElement>
-> = () => {
-  return (
-    <div className="flex flex-col items-center justify-center -mb-12">
-      <CheckCheck className="mt-5 cursor-default" />
-      <div className="py-10"></div>
-      <Footer />
-    </div>
-  );
-};
-
-export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
-  const firstLoadVisibleNum = 2;
-  const perLoadVisibleNum = 1;
+export default function Posts({ posts }: { posts: PostData[] }) {
+  const firstLoadVisibleNum = 5;
+  const perLoadVisibleNum = 2;
   const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
-  const loadMore = visibleNum <= blogPosts.length;
+  const loadMore = visibleNum <= posts.length;
 
   return (
     <main>
-      {blogPosts
+      {posts
         .sort((b1, b2) => {
           if (
             new Date(b1.parsedContent.attributes.firstModDate) >
@@ -56,7 +44,7 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
               delay: index * 0.1,
             }}
           >
-            <BlogPostCard blogData={post}></BlogPostCard>
+            <PostCard postData={post}></PostCard>
           </motion.div>
         ))}
       <div id="more" className="flex items-center justify-center m-14">
@@ -76,3 +64,15 @@ export default function BlogPosts({ blogPosts }: { blogPosts: BlogData[] }) {
     </main>
   );
 }
+
+const NoMoreImTiredBoss: React.FC<
+  ButtonHTMLAttributes<HTMLButtonElement>
+> = () => {
+  return (
+    <div className="flex flex-col items-center justify-center -mb-12">
+      <CheckCheck className="mt-5 cursor-default" />
+      <div className="py-10"></div>
+      <Footer />
+    </div>
+  );
+};

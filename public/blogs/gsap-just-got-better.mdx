@@ -6,7 +6,7 @@ isReleased: true
 isSequel: false
 lastModDate: 2024-01-19T09:15:00-0401
 firstModDate: 2024-01-19T09:15:00-0401
-minutesToRead: 3
+minutesToRead: 1
 tags:
   - 'react'
   - 'gsap'
@@ -14,7 +14,7 @@ tags:
 
 <H2>The Update</H2>
 <C>
-Over the past few years, I've primarily relied on <L href="https://framer.com/motion">Framer Motion</L> for handling my animations, while incorporating <L href="https://gsap.com/">GSAP</L> from time to time, I found it to be somewhat verbose compared to **Framer**, especially in a **React** context.
+Over the past few years, I've primarily relied on <L href="/blog/framer-motion">Framer Motion</L> for handling my animations, while incorporating <L href="https://gsap.com/">GSAP</L> from time to time, I found it to be somewhat verbose compared to **Framer**, especially in a **React** context.
 
 But, check this out, yesterday **GSAP** introduced the **``useGSAP()``** hook, an addition to easily integrate **GSAP** with **React**. 
 <S/>
@@ -84,13 +84,7 @@ const Component: React.FC = () => {
 <C>This new hook abstracts away these inconveniences, and obviates the need for explicit cleanup. 
    So the same logic above can be written as </C>
 <Code
-  code={`import React, { useRef } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-
-export const Component: React.FC = () => {
-  const container = useRef<HTMLDivElement>(null);
-
+  code={`
   useGSAP(
     () => {
       const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
@@ -118,19 +112,6 @@ export const Component: React.FC = () => {
     },
     { scope: container}
   );
-  return (
-    <div>
-      <div
-        ref={container}
-        className="flex flex-col items-center justify-center gap-10"
-      >
-        <div className="x w-10 h-10 bg-red-400 rounded-2xl animate-pulse  "></div>
-        <div className="x w-10 h-10 bg-yellow-400 rounded-2xl animate-pulse "></div>
-        <div className="x w-10 h-10 bg-green-500 rounded-2xl animate-pulse "></div>
-      </div>
-    </div>
-  );
-};
 `}
   language="tsx"
   showLineNumbers={false}

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getBlogPosts, getBlogPost } from '@/lib/mdx/content';
+import { getBusinessPosts, getBusinessPost } from '@/lib/mdx/content';
 import { getSiteName } from '@/lib/funcs/site-name';
 import { pub } from '@/lib/env';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
@@ -14,14 +14,14 @@ type RouteParams = {
 type NoMetadata = Record<never, never>; // the only available solution to type it
 
 export const generateStaticParams = async () => {
-  const posts = await getBlogPosts();
+  const posts = await getBusinessPosts();
   return posts.map((post) => ({ post: post.filename }));
 };
 
 export async function generateMetadata({
   params,
 }: RouteParams): Promise<Metadata | NoMetadata> {
-  const post = await getBlogPost(params.post);
+  const post = await getBusinessPost(params.post);
   if (!post) {
     return {};
   }
@@ -80,12 +80,12 @@ export async function generateMetadata({
 }
 
 export default async function Blog({ params }: RouteParams) {
-  const post = await getBlogPost(params.post);
+  const post = await getBusinessPost(params.post);
   if (post) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <main className="pt-5">
-          <PostSection post={post} />
+          <PostSection post={post} forBusiness={true} />
         </main>
         <div className="py-10"></div>
         <Footer />

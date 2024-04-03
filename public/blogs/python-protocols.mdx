@@ -1,12 +1,12 @@
 ---
 title: Python Protocols 
 seoTitle: How to Use Python's "Protocol" Type For Structural Subtyping.
-summary: The Use Of "Protocol" Type For Structural Subtyping.
+summary: The use of "Protocol" type for structural subtyping.
 isReleased: true
 isSequel: false
 lastModDate: 2020-01-02T09:15:00-0401
 firstModDate: 2020-01-02T09:15:00-0401
-minutesToRead: 5
+minutesToRead: 4
 tags:
   - 'python'
   - 'typing'
@@ -124,11 +124,11 @@ showLineNumbers={false}
 <C>
   Even though `Human` and `Plant` don't share a common ancestor,
    they both conform to the `OrganicOrganism` protocol because they exhibit
-    the required methods. No need for inheritance here 
+    the required methods. No need for inheritance here.
 </C>
 <H3>Ok we know all that, what's special</H3>
 <C>
-Consider a case where you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or adapter. You might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with abstracted behavior. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
+Consider a case where you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or adapter. You might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with an abstracted one. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
 </C>
 <Code
   code=
@@ -137,17 +137,17 @@ Consider a case where you have various classes representing different request or
 
 @runtime_checkable
 class RequestProtocol(Protocol):
-    def get_cookie(self, cookie_name: str) -> Optional[str]:
+    def p_cookie(self, cookie_name: str) -> Optional[str]:
         ...
     @property
-    def all_cookies(self) -> Dict[str, str]:
+    def p_all_cookies(self) -> Dict[str, str]:
         ...
     @property
-    def is_connection_secure(self) -> bool:
+    def p_is_connection_secure(self) -> bool:
         ...
 
     @property
-    def get_base_url(self) -> str:
+    def p_base_url(self) -> str:
         ...
 `}
 language="python"
@@ -155,26 +155,26 @@ showLineNumbers={false}
 
 />
 <C>
-You can extend these different Request objects to where they adhere to the protocol 
+You can extend these different Request objects to where they adhere to the protocol.
 </C>
 <Code
   code=
 {`from libx import Request
 
 class RequestX(Request):
-    def get_cookie(self, cookie_name: str) -> Optional[str]:
+    def p_cookie(self, cookie_name: str) -> Optional[str]:
         return self.cookies.get(cookie_name)
 
     @property
-    def all_cookies(self) -> Dict[str, str]:
+    def p_cookies(self) -> Dict[str, str]:
         return self.cookies
 
     @property
-    def is_connection_secure(self) -> bool:
+    def p_is_connection_secure(self) -> bool:
         return self.url.is_secure
 
     @property
-    def get_base_url(self) -> str:
+    def p_base_url(self) -> str:
         return str(self.base_url)
 `}
 language="python"
@@ -186,19 +186,19 @@ showLineNumbers={false}
   code={`from liby import Request
 
 class RequestY(Request):
-    def get_cookie(self, cookie_name: str) -> Optional[str]:
+    def p_cookie(self, cookie_name: str) -> Optional[str]:
         return self.cookie(cookie_name)
 
     @property
-    def all_cookies(self) -> Dict[str, str]:
+    def p_all_cookies(self) -> Dict[str, str]:
         return self.cookies
 
     @property
-    def is_connection_secure(self) -> bool:
+    def p_is_connection_secure(self) -> bool:
         return self.is_https
 
     @property
-    def get_base_url(self) -> str:
+    def p_base_url(self) -> str:
         return self.base_url
 `}
   language="python"
@@ -212,7 +212,7 @@ class RequestY(Request):
  adhere to, now for example if you want to create a function 
  that processes a given request you can annotate the request 
  parameter with ``RequestProtocol``, this means that his function
-  will process any class that adheres to this protocol</C>
+  will process any class that adheres to this protocol.</C>
 <Code
   code={`def process_request(req: RequestProtocol) -> None:
 
@@ -224,7 +224,7 @@ class RequestY(Request):
   showLineNumbers={false}
 />
 <C>
-Another use case is using `Protocol` to type function signatures
+Another use case is using `Protocol` to type function signatures.
 </C>
 <Code
   code={`class Foo:
@@ -240,14 +240,14 @@ class Bar(Protocol):
 />
 
 <C>Any function that is asynchronous, accepts an argument called `foo` of 
-type  `Foo` and returns nothing, adheres to this protocol, a given function might be</C>
+type  `Foo` and returns nothing, adheres to this protocol, a given function might be.</C>
 <Code
   code={`async def bar(foo: Foo): pass
 `}
   language="python"
   showLineNumbers={false}
 />
-<C>If you would have typed this function otherwise it would have been</C>
+<C>If you would have typed this function otherwise it would have been.</C>
 <Code
   code={`f: Callable[[Foo],Awaitable[None]] = bar
 `}
@@ -255,7 +255,7 @@ type  `Foo` and returns nothing, adheres to this protocol, a given function migh
   showLineNumbers={false}
 />
 <C>It's much easier to type functions using `Protocol`
-instead of </C>
+instead of:</C>
 <Code
   code={`def f(bar: Callable[[Foo],Awaitable[None]]) -> Any: ...
 `}
@@ -263,7 +263,7 @@ instead of </C>
   showLineNumbers={false}
 />
 <C>
-If you annotate the protocol with `@runtime_checkable`, you're allowed access to `isinstance()` and `issubclass()` functions to check the type at runtime
+If you annotate the protocol with `@runtime_checkable`, you're allowed access to `isinstance()` and `issubclass()` functions to check the type at runtime.
 </C>
 <Code
   code={`def f(bar: Bar) -> Any:
@@ -274,7 +274,7 @@ If you annotate the protocol with `@runtime_checkable`, you're allowed access to
 />
 <C>
 You can also create a function that checks
- the signature of another function, if it adheres to the protocol or not, and provide helpful error messages over why the given object does not adhere to the protocol
+ the signature of another function, if it adheres to the protocol or not, and provide helpful error messages over why the given object does not adhere to the protocol.
 </C>
 <Code
   code={`import inspect 

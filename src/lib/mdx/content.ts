@@ -4,8 +4,8 @@
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import fm from 'front-matter';
-import type { MDXData, BlogData } from '@/lib/types/mdx';
-import { BLOG_CONTENT_PATH } from '@/lib/constants';
+import type { MDXData, PostData } from '@/lib/types/mdx';
+import { BLOG_CONTENT_PATH, BUSINESS_CONTENT_PATH } from '@/lib/constants';
 import type { Maybe } from '@/lib/types/global';
 
 function parseMDX(content: string): MDXData {
@@ -34,7 +34,7 @@ async function readMDXFile(filePath: string): Promise<MDXData> {
     throw new Error();
   }
 }
-async function getMDXData(dir: string): Promise<BlogData[]> {
+async function getMDXData(dir: string): Promise<PostData[]> {
   const mdxFiles = await getMDXFiles(dir);
 
   const blogDataPromises = mdxFiles.map(async (file) => {
@@ -49,13 +49,28 @@ async function getMDXData(dir: string): Promise<BlogData[]> {
   return Promise.all(blogDataPromises);
 }
 
-export async function getBlogPosts(): Promise<BlogData[]> {
-  return getMDXData(path.join(process.cwd(), BLOG_CONTENT_PATH));
+export async function getBlogPosts(
+  blogDirectory: string = BLOG_CONTENT_PATH
+): Promise<PostData[]> {
+  return getMDXData(path.join(process.cwd(), blogDirectory));
 }
 
-export async function getBlogPost(slug: string): Promise<Maybe<BlogData>> {
+export async function getBusinessPosts(
+  businessDirectory: string = BUSINESS_CONTENT_PATH
+): Promise<PostData[]> {
+  return getMDXData(path.join(process.cwd(), businessDirectory));
+}
+
+export async function getBlogPost(slug: string): Promise<Maybe<PostData>> {
   // TODO: optimize
   const blogs = await getBlogPosts();
+  const blogPost = blogs.find((p) => p?.filename === slug);
+  return blogPost;
+}
+
+export async function getBusinessPost(slug: string): Promise<Maybe<PostData>> {
+  // TODO: optimize
+  const blogs = await getBusinessPosts();
   const blogPost = blogs.find((p) => p?.filename === slug);
   return blogPost;
 }

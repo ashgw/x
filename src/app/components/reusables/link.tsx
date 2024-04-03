@@ -1,4 +1,6 @@
 import NextLink from 'next/link';
+import { SITE_URL } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 export function Link({
   href,
@@ -7,11 +9,23 @@ export function Link({
   href: string;
   children: React.ReactNode;
 }) {
-  if (href.startsWith('#') || href.startsWith('/')) {
+  const LINK_CLASS_NAME = cn(
+    'average-transition',
+    'gradient-text-purple',
+    'hover:text-white'
+  );
+  if (href.startsWith('#')) {
+    return (
+      <NextLink href={href} className={cn(LINK_CLASS_NAME)} {...props}>
+        {props.children}
+      </NextLink>
+    );
+  }
+  if (href.startsWith('/')) {
     return (
       <NextLink
-        href={href}
-        className=" average-transition gradient-text-purple hover:text-white"
+        href={SITE_URL + href}
+        className={cn(LINK_CLASS_NAME)}
         {...props}
       >
         {props.children}
@@ -24,7 +38,7 @@ export function Link({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="average-transition gradient-text-purple hover:text-white hover:bright "
+      className={cn(LINK_CLASS_NAME + 'hover: bright')}
       {...props}
     >
       {props.children}
