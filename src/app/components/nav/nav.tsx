@@ -64,9 +64,9 @@ export function LeftNav() {
         </Link>
         <Link
           className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
-          href="/business"
+          href="/services"
         >
-          Business
+          Services
         </Link>
         <Link
           className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"

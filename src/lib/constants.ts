@@ -1,6 +1,6 @@
 import { nextJS, pub } from './env';
 export const BLOG_CONTENT_PATH = '/public/blogs';
-export const BUSINESS_CONTENT_PATH = '/public/business';
+export const BUSINESS_CONTENT_PATH = '/public/services';
 export const BLOG_URI = '/blog';
 export const BLOG_API_URI = '/api/blogs';
 export const SITE_URL =
