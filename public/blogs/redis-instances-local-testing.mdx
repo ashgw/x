@@ -1,7 +1,7 @@
 ---
 title: Test Redis with Docker
-seoTitle: How to use Docker to to test Redis connections without resorting to mocks
-summary: Automated containerized approach for testing Redis connections
+seoTitle: Automated Containerized Approach For Testing Redis Connections In CI pipelines
+summary: Automated containerized approach for testing Redis connections in CI pipelines
 isReleased: true
 isSequel: false
 firstModDate: 2020-04-12T09:15:00-0400
@@ -23,10 +23,15 @@ tags:
 <C>
 It's obvious right, have a mechanism that switches between 
 testing instances and real instances, of course, this is not
- hard to implement, the thing is: how do you automate these tests with one command?
-<S/>well the short answer is a shell a script that spins these
+ hard to implement, the thing is: how do you automate these tests and have them work, even in CI?
+<S/>well the short answer is a shell a script that spins **Docker**
  containers up and tears them down later, and cleanup after.
-  <S3/>I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a framework, but it doesn't matter, the core concept remains the same regardless of the stack being used.
+</C>
+<H2>
+Demo
+</H2>
+<C>
+I'll be using Python for this demo with <L href="https://fastapi.tiangolo.com/">FastAPI</L> as a framework, but it doesn't matter, the core concept remains the same regardless of the stack being used.
 
 <S />
   Pre-requisites: 
@@ -36,6 +41,7 @@ testing instances and real instances, of course, this is not
   <S2 />
   These are the basic rate limited endpoints
 </C>
+
 
 <Code
   code={`RATE_LIMITED_PATHS = [
@@ -265,7 +271,7 @@ curl: (1) Received HTTP/0.9 when not allowed
   showLineNumbers={false}
 />
 <C>
-  To work around this, you could either run your API with **``Compose``** as well.
+  To work around this, you could either run your API with **``compose``** as well.
   However, for testing purposes, this might be totally unnecessary. Another
   workaround is to have a service act as a trigger that you can curl. This
   service depends on Redis, ensuring that it only runs if Redis is functioning
@@ -340,7 +346,7 @@ docker-compose down
   showLineNumbers={false}
 />
 <C>
- This script orchestrates the **Docker-Compose** configs, runs it in the background, 
+ This script orchestrates the **docker-compose** configs, runs it in the background, 
   waits for the **NGINX** trigger
   to be accessible, runs the **FastAPI** app, executes tests, shuts down the
   server, and tears down the **Docker** containers.
