@@ -1,3 +1,41 @@
+## v1.71.1
+
+[compare changes](https://github.com/AshGw/mysite/compare/v2.0.0...v1.71.1)
+
+### 🏡 Chore
+
+- Cleanup ([c2cd873](https://github.com/AshGw/mysite/commit/c2cd873))
+- Set version ([04c5efb](https://github.com/AshGw/mysite/commit/04c5efb))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
+## v1.71.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v0.8.2...v2.0.0)
+
+### 🚀 Enhancements
+
+- Finish "/business/services" page ([47a3d2b](https://github.com/AshGw/mysite/commit/47a3d2b))
+- Set links for /business/code-audits/ ([0a149b1](https://github.com/AshGw/mysite/commit/0a149b1))
+- Set links for /business/full-project-develoment ([9c7f0cf](https://github.com/AshGw/mysite/commit/9c7f0cf))
+- Glossary setup ([791b9f3](https://github.com/AshGw/mysite/commit/791b9f3))
+- Set `/services/transparency` page ([ba024ff](https://github.com/AshGw/mysite/commit/ba024ff))
+- Set `/services/billing` page ([3b0dd52](https://github.com/AshGw/mysite/commit/3b0dd52))
+- Hook up the blogs links with the business side of things ([3c6fbc4](https://github.com/AshGw/mysite/commit/3c6fbc4))
+- Migrate the `ìndependent-code-audit` blog ([7b01ef0](https://github.com/AshGw/mysite/commit/7b01ef0))
+- Migrate `Async Python Mock Testing` blog post ([26cc71b](https://github.com/AshGw/mysite/commit/26cc71b))
+
+### 📦 Build
+
+- 69 is good ([39852b8](https://github.com/AshGw/mysite/commit/39852b8))
+- Confusion v5 ([0e62c32](https://github.com/AshGw/mysite/commit/0e62c32))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.70.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v0.8.1...v0.8.2)

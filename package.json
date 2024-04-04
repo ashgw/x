@@ -1,6 +1,6 @@
 {
   "name": "mysite",
-  "version": "1.70.0",
+  "version": "1.71.1",
   "private": true,
   "scripts": {
     "build": "next build",

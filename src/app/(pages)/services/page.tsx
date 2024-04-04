@@ -4,7 +4,7 @@ import LoadingScreen from '../blog/loading';
 
 export default function Redirect() {
   useEffect(() => {
-    window.location.href = '/business/services';
+    window.location.href = '/services/all';
   }, []);
 
   return <LoadingScreen></LoadingScreen>;

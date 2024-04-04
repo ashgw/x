@@ -14,7 +14,7 @@ tags:
 <C>
 You may have encountered explanations that appear overly simplistic, merely emphasizing the importance of async programming without delving into the mechanics or exploring high-level APIs such as the <L href="https://github.com/python/cpython/tree/main/Lib/asyncio">`asyncio`</L> module in the standard library. Clearly, you already understand the significance and use cases, so let's cut to the chase and see how it actually works.
 </C>
-<H2>Pausing Execution</H2>
+<H2>Pausing</H2>
 <C>
 So, what's the deal with async functions in Python? The common refrain is about them not blocking execution until some operation resolves, we all know that right? but how does this mechanism truly operate? To understand this, let's take a step back and delve into the foundational concept:
 </C>
@@ -26,7 +26,7 @@ An iterator serves as a programming object that facilitates the systematic trave
 <C>
 The key concepts here are the actions of pausing, resuming, and awaiting the next element. These notions become particularly relevant and meaningful when correlated with the concept of asynchronous functions, the idea of pausing and resuming execution aligns with the asynchronous nature of handling tasks, allowing the program to efficiently manage and switch between various operations without blocking the entire execution flow. The term "await" further emphasizes this waiting aspect, where the program can await the completion of a specific asynchronous task before proceeding, we call this task a <L href="#related-objects">``Future``</L> , echoing the behavior of iterators in a more dynamic and non-blocking context.
 </C>
-<H2>How Do I Make An Iterator</H2>
+<H2>How Do I Create An Iterator</H2>
 <C>
 To define your own iterator you have to adhere to the iterator <L href='/blog/python-protocols'>protocol</L> meaning you have to define `__iter__` and `__next__` methods
 </C>
@@ -98,7 +98,7 @@ The invocation of `__anext__` involves the use of the `async` and `await` keywor
 </C>
 <H2 id="what-is-an-awaitable?">What Exactly Is An **``awaitable``**</H2>
 <C>
-An ``awaitable`` is an object that can be used with the `await` keyword within an async function. It typically represents an operation that may not be immediately completed, such as an asynchronous task or a <L href="#related-objects">``Future``</L> object. Essentially, an awaitable is anything that can be awaited for its completion, allowing the program to proceed with other tasks while waiting for the other operation to finish.
+An ``awaitable`` is an object that can be used with the `await` keyword within an async function. It typically represents an operation that may not be immediately completed, such as an asynchronous task or a <L href="#related-objects">``Future``</L> object. Essentially, an awaitable is anything that can be awaited for its completion, allowing the program to proceed with other tasks.
 </C>
 <H2>How Do I Define An **``awaitable``**</H2>
 <C>
