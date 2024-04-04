@@ -1,3 +1,16 @@
+## v1.71.1
+
+[compare changes](https://github.com/AshGw/mysite/compare/v2.0.0...v1.71.1)
+
+### 🏡 Chore
+
+- Cleanup ([c2cd873](https://github.com/AshGw/mysite/commit/c2cd873))
+- Set version ([04c5efb](https://github.com/AshGw/mysite/commit/04c5efb))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.71.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v0.8.2...v2.0.0)
