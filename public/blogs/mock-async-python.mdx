@@ -11,3 +11,287 @@ tags:
   - 'python'
   - 'async'
 ---
+<C>
+The standard library does not really provide very helpful information over the topic, nor does <L href="https://pytest.org">Pytest</L> docs, so I figured, I'll write a quick blog post on how to do it. There are third party libraries of course for this subject but I'm not a fan of using third parties, unless absolutely necessary, plus you should <L href="/blog/bootcamp-ripoff">understand</L> how the subject works before abstracting it.
+</C>
+
+<C>
+ I've <L href="/blog/async-python">previously</L> explained how the whole async concept works under the hood in Python. While not all the details are essential for this task, it's beneficial for grasping the nuances of asynchronous logic before attempting to test it.
+ </C>
+
+ <C>
+With that out of the way, lets start with the two main ways you can patch an async object.
+</C>
+
+<H2>Monkey Patch</H2>
+
+<C>
+Given a function ``some_result`` of the class  ``Foo`` (we can argue later if static methods are true OOP, but bear with me now) 
+</C>
+<Code
+  code=
+{`class Foo:
+    @staticmethod
+    async def some_result(previous_status: bool) -> Result:
+        return Result.OK if previous_status else Result.Err
+`}
+language="python"
+showLineNumbers={false}
+/>
+
+<C>
+With this enumerable as a return type: 
+</C>
+<Code
+  code=
+{`import enum 
+
+class Result(enum.Enum):
+    Err = enum.auto()
+    OK = enum.auto()
+`}
+language="python"
+showLineNumbers={true}
+/>
+
+<C>
+The goal is to mock the behavior of the `some_result()` method in the `Foo` class under different conditions. The method takes a ``boolean`` which is `previous_status` that we might not control, and returns a `Result`. Depending on the value of `previous_status`, the method should return either `OK` or `Err`. 
+</C>
+
+<C>
+For this we'll need to <L href="https://en.wikipedia.org/wiki/Monkey_patch">monkey</L> patch it.
+</C>
+
+<Code
+  code=
+{`import pytest
+from _pytest.monkeypatch import MonkeyPatch
+
+@pytest.fixture
+def mock_get_result(monkeypatch: MonkeyPatch) -> None:
+    async def _always_ok(_previous_status: bool) -> Result: 
+        return Result.OK
+    monkeypatch.setattr(target=Foo, name="get_result", value=_always_ok)
+`}
+language="python"
+showLineNumbers={true}
+/>
+
+
+<C>
+Pytest allows us to define <L href="https://docs.pytest.org/en/stable/explanation/fixtures.html">fixtures</L>, which are functions that set up or provide resources for our tests, so we don't keep repeating the logic again and again for each test case. In this case we only have one fixture.
+</C>
+
+
+<C>
+`mock_foo_result_ok` monkey patches the  `some_result()` method of the `Foo` class. it replaces it with the inner function `_always_ok`, meaning 
+when we pass this fixture as an argument to any test function whenever we use `some_result()` in that particular test, it comes patched already to always return whatever we want it to, in this case it is the `Ok` variant.
+And by the way with Pytest, when dealing with asynchronous test cases, you have to mark them as ``@pytest.mark.asyncio`` and also install an async plugin, for me I'm using <L href="https://pytest-asyncio.readthedocs.io/en/latest/">`pytest-asyncio`</L>. There are many others of course.
+</C>
+
+
+<Code
+  code=
+{`@pytest.mark.asyncio
+async def test(mock_get_result) -> None:
+    r1 = await Foo.get_result(True) # either True or Flase 
+    r2 = await Foo.get_result(False) # it does not matter
+
+    assert r1 == Result.OK # passes 
+    assert r2 == Result.OK # passes 
+`}
+language="python"
+showLineNumbers={false}
+/>
+
+
+<H2>AsyncMock Patch</H2>
+
+
+
+
+<C>
+Say I have a library called `playground` where the project structure is as follows (I use <L href="https://python-poetry.org/">poetry</L> btw)
+</C>
+<Code
+  code=
+{`(.venv) ➜  playground 
+.
+├── README.md
+├── __init__.py
+├── foo.py
+├── poetry.lock
+├── pyproject.toml
+└── test.py
+`}
+language="bash"
+showLineNumbers={false}
+/>
+
+
+
+
+<C>
+The `foo`  module has a class that contains another class which has a method that uses <L href="https://www.python-httpx.org/">`httpx`</L> to request API data <L href="/blog/async-python">asynchronously</L>, this is a dummy example of course but you get the picture, we're trying to test the functionality of an object (function) that's two modules deep. 
+</C>
+<Code
+  code=
+{`import httpx
+
+class Foo:
+    class Bar:
+        @staticmethod
+        async def fetch(url: str) -> httpx.Response :
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url)
+                return response
+`}
+language="python"
+showLineNumbers={true}
+/>
+
+<C>
+How do you mock the ``fetch`` method ?
+</C>
+
+
+<C>
+For this we will need `AsyncMock` (Python 3.8+), which is an enhanced version of the synchronous <L href="https://docs.python.org/3/library/unittest.mock.html#the-mock-class">`Mock`</L> object, supporting async functions which returns <L href="/blog/async-python#related-objects">awaitables</L> instead of normal functions.  
+</C>
+<Code
+  code=
+{`from unittest.mock import AsyncMock
+`}
+language="python"
+showLineNumbers={false}
+/>
+<C>
+We'll also need `patch()` to patch the object in hand.
+</C>
+<Code
+  code=
+{`from unittest.mock import AsyncMock, patch
+`}
+language="python"
+showLineNumbers={false}
+/>
+
+
+<C>
+I'll be mocking the status code of  `httpx.Response` object along with the 
+``JSON`` data that the `.json()` method returns.
+</C>
+<Code
+  code=
+{`import pytest
+
+from unittest.mock import AsyncMock, patch
+from playground.foo import Foo
+
+FAKE_JSON = {'hey, this is some fake':'json'}
+
+@pytest.mark.asyncio
+async def test() -> None:
+    with patch(
+        "playground.foo.Foo.Bar.fetch"
+    ) as patched_fetch:
+        mock_object = AsyncMock()
+        mock_object.status_code = 200
+        mock_object.json = lambda:  FAKE_JSON
+
+        patched_fetch.return_value = mock_object
+
+        result = await Foo.Bar.fetch('https://api.example.com')
+        assert result.status_code == 200
+        assert result.json() == FAKE_JSON
+`}
+language="python"
+showLineNumbers={true}
+/>
+
+
+
+<C>
+Let's go step by step over what's happening here:
+</C>
+<C>
+The `patch` function allows the use of <L href="https://docs.python.org/3/library/contextlib.html#single-use-reusable-and-reentrant-context-managers">context managers,</L> so as long as you're in the context perse, whatever object you patched stays patched, you must provide the full import path of the function or else it will not work. So if you're patching a function from library ``X`` you might do:
+</C>
+
+<Code
+  code=
+{`@pytest.mark.asyncio
+async def test() -> None:
+    with patch(
+        "library_x.foo.class.method"
+    ) as patched_method:
+`}
+language="python"
+showLineNumbers={false}
+/>
+<C>
+With it, you can alter the return value of methods, hence the: 
+</C>
+<Code
+  code=
+{`patched_fetch.return_value = mock_object
+`}
+language="python"
+showLineNumbers={false}
+/>
+<C>
+But what's the deal with the mock object?  the return value is  a mocked version of the response, it's saying: here I have a `Response` object that I'm trying to patch with a mocked version of it, that behaves like I need it to, we need a basic mock object that we can build upon, that's asynchronous in nature.
+</C>
+<Code
+  code=
+{`mock_object = AsyncMock()
+`}
+language="python"
+showLineNumbers={false}
+/>
+<C>
+You can set any properties and any methods on this object as you see fit.
+If you're setting properties you can directly set them as such: 
+</C>
+<Code
+  code= 
+{`mock_object.my_property = 'anything'
+`}
+language="python"
+showLineNumbers={false}
+/>
+
+<C>
+But if it's a <L href="https://docs.python.org/3/library/typing.html#annotating-callables">`Callable`</L> that you're mocking that's not exactly a `@property`, you must provide a function for it, you can use a lambda if the function is simple, or define a normal function and assign it, if it's complex.
+In the example above I mocked the `.json()` method of the `Response` class with a lambda function that takes nothing and returns a dictionary holding the data I want to receive, which is `FAKE_JSON`.
+Notice I didn't do the same for the `.status_code` as it is a property method so you can set it directly like you would set a normal attribute. 
+</C>
+
+<C>
+With that out of the way, we can then test if it actually works.
+</C>
+
+<Code
+  code= 
+{`result = await Foo.Bar.fetch('https://api.fake-example.com')
+assert result.status_code == 200
+assert result.json() == {'patched':'json'}
+`}
+language="python"
+showLineNumbers={false}
+/>
+<C>
+And it does!
+</C>
+<Code
+  code= 
+{`============================= test session starts ==============================
+collecting ... collected 1 item
+
+test.py::test PASSED                                                     [100%]
+
+============================== 1 passed in 0.13s ===============================
+`}
+language="shell"
+showLineNumbers={false}
+/>
