@@ -10,7 +10,7 @@
 - Glossary setup ([791b9f3](https://github.com/AshGw/mysite/commit/791b9f3))
 - Set `/services/transparency` page ([ba024ff](https://github.com/AshGw/mysite/commit/ba024ff))
 - Set `/services/billing` page ([3b0dd52](https://github.com/AshGw/mysite/commit/3b0dd52))
-- Hook  up the blogs links with the business side of things ([3c6fbc4](https://github.com/AshGw/mysite/commit/3c6fbc4))
+- Hook up the blogs links with the business side of things ([3c6fbc4](https://github.com/AshGw/mysite/commit/3c6fbc4))
 - Migrate the `ìndependent-code-audit` blog ([7b01ef0](https://github.com/AshGw/mysite/commit/7b01ef0))
 - Migrate `Async Python Mock Testing` blog post ([26cc71b](https://github.com/AshGw/mysite/commit/26cc71b))
 
