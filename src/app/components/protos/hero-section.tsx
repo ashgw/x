@@ -22,12 +22,11 @@ export default function HeroSection() {
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-              Hey, I'm AshGw
+              Hey, I'm Ashref
             </h1>
             <TextContent>
-              This is my online corner, where I share my thoughts through my
-              blog, conduct my business, and also connect with individuals like
-              you so
+              Welcome to my corner of the internet where I share my thoughts and
+              conduct my business by building solutions to complex problems.
             </TextContent>
           </div>
           <div className="w-full max-w-sm space-y-2">
