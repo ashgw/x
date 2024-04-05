@@ -13,344 +13,43 @@ tags:
 
 <H2>How It came to be</H2>
 <C>
-  I recently stumbled upon
-  <L href="https://www.framer.com/motion/">Framer Motion</L>
-  and let me tell you, it's a game-changer when it comes to animations in React.
-  The variety of features bundled with it is a massive time saver, it's super
-  easy & fast to create animations that would have otherwise been a migraine to
-  implement. I've been playing with it for the past couple of days, so here are
-  a couple of use cases where I'll be using it in the future.
-</C>
-<H2>Case 1</H2>
-<C>Starting off with a simple fade in on view a component.</C>
-<H3>The Traditional Approach</H3>
-<C>
-  This involves creating CSS styles for fading, handling state changes, and
-  using the
-  <L href="#IntersectionObserver">IntersectionObserver</L> API. It's effective but
-  requires several steps and can get a bit verbose.
+I'd reply back with "How far you want to go?", if I give you a concrete number I'd be lying just to make you comfortable, to trust me for the time being until I hit you with: "Oh! we ran out of budget. Again!", so let me explain to you why conventional cost estimates may not serve your best interests and propose a paradigm shift towards a more navigable approach.
 </C>
 
-<Code
-  code=
-{`const FadingText: React.FC = () => {
-  return (
-    <h1
-      className=" text-4xl font-bold
-     bg-gradient-to-r from-teal-500 to-indigo-500 
-     text-transparent bg-clip-text "
-    >
-      I&apos;m Fading in
-    </h1>
-  );
-};
-`}
-language="tsx"
-showLineNumbers={true}
-
-/>
-
+<H2>It's a Journey That Never Truly Ends</H2>
 <C>
-  How would I usually go by doing this ?<S /> First, Create the fade in style
+software development is a journey without a fixed destination. Unlike building a physical structure with predefined blueprints, crafting software embarks on an open-ended exploration, an endeavor marked by perpetual evolution and refinement.
+</C>
+<C>
+Look at Instagram. How much would it cost to replicate such a monumental software product ? The answer, quite simply, is incalculable. While a skilled developer might create a basic photo-sharing app in a matter of weeks, achieving parity with Instagram demands a Herculean effort, countless developers, years of development, and significant financial investment, yet it's still not complete. Why? Because software, by its very nature needs to evolve, subject to continuous iteration and enhancement.
+</C>
+<H2>The Right Question To Ask</H2>
+<C>
+Clients would be better served by reframing the question: "How much <L href="/blog/software-quality">quality</L> software can we create for each dollar invested?" This transforms the conversation from one of elusive certainty to one of tangible value creation. Instead of striving towards an illusory finish line, clients can focus on maximizing their investment by optimizing the quantity and quality of software produced, where they can measure progress not in terms of time constraints but in terms of <L href="/services/glossary#ticket-system">measurable</L> <L href="/blog/management-skill-issues#conclusion">deliverables.</L>
+
+</C>
+<C>
+As a freelancer who frequently collaborates with discerning individuals, I understand the importance of obtaining the greatest benefit for every dollar invested. Just like Instagram, software projects are never truly complete, they evolve through versions/iterations, each offering an opportunity to assess the value gained for the resources expended. It's a journey toward perfection that approaches infinity but never quite reaches it, it is impossible.
 </C>
 
-<Code
-  code=
-{`.fade-in {
-  opacity: 0;
-}
-.fade-in.visible {
-  opacity: 1;
-}
-`}
-language="css"
-showLineNumbers={true}
-
-/>
-
+<H2>Adapting To Market Needs</H2>
 <C>
-  Then wrap the element in a parent that checks its visibility state and fades it in if it's visible.
-</C>
-<Code
-  code=
-{`const Component: React.FC = () => {
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  return (
-    <div className="flex items-center justify-center py-2">
-      <div
-        className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`}
-      >
-        <FadingText />
-      </div>
-    </div>
-  );
-};
-`}
-language="tsx"
-showLineNumbers={true}
-
-/>
-
-<C>
-  To trigger the state change when the element mounts, **`useEffect`** is needed
-  with a reference to the target element:
+In any software business, there should be a recognition that versioned projects represent milestones rather than endpoints. Version 1.4 for example may satisfy immediate needs intended for a certain number of users for limited amount of time. Needs evolve, technologies advance, and user expectations change. Thus, the journey continues, with each version representing a step forward in the quest for software dominance in a highly competitive market.
 </C>
 
-<Code
-  code={`const Component: React.FC = () => {
 
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Handle it when in view
-    setIsVisible(!isVisible);
-  }, [ref]);
 
-  return (
-    <div className="flex items-center justify-center py-2">
-      <div
-        ref={ref}
-        className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`}
-      >
-        <FadingText />
-      </div>
-    </div>
-  );
-};
-`}
-  language="tsx"
-  showLineNumbers={true}
-/>
-<C>
-  But I don't need the state to change when the element mounts, instead I want
-  it to fade in when it comes in view, to make it happen I'll be using the
-  **`IntersectionObserver`** API which basically detects when an element comes
-  into or goes out of view within the browser's viewport
-</C>
-<Code
-  id="IntersectionObserver"
-  code={`const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-            // make the element invisible;
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.5 } /* trigger when at least 50% of the observed
-       element is visible in the viewport. */
-    );
-`}
-  language="tsx"
-  showLineNumbers={true}
-/>
-
-<C>With this setup, the component is ready to gracefully fade in.</C>
-<Code
-  code={`
-import React, { useEffect, useRef, useState } from 'react';
-import './styles.css';
-
-const Component: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const current = ref.current;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(!isVisible);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (current) {
-      observer.observe(current);
-    }
-    return () => {
-      if (current) {
-        observer.unobserve(current);
-      }
-    };
-  }, [ref]);
-
-  return (
-    <div className="flex items-center justify-center py-2">
-      <div
-        ref={ref}
-        className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`}
-      >
-        <FadingText />
-      </div>
-    </div>
-  );
-};
-
-export default Component;
-const FadingText: React.FC = () => {
-  return (
-    <h1 className=" text-4xl font-bold bg-gradient-to-r from-teal-500 to-indigo-500 text-transparent bg-clip-text ">
-      I&apos;m Fading in
-    </h1>
-  );
-};
-`}
-  language="tsx"
-  showLineNumbers={true}
-/>
-<C>Resulting in</C>
-<FramerMotionFadeInComponent />
-<C>
-  A bit cumbersome for a subtle fade-in effect, look how much of work that took,
-  now I'll be doing the same except this time with
-  <L href="https://www.framer.com/motion/">Framer Motion</L>
-</C>
-<H3>Roided Approach</H3>
-<Code
-  code={`
-import React from 'react';
-import { motion } from 'framer-motion';
-
-const FramerMotionFadeInComponent: React.FC = () => {
-  return (
-    <div className="flex justify-center items-center py-2">
-      <FadingText />
-    </div>
-  );
-};
-`}
-  language="tsx"
-  showLineNumbers={true}
-/>
 
 <C>
-  Now all I have to do is to turn any HTML element into a motion element A.K.A
-  juice it up 💉 💪 and slap the needed animation on, in this case it's on the
-  component's surrounding **``div``**
-</C>
-<Code
-  code={`
-import React from 'react';
-import { motion } from 'framer-motion';
-
-const FramerMotionFadeInComponent: React.FC = () => {
-  return (
-     <div className="flex justify-center items-center py-2">
-      <motion.div
-        viewport={{ once: true }} // only run once per load
-        whileInView={{
-          opacity: 1,
-        }}
-        initial={{
-          opacity: 0,
-        }}
-        transition={{
-          duration: 1,
-          ease: 'easeInOut',
-        }}
-      >
-        <FadingText />
-      </motion.div>
-      {// the rest of the page}
-    </div>
-  );
-};
-`}
-  language="tsx"
-  showLineNumbers={true}
-/>
-<S3 />
-<H2>Case 2 </H2>
-<C>
-  Creating this **`YeetMe`** component would have been really hard with plain
-  CSS & JS
+As an analogy, think of software teams as space ships and software projects as infinite rides to the edge of the universe. The journey of software development is boundless, with no predetermined endpoint. You can never truly reach the end; there will always be new horizons to explore and improvements to make.
+With this in mind, consider your budget as the fuel in the spaceship's tank. The question becomes: How far can the ship go until it runs out of energy? And when it runs out of energy, are you satisfied with the distance traveled? are you satisfied with the journey? However, for some ships—like those of Google, Facebook, Instagram, and other continuously evolving software giants—the journey never ends and never will; they always refill and continue pushing the boundaries of innovation, till the edge of the universe.
 </C>
 
-<YeetMe />
-
-<C>Here's the code for it </C>
-<Code
-  code={`import { motion } from 'framer-motion';
-
-export default function YeetMe() {
-  const initial = {
-    opacity: 0,
-    borderRadius: 0,
-    scale: 0,
-    rotate: 360,
-  };
-
-  const animate = {
-    opacity: 1,
-    width: 160,
-    height: 70,
-    borderRadius: 20,
-    scale: 1,
-    boxShadow: '10px 10px 0 rgba(255, 46, 199, 0.2)',
-    rotate: 0,
-  };
-
-  const transition = {
-    duration: 1,
-    type: 'keyframes',
-    ease: 'easeInOut',
-  };
-
-  const whileHover = {
-    cursor: 'grab',
-  };
-
-  const whileDrag = {
-    cursor: 'grabbing',
-  };
-  
-  return (
-    <motion.button
-      layout
-      viewport={{ once: true }}
-      className="flex justify-center items-center origin-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500 w-80 h-80"
-      initial={initial}
-      whileInView={animate}
-      transition={transition}
-      whileHover={whileHover}
-      drag
-      whileDrag={whileDrag}
-      dragConstraints={{
-        top: -10,
-        left: -10,
-        right: 10,
-        bottom: 10,
-      }}
-      dragMomentum={true}
-      dragPropagation
-    >
-      <motion.div
-        layout
-        viewport={{ once: true }}
-        className="flex justify-center items-center origin-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-80 h-80"
-        initial={initial}
-        whileInView={animate}
-        transition={transition}
-        whileHover={whileHover}
-        whileDrag={whileDrag}
-        drag
-      >
-        <span className=" font-bold">yeet me</span>
-      </motion.div>
-    </motion.button>
-  );
-}
-`}
-  language="tsx"
-  showLineNumbers={true}
-/>
-
+<H2>Conclusion</H2>
 <C>
-  These are just a couple of examples, the library offers more features and
-  options for creating sophisticated animations. You can check out the
-  <L href="https://www.framer.com/motion/introduction/">docs</L> for more info.
+When undertaking a software project, one has to recognize that the journey is just as significant as the destination, if not more so. Rather than fixating on reaching a predefined endpoint, one has accept the dynamic nature of software development. It's about leveraging resources effectively to create software that not only meets current needs but also evolves alongside changing requirements and technological advancements.
+</C>
+<C>
+So embrace the uncertainty, navigate the challenges, It's not just about reaching the destination—it's about maximizing the value of every step along the way.
 </C>
