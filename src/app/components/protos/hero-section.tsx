@@ -2,7 +2,7 @@
 'use client';
 import { Button } from '../ui/button';
 import { motion } from 'framer-motion';
-import { TextContent } from '../reusables/content';
+
 export default function HeroSection() {
   return (
     <motion.section
@@ -22,10 +22,12 @@ export default function HeroSection() {
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-              Discover Your Next Adventure aez
+              Hey, I'm AshGw
             </h1>
             <TextContent>
-              Explore our collection of unique destinations and experiences
+              This is my online corner, where I share my thoughts through my
+              blog, conduct my business, and also connect with individuals like
+              you so
             </TextContent>
           </div>
           <div className="w-full max-w-sm space-y-2">
@@ -36,5 +38,25 @@ export default function HeroSection() {
         </div>
       </div>
     </motion.section>
+  );
+}
+
+export function TextContent({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.p
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.3,
+        ease: 'easeInOut',
+      }}
+      className="p-2 my-1 mx-2 font-normal dimmed-3 max-w-[700px] "
+    >
+      {children}
+    </motion.p>
   );
 }

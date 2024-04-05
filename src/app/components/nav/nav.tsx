@@ -57,16 +57,16 @@ export function LeftNav() {
     <div className="hidden sm:ml-6 sm:block">
       <div className="flex space-x-12">
         <Link
-          className="nav-link-shadow dimmed-3 font-semibold average-transition  hover:average-translate  hover:text-white"
-          href="/blog"
-        >
-          Blog
-        </Link>
-        <Link
           className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
           href="/services"
         >
           Services
+        </Link>
+        <Link
+          className="nav-link-shadow dimmed-3 font-semibold average-transition  hover:average-translate  hover:text-white"
+          href="/blog"
+        >
+          Blog
         </Link>
         <Link
           className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
