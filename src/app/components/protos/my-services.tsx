@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { SVGProps } from 'react';
+import Link from 'next/link';
 
 export default function Component() {
   return (
@@ -21,7 +22,10 @@ export default function Component() {
           </div>
         </div>
         <div className="grid max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3   md:gap-6 lg:gap-10 mx-auto items-start justify-center py-8 md:py-12 lg:py-16 px-4 md:px-6">
-          <div className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
+          <Link
+            href="/"
+            className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
+          >
             <div className="flex flex-col gap-2 m-1 items-center">
               <CloudIcon className="w-10 h-10 mx-auto" />
               <h3 className="text-2xl font-bold">Cloud Architecture</h3>
@@ -30,24 +34,33 @@ export default function Component() {
                 design and deploy a scalable, secure architecture.
               </p>
             </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <CodeIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Code Review</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Catch bugs before they reach production. Our experts will review
-              your code and provide actionable feedback.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <PiIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Python Consulting</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Supercharge your Python projects. Our experts can optimize
-              performance, squash bugs, and add new features.
-            </p>
-          </div>
+          </Link>
+          <Link
+            href="/"
+            className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
+          >
+            <div className="flex flex-col gap-2 m-1 items-center">
+              <CloudIcon className="w-10 h-10 mx-auto" />
+              <h3 className="text-2xl font-bold">Cloud Architecture</h3>
+              <p className="text-center text-gray-500 md:text-base/relaxed dark:text-gray-400">
+                Migrate to the cloud with confidence. Our team can help you
+                design and deploy a scalable, secure architecture.
+              </p>
+            </div>
+          </Link>
+          <Link
+            href="#"
+            className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
+          >
+            <div className="flex flex-col gap-2 m-1 items-center">
+              <CloudIcon className="w-10 h-10 mx-auto" />
+              <h3 className="text-2xl font-bold">Cloud Architecture</h3>
+              <p className="text-center text-gray-500 md:text-base/relaxed dark:text-gray-400">
+                Migrate to the cloud with confidence. Our team can help you
+                design and deploy a scalable, secure architecture.
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
     </section>
