@@ -12,7 +12,7 @@ export default function Component() {
           <div className="space-y-6 text-center">
             <div className="space-y-2 mx-auto max-w-2xl">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                <h2 className="dimmed-4 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                   Expert Consulting. Custom Solutions.
                 </h2>
                 <p className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -46,7 +46,9 @@ export default function Component() {
             >
               <div className="flex flex-col gap-2 m-1 items-center">
                 <CloudIcon className="w-10 h-10 mx-auto" />
-                <h3 className="text-2xl font-bold">Cloud Architecture</h3>
+                <h3 className="dimmed-4 text-2xl font-bold">
+                  Cloud Architecture
+                </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Migrate to the cloud with confidence. Our team can help you
                   design and deploy a scalable, secure architecture.
@@ -59,7 +61,9 @@ export default function Component() {
             >
               <div className="flex flex-col gap-2 m-1 items-center">
                 <CloudIcon className="w-10 h-10 mx-auto" />
-                <h3 className="text-2xl font-bold">Cloud Architecture</h3>
+                <h3 className="dimmed-4 text-2xl font-bold">
+                  Cloud Architecture
+                </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Migrate to the cloud with confidence. Our team can help you
                   design and deploy a scalable, secure architecture.
