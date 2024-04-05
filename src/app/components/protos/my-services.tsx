@@ -21,7 +21,7 @@ export default function Component() {
           </div>
         </div>
         <div className="grid max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3   md:gap-6 lg:gap-10 mx-auto items-start justify-center py-8 md:py-12 lg:py-16 px-4 md:px-6">
-          <div className="border order-white/10b p-4 rounded-[2rem]">
+          <div className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
             <div className="flex flex-col gap-2 m-1 items-center">
               <CloudIcon className="w-10 h-10 mx-auto" />
               <h3 className="text-2xl font-bold">Cloud Architecture</h3>
