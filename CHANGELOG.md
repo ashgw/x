@@ -1,3 +1,31 @@
+## v1.72.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.71.1...v1.72.0)
+
+### 🚀 Enhancements
+
+- Migrate `management-skill-issues` ([54e4d4f](https://github.com/AshGw/mysite/commit/54e4d4f))
+- Migrate `/estimates` ([2f34533](https://github.com/AshGw/mysite/commit/2f34533))
+- Initial `/services` looksmaxin set ([d5fff47](https://github.com/AshGw/mysite/commit/d5fff47))
+- Make services cards glow & scale ([4506cc3](https://github.com/AshGw/mysite/commit/4506cc3))
+- Make services cards a link ([8d571f7](https://github.com/AshGw/mysite/commit/8d571f7))
+- Make services animate ([89731f5](https://github.com/AshGw/mysite/commit/89731f5))
+
+### 🩹 Fixes
+
+- Gap problem between service cards ([50e5f39](https://github.com/AshGw/mysite/commit/50e5f39))
+- Footer problems with `/services` ([bf5bbda](https://github.com/AshGw/mysite/commit/bf5bbda))
+
+### 🏡 Chore
+
+- Cleanup ([5fb146c](https://github.com/AshGw/mysite/commit/5fb146c))
+- Cleanup v2 ([8ff45cd](https://github.com/AshGw/mysite/commit/8ff45cd))
+- Pause ([77ed64a](https://github.com/AshGw/mysite/commit/77ed64a))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.71.1
 
 [compare changes](https://github.com/AshGw/mysite/compare/v2.0.0...v1.71.1)
