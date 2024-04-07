@@ -60,6 +60,7 @@
   html,
   body {
     scroll-behavior: smooth;
+    min-height: 100vh;
     background: linear-gradient(
       84.16deg,
       rgba(150, 46, 200, 0.15),
