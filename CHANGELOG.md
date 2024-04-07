@@ -1,3 +1,15 @@
+## v1.72.1
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.72.0...v1.72.1)
+
+### 🩹 Fixes
+
+- **#146:** Expanded background color to the whole vh ([dd4fa71](https://github.com/AshGw/mysite/commit/dd4fa71))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.72.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.71.1...v1.72.0)
