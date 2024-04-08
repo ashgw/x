@@ -1,3 +1,22 @@
+## v1.75.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.74.0...v1.75.0)
+
+### 🩹 Fixes
+
+- **playwright ci:** `.env.all` instead of `.env.local` ([21b21d3](https://github.com/AshGw/mysite/commit/21b21d3))
+- **ci:** Install with frozen lock file ([c487da3](https://github.com/AshGw/mysite/commit/c487da3))
+
+### 🏡 Chore
+
+- Add email to env vars ([f903ef0](https://github.com/AshGw/mysite/commit/f903ef0))
+- Remove `env.local` ([97c5924](https://github.com/AshGw/mysite/commit/97c5924))
+- Add `hooks` command  to Just ([0b4bfdd](https://github.com/AshGw/mysite/commit/0b4bfdd))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.74.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.73.0...v1.74.0)
