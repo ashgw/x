@@ -1,3 +1,20 @@
+## v1.74.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.73.0...v1.74.0)
+
+### 💅 Refactors
+
+- Rename `.env.local` to `.env.all` ([cad4125](https://github.com/AshGw/mysite/commit/cad4125))
+
+### 🏡 Chore
+
+- Remove `zod` & `tailwind-animate` from prod deps ([2cb96cc](https://github.com/AshGw/mysite/commit/2cb96cc))
+- Add new words to the project dictionary ([c798a01](https://github.com/AshGw/mysite/commit/c798a01))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.73.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.72.1...v1.73.0)
