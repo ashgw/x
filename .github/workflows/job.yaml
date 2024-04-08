@@ -36,7 +36,7 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       - name: Set up .env
-        run: echo '${{ secrets.ENV_VARS }}' >> .env.local
+        run: echo '${{ secrets.ENV_VARS }}' >> .env.all
       - name: Install dependencies w/ setup
         run: pnpm i
       - name: lint
