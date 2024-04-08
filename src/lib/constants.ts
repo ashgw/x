@@ -12,4 +12,4 @@ export const Status = {
   NOT_FOUND: 404,
 };
 
-export const EMAIL = 'ashrefgw@proton.me';
+export const EMAIL = pub.EMAIL;
