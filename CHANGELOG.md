@@ -1,3 +1,91 @@
+## v1.75.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.74.0...v1.75.0)
+
+### 🩹 Fixes
+
+- **playwright ci:** `.env.all` instead of `.env.local` ([21b21d3](https://github.com/AshGw/mysite/commit/21b21d3))
+- **ci:** Install with frozen lock file ([c487da3](https://github.com/AshGw/mysite/commit/c487da3))
+
+### 🏡 Chore
+
+- Add email to env vars ([f903ef0](https://github.com/AshGw/mysite/commit/f903ef0))
+- Remove `env.local` ([97c5924](https://github.com/AshGw/mysite/commit/97c5924))
+- Add `hooks` command to Just ([0b4bfdd](https://github.com/AshGw/mysite/commit/0b4bfdd))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
+## v1.74.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.73.0...v1.74.0)
+
+### 💅 Refactors
+
+- Rename `.env.local` to `.env.all` ([cad4125](https://github.com/AshGw/mysite/commit/cad4125))
+
+### 🏡 Chore
+
+- Remove `zod` & `tailwind-animate` from prod deps ([2cb96cc](https://github.com/AshGw/mysite/commit/2cb96cc))
+- Add new words to the project dictionary ([c798a01](https://github.com/AshGw/mysite/commit/c798a01))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
+## v1.73.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.72.1...v1.73.0)
+
+### 🏡 Chore
+
+- Mark w/ `TODO` ([1988a24](https://github.com/AshGw/mysite/commit/1988a24))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
+## v1.72.1
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.72.0...v1.72.1)
+
+### 🩹 Fixes
+
+- **#146:** Expanded background color to the whole vh ([dd4fa71](https://github.com/AshGw/mysite/commit/dd4fa71))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
+## v1.72.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.71.1...v1.72.0)
+
+### 🚀 Enhancements
+
+- Migrate `management-skill-issues` ([54e4d4f](https://github.com/AshGw/mysite/commit/54e4d4f))
+- Migrate `/estimates` ([2f34533](https://github.com/AshGw/mysite/commit/2f34533))
+- Initial `/services` looksmaxin set ([d5fff47](https://github.com/AshGw/mysite/commit/d5fff47))
+- Make services cards glow & scale ([4506cc3](https://github.com/AshGw/mysite/commit/4506cc3))
+- Make services cards a link ([8d571f7](https://github.com/AshGw/mysite/commit/8d571f7))
+- Make services animate ([89731f5](https://github.com/AshGw/mysite/commit/89731f5))
+
+### 🩹 Fixes
+
+- Gap problem between service cards ([50e5f39](https://github.com/AshGw/mysite/commit/50e5f39))
+- Footer problems with `/services` ([bf5bbda](https://github.com/AshGw/mysite/commit/bf5bbda))
+
+### 🏡 Chore
+
+- Cleanup ([5fb146c](https://github.com/AshGw/mysite/commit/5fb146c))
+- Cleanup v2 ([8ff45cd](https://github.com/AshGw/mysite/commit/8ff45cd))
+- Pause ([77ed64a](https://github.com/AshGw/mysite/commit/77ed64a))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.71.1
 
 [compare changes](https://github.com/AshGw/mysite/compare/v2.0.0...v1.71.1)

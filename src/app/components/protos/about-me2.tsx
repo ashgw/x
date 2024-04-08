@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+const FrontEnd = ['React', 'Next', 'Framer', 'GSAP'];
+
 export default function AboutMe2() {
   return (
     <div className="w-full py-12 lg:py-24">
@@ -18,26 +20,16 @@ export default function AboutMe2() {
             </p>
           </div>
           <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tighter">Skills</h2>
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                JavaScript
-              </span>
-              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                React
-              </span>
-              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                Node.js
-              </span>
-              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                TypeScript
-              </span>
-              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                AWS
-              </span>
-              <span className="rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                Docker
-              </span>
+            <h2 className="text-2xl font-bold tracking-tighter">Frontend</h2>
+            <div className="flex flex-wrap items-center gap-[0.625rem] text-sm dimmed-4">
+              {FrontEnd.map((tech) => (
+                <span
+                  key={tech}
+                  className="relative rounded-full px-2 py-1 border border-white/10"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
           </div>
           <div className="space-y-2">
@@ -81,9 +73,9 @@ export default function AboutMe2() {
           <img
             alt="Profile Picture"
             className="rounded-full w-60 border aspect-square object-cover object-center justify-self-start"
-            height="300"
-            src="/placeholder.svg"
-            width="300"
+            height="800"
+            src="https://avatars.githubusercontent.com/u/126174609?v=4"
+            width="1200"
           />
         </div>
       </div>

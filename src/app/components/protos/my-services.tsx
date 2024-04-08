@@ -1,96 +1,123 @@
+'use client';
 /* eslint-disable */
 import React, { SVGProps } from 'react';
+import Footer from '../footer/footer';
+import CopyRight from '../footer/copyright';
+import Link from 'next/link';
+import { Boxes, Code, Computer, ScanEye } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+// TODO: setup SEO
 
 export default function Component() {
+  const TRANSITION_DURATION: number = 0.3; // secs
+  const TRANSITION_DELAY: number = 0.4;
+  const transition = {
+    duration: TRANSITION_DURATION,
+    delay: TRANSITION_DELAY,
+  };
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
-        <div className="space-y-6 text-center">
-          <div className="space-y-2 mx-auto max-w-2xl">
-            <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-              Our Services
+    <>
+      <section className="w-full pt-12 md:pt-24 lg:pt-32">
+        <div className="px-4 md:px-6">
+          <div className="space-y-6 text-center">
+            <div className="space-y-2 mx-auto max-w-2xl">
+              <div className="space-y-2">
+                <motion.h2
+                  initial={{
+                    opacity: 0,
+                    x: 50,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                  transition={transition}
+                  className="dimmed-4 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+                >
+                  Expert Consulting. Custom Solutions.
+                </motion.h2>
+                <motion.p
+                  initial={{
+                    opacity: 0,
+                    x: -50,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                  transition={transition}
+                  className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+                >
+                  Our team of experts is here to help you succeed. From
+                  architecting scalable APIs to designing beautiful user
+                  interfaces, we have the skills and experience to bring your
+                  ideas to life.
+                </motion.p>
+              </div>
             </div>
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Expert Consulting. Custom Solutions.
-              </h2>
-              <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Our team of experts is here to help you succeed. From
-                architecting scalable APIs to designing beautiful user
-                interfaces, we have the skills and experience to bring your
-                ideas to life.
-              </p>
-            </div>
           </div>
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.8,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            transition={{
+              duration: 0.4,
+              delay: 1,
+            }}
+            className="grid max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 mx-auto items-start justify-center py-8 md:py-12 lg:py-16 px-4 md:px-6"
+          >
+            <Link
+              href="#"
+              className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
+            >
+              <div className="flex flex-col gap-2 m-1 items-center">
+                <ScanEye className="w-10 h-10 mx-auto" />
+                <h3 className="dimmed-4 text-2xl font-bold">Consulting</h3>
+                <p className="text-center md:text-base/relaxed dimmed-1">
+                  Migrate to the cloud with confidence. Our team can help you
+                  design and deploy a scalable, secure architecture.
+                </p>
+              </div>
+            </Link>
+            <Link
+              href="/"
+              className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
+            >
+              <div className="flex flex-col gap-2 m-1 items-center">
+                <Code className="w-10 h-10 mx-auto" />
+                <h3 className="dimmed-4 text-2xl font-bold">Code Audits</h3>
+                <p className="text-center md:text-base/relaxed dimmed-1">
+                  Migrate to the cloud with confidence. Our team can help you
+                  design and deploy a scalable, secure architecture.
+                </p>
+              </div>
+            </Link>
+            <Link
+              href="/"
+              className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
+            >
+              <div className="flex flex-col gap-2 m-1 items-center">
+                <Computer className="w-10 h-10 mx-auto" />
+                <h3 className="text-2xl font-bold  dimmed-4">
+                  Software Solutions
+                </h3>
+                <p className="text-center md:text-base/relaxed dimmed-1">
+                  Migrate to the cloud with confidence. Our team can help you
+                  design and deploy a scalable, secure architecture.
+                </p>
+              </div>
+            </Link>
+          </motion.div>
         </div>
-        <div className="grid max-w-5xl grid-cols-1 md:grid-cols-2 md:gap-6 lg:gap-10 mx-auto items-start justify-center py-8 md:py-12 lg:py-16 px-4 md:px-6">
-          <div className="flex flex-col gap-2">
-            <DatabaseIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Managed Databases</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Focus on your apps, not your databases. Let us handle the
-              maintenance, backups, and updates.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <CloudIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Cloud Architecture</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Migrate to the cloud with confidence. Our team can help you design
-              and deploy a scalable, secure architecture.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <CodeIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Code Review</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Catch bugs before they reach production. Our experts will review
-              your code and provide actionable feedback.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <KeyIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">API Development</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Build the foundation of your app. We can create custom APIs to
-              power your frontend or mobile app.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <RadiationIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Rust Consulting</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Embrace the power of Rust. Our Rustaceans can help you write safe,
-              fast, and concurrent code.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <PiIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Python Consulting</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Supercharge your Python projects. Our experts can optimize
-              performance, squash bugs, and add new features.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <ComponentIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">Design System</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Create a cohesive user experience. Our designers can craft a
-              custom design system for your app.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <AppleIcon className="w-10 h-10 mx-auto" />
-            <h3 className="text-2xl font-bold">App Store Submission</h3>
-            <p className="text-gray-500 md:text-base/relaxed dark:text-gray-400">
-              Get your app in the hands of users. We'll handle the app store
-              submission process for iOS and Android.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+      <Footer />
+    </>
   );
 }
 

@@ -74,12 +74,6 @@ dependencies:
   tailwind-merge:
     specifier: ^2.2.0
     version: 2.2.1
-  tailwindcss-animate:
-    specifier: ^1.0.7
-    version: 1.0.7(tailwindcss@3.4.1)
-  zod:
-    specifier: ^3.22.4
-    version: 3.22.4
 
 devDependencies:
   '@commitlint/cli':
@@ -14313,17 +14307,6 @@ packages:
       tailwind-merge: 1.14.0
       tailwindcss: 3.4.1(ts-node@10.9.2)
 
-  /tailwindcss-animate@1.0.7(tailwindcss@3.4.1):
-    resolution:
-      {
-        integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==,
-      }
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
-    dependencies:
-      tailwindcss: 3.4.1(ts-node@10.9.2)
-    dev: false
-
   /tailwindcss@3.4.1(ts-node@10.9.2):
     resolution:
       {
@@ -15550,6 +15533,7 @@ packages:
       {
         integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==,
       }
+    dev: true
 
   /zwitch@2.0.4:
     resolution:

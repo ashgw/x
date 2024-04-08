@@ -11,10 +11,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Set up .env
-        run: echo '${{ secrets.ENV_VARS }}' >> .env.local
+        run: echo '${{ secrets.ENV_VARS }}' >> .env.all
+      - name: Get version from package.json
+        id: get_version
+        run: echo "::set-output name=version::$(node -p \"require('./package.json').version\")"
       - name: Building & tagging
-        run: docker build -t ashgw/mysite:latest .
-      - name: Login
+        run: |
+          docker build -t ashgw/mysite:${{ steps.get_version.outputs.version }} .
+          docker tag ashgw/mysite:${{ steps.get_version.outputs.version }} ashgw/mysite:latest
+      - name: Login to DockerHub
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ashgw --password-stdin
       - name: Pushing
-        run: docker push ashgw/mysite:latest
+        run: |
+          docker push ashgw/mysite:${{ steps.get_version.outputs.version }}
+          docker push ashgw/mysite:latest

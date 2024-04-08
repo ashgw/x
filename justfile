@@ -31,6 +31,9 @@ alias rn := reincarnate
 @build:
     pnpm build 
 
+@hooks:
+    pnpm hooks 
+    
 @test:
     pnpm test
 
