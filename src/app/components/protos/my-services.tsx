@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { Boxes, Code, Computer, ScanEye } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+// TODO: setup SEO
+
 export default function Component() {
   const TRANSITION_DURATION: number = 0.3; // secs
   const TRANSITION_DELAY: number = 0.4;
