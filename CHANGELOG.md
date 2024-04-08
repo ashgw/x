@@ -11,7 +11,7 @@
 
 - Add email to env vars ([f903ef0](https://github.com/AshGw/mysite/commit/f903ef0))
 - Remove `env.local` ([97c5924](https://github.com/AshGw/mysite/commit/97c5924))
-- Add `hooks` command  to Just ([0b4bfdd](https://github.com/AshGw/mysite/commit/0b4bfdd))
+- Add `hooks` command to Just ([0b4bfdd](https://github.com/AshGw/mysite/commit/0b4bfdd))
 
 ### ❤️ Contributors
 
