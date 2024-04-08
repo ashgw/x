@@ -1,3 +1,15 @@
+## v1.73.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.72.1...v1.73.0)
+
+### 🏡 Chore
+
+- Mark w/ `TODO` ([1988a24](https://github.com/AshGw/mysite/commit/1988a24))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.72.1
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.72.0...v1.72.1)
