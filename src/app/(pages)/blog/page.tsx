@@ -16,6 +16,7 @@ export default async function BlogPage() {
           <Posts posts={posts} />
           <div className="w-auto h-full"></div>
         </section>
+        <div className="py-6"></div>
       </Suspense>
     );
   } else {

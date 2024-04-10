@@ -61,7 +61,6 @@ export default function Posts({ posts }: { posts: PostData[] }) {
           <NoMoreImTiredBoss />
         )}
       </div>
-      <div className="py-32"></div>
     </main>
   );
 }
