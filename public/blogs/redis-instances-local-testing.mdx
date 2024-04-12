@@ -24,7 +24,8 @@ tags:
 It's obvious right, have a mechanism that switches between 
 testing instances and real instances, of course, this is not
  hard to implement, the thing is: how do you automate these tests and have them work, even in CI?
-<S/>well the short answer is a shell a script that spins **Docker**
+<S/>
+Well the short answer is a shell a script that spins **Docker**
  containers up and tears them down later, and cleanup after.
 </C>
 <H2>
@@ -400,4 +401,4 @@ async def do_some_tests(): ...  # use the test client
 />
 
 <C>But the idea remains the same, scale redis container(s) before tests and scale down and clean up after, the only part changing in the script 
-is the test runner, instead of Python's **``pytest``** it'll be **`go test`**, if you use rust then it's  **`cargo test`** and so on.</C>
+is the test runner, instead of Python's **``pytest``** it'll be **`go test`**, if you use Rust then it's  **`cargo test`** and so on.</C>
