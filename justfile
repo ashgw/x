@@ -59,12 +59,15 @@ NGROK_DOMAIN := "saved-duckling-subtle.ngrok-free.app"
     ngrok http --domain={{NGROK_DOMAIN}} {{COMPOSE_PORT}}
 
 @patch:
+    git add .
     npx changelogen@latest --release --push --patch 
 
 @minor:
+    git add .
     npx changelogen@latest --release --push --minor 
 
 @major:
+    git add .
     npx changelogen@latest --release --push --major 
 
 @reincarnate:

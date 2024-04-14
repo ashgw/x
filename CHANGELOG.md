@@ -16,8 +16,8 @@
 
 - Set `tailwind-animate` > 2.2.0 ([#154](https://github.com/AshGw/mysite/pull/154))
 - Remove stale lock file ([1075c95](https://github.com/AshGw/mysite/commit/1075c95))
-- Update  lock file with the new deps ([4148fb8](https://github.com/AshGw/mysite/commit/4148fb8))
-- Update  lock file with the new deps ([9b0fd4d](https://github.com/AshGw/mysite/commit/9b0fd4d))
+- Update lock file with the new deps ([4148fb8](https://github.com/AshGw/mysite/commit/4148fb8))
+- Update lock file with the new deps ([9b0fd4d](https://github.com/AshGw/mysite/commit/9b0fd4d))
 
 ### 🏡 Chore
 

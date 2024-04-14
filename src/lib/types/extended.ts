@@ -12,6 +12,8 @@ astd provides the NonNullable type whcih is defined as such:
     export type NonNullable<T> = T & {};
  */
 export type ExcludeNullable<T> = Exclude<T, Nullable>;
+export type ExcludeUndefined<T> = Exclude<T, undefined>;
+export type ExcludeNull<T> = Exclude<T, null>;
 export type ExcludeNullableFields<T> = {
   [P in keyof T]-?: ExcludeNullable<T[P]>;
 };
@@ -19,6 +21,7 @@ export type ExcludeNullableFields<T> = {
 export type Optional<T> = T | null;
 export type MaybeUndefined<T> = T | undefined;
 export type Maybe<T> = T | Nullable;
+
 export type KeysOnly<T extends object> = keyof T;
 export type ValuesOnly<T extends object> = T[keyof T];
 /**
@@ -79,7 +82,7 @@ type CarKeysByValue = ValsToKeys<Car>;
 // Usage example:
 const keysForString: CarKeysByValue['string'] = 'model';
 
-type Expand<T> = T extends object
+export type Expand<T> = T extends object
   ? T extends infer O
     ? { [K in keyof O]: Expand<O[K]> }
     : never
