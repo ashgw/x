@@ -26,7 +26,7 @@ export default function HeroSection() {
             </h1>
             <TextContent>
               Welcome to my corner of the internet where I share my thoughts and
-              conduct my business by building solutions to complex problems.
+              conduct business.
             </TextContent>
           </div>
           <div className="w-full max-w-sm space-y-2">

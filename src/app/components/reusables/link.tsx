@@ -42,7 +42,7 @@ export function Link({
       {...props}
     >
       {props.children}
-      <span className="pl-1 hidden sm:inline-block">&#x2197;</span>
+      <span className="pl-1 hidden sm:inline-block">&#8599;</span>
     </NextLink>
   );
 }

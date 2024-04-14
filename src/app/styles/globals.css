@@ -59,6 +59,7 @@
   }
   html,
   body {
+    font-family: 'Zapf Dingbats';
     scroll-behavior: smooth;
     min-height: 100vh;
     background: linear-gradient(

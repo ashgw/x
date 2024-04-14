@@ -12,11 +12,8 @@ export default function AboutMe2() {
               About Me
             </h1>
             <p className="max-w-[600px] text-gray-500 dark:text-gray-400">
-              Hi, I'm a passionate software engineer with a love for creating
-              elegant solutions to complex problems. My experience spans various
-              domains, from web development to cloud computing. I'm always eager
-              to learn new technologies and frameworks to stay ahead in the
-              ever-evolving tech landscape.
+              Hi, I'm a software engineer, I'm not passionate about shit, nor
+              eager to learn, mfs who say that shit all cap big time
             </p>
           </div>
           <div className="space-y-2">
@@ -36,7 +33,9 @@ export default function AboutMe2() {
             <h2 className="text-2xl font-bold tracking-tighter">Experience</h2>
             <div className="space-y-4">
               <div>
-                <h3 className="text-xl font-bold">Senior Frontend Engineer</h3>
+                <h3 className="text-xl font-bold">
+                  Fake aah Frontend Engineer
+                </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   Leading the development of a next-generation customer
                   engagement platform.
