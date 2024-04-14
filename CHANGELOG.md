@@ -1,3 +1,40 @@
+## v1.76.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.75.0...v1.76.0)
+
+### 🩹 Fixes
+
+- **docker ci:** Have it pick up the version from the start ([d128350](https://github.com/AshGw/mysite/commit/d128350))
+- **#146:** Background colors not expanding to cover the whole viewport on Safari ([4c7ed3b](https://github.com/AshGw/mysite/commit/4c7ed3b))
+- **#145:** Remove small external link arrows for android & ios ([9fc15b8](https://github.com/AshGw/mysite/commit/9fc15b8))
+
+### 💅 Refactors
+
+- Rename `.env.all` to `.env.local` ([74bc1b7](https://github.com/AshGw/mysite/commit/74bc1b7))
+
+### 📦 Build
+
+- Set `tailwind-animate` > 2.2.0 ([#154](https://github.com/AshGw/mysite/pull/154))
+- Remove stale lock file ([1075c95](https://github.com/AshGw/mysite/commit/1075c95))
+- Update  lock file with the new deps ([4148fb8](https://github.com/AshGw/mysite/commit/4148fb8))
+- Update  lock file with the new deps ([9b0fd4d](https://github.com/AshGw/mysite/commit/9b0fd4d))
+
+### 🏡 Chore
+
+- Fix typos ([37422ae](https://github.com/AshGw/mysite/commit/37422ae))
+- Fix typos ([75108a4](https://github.com/AshGw/mysite/commit/75108a4))
+
+### 🤖 CI
+
+- **docker:** Tag image with the current version instead of latest only ([eed56f9](https://github.com/AshGw/mysite/commit/eed56f9))
+- **docker:** Shorten the steps for double tag ([b0e7603](https://github.com/AshGw/mysite/commit/b0e7603))
+- Add `ngrok` command for Just ([1ef2d1b](https://github.com/AshGw/mysite/commit/1ef2d1b))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+- Ashref Gwader ([@AshGw](http://github.com/AshGw))
+
 ## v1.75.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.74.0...v1.75.0)
