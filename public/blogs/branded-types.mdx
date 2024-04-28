@@ -1,0 +1,183 @@
+---
+title: Branded Types
+seoTitle: Enhance Runtime Safety with Branded Types in TypeScript
+summary: Enhance TypeScript's runtime safety with branded types
+isReleased: true
+isSequel: false
+lastModDate: 2024-04-27T09:15:00-0401
+firstModDate: 2024-04-27T09:15:00-0401
+minutesToRead: 3
+tags:
+  - 'typescript'
+  - 'quality'
+---
+
+<C>
+You're likely familiar with TypeScript's ability to enhance reliability and safety within your codebase. However, not all TypeScript code is created equal in terms of safety or quality. There are many ways to enhance the safety of your TS code, and one of the ways is using a pattern called "Branded Types," also known as "Nominal Types", "Unique Types," or simply "New Types." They all mean the same thing, which is to establish deeper specificity and uniqueness for modeling your data beyond basic type primitives.
+</C>
+<H2>The Problem</H2>
+<C>
+So here's a question for you, can you figure out how many things that can go wrong here
+</C>
+<Code
+  code={`function requestBaz(barID: string, fooID: string) {
+  if (
+    fooID.concat().toLowerCase() === 'fooid' &&
+    barID.concat().toLowerCase() === 'barid'
+  ) {
+    return 'baz';
+  }
+}
+type Foo = {
+  id: string;
+  foo: string;
+};
+
+type Bar = {
+  id: string;
+  bar: string;
+};
+
+// ...
+
+const baz = requestBaz(foo.id, bar.id);
+const baz2 = requestBaz(bar.id, foo.id);
+`}
+  language="tsx"
+  showLineNumbers={true}
+/>
+<C>
+What does `requestBaz()` return exactly? Suppose it does, Is it a string? If so, would any string do?
+ </C>
+ <C>
+`fooID` and `barID` are both strings so if you mistakenly mix both parameter of the `requestBaz()` function like `baz` and `baz2` did here, the code will run, but the logic breaks and the bug goes totally undetected.
+This gets amplified when the codebase has tens or hundreds of thousands of lines.
+ </C>
+  <C>
+As you can see, there are so many ways this can go south. So here's how to fix it with new types.
+</C>
+<H2>The Solution</H2>
+
+<Code
+  code={`type FooID = NewType<'FooID', string>;
+type BarID = NewType<'BarID', string>;
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+<C>
+Note that: new types must be unique to get types violations flagged by linter. So this type definition: 
+</C>
+<Code
+  code={`type FooID = NewType<'BarID', string>;
+type BarID = NewType<'BarID', string>;
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+<C>
+ Will not help detect any errors. Even though the type name declaration itself is different as in `FooID` and `BarID`, they're actually both of type `BarID`.
+ </C>
+ <C>
+You can now use these types to annotate the IDs for `Foo` and `Bar`
+ </C>
+<Code
+  code={`type Foo = {
+  id: FooID;
+  foo: string;
+};
+
+type Bar = {
+  id: BarID;
+  bar: string;
+};
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+  <C>
+And if you're wondering how to create the `NewType` yourself here's the type definition: 
+ </C>
+<Code
+  code={`declare const __s: unique symbol;
+export type NewType<N, T> = T & {
+  /**
+   * Property \`__s\` is not intended for direct access nor modification.
+   * @internal
+   */ [__s]: N;
+};
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+   <C>
+We also need the return type for the function, it is a string, true, but what type of string exactly? Can any string do?
+
+So we need to create a new unique type called `Baz` for the type of function return.
+ </C>
+
+<Code
+  code={`type Baz = NewType<'Baz', string>;
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+
+<C>
+One more thing though, the function `requestBaz()`, may or may not find a `Baz`. Should it fail fast and error out? Well instead of `try` `catch` which is an anti pattern, maybe we need a type that returns `Baz` if found, else `null`, not `void` nor `undefined` since these do not require explicit return, which we do need here. Perhaps we need some optional type like
+</C><Code
+  code={`type Optional<T> = T | null;
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+<C>
+Now, using all of these here's the the same piece of code, enhanced and bug free.
+</C>
+<Code
+  code={`import type { NewType, Optional } from 'ts-roids' 
+
+type FooID = NewType<'FooID', string>;
+type BarID = NewType<'BarID', string>;
+
+type Foo = {
+  id: FooID;
+  foo: string;
+};
+
+type Bar = {
+  id: BarID;
+  bar: string;
+};
+
+type Baz = NewType<'Baz', string>;
+
+function requestBaz(barID: BarID, fooID: FooID): Optional<Baz> {
+  // String methods work for fooID and barID, since they're both strings.
+  if (
+    fooID.concat().toLowerCase() === 'fooid' &&
+    barID.concat().toLowerCase() === 'barid'
+  ) {
+    return 'baz' as Baz; 
+  }
+    return null; // You have to explicitly return null here.
+}
+const foo = {} as Foo;
+const bar = {} as Bar;
+
+// The line below will work just fine.
+const baz1 = requestBaz(bar.id, foo.id); 
+
+
+// But this will fail.
+const baz2 = requestBaz(foo.id, bar.id); 
+/* TypeError: 
+    Argument of type 'FooID' is not assignable to parameter of type 'BarID'.
+    Type 'FooID' is not assignable to type '"BarID"' 
+  */`}
+  language="tsx"
+  showLineNumbers={true}
+/>
+<C>
+`ts-roids` is yet another library I created this month, it helps to bulletproof TypeScript with types and decorators, it includes more than 150+ utilities, you can check it out <L href="https://github.com/ashgw/ts-roids">here</L>, this just a small example of what you might use it for.
+</C>
