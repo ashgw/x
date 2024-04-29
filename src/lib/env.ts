@@ -13,7 +13,7 @@ export const nextJS = {
 };
 
 export const pub = {
-  SITE_URL_PROD: process.env.SITE_URL_PROD as string,
-  SITE_URL_DEV: process.env.SITE_URL_DEV as string,
+  SITE_URL_PROD: nextJS.NEXT_URL,
+  SITE_URL_DEV: nextJS.NEXT_DEV_URL,
   EMAIL: process.env.EMAIL as string,
 };
