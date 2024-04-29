@@ -1,0 +1,61 @@
+---
+title: Pitfalls of A/B Testing
+seoTitle:  Pitfalls of overreliance on A/B tests for complex decisions
+summary: The overreliance on A/B tests for complex decisions
+isReleased: true
+isSequel: false
+lastModDate: 2024-01-14T09:15:00-0401
+firstModDate: 2024-01-14T09:15:00-0401
+minutesToRead: 5
+tags:
+  - 'a/b'
+  - 'testing'
+---
+
+<C>
+Over the past few years, I've noticed a common issue with how A/B test results are handled. Sometimes, conclusions are presented as definitive winners, but these conclusions are often based on the best interpretations possible with the available data, data, that is not quite accurately interpreted.
+</C>
+
+<C>
+What's missing is the acknowledgment that the final decision wasn't actually based on a logical understanding of the collected metrics, but merely on a shallow assumptions.
+</C>
+
+<C>
+The reason behind emphasizing certain data over others can vary greatly, and mostly this selective use of data or let's say misinterpretation of test results can benefit individuals who want to support a particular idea for their [own benefit](), which leads to decisions being made based on incomplete or let's say biased interpretations of the data, rather than a thorough understanding of the metrics and their true implications.
+</C>
+
+<H2>Example</H2>
+<C>
+ Say there's a product with multiple complex features, each costly to maintain and very resource-intensive. And now, two stakeholders debate the fate of these features, one of them argues for their removal, the other advocates for fixes. To resolve the dispute, they decide to conduct A/B tests to gauge user responses to feature removal. 
+ </C>
+
+
+<C>
+They removed one feature and conducted the first test, the user remained unaffected, they did the second one,  the user remained unaffected, they did it the third time, the same result, so they kept going, progressively removing features based on the previous "unaffected user" results. 
+</C>
+
+
+<C>
+Eventually, a noticeable number of users began to leave, and they were leaving fast. The removal of features has impacted user satisfaction **cumulatively**, not just **individually**. The final test indicates increased user attrition, but attributing this solely to the last removed feature overlooks the broader context of user experience erosion over time.
+</C>
+
+
+<C>
+The primary fallacy in such cases is in the assumption that sufficient data was collected to support decisive actions. User dissatisfaction resulting from feature removals can be multifaceted, users may not be satisfied, but they keep using the service anyway, and since they're dissatisfied, they keep looking for other alternatives as a complement to the missing 
+feature(s), until one day, they remove too much, the user has no option but to leave, this behavior will definitely not get picked up with this form of A/B tests. The tests fail to capture the overall user experience trajectory. 
+</C>
+
+
+<C>
+I mean, don't get me wrong, A/B testing is a valuable tool when applied appropriately, such as comparing sign-up buttons, landing on webpages, UI changes and stuff like that, it has limitations though, in capturing user satisfaction specifically. 
+</C>
+
+<H2>Conclusion</H2>
+<C>
+So caution is therefore advised in relying solely on these tests for complex decisions, it can inadvertently reinforce preconceived notions rather than reflect nuanced realities. It is after all a valuable analytical tool, its application should be tempered with an understanding of its limitations.
+</C>
+
+<C>
+Satisfaction and user behavior are intricate and multifaceted phenomena, way beyond the scope of simple A/B tests. It is important to approach testing with humility and awareness of its potential blind spots.
+</C>
+
