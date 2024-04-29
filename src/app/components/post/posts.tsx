@@ -9,9 +9,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Footer from '@/app/components/footer/footer';
 
-export default function Posts({ posts }: { posts: PostData[] }) {
+type Post = { posts: PostData[] };
+export default function Posts({ posts }: Post) {
   const firstLoadVisibleNum = 5;
-  const perLoadVisibleNum = 2;
+  const perLoadVisibleNum = 3;
   const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
   const loadMore = visibleNum <= posts.length;
 
