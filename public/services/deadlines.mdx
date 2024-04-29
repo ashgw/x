@@ -1,18 +1,35 @@
 ---
 title: Deadlines
-seoTitle: Deadlines
+seoTitle: How Deadlines Are Set
 summary: Deadlines
 isReleased: true
 isSequel: false
-lastModDate: 2000-00-00T00:00:00-0000
-firstModDate: 2000-00-00T00:00:00-0000
-minutesToRead: 0
+lastModDate: 2023-04-00T00:00:00-0000
+firstModDate: 2023-04-00T00:00:00-0000
+minutesToRead: 5
 tags:
-  - 'code audits'
+  - 'deadlines'
+  - 'estimates'
+  - 'timeframe'
 ---
 <C>
-A deadline signifies more than just a point in time when work should be completed. It indicates that the project must be operational in a real-world production environment by that date **without** sacrificing <L href="/blog/software-quality">quality.</L> Simply regarding it as the moment to submit source code is shortsighted and ultimately dissatisfying for the client.
+A deadline signifies more than just a point in time when work should be completed. It indicates that the project must be operational in a real-world production environment by that date **without** sacrificing <L href="/blog/software-quality">quality.</L> Simply regarding it as the moment to submit source code is shortsighted and ultimately dissatisfying for the client. And by deadline I don't mean the classical sprint deadlines.
 </C>
+
+<C>
+Sprints, with their fixed timelines mostly based on literally nothing, often impose arbitrary deadlines that can lead to estimation overhead and short-term thinking.
+</C>
+<C>
+Instead of adhering to traditional sprints with predetermined timelines for implementing a set number of features, our approach allows sprints to conclude once a collection of <L href="/services/glossary#user-stories">User Stories</L>, also referred to as "Epics", are fully implemented. These sprints can span anywhere from two days, two weeks to several months or even longer. And since we prioritize <L href='/blog/management-skill-issues#conclusion'>deliverables</L> over time. We do not try to squash a bunch of features to  fit a golden number like "2 weeks". Each "sprint" is different. The asynchronous and parallel nature of task management allows to engage in multiple sprints simultaneously. For instance, if we have features A, B, C, and D to implement, rather than completing them sequentially, they all start simultaneously. If one feature, such as D, takes longer than expected, we don't halt progress, instead, we continue advancing. By the time we reach the midpoint of D, A, B, and C have already been completed. We use a <L href='/services/glossary#ticket-system'>ticket system</L> to break down these larger features into smaller, independent, traceable, and <L href='/services/billing#task-cost'>billable</L> tickets.
+</C>
+<C>
+<L href='/blog/project-exstimates'>Estimating</L> future progress is based on tracking the completion of these tickets over time, rather than predicting how much can be done within an arbitrarily defined classical "sprint" period. And by monitoring the rate of ticket completion, we can forecast project progress more accurately and adjust <L href='#prioritized'>priorities</L> accordingly.
+</C>
+<C>
+This also reduces risk by minimizing the chances of encountering unforeseen complications in large and complex tasks. It allows for a steady flow of completed work. If an <L href='/services/glossary#ticket'>issue</L>  is particularly challenging, we can work on multiple tasks simultaneously without disruption. On top of that, code reviews become more manageable and efficient with smaller and laser focused units of work, which in turn enhances overall <L href='/blog/software-quality'>quality</L> while reducing overhead.
+</C>
+
+
 
 <H2>In Case We Come Short</H2>
 <C>
@@ -23,7 +40,7 @@ Additional time is always allocated for addressing unexpected challenges, but, w
 - \- Drop low-priority features.
 </C>
 <C>
-Sacrificing quality is a short-term fix, it will inevitably lead to issues later on. Most software teams that opt for this approach end up with unmaintainable code, resulting in numerous bugs, performance issues, or even requiring a complete project rewrite. In my projects, I never consider this as an option. 
+Sacrificing quality is a short-term fix, it will inevitably lead to issues later on. Most software teams that opt for this approach end up with unmaintainable code, resulting in numerous bugs, performance issues, or even requiring a complete project rewrite. This is approach is never to be considered. 
 </C>
 <C>
 Outsourcing work is a viable solution, but it comes with additional costs. Therefore, it's only considered when it provides a positive ROI
