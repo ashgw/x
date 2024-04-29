@@ -15,14 +15,15 @@ export default function Posts({ posts, taggedPostsFileNames }: PostsParams) {
   const firstLoadVisibleNum = 5;
   const perLoadVisibleNum = 3;
   const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
-  
-  const loadMore = visibleNum <= posts.length;
+
   let filteredPosts: PostData[] = posts;
   if (taggedPostsFileNames && taggedPostsFileNames.length > 0) {
     filteredPosts = posts.filter((post) =>
       taggedPostsFileNames.includes(post.filename)
     );
   }
+  const loadMore = visibleNum <= filteredPosts.length;
+
   return (
     <main>
       {filteredPosts
