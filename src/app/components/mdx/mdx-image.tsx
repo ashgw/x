@@ -3,11 +3,10 @@ import { cn } from '@/lib/utils';
 import NextImage from 'next/image';
 
 type MDXImageProps = {
-  alt: string;
-  width: string;
-  height: string;
-  src: string;
+  alt?: string;
+  fill?: boolean;
   className?: string;
+  src: string;
 };
 export function MDXImage(props: MDXImageProps) {
   return (
@@ -16,9 +15,8 @@ export function MDXImage(props: MDXImageProps) {
         as={NextImage}
         className={cn('rounded-lg', props.className || '')}
         src={props.src}
-        alt={props.alt}
-        height={props.height}
-        width={props.width}
+        alt={props.alt || 'blog image'}
+        fill={props.fill || true}
       />
     </Skeleton>
   );
