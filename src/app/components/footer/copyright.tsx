@@ -3,7 +3,7 @@ export default function CopyRight() {
   return (
     <>
       <p className="flex items-center justify-center text-secondary-center dimmed-3 text-sm">
-        &copy; 2024 Ashref Gwader. All rights reserved
+        &copy; {new Date().getFullYear()} Ashref Gwader. All rights reserved
       </p>
       <div className="hidden dimmed-3 flex items-center justify-center gap-2 max-w-md mx-auto sm:gap-4">
         <Link

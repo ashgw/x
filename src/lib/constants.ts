@@ -1,8 +1,8 @@
-import { nextJS, pub } from './env';
+import { nextJS, pub } from '@/lib/env';
 export const BLOG_CONTENT_PATH = '/public/blogs';
 export const BUSINESS_CONTENT_PATH = '/public/services';
 export const BLOG_URI = '/blog';
-export const BLOG_TAG_URI = 'blog/tag';
+export const BLOG_TAG_URI = '/blog/tag';
 export const BLOG_API_URI = '/api/blogs';
 export const SITE_URL = nextJS.NEXT_DEV_URL;
 export const EMAIL = pub.EMAIL;
