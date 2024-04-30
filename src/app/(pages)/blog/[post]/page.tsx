@@ -7,11 +7,10 @@ import { pub } from '@/lib/env';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import PostSection from '@/app/components/post/post-section';
 import Footer from '@/app/components/footer/footer';
-
+import type { EmptyObject } from 'ts-roids';
 type RouteParams = {
   params: { post: string };
 };
-type NoMetadata = Record<never, never>; // the only available solution to type it
 
 export const generateStaticParams = async () => {
   const posts = await getBlogPosts();
@@ -22,7 +21,7 @@ export const generateStaticParams = async () => {
 
 export async function generateMetadata({
   params,
-}: RouteParams): Promise<Metadata | NoMetadata> {
+}: RouteParams): Promise<Metadata | EmptyObject> {
   const post = await getBlogPost(params.post);
   if (!post) {
     return {};

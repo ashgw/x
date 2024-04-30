@@ -7,13 +7,11 @@ import type { PostData } from '@/lib/types/mdx';
 import { Badge } from '@/app/components/ui/badge';
 import { CreationDate } from './creation-date';
 
-export default function PostSection({
-  post,
-  forBusiness,
-}: {
+type _Props = {
   post: PostData;
   forBusiness?: boolean;
-}) {
+};
+export default function PostSection({ post, forBusiness }: _Props) {
   return (
     <MediumSection>
       <H1 id={post.parsedContent.attributes.title}>

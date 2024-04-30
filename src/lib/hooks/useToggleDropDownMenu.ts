@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import type { MouseEvent, TouchEvent } from 'react';
-
-const useToggleDropDownMenu = ({
-  menuId,
-}: {
+type _P = {
   menuId: string;
-}): [boolean, () => void] => {
+};
+const useToggleDropDownMenu = ({ menuId }: _P): [boolean, () => void] => {
   const initialState = false;
   const [isOpened, setIsOpened] = useState<boolean>(initialState);
 
