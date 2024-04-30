@@ -15,7 +15,9 @@ type NoMetadata = Record<never, never>; // the only available solution to type i
 
 export const generateStaticParams = async () => {
   const posts = await getBlogPosts();
-  return posts.map((post) => ({ post: post.filename }));
+  if (posts) {
+    return posts.map((post) => ({ post: post.filename }));
+  }
 };
 
 export async function generateMetadata({
