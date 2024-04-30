@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-config({ path:'.env.local' });
+config({ path: '.env.local' });
 
 export const dev = {};
 
@@ -13,7 +13,7 @@ export const nextJS = {
 };
 
 export const pub = {
-  SITE_URL_PROD: nextJS.NEXT_URL as string,
-  SITE_URL_DEV: nextJS.NEXT_DEV_URL as string,
+  SITE_URL_PROD: 'https://ashgw.net',
+  SITE_URL_DEV: 'http://localhost:3000',
   EMAIL: process.env.EMAIL as string,
 };
