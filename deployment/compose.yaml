@@ -3,8 +3,13 @@ services:
   main_service:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: mysite
     ports:
       - '6969:3000'
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 250M

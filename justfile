@@ -6,10 +6,11 @@ alias t:= test
 alias f:= format
 alias l:= lint
 alias b:= build
-alias rn := reincarnate
+alias rn:= reincarnate
+alias ng:= ngrok 
 
-DEFAULT_PORT := "3000"
-COMPOSE_PORT := "6969"
+__CONTAINER_PORT := "3000"
+EXPOSED_PORT := "6969"
 NGROK_DOMAIN := "saved-duckling-subtle.ngrok-free.app"
 
 @help:
@@ -50,13 +51,13 @@ NGROK_DOMAIN := "saved-duckling-subtle.ngrok-free.app"
     echo 'this command is not set yet'
 
 @u:
-    docker-compose up
+    docker compose -f deployment/compose.yaml up 
     
 @d:
-    docker-compose down
+    docker compose -f deployment/compose.yaml down 
 
 @ngrok:
-    ngrok http --domain={{NGROK_DOMAIN}} {{COMPOSE_PORT}}
+    ngrok http --domain={{NGROK_DOMAIN}} {{EXPOSED_PORT}}
 
 @patch:
     git add .
