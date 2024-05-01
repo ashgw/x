@@ -10,7 +10,7 @@ alias rn:= reincarnate
 alias ng:= ngrok 
 
 __CONTAINER_PORT := "3000"
-EXPOSED_PORT := "6969"
+EXPOSED_PORT := "3000"
 NGROK_DOMAIN := "saved-duckling-subtle.ngrok-free.app"
 
 @help:
