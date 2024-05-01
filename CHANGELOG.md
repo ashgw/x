@@ -1,3 +1,56 @@
+## v1.77.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.76.0...v1.77.0)
+
+### 🚀 Enhancements
+
+- Add utility types ([5332073](https://github.com/AshGw/mysite/commit/5332073))
+- Add branded types blog ([e7ce513](https://github.com/AshGw/mysite/commit/e7ce513))
+- Add `skill-issues` everywhere ([1951cd8](https://github.com/AshGw/mysite/commit/1951cd8))
+- Add `skill-issues` everywhere ([911221e](https://github.com/AshGw/mysite/commit/911221e))
+- Add `/services/estimates` ([7c87f39](https://github.com/AshGw/mysite/commit/7c87f39))
+- **#183:** Add prototype for tags sorting works good like a mf ([9d53f63](https://github.com/AshGw/mysite/commit/9d53f63))
+- **#183:** Finish [tags] slug page ([644d92c](https://github.com/AshGw/mysite/commit/644d92c))
+- **#183:** Do not load more if total posts are less or equal to inital posts count ([8ca5f81](https://github.com/AshGw/mysite/commit/8ca5f81))
+- **#183:** Make tags links ([759463c](https://github.com/AshGw/mysite/commit/759463c))
+- **#175:** Make year auto, for copyright notice ([5dea01e](https://github.com/AshGw/mysite/commit/5dea01e))
+- Migrate `react-object-restructuring` ([2b0eb12](https://github.com/AshGw/mysite/commit/2b0eb12))
+- **#203:** Move deployment settings to `/deployment` ([c054655](https://github.com/AshGw/mysite/commit/c054655))
+
+### 🩹 Fixes
+
+- **#206:** Fix `generateStaticParams` erroring out ([6b008e3](https://github.com/AshGw/mysite/commit/6b008e3))
+
+### 💅 Refactors
+
+- `LoadMore` into its own component ([315dca4](https://github.com/AshGw/mysite/commit/315dca4))
+- Replace `types` tag with `typing` ([7ad9754](https://github.com/AshGw/mysite/commit/7ad9754))
+
+### 📖 Documentation
+
+- Add docs for `devContainers` usage ([13e5557](https://github.com/AshGw/mysite/commit/13e5557))
+
+### 📦 Build
+
+- Use `ts-roids` ([7767d72](https://github.com/AshGw/mysite/commit/7767d72))
+
+### 🏡 Chore
+
+- Next release ([3a53aca](https://github.com/AshGw/mysite/commit/3a53aca))
+- Keep [] everywhere ([f1d6388](https://github.com/AshGw/mysite/commit/f1d6388))
+- Add remote patterns to next image confs ([646f536](https://github.com/AshGw/mysite/commit/646f536))
+- Switch links for project estimates ([c4a7afc](https://github.com/AshGw/mysite/commit/c4a7afc))
+- Load 5 blogs upon landing ([76152ef](https://github.com/AshGw/mysite/commit/76152ef))
+- **#197:** Band-aid for now, still dont work ([9f9a3d8](https://github.com/AshGw/mysite/commit/9f9a3d8))
+- **#173:** Always fail safe with `mdx` content retrieval ([e17e5ea](https://github.com/AshGw/mysite/commit/e17e5ea))
+- **#173:** Always fail safe with `mdx` content retrieval ([3d2c805](https://github.com/AshGw/mysite/commit/3d2c805))
+- **#184:** Cleanup `/lib` ([edef12b](https://github.com/AshGw/mysite/commit/edef12b))
+- Typos purge ([241083d](https://github.com/AshGw/mysite/commit/241083d))
+
+### ❤️ Contributors
+
+- AshGw <AshrefGw@proton.me>
+
 ## v1.76.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.75.0...v1.76.0)
