@@ -7,15 +7,19 @@ import { pub } from '@/lib/env';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import PostSection from '@/app/components/post/post-section';
 import Footer from '@/app/components/footer/footer';
+import { EmptyObject } from 'ts-roids';
 
 type RouteParams = {
   params: { post: string };
 };
-type NoMetadata = Record<never, never>; // the only available solution to type it
+type NoMetadata = EmptyObject;
 
 export const generateStaticParams = async () => {
   const posts = await getBusinessPosts();
-  return posts.map((post) => ({ post: post.filename }));
+  if (posts) {
+    return posts.map((post) => ({ post: post.filename }));
+  }
+  return [];
 };
 
 export async function generateMetadata({
@@ -79,7 +83,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Blog({ params }: RouteParams) {
+export default async function Page({ params }: RouteParams) {
   const post = await getBusinessPost(params.post);
   if (post) {
     return (

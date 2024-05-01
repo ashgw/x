@@ -17,6 +17,7 @@ export const generateStaticParams = async () => {
   if (posts) {
     return posts.map((post) => ({ post: post.filename }));
   }
+  return [];
 };
 
 export async function generateMetadata({
