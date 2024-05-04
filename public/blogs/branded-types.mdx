@@ -124,7 +124,7 @@ So we need to create a new unique type called `Baz` for the type of function ret
 />
 
 <C>
-One more thing though, the function `requestBaz()`, may or may not find a `Baz`. Should it fail fast and error out? Well instead of `try` `catch` which is an anti pattern, maybe we need a type that returns `Baz` if found, else `null`, not `void` nor `undefined` since these do not require explicit return, which we do need here. Perhaps we need some optional type like
+One more thing though, the function `requestBaz()`, may or may not find a `Baz`. Should it fail fast and error out? Or fail safe? I think failing safe is better here, maybe we need a type that returns `Baz` if found, else `null`, not `void` nor `undefined` since these do not require explicit return, which we do need here. Perhaps we need some optional type like
 </C><Code
   code={`type Optional<T> = T | null;
 `}
@@ -179,5 +179,5 @@ const baz2 = requestBaz(foo.id, bar.id);
   showLineNumbers={true}
 />
 <C>
-`ts-roids` is a library I created this week, the goal is to bulletproof TypeScript with types and decorators, it includes more than 150+ utilities, you can check it out <L href="https://github.com/ashgw/ts-roids">here</L>, this just a small example of what you might use it for.
+`ts-roids` is a library I created this week, the goal is to bulletproof TypeScript with types and decorators, it includes more than 120+ utilities, you can check it out <L href="https://github.com/ashgw/ts-roids">here</L>, this just a small example of what you might use it for.
 </C>

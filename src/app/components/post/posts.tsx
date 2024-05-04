@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Footer from '@/app/components/footer/footer';
+import BackUpTop from '@/app/components/reusables/back-up-top';
 
 type PostsParams = { posts: PostData[]; taggedPostsFileNames?: string[] };
 
@@ -67,6 +68,7 @@ export default function Posts({ posts, taggedPostsFileNames }: PostsParams) {
           <NoMoreImTiredBoss />
         )}
       </div>
+      <BackUpTop></BackUpTop>
     </main>
   );
 }

@@ -106,8 +106,8 @@ export default function Component() {
                   Software Solutions
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  Migrate to the cloud with confidence. Our team can help you
-                  design and deploy a scalable, secure architecture.
+                  End-to-end software solutions tailored to meet your specific
+                  needs. From small to medium size commercial projects.
                 </p>
               </div>
             </Link>

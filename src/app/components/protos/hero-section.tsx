@@ -24,7 +24,7 @@ function TypingAnimation() {
   }, []);
 
   return (
-    <div className="">
+    <div className="dimmed-4">
       <span ref={el} />
     </div>
   );
@@ -65,10 +65,10 @@ export default function HeroSection() {
               }}
               transition={transition}
             >
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                Hey, I'm Ashref
+              <h1 className="xl:text-[5rem] font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                <span className="dimmed-4">Hey, I'm Ashref</span>
               </h1>
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+              <h1 className="xl:text-[5rem] font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                 <TypingAnimation></TypingAnimation>
               </h1>
             </motion.div>
