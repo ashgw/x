@@ -1,3 +1,25 @@
+## v1.78.0
+
+[compare changes](https://github.com/AshGw/mysite/compare/v1.77.0...v1.78.0)
+
+### 🚀 Enhancements
+
+- Looksmaxx the home page ([657044a](https://github.com/AshGw/mysite/commit/657044a))
+- Add back up top button ([3a0cea0](https://github.com/AshGw/mysite/commit/3a0cea0))
+
+### 🏡 Chore
+
+- Change the container exposed port to `3000` ([586780b](https://github.com/AshGw/mysite/commit/586780b))
+- Typos cleanup ([8b367b7](https://github.com/AshGw/mysite/commit/8b367b7))
+
+### 🤖 CI
+
+- **fix:** Docker job typo ([f862e6d](https://github.com/AshGw/mysite/commit/f862e6d))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.77.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.76.0...v1.77.0)
