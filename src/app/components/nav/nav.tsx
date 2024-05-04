@@ -58,6 +58,12 @@ export function LeftNav() {
       <div className="flex space-x-12">
         <Link
           className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
+          href="/"
+        >
+          Home
+        </Link>
+        <Link
+          className="nav-link-shadow  dimmed-3 font-semibold average-transition  hover:average-translate hover:text-white"
           href="/services"
         >
           Services
