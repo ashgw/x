@@ -15,7 +15,9 @@ export default function Main() {
           <div className="container px-4 md:px-6">
             <div className="space-y-6 text-center">
               <div className="space-y-2">
-                <H1>Get in touch</H1>
+                <div className="glowsup slower-transition">
+                  <H1>Get in touch</H1>
+                </div>
                 <div className="mx-auto max-w-[600px]">
                   <C>
                     I&apos;m available for business inquiries, and new
