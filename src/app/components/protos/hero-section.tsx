@@ -87,8 +87,8 @@ export default function HeroSection() {
             >
               <TextContent>
                 Welcome to my corner of the internet where I share my thoughts
-                and conduct business. You can read my blogs or checkout my
-                services, or learn more about me
+                and conduct my business. You can read my blogs or checkout my
+                services, or learn more about me, and if you like what you see
               </TextContent>
             </motion.div>
           </div>
@@ -108,7 +108,9 @@ export default function HeroSection() {
                 delay: 3,
               }}
             >
-              <Button type="submit">Let's build something great</Button>
+              <Button className="w-full glowsup" variant={'navbar'}>
+                Let's build something great
+              </Button>
             </motion.div>
           </div>
         </div>

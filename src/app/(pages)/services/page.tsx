@@ -31,7 +31,7 @@ export default function Component() {
                     x: 0,
                   }}
                   transition={transition}
-                  className="dimmed-4 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+                  className="glows-dimmed dimmed-4 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
                 >
                   Expert Consulting. Custom Solutions.
                 </motion.h2>
@@ -75,8 +75,10 @@ export default function Component() {
               className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
             >
               <div className="flex flex-col gap-2 m-1 items-center">
-                <ScanEye className="w-10 h-10 mx-auto" />
-                <h3 className="dimmed-4 text-2xl font-bold">Consulting</h3>
+                <ScanEye className="glows-dimmed w-10 h-10 mx-auto" />
+                <h3 className="glows-dimmed dimmed-4 text-2xl font-bold">
+                  Consulting
+                </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Migrate to the cloud with confidence. Our team can help you
                   design and deploy a scalable, secure architecture.
@@ -88,8 +90,10 @@ export default function Component() {
               className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
             >
               <div className="flex flex-col gap-2 m-1 items-center">
-                <Presentation className="w-10 h-10 mx-auto" />
-                <h3 className="dimmed-4 text-2xl font-bold">Training</h3>
+                <Presentation className="glows-dimmed w-10 h-10 mx-auto" />
+                <h3 className="glows-dimmed dimmed-4 text-2xl font-bold">
+                  Training
+                </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Book me for both on-site and virtual presentations, training
                   and coaching to share my expertise and domain knowledge with
@@ -102,8 +106,8 @@ export default function Component() {
               className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
             >
               <div className="flex flex-col gap-2 m-1 items-center">
-                <Computer className="w-10 h-10 mx-auto" />
-                <h3 className="text-2xl font-bold  dimmed-4">
+                <Computer className="glows-dimmed w-10 h-10 mx-auto" />
+                <h3 className="glows-dimmed text-2xl font-bold  dimmed-4">
                   Software Solutions
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">

@@ -43,8 +43,10 @@
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
   }
   .glows {
-    /* Major text I */
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
+  .glows-dimmed {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
   .glowsup-dimmed:hover {
     /* Major text II */
