@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-
+import { cn } from '@/lib/utils';
 export function TextContent({ children }: { children: React.ReactNode }) {
   return (
     <motion.p
@@ -20,3 +20,18 @@ export function TextContent({ children }: { children: React.ReactNode }) {
     </motion.p>
   );
 }
+
+export const GlowingText: React.FC<React.HTMLProps<HTMLSpanElement>> = (
+  props
+) => {
+  const { className, children, ...otherProps } = props;
+  return (
+    <>
+      <span> </span>
+      <strong className={cn('text-white glows', className)} {...otherProps}>
+        {children}
+      </strong>
+      <span> </span>
+    </>
+  );
+};

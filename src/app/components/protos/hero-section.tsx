@@ -11,7 +11,7 @@ function TypingAnimation() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <span class="glows">make</span> software',
+        'I <span class="glows">write</span> software',
         'I <span class="glows">solve</span> software',
         'I <span class="glows">architect</span> software',
       ],
@@ -109,7 +109,13 @@ export default function HeroSection() {
                 delay: 3,
               }}
             >
-              <Button className="w-full glowsup" variant={'navbar'}>
+              <Button
+                className="w-full glowsup"
+                variant={'navbar'}
+                onClick={() => {
+                  window.location.href = '/contact';
+                }}
+              >
                 Let's build something great
               </Button>
             </motion.div>

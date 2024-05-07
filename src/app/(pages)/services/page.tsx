@@ -4,8 +4,7 @@ import Footer from '@/app/components/footer/footer';
 import Link from 'next/link';
 import { Computer, Presentation, ScanEye } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-// TODO: setup SEO
+import { GlowingText } from '@/app/components/reusables/content';
 
 export default function Component() {
   const TRANSITION_DURATION: number = 0.3; // secs
@@ -48,9 +47,7 @@ export default function Component() {
                   className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 >
                   If you use my
-                  <span> </span>
-                  <strong className="text-white glows underline">stack</strong>
-                  <span> </span>
+                  <GlowingText className="underline">stack</GlowingText>
                   I&apos;m here to help. From architecting scalable APIs and
                   designing beautiful user interfaces to writing quality code,
                   I&apos;ve got the skills and experience to bring your ideas to
@@ -72,12 +69,9 @@ export default function Component() {
               duration: 0.4,
               delay: 1,
             }}
-            className="grid max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 mx-auto items-start justify-center py-8 md:py-12 lg:py-16 px-4 md:px-6"
+            className="cursor-default grid max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 mx-auto items-start justify-center py-8 md:py-12 lg:py-16 px-4 md:px-6"
           >
-            <Link
-              href="#"
-              className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
-            >
+            <div className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
               <div className="flex flex-col gap-2 m-1 items-center">
                 <ScanEye className="glows-dimmed w-10 h-10 mx-auto" />
                 <h3 className="glows-dimmed dimmed-4 text-2xl font-bold">
@@ -85,15 +79,15 @@ export default function Component() {
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Invite me to become an extension of your team. Working
-                  directly with you on a daily basis from code audits to
-                  assistence in development
+                  directly with you on a daily basis, from technical advice, code
+                  <Link href="/services/code-audits">
+                    <GlowingText>audits</GlowingText>
+                  </Link>
+                  to development
                 </p>
               </div>
-            </Link>
-            <Link
-              href="/"
-              className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
-            >
+            </div>
+            <div className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
               <div className="flex flex-col gap-2 m-1 items-center">
                 <Presentation className="glows-dimmed w-10 h-10 mx-auto" />
                 <h3 className="glows-dimmed dimmed-4 text-2xl font-bold">
@@ -105,11 +99,8 @@ export default function Component() {
                   your team.
                 </p>
               </div>
-            </Link>
-            <Link
-              href="/"
-              className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
-            >
+            </div>
+            <div className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
               <div className="flex flex-col gap-2 m-1 items-center">
                 <Computer className="glows-dimmed w-10 h-10 mx-auto" />
                 <h3 className="glows-dimmed text-2xl font-bold  dimmed-4">
@@ -117,10 +108,14 @@ export default function Component() {
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Commercial end-to-end software solutions covering the whole
-                  softwre lifecyle, from ideation to deployment.
+                  software
+                  <Link href="/services/full-software-solution">
+                    <GlowingText>lifecycle</GlowingText>
+                  </Link>
+                  from ideation to deployment.
                 </p>
               </div>
-            </Link>
+            </div>
           </motion.div>
         </div>
       </section>

@@ -13,7 +13,7 @@ export async function GET(
     const res = await fetch(GPG_PUBLIC_KEY_EXTERNAL_URL, {
       method: 'GET',
       mode: 'no-cors',
-      next: {revalidate: 36969}
+      next: { revalidate: 36969 },
     });
     if (!res.ok) {
       return new NextResponse('Failed to fetch the public key', {
