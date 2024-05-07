@@ -79,7 +79,8 @@ export default function Component() {
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Invite me to become an extension of your team. Working
-                  directly with you on a daily basis, from technical advice, code
+                  directly with you on a daily basis, from technical advice,
+                  code
                   <Link href="/services/code-audits">
                     <GlowingText>audits</GlowingText>
                   </Link>

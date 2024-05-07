@@ -88,7 +88,7 @@ export default function HeroSection() {
             >
               <TextContent>
                 Welcome to my corner of the internet where I share my thoughts
-                and conduct my business. You can read my blogs, checkout my
+                and offer my expertise. You can read my blogs, checkout my
                 services, or learn more about me, and if you like what you see
               </TextContent>
             </motion.div>

@@ -1,2 +1,2 @@
-import SplitCard from '@/app/components/__futures__/split-card';
-export default SplitCard;
+import LightGrid from '@/app/components/__futures__/light-grid';
+export default LightGrid;

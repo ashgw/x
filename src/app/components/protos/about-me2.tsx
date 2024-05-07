@@ -72,9 +72,9 @@ export default function AboutMe2() {
           <img
             alt="Profile Picture"
             className="rounded-full w-60 border aspect-square object-cover object-center justify-self-start"
-            height="800"
+            height="2500"
             src="https://avatars.githubusercontent.com/u/126174609?v=4"
-            width="1200"
+            width="3200"
           />
         </div>
       </div>

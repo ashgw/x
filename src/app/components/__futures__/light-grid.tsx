@@ -31,9 +31,9 @@ const LightGrid: React.FC = () => {
             {Array.from({ length: 100 }, (_, index) => (
               <div
                 key={index}
-                className=" bg-blue-500 flex items-center justify-center rounded-full"
+                className=" bg-purple-500 flex items-center justify-center rounded-full"
               >
-                <span className="h-[0.24rem] w-[0.24rem] bg-blue-500 rounded-full animate-ping "></span>
+                <span className="h-[0.24rem] w-[0.24rem] bg-purple-500 rounded-full animate-ping "></span>
               </div>
             ))}
           </div>
