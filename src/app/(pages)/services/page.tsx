@@ -2,7 +2,7 @@
 
 import Footer from '@/app/components/footer/footer';
 import Link from 'next/link';
-import { Code, Computer, ScanEye } from 'lucide-react';
+import { Computer, Presentation, ScanEye } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // TODO: setup SEO
@@ -88,11 +88,12 @@ export default function Component() {
               className="border order-white/10b p-4 rounded-[2rem] glowsup-dimmed slower-transition hover:slower-translate hover:scale-110 slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]"
             >
               <div className="flex flex-col gap-2 m-1 items-center">
-                <Code className="w-10 h-10 mx-auto" />
-                <h3 className="dimmed-4 text-2xl font-bold">Code Audits</h3>
+                <Presentation className="w-10 h-10 mx-auto" />
+                <h3 className="dimmed-4 text-2xl font-bold">Training</h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  Migrate to the cloud with confidence. Our team can help you
-                  design and deploy a scalable, secure architecture.
+                  Book me for both on-site and virtual presentations, training
+                  and coaching to share my expertise and domain knowledge with
+                  your team.
                 </p>
               </div>
             </Link>
@@ -106,8 +107,8 @@ export default function Component() {
                   Software Solutions
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  End-to-end software solutions tailored to meet your specific
-                  needs. From small to medium size commercial projects.
+                  Commercial end-to-end software solutions tailored to meet your
+                  specific needs, from ideation to deployment.
                 </p>
               </div>
             </Link>

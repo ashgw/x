@@ -15,7 +15,7 @@ tags:
 <C>
 Not all TypeScript code is created equal in terms of safety or quality. There are many ways to enhance the safety of your TS code, and one of the ways is using a pattern called "Branded Types," also known as "Nominal Types", "Unique Types," or simply "New Types." They all mean the same thing, which is to establish deeper specificity and uniqueness for modeling your data beyond basic type primitives.
 </C>
-<H2>The Problem</H2>
+<H2>Problem</H2>
 <C>
 So here's a question for you, can you figure out how many things that can go wrong here?
 </C>
@@ -50,13 +50,23 @@ const baz2 = requestBaz(bar.id, foo.id);
 What does `requestBaz()` return exactly? Suppose it does, Is it a string? If so, would any string do?
  </C>
  <C>
-`fooID` and `barID` are both strings so if you mistakenly mix both parameter of the `requestBaz()` function like `baz` and `baz2` did here, the code will run, but the logic breaks and the bug goes totally undetected.
+`fooID` and `barID` are both strings so if you mistakenly mix both parameter of the `requestBaz()` function as such 
+
+<Code
+  code={`const baz = requestBaz(foo.id, bar.id);
+const baz2 = requestBaz(bar.id, foo.id);
+`}
+  language="tsx"
+  showLineNumbers={false}
+/>
+
+The code will run, but the logic breaks and the bug goes totally undetected.
 This gets amplified when the codebase has tens or hundreds of thousands of lines.
  </C>
   <C>
 As you can see, there are so many ways this can go south. So here's how to fix it with new types.
 </C>
-<H2>The Solution</H2>
+<H2>Solution</H2>
 
 <Code
   code={`type FooID = NewType<'FooID', string>;
@@ -179,5 +189,5 @@ const baz2 = requestBaz(foo.id, bar.id);
   showLineNumbers={true}
 />
 <C>
-`ts-roids` is a library I created this week, the goal is to bulletproof TypeScript with types and decorators, it includes more than 120+ utilities, you can check it out <L href="https://github.com/ashgw/ts-roids">here</L>, this just a small example of what you might use it for.
+`ts-roids` is a library I created this week, the goal is to bulletproof TypeScript with types and decorators, it includes more than 120+ utilities, you can check it out <L href="https://github.com/ashgw/ts-roids">here</L>.
 </C>

@@ -91,9 +91,11 @@ export function RightNav() {
         <SourceCodeButton href="https://github.com/ashgw/mysite" />
       </div>
       <div className=" glowsup hidden sm:block">
-        <Button className="w-full" variant={'navbar'}>
-          Contact
-        </Button>
+        <Link href="/contact">
+          <Button className="w-full" variant={'navbar'}>
+            Contact
+          </Button>
+        </Link>
       </div>
     </div>
   );
@@ -143,9 +145,11 @@ export function DropDownNav() {
         </Link>
       </div>
       <div className=" glowsup">
-        <Button className="w-full" variant={'navbarMin'}>
-          Contact
-        </Button>
+        <Link href="/contact">
+          <Button className="w-full" variant={'navbar'}>
+            Contact
+          </Button>
+        </Link>
       </div>
     </motion.div>
   );
