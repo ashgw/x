@@ -11,8 +11,8 @@ function TypingAnimation() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <solid class="gradient-text-purple">do</solid>  software',
-        'I <solid class="gradient-text-purple">solve</solid> software',
+        'I <span class="glows">do</span>  software',
+        'I <span class="glows">solve</span> software',
       ],
       typeSpeed: 50,
       loop: true,
@@ -66,7 +66,9 @@ export default function HeroSection() {
               transition={transition}
             >
               <h1 className="text-5xl md:text-5xl lg:text-6xl/none xl:text-[5rem] font-bold tracking-tighter">
-                <span className="dimmed-4">Hey, I'm Ashref</span>
+                <span className="dimmed-4">
+                  Hey, I'm <span className="glows">Ashref</span>
+                </span>
               </h1>
               <h1 className="text-5xl md:text-5xl lg:text-6xl/none xl:text-[5rem] font-bold tracking-tighter ">
                 <TypingAnimation></TypingAnimation>

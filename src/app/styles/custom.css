@@ -42,6 +42,10 @@
     /* Major text I */
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
   }
+  .glows {
+    /* Major text I */
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
   .glowsup-dimmed:hover {
     /* Major text II */
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
