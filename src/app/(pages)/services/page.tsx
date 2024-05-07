@@ -47,10 +47,14 @@ export default function Component() {
                   transition={transition}
                   className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 >
-                  Our team of experts is here to help you succeed. From
-                  architecting scalable APIs to designing beautiful user
-                  interfaces, we have the skills and experience to bring your
-                  ideas to life.
+                  If you use my
+                  <span> </span>
+                  <strong className="text-white glows underline">stack</strong>
+                  <span> </span>
+                  I&apos;m here to help. From architecting scalable APIs and
+                  designing beautiful user interfaces to writing quality code,
+                  I&apos;ve got the skills and experience to bring your ideas to
+                  life.
                 </motion.p>
               </div>
             </div>
@@ -80,8 +84,9 @@ export default function Component() {
                   Consulting
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  Migrate to the cloud with confidence. Our team can help you
-                  design and deploy a scalable, secure architecture.
+                  Invite me to become an extension of your team. Working
+                  directly with you on a daily basis from code audits to
+                  assistence in development
                 </p>
               </div>
             </Link>
@@ -111,8 +116,8 @@ export default function Component() {
                   Software Solutions
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  Commercial end-to-end software solutions tailored to meet your
-                  specific needs, from ideation to deployment.
+                  Commercial end-to-end software solutions covering the whole
+                  softwre lifecyle, from ideation to deployment.
                 </p>
               </div>
             </Link>

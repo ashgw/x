@@ -11,8 +11,9 @@ function TypingAnimation() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <span class="glows">do</span>  software',
+        'I <span class="glows">make</span> software',
         'I <span class="glows">solve</span> software',
+        'I <span class="glows">architect</span> software',
       ],
       typeSpeed: 50,
       loop: true,
@@ -87,7 +88,7 @@ export default function HeroSection() {
             >
               <TextContent>
                 Welcome to my corner of the internet where I share my thoughts
-                and conduct my business. You can read my blogs or checkout my
+                and conduct my business. You can read my blogs, checkout my
                 services, or learn more about me, and if you like what you see
               </TextContent>
             </motion.div>
