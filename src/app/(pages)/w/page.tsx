@@ -1,7 +1,3 @@
-const Divider: React.FC<React.HTMLProps<HTMLDivElement>> = ({ children }) => {
-  return <>{children}</>;
-};
-
 interface CardProps extends React.HTMLProps<HTMLDivElement> {
   title: string;
 }
@@ -11,7 +7,7 @@ const Card: React.FC<CardProps> = ({ title, children }) => {
       <div className="flex flex-col gap-2 items-center text-xl">
         <div className="text-center dimmed-3 max-w-sm sm:max-w-[550px] md:max-w-[650px] lg:max-w-[850px]">
           <h3 className="glows-dimmed dimmed-4 text-2xl font-bold">{title}</h3>
-          <div className="p-2 my-1">{children}</div>
+          <div>{children}</div>
         </div>
       </div>
     </div>
@@ -19,20 +15,29 @@ const Card: React.FC<CardProps> = ({ title, children }) => {
 };
 export default function Page() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Card title="Team">
+    <div className="flex flex-col items-center justify-center gap-6 mt-8 md:mt-20">
+      <Card title="Hi">
         <p>
-          Experiencing roadblocks due to tricky bugs or intricate feature
-          implementations? My services extend beyond advice to actively
-          integrate with your development process
-          
+          I&apos;m Ashref Gwader, I&apos;m a technical educator, poker player,
+          motorcycle enthusiast, basketball player, health enthusiast, thinker,
+          and philosopher. Oh I almost forgot, yeah and a software developer
+          with 7+ years of experience having worked with over 100+ startups and
+          teams worldwide.
         </p>
       </Card>
-      <Card title="Another Title">
+      <Card title="Hi, I'm Ashref Gwader">
         <p>
-          Experiencing roadblocks due to tricky bugs or intricate feature
-          implementations? My services extend beyond advice to actively
-          integrate with your development process. 
+          I&apos;m a technical educator, poker player, motorcycle enthusiast,
+          basketball player, health enthusiast, thinker, and philosopher. Oh,
+          and I almost forgot—I&apos;m also a software developer from Tunisia.
+          Over the past 7+ years, I&apos;ve been involved in building, scaling,
+          and organizing software teams, collaborating with over 100 startups
+          worldwide. My expertise lies predominantly in web technologies,
+          including HTTP/2, HTTP/3, gRPC, GraphQL, and other related
+          technologies. Apart from web development, I advocate for quality code,
+          particularily for Python and Typescript, which often involves
+          reviewing and correcting code and design decisions, whether or not
+          they are directly related to web development.
         </p>
       </Card>
     </div>

@@ -13,7 +13,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'github-production-user-asset-6210df.s3.amazonaws.com',
+        hostname: 'ashgw-blog-public-images.s3.us-east-2.amazonaws.com',
         port: '',
         pathname: '/**',
       },
@@ -62,7 +62,7 @@ const securityHeaders = [
   },
   {
     key: 'X-Powered-By',
-    value: 'deez nuts v69.0.1',
+    value: 'deez nuts v69.0.1-pro',
   },
   {
     key: 'Cross-Origin-Opener-Policy',
