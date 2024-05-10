@@ -155,7 +155,7 @@ export default function Page() {
             <Link href="/blog/tag/management" name="cv" /> (it&apos;s too long),
             or, you might want to check out my
             <Link href="/blog/tag/management" name="resume" /> to get a glimpse
-            instead. Speaking of tools
+            instead.
           </p>
         </Card>
         <MajorHeading title="About The Website" />
