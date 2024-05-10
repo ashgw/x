@@ -1,4 +1,5 @@
 import { pub, nextJS } from '@/lib/env';
+import { getSiteName } from './funcs/site-name';
 export const BLOG_CONTENT_PATH = '/public/blogs';
 export const BUSINESS_CONTENT_PATH = '/public/services';
 export const BLOG_URI = '/blog';
@@ -18,3 +19,5 @@ export const GPG_PUBLIC_KEY_EXTERNAL_URL = 'https://github.com/ashgw.gpg';
 export const GPG_PUBLIC_KEY_INTERNAL_URL = SITE_URL + DEFAULT_API_URI + '/gpg';
 export const PUBLIC_BLOG_IMAGES_SOURCE =
   'https://ashgw-blog-public-images.s3.us-east-2.amazonaws.com/';
+
+export const SITE_NAME = getSiteName(pub.SITE_URL_PROD);

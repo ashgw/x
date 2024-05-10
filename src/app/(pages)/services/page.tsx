@@ -47,11 +47,10 @@ export default function Component() {
                   className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 >
                   If you use my
-                  <GlowingText className="underline">stack</GlowingText>
-                  I&apos;m here to help. From architecting scalable APIs and
-                  designing beautiful user interfaces to writing quality code,
-                  I&apos;ve got the skills and experience to bring your ideas to
-                  life.
+                  <GlowingText className="underline">stack</GlowingText>I got
+                  you. From architecting scalable APIs and designing beautiful
+                  user interfaces to quality code, I&apos;ve got the skills and
+                  experience to bring your ideas to life.
                 </motion.p>
               </div>
             </div>
@@ -78,13 +77,12 @@ export default function Component() {
                   Consulting
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  Invite me to become an extension of your team. Working
-                  directly with you on a daily basis, from technical advice,
-                  code
+                  Code
                   <Link href="/services/code-audits">
-                    <GlowingText>audits</GlowingText>
+                    <GlowingText>audits,</GlowingText>
                   </Link>
-                  to development
+                  , team guidance, bug hunting, testing, security and best
+                  practices recommendations, anything Python and TypeScript
                 </p>
               </div>
             </div>
@@ -96,8 +94,11 @@ export default function Component() {
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   Book me for both on-site and virtual presentations, training
-                  and coaching to share my expertise and domain knowledge with
-                  your team.
+                  and coaching to share my
+                  <Link href="/blog/tag/skill-issues">
+                    <GlowingText>skills</GlowingText>
+                  </Link>
+                  and domain knowledge with your team.
                 </p>
               </div>
             </div>
