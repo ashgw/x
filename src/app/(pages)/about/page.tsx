@@ -4,10 +4,11 @@ import Footer from '@/app/components/footer/footer';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { SITE_NAME } from '@/lib/constants';
 import { GlowingText } from '@/app/components/reusables/content';
 import NextLink from 'next/link';
+import { ReactNode } from 'react';
 
 const FrontEnd = [
   'TypeScript',
@@ -132,7 +133,7 @@ export default function Page() {
           <p>
             While I have experience with many technologies, I specialize and
             work mostly in Python and TypeScript, with a heavy focus on
-            everything web related (HTTP, gRPC, GraphQL, microservices,
+            everything web related (HTTP, RPC, GraphQL, microservices,
             containers, cloud architecture...)
           </p>
         </Card>
@@ -184,31 +185,30 @@ export default function Page() {
   );
 }
 
-export const BaseHeading: React.FC<React.HTMLProps<HTMLHeadingElement>> = (
-  props
-) => {
-  const { className, children, ...otherProps } = props;
-
+interface BaseHeadingProps {
+  children: ReactNode;
+  className?: string;
+  id?: string;
+}
+const BaseHeading = (props: BaseHeadingProps) => {
   return (
-    <div {...otherProps}>
-      <motion.h2
-        animate={{
-          opacity: 1,
-          x: 0,
-        }}
-        initial={{
-          opacity: 0,
-          x: -30,
-        }}
-        transition={{
-          duration: 0.2,
-          ease: 'easeInOut',
-        }}
-        className={cn(className)}
-      >
-        {children}
-      </motion.h2>
-    </div>
+    <motion.h2
+      animate={{
+        opacity: 1,
+        x: 0,
+      }}
+      initial={{
+        opacity: 0,
+        x: -30,
+      }}
+      transition={{
+        duration: 0.2,
+        ease: 'easeInOut',
+      }}
+      className={cn(props.className)}
+    >
+      {props.children}
+    </motion.h2>
   );
 };
 const MinorHeading = ({ title }: { title: string }) => {
