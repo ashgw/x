@@ -1,3 +1,23 @@
+## v1.80.0
+
+[compare changes](https://github.com/ashgw/ashgw.io/compare/v1.79.0...v1.80.0)
+
+### 🚀 Enhancements
+
+- Finish the about page ([362e5c7](https://github.com/ashgw/ashgw.io/commit/362e5c7))
+
+### 🩹 Fixes
+
+- Filed build due to double export ([2b9da7f](https://github.com/ashgw/ashgw.io/commit/2b9da7f))
+
+### 📦 Build
+
+- Create two buckets one for images, other genral ([3b6c792](https://github.com/ashgw/ashgw.io/commit/3b6c792))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.79.0
 
 [compare changes](https://github.com/ashgw/ashgw.io/compare/v1.77.0...v1.79.0)
