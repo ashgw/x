@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AJAX Request with CSRF Token</title>
+  </head>
+  <body>
+    <div id="ajaxResponse"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        createCSRFTokenContainer();
+        document
+          .getElementById('makeRequestButton')
+          .addEventListener('click', () => {
+            // Make an AJAX request when the button is clicked, it should
+            // show a successful message when no attack is made
+            var xhr = new XMLHttpRequest();
+
+            var csrfToken = getCSRFTokenFromClient();
+
+            xhr.open('POST', '/protected', true);
+
+            xhr.setRequestHeader('CSRF-Token', csrfToken);
+
+            xhr.onreadystatechange = () => {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                // The server validates if the token sent in the header, if it matches the one
+                // stored on the server, it sends an OK status code.
+                // else it blocks the request
+                if (xhr.status === 200) {
+                  document.getElementById('ajaxResponse').innerText =
+                    "You're allowed, come in";
+                } else {
+                  // Possible forgery
+                  document.getElementById('ajaxResponse').innerText =
+                    "You're blocked, the CSRF Token has been tampered with";
+                  console.error('AJAX request failed:', xhr.status);
+                }
+              }
+            };
+          });
+      });
+
+      function getCSRFTokenFromServer() {
+        // When the user authenticated, the user ID was set as cookie (HttpOnly, Secure, Lax and all that), sent with every request
+        // the server will generate a secure random anti-CSRF token and associate it with that user ID on its end
+        // send a POST to the server you'll get the token.
+        return 'CSRF_TOKEN';
+      }
+
+      function createCSRFTokenContainer() {
+        var csrfToken = getCSRFTokenFromServer(); // New div element to hold the hidden token
+        var csrfDiv = document.createElement('div');
+        csrfDiv.id = 'csrfTokenDiv'; // Create a hidden input field and set its value to the generated CSRF token
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'CSRFToken';
+        input.value = csrfToken;
+        csrfDiv.appendChild(input);
+      }
+
+      function getCSRFTokenFromClient() {
+        var csrfTokenDiv = document.getElementById('csrfTokenDiv');
+
+        if (csrfTokenDiv) {
+          var inputField = csrfTokenDiv.querySelector(
+            'input[type="hidden"][name="CSRFToken"]'
+          );
+
+          if (inputField) {
+            return inputField.value; // The CSRF token value
+          }
+        }
+      }
+    </script>
+        <button id="makeRequestButton">Make AJAX Request</button>
+  </body>
+</html>

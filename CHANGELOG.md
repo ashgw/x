@@ -1,3 +1,36 @@
+## v1.79.0
+
+[compare changes](https://github.com/ashgw/ashgw.io/compare/v1.77.0...v1.79.0)
+
+### 🚀 Enhancements
+
+- Looksmaxx the home page ([657044a](https://github.com/ashgw/ashgw.io/commit/657044a))
+- Add back up top button ([3a0cea0](https://github.com/ashgw/ashgw.io/commit/3a0cea0))
+- Add glows without hover style ([0dd20d3](https://github.com/ashgw/ashgw.io/commit/0dd20d3))
+- Make shit glowup ([b857533](https://github.com/ashgw/ashgw.io/commit/b857533))
+- Finish gpg key setup ([a982db2](https://github.com/ashgw/ashgw.io/commit/a982db2))
+- Finish the 3 services block ([d10ed76](https://github.com/ashgw/ashgw.io/commit/d10ed76))
+- **#220:** Use an S3 bucket instead of `/public` for images ([b41a49a](https://github.com/ashgw/ashgw.io/commit/b41a49a))
+- Add `ECR` ([34cb639](https://github.com/ashgw/ashgw.io/commit/34cb639))
+
+### 🏡 Chore
+
+- Change the container exposed port to `3000` ([586780b](https://github.com/ashgw/ashgw.io/commit/586780b))
+- Typos cleanup ([8b367b7](https://github.com/ashgw/ashgw.io/commit/8b367b7))
+- **release:** V1.78.0 ([fcf3d4a](https://github.com/ashgw/ashgw.io/commit/fcf3d4a))
+- Cleaup source types files v2 ([e024463](https://github.com/ashgw/ashgw.io/commit/e024463))
+- Cleaup source types files v2 ([00f9753](https://github.com/ashgw/ashgw.io/commit/00f9753))
+- Cache the GPG request for like an hour ([5bdbe22](https://github.com/ashgw/ashgw.io/commit/5bdbe22))
+- Ion know G fr ([b58399a](https://github.com/ashgw/ashgw.io/commit/b58399a))
+
+### 🤖 CI
+
+- **fix:** Docker job typo ([f862e6d](https://github.com/ashgw/ashgw.io/commit/f862e6d))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.78.0
 
 [compare changes](https://github.com/AshGw/mysite/compare/v1.77.0...v1.78.0)
