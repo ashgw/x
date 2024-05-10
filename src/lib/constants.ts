@@ -16,3 +16,5 @@ export const Status = {
 export const DEFAULT_API_URI = '/api/v1';
 export const GPG_PUBLIC_KEY_EXTERNAL_URL = 'https://github.com/ashgw.gpg';
 export const GPG_PUBLIC_KEY_INTERNAL_URL = SITE_URL + DEFAULT_API_URI + '/gpg';
+export const PUBLIC_BLOG_IMAGES_SOURCE =
+  'https://ashgw-blog-public-images.s3.us-east-2.amazonaws.com/';

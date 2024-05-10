@@ -9,7 +9,4 @@ variable "bucket_owner" {
   default = "i-own-ashgw-blog-public-images"
 }
 
-variable "aws_region" {
-  type = string
-  default = "us-east-2"
-}
+
