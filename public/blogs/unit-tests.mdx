@@ -1,0 +1,94 @@
+---
+title: Unit Test
+seoTitle:  Things to keep in mind about unit testingg
+summary: Things to keep in mind 
+isReleased: true
+isSequel: false
+lastModDate: 2019-12-29T09:15:00-0401
+firstModDate: 2019-12-29T09:15:00-0401
+minutesToRead: 5
+tags:
+  - 'testing'
+---
+
+<C>
+Unit tests do not only provides a safety net for detecting unintended changes but also serve as living documentation for the code when tests are clear and concise. 
+</C>
+<C>
+They're time-consuming, true, but worth the investment. Well-written tests can take up to 30-50% of development time but pay off in increased confidence to refactor, expand and not break the codebase.
+</C>
+<C>
+Below are a couple of things to know about unit tests
+</C>
+<H2>100% Code Coverage != 0 Bugs</H2>
+<C>
+One common misconception is relying on code coverage metrics as the **sole** indicator of testing completeness. Simply touching a line of code with a test doesn't mean it's adequately tested. Each method should have as many tests as needed, covering various **scenarios** based on its complexity.
+ </C>
+<C>
+Coverage percentage alone doesn't reflect test [quality](). A 100% coverage doesn't guarantee bug-free software. On the other hand, shooting for a as low as 50% coverage sets a very low quality bar, so that's a no go. There's no magical number to hit, numbers can lie sometimes, but usually somewhere around 80% is good.
+ </C>
+ <C>
+Well usually teams who have 100% coverage, either do have some very good and excellent high quality, composable code, which is quite rare, or, just have it as a front to dismay managers and deceive sponsors. 
+ </C>
+ <H2>No Preconceived knowledge</H2>
+ <C>
+Even if you "know" certain values will never be "X" or Y. It's essential to test all code paths, not just those reflecting current usage patterns
+ </C>
+
+<H2>If You Over Assert, Break  It Down</H2>
+ <C>
+Over-asserting can make tests brittle and hard to maintain. A good rule is to focus each test on a specific scenario and limit assertions to what's necessary for that specific scenario.
+</C>
+<H2>Re-usable setup</H2>
+ <C>
+Test preparation should be clean and reusable. Instead of repetitive setup code, use <L href="https://en.wikipedia.org/wiki/Builder_pattern">builders</L> to create test scenarios that can be shared across multiple tests.
+</C>
+<H2>Provide Context (As Much As Possible)</H2>
+ <C>
+Naming tests appropriately is **essential**, especially as the complexity and size of your codebase increase. Use descriptive names for test files and individual test cases.  This might not seem important nor practical with a smaller projects with smaller test suite (e.g., 20 test files with 5 tests each), it becomes incredibly important as your project grows, if you have as many as 100 test files or even more, you should be thinking about very good names for them, this makes it easier for your team members to not create duplicates. Also good long, yes long descriptive names for each test case is as important if not more,  if a test errors out, you'd have a good idea about what scenario/class/method/case/library or "thing" the test just flagged.
+</C>
+ <C>
+In JS/TS ecosystem you can have a very good description of test and what should it do.
+</C>
+<Code
+  code={`describe("A very good description over what you're testing", () => {
+  test('A very good explaination of what should happen in this particular case', () => {
+  });`}
+  language="shell"
+  showLineNumbers={false}
+/>
+ <C>
+In Python for example you don't have this luxury so you have to put the description in it the test name itself.
+</C>
+
+<Code
+  code={`def test_given_correct_jwe_key_length_then_pass():
+	...
+def test_given_wrong_jwe_key_length_then_fail_safe():
+	...
+
+def test_given_wrong_jwe_encrtpion_algorithm_then_error():
+	...
+	
+def test_given_wrong_jwe_signin_algorithm_then_error():
+	...`}
+  language="shell"
+  showLineNumbers={false}
+/>
+ <C>
+Instead of
+</C>
+<Code
+  code={`def test_jwe1:
+	...
+def test_jwe2():
+	...
+
+def test_jwe2():
+	...
+	
+def test_jwe2():
+	...`}
+  language="shell"
+  showLineNumbers={false}
+/>
