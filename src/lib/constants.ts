@@ -21,3 +21,4 @@ export const PUBLIC_BLOG_IMAGES_SOURCE =
   'https://ashgw-blog-public-images.s3.us-east-2.amazonaws.com/';
 
 export const SITE_NAME = getSiteName(pub.SITE_URL_PROD);
+export const REPO_SOURCE = 'https://github.com/ashgw/ashgw.me';

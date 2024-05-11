@@ -8,6 +8,7 @@ import Image from 'next/image';
 import HamburgerButton from '@/app/components/nav/hamburger';
 import { motion, AnimatePresence } from 'framer-motion';
 import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenu';
+import { REPO_SOURCE } from '@/lib/constants';
 
 export default function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({
@@ -87,8 +88,8 @@ export function LeftNav() {
 export function RightNav() {
   return (
     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
-      <div className="average-transition hover:average-translate">
-        <SourceCodeButton href="https://github.com/ashgw/mysite" />
+      <div className="hidden average-transition hover:average-translate">
+        <SourceCodeButton href={REPO_SOURCE} />
       </div>
       <div className=" glowsup hidden sm:block">
         <Link href="/contact">
@@ -119,6 +120,14 @@ export function DropDownNav() {
       }}
       className="absolute rounded-3xl z-50 backdrop-blur-md  w-full space-y-3 px-5 pb-3 pt-2"
     >
+      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+        <Link
+          href="/"
+          className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
+        >
+          Home
+        </Link>
+      </div>
       <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
         <Link
           href="/services"

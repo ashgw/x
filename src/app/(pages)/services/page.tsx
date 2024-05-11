@@ -47,10 +47,12 @@ export default function Component() {
                   className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 >
                   If you use my
-                  <GlowingText className="underline">stack</GlowingText>I got
-                  you. From architecting scalable APIs and designing beautiful
-                  user interfaces to quality code, I&apos;ve got the skills and
-                  experience to bring your ideas to life.
+                  <Link href="/about#stack">
+                    <GlowingText>stack</GlowingText>
+                  </Link>
+                  I got you. From architecting scalable APIs and designing
+                  beautiful user interfaces to quality code, I&apos;ve got the
+                  skills and experience to bring your ideas to life.
                 </motion.p>
               </div>
             </div>
