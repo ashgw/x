@@ -34,14 +34,11 @@ resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
     rule {
     object_ownership = "BucketOwnerPreferred"
   }
-  depends_on = [aws_s3_bucket_public_access_block.example]
+  depends_on = [aws_s3_bucket_public_access_block.a_block]
 }
 
-resource "aws_iam_user" "bucket_owner" {
-  name = var.bucket_owner
-}
 
-resource "aws_s3_bucket_public_access_block" "example" {
+resource "aws_s3_bucket_public_access_block" "a_block" {
   for_each = aws_s3_bucket.buckets
 
   bucket = each.value.id
@@ -84,5 +81,5 @@ resource "aws_s3_bucket_policy" "prod" {
     ]
   })
 
-  depends_on = [aws_s3_bucket_public_access_block.example]
+  depends_on = [aws_s3_bucket_public_access_block.a_block]
 }
