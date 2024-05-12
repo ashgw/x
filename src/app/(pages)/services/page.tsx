@@ -50,9 +50,8 @@ export default function Component() {
                   <Link href="/about#stack">
                     <GlowingText>stack</GlowingText>
                   </Link>
-                  I got you. From architecting scalable APIs and designing
-                  beautiful user interfaces to quality code, I&apos;ve got the
-                  skills and experience to bring your ideas to life.
+                  I got you, with a huge emphesis on quality software, I&apos;ve
+                  got the skills and experience to bring your ideas to life.
                 </motion.p>
               </div>
             </div>

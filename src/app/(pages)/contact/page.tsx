@@ -50,7 +50,7 @@ export default function Main() {
                 <div className="mx-auto max-w-[600px]">
                   <C>
                     Feel free to reach out through email. I will get back to you
-                    as soon as possible. If you prefer to communicate securely
+                    as soon as possible. If you prefer to communicate securely,
                     use my <span> </span>
                     <button
                       onClick={async () => {

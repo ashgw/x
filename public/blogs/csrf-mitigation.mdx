@@ -1,0 +1,287 @@
+---
+title: CSRF Mitigation 
+seoTitle: CSRF Mitigation techniques
+summary: If you're vulnerable to XSS, none of this will work
+isReleased: true
+isSequel: false
+lastModDate: 2022-09-04T09:15:00-0401
+firstModDate: 2022-09-04T09:15:00-0401
+minutesToRead: 7
+tags:
+  - 'csrf'
+  - 'cybersec'
+---
+
+<C>
+If you don't rely on a framework to do the heavy lifting for you, or a third party library. As I always say: you have to [understand]() the subject before you abstract it. Here's how to do it manually, but first note thhat none of the techniques below will work if you're already [XSS]() vulnerable
+</C>
+<H2>Where Did The Request Come From?</H2>
+<C>
+If you do not trust the request's origin, block it.
+</C>
+<H3>"Origin" Header</H3>
+<C>
+Since the `Origin` header is being added automatically by browsers as part of the [`CORS`]() mechanism, you can check and validate the header, to check if the request that is coming in, actually comes from you site, block it if it doesn't
+</C>
+<Code
+  code={`if r.Header.Get("Origin") != "https://my-actual-site.com" {
+    http.Error(w, "Bad Request", http.StatusBadRequest)
+    return
+}`}
+  language="go"
+  showLineNumbers={false}
+/>
+<H3>"Sec-Fetc-" Headers</H3>
+
+<C>
+Fetch Metadata headers, [introduced]() in 2019 to provide additional context about the resource request. But all you have to know for now is you can use it  to to check the origin  
+</C>
+<Code
+  code={`if secFetchSite := r.Header.Get("Sec-Fetch-Site"); 
+    secFetchSite != "" && secFetchSite != "same-origin" {
+    http.Error(w, "Bad Request", http.StatusBadRequest)
+    return
+}
+`}
+  language="go"
+  showLineNumbers={false}
+/>
+<C>
+Learn more about `Sec-Fetch` headers [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode) and [here](https://w3c.github.io/webappsec-fetch-metadata/#sec-fetch-site-header)
+</C>
+<C>
+You can use a combo of these two, just to make sure, if one doesn't exist is altered the other might be used. But solely relying on headers is not sufficient, headers could potentially be tampered with or omitted due to certain browser vulnerabilities, network configurations or proxies misconfigurations. So other techniques should be employed too, like 
+</C>
+
+<H2>Anti-CSRF tokens</H2>
+
+<C>
+CSRF tokens are a common and effective technique to prevent Cross-Site Request Forgery attacks, they are cryptographically secure pseudorandom characters or digits, and they basically work like this: 
+</C>
+<C>
+When a client makes a request, the server verifies the token's existence and validity against the token stored in the user's session (the mechanism of which the user session is stored might differ). If the token is missing or doesn't match, the request is rejected as potentially malicious. 
+</C><C>
+There  are two main ways to implement anti-CSRF tokens: 
+</C>
+<H3>Stateless Services</H3>
+<C>
+As in, user sessions can be managed without a database by storing session information as a [JWT]() or [JWE]() within a [cookie](). To defend against CSRF attacks in this setup, use the "Signed Double Submit Cookie Method.": 
+</C><C>
+This method involves generating a unique and cryptographically secure random value, typically a UUID, when a user first authenticates. This UUID is then embedded within both the payload of the JWT/JWE and the CSRF token. To ensure the integrity and authenticity of the CSRF token, use an [HMAC](https://datatracker.ietf.org/doc/html/rfc2104.html), which you combine a secret key (used for signing/encrypting the JWT/JWE) with a hash function like [Blake3](https://github.com/BLAKE3-team/BLAKE3) or SHA256 (make sure it's not computationally intensive but secure enough) , to produce a fixed-size hash value representing the message's integrity. The HMAC message includes two parts: a new random value for collision avoidance and the shared UUID between the JWT/JWE and the CSRF token. 
+</C><C>
+ The idea might **Go** like this
+</C>
+<Code
+  code={`package main
+
+import (
+	"crypto/hmac"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"os"
+
+	"github.com/google/uuid"
+)
+
+func main() {
+	// Gather the values
+
+    // Both HMAC and JWT/JWE secret key
+	secret := getSecretKey("CSRF_SECRET")       
+	uuid := generateUUID()            
+
+    // Random value for collision purposes
+	randomValue := generateAntiCollisionValue() 
+
+	// Create the CSRF Token
+    
+    // HMAC message payload
+	message := fmt.Sprintf("%s!%s", uuid, randomValue)    
+	// Generate the HMAC hash
+    hmacValue := generateHMAC(secret, message)
+    // Combine HMAC hash with message to generate the token
+	csrfToken := fmt.Sprintf("%s.%s", hmacValue, message) 
+
+	fmt.Println("CSRF Token:", csrfToken)
+}
+
+
+func getSecretKey(name string) string {
+	return os.Getenv(name) 
+}
+
+func generateUUID() string {
+	ns := uuid.Nil
+	name := "some-arbitrary-name"
+	return uuid.NewSHA1(ns, []byte(name)).String()
+}
+
+func generateAntiCollisionValue() string {
+	b := make([]byte, 16)
+	rand.Read(b)
+	return hex.EncodeToString(b)
+}
+
+func generateHMAC(secret, message string) string {
+	key := []byte(secret)
+	h := hmac.New(sha256.New, key)
+	h.Write([]byte(message))
+	return hex.EncodeToString(h.Sum(nil))
+}`}
+  language="go"
+  showLineNumbers={false}
+/>
+<C>
+On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the UUID. Simultaneously, it decodes the HMAC-CSRF token, verifies its integrity using the stored secret key, if the integrity was not preserved, the server blocks, else it extracts the UUID. If the extracted UUIDs do not match, there is a potential indication of tampering or unauthorized access, the server blocks.
+</C>
+
+<H3>Stateleful Services</H3>
+<C>
+As in, you use a database to store a user's session, the cookie is just a reference to the user session, like an ID. Use the Synchronizer Pattern: 
+</C>
+<C>
+When a user session is initiated on the server, a unique, secret, and unpredictable CSRF token is generated and associated with that session. This token is then transmitted to the client  as part of the response payload. This transmission can occur by embedding the token within HTML forms as a hidden field, including it in JSON responses, or setting it as a custom HTTP header for AJAX requests.
+</C><C>
+Subsequently, when the client makes further requests to the server, it includes this CSRF token with each request. By doing so, the server can verify that the request originated from its own legitimate pages and was not initiated by a malicious third-party site attempting a CSRF attack.
+</C><C>
+Here's an AJAX example 
+</C>
+<Code
+  code={`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AJAX Request with CSRF Token</title>
+  </head>
+  <body>
+    <div id="ajaxResponse"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        createCSRFTokenContainer();
+        document
+          .getElementById('makeRequestButton')
+          .addEventListener('click', () => {
+            // Make an AJAX request when the button is clicked, it should
+            // show a successful message when no CSRF attack is made
+            var xhr = new XMLHttpRequest();
+
+            var csrfToken = getCSRFTokenFromClient();
+
+            xhr.open('POST', '/protected', true);
+
+            xhr.setRequestHeader('CSRF-Token', csrfToken);
+
+            xhr.onreadystatechange = () => {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                // The server validates the token sent in the header,
+                // if it matches the one stored on the server,
+                // it sends an OK response.
+                // else it blocks the request
+                if (xhr.status === 200) {
+                  // allow
+                  document.getElementById('ajaxResponse').innerText =
+                    "You're allowed, come in";
+                } else {
+                  // BLOCK! Possible forgery
+                  document.getElementById('ajaxResponse').innerText =
+                    "You're blocked, the CSRF Token has been tampered with";
+                  console.error('AJAX request failed:', xhr.status);
+                }
+              }
+            };
+          });
+      });
+
+     
+
+      function createCSRFTokenContainer() {
+        var csrfToken =  'CSRF_TOKEN' // use a template engine,
+        // or whatever framework you're using
+        // to render  this value.
+        //  div element to hold the hidden token
+        var csrfDiv = document.createElement('div');
+        csrfDiv.id = 'csrfTokenDiv'; 
+        // hidden input field and set its value to the generated CSRF token
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'CSRFToken';
+        input.value = csrfToken;
+        csrfDiv.appendChild(input);
+      }
+
+      function getCSRFTokenFromClient() {
+        var csrfTokenDiv = document.getElementById('csrfTokenDiv');
+
+        if (csrfTokenDiv) {
+          var inputField = csrfTokenDiv.querySelector(
+            'input[type="hidden"][name="CSRFToken"]'
+          );
+
+          if (inputField) {
+            return inputField.value; // The CSRF token value
+          }
+        }
+      }
+    </script>
+       <button id="makeRequestButton">Make AJAX Request</button>
+  </body>
+</html>
+`}
+  language="html"
+  showLineNumbers={false}
+/>
+<C>
+If you want to see a framework implementation of the synchronized pattern , check out [`Django`]()'s implementation with the CSRF mitigation middleware, you can read the source code [here]().
+</C>
+<H2>Cookies</H2>
+<C>
+Avoid setting cookies with a specific domain to minimize security risks. When a cookie is domain-specific, all subdomains share that cookie, which can pose risks if subdomains are linked to external domains through CNAME records.
+</C><C>
+For session cookies, ensure they are protected by:
+</C><C>
+ - \-  Using the `HttpOnly` attribute to prevent client-side scripts from accessing cookies, enhancing security against XSS attacks.
+ - \-  Setting the `SameSite` attribute to `Lax` or `Strict` to control cookie behavior in cross-site requests, more [below]().
+ - \-  Avoid specifying a domain (`Domain=None`) to prevent cookies from being sent in cross-origin requests.
+ - \-  Using the `Secure` attribute to ensure that cookies are only sent over HTTPS connections.
+</C><C>
+Also, for enhanced security measures, consider cookie prefixes like `__Host-` and `__Secure-`, read more [here]()
+</C>
+<H3>About "SameSite" Cookies</H3>
+<C>
+Use the `SameSite` cookie attribute to set your users sessions (older browsers do not support this)
+</C>
+<Code
+  code={`Set-Cookie: SID=xxxxx; SameSite=Strict`}
+  language="http"
+  showLineNumbers={false}
+/>
+<C>
+Or
+</C>
+<Code
+  code={`Set-Cookie: SID=xxxxx; SameSite=Lax`}
+  language="http"
+  showLineNumbers={false}
+/>
+<C>
+Read about [`Lax`]() and [`Strict`]() from the official [RFC](). Here's is basically what they do:
+</C>
+<C>
+**``Strict``:** This value prevents cookies from being sent in all cross-site browsing contexts, including regular links. For example: You're logged in your banking account, which means you have a session cookie. If this banking website employs the Strict ``SameSite`` value for its session cookies, and you  click on a link to perform a banking transaction from an external website (like a forum or email) say https://scam-me-please.com , the banking website won't receive the session cookie due to the ``Strict`` setting. Consequently, the user won't be able to complete the transaction because the session information is not sent with the request. 
+</C><C>
+**``Lax``:** The default value of ``SameSite`` is Lax ( since Chrome version 80, in February 2020) , which provides a balance between security and usability. Cookies are allowed when following regular links from external sites but are blocked in CSRF-prone requests such as POST methods. Only cross-site requests that are considered safe (like top-level navigations) are allowed in Lax mode.
+</C><C>
+**``None``:** Using the ``None`` value means the cookie is sent with all cross-site requests, which can potentially expose users to CSRF attacks. Simply don't use this.
+</C>
+<H2>User Interaction-Based CSRF Defense</H2>
+
+<C>
+Requiring users to authenticate using their password, biometric data, security questions, or [OTP]() is a highly effective security measure. However, it can significantly impact user experience, so it's typically used only for critical operations like changing passwords or conducting financial transactions. Avoid using CAPTCHA for this purpose, as it's primarily aimed at preventing automated bot attacks and doesn't provide the necessary level of security for these sensitive activities.
+</C>
+<H2>HTTP Methods</H2>
+<C>
+And oh yeah, this is obvious but, For any state changing request,  DON'T USE  [safe methods]().
+</C>

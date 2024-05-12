@@ -86,8 +86,8 @@ export default function Page() {
             While I have experience with many technologies, I specialize and
             work mostly in <Link href="/blog/tag/python" name="Python" /> and
             <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
-            focus on everything web related (HTTP, RPC, GraphQL, microservices,
-            containers, cloud architecture...)
+            focus on everything web related (HTTP, WebSockets, RPC, GraphQL,
+            microservices, containers, cloud architecture...)
           </p>
         </Card>
         <MinorHeading title="A wise man once said" />
@@ -110,14 +110,12 @@ export default function Page() {
             <Link href="#" name="resume" /> to get a glimpse instead.
           </p>
         </Card>
-        <MajorHeading title="About The Website" />
+        <MajorHeading title={SITE_NAME || 'About The Website'} />
         <Card title="">
           <p>
-            <code>{SITE_NAME}</code> is open{' '}
-            <Link href={REPO_SOURCE} name="source" />
-            and made using the following technologies for provisioning,
-            development, testing, and deployment, with a sprinkle of creativity
-            and love.
+            This site is open <Link href={REPO_SOURCE} name="source" /> and made
+            using the following technologies for provisioning, development,
+            testing, and deployment.
           </p>
         </Card>
         <Card title="">
