@@ -16,12 +16,12 @@ tags:
 The Referrer header automatically includes the source URL of a transition, like clicking a link, in the request's Referer header. However, this can unintentionally expose some information. 
 </C>
 <C>
-So let's explore the Referrer-Policy header, which allows us to control this behavior.
+So let's explore al the ways which allows us to control this behavior.
 </C>
 
 <H2>Referrer or Referer?</H2>
 <C>
-In proper English, "Referrer" is correct, but the misspelled "Referer" is used in the HTTP header for historical compatibility. The newly defined Referrer-Policy is spelled correctly.
+In proper English, "Referrer" is correct, but the misspelled "Referer" is used in the HTTP header for historical compatibility. The newly defined Referrer-Policy is spelled correctly though.
 </C>
 <H3>The Referer Header</H3>
 <C>
@@ -58,7 +58,7 @@ By analyzing traffic sources. For example:
   showLineNumbers={false}
 />
 <C>
-This helps site owners identify traffic sources, to know what exactly people searched for before landing on their site, and then use this info to optimize SEO.
+This helps site owners identify traffic sources, to know what people searched for before landing on their site, and then use this info to optimize SEO.
 </C><C>
 <H3>CSRF Protection</H3>
 </C><C>
@@ -77,7 +77,7 @@ Browsers automatically populate Referer headers, potentially exposing private UR
   language="shell"
   showLineNumbers={false}
 /><C>
-Jumping to an external page from search results can also reveal project details (`https://intra.skyline.techsolutions.example.com/search?q=Cloud+Security`). Despite no direct access
+Jumping to an external page from search results can also reveal project details. Despite no direct access
 </C>
 <H2>Controlling Referer Behavior</H2>
 <C>
@@ -85,10 +85,7 @@ There are many ways to go by this
 </C>
 <H3>Browser Settings</H3>
 <C>
-Some browsers allow restricting Referer sending via settings like Firefox's about:config or Chrome's command line options. Browser extensions also provide this functionality.
-
-These controls have long been available as user options, addressing privacy concerns predating organizational data leaks.
-
+Some browsers allow restricting Referer sending via settings like Firefox's [``about:config``]() or Chrome's command line options. Browser extensions also provide this functionality.
 </C>
 <H3>Internal Proxies</H3>
 <C>
@@ -96,7 +93,7 @@ Companies often use proxies to manage internal network traffic, including contro
 </C>
 <H3>Referrer Policy </H3>
 <C>
-This policy allows controlling the Referer header behavior when transitioning from a web page. By setting the Referrer-Policy header appropriately on internal HTTP servers, organizations can reduce unintentional URL exposure.
+This policy allows controlling the Referer header behavior when transitioning from a web page. By setting the Referrer-Policy header appropriately on internal HTTP servers.
 </C>
 <C>
 Several settings are available based on the origin of requests:
@@ -142,41 +139,20 @@ It's important to note that if the Origin header is sent, it conveys similar inf
  `origin`
 </H3>
 <C>
-  - \-  **Conditions for Sending:** Don't send anything, completely omit Referer header.
-  - \-  **Value Sent:** None.
-  - \-    **Description:** Safest option to prevent information leakage. However, not sending the Referer header can cause issues with certain verifications relying on it. Internal transitions within the same domain won't send the Referer either, making it restrictive for collecting internal metrics. Note that the Origin header remains even when the Referer is omitted.
-</C>
-
-
-<H3>
-`no-referrer`
-</H3>
-<C>
-  - \-  **Conditions for Sending:** Don't send anything, completely omit Referer header.
-  - \-  **Value Sent:** None.
-  - \-    **Description:** Safest option to prevent information leakage. However, not sending the Referer header can cause issues with certain verifications relying on it. Internal transitions within the same domain won't send the Referer either, making it restrictive for collecting internal metrics. Note that the Origin header remains even when the Referer is omitted.
-</C>
-
-
-<H3>
-`no-referrer`
-</H3>
-<C>
-  - \-  **Conditions for Sending:** Don't send anything, completely omit Referer header.
-  - \-  **Value Sent:** None.
-  - \-    **Description:** Safest option to prevent information leakage. However, not sending the Referer header can cause issues with certain verifications relying on it. Internal transitions within the same domain won't send the Referer either, making it restrictive for collecting internal metrics. Note that the Origin header remains even when the Referer is omitted.
-</C>
-
-
-<H3>
-`no-referrer`
-</H3>
-<C>
-  - \-  **Conditions for Sending:** Always include Referer
+  - \-  **Conditions for Sending:** include Referer.
   - \-  **Value Sent:** Origin only.
-  - \-    **Description:** Similar to `unsafe-url` but only sends the origin (base URL) in the Referer header, omitting specific path information. This narrows down information leakage, but plaintext communication still exposes the Referer.
+  - \-    **Description:**  Similar to `unsafe-url` but only sends the origin (base URL) in the Referer header, omitting specific path information. This narrows down information leakage, but plaintext communication still exposes the Referer.
   </C>
 
+
+<H3>
+`no-referrer`
+</H3>
+<C>
+  - \-  **Conditions for Sending:** Don't send anything, completely omit Referer header.
+  - \-  **Value Sent:** None.
+  - \-    **Description:** Safest option to prevent information leakage. However, not sending the Referer header can cause issues with certain verifications relying on it. Internal transitions within the same domain won't send the Referer either, making it restrictive for collecting internal metrics. Note that the Origin header remains even when the Referer is omitted.
+</C>
 
 <H3>
 `same-origin`
@@ -267,7 +243,7 @@ By adding `rel=noreferrer` to `<a>` or `<area>` elements, you can modify the tra
   showLineNumbers={false}
 />
 <C>
-**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate [tab-nabbing.]()For example:
+**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate [tab-nabbing](). For example:
 </C>
 <Code
   code={`<a href="https://example.com" rel="noreferrer noopener" target="_blank">`}

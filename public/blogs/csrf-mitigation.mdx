@@ -34,7 +34,7 @@ Since the `Origin` header is being added automatically by browsers as part of th
 <H3>"Sec-Fetc-" Headers</H3>
 
 <C>
-Fetch Metadata headers, [introduced]() in 2019 to provide additional context about the resource request. But all you have to know for now is you can use it  to to check the origin  
+Fetch Metadata headers, [introduced]() last year to provide additional context about the resource request. But all you have to know for now is you can use it  to to check the origin  
 </C>
 <Code
   code={`if secFetchSite := r.Header.Get("Sec-Fetch-Site"); 
@@ -134,7 +134,14 @@ func generateHMAC(secret, message string) string {
   showLineNumbers={false}
 />
 <C>
-On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the UUID. Simultaneously, it decodes the HMAC-CSRF token, verifies its integrity using the stored secret key, if the integrity was not preserved, the server logs, and blocks, else it extracts the UUID. If the extracted UUIDs do not match, there is a potential indication of tampering or unauthorized access, the server logs, and blocks.
+On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the UUID. Simultaneously, it decodes the HMAC-CSRF token and verifies its integrity using the stored secret key. If the integrity check fails, the server logs the event and blocks the request. If the integrity is preserved, the server extracts the UUID from the token.
+</C>
+<C>
+If the UUIDs extracted from the JWT/JWE and the HMAC-CSRF token do not match, it may indicate tampering or unauthorized access. In this case, the server logs the event and blocks the request.
+</C>
+<C>
+You might ask why not block immediately. The reason is that understanding the type of attack is crucial. By verifying the integrity of the tokens first, you can determine what the attacker attempted to do. If the cookie exists but its integrity is compromised, it suggests the attacker managed to swap the JWT cookie but couldn't sign it with the secret key. 
+A worse scenario is if the attacker already knows the secret key but is unaware of the random that's supposed to exist in both the CSRF token and the JWT/JWE. This information is vital for understanding the extent of the breach and implementing appropriate countermeasures.
 </C>
 
 <H3>Stateful Services</H3>
@@ -201,9 +208,11 @@ Here's an AJAX example
         var csrfToken =  'CSRF_TOKEN' // use a template engine,
         // or whatever framework you're using
         // to render  this value.
+
         //  div element to hold the hidden token
         var csrfDiv = document.createElement('div');
         csrfDiv.id = 'csrfTokenDiv'; 
+
         // hidden input field and set its value to the generated CSRF token
         var input = document.createElement('input');
         input.type = 'hidden';
@@ -238,7 +247,7 @@ If you want to see a framework implementation of the synchronized pattern , chec
 </C>
 <H2>Cookies</H2>
 <C>
-Avoid setting cookies with a specific domain to minimize security risks. When a cookie is domain-specific, all subdomains share that cookie, which can pose risks if you get hit with a <L href="https://developer.mozilla.org/en-US/docs/Web/Security/Subdomain_takeovers">subdomain takeover</L> attack.
+Avoid setting cookies with a specific domain to minimize security risks. When a cookie is domain-specific, all subdomains share that cookie, which can pose risks if you get hit with a <L href="https://developer.mozilla.org/en-US/docs/Web/Security/Subdomain_takeovers">subdomain takeover.</L>
 </C><C>
 For session cookies, ensure they are protected by:
 </C><C>
@@ -272,7 +281,7 @@ Read about [`Lax`]() and [`Strict`]() from the official [RFC](). Here's is basic
 <C>
 **``Strict``:** This value prevents cookies from being sent in all cross-site browsing contexts, including regular links. For example: You're logged in your banking account, which means you have a session cookie. If this banking website employs the Strict ``SameSite`` value for its session cookies, and you  click on a link to perform a banking transaction from an external website (like a forum or email) say https://scam-me-please.com , the banking website won't receive the session cookie due to the ``Strict`` setting. Consequently, the user won't be able to complete the transaction because the session information is not sent with the request. 
 </C><C>
-**``Lax``:** The default value of ``SameSite`` is Lax ( since Chrome version 80, in February 2020) , which provides a balance between security and usability. Cookies are allowed when following regular links from external sites but are blocked in CSRF-prone requests such as POST methods. Only cross-site requests that are considered safe (like top-level navigations) are allowed in Lax mode.
+**``Lax``:** The default value of ``SameSite`` is Lax ( since Chrome version 80, February this year) , which provides a balance between security and usability. Cookies are allowed when following regular links from external sites but are blocked in CSRF-prone requests such as POST methods. Only cross-site requests that are considered safe (like top-level navigations) are allowed in Lax mode.
 </C><C>
 **``None``:** Using the ``None`` value means the cookie is sent with all cross-site requests, which can potentially expose users to CSRF attacks. Simply don't use this.
 </C>
