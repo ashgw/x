@@ -1,0 +1,199 @@
+---
+title: User Stories
+seoTitle:  How to Write Effective User Stories
+summary: How to write effective User Stories
+isReleased: true
+isSequel: false
+lastModDate: 2023-06-14T09:15:00-0401
+firstModDate: 2023-06-14T09:15:00-0401
+minutesToRead: 6
+tags:
+  - 'user-stories'
+  - 'srs'
+---
+<C>
+User stories are a vital component of agile software development, that allows software teams to capture user needs and translate them into actionable requirements. Here's a comprehensive guide on crafting effective user stories.
+</C>
+<H2>Understanding User Stories</H2>
+<C>
+A user story is a concise description of a software feature from an end user's perspective, narrated using non-technical language. It typically follows the format: "As a **persona**, I want to **software goal**, so that **result**".
+</C>
+<C>
+The term "end user" can refer to external customers or internal stakeholders benefiting from the feature.
+</C>
+<H2>Writing Effective User Stories</H2>
+<C>
+Understand the target audience's demographics and psychographics to define the user persona accurately. Design the feature to address their needs and help them achieve their goals, focusing on user intent rather than technical details. Also
+</C>
+
+<H3>Adhere to INVEST Criteria</H3>
+<C>
+An effective user story should adhere to the [INVEST]() criteria to ensure clarity, feasibility, and value delivery:
+</C>
+
+<C>
+ **Independent:** User stories should be self-contained and independent, to enable teams to develop and deliver them without reliance on other stories.
+</C>
+
+
+
+<C>
+**Valuable:** Each user story should deliver tangible value to the end user or stakeholder, by enhancing functionality, user experience, or productivity.
+</C>
+
+
+
+
+<C>
+**Estimable:** User stories should be sufficiently detailed to allow for [estimation]() of effort and duration required for implementation
+</C>
+
+
+<C>
+**Small:** User stories should be broken down into small, manageable chunks of work that can be completed within a single [sprint.]()
+</C>
+
+
+
+<C>
+**Negotiable:** User stories should be open to negotiation and refinement throughout the development process to accommodate evolving requirements.
+</C>
+
+<C>
+**Testable:** More on this [later.]()
+</C>
+
+<C>
+**Prioritized:** More on this [later.]()
+</C>
+
+<H2>Fixing Common Mistakes in User Stories</H2>
+
+<C>
+**Use Consistent Language:** Establish a [glossary]() early in the project to define terms consistently and ensure clarity across all stakeholders
+</C>
+
+
+
+
+
+<C>
+**Focus on User Goals:** Understand the underlying user intent behind each story. Consult real users or representatives to refine requirements accurately.
+</C>
+
+
+
+
+<C>
+**Remove Technical Details If not needed:** Separate user goals from implementation specifics to maintain relevance and flexibility. Should the user get notified by [Kafka]() or a web hook? Does it really matter? The user just wants to get notified, using either technology won't matter, in the end. But will it matter if the user receives the notification through email or other means? Yes.
+</C>
+
+
+
+
+<C>
+**Clarifying Roles:** Yes it's called User Story but, not everyone is a user. Tailor user stories to specific user roles (e.g., manager, admin, architect, [group leader?](https://www.urbandictionary.com/define.php?term=group%20leader) ) to ensure features meet diverse user needs. 
+</C>
+
+<H2>Good and Bad User Story Examples</H2>
+
+
+<C>
+You might find these ones in the wild
+</C>
+<H3>Bad Examples</H3>
+<C>
+ **#1:** As a user, I want a button on the homepage.
+  - **\>  Problem:** This user story lacks context, purpose, and specific user intent.
+</C>
+<C>
+ **#2:**  As a developer, I want to refactor the codebase.
+  - **\>  Problem:** Focuses solely on the developer's task, missing value or outcome.
+  </C>
+<C>
+ **#3:** As a manager, I want reports.
+  - **\>  Problem:** Doesn't specify the purpose or value of the reports for the user. These reports can literally be about anything.
+  </C>
+<C>
+ **#1:** As a first time website visitor, I want the landing page to be fast.
+  - **\>  Problem:** Vague and lacks clarity on the specific performance improvement needed. How can "fast" be tested? Is there a concrete metric? Is it fast on a Mac? Or an old android? How many milliseconds should it take to be considered "fast"?
+  </C>
+<H3>Good Examples</H3>
+<C>
+ **#1:** As a registered user, I want to reset my password via email verification if forgot it, so that I can regain access to my account.
+  - **\>  Persona:** Registered User.
+  - **\>  Needs:** Password reset functionality.
+  - **\>  Purpose:** Account security and user autonomy.
+</C>
+<C>
+ **#1:** As a customer, I want to receive email notifications for order updates, so that I can track the status of my purchases conveniently.
+  - **\>  Persona:** Customer.
+  - **\>  Needs:** Order status update.
+  - **\>  Purpose:**  Enhanced customer experience and order management.
+</C>
+<C>
+ **#1:** As a project manager, I want a web dashboard displaying real-time project milestones and tickets completion, so that I can monitor project progress to make informed decisions.
+  - **\>  Persona:** Project Manager
+  - **\>  Needs:** Real-time project metrics
+  - **\>  Purpose:**  Improved project visibility and decision-making
+</C>
+<H2>Testability</H2>
+<C>
+Rewrite user stories using Behavior-Driven Development format, such as [Gherkin]() syntax, so you can directly map these stories to executable tests, and ensure that the software meets the specified requirements and behaviors.
+</C>
+<H2>Gherkin Syntax</H2>
+
+
+
+<C>
+This is how to write user stories in Gherkin syntax 
+</C>
+<H3>Example 1: Password Reset Feature</H3>
+<C>
+*"As a registered user, I want to reset my password via email verification, so that I can regain access to my account securely."* Can be written as
+</C>
+<Code
+  code={`Feature: Password Reset
+
+  Scenario: User resets password via email verification
+    Given I am a registered user
+    And I have forgotten my password
+    When I request a password reset via email
+    Then I should receive an email with a password reset link
+    And I click on the password reset link
+    And I set a new password
+    Then I should be able to log in with my new password
+`}
+  language="gherkin"
+  showLineNumbers={false}
+/>
+
+
+<C>
+You see how better it gets? Here's another one 
+</C>
+<H3>Example 2: Order Status Notifications</H3>
+<C>
+*"As a customer, I want to receive email notifications for order updates, so that I can track the status of my purchases conveniently."* Can be written as
+</C>
+<Code
+  code={`Feature: Order Status Notifications
+
+  Scenario: Customer receives email notification for order updates
+    Given I am a customer with pending orders
+    When an order status changes (shipped, delivered)
+    Then I should receive an email notification with the updated status
+    And I can click on the email to view detailed order information
+`}
+  language="gherkin"
+  showLineNumbers={false}
+/>
+
+
+<H2>Ranking</H2>
+<C>
+And yeah, did I mention that, when a user story is set, it needs a priority level. The method you use might [differ](https://www.altexsoft.com/blog/most-popular-prioritization-techniques-and-methods-moscow-rice-kano-model-walking-skeleton-and-others/), in [my projects]() I use the [MoSCoW]() method.
+</C>
+
+
+

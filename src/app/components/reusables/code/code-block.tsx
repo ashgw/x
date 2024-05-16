@@ -17,6 +17,7 @@ import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
 import http from 'react-syntax-highlighter/dist/cjs/languages/prism/http';
 import sql from 'react-syntax-highlighter/dist/cjs/languages/prism/sql';
 import sass from 'react-syntax-highlighter/dist/cjs/languages/prism/sass';
+import gherkin from 'react-syntax-highlighter/dist/cjs/languages/prism/gherkin';
 
 import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark';
 import CopyButton from './copy-code';
@@ -35,6 +36,7 @@ SyntaxHighlighter.registerLanguage('yaml', yaml);
 SyntaxHighlighter.registerLanguage('http', http);
 SyntaxHighlighter.registerLanguage('sql', sql);
 SyntaxHighlighter.registerLanguage('sass', sass);
+SyntaxHighlighter.registerLanguage('gherkin', gherkin);
 
 export type CodeBlockProps = {
   language: string;
