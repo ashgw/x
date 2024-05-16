@@ -4,8 +4,8 @@ seoTitle: CSRF Mitigation techniques
 summary: If you're vulnerable to XSS, none of this will work
 isReleased: true
 isSequel: false
-lastModDate: 2022-09-04T09:15:00-0401
-firstModDate: 2022-09-04T09:15:00-0401
+lastModDate: 2020-09-04T09:15:00-0401
+firstModDate: 2020-09-04T09:15:00-0401
 minutesToRead: 7
 tags:
   - 'csrf'
@@ -13,7 +13,7 @@ tags:
 ---
 
 <C>
-If you don't rely on a framework to do the heavy lifting for you, or a third party library. As I always say: you have to [understand]() the subject before you abstract it. Here's how to do it manually, but first note thhat none of the techniques below will work if you're already [XSS]() vulnerable
+If you don't rely on a framework to do the heavy lifting for you, or a third party library. As I always say that you have to [understand]() the subject before you abstract it. Here's how to do it manually, but first note that none of the techniques below will work if you're already [XSS]() vulnerable
 </C>
 <H2>Where Did The Request Come From?</H2>
 <C>
@@ -134,10 +134,10 @@ func generateHMAC(secret, message string) string {
   showLineNumbers={false}
 />
 <C>
-On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the UUID. Simultaneously, it decodes the HMAC-CSRF token, verifies its integrity using the stored secret key, if the integrity was not preserved, the server blocks, else it extracts the UUID. If the extracted UUIDs do not match, there is a potential indication of tampering or unauthorized access, the server blocks.
+On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the UUID. Simultaneously, it decodes the HMAC-CSRF token, verifies its integrity using the stored secret key, if the integrity was not preserved, the server logs, and blocks, else it extracts the UUID. If the extracted UUIDs do not match, there is a potential indication of tampering or unauthorized access, the server logs, and blocks.
 </C>
 
-<H3>Stateleful Services</H3>
+<H3>Stateful Services</H3>
 <C>
 As in, you use a database to store a user's session, the cookie is just a reference to the user session, like an ID. Use the Synchronizer Pattern: 
 </C>
@@ -238,7 +238,7 @@ If you want to see a framework implementation of the synchronized pattern , chec
 </C>
 <H2>Cookies</H2>
 <C>
-Avoid setting cookies with a specific domain to minimize security risks. When a cookie is domain-specific, all subdomains share that cookie, which can pose risks if subdomains are linked to external domains through CNAME records.
+Avoid setting cookies with a specific domain to minimize security risks. When a cookie is domain-specific, all subdomains share that cookie, which can pose risks if you get hit with a <L href="https://developer.mozilla.org/en-US/docs/Web/Security/Subdomain_takeovers">subdomain takeover</L> attack.
 </C><C>
 For session cookies, ensure they are protected by:
 </C><C>
@@ -283,5 +283,5 @@ Requiring users to authenticate using their password, biometric data, security q
 </C>
 <H2>HTTP Methods</H2>
 <C>
-And oh yeah, this is obvious but, For any state changing request,  DON'T USE  [safe methods]().
+And oh yeah, did I mention that for any state changing request,  DON'T USE  [safe methods]().
 </C>

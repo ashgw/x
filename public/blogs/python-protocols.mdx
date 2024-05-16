@@ -1,7 +1,7 @@
 ---
 title: Python Protocols 
-seoTitle: How to Use Python's "Protocol" Type For Structural Subtyping.
-summary: You need to use "Protocol" type for structural subtyping.
+seoTitle: How to Use Python's "Protocol" Type For Structural Subtyping
+summary: structural subtyping with the "Protocol" type
 isReleased: true
 isSequel: false
 lastModDate: 2020-01-02T09:15:00-0401
@@ -13,13 +13,7 @@ tags:
   - 'protocols'
 ---
 
-<H2>Intro</H2>
-<C>
-    The concept of protocols provides a  way to check type compatibility,
-     one that diverges from the conventional class hierarchy approach. 
-In the world of Rust, you might be familiar with traits. They share the same essence as Python protocols, focusing on behavior rather than lineage.
- TypeScript interfaces offer a similar structural approach.
-</C>
+
 <H2>Structural Subtyping</H2>
 <C>
 <L href="https://peps.python.org/pep-0544/">PEP 544</L>
@@ -128,7 +122,7 @@ showLineNumbers={false}
 </C>
 <H3>Ok we know all that, what's special</H3>
 <C>
-Let'say you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or adapter. You might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with an abstracted one. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
+Let's say you have various classes representing different request or response objects, possibly from different libraries. You aim to consolidate these diverse objects and their methods into a unified class or <L href='https://en.wikipedia.org/wiki/Adapter_pattern'>adapter</L>. You might expect these classes to inherit from a common base class. However, using protocols, you can define a protocol that outlines the expected behavior of response objects with an abstracted one. This enables disparate classes to conform to the same structure without requiring a shared ancestry.
 </C>
 <Code
   code=
@@ -207,7 +201,7 @@ class RequestY(Request):
 
 <C>As you can see these different libraries
  have different implementation over how they access 
- different request attributes/methods, but with a protocol 
+ different request properties/methods, but with a protocol 
  you can define a unified way that all these different objects 
  adhere to, now for example if you want to create a function 
  that processes a given request you can annotate the request 

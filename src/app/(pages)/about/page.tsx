@@ -62,16 +62,21 @@ export default function Page() {
         <Card title="">
           <p>
             I&apos;m a software developer and technical educator, and I do work
-            for <Link href="/contact" name="hire." /> <br />
-            Over the past 7 years I&apos;ve had the privilge to collaborate with
-            numerous individuals, teams and startups worldwide, to build, scale,
-            and lead software projects.
+            for <Link href="/contact" name="hire." />
+          </p>
+        </Card>
+        <Card title="">
+          <p>
+            I&apos;ve been programming since I was 12 years old, getting
+            professionally paid for it for 4 years now, where I&apos;ve had the
+            privilge to collaborate with numerous individuals, teams and
+            startups worldwide, to build, scale, and lead software projects.
           </p>
         </Card>
         <Card title="">
           <p>
             You can learn more about me from my blogs than I can convey here.
-            <br /> I believe in
+            <br /> But in short, I believe in
             <Link href="/blog/tag/quality" name="quality" /> code,
             <Link href="/blog/tag/skill-issues" name="high-performing" />
             teams, and effective
@@ -84,52 +89,54 @@ export default function Page() {
         <Card title="">
           <p>
             While I have experience with many technologies, I specialize and
-            work mostly in <Link href="/blog/tag/python" name="Python" /> and
+            work mostly with <Link href="/blog/tag/python" name="Python" /> and
             <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
             focus on everything web related (HTTP, WebSockets, RPC, GraphQL,
             microservices, containers, cloud architecture...)
           </p>
         </Card>
-        <MinorHeading title="A wise man once said" />
-        <Card title="">
-          <p>
-            <span className="italic">
-              &quot;Before you learn an ephemeral web framework, learn HTTP
-              instead, that way you have learned every web framework to ever
-              exist&quot;
-            </span>
-          </p>
-        </Card>
-        <Card title="">
-          <p>
-            Frameworks and libraries don&apos;t matter they come and go.
-            Fundamentals are key. But if you&apos;re interested in knowing the
-            exact tools I use you can check out my
-            <Link href="#" name="cv" /> (it&apos;s too long), or, you might want
-            to check out my
-            <Link href="#" name="resume" /> to get a glimpse instead.
-          </p>
-        </Card>
-        <MajorHeading title={SITE_NAME || 'About The Website'} />
-        <Card title="">
-          <p>
-            This site is open <Link href={REPO_SOURCE} name="source" /> and made
-            using the following technologies for provisioning, development,
-            testing, and deployment.
-          </p>
-        </Card>
-        <Card title="">
-          <div className="flex flex-wrap justify-center items-center gap-[0.625rem] text-sm dimmed-4">
-            {ThisSiteTools.map((tech) => (
-              <span
-                key={tech}
-                className="relative rounded-full px-2 py-1 border border-white/10"
-              >
-                {tech}
+        <div id="hiden" className="hidden">
+          <MinorHeading title="A wise man once said" />
+          <Card title="">
+            <p>
+              <span className="italic">
+                &quot;Before you learn an ephemeral web framework, learn HTTP
+                instead, that way you have learned every web framework to ever
+                exist&quot;
               </span>
-            ))}
-          </div>
-        </Card>
+            </p>
+          </Card>
+          <Card title="">
+            <p>
+              Frameworks and libraries don&apos;t matter they come and go.
+              Fundamentals are key. But if you&apos;re interested in knowing the
+              exact tools I use you can check out my
+              <Link href="#" name="cv" /> (it&apos;s too long), or, you might
+              want to check out my
+              <Link href="#" name="resume" /> to get a glimpse instead.
+            </p>
+          </Card>
+          <MajorHeading title={SITE_NAME || 'About The Website'} />
+          <Card title="">
+            <p>
+              This site is open <Link href={REPO_SOURCE} name="source" /> and
+              made using the following technologies for provisioning,
+              development, testing, and deployment.
+            </p>
+          </Card>
+          <Card title="">
+            <div className="flex flex-wrap justify-center items-center gap-[0.625rem] text-sm dimmed-4">
+              {ThisSiteTools.map((tech) => (
+                <span
+                  key={tech}
+                  className="relative rounded-full px-2 py-1 border border-white/10"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </Card>
+        </div>
       </div>
       <div className="mt-10"></div>
       <Footer></Footer>

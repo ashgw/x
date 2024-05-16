@@ -11,9 +11,8 @@ function TypingAnimation() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <span class="glows">write</span> software',
-        'I <span class="glows">solve</span> software',
-        'I <span class="glows">architect</span> software',
+        'I <span class="glows">develop</span> software',
+        'And <span class="glows">rant</span> about it',
       ],
       typeSpeed: 50,
       loop: true,
