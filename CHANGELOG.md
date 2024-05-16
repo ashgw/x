@@ -1,3 +1,37 @@
+## v1.81.0
+
+[compare changes](https://github.com/ashgw/ashgw.io/compare/v1.80.0...v1.81.0)
+
+### 🚀 Enhancements
+
+- Set blogs time to read ([ef9180c](https://github.com/ashgw/ashgw.io/commit/ef9180c))
+- Add ghirkin format ([677b09f](https://github.com/ashgw/ashgw.io/commit/677b09f))
+
+### 🩹 Fixes
+
+- A shit ton of typos and missed links ([41cf118](https://github.com/ashgw/ashgw.io/commit/41cf118))
+- **test:** Env var missing ([8aebe83](https://github.com/ashgw/ashgw.io/commit/8aebe83))
+- Missing links ([6e24a8d](https://github.com/ashgw/ashgw.io/commit/6e24a8d))
+
+### 💅 Refactors
+
+- Move pupl fiction ref to its own component ([bcf655e](https://github.com/ashgw/ashgw.io/commit/bcf655e))
+- Remove unecessary unused env vars ([b61af55](https://github.com/ashgw/ashgw.io/commit/b61af55))
+- **infra:** Remove `iam_user` for `s3` ([bf91a5f](https://github.com/ashgw/ashgw.io/commit/bf91a5f))
+- **infra:** Remove `iam_user` for `s3` ([0b3fe63](https://github.com/ashgw/ashgw.io/commit/0b3fe63))
+
+### 📦 Build
+
+- **DevContainers:** Add `tfenv` with aliases ([37b58bd](https://github.com/ashgw/ashgw.io/commit/37b58bd))
+
+### 🏡 Chore
+
+- Clearup major typos ([8136ce5](https://github.com/ashgw/ashgw.io/commit/8136ce5))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.80.0
 
 [compare changes](https://github.com/ashgw/ashgw.io/compare/v1.79.0...v1.80.0)
