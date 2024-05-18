@@ -62,7 +62,7 @@ This helps site owners identify traffic sources, to know what people searched fo
 </C><C>
 <H3>CSRF Protection</H3>
 </C><C>
-The header can be checked to combat Cross-Site Request Forgery. However, for form submissions, using the ``Origin`` header is more preferable. But using the ``Origin`` header [alone]() is not secure enough.
+The header can be checked to combat Cross-Site Request Forgery. However, for form submissions, using the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin'>``Origin``</L> header is more preferable. But using the ``Origin`` header <L href='/blog/csrf-mitigation'>alone</L> is not secure enough.
 </C>
 <H3>Preventing Plagiarism</H3>
 <C>
@@ -85,11 +85,11 @@ There are many ways to go by this
 </C>
 <H3>Browser Settings</H3>
 <C>
-Some browsers allow restricting Referer sending via settings like Firefox's [``about:config``]() or Chrome's command line options. Browser extensions also provide this functionality.
+Some browsers allow restricting Referer sending via settings like Firefox's <L href='https://support.mozilla.org/en-US/kb/about-config-editor-firefox#w_opening-aboutconfig'>``about:config``</L> or Chrome's command line options. Browser extensions also provide this functionality.
 </C>
 <H3>Internal Proxies</H3>
 <C>
-Companies often use proxies to manage internal network traffic, including controlling the Referer header. This allows selective dropping or rewriting of the Referer based on whether it's an internal or external domain. However, with the widespread adoption of HTTPS, which encrypts traffic end-to-end, traditional proxy methods like [MITM]() have limitations due to encryption complexities.
+Companies often use proxies to manage internal network traffic, including controlling the Referer header. This allows selective dropping or rewriting of the Referer based on whether it's an internal or external domain. However, with the widespread adoption of HTTPS, which encrypts traffic end-to-end, traditional proxy methods like <L href='https://en.wikipedia.org/wiki/Man-in-the-middle_attack'>MITM</L> have limitations due to encryption complexities.
 </C>
 <H3>Referrer Policy </H3>
 <C>
@@ -131,7 +131,7 @@ It's important to note that if the Origin header is sent, it conveys similar inf
 <C>
   - \-  **Conditions for Sending:** Always include Referer.
   - \-  **Value Sent:** The entire URL.
-  - \-    **Description:**  Sends the complete URL in the Referer header, even during insecure HTTP transitions (e.g., HTTP to HTTP or HTTPS to HTTP). This behavior is considered unsafe due to potential exposure in plaintext communication, susceptible to [MITM]() attacks like proxies.
+  - \-    **Description:**  Sends the complete URL in the Referer header, even during insecure HTTP transitions (e.g., HTTP to HTTP or HTTPS to HTTP). This behavior is considered unsafe due to potential exposure in plaintext communication, susceptible to MITM attacks like proxies.
   </C>
 
 
@@ -243,7 +243,7 @@ By adding `rel=noreferrer` to `<a>` or `<area>` elements, you can modify the tra
   showLineNumbers={false}
 />
 <C>
-**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate [tab-nabbing](). For example:
+**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate <L href='https://en.wikipedia.org/wiki/Tabnabbing'>tab-nabbing.</L> For example:
 </C>
 <Code
   code={`<a href="https://example.com" rel="noreferrer noopener" target="_blank">`}
@@ -267,7 +267,7 @@ The value of `referrerpolicy` can be selected from the Referrer-Policy options m
 To make a link adhere to the Referrer-Policy set for the entire page, use an empty string (`""`) as the attribute value.
 </C>
 <C>
-Read [more](https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-delivery-referrer-attribute).
+Read <L href='https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-delivery-referrer-attribute'>more</L>
 </C>
 <H3>
 `<meta>` referrer Attribute
@@ -290,7 +290,7 @@ This `<meta>` tag is typically added within the `<head>` section of an HTML docu
 
 
 <C>
-Read [more](https://html.spec.whatwg.org/multipage/semantics.html#meta-referrer).
+Read <L href='https://html.spec.whatwg.org/multipage/semantics.html#meta-referrer'>more</L>
 </C>
 <H3>
 HTTP Header
@@ -312,7 +312,7 @@ This approach is useful when you cannot modify the content directly (e.g., third
 
 
 <C>
-Read [more](https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header-dfn).
+Read <L href='https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header-dfn'>more</L>
 </C>
 
 
