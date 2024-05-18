@@ -51,7 +51,7 @@ export default function Posts({ posts, taggedPostsFileNames }: PostsParams) {
             }}
             transition={{
               duration: 0.4,
-              delay: index * 0.1,
+              delay: index < 5 ? index * 0.1 : index * 0.05,
             }}
           >
             <PostCard postData={post}></PostCard>
