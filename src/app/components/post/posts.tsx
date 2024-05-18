@@ -13,8 +13,8 @@ import BackUpTop from '@/app/components/reusables/back-up-top';
 type PostsParams = { posts: PostData[]; taggedPostsFileNames?: string[] };
 
 export default function Posts({ posts, taggedPostsFileNames }: PostsParams) {
-  const firstLoadVisibleNum = 5;
-  const perLoadVisibleNum = 3;
+  const firstLoadVisibleNum = 10;
+  const perLoadVisibleNum = 5;
   const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
 
   let filteredPosts: PostData[] = posts;
