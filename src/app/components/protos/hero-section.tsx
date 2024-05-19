@@ -27,13 +27,27 @@ import { Button } from '../ui/button';
 
 /* eslint-disable */
 
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
 function TypingAnimation() {
   const el = useRef(null);
 
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <span class="glows">develop</span> software',
+        'I <span class="glows">do</span> software',
         'And <span class="glows">rant</span> about it',
       ],
       typeSpeed: 50,
@@ -89,7 +103,7 @@ export default function HeroSection() {
             >
               <h1 className="text-5xl md:text-5xl lg:text-6xl/none xl:text-[5rem] font-bold tracking-tighter">
                 <span className="dimmed-4">
-                  Hey, I'm <span className="glows">Ashref</span>
+                  Hey, I'm <span className="glows">AG</span>
                 </span>
               </h1>
               <h1 className="text-5xl md:text-5xl lg:text-6xl/none xl:text-[5rem] font-bold tracking-tighter ">

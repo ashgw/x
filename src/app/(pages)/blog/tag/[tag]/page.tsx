@@ -3,15 +3,12 @@ import LoadingScreen from '@/app/components/reusables/loading-screen';
 import { getBlogPosts } from '@/lib/mdx/content';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { MaybeUndefined } from 'ts-roids';
 
 type RouteParams = {
   params: { tag: string };
 };
 
-export default async function Tags({
-  params,
-}: RouteParams): Promise<MaybeUndefined<JSX.Element>> {
+export default async function Tags({ params }: RouteParams) {
   const posts = await getBlogPosts();
   if (posts) {
     const taggedPostsFileNames: string[] = [];
@@ -33,6 +30,8 @@ export default async function Tags({
           <div className="py-6"></div>
         </Suspense>
       );
+    } else {
+      return notFound();
     }
   } else {
     return notFound();

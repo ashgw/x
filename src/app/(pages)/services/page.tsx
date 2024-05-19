@@ -46,12 +46,13 @@ export default function Component() {
                   transition={transition}
                   className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 >
+                  <i>&quot;I&apos;m winston wolf, I solve problems&quot;</i>
+                  <br />
                   If you use my
                   <Link href="/about#stack">
-                    <GlowingText>stack</GlowingText>
+                    <GlowingText>stack,</GlowingText>
                   </Link>
-                  I got you, with a huge emphesis on quality software, I&apos;ve
-                  got the skills and experience to bring your ideas to life.
+                  I got you
                 </motion.p>
               </div>
             </div>
