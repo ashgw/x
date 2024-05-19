@@ -1,28 +1,34 @@
 // react-syntax-highlighter has no types
+
 /* eslint-disable */
 // @ts-nocheck
 'use client';
-import { motion } from 'framer-motion';
+
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { Suspense } from 'react';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import rust from 'react-syntax-highlighter/dist/cjs/languages/prism/rust';
-import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python';
-import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
-import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
-import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import docker from 'react-syntax-highlighter/dist/cjs/languages/prism/docker';
-import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
-import http from 'react-syntax-highlighter/dist/cjs/languages/prism/http';
-import sql from 'react-syntax-highlighter/dist/cjs/languages/prism/sql';
-import sass from 'react-syntax-highlighter/dist/cjs/languages/prism/sass';
 import gherkin from 'react-syntax-highlighter/dist/cjs/languages/prism/gherkin';
-
+import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
+import http from 'react-syntax-highlighter/dist/cjs/languages/prism/http';
+import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python';
+import rust from 'react-syntax-highlighter/dist/cjs/languages/prism/rust';
+import sass from 'react-syntax-highlighter/dist/cjs/languages/prism/sass';
+import sql from 'react-syntax-highlighter/dist/cjs/languages/prism/sql';
+import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
+import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
+import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
 import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark';
-import CopyButton from './copy-code';
+
 import { Skeleton } from '../../ui/skeleton';
-import { Suspense } from 'react';
+import CopyButton from './copy-code';
+
+// react-syntax-highlighter has no types
+/* eslint-disable */
+// @ts-nocheck
 
 SyntaxHighlighter.registerLanguage('rust', rust);
 SyntaxHighlighter.registerLanguage('python', python);

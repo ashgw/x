@@ -1,7 +1,8 @@
 'use client';
-import React, { useRef } from 'react';
-import gsap from 'gsap';
+
 import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import React, { useRef } from 'react';
 
 export const ThreeTrafficLightsMovingObjects: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);

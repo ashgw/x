@@ -1,10 +1,10 @@
 'use client';
 
 import Footer from '@/app/components/footer/footer';
-import Link from 'next/link';
-import { Computer, Presentation, ScanEye } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { GlowingText } from '@/app/components/reusables/content';
+import { motion } from 'framer-motion';
+import { Computer, Presentation, ScanEye } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Component() {
   const TRANSITION_DURATION: number = 0.3; // secs

@@ -1,4 +1,5 @@
 'use client';
+
 import { formatDate } from '@/lib/funcs/dates';
 import { motion } from 'framer-motion';
 

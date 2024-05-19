@@ -1,14 +1,14 @@
 'use client';
 
-import React from 'react';
 import SourceCodeButton from '@/app/components/nav/git-button';
-import { Button } from '@/app/components/ui/button';
-import Link from 'next/link';
-import Image from 'next/image';
 import HamburgerButton from '@/app/components/nav/hamburger';
-import { motion, AnimatePresence } from 'framer-motion';
-import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenu';
+import { Button } from '@/app/components/ui/button';
 import { REPO_SOURCE } from '@/lib/constants';
+import useToggleDropDownMenu from '@/lib/hooks/useToggleDropDownMenu';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
 export default function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({

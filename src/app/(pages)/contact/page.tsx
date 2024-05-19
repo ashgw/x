@@ -1,14 +1,14 @@
 'use client';
-import Link from 'next/link';
-import Footer from '@/app/components/footer/footer';
-import { Button } from '@/app/components/ui/button';
-import { Heading1 as H1 } from '@/app/components/reusables/headers';
-import { TextContent as C } from '@/app/components/reusables/content';
-import { motion } from 'framer-motion';
-import { Toaster, toast } from 'sonner';
-import { useCopyToClipboard } from 'react-use';
 
+import Footer from '@/app/components/footer/footer';
+import { TextContent as C } from '@/app/components/reusables/content';
+import { Heading1 as H1 } from '@/app/components/reusables/headers';
+import { Button } from '@/app/components/ui/button';
 import { EMAIL, GPG_PUBLIC_KEY_INTERNAL_URL } from '@/lib/constants';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useCopyToClipboard } from 'react-use';
+import { Toaster, toast } from 'sonner';
 
 export default function Main() {
   const [, copyToClipboard] = useCopyToClipboard();

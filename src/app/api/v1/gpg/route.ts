@@ -1,6 +1,6 @@
+import { GPG_PUBLIC_KEY_EXTERNAL_URL } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 import { NewType } from 'ts-roids';
-import { GPG_PUBLIC_KEY_EXTERNAL_URL } from '@/lib/constants';
 
 type Key = NewType<'Key', string>;
 type Err = string;

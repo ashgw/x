@@ -1,6 +1,8 @@
 'use client';
-import { motion } from 'framer-motion';
+
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+
 export function TextContent({ children }: { children: React.ReactNode }) {
   return (
     <motion.p

@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
-import { notFound } from 'next/navigation';
-import { getBlogPosts } from '@/lib/mdx/content';
-import LoadingScreen from '@/app/components/reusables/loading-screen';
 import Posts from '@/app/components/post/posts';
+import LoadingScreen from '@/app/components/reusables/loading-screen';
+import { getBlogPosts } from '@/lib/mdx/content';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 type RouteParams = {
   params: { tag: string };

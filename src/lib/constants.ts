@@ -1,5 +1,7 @@
-import { pub, nextJS } from '@/lib/env';
+import { nextJS, pub } from '@/lib/env';
+
 import { getSiteName } from './funcs/site-name';
+
 export const BLOG_CONTENT_PATH = '/public/blogs';
 export const BUSINESS_CONTENT_PATH = '/public/services';
 export const BLOG_URI = '/blog';

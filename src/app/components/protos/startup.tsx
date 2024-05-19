@@ -1,8 +1,8 @@
 /* eslint-disable */
-import Link from 'next/link';
-import { Input } from '@/app/components/ui/input';
 import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
+import Link from 'next/link';
 import React, { SVGProps } from 'react';
 
 export default function StartUp() {

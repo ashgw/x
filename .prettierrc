@@ -4,5 +4,9 @@
   "semi": true,
   "singleQuote": true,
   "jsxBracketSameLine": false,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

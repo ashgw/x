@@ -1,5 +1,6 @@
-import { MetadataRoute } from 'next';
 import { pub } from '@/lib/env';
+import { MetadataRoute } from 'next';
+
 const BASE_URL = pub.SITE_URL_PROD;
 
 export default function sitemap(): MetadataRoute.Sitemap {

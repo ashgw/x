@@ -1,6 +1,7 @@
 'use client';
-import { useEffect } from 'react';
+
 import { ChevronUp } from 'lucide-react';
+import { useEffect } from 'react';
 
 export default function BackUpTop() {
   useEffect(() => {

@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
-import { Atkinson_Hyperlegible } from 'next/font/google';
-import { getSiteName } from '@/lib/funcs/site-name';
 import Providers from '@/app/components/providers/all';
 import { pub } from '@/lib/env';
-import NavBar from './components/nav/nav';
+import { getSiteName } from '@/lib/funcs/site-name';
+import type { Metadata } from 'next';
+import { Atkinson_Hyperlegible } from 'next/font/google';
 
+import NavBar from './components/nav/nav';
 import './styles/globals.css';
 
 const inter = Atkinson_Hyperlegible({

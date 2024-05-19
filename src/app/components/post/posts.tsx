@@ -1,14 +1,15 @@
 'use client';
-import type { PostData } from '@/lib/types/mdx';
-import type { ButtonHTMLAttributes } from 'react';
+
+import Footer from '@/app/components/footer/footer';
 import PostCard from '@/app/components/post/post-card';
+import BackUpTop from '@/app/components/reusables/back-up-top';
+import type { PostData } from '@/lib/types/mdx';
+import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { CheckCheck } from 'lucide-react';
-import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import Footer from '@/app/components/footer/footer';
-import BackUpTop from '@/app/components/reusables/back-up-top';
+import type { ButtonHTMLAttributes } from 'react';
+import { useState } from 'react';
 
 type PostsParams = { posts: PostData[]; taggedPostsFileNames?: string[] };
 

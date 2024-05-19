@@ -1,13 +1,13 @@
-import React from 'react';
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from '@nextui-org/react';
+import React from 'react';
 
 type BackdropType = 'opaque' | 'blur' | 'transparent';
 

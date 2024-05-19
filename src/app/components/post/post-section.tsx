@@ -1,10 +1,11 @@
 import StyledMDX from '@/app/components/mdx/styled-mdx';
-import { Heading1 as H1 } from '@/app/components/reusables/headers';
-import { isSameMonthAndYear } from '@/lib/funcs/dates';
-import { MediumSection } from '@/app/components/reusables/sections';
 import BackUpTop from '@/app/components/reusables/back-up-top';
-import type { PostData } from '@/lib/types/mdx';
+import { Heading1 as H1 } from '@/app/components/reusables/headers';
+import { MediumSection } from '@/app/components/reusables/sections';
 import { Badge } from '@/app/components/ui/badge';
+import { isSameMonthAndYear } from '@/lib/funcs/dates';
+import type { PostData } from '@/lib/types/mdx';
+
 import { CreationDate } from './creation-date';
 
 type _Props = {

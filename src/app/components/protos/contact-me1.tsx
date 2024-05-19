@@ -1,10 +1,10 @@
 /* eslint-disable */
-
-import Link from 'next/link';
 import Footer from '@/app/components/footer/footer';
-import { Button } from '@/app/components/ui/button';
-import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { TextContent as C } from '@/app/components/reusables/content';
+import { Heading1 as H1 } from '@/app/components/reusables/headers';
+import { Button } from '@/app/components/ui/button';
+import Link from 'next/link';
+
 export default function Freelance() {
   return (
     <div className="flex flex-col h-screen">

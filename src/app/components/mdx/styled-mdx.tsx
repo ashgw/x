@@ -1,21 +1,22 @@
-import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
-import { Link } from '@/app/components/reusables/link';
-import { MDXImage } from './mdx-image';
-import { Divider } from '@/app/components/reusables/divider';
-import CodeBlock from '@/app/components/reusables/code/code-block';
 import {
+  FramerMotionFadeInComponent,
+  YeetMe,
+} from '@/app/components/blog-mentions/framer-motion';
+import { ThreeTrafficLightsMovingObjects } from '@/app/components/blog-mentions/gsap';
+import CodeBlock from '@/app/components/reusables/code/code-block';
+import { TextContent } from '@/app/components/reusables/content';
+import { Divider } from '@/app/components/reusables/divider';
+import {
+  Heading1,
   Heading2,
   Heading3,
-  Heading1,
 } from '@/app/components/reusables/headers';
+import { Link } from '@/app/components/reusables/link';
 import { Spacer1, Spacer2, Spacer3 } from '@/app/components/reusables/spacers';
-import { TextContent } from '@/app/components/reusables/content';
-import {
-  YeetMe,
-  FramerMotionFadeInComponent,
-} from '@/app/components/blog-mentions/framer-motion';
+import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
+
 import CrossedOff from '../reusables/crossed-off';
-import { ThreeTrafficLightsMovingObjects } from '@/app/components/blog-mentions/gsap';
+import { MDXImage } from './mdx-image';
 
 export default function StyledMDX({ source }: { source: string }) {
   return (

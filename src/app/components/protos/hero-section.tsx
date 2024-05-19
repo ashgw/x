@@ -1,9 +1,13 @@
 /* eslint-disable */
 'use client';
-import { Button } from '../ui/button';
+
 import { motion } from 'framer-motion';
-import Typed from 'typed.js';
 import { useEffect, useRef } from 'react';
+import Typed from 'typed.js';
+
+import { Button } from '../ui/button';
+
+/* eslint-disable */
 
 function TypingAnimation() {
   const el = useRef(null);

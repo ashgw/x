@@ -1,12 +1,12 @@
-import { Suspense } from 'react';
+import Footer from '@/app/components/footer/footer';
+import PostSection from '@/app/components/post/post-section';
+import LoadingScreen from '@/app/components/reusables/loading-screen';
+import { pub } from '@/lib/env';
+import { getSiteName } from '@/lib/funcs/site-name';
+import { getBusinessPost, getBusinessPosts } from '@/lib/mdx/content';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getBusinessPosts, getBusinessPost } from '@/lib/mdx/content';
-import { getSiteName } from '@/lib/funcs/site-name';
-import { pub } from '@/lib/env';
-import LoadingScreen from '@/app/components/reusables/loading-screen';
-import PostSection from '@/app/components/post/post-section';
-import Footer from '@/app/components/footer/footer';
+import { Suspense } from 'react';
 import { EmptyObject } from 'ts-roids';
 
 type RouteParams = {

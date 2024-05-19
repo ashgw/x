@@ -1,9 +1,9 @@
-import { Label } from '@/app/components/ui/label';
-import { Input } from '@/app/components/ui/input';
-import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
+import { Label } from '@/app/components/ui/label';
 import { Separator } from '@/app/components/ui/separator';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Component() {
   return (

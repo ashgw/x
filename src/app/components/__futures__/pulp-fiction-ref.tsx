@@ -1,7 +1,8 @@
 'use client';
+
+import { Skeleton } from '@/app/components/ui/skeleton';
 import { PUBLIC_BLOG_IMAGES_SOURCE } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { Skeleton } from '@/app/components/ui/skeleton';
 import React, { Suspense } from 'react';
 
 const PulpFictionRef = () => {

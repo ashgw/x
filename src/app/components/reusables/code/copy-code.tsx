@@ -1,9 +1,10 @@
 'use client';
+
+import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import React, { useState } from 'react';
 import { FC } from 'react';
-import { Copy } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useCopyToClipboard } from 'react-use';
 
 interface CopyButtonProps {

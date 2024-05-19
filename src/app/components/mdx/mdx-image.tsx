@@ -1,5 +1,5 @@
-import { Image, Skeleton } from '@nextui-org/react';
 import { cn } from '@/lib/utils';
+import { Image, Skeleton } from '@nextui-org/react';
 import NextImage from 'next/image';
 
 type MDXImageProps = {

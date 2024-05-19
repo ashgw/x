@@ -1,6 +1,6 @@
-import NextLink from 'next/link';
 import { SITE_URL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import NextLink from 'next/link';
 
 export function Link({
   href,

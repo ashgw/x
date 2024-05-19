@@ -1,10 +1,9 @@
 /* eslint-disable */
-import React, { SVGProps } from 'react';
-
-import Link from 'next/link';
+import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
-import { Button } from '@/app/components/ui/button';
+import Link from 'next/link';
+import React, { SVGProps } from 'react';
 
 export default function AboutMe1() {
   return (
