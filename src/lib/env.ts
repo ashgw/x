@@ -7,7 +7,7 @@ export const dev = {};
 export const prod = {};
 
 export const nextJS = {
-  NEXT_NODE_ENV: process.env.NEXT_NODE_ENV as string,
+  NODE_ENV: process.env.NODE_ENV as string,
   GENERATE_SOURCEMAP: false,
 };
 
