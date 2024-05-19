@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  experimental: {
+    outputFileTracingIncludes: {
+      '/blog': ['./public/**/*'],
+    },
+  },
+
   headers() {
     return [
       {

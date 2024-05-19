@@ -46,7 +46,7 @@ const Card: React.FC<CardProps> = ({ title, children }) => {
       className="border border-white/10 p-4 rounded-[2rem]"
     >
       <div className="flex flex-col gap-2 items-center text-xl">
-        <div className=" text-center dimmed-3 max-w-sm sm:max-w-[550px] md:max-w-[650px] lg:max-w-[850px]">
+        <div className=" text-center dimmed-3 max-w-[370px] sm:max-w-[550px] md:max-w-[650px] lg:max-w-[850px]">
           <h3 className=" glows-dimmed dimmed-4 text-2xl font-bold">{title}</h3>
           <div>{children}</div>
         </div>
@@ -59,21 +59,26 @@ export default function Page() {
     <>
       <div className="mt-12"></div>
       <div className="flex flex-col items-center justify-center gap-6 mt-8 md:mt-20">
-        <MajorHeading title="Hello" />
+        <code>
+          <MajorHeading title="whomai" />
+        </code>
         <Card title="">
           <p>
             I&apos;m a software developer and technical educator, and I do work
             for <Link href="/contact" name="hire." />
           </p>
         </Card>
-        <Card title="">
-          <p>
-            I&apos;ve been programming since I was 12 years old, getting
-            professionally paid for it for 4 years now, where I&apos;ve had the
-            privilge to collaborate with numerous individuals, teams and
-            startups worldwide, to build, scale, and lead software projects.
-          </p>
-        </Card>
+        <div className="hidden">
+          <Card title="">
+            <p>
+              I&apos;ve been programming since I was 12 years old, getting
+              professionally paid for it for 4 years now, where I&apos;ve had
+              the privilge to collaborate with numerous individuals, teams and
+              startups worldwide, to build, scale, and lead software projects.
+            </p>
+          </Card>
+        </div>
+
         <Card title="">
           <p>
             You can learn more about me from my blogs than I can convey here.

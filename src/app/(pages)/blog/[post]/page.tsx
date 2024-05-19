@@ -29,13 +29,14 @@ export async function generateMetadata({
     return {};
   }
   const postAttrs = post.parsedContent.attributes;
-  const title = postAttrs.seoTitle;
+  const title = postAttrs.title;
   const description = postAttrs.summary;
+  const seoTitle = postAttrs.seoTitle;
   const url = pub.SITE_URL_PROD + '/' + post.filename;
 
   const postImageWidth = 1200; // in pixels
   const postImageHeight = 630;
-  const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${title}`;
+  const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${seoTitle}`;
   return {
     title,
     description,

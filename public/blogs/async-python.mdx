@@ -4,8 +4,8 @@ seoTitle: How Async Python Works Under The Hood
 summary: How it really works under the hood
 isReleased: true
 isSequel: false
-lastModDate: 2022-02-01T09:15:00-0401
-firstModDate: 2022-02-01T09:15:00-0401
+lastModDate: 2020-02-02T09:15:00-0401
+firstModDate: 2020-02-02T09:15:00-0401
 minutesToRead: 7
 tags:
   - 'python'
@@ -13,19 +13,19 @@ tags:
   - 'typing'
 ---
 <C>
-You may have encountered explanations that appear overly simplistic, merely emphasizing the importance of async programming without delving into the mechanics or exploring high-level APIs such as the <L href="https://github.com/python/cpython/tree/main/Lib/asyncio">`asyncio`</L> module in the standard library. Clearly, you already understand the significance and use cases, so let's cut to the chase and see how it actually works.
+You may have encountered explanations that appear overly simplistic, merely emphasizing the importance of async programming without going into the mechanics or exploring high-level APIs such as the <L href="https://github.com/python/cpython/tree/main/Lib/asyncio">`asyncio`</L> module in the standard library. Clearly, you already understand the significance and use cases, so let's cut to the chase and see how it actually works.
 </C>
 <H2>Pausing</H2>
 <C>
-So, what's the deal with async functions in Python? We all know they pause execution until some operation resolves, right? but how does this mechanism truly operate? To understand this, let's take a step back and delve into the foundational concept:
+So, what's the deal with async functions in Python? We all know they pause execution until some operation resolves, right? but how does this mechanism truly operate? Let's take a step back and check out a foundational concept:
 </C>
 <H2>Iterators</H2>
 <C>
-An iterator serves as a programming object that facilitates the systematic traversal of a <L href="https://en.wikipedia.org/wiki/Container_(abstract_data_type)">container</L>, granting access to its elements one at a time. It maintains the state of the traversal, allowing the iterator to pause execution after processing a specific item. To continue, a call to the `next()` method, typically named by convention, is made. This call prompts the iterator to resume execution and retrieve the next element in the sequence. This iterative process persists until the iterator reaches the end of the container, and this approach is commonly referred to as lazy evaluation.
+An iterator serves as a programming object that facilitates the systematic traversal of a <L href="https://en.wikipedia.org/wiki/Container_(abstract_data_type)">container</L>, granting access to its elements one at a time. It maintains the state of the traversal, allowing the iterator to pause execution after processing a specific item. To continue, a call to the `next()` method, which is typically named by convention, is made. This call prompts the iterator to resume execution and retrieve the next element in the sequence. This iterative process persists until the iterator reaches the end of the container, and this approach is commonly referred to as lazy evaluation.
 </C>
 <S3/>
 <C>
-The key concepts here are the actions of pausing, resuming, and awaiting the next element. These notions become particularly relevant and meaningful when correlated with the concept of asynchronous functions, the idea of pausing and resuming execution aligns with the asynchronous nature of handling tasks, allowing the program to efficiently manage and switch between various operations without blocking the entire execution flow. The term "await" further emphasizes this waiting aspect, where the program can await the completion of a specific asynchronous task before proceeding, we call this task a <L href="#related-objects">``Future``</L> , echoing the behavior of iterators in a more dynamic and non-blocking context.
+The key concepts here are the actions of pausing, resuming, and awaiting the next element. These notions become particularly relevant and meaningful when correlated with the concept of asynchronous functions, the idea of pausing and resuming execution aligns with the asynchronous nature of handling tasks, which allows the program to efficiently manage and switch between various operations without blocking the entire execution flow. The term "await" further emphasizes this waiting aspect, where the program can await the completion of a specific asynchronous task before proceeding, we call this task a ``Future``, more on this <L href="#related-objects">later.</L>
 </C>
 <H2>How Do I Create An Iterator</H2>
 <C>
@@ -33,7 +33,7 @@ To define your own iterator you have to adhere to the iterator <L href='/blog/py
 </C>
 <H3>**``__iter__``**</H3>
 <C>
- The purpose of the ``__iter__`` method is to return the iterator object itself. When this method is implemented in a class, it allows instances of that class to be used in a ``for`` loop or any other iteration context. By returning the iterator object, it enables the iteration over the elements of the associated object.
+ The purpose of the ``__iter__`` method is to return the iterator object itself. When this method is implemented in a class, it allows instances of that class to be used in a ``for`` loop or any other iteration context. In other words, it enables the iteration over the elements of the associated object.
  </C>
  <H3>**``__next__``**</H3>
 <C>
@@ -99,7 +99,7 @@ The invocation of `__anext__` involves the use of the `async` and `await` keywor
 </C>
 <H2 id="what-is-an-awaitable?">What Exactly Is An **``awaitable``**</H2>
 <C>
-An ``awaitable`` is an object that can be used with the `await` keyword within an async function. It typically represents an operation that may not be immediately completed, such as an asynchronous task or a <L href="#related-objects">``Future``</L> object. Essentially, an awaitable is anything that can be awaited for its completion, allowing the program to proceed with other tasks.
+An ``awaitable`` is an object that can be used with the `await` keyword within an async function. It typically represents an operation that may not be immediately completed, such as an asynchronous task or a <L href="#related-objects">``Future``</L> object. 
 </C>
 <H2>How Do I Define An **``awaitable``**</H2>
 <C>

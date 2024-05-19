@@ -52,7 +52,7 @@ export default function Component() {
                   <Link href="/about#stack">
                     <GlowingText>stack,</GlowingText>
                   </Link>
-                  I got you
+                  I got you.
                 </motion.p>
               </div>
             </div>

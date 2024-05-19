@@ -32,6 +32,7 @@ async function readMDXFile(filePath: string): Promise<Optional<MDXData>> {
   }
 }
 async function getMDXData(dir: string): Promise<Optional<PostData[]>> {
+  console.log('Invoked all mdx data from: ' + dir);
   const mdxFiles = await getMDXFiles(dir);
   if (mdxFiles === null) {
     return null;
@@ -52,6 +53,9 @@ async function getMDXData(dir: string): Promise<Optional<PostData[]>> {
 export async function getBlogPosts(
   blogDirectory: string = BLOG_CONTENT_PATH
 ): Promise<Optional<PostData[]>> {
+  console.log(
+    'Invoked all blog posts from: ' + path.join(process.cwd(), blogDirectory)
+  );
   return getMDXData(path.join(process.cwd(), blogDirectory));
 }
 

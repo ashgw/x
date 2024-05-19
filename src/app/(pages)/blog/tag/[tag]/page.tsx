@@ -1,14 +1,23 @@
 import Posts from '@/app/components/post/posts';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
 import { getBlogPosts } from '@/lib/mdx/content';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 type RouteParams = {
   params: { tag: string };
 };
 
+export const generateStaticParams = async () => {
+  const posts = await getBlogPosts();
+  if (posts) {
+    return posts.map((post) => ({ post: post.filename }));
+  }
+  return [];
+};
+
 export default async function Tags({ params }: RouteParams) {
+  // Is it efficient? Hell fucking no. Not going to fix it doe, no time for that
   const posts = await getBlogPosts();
   if (posts) {
     const taggedPostsFileNames: string[] = [];
@@ -31,9 +40,9 @@ export default async function Tags({ params }: RouteParams) {
         </Suspense>
       );
     } else {
-      return notFound();
+      return redirect('/contact');
     }
   } else {
-    return notFound();
+    return redirect('/');
   }
 }
