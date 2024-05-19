@@ -1,3 +1,33 @@
+## v1.82.0
+
+[compare changes](https://github.com/ashgw/ashgw.io/compare/v1.81.0...v1.82.0)
+
+### 🚀 Enhancements
+
+- Make blogs initially load 10 then 5 ([4a68b2f](https://github.com/ashgw/ashgw.io/commit/4a68b2f))
+- Make blogs load smoothly ([a60259a](https://github.com/ashgw/ashgw.io/commit/a60259a))
+- Add links for frontend performance ([c1d134a](https://github.com/ashgw/ashgw.io/commit/c1d134a))
+- **#198:** Configure SEO for the main layout ([88924e9](https://github.com/ashgw/ashgw.io/commit/88924e9))
+
+### 💅 Refactors
+
+- New prettier formatting ([60a5c4d](https://github.com/ashgw/ashgw.io/commit/60a5c4d))
+
+### 📦 Build
+
+- **eslint:** Now use no import rules ([7c59833](https://github.com/ashgw/ashgw.io/commit/7c59833))
+
+### 🏡 Chore
+
+- Update links for csrf blog ([02aa897](https://github.com/ashgw/ashgw.io/commit/02aa897))
+- Update links for csrf blog ([6101415](https://github.com/ashgw/ashgw.io/commit/6101415))
+- Update links for csrf blog ([56a8837](https://github.com/ashgw/ashgw.io/commit/56a8837))
+- Update links for referer blog ([e2319c9](https://github.com/ashgw/ashgw.io/commit/e2319c9))
+
+### ❤️ Contributors
+
+- AshGw ([@AshGw](http://github.com/AshGw))
+
 ## v1.81.0
 
 [compare changes](https://github.com/ashgw/ashgw.io/compare/v1.80.0...v1.81.0)
