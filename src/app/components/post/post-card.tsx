@@ -17,7 +17,10 @@ export default function PostCard({ postData }: { postData: PostData }) {
           <li className="list-disc ml-5 dimmed-0">
             {formatDate(postData.parsedContent.attributes.firstModDate)}
           </li>
-          <Link href={`${SITE_URL + BLOG_URI}/${postData.filename}`}>
+          <Link
+            target="_blank"
+            href={`${SITE_URL + BLOG_URI}/${postData.filename}`}
+          >
             <h2 className="text-2xl font-bold dimmed-4 lg:text-[2.5rem]">
               {postData.parsedContent.attributes.title}
             </h2>
@@ -28,6 +31,7 @@ export default function PostCard({ postData }: { postData: PostData }) {
           <div className="flex flex-wrap items-center gap-[0.625rem] text-sm dimmed-4">
             {postData.parsedContent.attributes.tags.map((tag) => (
               <Link
+                target="_blank"
                 href={`${SITE_URL + BLOG_TAG_URI}/${tag}`}
                 key={tag}
                 className="relative rounded-full px-2 py-1"
@@ -43,6 +47,7 @@ export default function PostCard({ postData }: { postData: PostData }) {
           </div>
         </div>
         <Link
+          target="_blank"
           href={`${SITE_URL + BLOG_URI}/${postData.filename}`}
           className="relative h-full overflow-hidden rounded-[2rem]"
         ></Link>
