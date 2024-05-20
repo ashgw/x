@@ -53,7 +53,7 @@ const securityHeaders = [
     value: 'max-age=63072000; includeSubDomains; preload',
   },
   {
-    key: 'Permissions-Policy', 
+    key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
   },
   {
