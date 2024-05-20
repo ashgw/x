@@ -26,7 +26,7 @@ export default async function Image() {
             color: 'white',
           }}
         >
-          Ashgw
+          A S H G W
         </span>
       </div>
     ),
