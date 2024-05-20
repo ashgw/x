@@ -36,7 +36,7 @@ export async function generateMetadata({
 
   const postImageWidth = 1200; // in pixels
   const postImageHeight = 630;
-  const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${seoTitle}`;
+  const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${description}`;
   return {
     title,
     description,
@@ -60,7 +60,7 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title,
-      description,
+      description: seoTitle,
       images: [postImageUrl],
     },
     creator: 'Ashref Gwader',
@@ -79,7 +79,7 @@ export async function generateMetadata({
       },
     },
     manifest: pub.SITE_URL_PROD + '/manifest.json',
-    category: 'everything',
+    category: 'tech',
   };
 }
 

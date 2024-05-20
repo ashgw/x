@@ -23,15 +23,9 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-        port: '',
-        pathname: '/**',
-      },
     ],
   },
-  productionBrowserSourceMaps: process.env.NODE_ENV !== 'production',
+  productionBrowserSourceMaps: true,
   pageExtensions: ['js', 'ts', 'jsx', 'tsx', 'mdx'],
 };
 
@@ -59,8 +53,8 @@ const securityHeaders = [
     value: 'max-age=63072000; includeSubDomains; preload',
   },
   {
-    key: 'Permissions-Policy', // even tho I won't need em, prolly
-    value: 'camera=(), speaker=(), microphone=(), geolocation=()',
+    key: 'Permissions-Policy', 
+    value: 'camera=(), microphone=(), geolocation=()',
   },
   {
     key: 'Server',

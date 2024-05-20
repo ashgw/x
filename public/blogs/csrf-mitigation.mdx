@@ -140,7 +140,7 @@ On the server side, when handling incoming requests, the server decodes or decry
 If the UUIDs extracted from the JWT/JWE and the HMAC-CSRF token do not match, it may indicate tampering or unauthorized access. In this case, the server logs the event and blocks the request.
 </C>
 <C>
-You might ask why not block immediately. The reason is that understanding the type of attack is crucial. By verifying the integrity of the tokens first, you can determine what the attacker attempted to do. If the cookie exists but its integrity is compromised, it suggests the attacker managed to swap the JWT cookie but couldn't sign it with the secret key. 
+You might ask why not block immediately. The reason is that understanding the type of attack is needed. By verifying the integrity of the tokens first, you can determine what the attacker attempted to do. If the cookie exists but its integrity is compromised, it suggests the attacker managed to swap the JWT cookie but couldn't sign it with the secret key. 
 A worse scenario is if the attacker already knows the secret key but is unaware of the random that's supposed to exist in both the CSRF token and the JWT/JWE. This information is vital for understanding the extent of the breach and implementing appropriate countermeasures.
 </C>
 
@@ -288,7 +288,7 @@ Read about `Lax` and `Strict` from the official <L href='https://datatracker.iet
 <H2>User Interaction-Based CSRF Defense</H2>
 
 <C>
-Requiring users to authenticate using their password, biometric data, security questions, or <L href="https://en.wikipedia.org/wiki/One-time_password">OTP</L> is a highly effective security measure. However, it can significantly impact user experience, so it's typically used only for critical operations like changing passwords or conducting financial transactions. Avoid using CAPTCHA for this purpose, as it's primarily aimed at preventing automated bot attacks and doesn't provide the necessary level of security for these sensitive activities.
+Requiring users to authenticate using their password, biometric data, security questions, or <L href="https://en.wikipedia.org/wiki/One-time_password">OTP</L> is a highly effective security measure. But, it can significantly impact user experience, so it's typically used only for critical operations like changing passwords or conducting financial transactions. Avoid using CAPTCHA for this purpose, as it's primarily aimed at preventing automated bot attacks and doesn't provide the necessary level of security for these sensitive activities.
 </C>
 <H2>HTTP Methods</H2>
 <C>
