@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-// Image metadata
 export const alt = 'Ashgw';
 export const size = {
   width: 1200,

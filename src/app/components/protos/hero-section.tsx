@@ -191,6 +191,20 @@ import { Button } from '../ui/button';
 
 /* eslint-disable */
 
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
 function TypingAnimation() {
   const el = useRef(null);
 
@@ -302,7 +316,7 @@ export default function HeroSection() {
                   window.location.href = '/contact';
                 }}
               >
-                Hit me up
+                Let's build something great
               </Button>
             </motion.div>
           </div>
