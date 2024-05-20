@@ -7,7 +7,7 @@ import { Atkinson_Hyperlegible } from 'next/font/google';
 import NavBar from './components/nav/nav';
 import './styles/globals.css';
 
-const inter = Atkinson_Hyperlegible({
+const font = Atkinson_Hyperlegible({
   subsets: ['latin-ext'],
   weight: ['400', '700'],
 });
@@ -74,7 +74,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={font.className}>
         <NavBar />
         <Providers>{children}</Providers>
       </body>
