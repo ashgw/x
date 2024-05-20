@@ -83,8 +83,12 @@ export default function Component() {
                   <Link href="/services/code-audits">
                     <GlowingText>audits,</GlowingText>
                   </Link>
-                  team guidance, bug hunting, testing, security and best
-                  practices recommendations, anything Python and TypeScript
+                  team guidance,
+                  <Link href="/services/glossary#tickets">
+                    <GlowingText>bug</GlowingText>
+                  </Link>
+                  hunting, testing, security and best practices recommendations,
+                  anything Python and TypeScript
                 </p>
               </div>
             </div>

@@ -95,9 +95,10 @@ export default function Page() {
         <Card title="">
           <p>
             While I have experience with many technologies, I specialize and
-            work mostly with <Link href="/blog/tag/python" name="Python" /> and
+            work mostly now with <Link href="/blog/tag/python" name="Python" />{' '}
+            and
             <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
-            focus on everything web related (HTTP, WebSockets, RPC, GraphQL,
+            focus on everything web related (HTTP1/2/3, WebSockets, RPC,
             microservices, containers, cloud architecture...)
           </p>
         </Card>

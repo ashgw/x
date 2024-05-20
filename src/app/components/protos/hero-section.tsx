@@ -133,6 +133,60 @@ import { Button } from '../ui/button';
 
 /* eslint-disable */
 
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
 function TypingAnimation() {
   const el = useRef(null);
 
@@ -214,9 +268,10 @@ export default function HeroSection() {
               transition={transition}
             >
               <TextContent>
-                Welcome to my corner of the internet where I share my thoughts
-                and offer my expertise. You can read my blogs, checkout my
-                services, or learn more about me, and if you like what you see
+                You like this typing animation? But hold on, lemme grab your
+                attention real quick with some GPT generated text, and tell you
+                how unique and skilled I am. Jokes aside though, have a look
+                around, if you like what you see
               </TextContent>
             </motion.div>
           </div>
@@ -243,7 +298,7 @@ export default function HeroSection() {
                   window.location.href = '/contact';
                 }}
               >
-                Let's build something great
+                Hit me up
               </Button>
             </motion.div>
           </div>
