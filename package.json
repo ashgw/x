@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "postbuild": "next-sitemap",
+    "postbuild": "echo 'next-sitemap'",
     "hooks": "husky install",
     "dev": "next dev",
     "start": "next start",
