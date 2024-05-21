@@ -45,7 +45,7 @@ export async function generateMetadata({
       locale: 'en_US',
       publishedTime: postAttrs.firstModDate,
       title,
-      description,
+      description: seoDescription,
       type: 'article',
       url,
       images: [
