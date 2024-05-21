@@ -213,20 +213,6 @@ import { Button } from '../ui/button';
 
 /* eslint-disable */
 
-/* eslint-disable */
-
-/* eslint-disable */
-
-/* eslint-disable */
-
-/* eslint-disable */
-
-/* eslint-disable */
-
-/* eslint-disable */
-
-/* eslint-disable */
-
 function TypingAnimation() {
   const el = useRef(null);
 
@@ -308,9 +294,8 @@ export default function HeroSection() {
               transition={transition}
             >
               <TextContent>
-                You like this typing animation? But hold on, lemme grab your
-                attention real quick with some GPT generated text, and tell you
-                how unique and skilled I am. Jokes aside though, have a look
+                You like this typing animation? Hold on, let me ask GPT to tell
+                you how unique and skilled I am. Jokes aside though, have a look
                 around, if you like what you see
               </TextContent>
             </motion.div>

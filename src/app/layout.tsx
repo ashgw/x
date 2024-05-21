@@ -12,7 +12,7 @@ const font = Atkinson_Hyperlegible({
   weight: ['400', '700'],
 });
 
-const title = 'ashgw.me';
+const title = 'Ashref Gwader';
 const description = 'Developer, writer, and modern day philosopher.';
 const url = new URL(pub.SITE_URL_PROD);
 const kw: string[] = ['blog', 'tech', 'TS', 'Python'];
