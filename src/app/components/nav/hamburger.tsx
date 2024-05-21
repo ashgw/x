@@ -9,6 +9,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({
 }) => {
   return (
     <button
+      aria-label="Toggle navigation bar menu"
       className={`p-0 flex bg-transparent cursor-pointer ${isOpened ? 'ham-opened' : ''}`}
       onClick={onClick}
     >
