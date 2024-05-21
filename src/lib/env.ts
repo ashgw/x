@@ -14,5 +14,5 @@ export const nextJS = {
 export const pub = {
   SITE_URL_PROD: 'https://ashgw.me',
   SITE_URL_DEV: 'http://localhost:3000',
-  EMAIL: 'ashrefgw@proton.me',
+  EMAIL: 'contact@ashgw.me',
 };
