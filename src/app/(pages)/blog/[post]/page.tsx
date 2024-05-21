@@ -31,7 +31,7 @@ export async function generateMetadata({
   const postAttrs = post.parsedContent.attributes;
   const title = postAttrs.title;
   const description = postAttrs.summary;
-  const seoTitle = postAttrs.seoTitle;
+  const seoDescription = postAttrs.seoTitle;
   const url = pub.SITE_URL_PROD + '/' + post.filename;
 
   const postImageWidth = 1200; // in pixels
@@ -39,7 +39,7 @@ export async function generateMetadata({
   const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${description}`;
   return {
     title,
-    description,
+    description: seoDescription,
     openGraph: {
       siteName: getSiteName(pub.SITE_URL_PROD) || pub.SITE_URL_PROD,
       locale: 'en_US',
@@ -60,7 +60,7 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title,
-      description: seoTitle,
+      description: seoDescription,
       images: [postImageUrl],
     },
     creator: 'Ashref Gwader',
