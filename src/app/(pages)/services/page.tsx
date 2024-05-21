@@ -32,7 +32,7 @@ export default function Component() {
                   transition={transition}
                   className="glows-dimmed dimmed-4 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
                 >
-                  Expert Consulting. Custom Solutions.
+                  Software Consulting. Custom Solutions.
                 </motion.h2>
                 <motion.p
                   initial={{
@@ -52,7 +52,7 @@ export default function Component() {
                   <Link href="/about#stack">
                     <GlowingText>stack,</GlowingText>
                   </Link>
-                  I got you.
+                  you can rent my brain.
                 </motion.p>
               </div>
             </div>

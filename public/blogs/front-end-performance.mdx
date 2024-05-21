@@ -21,7 +21,7 @@ Before I start, I just want to say that you have to always ensure that there's s
 <H2>Frontend Performance Metrics</H2>
 
 <C>
-Below are  some metrics you should definitely know about, and optimize
+Below are  some metrics you should definitely know about, and optimize.
 </C>
 <H3>Largest Contentful Paint</H3>
 <C>
@@ -57,7 +57,7 @@ Here are a couple of optimization techniques you can leverage to enhance these m
 </C>
 <H3>Purge JS and CSS Bundles</H3>
 <C>
-It's 2021, you're probably using a bundler (<L href='https://vitejs.dev'>Vite</L>, <L href='https://webpack.js.org'>WebPack</L>, <L href='https://rollupjs.org'>Rollup</L>, <L href='https://parceljs.org/docs/'>Parcel</L>...) already for JS, so that's in check.
+You're probably using a bundler (<L href='https://vitejs.dev'>Vite</L>, <L href='https://webpack.js.org'>WebPack</L>, <L href='https://rollupjs.org'>Rollup</L>, <L href='https://parceljs.org/docs/'>Parcel</L>...) already for JS, so that's in check.
 </C>
 <C>
 Remove unused CSS. <L href='https://purgecss.com'>PurgeCSS</L> is good.
@@ -96,10 +96,10 @@ And
 />
 <H3>Lazy Loading</H3>
 <C>
-Where content is fetched only when it comes into view. Prioritize loading essential elements first, similar to how Netflix or YouTube optimizes their content loading. If you're using React, use `React.lazy` or `<Suspense/>` component with a fallback lightweight component.
+Where content is fetched only when it comes into view. Prioritize loading essential elements first, similar to how Netflix or YouTube optimizes their content loading. If you're using React, use `React.lazy` or <L href='https://react.dev/reference/react/Suspense'>`<Suspense/>`</L> component with a fallback lightweight component.
 </C>
 <C>
-Also use dynamic imports, if it's not going to be used right away, why import it. Here's  an example of a  dynamic import with React
+Also use dynamic imports. If it's not going to be used right away, why import it. Here's  an example of a  dynamic import with React
 </C>
 <Code
   code={`import { useState } from 'react'

@@ -2,36 +2,16 @@
 title: Framer Motion
 seoTitle: Supercharge Animations in React with Framer Motion 
 summary: Supercharge animations in React
-isReleased: false
+isReleased: true
 isSequel: false
-lastModDate: 2020-02-14T09:15:00-0401
-firstModDate: 2020-02-14T09:15:00-0401
+lastModDate: 2020-02-11T09:15:00-0401
+firstModDate: 2020-02-11T09:15:00-0401
 minutesToRead: 4
 tags:
   - 'react'
   - 'framer-motion'
 ---
-
-<H2>How It came to be</H2>
-<C>
-  I recently stumbled upon
-  <L href="https://www.framer.com/motion/">Framer Motion</L>
-  and let me tell you, it's a game-changer when it comes to animations in React.
-  The variety of features bundled with it is a massive time saver, it's super
-  easy & fast to create animations that would have otherwise been a migraine to
-  implement. I've been playing with it for the past couple of days, so here are
-  a couple of use cases where I'll be using it in the future.
-</C>
-<H2>Case 1</H2>
-<C>Starting off with a simple fade in on view a component.</C>
-<H3>The Traditional Approach</H3>
-<C>
-  This involves creating CSS styles for fading, handling state changes, and
-  using the
-  <L href="#IntersectionObserver">IntersectionObserver</L> API. It's effective but
-  requires several steps and can get a bit verbose.
-</C>
-
+<C>I have a question for you. How would you make this react element, fade in on view?</C>
 <Code
   code=
 {`const FadingText: React.FC = () => {
@@ -50,9 +30,17 @@ language="tsx"
 showLineNumbers={true}
 
 />
+<H3>The Traditional Approach</H3>
+<C>
+  This involves creating CSS styles for fading, handling state changes, and
+  using the
+  <L href="#IntersectionObserver">IntersectionObserver</L> API. It's effective but
+  requires several steps and can get a bit verbose.
+</C>
+
 
 <C>
-  How would I usually go by doing this ?<S /> First, Create the fade in style
+ First, Create the fade in style
 </C>
 
 <Code
@@ -126,7 +114,7 @@ showLineNumbers={true}
   showLineNumbers={true}
 />
 <C>
-  But I don't need the state to change when the element mounts, instead I want
+  But you don't need the state to change when the element mounts, instead you want
   it to fade in when it comes in view, to make it happen I'll be using the
   **`IntersectionObserver`** API which basically detects when an element comes
   into or goes out of view within the browser's viewport
@@ -210,7 +198,7 @@ const FadingText: React.FC = () => {
   now I'll be doing the same except this time with
   <L href="https://www.framer.com/motion/">Framer Motion</L>
 </C>
-<H3>Roided Approach</H3>
+<H3>Using Framer</H3>
 <Code
   code={`
 import React from 'react';
@@ -229,9 +217,8 @@ const FramerMotionFadeInComponent: React.FC = () => {
 />
 
 <C>
-  Now all I have to do is to turn any HTML element into a motion element A.K.A
-  juice it up 💉 💪 and slap the needed animation on, in this case it's on the
-  component's surrounding **``div``**
+  Now all I have to do is to turn any HTML element into a motion element, in this case it's on the
+  component's surrounding **``div``**. And then just add some props provided by framer.
 </C>
 <Code
   code={`
@@ -264,8 +251,11 @@ const FramerMotionFadeInComponent: React.FC = () => {
   language="tsx"
   showLineNumbers={true}
 />
+<C>
+  Clean, easy and efficient.
+</C>
 <S3 />
-<H2>Case 2 </H2>
+<H2>Yeet Me</H2>
 <C>
   Creating this **`YeetMe`** component would have been really hard with plain
   CSS & JS
