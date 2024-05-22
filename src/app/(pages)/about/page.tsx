@@ -3,11 +3,10 @@ import { pub } from '@/lib/env';
 import { getSiteName } from '@/lib/funcs/site-name';
 import type { Metadata } from 'next';
 
-const SERVICES_URL = new URL(pub.SITE_URL_PROD + '/about');
+const PAGE_URL = new URL(pub.SITE_URL_PROD + '/about');
 const creator = 'Ashref Gwader';
 const title = 'About';
-const description = "I'moftware developer and technical educator";
-const url = SERVICES_URL;
+const description = "I'm a software developer and technical educator";
 const kw: string[] = [creator, 'ashgw', 'about'];
 
 const postImageWidth = 1200; // in pixels
@@ -15,7 +14,7 @@ const postImageHeight = 630;
 const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${title}`;
 
 export const metadata: Metadata = {
-  metadataBase: SERVICES_URL,
+  metadataBase: PAGE_URL,
   title: {
     default: title,
     template: '%s | Ashgw',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
     title,
     description,
     type: 'article',
-    url,
+    url: PAGE_URL,
     images: [
       {
         url: postImageUrl,
