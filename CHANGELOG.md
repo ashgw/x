@@ -1,3 +1,55 @@
+## v1.83.0
+
+[compare changes](https://github.com/ashgw/ashgw.io/compare/v1.82.0...v1.83.0)
+
+### 🚀 Enhancements
+
+- Add pulp fiction reference ([ca45876](https://github.com/ashgw/ashgw.io/commit/ca45876))
+- Update robots.txt with the new  site URL ([c712ab9](https://github.com/ashgw/ashgw.io/commit/c712ab9))
+- Update the hero section with better shit ([39640fb](https://github.com/ashgw/ashgw.io/commit/39640fb))
+- Add opengraph image ([9b4eb5d](https://github.com/ashgw/ashgw.io/commit/9b4eb5d))
+- Add `manifest.json` TS generated ([bade377](https://github.com/ashgw/ashgw.io/commit/bade377))
+- Add site icon, TS geenrated ([9476e8e](https://github.com/ashgw/ashgw.io/commit/9476e8e))
+- Add manual sitemap ([c635ced](https://github.com/ashgw/ashgw.io/commit/c635ced))
+- Add new SEO confs ([5cf6e74](https://github.com/ashgw/ashgw.io/commit/5cf6e74))
+- Add screen reader info for hambuger button ([ae4de34](https://github.com/ashgw/ashgw.io/commit/ae4de34))
+- Make seoTitle the default seo blog description ([eb5dd3a](https://github.com/ashgw/ashgw.io/commit/eb5dd3a))
+- Configure SEO for about page ([9de983a](https://github.com/ashgw/ashgw.io/commit/9de983a))
+- Configure SEO for contact page ([c5b6b43](https://github.com/ashgw/ashgw.io/commit/c5b6b43))
+- Configure SEO for contact page ([a5e5b4d](https://github.com/ashgw/ashgw.io/commit/a5e5b4d))
+
+### 🩹 Fixes
+
+- Tags returing null right away ([a6a883e](https://github.com/ashgw/ashgw.io/commit/a6a883e))
+- Services link tag ([7501bb0](https://github.com/ashgw/ashgw.io/commit/7501bb0))
+- **#229:** `/blog/tag/[tag]` not showing ([534d60f](https://github.com/ashgw/ashgw.io/commit/534d60f))
+- Use the website name for opengraph images ([71b55e1](https://github.com/ashgw/ashgw.io/commit/71b55e1))
+- Punctuations and typos ([9447969](https://github.com/ashgw/ashgw.io/commit/9447969))
+- Punctuations and typos 2 ([bb8a486](https://github.com/ashgw/ashgw.io/commit/bb8a486))
+
+### 💅 Refactors
+
+- Change `NextJS` env const var to `NODE_ENV` ([e9cc660](https://github.com/ashgw/ashgw.io/commit/e9cc660))
+
+### 📦 Build
+
+- Enable post-build scripts ([505de37](https://github.com/ashgw/ashgw.io/commit/505de37))
+
+### 🏡 Chore
+
+- Don't open new tabs with blog card ([19e3a8a](https://github.com/ashgw/ashgw.io/commit/19e3a8a))
+- Remove next-sitemap ([ef6be32](https://github.com/ashgw/ashgw.io/commit/ef6be32))
+- Use default contact email ([209b714](https://github.com/ashgw/ashgw.io/commit/209b714))
+- Make all seoSummaries for `/blog` lowercase ([1d61eac](https://github.com/ashgw/ashgw.io/commit/1d61eac))
+- Update all blogs with the new domain ([10f3f7a](https://github.com/ashgw/ashgw.io/commit/10f3f7a))
+- Migrate gsap ([4e4f182](https://github.com/ashgw/ashgw.io/commit/4e4f182))
+- Update old SEO metadata ([a2c8754](https://github.com/ashgw/ashgw.io/commit/a2c8754))
+- Update the communication & deadlines pages ([f1bc7f0](https://github.com/ashgw/ashgw.io/commit/f1bc7f0))
+
+### ❤️ Contributors
+
+- AshGw <AshrefGw@proton.me>
+
 ## v1.82.0
 
 [compare changes](https://github.com/ashgw/ashgw.io/compare/v1.81.0...v1.82.0)

@@ -87,8 +87,8 @@ export default function Page() {
             <Link href="/blog/tag/skill-issues" name="high-performing" />
             teams, and effective
             <Link href="/blog/tag/management" name="management." />
-            <br /> And I do offer services aimed at enhancing these aspects for
-            software teams.
+            <br /> And I do offer services aimed at enhancing some of these
+            aspects for software teams.
           </p>
         </Card>
         <MajorHeading id="stack" title="Stack" />
