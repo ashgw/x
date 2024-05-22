@@ -18,12 +18,12 @@ Over the past few years, I've primarily relied on <L href="/blog/framer-motion">
 
 But, check this out, yesterday **GSAP** introduced the **``useGSAP()``** hook, an addition to easily integrate **GSAP** with **React**. 
 <S/>
-Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``**'s cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of. It's just a lot of overhead really.
+Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``**'s cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of. 
     <S3/>
-    To do something silly like
+    It's just a lot of overhead really to do something silly like
 </C>
 <TTLMO/>
-<C>You'd probably need to</C>
+<C>You'd need to</C>
 <Code
   code={`import React, { useRef, useEffect, useLayoutEffect } from 'react';
 import gsap from 'gsap';
@@ -116,5 +116,5 @@ const Component: React.FC = () => {
   language="tsx"
   showLineNumbers={false}
 />
-<C>It looks hella cleaner, I actually like this update, I mean it's not a lot but hey, it gets the job done
-a lot easier so, I might use even more now, and sorry if you thought this is an educational blog where I teach you about **GSAP**, nope, I'm just glad they introduced this new hook, that's it.</C>
+<C>It looks hella cleaner IMO, I actually like this update, I mean it's not a lot but hey, it gets the job done
+a lot easier so, I might use even more now, and sorry if you thought this is an educational post where I teach you about **GSAP**, nope, I'm just glad they introduced this new hook, that's it.</C>

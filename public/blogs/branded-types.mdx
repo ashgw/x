@@ -17,7 +17,7 @@ Not all TypeScript code is created equal in terms of safety or quality. There ar
 </C>
 <H2>Problem</H2>
 <C>
-So here's a question for you, can you figure out how many things that can go wrong here?
+So here's a question for you. Can you figure out how many things that can go wrong here?
 </C>
 <Code
   code={`function requestBaz(barID: string, fooID: string) {
@@ -76,7 +76,7 @@ type BarID = NewType<'BarID', string>;
   showLineNumbers={false}
 />
 <C>
-Note that: new types must be unique to get types violations flagged by linter. So this type definition: 
+**Note:** New types must be unique to get types violations flagged by linter. So this type definition: 
 </C>
 <Code
   code={`type FooID = NewType<'BarID', string>;
