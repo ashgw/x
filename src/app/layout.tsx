@@ -13,9 +13,10 @@ const font = Atkinson_Hyperlegible({
 });
 
 const title = 'Ashref Gwader';
-const description = 'Developer, writer, and modern day philosopher.';
+const description =
+  'Developer, writer, and self-proclaimed modern day philosopher.';
 const url = new URL(pub.SITE_URL_PROD);
-const kw: string[] = ['blog', 'tech', 'TS', 'Python'];
+const kw: string[] = ['Ashref Gwader', 'ashgw', 'blog', 'tech', 'TS', 'Python'];
 
 const postImageWidth = 1200; // in pixels
 const postImageHeight = 630;
@@ -24,12 +25,12 @@ const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageH
 export const metadata: Metadata = {
   metadataBase: new URL(pub.SITE_URL_PROD),
   title: {
-    default: 'Ashgw',
+    default: 'Ashref Gwader',
     template: '%s | Ashgw',
   },
   creator: 'Ashref Gwader',
   keywords: kw,
-  description: 'Developer, writer, and modern day philosopher.',
+  description: description,
   openGraph: {
     siteName: getSiteName(pub.SITE_URL_PROD) || pub.SITE_URL_PROD,
     locale: 'en_US',

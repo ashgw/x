@@ -94,10 +94,10 @@ export default function Page() {
         <MajorHeading id="stack" title="Stack" />
         <Card title="">
           <p>
-            While I have experience spanning from bare-metal to front-end
-            development, I now specialize primarily in Python and TypeScript,
-            with a heavy focus on web-related technologies (HTTP, WebSockets,
-            RPC, microservices, containers, cloud architecture...)
+            While I have experience spanning all the way from bare-metal to
+            front-end development, I now specialize primarily in Python and
+            TypeScript, with a heavy focus on web-related technologies (HTTP,
+            WebSockets, RPC, microservices, containers, cloud architecture...)
           </p>
         </Card>
         <div id="hiden" className="hidden">

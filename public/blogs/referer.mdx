@@ -243,7 +243,7 @@ By adding `rel=noreferrer` to `<a>` or `<area>` elements, you can modify the tra
   showLineNumbers={false}
 />
 <C>
-**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate <L href='https://en.wikipedia.org/wiki/Tabnabbing'>tab-nabbing.</L> For example:
+**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate <L href='https://owasp.org/www-community/attacks/Reverse_Tabnabbing'>reverse tabnabbing.</L> attacksFor example:
 </C>
 <Code
   code={`<a href="https://example.com" rel="noreferrer noopener" target="_blank">`}
