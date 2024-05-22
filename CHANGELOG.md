@@ -5,7 +5,7 @@
 ### 🚀 Enhancements
 
 - Add pulp fiction reference ([ca45876](https://github.com/ashgw/ashgw.io/commit/ca45876))
-- Update robots.txt with the new  site URL ([c712ab9](https://github.com/ashgw/ashgw.io/commit/c712ab9))
+- Update robots.txt with the new site URL ([c712ab9](https://github.com/ashgw/ashgw.io/commit/c712ab9))
 - Update the hero section with better shit ([39640fb](https://github.com/ashgw/ashgw.io/commit/39640fb))
 - Add opengraph image ([9b4eb5d](https://github.com/ashgw/ashgw.io/commit/9b4eb5d))
 - Add `manifest.json` TS generated ([bade377](https://github.com/ashgw/ashgw.io/commit/bade377))

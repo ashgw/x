@@ -319,6 +319,40 @@ import { Button } from '../ui/button';
 
 /* eslint-disable */
 
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
+/* eslint-disable */
+
 function TypingAnimation() {
   const el = useRef(null);
 
@@ -400,9 +434,9 @@ export default function HeroSection() {
               transition={transition}
             >
               <TextContent>
-                This typing animation seems trendy right now. Hold on, let me
-                ask GPT to tell you how unique and skilled I am. Jokes aside
-                though, have a look around, if you like what you see
+                Welcome to my corner on the internet, which serves as my brain
+                dump for a thing or two I learned throughout the years. Have a
+                look around, if you like what you see
               </TextContent>
             </motion.div>
           </div>
@@ -429,7 +463,7 @@ export default function HeroSection() {
                   window.location.href = '/contact';
                 }}
               >
-                Let's build something great
+                Feel free to reach out
               </Button>
             </motion.div>
           </div>
