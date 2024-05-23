@@ -11,9 +11,9 @@ export default async function Image() {
   return new ImageResponse(
     (
       <div
-        className="gradient-bg"
         style={{
           fontSize: 128,
+          background: 'black',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -21,7 +21,13 @@ export default async function Image() {
           justifyContent: 'center',
         }}
       >
-        <span className="dimmed-4">A S H G W</span>
+        <span
+          style={{
+            color: 'white',
+          }}
+        >
+          A S H G W
+        </span>
       </div>
     ),
     {
