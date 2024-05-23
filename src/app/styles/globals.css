@@ -5,6 +5,15 @@
 @import url('./hamburger.css');
 
 @layer base {
+  .gradient-bg {
+    background: linear-gradient(
+      84.16deg,
+      rgba(150, 46, 200, 0.15),
+      rgba(255, 215, 111, 0.042),
+      rgba(150, 0, 100, 0.1)
+    );
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -62,15 +71,9 @@
     font-family: 'Zapf Dingbats';
     scroll-behavior: smooth;
     min-height: 100vh;
-    background: linear-gradient(
-      84.16deg,
-      rgba(150, 46, 200, 0.15),
-      rgba(255, 215, 111, 0.042),
-      rgba(150, 0, 100, 0.1)
-    );
   }
 
   body {
-    @apply bg-background text-foreground text-xl;
+    @apply gradient-bg text-foreground text-xl;
   }
 }
