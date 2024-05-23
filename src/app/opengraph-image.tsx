@@ -10,8 +10,18 @@ export const contentType = 'image/png';
 export default async function Image() {
   return new ImageResponse(
     (
-      <div className="text-[128px] dimmed-4 gradient-bg w-full h-full flex items-center justify-center">
-        <span>A S H G W</span>
+      <div
+        className="gradient-bg"
+        style={{
+          fontSize: 128,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <span className="dimmed-4">A S H G W</span>
       </div>
     ),
     {
