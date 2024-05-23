@@ -82,11 +82,8 @@ export default function Page() {
         <Card title="">
           <p>
             You can learn more about me from my blogs than I can convey here.
-            <br /> But in short, I believe in
-            <Link href="/blog/tag/quality" name="quality" /> code,
-            <Link href="/blog/tag/skill-issues" name="high-performing" />
-            teams, and effective
-            <Link href="/blog/tag/management" name="management." />
+            <br /> But in short, I believe in quality code, high-performing
+            teams, and effective management
             <br /> And I do offer services aimed at enhancing some of these
             aspects for software teams.
           </p>
