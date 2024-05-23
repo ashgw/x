@@ -1,7 +1,7 @@
 ---
-title: Referer
-seoTitle: All about Referer header, Referrer-Policy header 
-summary: Referer & Referrer-Policy headers 
+title: HTTP Referer
+seoTitle: Referer & Referrer-Policy headers security implications
+summary: Referer & Referrer-Policy headers security implications
 isReleased: true
 isSequel: false
 lastModDate: 2019-12-30T09:15:00-0401
@@ -13,7 +13,7 @@ tags:
 ---
 
 <C>
-The Referrer header automatically includes the source URL of a transition, like clicking a link, in the request's Referer header. However, this can unintentionally expose some information. 
+The <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer'>Referer</L> header automatically includes the source URL of a transition, like clicking a link, in the request's Referer header. However, this can unintentionally expose some information.
 </C>
 <C>
 So let's explore al the ways which allows us to control this behavior.
@@ -21,7 +21,7 @@ So let's explore al the ways which allows us to control this behavior.
 
 <H2>Referrer or Referer?</H2>
 <C>
-In proper English, "Referrer" is correct, but the misspelled "Referer" is used in the HTTP header for historical compatibility. The newly defined Referrer-Policy is spelled correctly though.
+In proper English, "Referrer" is correct, but the misspelled "Referer" is used in the HTTP header for historical compatibility. The <L href='https://www.w3.org/TR/referrer-policy/'>newly</L> defined <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy'>Referrer-Policy</L> is spelled correctly though.
 </C>
 <H3>The Referer Header</H3>
 <C>
@@ -45,7 +45,7 @@ From an application perspective, the Referer should be treated as auxiliary info
 <H2>Usage</H2>
 
 <C>
-There are many ways the Referer header can be used 
+There are many ways the Referer header can be used
 </C>
 <H3>Tracking</H3>
 
@@ -66,7 +66,7 @@ The header can be checked to combat Cross-Site Request Forgery. However, for for
 </C>
 <H3>Preventing Plagiarism</H3>
 <C>
-Some plagiarism detection tools or services may use `Referer` information as part of their analysis. By analyzing where content is being accessed from and comparing it to known sources or authorized domains
+Some plagiarism detection tools or services may use `Referer` information as part of their analysis. By analyzing where content is being accessed from and comparing it to known sources or authorized domains.
 </C>
 <H2>Risks of Information Leakage</H2>
 <C>
@@ -83,13 +83,13 @@ Jumping to an external page from search results can also reveal project details.
 <C>
 There are many ways to go by this
 </C>
+<H3>Proxies</H3>
+<C>
+Organizations often use <L href='https://www.ibm.com/docs/en/i/7.3?topic=concepts-proxy-server-types#rzaieproxytypes__forward__title__1'>forward proxies</L> to manage internal network traffic, including controlling the Referer header. This allows selective dropping or rewriting of the Referer based on whether it's an internal or external domain (friendly <L href='https://en.wikipedia.org/wiki/Man-in-the-middle_attack'>MITM</L> I suppose), in attempt to not leak information. However, with the widespread adoption of HTTPS, this method is not viable anymore.
+</C>
 <H3>Browser Settings</H3>
 <C>
 Some browsers allow restricting Referer sending via settings like Firefox's <L href='https://support.mozilla.org/en-US/kb/about-config-editor-firefox#w_opening-aboutconfig'>``about:config``</L> or Chrome's command line options. Browser extensions also provide this functionality.
-</C>
-<H3>Internal Proxies</H3>
-<C>
-Companies often use proxies to manage internal network traffic, including controlling the Referer header. This allows selective dropping or rewriting of the Referer based on whether it's an internal or external domain. However, with the widespread adoption of HTTPS, which encrypts traffic end-to-end, traditional proxy methods like <L href='https://en.wikipedia.org/wiki/Man-in-the-middle_attack'>MITM</L> have limitations due to encryption complexities.
 </C>
 <H3>Referrer Policy </H3>
 <C>
@@ -214,7 +214,7 @@ It's important to note that if the Origin header is sent, it conveys similar inf
   - \-    **Description:** Reflects the behavior dictated by the User Agent or higher-level specification when Referrer Policy is not explicitly set.
   </C>
 <C>
-These Referrer Policy settings offer varying levels of control over the Referer header to balance privacy and functionality based on different security needs and scenarios. But there are 
+These Referrer Policy settings offer varying levels of control over the Referer header to balance privacy and functionality based on different security needs and scenarios. But there are
 </C>
 <H2>
 Ways to Apply Referrer-Policy
@@ -314,5 +314,3 @@ This approach is useful when you cannot modify the content directly (e.g., third
 <C>
 Read <L href='https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header-dfn'>more</L>
 </C>
-
-
