@@ -50,7 +50,9 @@ export default function Services({
                   transition={transition}
                   className="dimmed-1  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 >
-                  <i>&quot;I&apos;m winston wolf, I solve problems&quot;</i>
+                  <i className="">
+                    &quot;I&apos;m winston wolf, I solve problems&quot;
+                  </i>
                   <br />
                   If you use my
                   <Link href="/about#stack">
