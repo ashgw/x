@@ -5,8 +5,8 @@ import type { Metadata } from 'next';
 
 const PAGE_URL = new URL(pub.SITE_URL_PROD + '/contact');
 const creator = 'Ashref Gwader';
-const title = 'About';
-const description = 'Contact me through email';
+const title = 'Contact';
+const description = 'Feel free to reach out';
 const kw: string[] = [creator, 'ashgw', 'contact'];
 
 const postImageWidth = 1200; // in pixels
