@@ -1,16 +1,16 @@
-import { GPG_PUBLIC_KEY_EXTERNAL_URL } from '@/lib/constants';
+import { PUBLIC_CONTENT_SOURCE } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 import { NewType } from 'ts-roids';
 
 type Key = NewType<'Key', string>;
 type Err = string;
-
+const GPG_FILENAME = 'gpg.asc';
 export async function GET(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _req: NextRequest
 ): Promise<NextResponse<Key> | NextResponse<Err>> {
   try {
-    const res = await fetch(GPG_PUBLIC_KEY_EXTERNAL_URL, {
+    const res = await fetch(PUBLIC_CONTENT_SOURCE + GPG_FILENAME, {
       method: 'GET',
       mode: 'no-cors',
       next: { revalidate: 36969 },
