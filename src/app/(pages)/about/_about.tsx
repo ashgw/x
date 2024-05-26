@@ -2,7 +2,7 @@
 
 import Footer from '@/app/components/footer/footer';
 import { GlowingText } from '@/app/components/reusables/content';
-import { REPO_SOURCE, SITE_NAME } from '@/lib/constants';
+import { REPO_SOURCE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import NextLink from 'next/link';
@@ -60,7 +60,7 @@ export default function Page() {
       <div className="mt-12"></div>
       <div className="flex flex-col items-center justify-center gap-6 mt-8 md:mt-20">
         <code>
-          <MajorHeading title="whomai" />
+          <MajorHeading title="whoami" />
         </code>
         <Card title="">
           <p>
@@ -91,34 +91,15 @@ export default function Page() {
         <MajorHeading id="stack" title="Stack" />
         <Card title="">
           <p>
-            While I have experience spanning all the way from bare-metal to
-            front-end development, I now specialize primarily in Python and
-            TypeScript, with a heavy focus on web-related technologies (HTTP,
-            WebSockets, RPC, microservices, containers, cloud architecture...)
+            I&apos;ve done it all, been there, done that, all the way from
+            bare-metal to front-end development, But now, I specialize primarily
+            in Python and TypeScript, with a heavy focus on web-related
+            technologies (HTTP, WebSockets, RPC, microservices, containers,
+            cloud architecture...)
           </p>
         </Card>
-        <div id="hiden" className="hidden">
-          <MinorHeading title="A wise man once said" />
-          <Card title="">
-            <p>
-              <span className="italic">
-                &quot;Before you learn an ephemeral web framework, learn HTTP
-                instead, that way you have learned every web framework to ever
-                exist&quot;
-              </span>
-            </p>
-          </Card>
-          <Card title="">
-            <p>
-              Frameworks and libraries don&apos;t matter they come and go.
-              Fundamentals are key. But if you&apos;re interested in knowing the
-              exact tools I use you can check out my
-              <Link href="#" name="cv" /> (it&apos;s too long), or, you might
-              want to check out my
-              <Link href="#" name="resume" /> to get a glimpse instead.
-            </p>
-          </Card>
-          <MajorHeading title={SITE_NAME || 'About The Website'} />
+        <div className="hidden">
+          <MajorHeading title="Website" />
           <Card title="">
             <p>
               This site is open <Link href={REPO_SOURCE} name="source" /> and
@@ -141,6 +122,7 @@ export default function Page() {
         </div>
       </div>
       <div className="mt-10"></div>
+      <MinorHeading title="" />
       <Footer></Footer>
     </>
   );
