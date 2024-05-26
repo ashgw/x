@@ -1,5 +1,6 @@
 'use client';
 
+import { CREATOR } from '@/lib/constants';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -19,7 +20,7 @@ export default function CopyRight() {
       }}
     >
       <p className="flex items-center justify-center text-secondary-center dimmed-3 text-sm">
-        &copy; {new Date().getFullYear()} Ashref Gwader. All rights reserved
+        &copy; {new Date().getFullYear()} {CREATOR}. All rights reserved
       </p>
       <div className="hidden dimmed-3 flex items-center justify-center gap-2 max-w-md mx-auto sm:gap-4">
         <Link

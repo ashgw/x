@@ -1,13 +1,13 @@
 import About from '@/app/(pages)/about/_about';
+import { CREATOR } from '@/lib/constants';
 import { pub } from '@/lib/env';
 import { getSiteName } from '@/lib/funcs/site-name';
 import type { Metadata } from 'next';
 
 const PAGE_URL = new URL(pub.SITE_URL_PROD + '/about');
-const creator = 'Ashref Gwader';
 const title = 'About';
 const description = "I'm a software developer and technical educator";
-const kw: string[] = [creator, 'ashgw', 'about'];
+const kw: string[] = [CREATOR, 'ashgw', 'about'];
 
 const postImageWidth = 1200; // in pixels
 const postImageHeight = 630;
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: title,
     template: '%s | Ashgw',
   },
-  creator: creator,
+  creator: CREATOR,
   keywords: kw,
   description: description,
   openGraph: {

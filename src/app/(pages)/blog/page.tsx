@@ -1,5 +1,6 @@
 import Posts from '@/app/components/post/posts';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
+import { CREATOR } from '@/lib/constants';
 import { pub } from '@/lib/env';
 import { getSiteName } from '@/lib/funcs/site-name';
 import { getBlogPosts } from '@/lib/mdx/content';
@@ -8,10 +9,9 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 const PAGE_URL = new URL(pub.SITE_URL_PROD + '/blog');
-const creator = 'Ashref Gwader';
 const title = 'Blog';
 const description = 'All about tech';
-const kw: string[] = [creator, 'ashgw', 'blog'];
+const kw: string[] = [CREATOR, 'ashgw', 'blog'];
 
 const postImageWidth = 1200; // in pixels
 const postImageHeight = 630;
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     default: title,
     template: '%s | Ashgw',
   },
-  creator: creator,
+  creator: CREATOR,
   keywords: kw,
   description: description,
   openGraph: {

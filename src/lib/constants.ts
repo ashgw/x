@@ -24,3 +24,4 @@ export const PUBLIC_BLOG_IMAGES_SOURCE =
 
 export const SITE_NAME = getSiteName(pub.SITE_URL_PROD);
 export const REPO_SOURCE = 'https://github.com/ashgw/ashgw.me';
+export const CREATOR = 'Ashref Gwader';

@@ -1,6 +1,7 @@
 import Footer from '@/app/components/footer/footer';
 import PostSection from '@/app/components/post/post-section';
 import LoadingScreen from '@/app/components/reusables/loading-screen';
+import { CREATOR } from '@/lib/constants';
 import { pub } from '@/lib/env';
 import { getSiteName } from '@/lib/funcs/site-name';
 import { getBlogPost, getBlogPosts } from '@/lib/mdx/content';
@@ -63,7 +64,7 @@ export async function generateMetadata({
       description: seoDescription,
       images: [postImageUrl],
     },
-    creator: 'Ashref Gwader',
+    creator: CREATOR,
     keywords: postAttrs.tags,
     robots: {
       index: false,

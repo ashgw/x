@@ -1,10 +1,10 @@
 import Services from '@/app/(pages)/services/_services';
+import { CREATOR } from '@/lib/constants';
 import { pub } from '@/lib/env';
 import { getSiteName } from '@/lib/funcs/site-name';
 import type { Metadata } from 'next';
 
 const SERVICES_URL = new URL(pub.SITE_URL_PROD + '/services');
-const CREATOR = 'Ashref Gwader';
 const title = 'Services';
 const description = 'Software Consulting. Custom Solutions.';
 const url = SERVICES_URL;
