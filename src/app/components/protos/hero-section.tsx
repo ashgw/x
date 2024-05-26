@@ -11,8 +11,8 @@ function TypingAnimation() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <span class="glows">develop.</span>',
-        'I <span class="glows">architect.</span>',
+        'I <span class="glows">design.</span>',
+        'I <span class="glows">build.</span>',
         'I <span class="glows">solve</span> software',
       ],
       typeSpeed: 50,
