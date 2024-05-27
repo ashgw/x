@@ -1,3 +1,43 @@
+## v1.84.0
+
+[compare changes](https://github.com/ashgw/ashgw.io/compare/v1.84.0...v1.84.0)
+
+### 🚀 Enhancements
+
+- Make opengraph image gradient ([c6aa605](https://github.com/ashgw/ashgw.io/commit/c6aa605))
+- Change the hero section catch phrase ([8190ce5](https://github.com/ashgw/ashgw.io/commit/8190ce5))
+- Add methodology section for `/services/glossary` ([02d87f3](https://github.com/ashgw/ashgw.io/commit/02d87f3))
+- **#44:** Add permissive `CSP` ([ae0b8a5](https://github.com/ashgw/ashgw.io/commit/ae0b8a5))
+
+### 🩹 Fixes
+
+- Fallback to the latest release ([f4a3d33](https://github.com/ashgw/ashgw.io/commit/f4a3d33))
+- Opengraph image not showing ([f3357dd](https://github.com/ashgw/ashgw.io/commit/f3357dd))
+- Opengraph image color ([5b6d30c](https://github.com/ashgw/ashgw.io/commit/5b6d30c))
+- Mismatch of SEO info for `/blog` & `/contact` ([e4bcc4b](https://github.com/ashgw/ashgw.io/commit/e4bcc4b))
+- Typos ([cba5b12](https://github.com/ashgw/ashgw.io/commit/cba5b12))
+
+### 💅 Refactors
+
+- Create `gradient-bg` CSS class and use it ([d538de2](https://github.com/ashgw/ashgw.io/commit/d538de2))
+- Make the creator a single point of truth ([11cd8f7](https://github.com/ashgw/ashgw.io/commit/11cd8f7))
+- Cleanup the about page ([493fb41](https://github.com/ashgw/ashgw.io/commit/493fb41))
+- Move hero section inside `/page.tsx` ([edb3dfd](https://github.com/ashgw/ashgw.io/commit/edb3dfd))
+
+### 🏡 Chore
+
+- Update readme with new domain ([5efa7c6](https://github.com/ashgw/ashgw.io/commit/5efa7c6))
+- Update blogs with the new links ([47a19d2](https://github.com/ashgw/ashgw.io/commit/47a19d2))
+- Use actual icon not TS generated icon ([de98276](https://github.com/ashgw/ashgw.io/commit/de98276))
+- Add missing links from MDX files ([2bf891b](https://github.com/ashgw/ashgw.io/commit/2bf891b))
+- Use gpg from s3 not gh ([36beb9d](https://github.com/ashgw/ashgw.io/commit/36beb9d))
+- Make the pgp toast message more concise ([20869ca](https://github.com/ashgw/ashgw.io/commit/20869ca))
+- Fix some punctuations ([bc1beb9](https://github.com/ashgw/ashgw.io/commit/bc1beb9))
+
+### ❤️ Contributors
+
+- AshGw <AshrefGw@proton.me>
+
 ## v1.83.0
 
 [compare changes](https://github.com/ashgw/ashgw.io/compare/v1.82.0...v1.83.0)
