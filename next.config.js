@@ -39,6 +39,16 @@ module.exports = nextConfig;
 
 const securityHeaders = [
   {
+    key: 'Content-Security-Policy',
+    value: `
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+`
+      .split('\n')
+      .join(''),
+  },
+  {
     key: 'Referrer-Policy',
     value: 'no-referrer, strict-origin-when-cross-origin',
   },
