@@ -14,8 +14,8 @@ export default function Main() {
   const [, copyToClipboard] = useCopyToClipboard();
 
   const successToast = () => {
-    toast.message('Key ID: 79821E0224D34EC4969FF6A8E5168EE090AE80D0', {
-      description: 'The public key block has been copied to your clipboard',
+    toast.message('79821E0224D34EC4969FF6A8E5168EE090AE80D0', {
+      description: 'PGP public key block is copied to your clipboard',
     });
   };
 
