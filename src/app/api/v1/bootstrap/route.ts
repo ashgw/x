@@ -20,8 +20,8 @@ export async function GET(): Promise<NextResponse<Script> | NextResponse<Err>> {
       });
     }
 
-    const key = (await res.text()) as Script;
-    return new NextResponse(key, { status: 200 });
+    const script = (await res.text()) as Script;
+    return new NextResponse(script, { status: 200 });
   } catch (e) {
     console.log(e);
     return new NextResponse('Something unexpected happened', {
