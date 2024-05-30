@@ -82,10 +82,13 @@ export default function Page() {
         <Card title="">
           <p>
             You can learn more about me from my blogs than I can convey here.
-            <br /> But in short, I believe in quality code, high-performing
-            teams, and effective management
-            <br /> And I do offer services aimed at enhancing some of these
-            aspects for software teams.
+            <br /> But in short, I believe in
+            <Link href="/blog/tag/quality" name="quality" /> code,
+            <Link href="/blog/tag/skill-issues" name="high-performing" />
+            teams, and effective
+            <Link href="/blog/tag/management" name="management." />
+            <br /> And I do offer services aimed at enhancing these aspects for
+            software teams.
           </p>
         </Card>
         <MajorHeading id="stack" title="Stack" />
@@ -93,9 +96,10 @@ export default function Page() {
           <p>
             I&apos;ve done it all, been there, done that, all the way from
             bare-metal to front-end development, But now, I specialize primarily
-            in Python and TypeScript, with a heavy focus on web-related
-            technologies (HTTP, WebSockets, RPC, microservices, containers,
-            cloud architecture...)
+            in <Link href="/blog/tag/python" name="Python" /> and
+            <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
+            focus on web-related technologies (HTTP, WebSockets, RPC,
+            microservices, containers, cloud architecture...)
           </p>
         </Card>
         <div className="hidden">
