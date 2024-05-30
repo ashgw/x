@@ -35,7 +35,9 @@ export default function NavBar() {
         </div>
       </div>
       <div className="mx-2 sm:hidden">
-        <AnimatePresence>{isOpened && <DropDownNav />}</AnimatePresence>
+        <AnimatePresence>
+          {isOpened && <DropDownNav toggleMenu={toggleMenu} />}
+        </AnimatePresence>
       </div>
     </nav>
   );
@@ -102,7 +104,7 @@ export function RightNav() {
   );
 }
 
-export function DropDownNav() {
+export function DropDownNav({ toggleMenu }: { toggleMenu: () => void }) {
   return (
     <motion.div
       initial={{
@@ -120,39 +122,10 @@ export function DropDownNav() {
       }}
       className="absolute rounded-3xl z-50 backdrop-blur-md  w-full space-y-3 px-5 pb-3 pt-2"
     >
-      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
-        <Link
-          href="/"
-          className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
-        >
-          Home
-        </Link>
-      </div>
-      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
-        <Link
-          href="/services"
-          className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
-        >
-          Services
-        </Link>
-      </div>
-
-      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
-        <Link
-          href="/blog"
-          className="dimmed-3  px-5 py-2 hover:text-white block rounded-4xl border-green-400 text-base"
-        >
-          Blog
-        </Link>
-      </div>
-      <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
-        <Link
-          href="/about"
-          className="dimmed-3  px-5 py-2 hover:text-white block rounded-4xl border-green-400 text-base"
-        >
-          About
-        </Link>
-      </div>
+      <SmallNavLink href="/" name="Home" toggleMenu={toggleMenu} />
+      <SmallNavLink href="/services" name="Services" toggleMenu={toggleMenu} />
+      <SmallNavLink href="/blog" name="Blog" toggleMenu={toggleMenu} />
+      <SmallNavLink href="/about" name="About" toggleMenu={toggleMenu} />
       <div className=" glowsup">
         <Link href="/contact">
           <Button className="w-full" variant={'navbar'}>
@@ -161,5 +134,24 @@ export function DropDownNav() {
         </Link>
       </div>
     </motion.div>
+  );
+}
+
+type SmallNavLinkProps = {
+  name: string;
+  href: string;
+  toggleMenu: () => void;
+};
+function SmallNavLink({ name, href, toggleMenu }: SmallNavLinkProps) {
+  return (
+    <div className="average-transition  hover:average-translate rounded-3xl slower-transition shadow hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)] border border-white/10">
+      <Link
+        href={href}
+        className="dimmed-3 px-5 py-2  hover:text-white block rounded-4xl border-green-400 text-base "
+        onClick={toggleMenu}
+      >
+        {name}
+      </Link>
+    </div>
   );
 }

@@ -3,6 +3,7 @@
 import Footer from '@/app/components/footer/footer';
 import { GlowingText } from '@/app/components/reusables/content';
 import { REPO_SOURCE } from '@/lib/constants';
+import { SITE_NAME } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import NextLink from 'next/link';
@@ -102,28 +103,27 @@ export default function Page() {
             microservices, containers, cloud architecture...)
           </p>
         </Card>
-        <div className="hidden">
-          <MajorHeading title="Website" />
-          <Card title="">
-            <p>
-              This site is open <Link href={REPO_SOURCE} name="source" /> and
-              made using the following technologies for provisioning,
-              development, testing, and deployment.
-            </p>
-          </Card>
-          <Card title="">
-            <div className="flex flex-wrap justify-center items-center gap-[0.625rem] text-sm dimmed-4">
-              {ThisSiteTools.map((tech) => (
-                <span
-                  key={tech}
-                  className="relative rounded-full px-2 py-1 border border-white/10"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </Card>
-        </div>
+        <MajorHeading title={SITE_NAME || 'About The Website'} />
+        <Card title="">
+          <p>
+            I like open source, so this site is open
+            <Link href={REPO_SOURCE} name="source" /> and made using the
+            following technologies for provisioning, development, testing, and
+            deployment.
+          </p>
+        </Card>
+        <Card title="">
+          <div className="flex flex-wrap justify-center items-center gap-[0.625rem] text-sm dimmed-4">
+            {ThisSiteTools.map((tech) => (
+              <span
+                key={tech}
+                className="relative rounded-full px-2 py-1 border border-white/10"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </Card>
       </div>
       <div className="mt-10"></div>
       <MinorHeading title="" />
