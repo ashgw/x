@@ -128,7 +128,7 @@ export function DropDownNav({ toggleMenu }: { toggleMenu: () => void }) {
       <SmallNavLink href="/about" name="About" toggleMenu={toggleMenu} />
       <div className=" glowsup">
         <Link href="/contact">
-          <Button className="w-full" variant={'navbar'}>
+          <Button className="w-full" variant={'navbar'} onClick={toggleMenu}>
             Contact
           </Button>
         </Link>
