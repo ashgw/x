@@ -2,14 +2,53 @@
 title: Code Quality 
 seoTitle: How to maintain the highest code quality for your projects ?
 summary: How to maintain the highest code quality for your projects ?
-isReleased: false
+isReleased: true
 isSequel: false
-lastModDate: 2022-01-02T09:15:00-0401
-firstModDate: 2022-01-02T09:15:00-0401
-minutesToRead: 4
+lastModDate: 2022-01-14T09:15:00-0401
+firstModDate: 2022-01-14T09:15:00-0401
+minutesToRead: 5
 tags:
   - 'quality'
-  - 'skill-issues'
+  - 'architecture'
 ---
+<C>
+Software must  be readable, maintainable, compatible, extensible, modular, fault tolerant, reusable, robust, secure, performant, portable, scalable, and all that good stuff. So,  how do you assess your software quality?
+</C>
 
-<H2>This Blog is not yet to be migrated with MDX</H2>
+<H2>Let's Start From The Beginning</H2>
+
+<C>
+How robust is the <L href='https://en.wikipedia.org/wiki/Software_requirements_specification'>SRS</L> to begin with? Is it **actually** adhering to <L href='https://standards.ieee.org/ieee/830/1222/'>industry standards?</L> Suppose it does, do you write effective <L href='/blog/user-stories'>user stories?</L> and do you break down these user stories into manageable <L href='/services/glossary#ticket'>tickets?</L> Are all issues, bugs, research and features documented as tickets? And, is every PR addressing a **very specific** issue?  Or do people just "submit" things and "work" on things? How promptly does the team respond to tickets? Is it <L href='/services/deadlines'>sync or async?</L> How many times do you have to change the requirements along the project <L href='/services/full-software-solution'>lifecycle?</L>
+</C>
+
+<C>
+Are critical architectural decisions well-documented? Do you use <L href='https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html'>ADRs?</L>  Are decisions documented with the rational behind them?  Is the architecture designed to scale efficiently with growing demands? Do you review the licenses in which your software uses, are using a GPL licensed library for a commercial closed source project? I hope the maintainers <L href='https://en.wikipedia.org/wiki/Open_source_license_litigation'>don't find out.</L> Is the source code repository owned by the customer (if applied)? 
+</C>
+
+
+<C>
+How clean is the codebase? How prevalent are anti-patterns? How about technical debt, we all have to cut corners some times, but, too much is too much. Say I come and join your codebase. Does it run on <L href='https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-try-a-development-container'> my machine?</L> Should I manually click and move or is anything that should be setup/automated, actually automated? Do I need someone to tell me how this piece of software works, or should the project <L href='/blog/code-silos' >self document</L> that? 
+What if the next person asks the same thing, again, isn't this a waste of time? Is documentation concise and up-to-date?  Are key components documented within the code itself? Is the source code repository free from unnecessary clutter?  Does the Git history provide clear documentation of changes? Does it allow force pushing? I hope not. 
+</C>
+
+
+<C>
+Say I make new changes,  Is static code analysis enforced for new changes? Is CI implemented both locally and remotely, and are its reports considered? how many times does the CI fail, and why? 
+</C>
+
+
+<C>
+Now I've made some changes but, still not sure how to implement a certain feature, should hit my teammate and ask for help on Slack? or go on a quick Zoom call? What if the next person gets the same roadblock again, you see where this is going?  Is there a clear escalation process for handling issues and roadblocks? How effectively does the team collaborate and <L href='/services/communication'>communicate?</L> Is the communication process traceable?  Are meetings only made when **huge** or **breaking** decisions are made? You can tell if a project is failing by the amount of **useless** stand up meetings <L href='/blog/tag/management'>rookie management</L> is having everyone attend.
+</C>
+
+
+<C>
+Ok now I submitted an issue on the tacker, someone replied with the answer, I finish the feature and submit a well documented (if not documented then short) PR addressing it. Is the delivery pipeline robust enough to detect and prevent errors I might have made? How many **qualified** reviewers do I need approval from before my PR is merged.
+</C>
+
+
+<C>
+It's merged now. What happens next? Is the release procedure documented, automated, and effective? Is the deployment infrastructure optimized with  <L href='https://aws.amazon.com/architecture/well-architected/)'>best practices</L> in mind? Are you using the **right** services and technologies for the right **cost?**  Do releases occur frequently? Are security measures implemented and regularly <L href='/services/code-audits'>audited?</L> Is sensitive data handled securely and in compliance with regulations?
+Does the build fail when tests fail, speaking of tests, Is the codebase thoroughly tested with visible coverage metrics? Are coverage metrics actually <L href='/blog/unit-tests#coverage'>honest?</L>
+</C>
+
