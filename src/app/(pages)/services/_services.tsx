@@ -107,9 +107,9 @@ export default function Services({
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
                   <Link href={BOOKING_LINK}>
-                    <GlowingText>Book me</GlowingText>
+                    <GlowingText>Book</GlowingText>
                   </Link>
-                  for both on-site and virtual presentations, training and
+                  me for both on-site and virtual presentations, training and
                   coaching to share my
                   <Link href="/blog/tag/skill-issues">
                     <GlowingText>skills</GlowingText>
