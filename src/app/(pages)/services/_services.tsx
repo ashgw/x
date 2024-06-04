@@ -2,6 +2,7 @@
 
 import Footer from '@/app/components/footer/footer';
 import { GlowingText } from '@/app/components/reusables/content';
+import { BOOKING_LINK } from '@/lib/constants';
 import { motion } from 'framer-motion';
 import { Computer, Presentation, ScanEye } from 'lucide-react';
 import Link from 'next/link';
@@ -105,8 +106,11 @@ export default function Services({
                   Training
                 </h3>
                 <p className="text-center md:text-base/relaxed dimmed-1">
-                  Book me for both on-site and virtual presentations, training
-                  and coaching to share my
+                  <Link href={BOOKING_LINK}>
+                    <GlowingText>Book me</GlowingText>
+                  </Link>
+                  for both on-site and virtual presentations, training and
+                  coaching to share my
                   <Link href="/blog/tag/skill-issues">
                     <GlowingText>skills</GlowingText>
                   </Link>
