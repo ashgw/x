@@ -41,6 +41,9 @@ const securityHeaders = [
   {
     key: 'Content-Security-Policy',
     value: `
+    default-src 'self'; 
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.vercel-insights.com vercel.live va.vercel-scripts.com;
+    object-src 'self'; 
     form-action 'self';
     frame-ancestors 'none';
     upgrade-insecure-requests;
