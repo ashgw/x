@@ -26,3 +26,11 @@ body:
     attributes:
       label: Expected behavior
       description: A clear and concise description of what you expected to happen.
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Possible solution ?
+      description: Optionally describe how you'd solve this.
+    validations:
+      required: false
