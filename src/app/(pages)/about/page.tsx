@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 
 const PAGE_URL = new URL(pub.SITE_URL_PROD + '/about');
 const title = 'About';
-const description = "I'm a software developer and technical educator";
+const description = "I'm a software developer";
 const kw: string[] = [CREATOR, 'ashgw', 'about'];
 
 const postImageWidth = 1200; // in pixels

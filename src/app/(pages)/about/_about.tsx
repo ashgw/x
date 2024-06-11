@@ -65,8 +65,8 @@ export default function Page() {
         </code>
         <Card title="">
           <p>
-            I&apos;m a software developer and technical educator, and I do work
-            for <Link href="/contact" name="hire." />
+            I&apos;m a software developer, and I do work for
+            <Link href="/contact" name="hire." />
           </p>
         </Card>
         <div className="hidden">
@@ -96,17 +96,17 @@ export default function Page() {
         <Card title="">
           <p>
             I&apos;ve done it all, been there, done that, all the way from
-            bare-metal to front-end development, But now, I specialize primarily
-            in <Link href="/blog/tag/python" name="Python" /> and
+            bare-metal to front-end, But now, I specialize primarily in{' '}
+            <Link href="/blog/tag/python" name="Python" /> and
             <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
-            focus on web-related technologies (HTTP, WebSockets, RPC,
+            focus on backend web-related technologies (HTTP, WebSockets, gRPC,
             microservices, containers, cloud architecture...)
           </p>
         </Card>
         <MajorHeading title={SITE_NAME || 'About The Website'} />
         <Card title="">
           <p>
-            I like open source, so this site is open
+            This site is open
             <Link href={REPO_SOURCE} name="source" /> and made using the
             following technologies for provisioning, development, testing, and
             deployment.
