@@ -1,13 +1,5 @@
-import './loader.scss';
+'use client';
 
-function Loader() {
-  return (
-    <div className="loader">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  );
-}
+import Loading from 'loading-points';
 
-export default Loader;
+export default Loading;

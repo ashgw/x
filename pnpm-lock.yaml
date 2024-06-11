@@ -38,6 +38,9 @@ dependencies:
   gsap:
     specifier: ^3.12.5
     version: 3.12.5
+  loading-points:
+    specifier: ^1.0.0
+    version: 1.0.0(react-dom@18.3.1)(react@18.3.1)
   lucide-react:
     specifier: ^0.309.0
     version: 0.309.0(react@18.3.1)
@@ -1400,6 +1403,15 @@ packages:
     dev: false
     optional: true
 
+  /@emotion/is-prop-valid@1.2.2:
+    resolution:
+      {
+        integrity: sha512-uNsoYd37AFmaCdXlg6EYD1KaPOaRWRByMCYzbKUX4+hhMfrxdVSelShywL4JVaAeM/eHUOSprYBQls+/neX3pw==,
+      }
+    dependencies:
+      '@emotion/memoize': 0.8.1
+    dev: false
+
   /@emotion/memoize@0.7.4:
     resolution:
       {
@@ -1408,6 +1420,20 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@emotion/memoize@0.8.1:
+    resolution:
+      {
+        integrity: sha512-W2P2c/VRW1/1tLox0mVUalvnWXxavmv/Oum2aPsRcoDJuob75FC3Y8FbpfLwUegRcxINtGUMPq0tFCvYNTBXNA==,
+      }
+    dev: false
+
+  /@emotion/unitless@0.8.1:
+    resolution:
+      {
+        integrity: sha512-KOEGMu6dmJZtpadb476IsZBclKvILjopjUii3V+7MnXIQCYh8W3NgNcgwo21n9LXZX6EDIKvqfjYxXebDwxKmQ==,
+      }
+    dev: false
 
   /@ericcornelissen/bash-parser@0.5.2:
     resolution:
@@ -5936,6 +5962,13 @@ packages:
       }
     dev: true
 
+  /@types/stylis@4.2.5:
+    resolution:
+      {
+        integrity: sha512-1Xve+NMN7FWjY14vLoY5tL3BVEQ/n42YLwaqJIPYhotZ9uBHt87VceMwWQpzmdEt2TNXIorIFG+YeCUUW7RInw==,
+      }
+    dev: false
+
   /@types/unist@2.0.10:
     resolution:
       {
@@ -6993,6 +7026,13 @@ packages:
     engines: { node: '>=10' }
     dev: true
 
+  /camelize@1.0.1:
+    resolution:
+      {
+        integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==,
+      }
+    dev: false
+
   /caniuse-lite@1.0.30001620:
     resolution:
       {
@@ -7686,6 +7726,14 @@ packages:
       vscode-uri: 3.0.8
     dev: true
 
+  /css-color-keywords@1.0.0:
+    resolution:
+      {
+        integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==,
+      }
+    engines: { node: '>=4' }
+    dev: false
+
   /css-in-js-utils@3.1.0:
     resolution:
       {
@@ -7693,6 +7741,17 @@ packages:
       }
     dependencies:
       hyphenate-style-name: 1.0.5
+    dev: false
+
+  /css-to-react-native@3.2.0:
+    resolution:
+      {
+        integrity: sha512-e8RKaLXMOFii+02mOlqwjbD00KSEKqblnpO9e++1aXS1fPQOpS1YoqdVHBqPjHNoxeF2mimzVqawm2KCbEdtHQ==,
+      }
+    dependencies:
+      camelize: 1.0.1
+      css-color-keywords: 1.0.0
+      postcss-value-parser: 4.2.0
     dev: false
 
   /css-tree@1.1.3:
@@ -11024,6 +11083,21 @@ packages:
     engines: { node: '>=6.11.5' }
     dev: true
 
+  /loading-points@1.0.0(react-dom@18.3.1)(react@18.3.1):
+    resolution:
+      {
+        integrity: sha512-cm/qnX0TtLqvBk+BylhHWKlNL9R5iY5l3YzEu1z+BWtuL7p/ptZMO21H1jKAxBtA3x5RCjPpN/TXQfLCQ0X5kw==,
+      }
+    engines: { node: '>=18' }
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 18.3.1
+      styled-components: 6.1.11(react-dom@18.3.1)(react@18.3.1)
+    transitivePeerDependencies:
+      - react-dom
+    dev: false
+
   /locate-path@5.0.0:
     resolution:
       {
@@ -13561,6 +13635,13 @@ packages:
     engines: { node: '>=6.9' }
     dev: false
 
+  /shallowequal@1.1.0:
+    resolution:
+      {
+        integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==,
+      }
+    dev: false
+
   /sharp@0.33.4:
     resolution:
       {
@@ -14064,6 +14145,29 @@ packages:
       }
     dependencies:
       inline-style-parser: 0.1.1
+    dev: false
+
+  /styled-components@6.1.11(react-dom@18.3.1)(react@18.3.1):
+    resolution:
+      {
+        integrity: sha512-Ui0jXPzbp1phYij90h12ksljKGqF8ncGx+pjrNPsSPhbUUjWT2tD1FwGo2LF6USCnbrsIhNngDfodhxbegfEOA==,
+      }
+    engines: { node: '>= 16' }
+    peerDependencies:
+      react: '>= 16.8.0'
+      react-dom: '>= 16.8.0'
+    dependencies:
+      '@emotion/is-prop-valid': 1.2.2
+      '@emotion/unitless': 0.8.1
+      '@types/stylis': 4.2.5
+      css-to-react-native: 3.2.0
+      csstype: 3.1.3
+      postcss: 8.4.38
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      shallowequal: 1.1.0
+      stylis: 4.3.2
+      tslib: 2.6.2
     dev: false
 
   /styled-jsx@5.1.1(react@18.3.1):
