@@ -665,6 +665,26 @@ import CopyButton from './copy-code';
 
 /* eslint-disable */
 // @ts-nocheck
+
+// react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
 SyntaxHighlighter.registerLanguage('rust', rust);
 SyntaxHighlighter.registerLanguage('python', python);
 SyntaxHighlighter.registerLanguage('bash', bash);

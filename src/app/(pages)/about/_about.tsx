@@ -83,11 +83,8 @@ export default function Page() {
         <Card title="">
           <p>
             You can learn more about me from my blogs than I can convey here.
-            <br /> But in short, I believe in
-            <Link href="/blog/tag/quality" name="quality" /> code,
-            <Link href="/blog/tag/skill-issues" name="high-performing" />
-            teams, and effective
-            <Link href="/blog/tag/management" name="management." />
+            <br /> But in short, I believe in quality code, high-performing
+            teams, and effective management
             <br /> And I do offer services aimed at enhancing these aspects for
             software teams.
           </p>
@@ -95,12 +92,13 @@ export default function Page() {
         <MajorHeading id="stack" title="Stack" />
         <Card title="">
           <p>
-            I&apos;ve done it all, been there, done that, all the way from
-            bare-metal to front-end, But now, I specialize primarily in{' '}
+            I&apos;ve done it all, been there, done that, all the way from bare
+            metal to frontend. As of now, I specialize primarily in
+            object-oriented design and analysis in
             <Link href="/blog/tag/python" name="Python" /> and
             <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
-            focus on backend web-related technologies (HTTP, WebSockets, gRPC,
-            microservices, containers, cloud architecture...)
+            focus on HTTP, microservices architecture, containerization, and
+            cloud services (AWS).
           </p>
         </Card>
         <MajorHeading title={SITE_NAME || 'About The Website'} />

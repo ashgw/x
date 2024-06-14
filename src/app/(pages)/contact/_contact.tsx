@@ -61,7 +61,7 @@ export default function Main() {
                         GPG
                       </strong>
                     </button>
-                    <span> </span> key to encrypt messages before you
+                    <span> </span> key before you
                   </C>
                 </div>
               </div>
