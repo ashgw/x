@@ -24,7 +24,7 @@ Mostly Framer, but some GSAP too, with some custom animations here and there.
 
 ### Content
 
-Rendered with MDX, S/O [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)
+Rendered with MDX, S/O [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote).
 
 ### Tested w/
 
@@ -32,7 +32,7 @@ Playwright & Jest.
 
 ### Deployments
 
-Initially on Vercel, then DigitalOcean, then Vercel again, though considering AWS due to occasional Vercel issues.
+Initially on Vercel, then DigitalOcean, then ECS, then Vercel again for convenience, though considering a fresh custom AWS serverless setup due to occasional Vercel issues.
 
 ### Other
 

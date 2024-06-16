@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 
 const SERVICES_URL = new URL(pub.SITE_URL_PROD + '/services');
 const title = 'Services';
-const description = 'Software Consulting. Custom Solutions.';
+const description = 'Professional Consulting. Custom Solutions.';
 const url = SERVICES_URL;
 const kw: string[] = [
   CREATOR,

@@ -13,6 +13,7 @@ import { ReactNode } from 'react';
 const ThisSiteTools = [
   'TypeScript',
   'ReactJS',
+  'Figma',
   'NextJS',
   'Framer-motion',
   'TailwindCSS',
@@ -61,67 +62,76 @@ export default function Page() {
       <div className="mt-12"></div>
       <div className="flex flex-col items-center justify-center gap-6 mt-8 md:mt-20">
         <code>
-          <MajorHeading title="whoami" />
+          <MajorHeading title="~ whoami" />
         </code>
         <Card title="">
           <p>
-            I&apos;m a software developer, and I do work for
-            <Link href="/contact" name="hire." />
+            I&apos;m a poker player, and a retired chess player, anthropology
+            aficionado, cinema enthusiast, and software developer.
           </p>
         </Card>
-        <div className="hidden">
+        <div className="">
           <Card title="">
             <p>
               I&apos;ve been programming since I was 12 years old, getting
-              professionally paid for it for 4 years now, where I&apos;ve had
-              the privilge to collaborate with numerous individuals, teams and
-              startups worldwide, to build, scale, and lead software projects.
+              professionally paid for it for the last 5 years now, where
+              I&apos;ve had the privilge to collaborate with numerous
+              individuals, teams and startups worldwide, to build, scale, and
+              lead software projects.
             </p>
           </Card>
         </div>
-
-        <Card title="">
-          <p>
-            You can learn more about me from my blogs than I can convey here.
-            <br /> But in short, I believe in quality code, high-performing
-            teams, and effective management
-            <br /> And I do offer services aimed at enhancing these aspects for
-            software teams.
-          </p>
-        </Card>
-        <MajorHeading id="stack" title="Stack" />
+        <div className="hidden">
+          <MajorHeading id="stack" title="Stack" />
+        </div>
         <Card title="">
           <p>
             I&apos;ve done it all, been there, done that, all the way from bare
-            metal to frontend. As of now, I specialize primarily in
-            object-oriented design and analysis in
-            <Link href="/blog/tag/python" name="Python" /> and
-            <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
-            focus on HTTP, microservices architecture, containerization, and
-            cloud services (AWS).
+            metal to frontend <br />
+            (this site is open
+            <Link href={REPO_SOURCE} name="source" /> btw)
           </p>
         </Card>
-        <MajorHeading title={SITE_NAME || 'About The Website'} />
         <Card title="">
           <p>
-            This site is open
-            <Link href={REPO_SOURCE} name="source" /> and made using the
-            following technologies for provisioning, development, testing, and
-            deployment.
+            As of now, I specialize primarily in object-oriented design and
+            analysis in
+            <Link href="/blog/tag/python" name="Python" /> and
+            <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
+            focus on HTTP 1.1/2, microservices architecture, containerization,
+            and cloud services (mostly AWS).
           </p>
         </Card>
         <Card title="">
-          <div className="flex flex-wrap justify-center items-center gap-[0.625rem] text-sm dimmed-4">
-            {ThisSiteTools.map((tech) => (
-              <span
-                key={tech}
-                className="relative rounded-full px-2 py-1 border border-white/10"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+          <p>
+            Well, you can learn more about me from my
+            <Link href="/blog" name="blogs" /> than I can convey here.
+          </p>
         </Card>
+        <div id="about-this-site" className="hidden">
+          {' '}
+          <MajorHeading title={SITE_NAME || 'About The Website'} />
+          <Card title="">
+            <p>
+              This site is open
+              <Link href={REPO_SOURCE} name="source," /> and made using the
+              following technologies for prototyping, provisioning, development,
+              testing, and deployment.
+            </p>
+          </Card>
+          <Card title="">
+            <div className="flex flex-wrap justify-center items-center gap-[0.625rem] text-sm dimmed-4">
+              {ThisSiteTools.map((tech) => (
+                <span
+                  key={tech}
+                  className="relative rounded-full px-2 py-1 border border-white/10"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </Card>
+        </div>
       </div>
       <div className="mt-10"></div>
       <MinorHeading title="" />
