@@ -52,7 +52,7 @@ export default function Main() {
                 </H1>
                 <div className="mx-auto max-w-[600px]">
                   <C>
-                    I use GPG for secure communication. You can copy my public
+                    I use GPG for secure communication. You can copy my public{' '}
                     <button
                       onClick={async () => {
                         await copyGPG();

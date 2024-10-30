@@ -537,6 +537,21 @@ import CopyButton from './copy-code';
 // @ts-nocheck
 
 // react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
 /* eslint-disable */
 // @ts-nocheck
 SyntaxHighlighter.registerLanguage('rust', rust);
