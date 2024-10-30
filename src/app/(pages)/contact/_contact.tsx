@@ -34,7 +34,7 @@ export default function Main() {
   const handleToggle = (state: boolean) => {
     setIsToggled(state);
     if (state) {
-      window.location.href = 'https://calendly.com/ashgw'; // TODO: put this in env or consts or something
+      window.location.href = 'https://cal.com/ashgw'; // TODO: put this in env or consts or something
     } else {
       window.location.href = `mailto:${EMAIL}`;
     }
