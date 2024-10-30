@@ -74,10 +74,12 @@
       rgba(30, 17, 224, 0.1)
     );
   }
-
+  /* 
   .turn-bg-gradient:hover::after {
     opacity: 1;
-  }
+  } */
+
+  /* TODO: actualy rename this on a second though, it's not only used in nav */
   .nav-link-shadow {
     position: relative;
   }
