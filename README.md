@@ -32,7 +32,7 @@ Playwright & Jest.
 
 ### Deployments
 
-Initially on Vercel, then DigitalOcean, then ECS, then Vercel again for convenience, though considering a fresh custom AWS serverless setup due to occasional Vercel issues.
+Initially on Vercel, then DigitalOcean, then ECS, then Vercel again for convenience, though considering a fresh custom AWS serverless setup due to occasional Vercel [issues](https://github.com/AshGw/ashgw.me/issues/229).
 
 ### Other
 

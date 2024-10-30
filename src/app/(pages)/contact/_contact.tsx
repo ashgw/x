@@ -3,27 +3,16 @@
 import Footer from '@/app/components/footer/footer';
 import { TextContent as C } from '@/app/components/reusables/content';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
-import { Button } from '@/app/components/ui/button';
+import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import { EMAIL, GPG_PUBLIC_KEY_INTERNAL_URL } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { Toaster, toast } from 'sonner';
 
 export default function Main() {
   const [, copyToClipboard] = useCopyToClipboard();
-
-  const successToast = () => {
-    toast.message('79821E0224D34EC4969FF6A8E5168EE090AE80D0', {
-      description: 'PGP public key block is copied to your clipboard',
-    });
-  };
-
-  const failToast = (message?: string) => {
-    toast.message('Oops! Looks like something went wrong!', {
-      description: message,
-    });
-  };
+  const [isToggled, setIsToggled] = useState(false);
 
   async function copyGPG() {
     const res = await fetch(GPG_PUBLIC_KEY_INTERNAL_URL, {
@@ -31,12 +20,26 @@ export default function Main() {
     });
     if (!res.ok) {
       const failureMessage = await res.text();
-      failToast(failureMessage);
+      toast.message('Oops! Looks like something went wrong!', {
+        description: failureMessage,
+      });
     }
     const key = await res.text();
     copyToClipboard(key);
-    successToast();
+    toast.message('79821E0224D34EC4969FF6A8E5168EE090AE80D0', {
+      description: 'PGP public key block is copied to your clipboard',
+    });
   }
+
+  const handleToggle = (state: boolean) => {
+    setIsToggled(state);
+    if (state) {
+      window.location.href = 'https://calendly.com/ashgw'; // TODO: put this in env or consts or something
+    } else {
+      window.location.href = `mailto:${EMAIL}`;
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <main className="flex-1">
@@ -49,43 +52,34 @@ export default function Main() {
                 </H1>
                 <div className="mx-auto max-w-[600px]">
                   <C>
-                    Feel free to reach out through email. I will get back to you
-                    as soon as possible. If you prefer to communicate securely,
-                    use my <span> </span>
+                    I use GPG for secure communication. You can copy my public
                     <button
                       onClick={async () => {
                         await copyGPG();
                       }}
                     >
                       <strong className="text-white glows underline">
-                        GPG
+                        key.
                       </strong>
-                    </button>
-                    <span> </span> key before you
+                    </button>{' '}
+                    Feel free to use it for encrypted messages and to verify my
+                    identity. Other than that, you can
                   </C>
                 </div>
               </div>
-              <div className="mx-auto max-w-sm space-y-2">
+              <div className="mx-auto max-w-sm space-y-4">
                 <motion.div
-                  className="space-y-4 "
-                  initial={{
-                    opacity: 0,
-                    scale: 0.8,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                  }}
-                  transition={{
-                    duration: 0.4,
-                    delay: 1,
-                  }}
+                  className="space-y-4"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 1 }}
                 >
-                  <Link href={`mailto:${EMAIL}`}>
-                    <Button className="glowsup" variant="navbar">
-                      email me
-                    </Button>
-                  </Link>
+                  <ToggleSwitch
+                    leftButtonText="Email Me"
+                    rightButtonText="Book a Call"
+                    isToggled={isToggled}
+                    onToggle={handleToggle}
+                  />
                 </motion.div>
               </div>
             </div>

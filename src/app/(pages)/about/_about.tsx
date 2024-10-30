@@ -102,12 +102,7 @@ export default function Page() {
             and cloud services (mostly AWS).
           </p>
         </Card>
-        <Card title="">
-          <p>
-            Well, you can learn more about me from my
-            <Link href="/blog" name="blogs" /> than I can convey here.
-          </p>
-        </Card>
+
         <div id="about-this-site" className="hidden">
           {' '}
           <MajorHeading title={SITE_NAME || 'About The Website'} />
