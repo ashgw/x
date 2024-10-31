@@ -4,7 +4,11 @@ import Footer from '@/app/components/footer/footer';
 import { TextContent as C } from '@/app/components/reusables/content';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
-import { EMAIL, GPG_PUBLIC_KEY_INTERNAL_URL } from '@/lib/constants';
+import {
+  BOOKING_LINK,
+  EMAIL,
+  GPG_PUBLIC_KEY_INTERNAL_URL,
+} from '@/lib/constants';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -34,7 +38,7 @@ export default function Main() {
   const handleToggle = (state: boolean) => {
     setIsToggled(state);
     if (state) {
-      window.location.href = 'https://cal.com/ashgw'; // TODO: put this in env or consts or something
+      window.location.href = BOOKING_LINK;
     } else {
       window.location.href = `mailto:${EMAIL}`;
     }

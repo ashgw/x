@@ -27,4 +27,4 @@ export const PUBLIC_CONTENT_SOURCE =
 export const SITE_NAME = getSiteName(pub.SITE_URL_PROD);
 export const REPO_SOURCE = 'https://github.com/ashgw/ashgw.me';
 export const CREATOR = 'Ashref Gwader';
-export const BOOKING_LINK = 'https://calendly.com/ashgw';
+export const BOOKING_LINK = 'https://cal.com/ashgw';
