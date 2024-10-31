@@ -109,7 +109,7 @@ export function LeftNav() {
 export function RightNav() {
   return (
     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
-      <div className="hidden average-transition hover:average-translate z-50">
+      <div className="average-transition hover:average-translate z-50">
         <SourceCodeButton href={REPO_SOURCE} />
       </div>
       <div className="glowsup hidden sm:block">
