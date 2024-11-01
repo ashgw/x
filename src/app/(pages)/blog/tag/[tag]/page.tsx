@@ -17,7 +17,6 @@ export const generateStaticParams = async () => {
 };
 
 export default async function Tags({ params }: RouteParams) {
-  // Is it efficient? Hell fucking no. Not going to fix it doe, no time for that
   const posts = await getBlogPosts();
   if (posts) {
     const taggedPostsFileNames: string[] = [];

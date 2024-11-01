@@ -11,9 +11,9 @@ import Link from 'next/link';
 import type { ButtonHTMLAttributes } from 'react';
 import { useState } from 'react';
 
-type PostsParams = { posts: PostData[]; taggedPostsFileNames?: string[] };
+type PostsProps = { posts: PostData[]; taggedPostsFileNames?: string[] };
 
-export default function Posts({ posts, taggedPostsFileNames }: PostsParams) {
+export default function Posts({ posts, taggedPostsFileNames }: PostsProps) {
   const firstLoadVisibleNum = 10;
   const perLoadVisibleNum = 5;
   const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
@@ -69,7 +69,7 @@ export default function Posts({ posts, taggedPostsFileNames }: PostsParams) {
           <NoMoreImTiredBoss />
         )}
       </div>
-      <BackUpTop></BackUpTop>
+      <BackUpTop />
     </main>
   );
 }
