@@ -1,0 +1,29 @@
+bug:
+  - 'fix:'
+  - 'bug:'
+  - 'error:'
+feature:
+  - 'feat:'
+enhancement:
+  - 'enhancement:'
+  - 'improvement:'
+documentation:
+  - 'docs:'
+  - 'documentation:'
+chore:
+  - 'chore:'
+style:
+  - 'style:'
+refactor:
+  - 'refactor:'
+performance:
+  - 'perf:'
+test:
+  - 'test:'
+  - 'tests:'
+build:
+  - 'build:'
+ci:
+  - 'ci:'
+revert:
+  - 'revert:'
