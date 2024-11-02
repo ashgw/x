@@ -1,0 +1,17 @@
+name: 'Setup Environment Variables'
+description: 'Sets up env from GitHub Secrets'
+inputs:
+  env_vars:
+    description: 'Environment variables to set up in .env.local'
+    required: true
+  ga_id:
+    description: 'Google Analytics ID to add to .env'
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Set up .env
+      shell: bash
+      run: |
+        echo "${{ inputs.env_vars }}" >> .env.local
+        echo "GA_ID='${{ inputs.ga_id }}'" >> .env  # Store GA_ID in .env

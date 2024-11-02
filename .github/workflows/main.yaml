@@ -21,7 +21,6 @@ permissions:
 concurrency:
   group: Release
   cancel-in-progress: false
-
 jobs:
   lint:
     runs-on: ubuntu-20.04
@@ -35,12 +34,15 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
-      - name: Set up .env
-        run: echo '${{ secrets.ENV_VARS }}' >> .env.local
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
       - name: Install dependencies w/ setup
         run: pnpm i
       - name: lint
         run: pnpm lint
+
   test:
     runs-on: ubuntu-20.04
     strategy:
@@ -56,8 +58,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - name: Set up .env
-        run: echo '${{ secrets.ENV_VARS }}' >> .env.local
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
       - name: Install dependencies w/ setup
         run: pnpm i
       - name: Running code tests
@@ -71,9 +75,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Set up .env
-        run: |
-          echo '${{ secrets.ENV_VARS }}' >> .env.local
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
       - name: Install dependencies
         run: npm install -g pnpm &&  pnpm install --frozen-lockfile
       - name: Install Playwright Browsers
@@ -98,7 +103,7 @@ jobs:
       - uses: re-actors/alls-green@release/v1
         id: all-green
         with:
-          jobs: ${{ toJSON(needs)}}
+          jobs: ${{ toJSON(needs) }}
 
   validate-pr:
     runs-on: ubuntu-latest
