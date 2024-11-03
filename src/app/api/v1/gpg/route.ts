@@ -4,6 +4,7 @@ import { NewType } from 'ts-roids';
 
 type Key = NewType<'Key', string>;
 type Err = string;
+
 const GPG_FILENAME = 'gpg.asc';
 export async function GET(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,7 +22,7 @@ export async function GET(
       });
     }
 
-    const key = (await res.text()) as Key;
+    const key = await res.text();
     return new NextResponse(key);
   } catch (e) {
     console.log(e);

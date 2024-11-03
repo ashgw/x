@@ -19,7 +19,7 @@ export async function GET(): Promise<NextResponse<Script> | NextResponse<Err>> {
       });
     }
 
-    const script = (await res.text()) as Script;
+    const script = await res.text();
     return new NextResponse(script, { status: 200 });
   } catch (e) {
     console.log(e);
