@@ -69,7 +69,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-20.04
-    needs: validate-pr
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/node-pnpm-setup
