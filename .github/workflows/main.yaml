@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - prod-preview
+      - staging
   pull_request:
     branches:
       - main
-      - prod-preview
+      - staging
     types:
       - opened
       - synchronize
@@ -21,25 +21,18 @@ permissions:
 concurrency:
   group: Release
   cancel-in-progress: false
+
 jobs:
   lint:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: 'pnpm'
+      - uses: ./.github/actions/node-pnpm-setup
       - uses: ./.github/actions/setup-env
         with:
           env_vars: ${{ secrets.ENV_VARS }}
           ga_id: ${{ secrets.GA_ID }}
-      - name: Install dependencies w/ setup
-        run: pnpm i
+      - uses: ./.github/actions/pnpm-install
       - name: lint
         run: pnpm lint
 
@@ -50,20 +43,15 @@ jobs:
         node-version: [18, 19, 20]
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: ./.github/actions/node-pnpm-setup
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
       - uses: ./.github/actions/setup-env
         with:
           env_vars: ${{ secrets.ENV_VARS }}
           ga_id: ${{ secrets.GA_ID }}
-      - name: Install dependencies w/ setup
-        run: pnpm i
+      - uses: ./.github/actions/pnpm-install
+
       - name: Running code tests
         run: npx jest
 
@@ -72,9 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - uses: ./.github/actions/node-pnpm-setup
       - uses: ./.github/actions/setup-env
         with:
           env_vars: ${{ secrets.ENV_VARS }}
