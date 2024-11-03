@@ -1,0 +1,162 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    branches:
+      - main
+      - staging
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: Release
+  cancel-in-progress: false
+
+jobs:
+  validate-pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: 'ashgw/ashgw.me'
+
+      - name: Assign PR to opener
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          OPENER: ${{ github.event.pull_request.user.login }}
+        run: |
+          curl -H "Authorization: token ${GITHUB_TOKEN}" \
+              -X POST \
+              -d "{\"assignees\": [\"${OPENER}\"]}" \
+              https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/assignees
+
+      - name: Label PR based on commits
+        uses: actions/labeler@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: true
+
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        id: lint_pr_title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR if title lint fails
+        if: always() && steps.lint_pr_title.outputs.error_message != null
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-title-lint-error
+          message: |
+            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
+            Details:
+            ```
+            ${{ steps.lint_pr_title.outputs.error_message }}
+            ```
+
+  lint:
+    runs-on: ubuntu-20.04
+    needs: validate-pr
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - uses: ./.github/actions/pnpm-install
+      - name: lint
+        run: echo 'pnpm lint' # TODO: actually fix this shit ISID: #335
+
+  test:
+    runs-on: ubuntu-20.04
+    needs: lint
+    strategy:
+      matrix:
+        node-version: [18, 19, 20]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node-pnpm-setup
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - uses: ./.github/actions/pnpm-install
+
+      - name: Running code tests
+        run: npx jest
+
+  e2e:
+    timeout-minutes: 60
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - name: Install dependencies
+        run: npm install -g pnpm &&  pnpm install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: npx playwright install # issue not resolved with pnpm
+      - name: Run Playwright tests
+        run: cd test/e2e &&  npx playwright test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  merge-check:
+    if: always()
+    needs:
+      - lint
+      - test
+      - e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        id: all-green
+        with:
+          jobs: ${{ toJSON(needs) }}
+
+  docker-cr:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - merge-check
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - name: Version extraction
+        id: get_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+      - name: Building & tagging
+        run: |
+          docker build -t ashgw/mysite:latest -f deployment/dockerfile . && docker build -t ashgw/mysite:${{ steps.get_version.outputs.version }}  -f deployment/dockerfile .
+      - name: Login
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ashgw --password-stdin
+      - name: Pushing to the hub both versions
+        run: docker push ashgw/mysite:latest && docker push ashgw/mysite:${{ steps.get_version.outputs.version }}

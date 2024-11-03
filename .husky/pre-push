@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-# pnpm lint
+pnpm lint
 # pnpm test
 # TODO: uncomment this later
-echo "No pre-push command set"
-exit 0
