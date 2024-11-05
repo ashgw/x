@@ -1,15 +1,20 @@
 'use client';
 
 import Footer from '@/app/components/footer/footer';
-import { TextContent as C } from '@/app/components/reusables/content';
+import {
+  TextContent as C,
+  GlowingText,
+} from '@/app/components/reusables/content';
 import { Heading1 as H1 } from '@/app/components/reusables/headers';
 import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import {
   BOOKING_LINK,
   EMAIL,
   GPG_PUBLIC_KEY_INTERNAL_URL,
+  LINKS,
 } from '@/lib/constants';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { Toaster, toast } from 'sonner';
@@ -56,18 +61,20 @@ export default function Main() {
                 </H1>
                 <div className="mx-auto max-w-[600px]">
                   <C>
-                    I use GPG for secure communication. You can copy my public{' '}
+                    I use{' '}
                     <button
                       onClick={async () => {
                         await copyGPG();
                       }}
                     >
                       <strong className="text-white glows underline">
-                        key.
+                        GPG
                       </strong>
                     </button>{' '}
-                    Feel free to use it for encrypted messages and to verify my
-                    identity. Other than that, you can
+                    for secure communication. Feel free to use it for encrypted
+                    messages and to verify my
+                    <GlowingLink href={LINKS.keyBase} name="identity." />
+                    Other than that, you can
                   </C>
                 </div>
               </div>
@@ -95,3 +102,14 @@ export default function Main() {
     </div>
   );
 }
+
+/* 
+  TODO: fix this please 
+*/
+const GlowingLink = ({ href, name }: { href: string; name: string }) => {
+  return (
+    <Link href={href}>
+      <GlowingText>{name}</GlowingText>
+    </Link>
+  );
+};

@@ -28,3 +28,14 @@ export const SITE_NAME = getSiteName(pub.SITE_URL_PROD);
 export const REPO_SOURCE = 'https://github.com/ashgw/ashgw.me';
 export const CREATOR = 'Ashref Gwader';
 export const BOOKING_LINK = 'https://cal.com/ashgw';
+
+export const LINKS = {
+  npm: 'https://www.npmjs.com/~ashgw',
+  crates: 'https://crates.io/users/AshGw',
+  pypi: 'https://pypi.org/user/AshGw/',
+  keyBase: 'https://keybase.io/ashgw',
+  gitHub: 'https://github.com/ashgw',
+  x: 'https://x.com/ashgw', // TODO: change this
+  reddit: 'https://www.reddit.com/ashgw', // TODO: change this
+  codePen: 'https://codepen.io/ashgw', // TODO: change this
+} as const;

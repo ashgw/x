@@ -83,12 +83,12 @@ export function LeftNav() {
         >
           Home
         </Link>
-        <Link
+        {/* <Link
           className="nav-link-shadow dimmed-3 font-semibold average-transition hover:average-translate hover:text-white"
           href="/services"
         >
           Services
-        </Link>
+        </Link> */}
         <Link
           className="nav-link-shadow dimmed-3 font-semibold average-transition hover:average-translate hover:text-white"
           href="/blog"
@@ -133,7 +133,7 @@ export function DropDownNav({ toggleMenu }: { toggleMenu: () => void }) {
       className="absolute rounded-3xl z-50 backdrop-blur-2xl w-full space-y-3 px-5 pb-3 pt-2"
     >
       <SmallNavLink href="/" name="Home" toggleMenu={toggleMenu} />
-      <SmallNavLink href="/services" name="Services" toggleMenu={toggleMenu} />
+      {/* <SmallNavLink href="/services" name="Services" toggleMenu={toggleMenu} /> */}
       <SmallNavLink href="/blog" name="Blog" toggleMenu={toggleMenu} />
       <SmallNavLink href="/about" name="About" toggleMenu={toggleMenu} />
       <div className="glowsup">

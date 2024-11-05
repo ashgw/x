@@ -2,7 +2,7 @@
 
 import Footer from '@/app/components/footer/footer';
 import { GlowingText } from '@/app/components/reusables/content';
-import { REPO_SOURCE } from '@/lib/constants';
+import { LINKS, REPO_SOURCE } from '@/lib/constants';
 import { SITE_NAME } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -67,14 +67,14 @@ export default function Page() {
         <Card title="">
           <p>
             I&apos;m a poker player, and a retired chess player, anthropology
-            aficionado, cinema enthusiast, and software developer.
+            aficionado, cinema enthusiast, and software engineer.
           </p>
         </Card>
         <div className="">
           <Card title="">
             <p>
-              I&apos;ve been programming since I was 12 years old, getting
-              professionally paid for it for the last 5 years now, where
+              I&apos;ve been programming since, well as far as I can remember,
+              getting professionally paid for it for the last 5 years now, where
               I&apos;ve had the privilge to collaborate with numerous
               individuals, teams and startups worldwide, to build, scale, and
               lead software projects.
@@ -87,21 +87,42 @@ export default function Page() {
         <Card title="">
           <p>
             I&apos;ve done it all, been there, done that, all the way from bare
-            metal to frontend <br />
+            metal to frontend
+            <br />
             (this site is open
-            <Link href={REPO_SOURCE} name="source" /> btw)
+            <Link href={REPO_SOURCE} name="source" /> btw). <br />
+            As of now, I mostly enjoy and work with TypeScript, Docker and AWS.
           </p>
         </Card>
         <Card title="">
+          <p>
+            I also do some open source from time to time, where you can find me
+            publishing libraries on <br />
+            <Link href={LINKS.npm} name="npm" />,
+            <Link href={LINKS.crates} name="crates" /> and
+            <Link href={LINKS.pypi} name="pypi" />
+          </p>
+        </Card>
+        <Card title="">
+          <p>
+            I am currently <Link href={'/services'} name="open" />
+            to engaging in selective consulting contracts and project
+            partnerships. If you&apos;re looking to scale SaaS products, or
+            enhance your team capabilities,
+            <br />
+            <Link href={'/contact'} name="let's talk." />
+          </p>
+        </Card>
+        {/* <Card title="">
           <p>
             As of now, I specialize primarily in object-oriented design and
             analysis in
             <Link href="/blog/tag/python" name="Python" /> and
             <Link href="/blog/tag/typescript" name="TypeScript" />, with a heavy
-            focus on HTTP 1.1/2, microservices architecture, containerization,
-            and cloud services (mostly AWS).
+            focus on HTTP 1.1/2,, containerization, and cloud services (mostly
+            AWS).
           </p>
-        </Card>
+        </Card> */}
 
         <div id="about-this-site" className="hidden">
           {' '}
