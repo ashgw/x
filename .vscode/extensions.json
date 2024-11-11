@@ -1,12 +1,24 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
-    "ms-vscode.vscode-typescript-next",
-    "Prisma.prisma",
-    "unifiedjs.vscode-mdx",
-    "Zignd.html-css-class-completion",
-    "csstools.postcss",
-    "bradlc.vscode-tailwindcss",
-    "ms-vscode.vscode-typescript-next"
+    "esbenp.prettier-vscode", // Code formatter using Prettier
+    "ms-vscode.vscode-typescript-next", // Latest TypeScript features support in VS Code
+    "Prisma.prisma", // Prisma syntax highlighting, completion, and formatting
+    "unifiedjs.vscode-mdx", // MDX language support, for JSX in Markdown files
+    "Zignd.html-css-class-completion", // Autocomplete for HTML and CSS class names
+    "csstools.postcss", // PostCSS language support and syntax highlighting
+    "bradlc.vscode-tailwindcss", // IntelliSense for Tailwind CSS classes
+    "DavidAnson.vscode-markdownlint", // Markdown linting for consistent documentation style
+    "yzhang.markdown-all-in-one", // Enhanced Markdown support with shortcuts and table of contents generator
+    "dbaeumer.vscode-eslint", // ESLint integration for linting JavaScript and TypeScript
+    "ban.spellright", // Spell check for various languages, especially useful in docs
+    "stripe.vscode-stripe", // Stripe integration for payments-related development
+    "rebornix.project-snippets", // Share project-specific snippets across team members
+    "inlang.vs-code-extension", // Improved developer experience for internationalization (i18n)
+    "eamodio.gitlens", // Enhances Git capabilities, such as blame annotations and history tracking
+    "yoavbls.pretty-ts-errors", // Makes TypeScript errors more readable and understandable
+    "expo.vscode-expo-tools", // Tools for developing with Expo, useful for React Native apps
+    "orta.vscode-jest", // Integration for Jest testing, includes results and error reporting
+    "github.vscode-pull-request-github", // Manage GitHub pull requests and issues directly in VS Code
+    "usernamehw.errorlens" // Highlights and shows errors directly in the code editor for better visibility
   ]
 }
