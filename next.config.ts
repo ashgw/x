@@ -1,3 +1,4 @@
+import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -79,5 +80,9 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: true,
   pageExtensions: ['js', 'ts', 'jsx', 'tsx', 'mdx'],
 };
+
+if (process.env.NODE_ENV === 'development') {
+  await setupDevPlatform();
+}
 
 export default nextConfig;
