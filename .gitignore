@@ -1,6 +1,6 @@
 .vim
 **/.cache/
-
+**test-results**
 **/dist/
 
 **/.turbo
