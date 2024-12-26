@@ -8,7 +8,7 @@ import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
 
 /**
- * All packages that leverage t3-env should use this rule
+ * Whenever`@ashgw/ts-env` is used, apply this rule
  */
 export const restrictEnvAccess = tseslint.config(
   { ignores: ["**/env.ts"] },
@@ -61,7 +61,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/consistent-type-imports": [
         "warn",
-        { prefer: "type-imports", fixStyle: "separate-type-imports" },
+        { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
       "@typescript-eslint/no-misused-promises": [
         2,
