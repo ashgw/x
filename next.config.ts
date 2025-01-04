@@ -2,6 +2,10 @@ import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  transpilePackages: [
+    'next-mdx-remote',
+    /* @see https://github.com/hashicorp/next-mdx-remote/issues/467#issuecomment-2432166413 */
+  ],
   async headers() {
     return Promise.resolve([
       {
