@@ -1,4 +1,4 @@
-name: Prettier
+name: CI
 
 on:
   pull_request:
@@ -6,9 +6,15 @@ on:
   workflow_call:
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
+  format:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: pnpm format-check
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - uses: ./.github/actions/pnpm-install
+      - name: format
+        run: pnpm format
