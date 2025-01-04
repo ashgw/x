@@ -5,23 +5,24 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 type RouteParams = {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
 };
 
 export const generateStaticParams = async () => {
   const posts = await getBlogPosts();
   if (posts) {
-    return posts.map((post) => ({ post: post.filename }));
+    return posts.map((post) => ({ tag: post.filename }));
   }
   return [];
 };
 
 export default async function Tags({ params }: RouteParams) {
+  const { tag } = await params;
   const posts = await getBlogPosts();
   if (posts) {
     const taggedPostsFileNames: string[] = [];
     posts.forEach((post) => {
-      if (post.parsedContent.attributes.tags.includes(params.tag)) {
+      if (post.parsedContent.attributes.tags.includes(tag)) {
         taggedPostsFileNames.push(post.filename);
       }
     });

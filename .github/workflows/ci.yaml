@@ -148,23 +148,19 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  # preview-deployemnt:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: ./.github/actions/node-pnpm-setup
-  #     - uses: ./.github/actions/setup-env
-  #       with:
-  #         env_vars: ${{ secrets.ENV_VARS }}
-  #         ga_id: ${{ secrets.GA_ID }}
-  #     - name: Install Vercel CLI
-  #       run: npm install --global vercel@latest
-  #     - name: Pull Vercel Environment Information
-  #       run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-  #     - name: Build Project Artifacts
-  #       run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-  #     - name: Deploy Project Artifacts to Vercel
-  #       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - run: pnpm run deploy
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
   docker-cr:
     runs-on: ubuntu-latest
