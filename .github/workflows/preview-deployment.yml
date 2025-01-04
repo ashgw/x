@@ -4,6 +4,11 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
 jobs:
   preview:
     runs-on: ubuntu-latest
@@ -36,7 +41,10 @@ jobs:
 
       - name: Comment Preview URL
         uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
