@@ -1,5 +1,6 @@
 {
   "name": "mysite",
+  "type": "module",
   "version": "1.84.0",
   "private": true,
   "scripts": {
@@ -8,6 +9,9 @@
     "hooks": "husky install",
     "dev": "next dev",
     "start": "next start",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy",
     "test": "npx jest --coverage; cd test/e2e && npx playwright test",
     "test:coverage": "jest --coverage",
     "lint": "pnpm run lint:ts &&  pnpm run format ",
@@ -19,10 +23,8 @@
     "lint:md": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
     "lint:spelling": "cspell \"**\" \".github/**/*\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.6",
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",
     "@cspell/dict-cryptocurrencies": "5.0.3",
@@ -53,7 +55,8 @@
     "ts-node": "^10.9.2",
     "ts-roids": "^1.34.0",
     "typescript": "^5.3.3",
-    "webpack": "^5.96.1"
+    "webpack": "^5.96.1",
+    "wrangler": "^3.91.0"
   },
   "dependencies": {
     "@gsap/react": "^2.1.0",
@@ -70,7 +73,7 @@
     "gsap": "^3.12.5",
     "loading-points": "^1.0.0",
     "lucide-react": "^0.309.0",
-    "next": "^14.2.3",
+    "next": "^15",
     "next-mdx-remote": "^4.4.1",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",

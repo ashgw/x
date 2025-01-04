@@ -30,7 +30,7 @@
     "test",
     "postcss.config.js",
     "src/app/components/mdx/styled-mdx.tsx",
-    "next.config.js"
+    "next.config.cjs"
   ],
   "exclude": ["node_modules"],
   "ts-node": {

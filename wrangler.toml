@@ -1,0 +1,5 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "www-ashgw"
+compatibility_date = "2024-07-29"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
