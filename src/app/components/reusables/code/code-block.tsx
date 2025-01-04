@@ -777,6 +777,11 @@ import CopyButton from './copy-code';
 // @ts-nocheck
 
 // react-syntax-highlighter has no types
+
+/* eslint-disable */
+// @ts-nocheck
+
+// react-syntax-highlighter has no types
 /* eslint-disable */
 // @ts-nocheck
 SyntaxHighlighter.registerLanguage('rust', rust);
@@ -785,7 +790,8 @@ SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('typescript', typescript);
 SyntaxHighlighter.registerLanguage('go', go);
 SyntaxHighlighter.registerLanguage('tsx', tsx);
-SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.<<<<<<< ci/refactors
+registerLanguage('css', css);
 SyntaxHighlighter.registerLanguage('docker', docker);
 SyntaxHighlighter.registerLanguage('yaml', yaml);
 SyntaxHighlighter.registerLanguage('http', http);
