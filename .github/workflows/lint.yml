@@ -1,0 +1,22 @@
+name: Lint
+
+on:
+  workflow_call:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/setup-env
+        with:
+          env_vars: ${{ secrets.ENV_VARS }}
+          ga_id: ${{ secrets.GA_ID }}
+      - uses: ./.github/actions/pnpm-install
+      - name: lint
+        run: echo 'pnpm lint' # TODO: actually fix this shit ISID: #335
