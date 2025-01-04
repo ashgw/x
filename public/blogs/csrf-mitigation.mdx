@@ -67,7 +67,7 @@ There  are two main ways to implement anti-CSRF tokens:
 <C>
 As in, user sessions can be managed without a database by storing session information as a <L href='https://datatracker.ietf.org/doc/html/rfc7519'>JWT</L> or <L href='https://datatracker.ietf.org/doc/html/rfc7516'>JWE</L> within a <L href='#cookies'>cookie</L>. To defend against CSRF attacks in this setup, use the "Signed Double Submit Cookie Method.": 
 </C><C>
-This method involves generating a unique and cryptographically secure random value, typically a UUID, when a user first authenticates. This UUID is then embedded within both the payload of the JWT/JWE and the CSRF token. To ensure the integrity and authenticity of the CSRF token, use an <L href='https://datatracker.ietf.org/doc/html/rfc2104.html'>HMAC</L>, which you combine a secret key (used for signing/encrypting the JWT/JWE) with a hash function like <L href='https://github.com/BLAKE3-team/BLAKE3'>Blake3</L> or SHA256 (make sure it's not computationally intensive but secure enough) , to produce a fixed-size hash value representing the message's integrity. The HMAC message includes two parts: a new random value for collision avoidance and the shared UUID between the JWT/JWE and the CSRF token. 
+This method involves generating a unique and cryptographically secure random value, when a user first authenticates. This value is then embedded within both the payload of the JWT/JWE and the CSRF token. To ensure the integrity and authenticity of the CSRF token, use an <L href='https://datatracker.ietf.org/doc/html/rfc2104.html'>HMAC</L>, which you combine a secret key (used for signing/encrypting the JWT/JWE) with a hash function like <L href='https://github.com/BLAKE3-team/BLAKE3'>Blake3</L> or SHA256 (make sure it's not computationally intensive but secure enough) , to produce a fixed-size hash value representing the message's integrity. The HMAC message includes two parts: a new random value for collision avoidance and the shared crypto random value between the JWT/JWE and the CSRF token. 
 </C><C>
  The idea might **Go** like this
 </C>
@@ -81,41 +81,36 @@ import (
 	"encoding/hex"
 	"fmt"
 	"os"
-
-	"github.com/google/uuid"
 )
 
 func main() {
 	// Gather the values
 
-    // Both HMAC and JWT/JWE secret key
-	secret := getSecretKey("CSRF_SECRET")       
-	uuid := generateUUID()            
-
-    // Random value for collision purposes
-	randomValue := generateAntiCollisionValue() 
+	// Both HMAC and JWT/JWE secret key
+	secret := getSecretKey("CSRF_SECRET")
+	tokenID := generateSecureRandomValue(32) // Cryptographically secure random value
+	randomValue := generateAntiCollisionValue() // Random value for collision purposes
 
 	// Create the CSRF Token
-    
-    // HMAC message payload
-	message := fmt.Sprintf("%s!%s", uuid, randomValue)    
+
+	// HMAC message payload
+	message := fmt.Sprintf("%s!%s", tokenID, randomValue)
 	// Generate the HMAC hash
-    hmacValue := generateHMAC(secret, message)
-    // Combine HMAC hash with message to generate the token
-	csrfToken := fmt.Sprintf("%s.%s", hmacValue, message) 
+	hmacValue := generateHMAC(secret, message)
+	// Combine HMAC hash with message to generate the token
+	csrfToken := fmt.Sprintf("%s.%s", hmacValue, message)
 
 	fmt.Println("CSRF Token:", csrfToken)
 }
 
-
 func getSecretKey(name string) string {
-	return os.Getenv(name) 
+	return os.Getenv(name)
 }
 
-func generateUUID() string {
-	ns := uuid.Nil
-	name := "some-arbitrary-name"
-	return uuid.NewSHA1(ns, []byte(name)).String()
+func generateSecureRandomValue(length int) string {
+	b := make([]byte, length)
+	rand.Read(b)
+	return hex.EncodeToString(b)
 }
 
 func generateAntiCollisionValue() string {
@@ -129,15 +124,16 @@ func generateHMAC(secret, message string) string {
 	h := hmac.New(sha256.New, key)
 	h.Write([]byte(message))
 	return hex.EncodeToString(h.Sum(nil))
-}`}
+}
+`}
   language="go"
   showLineNumbers={false}
 />
 <C>
-On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the UUID. Simultaneously, it decodes the HMAC-CSRF token and verifies its integrity using the stored secret key. If the integrity check fails, the server logs the event and blocks the request. If the integrity is preserved, the server extracts the UUID from the token.
+On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the crypto value. Simultaneously, it decodes the HMAC-CSRF token and verifies its integrity using the stored secret key. If the integrity check fails, the server logs the event and blocks the request. If the integrity is preserved, the server extracts the value from the token.
 </C>
 <C>
-If the UUIDs extracted from the JWT/JWE and the HMAC-CSRF token do not match, it may indicate tampering or unauthorized access. In this case, the server logs the event and blocks the request.
+If the crypt values that are extracted from the JWT/JWE and the HMAC-CSRF token do not match, it may indicate tampering or unauthorized access. In this case, the server logs the event and blocks the request.
 </C>
 <C>
 You might ask why not block immediately. The reason is that understanding the type of attack is needed. By verifying the integrity of the tokens first, you can determine what the attacker attempted to do. If the cookie exists but its integrity is compromised, it suggests the attacker managed to swap the JWT cookie but couldn't sign it with the secret key. 
