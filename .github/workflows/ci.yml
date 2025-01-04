@@ -78,9 +78,9 @@ jobs:
   #     - name: Deploy Project Artifacts to Vercel
   #       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
-  container-regisry:
+  container-registry:
     if: github.ref == 'refs/heads/main'
     needs:
       - mergeable
-    uses: ./.github/workflows/container-regisry.yml
+    uses: ./.github/workflows/container-registry.yml
     secrets: inherit
