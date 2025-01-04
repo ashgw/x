@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: Release
+  cancel-in-progress: false
+
+jobs:
+  validate-pr:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/validate-pr.yml
+    secrets: inherit
+
+  format:
+    uses: ./.github/workflows/format.yml
+    secrets: inherit
+
+  lint:
+    uses: ./.github/workflows/lint.yml
+    secrets: inherit
+
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  secrets-leaks:
+    uses: ./.github/workflows/secrets-leaks.yml
+    secrets: inherit
+
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  mergeable:
+    if: always()
+    needs:
+      - format
+      - lint
+      - test
+      - secrets-leaks
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        id: all-green
+        with:
+          jobs: ${{ toJSON(needs) }}
+
+  # preview-deployemnt:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: ./.github/actions/node-pnpm-setup
+  #     - uses: ./.github/actions/setup-env
+  #       with:
+  #         env_vars: ${{ secrets.ENV_VARS }}
+  #         ga_id: ${{ secrets.GA_ID }}
+  #     - name: Install Vercel CLI
+  #       run: npm install --global vercel@latest
+  #     - name: Pull Vercel Environment Information
+  #       run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+  #     - name: Build Project Artifacts
+  #       run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+  #     - name: Deploy Project Artifacts to Vercel
+  #       run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+  container-regisry:
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - mergeable
+    uses: ./.github/workflows/container-regisry.yml
+    secrets: inherit
