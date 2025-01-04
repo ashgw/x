@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { NewType } from 'ts-roids';
 
+export const runtime = 'edge';
+
 const BOOTSTRAP_SCRIPT =
   'https://raw.githubusercontent.com/AshGw/zshfuncs/main/funcs.zsh' as const;
 

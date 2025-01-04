@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { NewType } from 'ts-roids';
 
+export const runtime = 'edge';
+
 // TODO: KEEP TRACK OF STABLE COMMITS, DON'T JUST FETCH OFF OF MAIN
 const BOOTSTRAP_SCRIPT =
   'https://raw.githubusercontent.com/AshGw/dotfiles/main/install/bootstrap' as const;
