@@ -11,7 +11,7 @@ import { Suspense } from 'react';
 import { EmptyObject } from 'ts-roids';
 
 type RouteParams = {
-  params: Promise<{ post: string }>;
+  params: { post: string };
 };
 type NoMetadata = EmptyObject;
 
@@ -26,15 +26,14 @@ export const generateStaticParams = async () => {
 export async function generateMetadata({
   params,
 }: RouteParams): Promise<Metadata | NoMetadata> {
-  const { post } = await params;
-  const postData = await getBusinessPost(post);
-  if (!postData) {
+  const post = await getBusinessPost(params.post);
+  if (!post) {
     return {};
   }
-  const postAttrs = postData.parsedContent.attributes;
+  const postAttrs = post.parsedContent.attributes;
   const title = postAttrs.seoTitle;
   const description = postAttrs.summary;
-  const url = pub.SITE_URL_PROD + '/' + postData.filename;
+  const url = pub.SITE_URL_PROD + '/' + post.filename;
 
   const postImageWidth = 1200; // in pixels
   const postImageHeight = 630;
@@ -86,13 +85,12 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: RouteParams) {
-  const { post } = await params;
-  const postData = await getBusinessPost(post);
-  if (postData) {
+  const post = await getBusinessPost(params.post);
+  if (post) {
     return (
       <Suspense fallback={<LoadingScreen />}>
         <main className="pt-5">
-          <PostSection post={postData} forBusiness={true} />
+          <PostSection post={post} forBusiness={true} />
         </main>
         <div className="py-10"></div>
         <Footer />

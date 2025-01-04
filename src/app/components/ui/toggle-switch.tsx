@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
 
-interface ToggleSwitchProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ToggleSwitchProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onToggle'> {
   leftButtonText: string;
   rightButtonText: string;
   isToggled: boolean;
