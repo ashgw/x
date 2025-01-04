@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-# pnpm lint
-echo 'No command supplied to husky'
+pnpm lint
 # pnpm test
 # TODO: uncomment this later
