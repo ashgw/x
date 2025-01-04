@@ -1,26 +1,16 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
-      - staging
-  pull_request:
-    branches:
-      - main
-      - staging
-    types:
-      - opened
-      - synchronize
+  workflow_call:
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: write
 
 concurrency:
-  group: Release
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate-pr:
@@ -68,17 +58,9 @@ jobs:
             ```
 
   lint:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/node-pnpm-setup
-      - uses: ./.github/actions/setup-env
-        with:
-          env_vars: ${{ secrets.ENV_VARS }}
-          ga_id: ${{ secrets.GA_ID }}
-      - uses: ./.github/actions/pnpm-install
-      - name: lint
-        run: echo 'pnpm lint' # TODO: actually fix this shit ISID: #335
+    name: Linters
+    uses: ./.github/workflows/lint.yml
+    secrets: inherit
 
   test:
     runs-on: ubuntu-20.04
