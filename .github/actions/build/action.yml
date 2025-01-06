@@ -1,5 +1,12 @@
 name: 'Build'
 description: 'Run build'
+inputs:
+  env_vars:
+    description: 'Environment variables to set up in .env.local'
+    required: true
+  ga_id:
+    description: 'Google Analytics ID'
+    required: true
 runs:
   using: composite
   steps:
@@ -7,8 +14,8 @@ runs:
     - uses: ./.github/actions/install
     - uses: ./.github/actions/setup-env
       with:
-        env_vars: ${{ secrets.ENV_VARS }}
-        ga_id: ${{ secrets.GA_ID }}
+        env_vars: ${{ inputs.env_vars }}
+        ga_id: ${{ inputs.ga_id }}
     - name: build
       shell: bash
       run: pnpm build
