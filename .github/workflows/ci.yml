@@ -70,7 +70,7 @@ jobs:
     secrets: inherit
 
   deploy-prod:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.actor == 'ashgw'
+    if: github.ref == 'refs/heads/main' && github.triggering_actor == 'ashgw'
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
