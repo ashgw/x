@@ -10,6 +10,8 @@ on:
       - opened
       - synchronize
 
+  workflow_dispatch:
+
 permissions:
   contents: write
   issues: write
@@ -68,7 +70,7 @@ jobs:
     secrets: inherit
 
   deploy-prod:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.actor == 'ashgw'
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
