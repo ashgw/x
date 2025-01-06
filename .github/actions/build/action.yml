@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - uses: ./.github/actions/node-pnpm-setup
-    - uses: ./.github/actions/install
+    - uses: ./.github/actions/pnpm-install
     - uses: ./.github/actions/setup-env
       with:
         env_vars: ${{ inputs.env_vars }}
