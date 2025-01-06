@@ -16,7 +16,7 @@ jobs:
         with:
           env_vars: ${{ secrets.ENV_VARS }}
           ga_id: ${{ secrets.GA_ID }}
-      - uses: ./.github/actions/pnpm-install
+      - uses: ./.github/actions/build
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest

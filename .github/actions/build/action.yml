@@ -1,0 +1,14 @@
+name: 'Build'
+description: 'Run build'
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/node-pnpm-setup
+    - uses: ./.github/actions/install
+    - uses: ./.github/actions/setup-env
+      with:
+        env_vars: ${{ secrets.ENV_VARS }}
+        ga_id: ${{ secrets.GA_ID }}
+    - name: build
+      shell: bash
+      run: pnpm build
