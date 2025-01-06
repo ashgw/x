@@ -2,11 +2,17 @@ name: Production Deployment
 
 on:
   workflow_dispatch:
-  workflow_call:
+    inputs:
+      confirm_deploy:
+        description: 'Are you sure you want to deploy to production?'
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    if: github.event.inputs.confirm_deploy == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/node-pnpm-setup
