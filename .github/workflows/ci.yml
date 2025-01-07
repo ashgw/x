@@ -66,13 +66,13 @@ jobs:
     uses: ./.github/workflows/preview-deployment.yml
     secrets: inherit
 
+  deploy-prod:
+    needs: [mergeable]
+    uses: ./.github/workflows/production-deployment.yml
+    secrets: inherit
+
   container-registry:
     needs:
       - mergeable
     uses: ./.github/workflows/container-registry.yml
-    secrets: inherit
-
-  deploy-prod:
-    needs: [mergeable]
-    uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
