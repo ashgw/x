@@ -18,8 +18,8 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: Release
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate-pr:
@@ -72,7 +72,6 @@ jobs:
     secrets: inherit
 
   container-registry:
-    needs:
-      - mergeable
+    needs: [deploy-prod]
     uses: ./.github/workflows/container-registry.yml
     secrets: inherit
