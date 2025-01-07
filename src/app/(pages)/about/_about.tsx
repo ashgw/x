@@ -66,18 +66,16 @@ export default function Page() {
         </code>
         <Card title="">
           <p>
-            I&apos;m a poker player, and a retired chess player, anthropology
-            aficionado, cinema enthusiast, and software engineer.
+            I&apos;m a poker player, chess player, anthropology aficionado,
+            cinema enthusiast, and software engineer.
           </p>
         </Card>
         <div className="">
           <Card title="">
             <p>
-              I&apos;ve been programming since, well as far as I can remember,
-              getting professionally paid for it for the last 5 years now, where
-              I&apos;ve had the privilge to collaborate with numerous
-              individuals, teams and startups worldwide, to build, scale, and
-              lead software projects.
+              Throughout the years I&apos;ve had the privilge to collaborate
+              with numerous individuals, teams and startups worldwide, to build,
+              scale, and lead software projects.
             </p>
           </Card>
         </div>
@@ -86,12 +84,13 @@ export default function Page() {
         </div>
         <Card title="">
           <p>
-            I&apos;ve done it all, been there, done that, all the way from bare
-            metal to frontend
+            Regarding software, I&apos;ve done it all, been there, done that,
+            all the way from bare metal to frontend
             <br />
             (this site is open
             <Link href={REPO_SOURCE} name="source" /> btw). <br />
-            As of now, I mostly enjoy and work with TypeScript, Docker and AWS.
+            As of now, I mostly enjoy working with TypeScript the most, Python
+            second and then Rust.
           </p>
         </Card>
         <Card title="">

@@ -17,8 +17,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - uses: ./.github/actions/setup-env
         with:
-          env_vars: ${{ secrets.ENV_VARS }}
-          ga_id: ${{ secrets.GA_ID }}
+          ENV_VARS: ${{ secrets.ENV_VARS }}
+          GA_ID: ${{ secrets.GA_ID }}
       - uses: ./.github/actions/pnpm-install
 
       - name: Running code tests
@@ -31,8 +31,8 @@ jobs:
       - uses: ./.github/actions/node-pnpm-setup
       - uses: ./.github/actions/setup-env
         with:
-          env_vars: ${{ secrets.ENV_VARS }}
-          ga_id: ${{ secrets.GA_ID }}
+          ENV_VARS: ${{ secrets.ENV_VARS }}
+          GA_ID: ${{ secrets.GA_ID }}
       - name: Install dependencies
         run: npm install -g pnpm &&  pnpm install --frozen-lockfile
       - name: Install Playwright Browsers
