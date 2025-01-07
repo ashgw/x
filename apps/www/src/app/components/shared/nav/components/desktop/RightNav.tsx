@@ -1,4 +1,4 @@
-import { Button } from '@ashgw/ui/button';
+import { Button } from '@ashgw/ui';
 import Link from 'next/link';
 
 import { navLinks } from '../../utils/navLinks';

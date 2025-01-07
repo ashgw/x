@@ -1,4 +1,4 @@
-import { Button } from '@ashgw/ui/button';
+import { Button } from '@ashgw/ui';
 import { motion } from 'framer-motion';
 
 import { Text } from './Text';
