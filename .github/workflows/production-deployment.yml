@@ -6,26 +6,21 @@ on:
 
 jobs:
   deploy-production:
+    if: github.ref == 'refs/heads/main'
     environment: production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/node-pnpm-setup
-      - uses: ./.github/actions/setup-env
+      - uses: ./.github/actions/build
         with:
-          env_vars: ${{ secrets.ENV_VARS }}
-          ga_id: ${{ secrets.GA_ID }}
-      - uses: ./.github/actions/pnpm-install
-
+          ENV_VARS: ${{ secrets.ENV_VARS }}
+          GA_ID: ${{ secrets.GA_ID }}
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
-
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
       - name: Link to Vercel Project
         run: vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
-
       - name: Deploy to Vercel Production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

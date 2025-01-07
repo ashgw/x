@@ -23,7 +23,6 @@ concurrency:
 
 jobs:
   validate-pr:
-    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/validate-pr.yml
     secrets: inherit
 
@@ -63,14 +62,12 @@ jobs:
           jobs: ${{ toJSON(needs) }}
 
   container-registry:
-    if: github.ref == 'refs/heads/main'
     needs:
       - mergeable
     uses: ./.github/workflows/container-registry.yml
     secrets: inherit
 
   deploy-prod:
-    if: github.ref == 'refs/heads/main' && github.triggering_actor == 'ashgw'
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
