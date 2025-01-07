@@ -1,6 +1,10 @@
 on:
   workflow_dispatch:
   workflow_call:
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 permissions:
   pull-requests: write
@@ -9,6 +13,7 @@ permissions:
 
 jobs:
   preview:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
