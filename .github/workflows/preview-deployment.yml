@@ -1,6 +1,8 @@
+name: Preview Deployment
+
 on:
-  workflow_dispatch:
-  workflow_call:
+  pull_request:
+    types: [opened, synchronize]
 
 permissions:
   pull-requests: write
@@ -12,12 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/node-pnpm-setup
-      - uses: ./.github/actions/setup-env
+      - uses: ./.github/actions/build
         with:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
-      - uses: ./.github/actions/pnpm-install
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest

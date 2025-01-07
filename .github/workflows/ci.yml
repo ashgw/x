@@ -61,11 +61,6 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  deploy-preview:
-    needs: [mergeable]
-    uses: ./.github/workflows/preview-deployment.yml
-    secrets: inherit
-
   deploy-prod:
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
@@ -73,6 +68,6 @@ jobs:
 
   container-registry:
     needs:
-      - mergeable
+      - deploy-prod
     uses: ./.github/workflows/container-registry.yml
     secrets: inherit
