@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   preview:
-    if: github.event_name == 'pull_request'
+    # if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
