@@ -85,11 +85,10 @@ export default function Page() {
         <Card title="">
           <p>
             Regarding software, I&apos;ve done it all, been there, done that,
-            all the way from bare metal to frontend. Speaking of which,
+            all the way from bare metal to frontend.
             <br />
-            this site is open
-            <Link href={REPO_SOURCE} name="source" /> btw. <br />
-            <br />
+            (this site is open
+            <Link href={REPO_SOURCE} name="source" /> btw). <br />
           </p>
         </Card>
         <Card title="">
