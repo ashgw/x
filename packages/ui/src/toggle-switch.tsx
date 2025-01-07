@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 
 import { cn } from "@ashgw/ui";
 
-interface ToggleSwitchProps {
+interface ToggleSwitchProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onToggle"> {
   leftButtonText: string;
   rightButtonText: string;
   isToggled: boolean;
@@ -20,34 +21,34 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
       className,
       ...rest
     },
-    ref
+    ref,
   ) => {
     return (
       <div
         ref={ref}
         className={cn(
-          'relative flex h-11 min-w-[200px] max-w-xl rounded-full border border-white/20 backdrop-blur-md p-1 font-medium turn-bg-gradient', // Use your gradient class
-          className
+          "turn-bg-gradient relative flex h-11 min-w-[200px] max-w-xl rounded-full border border-white/20 p-1 font-medium backdrop-blur-md", // Use your gradient class
+          className,
         )}
         {...rest}
       >
         <div className="relative flex h-full w-full">
           <div
             className={cn(
-              ' bg-white/20 absolute inset-0 m-[1px] w-1/2 rounded-full transition-transform duration-300 ease-in-out',
+              "absolute inset-0 m-[1px] w-1/2 rounded-full bg-white/20 transition-transform duration-300 ease-in-out",
               {
-                'translate-x-0': !isToggled,
-                'translate-x-full': isToggled,
-              }
+                "translate-x-0": !isToggled,
+                "translate-x-full": isToggled,
+              },
             )}
           />
           <button
             className={cn(
-              'nav-link-shadow relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300',
+              "nav-link-shadow relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
               {
-                'text-white': !isToggled,
-                'text-gray-300': isToggled,
-              }
+                "text-white": !isToggled,
+                "text-gray-300": isToggled,
+              },
             )}
             onClick={() => onToggle(false)}
           >
@@ -55,11 +56,11 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
           </button>
           <button
             className={cn(
-              'nav-link-shadow relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300',
+              "nav-link-shadow relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
               {
-                'text-white': isToggled,
-                'text-gray-300': !isToggled,
-              }
+                "text-white": isToggled,
+                "text-gray-300": !isToggled,
+              },
             )}
             onClick={() => onToggle(true)}
           >
@@ -68,7 +69,7 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
-ToggleSwitch.displayName = 'ToggleSwitch';
+ToggleSwitch.displayName = "ToggleSwitch";

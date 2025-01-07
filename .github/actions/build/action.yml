@@ -1,0 +1,21 @@
+name: 'Build'
+description: 'Run build'
+inputs:
+  ENV_VARS:
+    description: 'Environment variables to set up in .env.local'
+    required: true
+  GA_ID:
+    description: 'Google Analytics ID'
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/node-pnpm-setup
+    - uses: ./.github/actions/pnpm-install
+    - uses: ./.github/actions/setup-env
+      with:
+        ENV_VARS: ${{ inputs.ENV_VARS }}
+        GA_ID: ${{ inputs.GA_ID }}
+    - name: build
+      shell: bash
+      run: pnpm build

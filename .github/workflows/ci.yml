@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: Release
+  cancel-in-progress: false
+
+jobs:
+  validate-pr:
+    uses: ./.github/workflows/validate-pr.yml
+    secrets: inherit
+
+  format:
+    uses: ./.github/workflows/format.yml
+    secrets: inherit
+
+  lint:
+    uses: ./.github/workflows/lint.yml
+    secrets: inherit
+
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  secrets-leaks:
+    uses: ./.github/workflows/secrets-leaks.yml
+    secrets: inherit
+
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  mergeable:
+    if: always()
+    needs:
+      - format
+      - lint
+      - test
+      - secrets-leaks
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        id: all-green
+        with:
+          jobs: ${{ toJSON(needs) }}
+
+  deploy-preview:
+    needs: [mergeable]
+    uses: ./.github/workflows/preview-deployment.yml
+    secrets: inherit
+
+  deploy-prod:
+    needs: [mergeable]
+    uses: ./.github/workflows/production-deployment.yml
+    secrets: inherit
+
+  container-registry:
+    needs:
+      - mergeable
+    uses: ./.github/workflows/container-registry.yml
+    secrets: inherit
