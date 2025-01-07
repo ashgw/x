@@ -1,5 +1,3 @@
-name: Preview Deployment
-
 on:
   pull_request:
     types: [opened, synchronize]
@@ -10,7 +8,7 @@ permissions:
   issues: write
 
 jobs:
-  preview:
+  preview-deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
