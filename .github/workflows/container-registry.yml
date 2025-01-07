@@ -13,8 +13,8 @@ jobs:
       - uses: ./.github/actions/node-pnpm-setup
       - uses: ./.github/actions/setup-env
         with:
-          env_vars: ${{ secrets.ENV_VARS }}
-          ga_id: ${{ secrets.GA_ID }}
+          ENV_VARS: ${{ secrets.ENV_VARS }}
+          GA_ID: ${{ secrets.GA_ID }}
       - name: Version extraction
         id: get_version
         run: echo "::set-output name=version::$(node -p "require('./package.json').version")"

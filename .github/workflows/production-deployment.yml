@@ -13,8 +13,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/build
         with:
-          env_vars: ${{ secrets.ENV_VARS }}
-          ga_id: ${{ secrets.GA_ID }}
+          ENV_VARS: ${{ secrets.ENV_VARS }}
+          GA_ID: ${{ secrets.GA_ID }}
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
