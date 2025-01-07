@@ -85,12 +85,10 @@ export default function Page() {
         <Card title="">
           <p>
             Regarding software, I&apos;ve done it all, been there, done that,
-            all the way from bare metal to frontend
+            all the way from bare metal to frontend. Speaking of which
             <br />
             (this site is open
             <Link href={REPO_SOURCE} name="source" /> btw). <br />
-            As of now, I mostly enjoy working with TypeScript the most, Python
-            second and then Rust.
           </p>
         </Card>
         <Card title="">
