@@ -1,3 +1,4 @@
+name: CI / Preview-deployemnt
 on:
   pull_request:
     types: [opened, synchronize]
