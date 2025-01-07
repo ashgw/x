@@ -9,7 +9,6 @@ import { Providers } from './components/providers';
 import { NavBar } from './components/shared/nav';
 import './styles/globals.css';
 
-// TOOD: refactor this here
 const font = Atkinson_Hyperlegible({
   subsets: ['latin-ext'],
   weight: ['400', '700'],
