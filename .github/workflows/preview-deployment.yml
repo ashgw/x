@@ -1,7 +1,7 @@
-name: CI / Preview-deployemnt
+name: CI / Preview-deployment
+
 on:
-  pull_request:
-    types: [opened, synchronize]
+  workflow_call:
 
 permissions:
   pull-requests: write
@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   preview-deployment:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
