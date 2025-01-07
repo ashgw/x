@@ -12,6 +12,9 @@ catalogs:
     jest:
       specifier: ^29.6.2
       version: 29.7.0
+    next:
+      specifier: ^14.2.3
+      version: 14.2.23
     prettier:
       specifier: ^3.3.3
       version: 3.3.3
@@ -32,6 +35,9 @@ catalogs:
       specifier: ^18.3.1
       version: 18.3.1
     react:
+      specifier: 18.3.1
+      version: 18.3.1
+    react-dom:
       specifier: 18.3.1
       version: 18.3.1
 
@@ -78,6 +84,9 @@ importers:
 
   apps/www:
     dependencies:
+      '@ashgw/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@gsap/react':
         specifier: ^2.1.0
         version: 2.1.1
@@ -121,7 +130,7 @@ importers:
         specifier: ^0.309.0
         version: 0.309.0(react@18.3.1)
       next:
-        specifier: ^14.2.3
+        specifier: 'catalog:'
         version: 14.2.23(@babel/core@7.25.9)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.80.7)
       next-mdx-remote:
         specifier: ^4.4.1
@@ -130,10 +139,10 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(next@14.2.23(@babel/core@7.25.9)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.80.7))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
-        specifier: ^18.2.0
+        specifier: catalog:react18
         version: 18.3.1
       react-dom:
-        specifier: ^18.2.0
+        specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
       react-syntax-highlighter:
         specifier: ^15.5.0

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cn } from "@ashgw/ui";
+import { cn } from "./cn";
 
 interface ToggleSwitchProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onToggle"> {
