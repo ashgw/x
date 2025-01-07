@@ -18,8 +18,8 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: Release
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate-pr:
