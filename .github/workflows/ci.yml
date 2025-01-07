@@ -67,7 +67,6 @@ jobs:
     secrets: inherit
 
   container-registry:
-    needs:
-      - deploy-prod
+    needs: [mergeable]
     uses: ./.github/workflows/container-registry.yml
     secrets: inherit
