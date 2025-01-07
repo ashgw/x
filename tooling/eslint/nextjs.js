@@ -20,13 +20,13 @@ export default [
       "@next/next/no-page-custom-font": "error", // Prevent custom fonts in pages
       "@next/next/no-sync-scripts": "error", // Prevent synchronous scripts
       "@next/next/no-unwanted-polyfillio": "error", // Prevent unnecessary polyfills
-      
+
       // Performance rules
       "@next/next/no-css-tags": "error", // Force CSS imports
       "@next/next/inline-script-id": "error", // Require IDs for inline scripts
       "@next/next/no-head-import-in-document": "error", // Prevent head imports in _document
       "@next/next/no-document-import-in-page": "error", // Prevent document imports in pages
-      
+
       // Security rules
       "@next/next/no-script-component-in-head": "error", // Prevent Script components in Head
       "@next/next/no-styled-jsx-in-document": "error", // Prevent styled-jsx in _document
