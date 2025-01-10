@@ -1,8 +1,8 @@
-import { serverConfig } from '@ashgw/jest-config/server';
+import { nextJsConfig } from '@ashgw/jest-config/nextjs';
 import type { Config } from 'jest';
 
 const config: Config = {
-  ...serverConfig,
+  ...nextJsConfig,
   preset: 'ts-jest',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
