@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@ashgw/ui';
 import { motion } from 'framer-motion';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import * as loading from 'loading-points';
 
 export function Loading() {
