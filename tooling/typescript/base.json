@@ -25,7 +25,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /** Transpile using Bundler (not tsc) */
-    "module": "Preserve",
+    "module": "ES2022",
     "moduleResolution": "Bundler",
     "noEmit": true,
     /** Other */

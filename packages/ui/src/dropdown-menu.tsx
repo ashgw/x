@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable */
 // as always lack of types
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";

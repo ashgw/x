@@ -12,6 +12,7 @@ export default [
       ...nextPlugin.configs["core-web-vitals"].rules,
       // TypeError: context.getAncestors is not a function
       "@next/next/no-duplicate-head": "off",
+      "@typescript-eslint/consistent-type-imports": "error",
 
       // Strict rules for Next.js best practices
       "@next/next/no-img-element": "error", // Force use of next/image

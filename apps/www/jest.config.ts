@@ -1,5 +1,5 @@
 import { nextJsConfig } from '@ashgw/jest-config/nextjs';
-import type { Config } from 'jest';
+import { Config } from 'jest';
 
 const config: Config = {
   ...nextJsConfig,
