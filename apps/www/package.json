@@ -10,7 +10,7 @@
     "hooks": "husky install",
     "dev": "next dev",
     "start": "next start",
-    "test": "vitest --config=vitest.config.ts; cd test/e2e && npx playwright test",
+    "test": "vitest run --config=vitest.config.ts; cd test/e2e && npx playwright test",
     "lint": "pnpm run lint:ts &&  pnpm run format ",
     "lint-all": "pnpm run lint:ts && pnpm run lint:md && pnpm run format && pnpm run lint:knip && pnpm run lint:spelling",
     "lint:ts": "tsc --noEmit; eslint .",
