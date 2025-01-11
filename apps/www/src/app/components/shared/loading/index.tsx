@@ -1,10 +1,11 @@
 'use client';
 
-import * as loading from 'loading-points';
+import LoadingPoints from 'loading-points';
+import type { Pixel, RGB } from 'loading-points';
 
 export function Loading() {
-  const glowColor = 'rgb(155, 46, 199)' as loading.RGB;
-  const circleSize = '8px' as loading.Pixel;
+  const glowColor = 'rgb(155, 46, 199)' as RGB;
+  const circleSize = '8px' as Pixel;
 
-  return <loading.default glowColor={glowColor} circleSize={circleSize} />;
+  return <LoadingPoints glowColor={glowColor} circleSize={circleSize} />;
 }
