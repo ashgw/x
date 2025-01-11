@@ -18,6 +18,7 @@
   "packageManager": "pnpm@9.12.2",
   "scripts": {
     "test": "turbo run test",
+    "test:unit-integration": "turbo run test:unit-integration",
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",

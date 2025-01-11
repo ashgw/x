@@ -22,7 +22,7 @@ jobs:
       - uses: ./.github/actions/pnpm-install
 
       - name: Running code tests
-        run: pnpm test
+        run: pnpm test:unit-integration
   e2e:
     timeout-minutes: 60
     runs-on: ubuntu-latest
