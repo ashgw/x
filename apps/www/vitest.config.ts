@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -7,5 +8,11 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
     },
     exclude: ['**/e2e/**'],
+  },
+  resolve: {
+    alias: {
+      // @see https://stackoverflow.com/questions/73022020/vitest-not-recognizing-absolute-import
+      '~/lib': path.resolve(__dirname, './src/lib/'),
+    },
   },
 });
