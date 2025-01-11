@@ -16,7 +16,9 @@ catalog:
   next: ^14.2.3
   "@vitest/ui": ^2.1.8
   vitest: "2.1.8"
-  vercel: "^39.2.6"
+  # There's a bug with the latest version as of 01.25
+  # @see https://github.com/vercel/vercel/issues/11097
+  vercel: "33.2.0"
 
 catalogs:
   react18:
