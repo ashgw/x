@@ -61,19 +61,30 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
+  www-preview-deployemnt:
+    needs: [mergeable]
+    uses: ./.github/workflows/www-preview-deployment.yml
+    secrets: inherit
+
+  blog-preview-deployemnt:
+    needs: [mergeable]
+    uses: ./.github/workflows/blog-preview-deployment.yml
+    secrets: inherit
+
+  # This is merely used as a trigger here, so I can manually dispatch all prod deployments
   production-deployemnt:
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
 
-  www-preview-deployemnt:
-    needs: [production-deployemnt]
-    uses: ./.github/workflows/www-preview-deployment.yml
-    secrets: inherit
-
   www-production-deployemnt:
     needs: [production-deployemnt]
     uses: ./.github/workflows/www-production-deployment.yml
+    secrets: inherit
+
+  blog-production-deployemnt:
+    needs: [production-deployemnt]
+    uses: ./.github/workflows/blog-production-deployment.yml
     secrets: inherit
 
   # add this back when you deploy the api

@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   workflow_call:
 
-# This is merely used as a trigger here so I can manually dispatch all prod deployments
 jobs:
   deploy-production:
     if: github.ref == 'refs/heads/main'

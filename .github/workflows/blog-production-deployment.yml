@@ -1,11 +1,11 @@
-name: WWW Production Deployment
+name: Blog Production Deployment
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  www-production-deployemnt:
+  blog-production-deployemnt:
     if: github.ref == 'refs/heads/main'
     environment: production
     runs-on: ubuntu-latest
@@ -18,13 +18,13 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
-        working-directory: apps/www
+        working-directory: apps/blog
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Link to Vercel Project
-        working-directory: apps/www
+        working-directory: apps/blog
         run: vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy to Vercel Production
-        working-directory: apps/www
+        working-directory: apps/blog
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
