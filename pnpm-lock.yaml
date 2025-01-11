@@ -133,8 +133,8 @@ importers:
         specifier: ^3.12.5
         version: 3.12.5
       loading-points:
-        specifier: ^1.0.0
-        version: 1.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.1.0
+        version: 1.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
         specifier: ^0.309.0
         version: 0.309.0(react@18.3.1)
@@ -4845,8 +4845,8 @@ packages:
     resolution: {integrity: sha512-3R/1M+yS3j5ou80Me59j7F9IMs4PXs3VqRrm0TU3AbKPxlmpoY1TNscJV/oGJXo8qCatFGTfDbY6W6ipGOYXfg==}
     engines: {node: '>=6.11.5'}
 
-  loading-points@1.0.2:
-    resolution: {integrity: sha512-heqSwlPMyfzwXvTzbalg8OKPfAMfkwPyL8zeg73a6/9+YP/Le9pi0Oc7M9DiVs5wcvG+NhHp998X1aZFW+HuUw==}
+  loading-points@1.1.0:
+    resolution: {integrity: sha512-cA7VZhyywj7zaOCGxUlNhykiqwaZPD70ONDauzmuAXLS568/094ZQJJR+jjCdFtnUvRmLDOZBPDZIHny96YTOQ==}
     engines: {node: '>=18'}
     peerDependencies:
       react: '>=16'
@@ -12354,7 +12354,7 @@ snapshots:
 
   loader-runner@4.3.0: {}
 
-  loading-points@1.0.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  loading-points@1.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
       styled-components: 6.1.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
