@@ -1,11 +1,16 @@
-import { execSync } from "node:child_process";
+/*
+  @see https://cwe.mitre.org/data/definitions/78 why sawn
+*/
+
+import { spawn } from "node:child_process";
 import type { PlopTypes } from "@turbo/gen";
 
+type Dictionary = Record<string, string>;
 interface PackageJson {
   name: string;
-  scripts: Record<string, string>;
-  dependencies: Record<string, string>;
-  devDependencies: Record<string, string>;
+  scripts: Dictionary;
+  dependencies: Dictionary;
+  devDependencies: Dictionary;
 }
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
@@ -82,10 +87,25 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           // execSync("pnpm dlx sherif@latest --fix", {
           //   stdio: "inherit",
           // });
-          execSync("pnpm i", { stdio: "inherit" });
-          execSync(
-            `pnpm prettier --write packages/${answers.name}/** --list-different`,
+          const pnpmInstall = spawn("pnpm", ["i"], { stdio: "inherit" });
+          pnpmInstall.on("error", (error) => {
+            console.error(`Failed to execute pnpm install: ${error.message}`);
+          });
+
+          const pnpmPrettier = spawn(
+            "pnpm",
+            [
+              "prettier",
+              "--write",
+              `packages/${answers.name}/**`,
+              "--list-different",
+            ],
+            { stdio: "inherit" },
           );
+          pnpmPrettier.on("error", (error) => {
+            console.error(`Failed to execute pnpm prettier: ${error.message}`);
+          });
+
           return "Package scaffolded";
         }
         return "Package not scaffolded";
