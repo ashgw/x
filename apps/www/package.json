@@ -11,7 +11,7 @@
     "dev": "next dev",
     "start": "next start",
     "test": "vitest run --config=vitest.config.ts; cd test/e2e && npx playwright test",
-    "lint": "pnpm run lint:ts &&  pnpm run format ",
+    "lint": "pnpm run lint:ts ",
     "lint-all": "pnpm run lint:ts && pnpm run lint:md && pnpm run format && pnpm run lint:knip && pnpm run lint:spelling",
     "lint:ts": "tsc --noEmit; eslint .",
     "lint:knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
