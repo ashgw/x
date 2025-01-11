@@ -8,6 +8,7 @@
   "devDependencies": {
     "vitest": "catalog:",
     "@vitest/ui": "catalog:",
-    "@ashgw/tsconfig": "workspace:*"
+    "@ashgw/tsconfig": "workspace:*",
+    "typescript": "catalog:"
   }
 }
