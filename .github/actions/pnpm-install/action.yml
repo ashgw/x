@@ -1,4 +1,4 @@
-name: "PNPM install"
+name: "pnpm install"
 description: "Run pnpm install with node_modules linker and cache enabled"
 inputs:
   node_version:
