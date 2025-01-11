@@ -1,6 +1,6 @@
+import '@ashgw/css/global';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
-import { Atkinson_Hyperlegible } from 'next/font/google';
 import localFont from 'next/font/local';
 import type { PropsWithChildren } from 'react';
 
@@ -8,7 +8,6 @@ import { env } from '../env';
 import { NamesService } from '../lib/services/Names.service';
 import { Providers } from './components/providers';
 import { NavBar } from './components/shared/nav';
-import './styles/globals.css';
 
 const atkinsonHyperlegible = localFont({
   src: [

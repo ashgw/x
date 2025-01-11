@@ -93,6 +93,9 @@ importers:
 
   apps/www:
     dependencies:
+      '@ashgw/css':
+        specifier: workspace:*
+        version: link:../../packages/css
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -256,6 +259,8 @@ importers:
       webpack:
         specifier: ^5.96.1
         version: 5.96.1
+
+  packages/css: {}
 
   packages/ui:
     dependencies:
