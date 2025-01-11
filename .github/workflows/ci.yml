@@ -61,17 +61,23 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  deploy-preview:
-    needs: [mergeable]
-    uses: ./.github/workflows/preview-deployment.yml
-    secrets: inherit
-
-  deploy-prod:
+  production-deployemnt:
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
 
-  container-registry:
-    needs: [deploy-prod]
-    uses: ./.github/workflows/container-registry.yml
+  www-preview-deployemnt:
+    needs: [production-deployemnt]
+    uses: ./.github/workflows/www-preview-deployment.yml
     secrets: inherit
+
+  www-production-deployemnt:
+    needs: [production-deployemnt]
+    uses: ./.github/workflows/www-production-deployment.yml
+    secrets: inherit
+
+  # add this back when you deploy the api
+  # container-registry:
+  #   needs: [production-deployemnt]
+  #   uses: ./.github/workflows/container-registry.yml
+  #   secrets: inherit
