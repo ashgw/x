@@ -10,7 +10,7 @@
     "hooks": "husky install",
     "dev": "next dev",
     "start": "next start",
-    "test": "npx jest --coverage --config=jest.config.ts; cd test/e2e && npx playwright test",
+    "test": "vitest --config=vitest.config.ts; cd test/e2e && npx playwright test",
     "lint": "pnpm run lint:ts &&  pnpm run format ",
     "lint-all": "pnpm run lint:ts && pnpm run lint:md && pnpm run format && pnpm run lint:knip && pnpm run lint:spelling",
     "lint:ts": "tsc --noEmit; eslint .",
@@ -24,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@ashgw/vitest-config": "workspace:*",
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/jest-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",

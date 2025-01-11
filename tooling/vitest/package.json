@@ -1,1 +1,13 @@
- 
+{
+  "name": "@ashgw/vitest-config",
+  "files": [
+    "base.ts"
+  ],
+  "private": true,
+  "version": "0.1.0",
+  "devDependencies": {
+    "vitest": "catalog:",
+    "@vitest/ui": "catalog:",
+    "@ashgw/tsconfig": "workspace:*"
+  }
+}
