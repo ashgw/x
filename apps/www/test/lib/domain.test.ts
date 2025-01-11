@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { NamesService } from '~/lib/services/Names.service';
 
 const getSiteName = NamesService.getSiteName.bind(NamesService);
