@@ -9,29 +9,24 @@ permissions:
   issues: write
 
 jobs:
-  blog-preview-deployment:
+  deploy:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BLOG_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/build
+      - uses: ./.github/actions/build # remove this joint here when refactoring to one build, make it just install stuff, or better yet, make it either with vercel or normal
         with:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Link to Vercel Project
-        working-directory: apps/blog
-        run: vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build with vercel
+        run: pnpm --filter @ashgw/blog build:vercel
       - name: Deploy Preview
-        working-directory: apps/blog
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BLOG_PROJECT_ID }}
         run: |
-          PREVIEW_URL=$(vercel deploy --token=$VERCEL_TOKEN --yes)
+          PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview)
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
       - name: Comment Preview URL
         uses: actions/github-script@v6
