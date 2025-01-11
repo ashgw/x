@@ -23,13 +23,11 @@ jobs:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
       - name: Build with vercel
-        working-directory: apps/www
-        run: pnpm --filter @ashgw/www build:vercel
-
+        run: cd apps/www && pnpm --filter @ashgw/www build:vercel
       - name: Deploy Preview
-        working-directory: apps/www
         run: |
-          PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview)
+          cd apps/www && \
+          PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview) && \
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
       - name: Comment Preview URL
         uses: actions/github-script@v6
