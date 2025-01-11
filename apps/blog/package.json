@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "build:vercel": "vercel build --yes",
+    "deploy:vercel-preview": "vercel deploy --prebuilt",
+    "deploy:vercel-prod": "vercel deploy --prebuilt",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
     "postbuild": "echo 'next-sitemap'",
     "dev": "next dev",
