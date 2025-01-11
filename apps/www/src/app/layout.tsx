@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Atkinson_Hyperlegible } from 'next/font/google';
+import localFont from 'next/font/local';
 import type { PropsWithChildren } from 'react';
 
 import { env } from '../env';
@@ -9,9 +10,31 @@ import { Providers } from './components/providers';
 import { NavBar } from './components/shared/nav';
 import './styles/globals.css';
 
-const font = Atkinson_Hyperlegible({
-  subsets: ['latin-ext'],
-  weight: ['400', '700'],
+const atkinsonHyperlegible = localFont({
+  src: [
+    {
+      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf',
+      weight: '700',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-atkinson-hyperlegible', // a CSS variable for use in your styles
+  display: 'swap', // `swap` for better performance
 });
 
 const title = 'Ashref Gwader';
@@ -76,7 +99,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={atkinsonHyperlegible.className}>
         <NavBar />
         <Providers>{children}</Providers>
       </body>
