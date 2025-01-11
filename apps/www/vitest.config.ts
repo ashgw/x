@@ -1,4 +1,4 @@
-import { baseConfig } from '@ashgw/vitest-config/base';
+import { baseConfig } from '@ashgw/vitest-config';
 import path from 'path';
 import { defineProject, mergeConfig } from 'vitest/config';
 
