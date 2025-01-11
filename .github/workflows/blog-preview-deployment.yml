@@ -25,10 +25,9 @@ jobs:
       - name: Build with vercel
         run: cd apps/blog && pnpm --filter @ashgw/blog build:vercel --token=$VERCEL_TOKEN
       - name: Deploy Preview
-        run: |
-          cd apps/blog && \
-          PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview --token=$VERCEL_TOKEN) && \
-          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+        run: cd apps/blog && PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview --token=$VERCEL_TOKEN)
+      - name: Update GH env
+        run: echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
       - name: Comment Preview URL
         uses: actions/github-script@v6
         env:
