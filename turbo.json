@@ -13,6 +13,10 @@
       "outputs": ["coverage/**"],
       "cache": true
     },
+    "test:e2e": {
+      "outputs": ["coverage/**"],
+      "cache": true
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".cache/tsbuildinfo.json", "dist/**"]

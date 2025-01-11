@@ -23,6 +23,7 @@ jobs:
 
       - name: Running code tests
         run: pnpm test:unit-integration
+
   e2e:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -36,9 +37,9 @@ jobs:
       - name: Install dependencies
         run: npm install -g pnpm &&  pnpm install --frozen-lockfile
       - name: Install Playwright Browsers
-        run: npx playwright install # issue not resolved with pnpm
+        run: npx playwright install # issue not resolved with pnpm as of date 04.24
       - name: Run Playwright tests
-        run: cd test/e2e &&  npx playwright test
+        run: pnpm test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:

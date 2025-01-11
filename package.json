@@ -19,6 +19,7 @@
   "scripts": {
     "test": "turbo run test",
     "test:unit-integration": "turbo run test:unit-integration",
+    "test:e2e": "turbo run test:e2e",
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
