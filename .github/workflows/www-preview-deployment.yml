@@ -22,18 +22,12 @@ jobs:
         with:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
-      - name: testing envs, REMOVE THIS SHIT
-        run: |
-          echo $VERCEL_TOKEN                                       
-          echo $VERCEL_PROJECT_ID
-          echo $VERCEL_ORG_ID
-
       - name: Build with vercel
         run: cd apps/www && pnpm --filter @ashgw/www build:vercel --token=$VERCEL_TOKEN
       - name: Deploy Preview
         run: |
           cd apps/www && \
-          PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview) && \
+          PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview --token=$VERCEL_TOKEN) && \
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
       - name: Comment Preview URL
         uses: actions/github-script@v6
