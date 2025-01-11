@@ -16,6 +16,7 @@ catalog:
   next: ^14.2.3
   "@vitest/ui": ^2.1.8
   vitest: "2.1.8"
+  vercel: "^39.2.6"
 
 catalogs:
   react18:
