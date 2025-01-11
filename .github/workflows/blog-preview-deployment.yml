@@ -23,8 +23,10 @@ jobs:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
       - name: Build with vercel
+        working-directory: apps/blog
         run: pnpm --filter @ashgw/blog build:vercel
       - name: Deploy Preview
+        working-directory: apps/blog
         run: |
           PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview)
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
