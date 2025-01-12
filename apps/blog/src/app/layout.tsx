@@ -103,7 +103,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <NavBar />
         <Providers>{children}</Providers>
       </body>
-      <GoogleAnalytics gaId={env.GA_ID as string} /> {/* TODO: fix this  */}
+      <GoogleAnalytics gaId={env.GA_ID as string} />
     </html>
   );
 }
