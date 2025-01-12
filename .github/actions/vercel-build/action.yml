@@ -1,0 +1,41 @@
+name: Vercel Build
+
+description: Build to deploy to vercel
+
+inputs:
+  project_name:
+    description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
+    required: true
+  VERCEL_TOKEN:
+    description: "Vercel token for authentication"
+    required: true
+  VERCEL_ORG_ID:
+    description: "Vercel organization ID"
+    required: true
+  VERCEL_PROJECT_ID:
+    description: "Vercel project ID"
+    required: true
+  ENV_VARS:
+    description: "env vars"
+    required: true
+  GA_ID:
+    description: "Google Analytics"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/pnpm-install
+    - uses: ./.github/actions/setup-env
+      with:
+        ENV_VARS: ${{ inputs.ENV_VARS }}
+        GA_ID: ${{ inputs.GA_ID }}
+    - name: Build for Vercel
+      shell: bash
+      env:
+        VERCEL_TOKEN: ${{ inputs.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
+      run: |
+        cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel --token=$VERCEL_TOKEN
