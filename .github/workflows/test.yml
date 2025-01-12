@@ -12,15 +12,13 @@ jobs:
         node-version: [18, 19, 20]
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/pnpm-install
         with:
           node-version: ${{ matrix.node-version }}
       - uses: ./.github/actions/setup-env
         with:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
-      - uses: ./.github/actions/pnpm-install
-
       - name: Running code tests
         run: pnpm test:unit-integration
 
@@ -29,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/node-pnpm-setup
+      - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
           ENV_VARS: ${{ secrets.ENV_VARS }}
