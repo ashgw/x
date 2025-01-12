@@ -1,0 +1,17 @@
+{
+  "name": "@ashgw/env",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "private": true,
+  "version": "0.1.0",
+  "dependencies": {
+    "@ashgw/ts-env": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ashgw/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
