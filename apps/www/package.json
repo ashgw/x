@@ -62,6 +62,8 @@
   "dependencies": {
     "@ashgw/css": "workspace:*",
     "@ashgw/ui": "workspace:*",
+    "@ashgw/ts-env": "catalog:",
+    "zod": "catalog:",
     "@gsap/react": "^2.1.0",
     "@next/third-parties": "^15.0.2",
     "@nextui-org/react": "^2.2.9",
