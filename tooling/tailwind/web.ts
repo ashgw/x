@@ -1,11 +1,11 @@
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 
-import base from "./base";
+import { baseConfig } from "./base";
 
-export default {
-  content: base.content,
-  presets: [base],
+export const webConfig = {
+  content: baseConfig.content,
+  presets: [baseConfig],
   theme: {
     container: {
       center: true,
