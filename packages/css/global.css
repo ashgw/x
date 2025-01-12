@@ -68,11 +68,12 @@
   }
   html,
   body {
+    font-family: "Zapf Dingbats";
     scroll-behavior: smooth;
     min-height: 100vh;
   }
 
   body {
-    @apply gradient-bg text-xl text-foreground;
+    @apply gradient-bg text-foreground text-xl;
   }
 }
