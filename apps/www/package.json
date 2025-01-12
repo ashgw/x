@@ -32,6 +32,7 @@
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tailwind-config": "workspace:*",
+    "@ashgw/next-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@ashgw/playwright-config": "workspace:*",

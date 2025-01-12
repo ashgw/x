@@ -362,6 +362,9 @@ importers:
       '@ashgw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
+      '@ashgw/next-config':
+        specifier: workspace:*
+        version: link:../../tooling/next
       '@ashgw/playwright-config':
         specifier: workspace:*
         version: link:../../tooling/playwright
@@ -555,6 +558,12 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
+
+  tooling/next:
+    devDependencies:
+      next:
+        specifier: 'catalog:'
+        version: 14.2.23(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.80.7)
 
   tooling/playwright:
     devDependencies:
