@@ -12,33 +12,17 @@ jobs:
   deploy:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BLOG_PROJECT_ID }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/build # remove this joint here when refactoring to one build, make it just install stuff, or better yet, make it either with vercel or normal
+      - uses: ./.github/actions/vercel-build
         with:
           ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
-      - name: Build with vercel
-        run: cd apps/blog && pnpm --filter @ashgw/blog build:vercel --token=$VERCEL_TOKEN
-      - name: Deploy Preview
-        run: |
-          cd apps/blog
-          PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
-          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
-      - name: Comment Preview URL
-        uses: actions/github-script@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          project_name: blog
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BLOG_PROJECT_ID }}
+      - uses: ./.github/actions/vercel-deploy
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🚀 Blog Preview deployment is ready at: ${process.env.PREVIEW_URL}`
-            })
+          project_name: blog
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
