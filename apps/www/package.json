@@ -47,7 +47,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@vitest/ui": "catalog:",
     "autoprefixer": "^10.0.1",
-    "dotenv": "^16.4.5",
+    "dotenv": "catalog:",
     "eslint": "catalog:",
     "jiti": "^2.3.3",
     "prettier": "catalog:",
