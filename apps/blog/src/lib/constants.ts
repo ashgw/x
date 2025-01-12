@@ -7,7 +7,6 @@ export const BLOG_URI = "/blog";
 export const BLOG_TAG_URI = "/blog/tag";
 export const BLOG_API_URI = "/api/blogs";
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* TOFIX */
 export const SITE_URL =
   env.NODE_ENV === "development"
     ? env.NEXT_PUBLIC_WWW_DEVELOPMENT_URL
@@ -41,7 +40,7 @@ export const LINKS = {
   pypi: "https://pypi.org/user/AshGw/",
   keyBase: "https://keybase.io/ashgw",
   gitHub: "https://github.com/ashgw",
-  x: "https://x.com/ashgw", // TODO: change this
-  reddit: "https://www.reddit.com/ashgw", // TODO: change this
-  codePen: "https://codepen.io/ashgw", // TODO: change this
+  x: "https://x.com/ashgw",
+  reddit: "https://www.reddit.com/ashgw",
+  codePen: "https://codepen.io/ashgw",
 } as const;

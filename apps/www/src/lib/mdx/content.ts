@@ -7,9 +7,6 @@ import path from 'path';
 import { BLOG_CONTENT_PATH, BUSINESS_CONTENT_PATH } from '../constants';
 import type { MDXData, PostData } from './mdx';
 
-// TODO: fix this
-// import type { MaybeUndefined, Optional } from 'ts-roids';
-
 type Optional<T> = T | null;
 type MaybeUndefined<T> = T | undefined;
 

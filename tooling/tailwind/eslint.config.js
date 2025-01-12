@@ -1,4 +1,4 @@
-// FIXME: This kinda stinks...
+// maybe use @rushstack?
 /// <reference types="../../tooling/eslint/types.d.ts" />
 
 import baseConfig from "@ashgw/eslint-config/base";

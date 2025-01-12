@@ -1,5 +1,3 @@
-export type MDXContent = string;
-
 export interface MetaDataAttributes {
   title: string;
   seoTitle: string;
@@ -14,7 +12,7 @@ export interface MetaDataAttributes {
 
 export interface MDXData {
   attributes: MetaDataAttributes;
-  body: MDXContent;
+  body: string;
   bodyBegin: number;
   frontMatter: string;
 }

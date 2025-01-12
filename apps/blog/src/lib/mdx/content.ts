@@ -7,9 +7,6 @@ import fm from "front-matter";
 import type { MDXData, PostData } from "./mdx";
 import { BLOG_CONTENT_PATH, BUSINESS_CONTENT_PATH } from "../constants";
 
-// TODO: fix this
-// import type { MaybeUndefined, Optional } from 'ts-roids';
-
 type Optional<T> = T | null;
 type MaybeUndefined<T> = T | undefined;
 

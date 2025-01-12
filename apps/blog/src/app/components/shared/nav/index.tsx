@@ -15,13 +15,13 @@ export function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({
     menuId: "nav-menu",
   });
-  const [isOverlayVisible, setOverlayVisible] = useState(false);
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
   useEffect(() => {
     if (isOpened) {
-      setOverlayVisible(true);
+      setIsOverlayVisible(true);
     } else {
-      setOverlayVisible(false);
+      setIsOverlayVisible(false);
     }
   }, [isOpened]);
 
