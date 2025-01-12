@@ -1,0 +1,44 @@
+name: CI / WWW preview deployment
+
+on:
+  workflow_call:
+
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
+jobs:
+  deploy:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build # remove this joint here when refactoring to one build, make it just install stuff, or better yet, make it either with vercel or normal
+        with:
+          ENV_VARS: ${{ secrets.ENV_VARS }}
+          GA_ID: ${{ secrets.GA_ID }}
+      - name: Build with vercel
+        run: cd apps/www && pnpm --filter @ashgw/www build:vercel --token=$VERCEL_TOKEN
+      - name: Deploy Preview
+        run: |
+          cd apps/www
+          PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
+          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+      - name: Comment Preview URL
+        uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 WWW Preview deployment is ready at: ${process.env.PREVIEW_URL}`
+            })

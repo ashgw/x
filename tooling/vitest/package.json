@@ -1,0 +1,14 @@
+{
+  "name": "@ashgw/vitest-config",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "private": true,
+  "version": "0.1.0",
+  "devDependencies": {
+    "vitest": "catalog:",
+    "@vitest/ui": "catalog:",
+    "@ashgw/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
