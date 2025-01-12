@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
 import { baseConfig } from "./base";
@@ -70,5 +71,5 @@ export const webConfig = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [animate, typography],
 } satisfies Config;

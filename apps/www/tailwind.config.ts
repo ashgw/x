@@ -5,8 +5,6 @@ import type { Config } from 'tailwindcss';
 const config = {
   ...webConfig,
   plugins: [
-    require('tailwindcss-animate'),
-    require('@tailwindcss/typography'),
     nextui({
       layout: {
         disabledOpacity: '0.3',
