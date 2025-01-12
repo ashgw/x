@@ -30,7 +30,7 @@ jobs:
           PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
       - name: Comment Preview URL
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
