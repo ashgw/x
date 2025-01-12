@@ -10,7 +10,7 @@ export const HamburgerButton: React.FC<HamburgerButtonProps> = ({
   return (
     <button
       aria-label="Toggle navigation bar menu"
-      className={`p-0 flex bg-transparent cursor-pointer ${isOpened ? 'ham-opened' : ''}`}
+      className={`flex cursor-pointer bg-transparent p-0 ${isOpened ? "ham-opened" : ""}`}
       onClick={onClick}
     >
       <svg width="40" height="40" color="white" viewBox="0 0 100 100">

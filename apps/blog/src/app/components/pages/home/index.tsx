@@ -1,10 +1,10 @@
 import { Footer } from "./../../shared/footer";
-import { BlogPostCards } from "./components/BlogPostCards";
+import { HeroSection } from "./components/HeroSection";
 
 export function HomePage() {
   return (
     <>
-      <BlogPostCards />
+      <HeroSection />
       <Footer />
     </>
   );

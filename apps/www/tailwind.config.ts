@@ -1,5 +1,6 @@
-import { webConfig } from '@ashgw/tailwind-config';
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
+
+import { webConfig } from "@ashgw/tailwind-config";
 
 const config = {
   content: webConfig.content,

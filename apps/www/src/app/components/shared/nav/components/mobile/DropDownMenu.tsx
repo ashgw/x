@@ -1,10 +1,11 @@
-import { Button } from '@ashgw/ui';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-import { navLinks } from '../../utils/navLinks';
-import { NavElement } from './NavElement';
+import { Button } from "@ashgw/ui";
+
+import { navLinks } from "../../utils/navLinks";
+import { NavElement } from "./NavElement";
 
 interface DropDownMenuProps {
   onToggleMenu: () => void;
@@ -15,20 +16,20 @@ export function DropDownMenu({ onToggleMenu }: DropDownMenuProps) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
       exit={{ opacity: 0 }}
-      className="absolute rounded-3xl z-50 backdrop-blur-2xl w-full space-y-3 px-5 pb-3 pt-2"
+      className="absolute z-50 w-full space-y-3 rounded-3xl px-5 pb-3 pt-2 backdrop-blur-2xl"
     >
       {navLinks
         .filter(({ hidden }) => !hidden)
         .map(({ name, href }) =>
-          name === 'Contact' ? (
+          name === "Contact" ? (
             <Fragment key={name}>
               <div className="glowsup">
                 <Link href={href}>
                   <Button
                     className="w-full"
-                    variant={'navbar'}
+                    variant={"navbar"}
                     onClick={onToggleMenu}
                   >
                     {name}
@@ -43,7 +44,7 @@ export function DropDownMenu({ onToggleMenu }: DropDownMenuProps) {
               name={name}
               onToggleMenu={onToggleMenu}
             />
-          )
+          ),
         )}
     </motion.div>
   );

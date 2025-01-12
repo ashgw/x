@@ -1,13 +1,14 @@
-import { env } from '@ashgw/env';
-import type { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
+
+import { env } from "@ashgw/env";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
+      userAgent: "*",
+      allow: "/",
     },
-    sitemap: env.NEXT_PUBLIC_WWW_URL + '/sitemap.xml',
+    sitemap: env.NEXT_PUBLIC_WWW_URL + "/sitemap.xml",
     host: env.NEXT_PUBLIC_WWW_URL,
   };
 }

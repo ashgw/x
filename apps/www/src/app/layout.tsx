@@ -1,46 +1,48 @@
-import '@ashgw/css/global';
-import { env } from '@ashgw/env';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import type { PropsWithChildren } from 'react';
+import "@ashgw/css/global";
 
-import { NamesService } from '../lib/services/Names.service';
-import { Providers } from './components/providers';
-import { NavBar } from './components/shared/nav';
+import type { Metadata } from "next";
+import type { PropsWithChildren } from "react";
+import localFont from "next/font/local";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
+import { env } from "@ashgw/env";
+
+import { NamesService } from "../lib/services/Names.service";
+import { Providers } from "./components/providers";
+import { NavBar } from "./components/shared/nav";
 
 const atkinsonHyperlegible = localFont({
   src: [
     {
-      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf',
-      weight: '400',
-      style: 'normal',
+      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf',
-      weight: '700',
-      style: 'normal',
+      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf",
+      weight: "700",
+      style: "normal",
     },
     {
-      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf',
-      weight: '400',
-      style: 'italic',
+      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf",
+      weight: "400",
+      style: "italic",
     },
     {
-      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf',
-      weight: '700',
-      style: 'italic',
+      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf",
+      weight: "700",
+      style: "italic",
     },
   ],
-  variable: '--font-atkinson-hyperlegible', // a CSS variable for use in your styles
-  display: 'swap', // `swap` for better performance
+  variable: "--font-atkinson-hyperlegible", // a CSS variable for use in your styles
+  display: "swap", // `swap` for better performance
 });
 
-const title = 'Ashref Gwader';
+const title = "Ashref Gwader";
 const description =
-  'Developer, writer, and self-proclaimed modern day philosopher.';
+  "Developer, writer, and self-proclaimed modern day philosopher.";
 const url = new URL(env.NEXT_PUBLIC_WWW_URL);
-const kw: string[] = ['Ashref Gwader', 'ashgw', 'blog', 'tech', 'TS', 'Python'];
+const kw: string[] = ["Ashref Gwader", "ashgw", "blog", "tech", "TS", "Python"];
 
 const postImageWidth = 1200; // in pixels
 const postImageHeight = 630;
@@ -49,22 +51,22 @@ const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageH
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
   title: {
-    default: 'Ashref Gwader',
-    template: '%s | Ashgw',
+    default: "Ashref Gwader",
+    template: "%s | Ashgw",
   },
-  creator: 'Ashref Gwader',
+  creator: "Ashref Gwader",
   keywords: kw,
   description: description,
   openGraph: {
     siteName:
       NamesService.getSiteName({
         url: env.NEXT_PUBLIC_WWW_URL,
-      }) ?? 'ashgw',
-    locale: 'en_US',
-    publishedTime: '2023-12-01T09:15:00-0401',
+      }) ?? "ashgw",
+    locale: "en_US",
+    publishedTime: "2023-12-01T09:15:00-0401",
     title,
     description,
-    type: 'article',
+    type: "article",
     url,
     images: [
       {
@@ -81,18 +83,18 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title,
     description,
     images: [postImageUrl],
   },
-  category: 'tech',
+  category: "tech",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

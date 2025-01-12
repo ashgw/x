@@ -1,4 +1,4 @@
-import { CopyRight } from './components/CopyRight';
+import { CopyRight } from "./components/CopyRight";
 
 export function Footer() {
   return (
