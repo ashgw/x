@@ -30,12 +30,12 @@
   "license": "ISC",
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/next-config": "workspace:*",
+    "@ashgw/playwright-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tailwind-config": "workspace:*",
-    "@ashgw/next-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
-    "@ashgw/playwright-config": "workspace:*",
     "@playwright/test": "catalog:",
     "@tailwindcss/typography": "^0.5.10",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
@@ -47,6 +47,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@vitest/ui": "catalog:",
     "autoprefixer": "^10.0.1",
+    "dotenv": "^16.4.5",
     "eslint": "catalog:",
     "jiti": "^2.3.3",
     "prettier": "catalog:",
@@ -61,9 +62,8 @@
   },
   "dependencies": {
     "@ashgw/css": "workspace:*",
-    "@ashgw/ui": "workspace:*",
     "@ashgw/ts-env": "catalog:",
-    "zod": "catalog:",
+    "@ashgw/ui": "workspace:*",
     "@gsap/react": "^2.1.0",
     "@next/third-parties": "^15.0.2",
     "@nextui-org/react": "^2.2.9",
@@ -72,7 +72,6 @@
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "dotenv": "^16.3.1",
     "framer-motion": "^10.17.4",
     "front-matter": "^4.0.2",
     "gsap": "^3.12.5",
@@ -90,6 +89,7 @@
     "sonner": "^1.3.1",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "typed.js": "^2.1.0"
+    "typed.js": "^2.1.0",
+    "zod": "catalog:"
   }
 }
