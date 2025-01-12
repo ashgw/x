@@ -43,5 +43,5 @@ runs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `Deployed 🚀 ${process.env.PROJECT_NAME}. Preview is ready at: ${process.env.PREVIEW_URL}`
+            body: `Deployed ${process.env.PROJECT_NAME} 🚀🚀 Preview is ready at: ${process.env.PREVIEW_URL}`
           })
