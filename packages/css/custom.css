@@ -54,7 +54,7 @@
   }
 
   .turn-bg-gradient::after {
-    content: '';
+    content: "";
     position: fixed;
     left: -1px;
     top: -1px;
@@ -86,7 +86,7 @@
 
   @media (min-width: 1024px) {
     .nav-link-shadow::before {
-      content: '';
+      content: "";
       position: absolute;
       height: 33px;
       width: 70px;
@@ -106,7 +106,7 @@
     /*
          for links
       */
-    @apply bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text;
+    @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
     -webkit-background-clip: text; /* older browsers can get this too */
   }
 
