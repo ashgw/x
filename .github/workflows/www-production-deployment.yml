@@ -15,12 +15,16 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/vercel-build
         with:
-          ENV_VARS: ${{ secrets.ENV_VARS }}
-          GA_ID: ${{ secrets.GA_ID }}
           project_name: www
+          NODE_ENV: production # TODO: remove either deployment type or node env
+          NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
+          NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
+          NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+          NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
+
       - uses: ./.github/actions/vercel-deploy
         with:
           deployment_type: production
