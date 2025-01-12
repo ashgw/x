@@ -10,21 +10,7 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/build
+      - uses: re-actors/alls-green@release/v1
+        id: all-green
         with:
-          ENV_VARS: ${{ secrets.ENV_VARS }}
-          GA_ID: ${{ secrets.GA_ID }}
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Link to Vercel Project
-        run: vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy to Vercel Production
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          vercel deploy --prod --token=$VERCEL_TOKEN --yes
+          jobs: ${{ toJSON(needs) }}

@@ -1,8 +1,13 @@
 .vim
+**/.cache/
+**test-results**
+**/dist/
 
+**/.turbo
+**/.next
 
 # dependencies
-/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 
