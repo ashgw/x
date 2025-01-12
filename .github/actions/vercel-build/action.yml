@@ -6,6 +6,8 @@ inputs:
   project_name:
     description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
     required: true
+  NODE_ENV:
+    required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
     required: true
@@ -15,11 +17,13 @@ inputs:
   VERCEL_PROJECT_ID:
     description: "Vercel project ID"
     required: true
-  ENV_VARS:
-    description: "env vars"
+  NEXT_PUBLIC_WWW_URL:
     required: true
-  GA_ID:
-    description: "Google Analytics"
+  NEXT_PUBLIC_BLOG_URL:
+    required: true
+  NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
+    required: true
+  NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
     required: true
 
 runs:
@@ -29,8 +33,12 @@ runs:
     - uses: ./.github/actions/pnpm-install
     - uses: ./.github/actions/setup-env
       with:
-        ENV_VARS: ${{ inputs.ENV_VARS }}
-        GA_ID: ${{ inputs.GA_ID }}
+        NODE_ENV: ${{ inputs.NODE_ENV }}
+        NEXT_PUBLIC_WWW_URL: ${{ inputs.NEXT_PUBLIC_WWW_URL }}
+        NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}
+        NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+        NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+
     - name: Build for Vercel
       shell: bash
       env:

@@ -1,6 +1,9 @@
 name: "Setup Environment Variables"
 description: "Sets up env from GitHub Secrets"
 inputs:
+  NODE_ENV:
+    description: either 'development', 'staging' or 'production' & defo not 'prod' or 'dev'
+    required: true
   NEXT_PUBLIC_WWW_URL:
     required: true
   NEXT_PUBLIC_BLOG_URL:
@@ -9,6 +12,7 @@ inputs:
     required: true
   NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
     required: true
+
 runs:
   using: composite
   steps:
@@ -16,6 +20,7 @@ runs:
       shell: bash
       run: |
         vars=(
+          "NODE_ENV"
           "NEXT_PUBLIC_WWW_URL"
           "NEXT_PUBLIC_BLOG_URL"
           "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"
