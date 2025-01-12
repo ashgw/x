@@ -6,7 +6,6 @@ export const env = createEnv({
     NODE_ENV: z.enum(['production', 'development', 'staging']),
     WWW_URL: z.string().url(),
     BLOG_URL: z.string().url(),
-    CONTACT_EMAIL: z.string().email(),
     GENERATE_SOURCE_MAP: z.boolean(),
     GA_ID: z.string().min(1),
   },

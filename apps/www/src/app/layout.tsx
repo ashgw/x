@@ -3,8 +3,8 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import type { PropsWithChildren } from 'react';
+import { env } from '~/env';
 
-import { env } from '../env';
 import { NamesService } from '../lib/services/Names.service';
 import { Providers } from './components/providers';
 import { NavBar } from './components/shared/nav';
@@ -39,7 +39,7 @@ const atkinsonHyperlegible = localFont({
 const title = 'Ashref Gwader';
 const description =
   'Developer, writer, and self-proclaimed modern day philosopher.';
-const url = new URL(env.NEXT_PUBLIC_WWW_PRODUCTION_URL);
+const url = new URL(env.NEXT_PUBLIC_WWW_URL);
 const kw: string[] = ['Ashref Gwader', 'ashgw', 'blog', 'tech', 'TS', 'Python'];
 
 const postImageWidth = 1200; // in pixels
@@ -47,7 +47,7 @@ const postImageHeight = 630;
 const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${title}`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXT_PUBLIC_WWW_PRODUCTION_URL),
+  metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
   title: {
     default: 'Ashref Gwader',
     template: '%s | Ashgw',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   openGraph: {
     siteName:
       NamesService.getSiteName({
-        url: env.NEXT_PUBLIC_WWW_PRODUCTION_URL,
+        url: env.NEXT_PUBLIC_WWW_URL,
       }) ?? 'ashgw',
     locale: 'en_US',
     publishedTime: '2023-12-01T09:15:00-0401',
@@ -102,7 +102,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <NavBar />
         <Providers>{children}</Providers>
       </body>
-      <GoogleAnalytics gaId={env.GA_ID as string} />
+      <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
     </html>
   );
 }

@@ -4,7 +4,6 @@ import fm from 'front-matter';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 
-import { BLOG_CONTENT_PATH, BUSINESS_CONTENT_PATH } from '../constants';
 import type { MDXData, PostData } from './mdx';
 
 type Optional<T> = T | null;
@@ -14,7 +13,11 @@ function parseMDX(content: string): MDXData {
   return fm(content) as MDXData;
 }
 
-async function getMDXFiles(dir: string): Promise<Optional<string[]>> {
+async function getMDXFiles({
+  dir,
+}: {
+  dir: string;
+}): Promise<Optional<string[]>> {
   try {
     const files = await fsPromises.readdir(dir);
     const mdxFiles = files.filter((file) => path.extname(file) === '.mdx');
@@ -25,7 +28,11 @@ async function getMDXFiles(dir: string): Promise<Optional<string[]>> {
   }
 }
 
-async function readMDXFile(filePath: string): Promise<Optional<MDXData>> {
+async function readMDXFile({
+  filePath,
+}: {
+  filePath: string;
+}): Promise<Optional<MDXData>> {
   try {
     const rawContent = await fsPromises.readFile(filePath, 'utf-8');
     return parseMDX(rawContent);
@@ -34,13 +41,17 @@ async function readMDXFile(filePath: string): Promise<Optional<MDXData>> {
     return null;
   }
 }
-async function getMDXData(dir: string): Promise<Optional<PostData[]>> {
-  const mdxFiles = await getMDXFiles(dir);
+async function getMDXData({
+  dir,
+}: {
+  dir: string;
+}): Promise<Optional<PostData[]>> {
+  const mdxFiles = await getMDXFiles({ dir });
   if (mdxFiles === null) {
     return null;
   }
   const blogDataPromises = mdxFiles.map(async (file) => {
-    const parsedContent = await readMDXFile(path.join(dir, file));
+    const parsedContent = await readMDXFile({ filePath: path.join(dir, file) });
     const filename: string = path.basename(file, path.extname(file));
     return {
       parsedContent,
@@ -52,20 +63,30 @@ async function getMDXData(dir: string): Promise<Optional<PostData[]>> {
   return blogData as PostData[];
 }
 
-export async function getBlogPosts(
-  blogDirectory: string = BLOG_CONTENT_PATH
-): Promise<Optional<PostData[]>> {
-  return getMDXData(path.join(process.cwd(), blogDirectory));
+export async function getBlogPosts({
+  blogDirectory,
+}: {
+  blogDirectory: string;
+}): Promise<Optional<PostData[]>> {
+  return getMDXData({ dir: path.join(process.cwd(), blogDirectory) });
 }
 
-export async function getBusinessPosts(
-  businessDirectory: string = BUSINESS_CONTENT_PATH
-): Promise<Optional<PostData[]>> {
-  return getMDXData(path.join(process.cwd(), businessDirectory));
+export async function getBusinessPosts({
+  businessDirectory,
+}: {
+  businessDirectory: string;
+}): Promise<Optional<PostData[]>> {
+  return getMDXData({ dir: path.join(process.cwd(), businessDirectory) });
 }
 
-export async function getBlogPost(slug: string): Promise<Optional<PostData>> {
-  const blogs = await getBlogPosts();
+export async function getBlogPost({
+  blogDirectory,
+  slug,
+}: {
+  slug: string;
+  blogDirectory: string;
+}): Promise<Optional<PostData>> {
+  const blogs = await getBlogPosts({ blogDirectory });
   if (blogs === null) {
     return null;
   }
@@ -78,10 +99,14 @@ export async function getBlogPost(slug: string): Promise<Optional<PostData>> {
   return blogPost;
 }
 
-export async function getBusinessPost(
-  slug: string
-): Promise<Optional<PostData>> {
-  const blogs = await getBusinessPosts();
+export async function getBusinessPost({
+  slug,
+  businessDirectory,
+}: {
+  slug: string;
+  businessDirectory: string;
+}): Promise<Optional<PostData>> {
+  const blogs = await getBusinessPosts({ businessDirectory });
   if (!blogs) {
     return null;
   }

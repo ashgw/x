@@ -1,9 +1,9 @@
-import { env } from 'env';
+import { env } from '~/env';
 
 import { NamesService } from './services/Names.service';
 
 export const BUSINESS_CONTENT_PATH = '/public/services';
-export const EMAIL = env.NEXT_PUBLIC_CONTACT_EMAIL;
+export const EMAIL = 'contact@ashgw.me';
 
 export const SITE_NAME =
   NamesService.getSiteName({
