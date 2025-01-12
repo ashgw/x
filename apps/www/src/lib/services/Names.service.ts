@@ -1,8 +1,7 @@
 type Optional<T> = T | null;
 export const URL_REGEX = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}$/; // eslint-disable-line no-useless-escape
 export const OPTIONAL_PROTOCOL_URL_REGEX =
-  /^(?:https?:\/\/)?(?:www\.)?([^\/]+)(?:\/.*)?$/; // eslint-disable-line no-useless-escape
-
+  /^(?:https?:\/\/)?(?:www\.)?([^/]+)(?:\/.*)?$/;
 export class NamesService {
   public static matchURL(dto: { url: string }): Optional<RegExpExecArray> {
     return URL_REGEX.exec(dto.url);
