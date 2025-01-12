@@ -8,8 +8,8 @@ export const env = createEnv({
   vars: {
     NODE_ENV: z.enum(['production', 'development', 'staging']),
     WWW_URL: z.string().url(),
+    WWW_GA_ID: z.string().min(1),
     BLOG_URL: z.string().url(),
-    GA_ID: z.string().min(1),
   },
   disablePrefix: ['NODE_ENV'],
   prefix: 'NEXT_PUBLIC',

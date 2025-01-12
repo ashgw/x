@@ -102,7 +102,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <NavBar />
         <Providers>{children}</Providers>
       </body>
-      <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
+      <GoogleAnalytics gaId={env.NEXT_PUBLIC_WWW_GA_ID} />
     </html>
   );
 }
