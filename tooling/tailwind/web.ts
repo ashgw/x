@@ -1,11 +1,13 @@
 import type { Config } from "tailwindcss";
+import { nextui } from "@nextui-org/react";
 import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
 import { baseConfig } from "./base";
 
 export const webConfig = {
-  ...baseConfig,
+  content: baseConfig.content,
+  presets: [baseConfig],
   theme: {
     container: {
       center: true,
@@ -71,5 +73,13 @@ export const webConfig = {
       },
     },
   },
-  plugins: [animate, typography],
+  plugins: [
+    animate,
+    typography,
+    nextui({
+      layout: {
+        disabledOpacity: "0.3",
+      },
+    }),
+  ],
 } satisfies Config;

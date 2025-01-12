@@ -1,16 +1,11 @@
 import { webConfig } from '@ashgw/tailwind-config';
-import { nextui } from '@nextui-org/react';
 import type { Config } from 'tailwindcss';
 
 const config = {
-  ...webConfig,
-  plugins: [
-    nextui({
-      layout: {
-        disabledOpacity: '0.3',
-      },
-    }),
-  ],
+  content: webConfig.content,
+  presets: [webConfig],
+  theme: { ...webConfig.theme },
+  plugins: [...webConfig.plugins],
 } satisfies Config;
 
 export default config;
