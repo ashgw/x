@@ -46,7 +46,7 @@
     "vitest": "catalog:",
     "autoprefixer": "^10.0.1",
     "eslint": "catalog:",
-    "jiti": "^2.3.3",
+    "jiti": "catalog:",
     "prettier": "catalog:",
     "tailwind-variants": "^0.1.20",
     "tailwindcss": "catalog:",
