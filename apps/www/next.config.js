@@ -1,7 +1,6 @@
+import baseConfig from '@ashgw/next-config/base.js';
 import { createJiti } from 'jiti';
 import { fileURLToPath } from 'url';
-
-import { baseConfig } from '../../tooling/next/base';
 
 /* 
   @see https://github.com/t3-oss/create-t3-turbo/blob/main/apps/nextjs/next.config.js

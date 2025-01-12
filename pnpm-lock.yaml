@@ -190,6 +190,9 @@ importers:
       '@ashgw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
+      '@ashgw/next-config':
+        specifier: workspace:*
+        version: link:../../tooling/next
       '@ashgw/playwright-config':
         specifier: workspace:*
         version: link:../../tooling/playwright

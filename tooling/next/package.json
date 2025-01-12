@@ -1,9 +1,9 @@
 {
   "name": "@ashgw/next-config",
-  "exports": {
-    ".": "./index.js"
-  },
   "private": true,
+  "files": [
+    "base.js"
+  ],
   "version": "0.1.0",
   "devDependencies": {
     "next": "catalog:"
