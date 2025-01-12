@@ -1,4 +1,4 @@
-import { env } from '~/env';
+import { env } from '@ashgw/env';
 
 import { NamesService } from './services/Names.service';
 

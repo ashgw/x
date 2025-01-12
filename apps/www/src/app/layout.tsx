@@ -1,9 +1,9 @@
 import '@ashgw/css/global';
+import { env } from '@ashgw/env';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import type { PropsWithChildren } from 'react';
-import { env } from '~/env';
 
 import { NamesService } from '../lib/services/Names.service';
 import { Providers } from './components/providers';
