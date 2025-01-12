@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@playwright/test':
+      specifier: ^1.40.1
+      version: 1.48.2
     '@vitest/ui':
       specifier: ^2.1.8
       version: 2.1.8
@@ -187,6 +190,9 @@ importers:
       '@ashgw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
+      '@ashgw/playwright-config':
+        specifier: workspace:*
+        version: link:../../tooling/playwright
       '@ashgw/prettier-config':
         specifier: workspace:*
         version: link:../../tooling/prettier
@@ -200,7 +206,7 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/vitest
       '@playwright/test':
-        specifier: ^1.40.1
+        specifier: 'catalog:'
         version: 1.48.2
       '@tailwindcss/typography':
         specifier: ^0.5.10
@@ -356,6 +362,9 @@ importers:
       '@ashgw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
+      '@ashgw/playwright-config':
+        specifier: workspace:*
+        version: link:../../tooling/playwright
       '@ashgw/prettier-config':
         specifier: workspace:*
         version: link:../../tooling/prettier
@@ -369,7 +378,7 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/vitest
       '@playwright/test':
-        specifier: ^1.40.1
+        specifier: 'catalog:'
         version: 1.48.2
       '@tailwindcss/typography':
         specifier: ^0.5.10
@@ -543,6 +552,18 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.3.3
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
+  tooling/playwright:
+    devDependencies:
+      '@ashgw/tsconfig':
+        specifier: workspace:*
+        version: link:../typescript
+      '@playwright/test':
+        specifier: 'catalog:'
+        version: 1.48.2
       typescript:
         specifier: 'catalog:'
         version: 5.6.3

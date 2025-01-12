@@ -1,0 +1,13 @@
+{
+  "name": "@ashgw/playwright-config",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "private": true,
+  "version": "0.1.0",
+  "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@ashgw/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
