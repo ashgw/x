@@ -29,17 +29,18 @@ runs:
         VERCEL_PROJECT_ID=${{ inputs.VERCEL_PROJECT_ID }}
       run: |
         cd ${{ inputs.project_name }} && \
-        PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }}) && \
+        PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }}) && \
         echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
     - name: Comment Preview URL
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PROJECT_NAME: ${{ inputs.project_name }}
       with:
         script: |
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `🚀 ${{ inputs.project_name }} Preview deployment is ready at: ${process.env.PREVIEW_URL}`
+            body: `Deployed 🚀 ${process.env.PROJECT_NAME}. Preview is ready at: ${process.env.PREVIEW_URL}`
           })
