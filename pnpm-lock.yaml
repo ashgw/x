@@ -432,7 +432,7 @@ importers:
         specifier: 'catalog:'
         version: 9.13.0(jiti@2.3.3)
       jiti:
-        specifier: ^2.3.3
+        specifier: 'catalog:'
         version: 2.3.3
       prettier:
         specifier: 'catalog:'
