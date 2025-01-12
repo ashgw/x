@@ -71,7 +71,7 @@ jobs:
     uses: ./.github/workflows/blog-preview-deployment.yml
     secrets: inherit
 
-  # This is merely used as a trigger here, so I can manually dispatch all prod deployments
+  # This is merely a trigger, so I can manually dispatch all prod deployments
   production-deployemnt:
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
