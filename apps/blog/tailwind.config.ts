@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
-import baseConfig from "@ashgw/tailwind-config/web";
+import { baseConfig } from "@ashgw/tailwind-config";
 
 export default {
   // We need to append the path to the UI package to the content array so that

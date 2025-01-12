@@ -1,4 +1,4 @@
-import baseConfig from '@ashgw/tailwind-config/web';
+import { baseConfig } from '@ashgw/tailwind-config';
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
