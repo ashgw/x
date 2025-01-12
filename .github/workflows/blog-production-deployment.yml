@@ -1,33 +1,30 @@
-name: Blog Production Deployment
+name: CI / Blog production deployment
 
 on:
-  workflow_dispatch:
   workflow_call:
 
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
 jobs:
-  blog-production-deployemnt:
-    if: github.ref == 'refs/heads/main'
-    environment: production
+  deploy:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/build
+      - uses: ./.github/actions/vercel-build
         with:
-          ENV_VARS: ${{ secrets.ENV_VARS }} # fix these here, oesn't look good with env vars, use hashicorp vault, this is ugly as hell
+          ENV_VARS: ${{ secrets.ENV_VARS }}
           GA_ID: ${{ secrets.GA_ID }}
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        working-directory: apps/blog
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Link to Vercel Project
-        working-directory: apps/blog
-        run: vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy to Vercel Production
-        working-directory: apps/blog
-        env:
+          project_name: blog
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          vercel deploy --prod --token=$VERCEL_TOKEN --yes
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BLOG_PROJECT_ID }}
+      - uses: ./.github/actions/vercel-deploy
+        with:
+          deployment_type: production
+          project_name: blog
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

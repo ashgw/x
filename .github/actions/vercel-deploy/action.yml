@@ -1,0 +1,47 @@
+name: Vercel Preview Deployment
+
+description: Deploy to Vercel and set the preview URL
+
+inputs:
+  project_name:
+    description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
+    required: true
+  deployment_type:
+    description: "Whether it's 'production' or 'preview'"
+    required: true
+  VERCEL_TOKEN:
+    description: "Vercel token for authentication"
+    required: true
+  GITHUB_TOKEN:
+    description: "GitHub token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy to Vercel
+      shell: bash
+      run: |
+        if [ "${{ inputs.deployment_type }}" == "preview" ]; then
+          cd apps/${{ inputs.project_name }} && \
+          PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+        else
+          cd apps/${{ inputs.project_name }} && \
+          pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-prod --token=${{ inputs.VERCEL_TOKEN }}
+        fi
+
+    - name: Notify about the deployment URL
+      if: ${{ inputs.deployment_type == 'preview' }}
+      uses: actions/github-script@v6
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PROJECT_NAME: ${{ inputs.project_name }}
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `Deployed 🚀 ${process.env.PROJECT_NAME}. Preview is ready at: ${process.env.PREVIEW_URL}`
+          })
