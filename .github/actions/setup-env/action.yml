@@ -1,11 +1,13 @@
-name: 'Setup Environment Variables'
-description: 'Sets up env from GitHub Secrets'
+name: "Setup Environment Variables"
+description: "Sets up env from GitHub Secrets"
 inputs:
-  ENV_VARS:
-    description: 'Environment variables to set up in .env.local'
+  NEXT_PUBLIC_WWW_URL:
     required: true
-  GA_ID:
-    description: 'Google Analytics ID to add to .env'
+  NEXT_PUBLIC_BLOG_URL:
+    required: true
+  NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
+    required: true
+  NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
     required: true
 runs:
   using: composite
@@ -13,5 +15,12 @@ runs:
     - name: Set up .env
       shell: bash
       run: |
-        echo "${{ inputs.ENV_VARS }}" >> .env.local
-        echo "GA_ID='${{ inputs.GA_ID }}'" >> .env  # Store GA_ID in .env
+        vars=(
+          "NEXT_PUBLIC_WWW_URL"
+          "NEXT_PUBLIC_BLOG_URL"
+          "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"
+          "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"
+        )
+        for var in "${vars[@]}"; do
+          echo "$var='${{ inputs[$var] }}'" >> .env
+        done
