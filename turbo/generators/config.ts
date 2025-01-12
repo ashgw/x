@@ -80,13 +80,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         },
       },
       async (answers) => {
-        /**
-         * Install deps and format everything
-         */
         if ("name" in answers && typeof answers.name === "string") {
-          // execSync("pnpm dlx sherif@latest --fix", {
-          //   stdio: "inherit",
-          // });
           const pnpmInstall = spawn("pnpm", ["i"], { stdio: "inherit" });
           pnpmInstall.on("error", (error) => {
             console.error(`Failed to execute pnpm install: ${error.message}`);
