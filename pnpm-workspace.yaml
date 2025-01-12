@@ -19,6 +19,7 @@ catalog:
   # There's a bug with the latest version as of 01.25
   # @see https://github.com/vercel/vercel/issues/11097
   vercel: "33.2.0"
+  "@playwright/test": ^1.40.1
 
 catalogs:
   react18:

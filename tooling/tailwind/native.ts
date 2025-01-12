@@ -1,9 +1,9 @@
 import type { Config } from "tailwindcss";
 
-import base from "./base";
+import { baseConfig } from "./base";
 
-export default {
-  content: base.content,
-  presets: [base],
+export const nativeConfig = {
+  content: baseConfig.content,
+  presets: [baseConfig],
   theme: {},
 } satisfies Config;

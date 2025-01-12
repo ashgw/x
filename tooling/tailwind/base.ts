@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+export const baseConfig = {
   darkMode: ["class"],
   content: ["src/**/*.{ts,tsx}"],
   theme: {
