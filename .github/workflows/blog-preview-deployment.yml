@@ -29,7 +29,6 @@ jobs:
           cd apps/blog
           PREVIEW_URL=$(pnpm --filter @ashgw/blog deploy:vercel-preview --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
-          [[ -z "$PREVIEW_URL" ]] && echo "Error: PREVIEW_URL is empty" && exit 1
       - name: Comment Preview URL
         uses: actions/github-script@v6
         env:
