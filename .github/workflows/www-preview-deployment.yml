@@ -25,9 +25,11 @@ jobs:
       - name: Build with vercel
         run: cd apps/www && pnpm --filter @ashgw/www build:vercel --token=$VERCEL_TOKEN
       - name: Deploy Preview
-        run: cd apps/www && PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview --token=$VERCEL_TOKEN)
-      - name: Update GH env
-        run: echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+        run: |
+          cd apps/www
+          PREVIEW_URL=$(pnpm --filter @ashgw/www deploy:vercel-preview --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
+          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+          [[ -z "$PREVIEW_URL" ]] && echo "Error: PREVIEW_URL is empty" && exit 1
       - name: Comment Preview URL
         uses: actions/github-script@v6
         env:

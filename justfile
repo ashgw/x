@@ -19,7 +19,13 @@ NGROK_DOMAIN := "saved-duckling-subtle.ngrok-free.app"
 @setup:
     #!/bin/zsh
     source ~/.zshrc 
-    nvm install 18.17.0 && nvm use 18.17.0
+    nvm install && nvm use 
+    if [[ "$(pnpm --version 2>/dev/null)" != "9.12.2" ]]; then
+        echo "Installing pnpm@9.12.2..."
+        npm install -g pnpm@9.12.2
+    else
+        echo "pnpm@9.12.2 is already installed."
+    fi
     pnpm i
     pnpm exec playwright install
     pnpm hooks
