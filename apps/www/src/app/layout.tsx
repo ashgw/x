@@ -12,22 +12,22 @@ import { NavBar } from './components/shared/nav';
 const atkinsonHyperlegible = localFont({
   src: [
     {
-      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf',
+      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf',
+      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf',
       weight: '700',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf',
+      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf',
       weight: '400',
       style: 'italic',
     },
     {
-      path: '../../public/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf',
+      path: '../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf',
       weight: '700',
       style: 'italic',
     },
