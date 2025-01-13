@@ -61,14 +61,14 @@ runs:
         for var in $existing_vars; do
           if [[ -n "${env_vars[$var]}" ]]; then
             echo "Removing $var from Vercel"
-            vercel env rm "$var" --token=$VERCEL_TOKEN
+            vercel env rm "$var" --token=$VERCEL_TOKEN -y
           fi
         done
 
         # Re-upload all variables from .env
         for key in "${!env_vars[@]}"; do
           echo "Adding $key to Vercel"
-          echo "${env_vars[$key]}" | vercel env add "$key" "${NODE_ENV}" --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID
+          echo "${env_vars[$key]}" | vercel env add "$key" "${NODE_ENV}" --token=$VERCEL_TOKEN 
 
         done
 
