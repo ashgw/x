@@ -46,9 +46,46 @@ runs:
         VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
+
+        set -e
+
+        # Ensure required environment variables are set
+        if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+          echo "Missing required environment variables: VERCEL_TOKEN, VERCEL_ORG_ID, or VERCEL_PROJECT_ID"
+          exit 1
+        fi
+
+        # Check if .env file exists
+        if [ ! -f .env ]; then
+          echo "Error: .env file not found"
+          exit 1
+        fi
+
+        # Fetch existing environment variables from Vercel
+        existing_vars=$(vercel env ls --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID | awk 'NR>4 {print $1}')
+
+        # Read .env file and store its variables
         while IFS='=' read -r key value; do
           if [[ -n "$key" && -n "$value" ]]; then
-            echo "$value" | vercel env add "$key" "${{ inputs.NODE_ENV }}" --token=${{ inputs.VERCEL_TOKEN }} 
+            env_vars[$key]="$value"
           fi
         done < .env
+
+        # Remove existing variables in both .env and Vercel
+        for var in $existing_vars; do
+          if [[ -n "${env_vars[$var]}" ]]; then
+            echo "Removing $var from Vercel"
+            vercel env rm "$var" --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID -y
+          fi
+        done
+
+        # Re-upload all variables from .env
+        for key in "${!env_vars[@]}"; do
+          echo "Adding $key to Vercel"
+          echo "${env_vars[$key]}" | vercel env add "$key" "${NODE_ENV}" --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID
+
+        done
+
+        echo "Environment synchronization with Vercel completed successfully."
+
         cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel --token=$VERCEL_TOKEN
