@@ -46,11 +46,11 @@ runs:
         VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
-
         # Fetch existing environment variables from Vercel
-        existing_vars=$(vercel env ls --token=$VERCEL_TOKEN| awk 'NR>4 {print $1}')
+        existing_vars=$(vercel env ls --token=$VERCEL_TOKEN --json | jq -r '.envs[].key')
 
         # Read .env file and store its variables
+        declare -A env_vars
         while IFS='=' read -r key value; do
           if [[ -n "$key" && -n "$value" ]]; then
             env_vars[$key]="$value"
@@ -61,7 +61,7 @@ runs:
         for var in $existing_vars; do
           if [[ -n "${env_vars[$var]}" ]]; then
             echo "Removing $var from Vercel"
-            vercel env rm "$var" --token=$VERCEL_TOKEN -y
+            vercel env rm "$var" --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID -y || echo "Warning: $var was not found on Vercel"
           fi
         done
 
@@ -69,9 +69,7 @@ runs:
         for key in "${!env_vars[@]}"; do
           echo "Adding $key to Vercel"
           echo "${env_vars[$key]}" | vercel env add "$key" "${NODE_ENV}" --token=$VERCEL_TOKEN 
-
         done
 
         echo "Environment synchronization with Vercel completed successfully."
-
         cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel --token=$VERCEL_TOKEN
