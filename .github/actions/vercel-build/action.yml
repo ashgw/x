@@ -47,29 +47,30 @@ runs:
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
 
-        # Fetch existing environment variables from Vercel
-        existing_vars=$(vercel env ls --token=$VERCEL_TOKEN| awk 'NR>4 {print $1}')
+        declare -A env_vars
 
-        # Read .env file and store its variables
+        # Fetch existing environment variables from Vercel
+        echo "Fetching existing environment variables from Vercel..."
+        existing_vars=$(vercel env ls $NODE_ENV --token=$VERCEL_TOKEN | awk 'NR > 4 {print $1}')
+
+        # Remove all existing variables from Vercel
+        for var in $existing_vars; do
+          echo "Removing $var from Vercel..."
+          vercel env rm "$var" --token=$VERCEL_TOKEN  $NODE_ENV -y
+        done
+
+        # Read variables from the .env file
+        echo "Reading variables from .env file..."
         while IFS='=' read -r key value; do
-          if [[ -n "$key" && -n "$value" ]]; then
+          if [[ -n "$key" && -n "$value" && ! "$key" =~ ^# ]]; then
             env_vars[$key]="$value"
           fi
         done < .env
 
-        # Remove existing variables in both .env and Vercel
-        for var in $existing_vars; do
-          if [[ -n "${env_vars[$var]}" ]]; then
-            echo "Removing $var from Vercel"
-            vercel env rm "$var" --token=$VERCEL_TOKEN  -y
-          fi
-        done
-
-        # Re-upload all variables from .env
+        # Add variables from .env to Vercel
         for key in "${!env_vars[@]}"; do
-          echo "Adding $key to Vercel"
-          echo "${env_vars[$key]}" | vercel env add "$key" "${NODE_ENV}" --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID
-
+          echo "Adding $key to Vercel..."
+          echo "${env_vars[$key]}" | vercel env add "$key" $NODE_ENV --token=$VERCEL_TOKEN 
         done
 
         echo "Environment synchronization with Vercel completed successfully."
