@@ -47,9 +47,26 @@ runs:
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
         while IFS='=' read -r key value; do
-          if [[ -n "$key" && -n "$value" ]]; then
-            vercel env rm "$key" --yes --token=${{ inputs.VERCEL_TOKEN }} || true
-            echo "$value" | vercel env add "$key" "${{ inputs.NODE_ENV }}" --token=${{ inputs.VERCEL_TOKEN }}
+        if [[ -n "$key" && -n "$value" ]]; then
+          # Log the variable being processed
+          echo "Processing variable: $key"
+
+          # Try to remove the existing variable
+          vercel env rm "$key" --yes --token=${{ inputs.VERCEL_TOKEN }}
+          
+          # Check if the variable was successfully removed
+          if ! vercel env ls --token=${{ inputs.VERCEL_TOKEN }} | grep -q "$key"; then
+            echo "Variable $key successfully removed."
+          else
+            echo "Failed to remove variable $key. Retrying..."
+            vercel env rm "$key" --yes --token=${{ inputs.VERCEL_TOKEN }}
           fi
+
+          # Add the new variable
+          echo "$value" | vercel env add "$key" "${{ inputs.NODE_ENV }}" --token=${{ inputs.VERCEL_TOKEN }}
+          echo "Variable $key added successfully."
+        fi
         done < .env
+
+        # Build the project
         cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel --token=$VERCEL_TOKEN
