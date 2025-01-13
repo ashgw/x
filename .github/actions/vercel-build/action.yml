@@ -48,7 +48,7 @@ runs:
       run: |
         while IFS='=' read -r key value; do
           if [[ -n "$key" && -n "$value" ]]; then
-            echo "$value" | vercel env add "$key" "${{ inputs.NODE_ENV }}" --token=${{ inputs.VERCEL_TOKEN }} --yes
+            echo "$value" | vercel env add "$key" "${{ inputs.NODE_ENV }}" --token=${{ inputs.VERCEL_TOKEN }} 
           fi
         done < .env
         cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel --token=$VERCEL_TOKEN
