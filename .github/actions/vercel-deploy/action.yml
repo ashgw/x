@@ -13,7 +13,7 @@ inputs:
     description: "Vercel token for authentication"
     required: true
   GITHUB_TOKEN:
-    description: "GitHub token"
+    description: "GitHub toaken"
     required: true
 
 runs:
