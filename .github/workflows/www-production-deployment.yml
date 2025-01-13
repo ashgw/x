@@ -27,7 +27,7 @@ jobs:
 
       - uses: ./.github/actions/vercel-deploy
         with:
-          deployment_type: production
+          NODE_ENV: production
           project_name: www
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

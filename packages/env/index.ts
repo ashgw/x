@@ -7,7 +7,7 @@ config({ path: require("path").resolve(__dirname, "../../.env") });
 
 export const env = createEnv({
   vars: {
-    NODE_ENV: z.enum(["production", "development", "staging"]),
+    NODE_ENV: z.enum(["production", "development", "preview"]),
     WWW_URL: z.string().url(),
     WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
     BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),

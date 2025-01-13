@@ -17,7 +17,7 @@ jobs:
       - uses: ./.github/actions/vercel-build
         with:
           project_name: blog
-          NODE_ENV: staging # TODO: rename this to preview
+          NODE_ENV: preview # TODO: rename this to preview
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
           NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
@@ -28,7 +28,7 @@ jobs:
 
       - uses: ./.github/actions/vercel-deploy
         with:
-          deployment_type: preview
+          NODE_ENV: preview
           project_name: blog
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
