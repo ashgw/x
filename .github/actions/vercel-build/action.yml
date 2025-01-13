@@ -47,22 +47,8 @@ runs:
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
 
-        set -e
-
-        # Ensure required environment variables are set
-        if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
-          echo "Missing required environment variables: VERCEL_TOKEN, VERCEL_ORG_ID, or VERCEL_PROJECT_ID"
-          exit 1
-        fi
-
-        # Check if .env file exists
-        if [ ! -f .env ]; then
-          echo "Error: .env file not found"
-          exit 1
-        fi
-
         # Fetch existing environment variables from Vercel
-        existing_vars=$(vercel env ls --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID | awk 'NR>4 {print $1}')
+        existing_vars=$(vercel env ls --token=$VERCEL_TOKEN| awk 'NR>4 {print $1}')
 
         # Read .env file and store its variables
         while IFS='=' read -r key value; do
@@ -75,7 +61,7 @@ runs:
         for var in $existing_vars; do
           if [[ -n "${env_vars[$var]}" ]]; then
             echo "Removing $var from Vercel"
-            vercel env rm "$var" --token=$VERCEL_TOKEN --project-id=$VERCEL_PROJECT_ID -y
+            vercel env rm "$var" --token=$VERCEL_TOKEN
           fi
         done
 
