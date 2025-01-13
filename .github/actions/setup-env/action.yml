@@ -2,7 +2,7 @@ name: "Setup Environment Variables"
 description: "Sets up env from GitHub Secrets"
 inputs:
   NODE_ENV:
-    description: either 'development', 'staging' or 'production' & defo not 'prod' or 'dev'
+    description: "either 'development', 'staging', or 'production' & defo not 'prod' or 'dev'"
     required: true
   NEXT_PUBLIC_WWW_URL:
     required: true
@@ -19,13 +19,14 @@ runs:
     - name: Set up .env
       shell: bash
       run: |
-        vars=(
-          "NODE_ENV"
-          "NEXT_PUBLIC_WWW_URL"
-          "NEXT_PUBLIC_BLOG_URL"
-          "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"
-          "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"
+        declare -A env_vars=(
+          ["NODE_ENV"]="${{ inputs.NODE_ENV }}"
+          ["NEXT_PUBLIC_WWW_URL"]="${{ inputs.NEXT_PUBLIC_WWW_URL }}"
+          ["NEXT_PUBLIC_BLOG_URL"]="${{ inputs.NEXT_PUBLIC_BLOG_URL }}"
+          ["NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}"
+          ["NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}"
         )
-        for var in "${vars[@]}"; do
-          echo "$var='${{ inputs[$var] }}'" >> .env
+
+        for key in "${!env_vars[@]}"; do
+          echo "${key}='${env_vars[$key]}'" >> .env
         done
