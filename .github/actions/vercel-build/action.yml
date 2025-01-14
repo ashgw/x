@@ -7,6 +7,7 @@ inputs:
     description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
     required: true
   NODE_ENV:
+    description: ""
     required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
@@ -18,12 +19,16 @@ inputs:
     description: "Vercel project ID"
     required: true
   NEXT_PUBLIC_WWW_URL:
+    description: ""
     required: true
   NEXT_PUBLIC_BLOG_URL:
+    description: ""
     required: true
   NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
+    description: ""
     required: true
   NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
+    description: ""
     required: true
 
 runs:
@@ -38,7 +43,30 @@ runs:
         NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}
         NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
         NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
-    - name: Install Vercel CLI
+
+    - name: Set Env Vars on Vercel Project
+      uses: dkershner6/vercel-set-env-action@v3
+      with:
+        token: ${{ inputs.VERCEL_TOKEN }}
+        teamId: ${{ inputs.VERCEL_ORG_ID }}
+        projectName: ${{ inputs.project_name }}
+        envVariableKeys: NEXT_PUBLIC_WWW_URL,NEXT_PUBLIC_BLOG_URL,NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID, NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID
+      env:
+        ENV_NEXT_PUBLIC_WWW_URL: NEXT_PUBLIC_WWW_URL
+        TARGET_NEXT_PUBLIC_WWW_URL: ${{ inputs.NODE_ENV }} # comma delimited, one of [production, preview, development]
+        TYPE_NEXT_PUBLIC_WWW_URL: plain # one of [plain, encrypted]
+
+        ENV_NEXT_PUBLIC_BLOG_URL: NEXT_PUBLIC_BLOG_URL
+        TARGET_NEXT_PUBLIC_BLOG_URL: ${{ inputs.NODE_ENV }}
+        TYPE_NEXT_PUBLIC_BLOG_URL: plain
+
+        ENV_NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID
+        TARGET_NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NODE_ENV }}
+        TYPE_NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: plain
+
+        ENV_NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID
+        TARGET_NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NODE_ENV }}
+        TYPE_NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: plain
 
     - name: Build for Vercel
       shell: bash
@@ -48,32 +76,32 @@ runs:
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
 
-        declare -A env_vars
+        # declare -A env_vars
 
-        # Fetch existing environment variables from Vercel
-        echo "Fetching existing environment variables from Vercel..."
-        existing_vars=$(pnpm vercel env ls $NODE_ENV --token=$VERCEL_TOKEN | awk 'NR > 4 {print $1}')
-        echo $existing_vars
-        # Remove all existing variables from Vercel
-        for var in $existing_vars; do
-          echo "Removing $var from Vercel..."
-          pnpm vercel env rm "$var" --token=$VERCEL_TOKEN  $NODE_ENV -y
-        done
+        # # Fetch existing environment variables from Vercel
+        # echo "Fetching existing environment variables from Vercel..."
+        # existing_vars=$(pnpm vercel env ls $NODE_ENV --token=$VERCEL_TOKEN | awk 'NR > 4 {print $1}')
+        # echo $existing_vars
+        # # Remove all existing variables from Vercel
+        # for var in $existing_vars; do
+        #   echo "Removing $var from Vercel..."
+        #   pnpm vercel env rm "$var" --token=$VERCEL_TOKEN  $NODE_ENV -y
+        # done
 
-        # Read variables from the .env file
-        echo "Reading variables from .env file..."
-        while IFS='=' read -r key value; do
-          if [[ -n "$key" && -n "$value" && ! "$key" =~ ^# ]]; then
-            env_vars[$key]="$value"
-          fi
-        done < .env
+        # # Read variables from the .env file
+        # echo "Reading variables from .env file..."
+        # while IFS='=' read -r key value; do
+        #   if [[ -n "$key" && -n "$value" && ! "$key" =~ ^# ]]; then
+        #     env_vars[$key]="$value"
+        #   fi
+        # done < .env
 
-        # Add variables from .env to Vercel
-        for key in "${!env_vars[@]}"; do
-          echo "Adding $key to Vercel..."
-          echo "${env_vars[$key]}" | pnpm vercel env add "$key" $NODE_ENV --token=$VERCEL_TOKEN 
-        done
+        # # Add variables from .env to Vercel
+        # for key in "${!env_vars[@]}"; do
+        #   echo "Adding $key to Vercel..."
+        #   echo "${env_vars[$key]}" | pnpm vercel env add "$key" $NODE_ENV --token=$VERCEL_TOKEN 
+        # done
 
-        echo "Environment synchronization with Vercel completed successfully."
+        # echo "Environment synchronization with Vercel completed successfully."
 
         cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel --token=$VERCEL_TOKEN
