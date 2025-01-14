@@ -38,6 +38,7 @@ runs:
         NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}
         NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
         NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+    - name: Install Vercel CLI
 
     - name: Build for Vercel
       shell: bash
@@ -51,12 +52,12 @@ runs:
 
         # Fetch existing environment variables from Vercel
         echo "Fetching existing environment variables from Vercel..."
-        existing_vars=$(vercel env ls $NODE_ENV --token=$VERCEL_TOKEN | awk 'NR > 4 {print $1}')
-
+        existing_vars=$(pnpm vercel env ls $NODE_ENV --token=$VERCEL_TOKEN | awk 'NR > 4 {print $1}')
+        echo $existing_vars
         # Remove all existing variables from Vercel
         for var in $existing_vars; do
           echo "Removing $var from Vercel..."
-          vercel env rm "$var" --token=$VERCEL_TOKEN  $NODE_ENV -y
+          pnpm vercel env rm "$var" --token=$VERCEL_TOKEN  $NODE_ENV -y
         done
 
         # Read variables from the .env file
@@ -70,7 +71,7 @@ runs:
         # Add variables from .env to Vercel
         for key in "${!env_vars[@]}"; do
           echo "Adding $key to Vercel..."
-          echo "${env_vars[$key]}" | vercel env add "$key" $NODE_ENV --token=$VERCEL_TOKEN 
+          echo "${env_vars[$key]}" | pnpm vercel env add "$key" $NODE_ENV --token=$VERCEL_TOKEN 
         done
 
         echo "Environment synchronization with Vercel completed successfully."
