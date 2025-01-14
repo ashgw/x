@@ -47,19 +47,19 @@ runs:
     - name: Set Env Vars on Vercel Project
       uses: dkershner6/vercel-set-env-action@v3
       env:
-        ENV_NEXT_PUBLIC_WWW_URL: ${{ inputs.NEXT_PUBLIC_WWW_URL }}
+        NEXT_PUBLIC_WWW_URL: ${{ inputs.NEXT_PUBLIC_WWW_URL }}
         TARGET_NEXT_PUBLIC_WWW_URL: ${{ inputs.NODE_ENV }} # comma delimited, one of [production, preview, development]
         TYPE_NEXT_PUBLIC_WWW_URL: plain # one of [plain, encrypted]
 
-        ENV_NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}
+        NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}
         TARGET_NEXT_PUBLIC_BLOG_URL: ${{ inputs.NODE_ENV }}
         TYPE_NEXT_PUBLIC_BLOG_URL: plain
 
-        ENV_NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+        NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
         TARGET_NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NODE_ENV }}
         TYPE_NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: plain
 
-        ENV_NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+        NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
         TARGET_NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NODE_ENV }}
         TYPE_NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: plain
       with:
