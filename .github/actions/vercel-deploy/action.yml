@@ -7,6 +7,7 @@ inputs:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
   NODE_ENV:
+    description: "Vercel takes care of this"
     required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
