@@ -45,6 +45,7 @@ runs:
         NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
 
     - name: Debug Environment Variables
+      shell: bash
       run: |
         echo "NEXT_PUBLIC_WWW_URL: ${{ inputs.NEXT_PUBLIC_WWW_URL }}"
         echo "NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}"
