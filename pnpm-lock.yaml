@@ -8,7 +8,7 @@ catalogs:
   default:
     '@ashgw/ts-env':
       specifier: ^1.3.5
-      version: 1.3.5
+      version: 1.3.6
     '@playwright/test':
       specifier: ^1.40.1
       version: 1.48.2
@@ -110,7 +110,7 @@ importers:
     dependencies:
       '@ashgw/css':
         specifier: workspace:*
-        version: link:../../packages/css
+        version: link:../../assets/packaged/css
       '@ashgw/env':
         specifier: workspace:*
         version: link:../../packages/env
@@ -288,7 +288,7 @@ importers:
     dependencies:
       '@ashgw/css':
         specifier: workspace:*
-        version: link:../../packages/css
+        version: link:../../assets/packaged/css
       '@ashgw/env':
         specifier: 'workspace:'
         version: link:../../packages/env
@@ -462,13 +462,13 @@ importers:
         specifier: ^5.96.1
         version: 5.96.1
 
-  packages/css: {}
+  assets/packaged/css: {}
 
   packages/env:
     dependencies:
       '@ashgw/ts-env':
         specifier: 'catalog:'
-        version: 1.3.5(zod@3.23.8)
+        version: 1.3.6(zod@3.23.8)
       dotenv:
         specifier: 'catalog:'
         version: 16.4.5
@@ -688,8 +688,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@ashgw/ts-env@1.3.5':
-    resolution: {integrity: sha512-gUBYTtFHl2MUruAzQcadNU8FQnHe6T0ejWnRd4eDh8fnxToe7v2t3e76PTZh84Wuk83QPazOxfKU5yJ7rpjK9g==}
+  '@ashgw/ts-env@1.3.6':
+    resolution: {integrity: sha512-5Iho64TTjpB6hUxVpsb+4m+hVAHvCaRMwlM2X07Nd6Fc4mM1XRupWNUE5yl4V5laBzDjj6dFoOgoHly5MhAKkg==}
     peerDependencies:
       zod: '>=3.0.0'
 
@@ -7723,7 +7723,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@ashgw/ts-env@1.3.5(zod@3.23.8)':
+  '@ashgw/ts-env@1.3.6(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 

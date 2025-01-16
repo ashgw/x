@@ -11,7 +11,7 @@ jobs:
       matrix:
         node-version: [18, 19, 20]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
         with:
           node-version: ${{ matrix.node-version }}
@@ -30,7 +30,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
@@ -46,7 +46,7 @@ jobs:
         run: npx playwright install # issue not resolved with pnpm as of date 04.24
       - name: Run Playwright tests
         run: pnpm test:e2e
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report

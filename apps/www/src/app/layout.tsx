@@ -14,28 +14,28 @@ import { NavBar } from "./components/shared/nav";
 const atkinsonHyperlegible = localFont({
   src: [
     {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf",
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf",
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf",
       weight: "400",
       style: "italic",
     },
     {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf",
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf",
       weight: "700",
       style: "italic",
     },
   ],
-  variable: "--font-atkinson-hyperlegible", // a CSS variable for use in your styles
-  display: "swap", // `swap` for better performance
+  variable: "--font-atkinson-hyperlegible",
+  display: "swap", // Enable font swapping for better performance
 });
 
 const title = "Ashref Gwader";
