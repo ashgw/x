@@ -22,7 +22,8 @@
     "format": "prettier . --write",
     "format-check": "prettier --check .",
     "lint:md": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
-    "lint:spelling": "cspell \"**\" \".github/**/*\""
+    "lint:spelling": "cspell \"**\" \".github/**/*\"",
+    "with-env": "dotenv -e ../../.env --"
   },
   "keywords": [],
   "author": "",
@@ -55,6 +56,7 @@
     "ts-roids": "^1.34.0",
     "typescript": "catalog:",
     "vercel": "catalog:",
+    "dotenv-cli": "catalog:",
     "vitest": "catalog:",
     "webpack": "^5.96.1"
   },
