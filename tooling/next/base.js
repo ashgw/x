@@ -4,7 +4,7 @@ const baseConfig = {
   productionBrowserSourceMaps: true,
 
   /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ["@ashgw/ui"],
+  transpilePackages: ["@ashgw/ui", "@ashgw/css", "@ashgw/env"],
   /** We already do linting and typechecking as separate tasks in CI */
 
   eslint: { ignoreDuringBuilds: true },
