@@ -2,7 +2,8 @@
   "name": "ashgw",
   "private": true,
   "engines": {
-    "node": ">=20.16.0"
+    "node": ">=20.18.1",
+    "pnpm": "^9.12.2"
   },
   "homepage": "https://ashgw.me",
   "repository": {
