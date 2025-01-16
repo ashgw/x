@@ -1,4 +1,4 @@
-import "@ashgw/css/global";
+import "@ashgw/css/globals";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
@@ -10,28 +10,30 @@ import { NamesService } from "../lib/services/Names.service";
 import { Providers } from "./components/providers";
 import { NavBar } from "./components/shared/nav";
 
-const createFontDefinition = (
-  fileName: string,
-  weight: `${400 | 700}`,
-  style: "normal" | "italic",
-) => ({
-  path: `${"./../../../../assets/fonts/AtkinsonHyperlegible"}/${fileName}`,
-  weight,
-  style,
-});
-
 const atkinsonHyperlegible = localFont({
   src: [
-    createFontDefinition("AtkinsonHyperlegible-Regular.ttf", "400", "normal"),
-    createFontDefinition("AtkinsonHyperlegible-Bold.ttf", "700", "normal"),
-    createFontDefinition("AtkinsonHyperlegible-Italic.ttf", "400", "italic"),
-    createFontDefinition(
-      "AtkinsonHyperlegible-BoldItalic.ttf",
-      "700",
-      "italic",
-    ),
+    {
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf",
+      weight: "700",
+      style: "italic",
+    },
   ],
-  variable: "--font-atkinson-hyperlegible", // Define a CSS variable for use in styles
+  variable: "--font-atkinson-hyperlegible",
   display: "swap", // Enable font swapping for better performance
 });
 
