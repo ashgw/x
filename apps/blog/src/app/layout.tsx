@@ -10,31 +10,29 @@ import { NamesService } from "../lib/services/Names.service";
 import { Providers } from "./components/providers";
 import { NavBar } from "./components/shared/nav";
 
+const createFontDefinition = (
+  fileName: string,
+  weight: `${400 | 700}`,
+  style: "normal" | "italic",
+) => ({
+  path: `${"./../../../../assets/fonts/AtkinsonHyperlegible"}/${fileName}`,
+  weight,
+  style,
+});
+
 const atkinsonHyperlegible = localFont({
   src: [
-    {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "../../../../packages/assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf",
-      weight: "700",
-      style: "italic",
-    },
+    createFontDefinition("AtkinsonHyperlegible-Regular.ttf", "400", "normal"),
+    createFontDefinition("AtkinsonHyperlegible-Bold.ttf", "700", "normal"),
+    createFontDefinition("AtkinsonHyperlegible-Italic.ttf", "400", "italic"),
+    createFontDefinition(
+      "AtkinsonHyperlegible-BoldItalic.ttf",
+      "700",
+      "italic",
+    ),
   ],
-  variable: "--font-atkinson-hyperlegible", // a CSS variable for use in your styles
-  display: "swap", // `swap` for better performance
+  variable: "--font-atkinson-hyperlegible", // Define a CSS variable for use in styles
+  display: "swap", // Enable font swapping for better performance
 });
 
 const title = "Ashref Gwader";
