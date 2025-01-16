@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { NextUIProvider } from '@nextui-org/react';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from "react";
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function Providers({ children }: PropsWithChildren) {
   return (

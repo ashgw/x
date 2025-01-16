@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 export default function YeetMe() {
   return (
-    <div className="flex justify-center items-center py-2">
+    <div className="flex items-center justify-center py-2">
       <YeetButton />
     </div>
   );
@@ -23,25 +23,25 @@ export function YeetButton() {
     height: 70,
     borderRadius: 20,
     scale: 1,
-    boxShadow: '10px 10px 0 rgba(255, 46, 199, 0.2)',
+    boxShadow: "10px 10px 0 rgba(255, 46, 199, 0.2)",
     rotate: 0,
   };
   const transition = {
     duration: 1,
-    type: 'keyframes',
-    ease: 'easeInOut',
+    type: "keyframes",
+    ease: "easeInOut",
   };
   const whileHover = {
-    cursor: 'grab',
+    cursor: "grab",
   };
   const whileDrag = {
-    cursor: 'grabbing',
+    cursor: "grabbing",
   };
   return (
     <motion.button
       layout
       viewport={{ once: true }}
-      className="flex justify-center items-center origin-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500 w-80 h-80"
+      className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500"
       initial={initial}
       whileInView={animate}
       transition={transition}
@@ -60,7 +60,7 @@ export function YeetButton() {
       <motion.div
         layout
         viewport={{ once: true }}
-        className="flex justify-center items-center origin-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-80 h-80"
+        className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
         initial={initial}
         whileInView={animate}
         transition={transition}
@@ -68,7 +68,7 @@ export function YeetButton() {
         whileDrag={whileDrag}
         drag
       >
-        <span className=" font-bold">yeet me</span>
+        <span className="font-bold">yeet me</span>
       </motion.div>
     </motion.button>
   );

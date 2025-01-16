@@ -1,6 +1,6 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import { navLinks } from '../../utils/navLinks';
+import { navLinks } from "../../utils/navLinks";
 
 export function LeftNav() {
   return (
@@ -11,7 +11,7 @@ export function LeftNav() {
           .map(({ name, href }) => (
             <Link
               key={name}
-              className="nav-link-shadow dimmed-3 font-semibold average-transition hover:average-translate hover:text-white"
+              className="nav-link-shadow dimmed-3 average-transition hover:average-translate font-semibold hover:text-white"
               href={href}
             >
               {name}

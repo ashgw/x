@@ -1,30 +1,30 @@
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from "next/og";
 
-export const alt = 'Ashgw';
+export const alt = "Ashgw";
 
 export const size = {
   width: 1200,
   height: 630,
 };
 
-export const contentType = 'image/png';
+export const contentType = "image/png";
 export default function Image() {
   return new ImageResponse(
     (
       <div
         style={{
           fontSize: 128,
-          background: 'black',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          background: "black",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <span
           style={{
-            color: 'white',
+            color: "white",
           }}
         >
           A S H G W
@@ -33,6 +33,6 @@ export default function Image() {
     ),
     {
       ...size,
-    }
+    },
   );
 }

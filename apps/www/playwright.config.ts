@@ -1,5 +1,6 @@
-import { baseConfig } from '@ashgw/playwright-config';
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
+
+import { baseConfig } from "@ashgw/playwright-config";
 
 export default defineConfig({
   ...baseConfig,

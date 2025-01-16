@@ -1,7 +1,7 @@
 export class DateService {
   public static formatDate({ stringDate }: { stringDate: string }): string {
     const currentDate = new Date();
-    if (!stringDate.includes('T')) {
+    if (!stringDate.includes("T")) {
       stringDate = `${stringDate}T00:00:00`;
     }
     const targetDate = new Date(stringDate);
@@ -10,7 +10,7 @@ export class DateService {
     const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
     const daysAgo = currentDate.getDate() - targetDate.getDate();
 
-    let formattedDate = '';
+    let formattedDate = "";
 
     if (yearsAgo > 0) {
       formattedDate = `${yearsAgo}y ago`;
@@ -19,13 +19,13 @@ export class DateService {
     } else if (daysAgo > 0) {
       formattedDate = `${daysAgo}d ago`;
     } else {
-      formattedDate = 'Today';
+      formattedDate = "Today";
     }
 
-    const fullDate = targetDate.toLocaleString('en-us', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
+    const fullDate = targetDate.toLocaleString("en-us", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     });
     return `${fullDate} (${formattedDate})`;
   }
