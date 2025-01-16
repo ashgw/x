@@ -12,5 +12,6 @@ export const env = createEnv({
   },
   disablePrefix: ["NODE_ENV"],
   prefix: "NEXT_PUBLIC",
-  skipValidation: false,
+  // @ts-expect-error skip in browser
+  skipValidation: typeof window === "undefined" ? false : true,
 });
