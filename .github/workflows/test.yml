@@ -17,8 +17,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - uses: ./.github/actions/setup-env
         with:
-          ENV_VARS: ${{ secrets.ENV_VARS }}
-          GA_ID: ${{ secrets.GA_ID }}
+          NODE_ENV: "development"
+          NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
+          NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
+          NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+          NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+
       - name: Running code tests
         run: pnpm test:unit-integration
 
@@ -30,8 +34,12 @@ jobs:
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
-          ENV_VARS: ${{ secrets.ENV_VARS }}
-          GA_ID: ${{ secrets.GA_ID }}
+          NODE_ENV: "development"
+          NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
+          NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
+          NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+          NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+
       - name: Install dependencies
         run: npm install -g pnpm &&  pnpm install --frozen-lockfile
       - name: Install Playwright Browsers

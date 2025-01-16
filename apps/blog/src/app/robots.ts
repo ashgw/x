@@ -1,8 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { env } from "~/env";
-
-const SITE_URL = env.NEXT_PUBLIC_WWW_PRODUCTION_URL;
+import { env } from "@ashgw/env";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: SITE_URL + "/sitemap.xml",
-    host: SITE_URL,
+    sitemap: env.NEXT_PUBLIC_WWW_URL + "/sitemap.xml",
+    host: env.NEXT_PUBLIC_WWW_URL,
   };
 }

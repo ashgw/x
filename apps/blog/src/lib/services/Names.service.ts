@@ -6,6 +6,7 @@ export class NamesService {
   public static matchURL(dto: { url: string }): Optional<RegExpExecArray> {
     return URL_REGEX.exec(dto.url);
   }
+
   public static getSiteName({ url }: { url: string }): Optional<string> {
     const match = OPTIONAL_PROTOCOL_URL_REGEX.exec(url);
     if (match) {

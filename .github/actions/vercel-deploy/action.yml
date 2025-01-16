@@ -6,14 +6,14 @@ inputs:
   project_name:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
-  deployment_type:
-    description: "Whether it's 'production' or 'preview'"
+  NODE_ENV:
+    description: "Vercel takes care of this"
     required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
     required: true
   GITHUB_TOKEN:
-    description: "GitHub token"
+    description: "GitHub toaken"
     required: true
 
 runs:
@@ -22,7 +22,7 @@ runs:
     - name: Deploy to Vercel
       shell: bash
       run: |
-        if [ "${{ inputs.deployment_type }}" == "preview" ]; then
+        if [ "${{ inputs.NODE_ENV }}" == "preview" ]; then
           cd apps/${{ inputs.project_name }} && \
           PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
@@ -32,7 +32,7 @@ runs:
         fi
 
     - name: Notify about the deployment URL
-      if: ${{ inputs.deployment_type == 'preview' }}
+      if: ${{ inputs.NODE_ENV == 'preview' }}
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

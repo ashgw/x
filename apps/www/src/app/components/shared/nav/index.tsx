@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { AnimatePresence } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
-import useToggleDropDownMenu from '../../../../lib/hooks/useToggleDropDownMenu';
-import { LeftNav } from './components/desktop/LeftNav';
-import { RightNav } from './components/desktop/RightNav';
-import { BgOverlay } from './components/mobile/BgOverlay';
-import { DropDownMenu } from './components/mobile/DropDownMenu';
-import { HamburgerButton } from './components/mobile/Hamburger';
-import { Logo } from './components/shared/Logo';
+import useToggleDropDownMenu from "../../../../lib/hooks/useToggleDropDownMenu";
+import { LeftNav } from "./components/desktop/LeftNav";
+import { RightNav } from "./components/desktop/RightNav";
+import { BgOverlay } from "./components/mobile/BgOverlay";
+import { DropDownMenu } from "./components/mobile/DropDownMenu";
+import { HamburgerButton } from "./components/mobile/Hamburger";
+import { Logo } from "./components/shared/Logo";
 
 export function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({
-    menuId: 'nav-menu',
+    menuId: "nav-menu",
   });
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
@@ -30,7 +30,7 @@ export function NavBar() {
   };
 
   return (
-    <nav id="nav-menu" className="pt-3 relative">
+    <nav id="nav-menu" className="relative pt-3">
       <AnimatePresence>
         {isOverlayVisible && <BgOverlay onClick={handleToggleMenu} />}
       </AnimatePresence>
@@ -38,7 +38,7 @@ export function NavBar() {
         <div className="relative flex h-16 items-center justify-between">
           <div
             id="hamburger"
-            className="absolute inset-y-0 left-2 flex items-center sm:hidden z-50"
+            className="absolute inset-y-0 left-2 z-50 flex items-center sm:hidden"
           >
             <HamburgerButton isOpened={isOpened} onClick={handleToggleMenu} />
           </div>

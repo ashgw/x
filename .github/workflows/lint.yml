@@ -12,8 +12,12 @@ jobs:
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
-          ENV_VARS: ${{ secrets.ENV_VARS }}
-          GA_ID: ${{ secrets.GA_ID }}
+          NODE_ENV: "production"
+          NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
+          NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
+          NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+          NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+
       - uses: ./.github/actions/pnpm-install
       - name: lint
         run: pnpm lint

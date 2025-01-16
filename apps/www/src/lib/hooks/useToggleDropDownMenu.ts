@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import type { MouseEvent, TouchEvent } from 'react';
+import type { MouseEvent, TouchEvent } from "react";
+import { useEffect, useState } from "react";
 
 const useToggleDropDownMenu = ({
   menuId,
@@ -22,11 +22,11 @@ const useToggleDropDownMenu = ({
       }
     };
     // @ts-expect-error it just works, no time to set types
-    window.addEventListener('click', handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
 
     return () => {
       // @ts-expect-error it just works, no time to set types
-      window.removeEventListener('click', handleClickOutside);
+      window.removeEventListener("click", handleClickOutside);
     };
   }, [menuId, initialState]);
 

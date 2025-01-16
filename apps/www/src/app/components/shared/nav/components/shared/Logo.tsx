@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export function Logo() {
   return (
@@ -6,7 +6,7 @@ export function Logo() {
       width={25}
       height={25}
       src="https://avatars.githubusercontent.com/u/126174609?v=4"
-      className="h-8 w-auto rounded-full invisible"
+      className="invisible h-8 w-auto rounded-full"
       alt="The logo"
     />
   );

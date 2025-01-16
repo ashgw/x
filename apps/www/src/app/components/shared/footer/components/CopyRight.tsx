@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { CREATOR } from '~/lib/constants';
+import { motion } from "framer-motion";
+
+import { CREATOR } from "~/lib/constants";
 
 export function CopyRight() {
   return (
@@ -15,10 +16,10 @@ export function CopyRight() {
       }}
       transition={{
         duration: 1,
-        ease: 'easeInOut',
+        ease: "easeInOut",
       }}
     >
-      <p className="flex items-center justify-center text-secondary-center dimmed-3 text-sm">
+      <p className="text-secondary-center dimmed-3 flex items-center justify-center text-sm">
         &copy; {new Date().getFullYear()} {CREATOR}. All rights reserved
       </p>
     </motion.div>
