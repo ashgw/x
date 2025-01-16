@@ -2,6 +2,7 @@ packages:
   - apps/*
   - packages/*
   - tooling/*
+  - assets/packaged/*
 
 catalog:
   "@tanstack/react-query": ^5.59.15
