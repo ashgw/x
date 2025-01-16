@@ -2,7 +2,8 @@
   "name": "ashgw",
   "private": true,
   "engines": {
-    "node": ">=20.16.0"
+    "node": ">=20.16.0",
+    "pnpm": "^9.12.2"
   },
   "homepage": "https://ashgw.me",
   "repository": {
@@ -32,7 +33,8 @@
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "typecheck": "turbo typecheck",
-    "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes"
+    "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
+    "postinstall": "pnpm dlx sherif@latest"
   },
   "devDependencies": {
     "@ashgw/prettier-config": "workspace:*",
