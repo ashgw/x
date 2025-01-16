@@ -56,7 +56,6 @@
     "ts-roids": "^1.34.0",
     "typescript": "catalog:",
     "vercel": "catalog:",
-    "dotenv-cli": "catalog:",
     "vitest": "catalog:",
     "webpack": "^5.96.1"
   },

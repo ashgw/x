@@ -12,9 +12,6 @@ catalogs:
     '@vitest/ui':
       specifier: ^2.1.8
       version: 2.1.8
-    dotenv-cli:
-      specifier: ^7.4.4
-      version: 7.4.4
     eslint:
       specifier: ^9.12.0
       version: 9.13.0
@@ -247,9 +244,6 @@ importers:
       autoprefixer:
         specifier: ^10.0.1
         version: 10.4.20(postcss@8.4.47)
-      dotenv-cli:
-        specifier: 'catalog:'
-        version: 7.4.4
       eslint:
         specifier: 'catalog:'
         version: 9.13.0(jiti@2.3.3)
@@ -425,9 +419,6 @@ importers:
       autoprefixer:
         specifier: ^10.0.1
         version: 10.4.20(postcss@8.4.47)
-      dotenv-cli:
-        specifier: 'catalog:'
-        version: 7.4.4
       eslint:
         specifier: 'catalog:'
         version: 9.13.0(jiti@2.3.3)
@@ -469,6 +460,9 @@ importers:
       '@ashgw/ts-env':
         specifier: workspace:*
         version: link:../ts-env
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -4311,14 +4305,6 @@ packages:
   dot-prop@6.0.1:
     resolution: {integrity: sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==}
     engines: {node: '>=10'}
-
-  dotenv-cli@7.4.4:
-    resolution: {integrity: sha512-XkBYCG0tPIes+YZr4SpfFv76SQrV/LeCE8CI7JSEMi3VR9MvTihCGTOtbIexD6i2mXF+6px7trb1imVCXSNMDw==}
-    hasBin: true
-
-  dotenv-expand@10.0.0:
-    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
-    engines: {node: '>=12'}
 
   dotenv@16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
@@ -12476,15 +12462,6 @@ snapshots:
   dot-prop@6.0.1:
     dependencies:
       is-obj: 2.0.0
-
-  dotenv-cli@7.4.4:
-    dependencies:
-      cross-spawn: 7.0.6
-      dotenv: 16.4.5
-      dotenv-expand: 10.0.0
-      minimist: 1.2.8
-
-  dotenv-expand@10.0.0: {}
 
   dotenv@16.0.3: {}
 
