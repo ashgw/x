@@ -16,7 +16,7 @@ jobs:
       - uses: ./.github/actions/vercel-build
         with:
           project_name: blog
-          NODE_ENV: production # TODO: rename this to NODE_ENV
+          NODE_ENV: production
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
           NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
