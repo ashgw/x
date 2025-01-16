@@ -1,4 +1,4 @@
-import "@ashgw/css/globals";
+import "@ashgw/css/global";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
