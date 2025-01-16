@@ -1,6 +1,9 @@
+import { config } from "dotenv";
 import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
+
+config({ path: require("path").resolve(__dirname, "../../.env") });
 
 export const env = createEnv({
   vars: {
