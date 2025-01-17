@@ -21,6 +21,7 @@ catalog:
   # @see https://github.com/vercel/vercel/issues/11097
   vercel: "33.2.0"
   "@playwright/test": ^1.40.1
+  # this is here to load the TS env file on nextJS builds
   "jiti": "^2.3.3"
 
 catalogs:
