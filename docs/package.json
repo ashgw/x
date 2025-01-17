@@ -1,5 +1,5 @@
 {
-  "name": "fumadocs-ui-template",
+  "name": "@ashgw/docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,18 +9,18 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
-    "next": "15.1.4",
+    "next": "catalog:",
     "fumadocs-ui": "14.7.4",
     "fumadocs-core": "14.7.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "catalog:react18",
+    "react-dom": "catalog:react18",
     "fumadocs-mdx": "11.3.1"
   },
   "devDependencies": {
     "@types/node": "22.10.6",
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
-    "typescript": "^5.7.3",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
+    "typescript": "catalog:",
     "@types/mdx": "^2.0.13"
   }
 }
