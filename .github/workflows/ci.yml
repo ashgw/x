@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   validate-pr:
-    uses: ./.github/workflows/validate-pr.yml
+    uses: ./.github/workflows/validate-pr-title.yml
     secrets: inherit
 
   format:
