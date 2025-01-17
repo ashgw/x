@@ -1,7 +1,7 @@
 feat:
   - head-branch: ["^feature", "feature", "feat"]
 
-bug:
+fix:
   - head-branch: ["^fix", "fixed"]
 
 tooling:
