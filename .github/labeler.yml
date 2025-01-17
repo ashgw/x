@@ -37,3 +37,8 @@ api:
   - changed-files:
       - any-glob-to-any-file:
           - apps/api/*
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/*
