@@ -552,6 +552,9 @@ importers:
       '@rushstack/eslint-patch':
         specifier: ^1.10.5
         version: 1.10.5
+      '@rushstack__eslint-patch':
+        specifier: link:@types/@rushstack__eslint-patch
+        version: link:@types/@rushstack__eslint-patch
       '@types/eslint__js':
         specifier: 8.42.3
         version: 8.42.3

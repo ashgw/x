@@ -18,6 +18,7 @@
     "@eslint/compat": "^1.2.0",
     "@next/eslint-plugin-next": "^14.2.15",
     "@rushstack/eslint-patch": "^1.10.5",
+    "@rushstack__eslint-patch": "link:@types/@rushstack__eslint-patch",
     "@types/eslint__js": "8.42.3",
     "eslint": "catalog:",
     "eslint-plugin-import": "^2.31.0",
