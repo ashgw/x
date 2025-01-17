@@ -3,7 +3,6 @@ packages:
   - packages/*
   - tooling/*
   - assets/packaged/*
-  - docs
 
 catalog:
   "@tanstack/react-query": ^5.59.15
