@@ -1,5 +1,6 @@
 {
   "extends": "@ashgw/tsconfig/base.json",
   "include": ["."],
+  "compilerOptions": { "lib": ["DOM", "ES2022"] },
   "exclude": ["node_modules"]
 }

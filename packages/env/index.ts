@@ -5,6 +5,8 @@ import { createEnv } from "@ashgw/ts-env";
 
 config({ path: require("path").resolve(__dirname, "../../.env") });
 
+const isBrowser = typeof window !== "undefined";
+
 export const env = createEnv({
   vars: {
     NODE_ENV: z.enum(["production", "development", "preview"]),
@@ -15,6 +17,5 @@ export const env = createEnv({
   },
   disablePrefix: ["NODE_ENV"],
   prefix: "NEXT_PUBLIC",
-  // @ts-expect-error skip in browser
-  skipValidation: typeof window === "undefined" ? false : true,
+  skipValidation: isBrowser,
 });
