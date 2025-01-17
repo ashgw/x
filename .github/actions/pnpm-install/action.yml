@@ -1,5 +1,5 @@
 name: "pnpm install"
-description: "Run pnpm install with node_modules linker and cache enabled"
+description: "Run pnpm install with node_modules linker and cache enabled & postinstall lint checks included"
 inputs:
   node_version:
     description: "Use node 20+"
