@@ -1,10 +1,10 @@
-feature:
+feat:
   - head-branch: ["^feature", "feature", "feat"]
 
-bug-fix:
+bug:
   - head-branch: ["^fix", "fixed"]
 
-global-config:
+tooling:
   - changed-files:
       - any-glob-to-any-file:
           - tooling/*
