@@ -1,6 +1,14 @@
 feat:
   - head-branch: ["^feature", "feature", "feat"]
 
+
+docs:
+  - head-branch: ['^documentation', 'documentation', '^docs', 'docs']
+  - changed-files:
+      - any-glob-to-any-file:
+        - '**/docs/**'
+
+
 fix:
   - head-branch: ["^fix", "fixed"]
 
