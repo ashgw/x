@@ -1,5 +1,6 @@
 # this auto labels PRs based on the configuration file
 # have a look at ./github/labeler.yml`
+name: CI
 
 on:
   - pull_request_target
@@ -17,4 +18,4 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
-          configuration-path: ./github/labeler.yml
+          configuration-path: ./github/labeler.yml`
