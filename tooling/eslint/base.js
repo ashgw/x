@@ -21,7 +21,7 @@ export const restrictEnvAccess = tseslint.config(
           object: "process",
           property: "env",
           message:
-            "Use `import { env } from '~/env'` instead to ensure validated types.",
+            "Use `import { env } from '~/env'` or '@ashgw/env' instead to ensure validated types.",
         },
       ],
       "@typescript-eslint/consistent-type-imports": "error",
@@ -31,7 +31,7 @@ export const restrictEnvAccess = tseslint.config(
           name: "process",
           importNames: ["env"],
           message:
-            "Use `import { env } from '~/env'` instead to ensure validated types.",
+            "Use `import { env } from '~/env'` or '@ashgw/env' instead to ensure validated types.",
         },
       ],
     },
