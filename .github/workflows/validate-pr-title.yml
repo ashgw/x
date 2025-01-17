@@ -1,11 +1,12 @@
-name: CI
+# this is here for the samentic release with conventional commits, needa make sure no commits are off
+name: PR
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  validate-pr:
+  validate-title:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
