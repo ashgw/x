@@ -1,0 +1,95 @@
+General Guidelines:
+- Be concise and accurate, avoid unnecessary verbosity.
+- Suggest solutions the user might not have thought about; anticipate needs.
+- Treat the user as an expert; provide answers directly and thoroughly.
+- Value good arguments over authority; source is irrelevant unless explicitly asked.
+- Discuss safety only when it’s crucial and non-obvious.
+- Split responses into multiple messages if the content exceeds length limitations.
+- Avoid placeholders, TODOs, or incomplete pieces of code; ensure completeness.
+- Fully implement all requested functionality. Verify correctness thoroughly.
+- Keep README.md up-to-date with project setup and contribution guidelines.
+- Confirm before writing code when clarification is required.
+- Flag speculative or predictive content.
+
+
+Code Style and Structure:
+- Write concise, technical TypeScript code with accurate examples.
+- Use functions declared with the `function` keyword for pure functions; omit semicolons.
+- Follow DRY principles (Don’t Repeat Yourself) and prefer modularization.
+- Use descriptive variable names with auxiliary verbs (e.g., `isLoading`, `hasError`).
+- Never use `export default` unless it’s a config file that doesn’t allow named exports.
+- One React component per file; break large components into smaller pieces.
+- Use `React.memo()` for performance optimization when appropriate.
+- Prefer `async/await` over `.then()` for asynchronous operations.
+- Always Receive an Object, Return an Object (RORO).
+- Handle errors gracefully; if a promise doesn’t throw, append `noError` to the variable name.
+
+
+
+Project Structure:
+- **Monorepo Layout**:
+  - Deployable apps: `apps/*` (e.g., `apps/blog`, `apps/www`, `apps/api`).
+  - Shared modules: `packages/*`.
+  - Config files and tooling: `tooling/*`.
+- **Naming Conventions**:
+  - Booleans: Use auxiliary verbs such as `does`, `has`, `is`, `should` (e.g., `isDisabled`, `hasError`).
+  - Directories: Use lowercase with dash separators (e.g., `components/auth-wizard`).
+  - React component files: Match the component name (e.g., `CopyRight.tsx` for the `CopyRight` component).
+  - File extensions: Use `.config.ts`, `.test.ts`, `.context.tsx`, `.type.ts`, `.hook.ts` appropriately.
+
+React and Next.js Guidelines:
+
+- **React Best Practices**:
+  - Minimize `use client`, `useEffect`, and `setState` usage.
+  - Favor React Server Components (RSC).
+  - Wrap client components in `Suspense` with a fallback.
+  - Use dynamic imports for non-critical components.
+  - Optimize images (WebP format, size data, lazy loading).
+  - Implement accessibility features (e.g., `aria-label`, `tabindex`, proper roles).
+
+- **Next.js Best Practices**:
+  - Follow Next.js documentation for Data Fetching, Rendering, and Routing.
+  - Optimize Web Vitals (LCP, CLS, FID).
+  - Use `nuqs` for URL search parameter state management.
+  - Sanitize user inputs to prevent XSS attacks.
+
+Error Handling and Validation:
+- Prioritize error handling and edge cases:
+  - Handle errors at the beginning of functions.
+  - Use guard clauses to handle preconditions and invalid states early.
+  - Use early returns for error conditions; avoid deeply nested `if` statements.
+  - Avoid unnecessary `else` statements; use the `if-return` pattern.
+- Implement global error boundaries to catch and handle unexpected errors.
+- Log errors consistently and provide user-friendly error messages.
+- Consider using custom error types or error factories.
+- Add environment variables to `packages/env` for validation.
+
+Styling and Design:
+- Use ShadCN UI, Radix, and TailwindCSS for components and styling.
+- Implement responsive design with a mobile-first approach.
+- Always use Tailwind classes for styling; avoid inline styles or separate CSS files.
+- Utilize the Class Variance Authority (CVA) for managing component variants.
+
+Object-Oriented Programming:
+- Use `public` modifier for all public methods.
+- Use `private` modifier for all private methods, prefixed with an underscore.
+- Place getters and setters at the top of the class.
+- Use `static` for static methods.
+- Use `async` for asynchronous class methods.
+
+Testing:
+- Write unit tests for components using `vitest`.
+- Implement integration tests for critical user flows.
+- Use snapshot testing sparingly.
+- Use Playwright for end-to-end (e2e) tests.
+
+
+
+Miscellaneous:
+- Sanitize content when using `dangerouslySetInnerHTML`; avoid whenever possible.
+- Use libraries like `react-intl` or `next-i18next` for internationalization (i18n).
+- Follow Taskfile commands for development and deployment tasks.
+- Follow WCAG standards for color contrast and readability.
+- Comment only when necessary to clarify complex logic; avoid excessive comments.
+- Use JSDoc comments for functions and components to improve IDE intellisense.
+
