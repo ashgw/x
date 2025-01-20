@@ -3,11 +3,17 @@
   "exports": {
     ".": "./index.ts"
   },
+  "type": "module",
   "private": true,
   "version": "0.1.0",
+  "scripts": {
+    "lint": "tsc --noEmit; eslint .",
+    "format": "prettier . --write"
+  },
   "devDependencies": {
     "@playwright/test": "catalog:",
     "@ashgw/tsconfig": "workspace:*",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@ashgw/eslint-config": "workspace:*"
   }
 }

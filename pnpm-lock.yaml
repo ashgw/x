@@ -467,6 +467,9 @@ importers:
         specifier: 'catalog:'
         version: 3.23.8
     devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
@@ -592,6 +595,9 @@ importers:
 
   tooling/playwright:
     devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../typescript
@@ -656,6 +662,9 @@ importers:
 
   tooling/vitest:
     devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../typescript
