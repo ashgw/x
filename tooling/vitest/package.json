@@ -3,12 +3,18 @@
   "exports": {
     ".": "./index.ts"
   },
+  "type": "module",
   "private": true,
   "version": "0.1.0",
+  "scripts": {
+    "lint": "tsc --noEmit; eslint .",
+    "format": "prettier . --write"
+  },
   "devDependencies": {
     "vitest": "catalog:",
     "@vitest/ui": "catalog:",
     "@ashgw/tsconfig": "workspace:*",
+    "@ashgw/eslint-config": "workspace:*",
     "typescript": "catalog:"
   }
 }
