@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 config({ path: path.resolve(__dirname, "../../.env") });
 
 const isBrowser = typeof window !== "undefined";
