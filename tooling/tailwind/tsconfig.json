@@ -1,5 +1,3 @@
 {
-  "extends": "@ashgw/tsconfig/base.json",
-  "include": ["."],
-  "exclude": ["node_modules"]
+  "extends": "@ashgw/tsconfig/base.json"
 }

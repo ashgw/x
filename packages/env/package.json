@@ -3,14 +3,20 @@
   "exports": {
     ".": "./index.ts"
   },
+  "type": "module",
   "private": true,
   "version": "0.1.0",
+  "scripts": {
+    "lint": "tsc --noEmit; eslint .",
+    "format": "prettier . --write"
+  },
   "dependencies": {
     "@ashgw/ts-env": "^1.3.6",
     "zod": "catalog:",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "typescript": "catalog:"
   }
