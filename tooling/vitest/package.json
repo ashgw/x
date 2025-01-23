@@ -1,14 +1,10 @@
 {
   "name": "@ashgw/vitest-config",
-  "exports": {
-    ".": "./index.ts"
-  },
-  "type": "module",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "lint": "tsc --noEmit; eslint .",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit; eslint ."
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
@@ -16,5 +12,9 @@
     "@vitest/ui": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  }
+  },
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "module"
 }

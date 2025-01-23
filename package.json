@@ -10,7 +10,6 @@
     "deps:check": "syncpack list-mismatches",
     "deps:fix": "syncpack fix-mismatches",
     "deps:format": "syncpack format",
-    "deps:lint": "syncpack lint",
     "dev": "turbo watch dev --continue",
     "dev:next": "turbo watch dev -F @ashgw/nextjs...",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",

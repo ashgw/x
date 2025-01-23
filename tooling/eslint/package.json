@@ -1,13 +1,7 @@
 {
   "name": "@ashgw/eslint-config",
-  "private": true,
   "version": "0.3.0",
-  "type": "module",
-  "exports": {
-    "./base": "./base.js",
-    "./nextjs": "./nextjs.js",
-    "./react": "./react.js"
-  },
+  "private": true,
   "scripts": {
     "clean": "git clean -xdf .cache .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
@@ -31,5 +25,11 @@
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@ashgw/prettier-config"
+  "exports": {
+    "./base": "./base.js",
+    "./nextjs": "./nextjs.js",
+    "./react": "./react.js"
+  },
+  "prettier": "@ashgw/prettier-config",
+  "type": "module"
 }
