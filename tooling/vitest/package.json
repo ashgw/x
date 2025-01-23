@@ -11,10 +11,10 @@
     "format": "prettier . --write"
   },
   "devDependencies": {
-    "vitest": "catalog:",
-    "@vitest/ui": "catalog:",
-    "@ashgw/tsconfig": "workspace:*",
     "@ashgw/eslint-config": "workspace:*",
-    "typescript": "catalog:"
+    "@ashgw/tsconfig": "workspace:*",
+    "@vitest/ui": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

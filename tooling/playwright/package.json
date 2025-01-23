@@ -11,9 +11,9 @@
     "format": "prettier . --write"
   },
   "devDependencies": {
-    "@playwright/test": "catalog:",
+    "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "typescript": "catalog:",
-    "@ashgw/eslint-config": "workspace:*"
+    "@playwright/test": "catalog:",
+    "typescript": "catalog:"
   }
 }
