@@ -34,7 +34,8 @@
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "typecheck": "turbo typecheck",
     "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
-    "hooks": "husky install"
+    "hooks": "husky install",
+    "postinstall": "pnpm dlx sherif@latest"
   },
   "devDependencies": {
     "@ashgw/prettier-config": "workspace:*",
