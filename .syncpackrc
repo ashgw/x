@@ -48,21 +48,7 @@
         "dev",
         "peer"
       ],
-      "pinVersion": "18.2.0"
-    },
-    {
-      "label": "ensure tailwind packages are in sync",
-      "dependencies": [
-        "tailwindcss-animate"
-      ],
-      "packages": [
-        "**"
-      ],
-      "dependencyTypes": [
-        "prod",
-        "dev"
-      ],
-      "pinVersion": "1.0.7"
+      "pinVersion": "catalog:react18"
     }
   ],
   "sortFirst": [
