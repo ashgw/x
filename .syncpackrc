@@ -1,0 +1,66 @@
+{
+  "dependencyTypes": [
+    "prod",
+    "dev"
+  ],
+  "source": [
+    "package.json",
+    "packages/*/package.json",
+    "apps/*/package.json",
+    "tooling/*/package.json"
+  ],
+  "semverGroups": [
+    {
+      "label": "use exact versions for production dependencies",
+      "dependencyTypes": [
+        "prod"
+      ],
+      "dependencies": [
+        "**"
+      ],
+      "range": ""
+    },
+    {
+      "label": "use caret ranges for development dependencies",
+      "dependencyTypes": [
+        "dev"
+      ],
+      "dependencies": [
+        "**"
+      ],
+      "range": "^"
+    }
+  ],
+  "versionGroups": [
+    {
+      "label": "ensure react packages are in sync",
+      "dependencies": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "packages": [
+        "**"
+      ],
+      "dependencyTypes": [
+        "prod",
+        "dev",
+        "peer"
+      ],
+      "pinVersion": "catalog:react18"
+    }
+  ],
+  "sortFirst": [
+    "name",
+    "version",
+    "private",
+    "scripts"
+  ],
+  "sortAz": [
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "scripts"
+  ]
+}

@@ -30,6 +30,10 @@ jobs:
     uses: ./.github/workflows/format.yml
     secrets: inherit
 
+  dependencies-check:
+    uses: ./.github/workflows/dependencies-check.yml
+    secrets: inherit
+
   lint:
     uses: ./.github/workflows/lint.yml
     secrets: inherit
@@ -54,6 +58,7 @@ jobs:
       - test
       - secrets-leaks
       - build
+      - dependencies-check
     runs-on: ubuntu-latest
     steps:
       - uses: re-actors/alls-green@release/v1

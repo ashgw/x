@@ -2,11 +2,6 @@
   "name": "@ashgw/tailwind-config",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "exports": {
-    ".": "./index.ts"
-  },
-  "license": "MIT",
   "scripts": {
     "clean": "git clean -xdf .cache .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
@@ -14,9 +9,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "postcss": "^8.4.47",
+    "postcss": "8.4.47",
     "tailwindcss": "catalog:",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "1.0.7"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
@@ -26,5 +21,10 @@
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@ashgw/prettier-config"
+  "exports": {
+    ".": "./index.ts"
+  },
+  "license": "MIT",
+  "prettier": "@ashgw/prettier-config",
+  "type": "module"
 }

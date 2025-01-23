@@ -1,19 +1,19 @@
 {
   "name": "@ashgw/playwright-config",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit; eslint ."
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "@playwright/test": "catalog:",
+    "typescript": "catalog:"
+  },
   "exports": {
     ".": "./index.ts"
   },
-  "type": "module",
-  "private": true,
-  "version": "0.1.0",
-  "scripts": {
-    "lint": "tsc --noEmit; eslint .",
-    "format": "prettier . --write"
-  },
-  "devDependencies": {
-    "@playwright/test": "catalog:",
-    "@ashgw/tsconfig": "workspace:*",
-    "typescript": "catalog:",
-    "@ashgw/eslint-config": "workspace:*"
-  }
+  "type": "module"
 }
