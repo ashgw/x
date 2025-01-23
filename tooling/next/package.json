@@ -1,11 +1,11 @@
 {
   "name": "@ashgw/next-config",
-  "private": true,
-  "files": [
-    "base.js"
-  ],
   "version": "0.1.0",
+  "private": true,
   "devDependencies": {
     "next": "catalog:"
-  }
+  },
+  "files": [
+    "base.js"
+  ]
 }

@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  format:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pnpm-install
+      - name: check dependencies
+        # if it errors out, u need to run `pnpm deps:format && pnpm deps:fix` locally before u push
+        run: pnpm deps:check
