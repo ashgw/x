@@ -1,14 +1,29 @@
 {
   "name": "ashgw",
   "private": true,
-  "engines": {
-    "node": ">=20.16.0",
-    "pnpm": "^9.12.2"
-  },
-  "homepage": "https://ashgw.me",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ashgw/ashgw.me"
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo run clean",
+    "db:push": "turbo -F @ashgw/db push",
+    "db:studio": "turbo -F @ashgw/db studio",
+    "deps:check": "syncpack list-mismatches",
+    "deps:fix": "syncpack fix-mismatches",
+    "deps:format": "syncpack format",
+    "deps:lint": "syncpack lint",
+    "dev": "turbo watch dev --continue",
+    "dev:next": "turbo watch dev -F @ashgw/nextjs...",
+    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
+    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "hooks": "husky install",
+    "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+    "postinstall": "pnpm dlx sherif@latest",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "test:unit-integration": "turbo run test:unit-integration",
+    "typecheck": "turbo typecheck"
   },
   "author": {
     "name": "Ashref Gwader",
@@ -16,27 +31,6 @@
     "url": "https://ashgw.me"
   },
   "description": "Empire being built",
-  "packageManager": "pnpm@9.12.2",
-  "scripts": {
-    "test": "turbo run test",
-    "test:unit-integration": "turbo run test:unit-integration",
-    "test:e2e": "turbo run test:e2e",
-    "build": "turbo run build",
-    "clean": "git clean -xdf node_modules",
-    "clean:workspaces": "turbo run clean",
-    "db:push": "turbo -F @ashgw/db push",
-    "db:studio": "turbo -F @ashgw/db studio",
-    "dev": "turbo watch dev --continue",
-    "dev:next": "turbo watch dev -F @ashgw/nextjs...",
-    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
-    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "typecheck": "turbo typecheck",
-    "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
-    "hooks": "husky install",
-    "postinstall": "pnpm dlx sherif@latest"
-  },
   "devDependencies": {
     "@ashgw/prettier-config": "workspace:*",
     "@commitlint/cli": "^18.2.0",
@@ -44,14 +38,22 @@
     "@turbo/gen": "^2.1.3",
     "@vitest/ui": "catalog:",
     "auto-changelog": "^2.4.0",
-    "cspell": "8.3.2",
+    "cspell": "^8.3.2",
     "husky": "^8.0.3",
     "knip": "^5.0.0",
-    "markdownlint-cli": "0.38.0",
+    "markdownlint-cli": "^0.38.0",
     "prettier": "catalog:",
+    "syncpack": "^13.0.0",
     "turbo": "^2.1.3",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
-  "prettier": "@ashgw/prettier-config"
+  "engines": {
+    "node": ">=20.16.0",
+    "pnpm": "^9.12.2"
+  },
+  "homepage": "https://ashgw.me",
+  "packageManager": "pnpm@9.12.2",
+  "prettier": "@ashgw/prettier-config",
+  "repository": "ashgw/ashgw.me"
 }
