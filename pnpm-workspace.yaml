@@ -21,6 +21,7 @@ catalog:
   # @see https://github.com/vercel/vercel/issues/11097
   vercel: "33.2.0"
   "@playwright/test": ^1.40.1
+  # use accorss next apps, to allow the build with @ashgw/env imported
   "jiti": "^2.3.3"
 
 catalogs:
