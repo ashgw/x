@@ -1,4 +1,4 @@
-name: Blog Preview on Label
+name: Dispatch
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
   issues: write
 
 jobs:
-  trigger-workflow:
+  blog-deploy-preview:
     if: github.event.label.name == 'ready-for-preview'
     uses: ./.github/workflows/blog-preview-deployment.yml
     secrets: inherit
