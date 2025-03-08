@@ -13,8 +13,5 @@ permissions:
 jobs:
   trigger-preview:
     if: github.event.label.name == 'ready-for-preview'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call WWW Preview Deployment Workflow
-        uses: ./.github/workflows/www-preview-deployment.yml
-        secrets: inherit
+    uses: ./.github/workflows/www-preview-deployment.yml
+    secrets: inherit

@@ -11,10 +11,7 @@ permissions:
   issues: write
 
 jobs:
-  trigger-preview:
+  trigger-workflow:
     if: github.event.label.name == 'ready-for-preview'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call Blog Preview Deployment Workflow
-        uses: ./.github/workflows/blog-preview-deployment.yml
-        secrets: inherit
+    uses: ./.github/workflows/blog-preview-deployment.yml
+    secrets: inherit
