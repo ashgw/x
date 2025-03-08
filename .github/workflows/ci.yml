@@ -68,18 +68,6 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  # www-preview-deployemnt:
-  #   if: github.event.action == 'labeled' && github.event_name == 'pull_request' && contains(github.event.pull_request.labels[*].name, 'ready-for-preview')
-  #   needs: [mergeable]
-  #   uses: ./.github/workflows/www-preview-deployment.yml
-  #   secrets: inherit
-
-  # blog-preview-deployemnt:
-  #   if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels[*].name, 'ready-for-preview')
-  #   needs: [mergeable]
-  #   uses: ./.github/workflows/blog-preview-deployment.yml
-  #   secrets: inherit
-
   # This needs my manual permission to dispatch
   production-deployemnt:
     if: github.ref == 'refs/heads/main'
