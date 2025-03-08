@@ -1,0 +1,17 @@
+name: Dispatch
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
+jobs:
+  blog-deploy-preview:
+    if: github.event.label.name == 'ready-for-preview'
+    uses: ./.github/workflows/blog-preview-deployment.yml
+    secrets: inherit
