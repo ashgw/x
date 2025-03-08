@@ -1,0 +1,20 @@
+name: WWW Preview on Label
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
+jobs:
+  trigger-preview:
+    if: github.event.label.name == 'ready-for-preview'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call WWW Preview Deployment Workflow
+        uses: ./.github/workflows/www-preview-deployment.yml
+        secrets: inherit
