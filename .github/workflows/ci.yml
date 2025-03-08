@@ -69,7 +69,7 @@ jobs:
           jobs: ${{ toJSON(needs) }}
 
   www-preview-deployemnt:
-    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels[*].name, 'ready-for-preview')
+    if: github.event.action == 'labeled' && github.event_name == 'pull_request' && contains(github.event.pull_request.labels[*].name, 'ready-for-preview')
     needs: [mergeable]
     uses: ./.github/workflows/www-preview-deployment.yml
     secrets: inherit
