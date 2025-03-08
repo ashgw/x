@@ -23,6 +23,8 @@ concurrency:
 
 jobs:
   validate-pr:
+    # need conventional commit validation so that the CHANGELOG is updated properly
+    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/validate-pr-title.yml
     secrets: inherit
 
@@ -67,17 +69,20 @@ jobs:
           jobs: ${{ toJSON(needs) }}
 
   www-preview-deployemnt:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels[*].name, 'ready-for-preview')
     needs: [mergeable]
     uses: ./.github/workflows/www-preview-deployment.yml
     secrets: inherit
 
   blog-preview-deployemnt:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels[*].name, 'ready-for-preview')
     needs: [mergeable]
     uses: ./.github/workflows/blog-preview-deployment.yml
     secrets: inherit
 
-  # This is merely a trigger, so I can manually dispatch all prod deployments
+  # This needs my manual permission to dispatch
   production-deployemnt:
+    if: github.ref == 'refs/heads/main'
     needs: [mergeable]
     uses: ./.github/workflows/production-deployment.yml
     secrets: inherit
