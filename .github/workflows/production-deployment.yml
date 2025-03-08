@@ -6,7 +6,6 @@ on:
 
 jobs:
   deploy-production:
-    if: github.ref == 'refs/heads/main'
     environment: production
     runs-on: ubuntu-latest
     steps:

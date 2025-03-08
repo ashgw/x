@@ -1,14 +1,37 @@
 {
-  "name": "AG site",
+  "name": "AG monorepo development container",
   "dockerFile": "Dockerfile",
-  "postCreateCommand": "sudo apt-get update",
-  "postStartCommand": "just setup",
+  "postCreateCommand": "pnpm hooks && pnpm install && pnpm exec playwright install",
   "runArgs": [
+    // Network mode set to host to allow the container to use the host network
     "--net",
     "host",
+    // X11 forwarding
     "-e",
     "DISPLAY=host.docker.internal:0",
+    // Mount the host's X11 Unix socket to the container for GUIs
     "-v",
     "/tmp/.X11-unix:/tmp/.X11-unix"
-  ]
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.codeActionsOnSave": {}
+      },
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "Prisma.prisma",
+        "eamodio.gitlens",
+        "yoavbls.pretty-ts-errors",
+        "expo.vscode-expo-tools",
+        "orta.vscode-jest",
+        "github.vscode-pull-request-github",
+        "usernamehw.errorlens",
+        "davidanson.vscode-markdownlint",
+        "unifiedjs.vscode-mdx"
+      ]
+    }
+  }
 }
