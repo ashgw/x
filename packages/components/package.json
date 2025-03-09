@@ -1,5 +1,5 @@
 {
-  "name": "@ashgw/ui",
+  "name": "@ashgw/components",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,8 +20,7 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
-    "typescript": "catalog:",
-    "zod": "catalog:"
+    "typescript": "catalog:"
   },
   "exports": {
     ".": {
@@ -37,6 +36,10 @@
     }
   },
   "license": "MIT",
+  "peerDependencies": {
+    "react": "catalog:react18",
+    "zod": "catalog:"
+  },
   "prettier": "@ashgw/prettier-config",
   "type": "module"
 }
