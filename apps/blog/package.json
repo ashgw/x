@@ -21,13 +21,13 @@
     "test:e2e": "cd test/e2e && npx playwright test",
     "test:unit-integration": "vitest run --config=vitest.config.ts"
   },
-  "author": "",
   "dependencies": {
     "@ashgw/components": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/cross-runtime": "workspace:*",
     "@ashgw/css": "workspace:*",
     "@ashgw/env": "workspace:*",
+    "@ashgw/api": "workspace:*",
     "@ashgw/models": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@gsap/react": "2.1.0",

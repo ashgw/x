@@ -5,7 +5,7 @@ import type { PropsWithChildren } from "react";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-import { Navbar } from "@ashgw/components";
+import { NavBar } from "@ashgw/components";
 import { NamesService } from "@ashgw/cross-runtime";
 import { env } from "@ashgw/env";
 

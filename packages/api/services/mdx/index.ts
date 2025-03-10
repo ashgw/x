@@ -12,6 +12,12 @@ export class MdxService {
     this.mdxDirectory = mdxDirectory;
   }
 
+  public async getPosts(): Promise<Optional<PostData[]>> {
+    return this._getMDXData({
+      dir: path.join(process.cwd(), this.mdxDirectory),
+    });
+  }
+
   public async getPost({
     slug,
   }: {
@@ -28,12 +34,6 @@ export class MdxService {
       return null;
     }
     return blogPost;
-  }
-
-  public async getPosts(): Promise<Optional<PostData[]>> {
-    return this._getMDXData({
-      dir: path.join(process.cwd(), this.mdxDirectory),
-    });
   }
 
   private async _getMDXData({
