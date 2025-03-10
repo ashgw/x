@@ -494,9 +494,6 @@ importers:
 
   packages/components:
     dependencies:
-      '@ashgw/components':
-        specifier: workspace:*
-        version: 'link:'
       '@ashgw/constants':
         specifier: workspace:*
         version: link:../constants
