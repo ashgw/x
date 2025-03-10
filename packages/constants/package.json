@@ -7,8 +7,8 @@
     "lint": "tsc --noEmit; eslint ."
   },
   "dependencies": {
-    "@ashgw/env": "workspace:*",
-    "@ashgw/cross-runtime": "workspace:*"
+    "@ashgw/cross-runtime": "workspace:*",
+    "@ashgw/env": "workspace:*"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
