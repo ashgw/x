@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { CREATOR } from "~/lib/constants";
+import { CREATOR } from "@ashgw/constants";
 
 export function CopyRight() {
   return (

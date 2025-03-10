@@ -1,5 +1,5 @@
 {
-  "name": "@ashgw/components",
+  "name": "@ashgw/hooks",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,11 +7,6 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
-  },
-  "dependencies": {
-    "@ashgw/components": "workspace:*",
-    "@ashgw/constants": "workspace:*",
-    "@ashgw/ui": "workspace:*"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

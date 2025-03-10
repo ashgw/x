@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
-import useToggleDropDownMenu from "../../../../lib/hooks/useToggleDropDownMenu";
 import { LeftNav } from "./components/desktop/LeftNav";
 import { RightNav } from "./components/desktop/RightNav";
 import { BgOverlay } from "./components/mobile/BgOverlay";
 import { DropDownMenu } from "./components/mobile/DropDownMenu";
 import { HamburgerButton } from "./components/mobile/Hamburger";
 import { Logo } from "./components/shared/Logo";
+import { useToggleDropDownMenu } from "./hooks/useToggleDropDownMenu";
 
 export function NavBar() {
   const [isOpened, toggleMenu] = useToggleDropDownMenu({
