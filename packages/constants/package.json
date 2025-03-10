@@ -1,0 +1,22 @@
+{
+  "name": "@ashgw/constants",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit; eslint ."
+  },
+  "dependencies": {
+    "@ashgw/env": "workspace:*"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "typescript": "catalog:",
+    "ts-roids": "catalog:"
+  },
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "module"
+}

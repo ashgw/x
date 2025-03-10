@@ -27,6 +27,9 @@ catalogs:
     tailwindcss:
       specifier: ^3.4.14
       version: 3.4.14
+    ts-roids:
+      specifier: ^1.44.0
+      version: 1.44.0
     typescript:
       specifier: ^5.6.3
       version: 5.6.3
@@ -488,6 +491,25 @@ importers:
       react:
         specifier: catalog:react18
         version: 18.3.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
+  packages/constants:
+    dependencies:
+      '@ashgw/env':
+        specifier: workspace:*
+        version: link:../env
+    devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@ashgw/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      ts-roids:
+        specifier: 'catalog:'
+        version: 1.44.0
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
@@ -6903,6 +6925,9 @@ packages:
 
   ts-roids@1.40.0:
     resolution: {integrity: sha512-droR08QKRS3LLjUQ/0hXfA60RI8xqpr3eIssZpVuhwmr1Tkvv38IYF6JrlQ9P2XZtZ9qDqIo4kY7wm41lICWKA==}
+
+  ts-roids@1.44.0:
+    resolution: {integrity: sha512-QharwmYU8P99LjlqtxUb+aKDn2Z0+4Sk2K/e4NVmzddHapsPcyCUrlWBP8z3c8/RoFMD3WIEm/VFiP7a25XqUQ==}
 
   ts-toolbelt@6.15.5:
     resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
@@ -14963,6 +14988,8 @@ snapshots:
       yn: 3.1.1
 
   ts-roids@1.40.0: {}
+
+  ts-roids@1.44.0: {}
 
   ts-toolbelt@6.15.5: {}
 
