@@ -12,6 +12,7 @@
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
+    "ts-roids": "catalog:",
     "typescript": "catalog:",
     "vitest": "^0.34.6",
     "@vitest/coverage-v8": "^0.34.6"
