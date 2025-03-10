@@ -1,48 +1,33 @@
+import * as chrono from "chrono-node";
+
 export class DateService {
-  public static formatDate({ stringDate }: { stringDate: string }): string {
-    const currentDate = new Date();
-    if (!stringDate.includes("T")) {
-      stringDate = `${stringDate}T00:00:00`;
-    }
-    const targetDate = new Date(stringDate);
-
-    const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-    const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-    const daysAgo = currentDate.getDate() - targetDate.getDate();
-
-    let formattedDate = "";
-
-    if (yearsAgo > 0) {
-      formattedDate = `${yearsAgo}y ago`;
-    } else if (monthsAgo > 0) {
-      formattedDate = `${monthsAgo}mo ago`;
-    } else if (daysAgo > 0) {
-      formattedDate = `${daysAgo}d ago`;
-    } else {
-      formattedDate = "Today";
-    }
-
-    const fullDate = targetDate.toLocaleString("en-us", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-    return `${fullDate} (${formattedDate})`;
+  static formatDate({ stringDate }: { stringDate: string }): string {
+    const parsed = chrono.parseDate(stringDate);
+    if (!parsed) throw new Error("Invalid date");
+    const date = new Date(parsed);
+    const now = new Date();
+    const yearsDiff = now.getFullYear() - date.getFullYear();
+    const monthsDiff = now.getMonth() - date.getMonth();
+    const daysDiff = now.getDate() - date.getDate();
+    let relative =
+      yearsDiff > 0
+        ? `${yearsDiff}y ago`
+        : monthsDiff > 0
+          ? `${monthsDiff}mo ago`
+          : daysDiff > 0
+            ? `${daysDiff}d ago`
+            : "Today";
+    return `${date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })} (${relative})`;
   }
-  public static isSameMonthAndYear({
-    stringDate,
-  }: {
-    stringDate: string;
-  }): boolean {
-    const currentDate = new Date();
-    const inputDateObj = new Date(stringDate);
 
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
-
-    const inputYear = inputDateObj.getFullYear();
-    const inputMonth = inputDateObj.getMonth();
-
-    return currentYear === inputYear && currentMonth === inputMonth;
+  static isSameMonthAndYear({ stringDate }: { stringDate: string }): boolean {
+    const parsed = chrono.parseDate(stringDate);
+    if (!parsed) throw new Error("Invalid date");
+    const date = new Date(parsed);
+    const now = new Date();
+    return (
+      now.getFullYear() === date.getFullYear() &&
+      now.getMonth() === date.getMonth()
+    );
   }
 }

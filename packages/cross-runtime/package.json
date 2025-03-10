@@ -5,9 +5,13 @@
   "scripts": {
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run --config=vitest.config.ts",
+    "test:watch": "vitest --config=vitest.config.ts",
     "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "chrono-node": "^2.7.8"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
