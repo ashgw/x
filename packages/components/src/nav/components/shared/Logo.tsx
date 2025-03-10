@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+// this is not used btw, but can be, so change the `src`
 export function Logo() {
   return (
     <Image
