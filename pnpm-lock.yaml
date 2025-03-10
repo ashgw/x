@@ -565,9 +565,6 @@ importers:
 
   packages/cross-runtime:
     dependencies:
-      chrono-node:
-        specifier: 2.7.8
-        version: 2.7.8
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -3907,10 +3904,6 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chrono-node@2.7.8:
-    resolution: {integrity: sha512-pzxemrTKu6jFVyAfkNxUckp9nlrmRFtr5lGrEJcVKyeKV9WSeGT78Oysazlzd/H0BdMv7EzACtJrw0pi2KODBQ==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
   class-variance-authority@0.7.0:
     resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==}
 
@@ -4202,9 +4195,6 @@ packages:
 
   date-fns@4.1.0:
     resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
-
-  dayjs@1.11.13:
-    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
@@ -11988,10 +11978,6 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chrono-node@2.7.8:
-    dependencies:
-      dayjs: 1.11.13
-
   class-variance-authority@0.7.0:
     dependencies:
       clsx: 2.0.0
@@ -12304,8 +12290,6 @@ snapshots:
       is-data-view: 1.0.1
 
   date-fns@4.1.0: {}
-
-  dayjs@1.11.13: {}
 
   debug@3.2.7:
     dependencies:
