@@ -18,5 +18,6 @@ export const env = createEnv({
   },
   disablePrefix: ["NODE_ENV"],
   prefix: "NEXT_PUBLIC",
-  skipValidation: isBrowser,
+  skipValidation: isBrowser, // Skip validation in the browser to prevent runtime errors.
+  // Since env vars are already injected at build time, we don't need to validate them at runtime.
 });
