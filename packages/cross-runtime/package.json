@@ -1,19 +1,20 @@
 {
-  "name": "@ashgw/api-services",
+  "name": "@ashgw/cross-runtime",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "format": "prettier . --write",
-    "lint": "tsc --noEmit; eslint ."
-  },
-  "dependencies": {
-    "@ashgw/models": "workspace:*"
+    "lint": "tsc --noEmit; eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "ts-roids": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "^0.34.6",
+    "@vitest/coverage-v8": "^0.34.6"
   },
   "exports": {
     ".": "./index.ts"

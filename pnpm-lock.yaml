@@ -461,7 +461,7 @@ importers:
 
   assets/packaged/css: {}
 
-  packages/api-services:
+  packages/api:
     dependencies:
       '@ashgw/models':
         specifier: workspace:*
@@ -535,6 +535,18 @@ importers:
       ts-roids:
         specifier: 'catalog:'
         version: 1.44.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
+  packages/cross-runtime:
+    devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@ashgw/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
