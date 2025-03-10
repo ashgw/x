@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@ashgw/components": "workspace:*",
     "@ashgw/ui": "workspace:*"
   },
   "devDependencies": {

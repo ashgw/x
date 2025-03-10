@@ -12,8 +12,8 @@
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "typescript": "catalog:",
-    "ts-roids": "catalog:"
+    "ts-roids": "catalog:",
+    "typescript": "catalog:"
   },
   "exports": {
     ".": "./index.ts"

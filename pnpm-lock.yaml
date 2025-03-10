@@ -463,6 +463,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@ashgw/components':
+        specifier: workspace:*
+        version: 'link:'
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../ui
