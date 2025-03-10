@@ -566,7 +566,7 @@ importers:
   packages/cross-runtime:
     dependencies:
       chrono-node:
-        specifier: ^2.7.8
+        specifier: 2.7.8
         version: 2.7.8
       date-fns:
         specifier: ^4.1.0
@@ -594,7 +594,7 @@ importers:
   packages/env:
     dependencies:
       '@ashgw/ts-env':
-        specifier: 1.4.0
+        specifier: ^1.4.0
         version: 1.4.0(zod@3.23.8)
       dotenv:
         specifier: 16.4.5
