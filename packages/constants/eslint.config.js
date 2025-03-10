@@ -1,4 +1,4 @@
-import baseConfig from "@ashgw/eslint-config/base";
+import baseConfig, { restrictEnvAccess } from "@ashgw/eslint-config/base";
 
 /** @type {import('typescript-eslint').Config} */
 export default [
@@ -6,4 +6,5 @@ export default [
     ignores: ["dist/**"],
   },
   ...baseConfig,
+  ...restrictEnvAccess,
 ];
