@@ -298,6 +298,15 @@ importers:
 
   apps/www:
     dependencies:
+      '@ashgw/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@ashgw/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@ashgw/cross-runtime':
+        specifier: workspace:*
+        version: link:../../packages/cross-runtime
       '@ashgw/css':
         specifier: workspace:*
         version: link:../../assets/packaged/css
@@ -534,6 +543,9 @@ importers:
 
   packages/constants:
     dependencies:
+      '@ashgw/cross-runtime':
+        specifier: workspace:*
+        version: link:../cross-runtime
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
@@ -562,6 +574,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^0.34.6
         version: 0.34.6(vitest@0.34.6)
+      ts-roids:
+        specifier: 'catalog:'
+        version: 1.44.0
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
