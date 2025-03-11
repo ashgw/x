@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Ashgw",
-    short_name: "Ashgw",
-    description: "AG's corner on the internet",
+    name: "@ashgw",
+    short_name: "ashgw",
+    description: "AG's personal site",
     start_url: "/",
     display: "standalone",
     background_color: "#21001d",
