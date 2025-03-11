@@ -10,7 +10,7 @@
     "test:watch": "vitest --config=vitest.config.ts"
   },
   "dependencies": {
-    "date-fns": "^4.1.0"
+    "date-fns": "4.1.0"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
@@ -18,7 +18,7 @@
     "@vitest/coverage-v8": "^0.34.6",
     "ts-roids": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^0.34.6"
+    "vitest": "catalog:"
   },
   "exports": {
     ".": "./index.ts"
