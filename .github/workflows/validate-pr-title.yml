@@ -37,7 +37,7 @@ jobs:
         with:
           header: pr-title-lint-error
           message: |
-            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
+            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) for valid changelog entries and it looks like your proposed title needs to be adjusted.
             Details:
             ```
             ${{ steps.lint_pr_title.outputs.error_message }}
