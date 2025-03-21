@@ -119,3 +119,26 @@
     }
   }
 }
+
+.highlight-underline {
+  position: relative;
+}
+
+.highlight-underline::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  transition: width 0.3s ease;
+}
+
+.highlight-underline:hover::after {
+  width: 100%;
+}

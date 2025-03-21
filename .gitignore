@@ -2,7 +2,7 @@
 **/.cache/
 **test-results**
 **/dist/
-
+**/pnpm-store/
 **/.turbo
 **/.next
 

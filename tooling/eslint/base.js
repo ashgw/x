@@ -7,37 +7,6 @@ import importPlugin from "eslint-plugin-import";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
 
-/**
- * Whenever`@ashgw/ts-env` is used, apply this rule
- */
-export const restrictEnvAccess = tseslint.config(
-  { ignores: ["**/env.ts"] },
-  {
-    files: ["**/*.js", "**/*.ts", "**/*.tsx"],
-    rules: {
-      "no-restricted-properties": [
-        "error",
-        {
-          object: "process",
-          property: "env",
-          message:
-            "Use `import { env } from '~/env'` or '@ashgw/env' instead to ensure validated types.",
-        },
-      ],
-      "@typescript-eslint/consistent-type-imports": "error",
-      "no-restricted-imports": [
-        "error",
-        {
-          name: "process",
-          importNames: ["env"],
-          message:
-            "Use `import { env } from '~/env'` or '@ashgw/env' instead to ensure validated types.",
-        },
-      ],
-    },
-  },
-);
-
 export default tseslint.config(
   // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(path.join(import.meta.dirname, "../../.gitignore")),

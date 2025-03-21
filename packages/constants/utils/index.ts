@@ -1,0 +1,1 @@
+export { getSiteName } from "./getSiteName";

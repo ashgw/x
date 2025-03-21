@@ -1,4 +1,4 @@
-import { Loading } from "./components/shared/loading/index";
+import { Loading } from "@ashgw/components";
 
 export default function LoadingScreen() {
   return (

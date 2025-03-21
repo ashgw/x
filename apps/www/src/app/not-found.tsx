@@ -1,4 +1,4 @@
-import { NotFound } from "./components/shared/not-found";
+import { NotFound } from "@ashgw/components";
 
 export default function Page() {
   return <NotFound />;
