@@ -98,24 +98,21 @@ export const metadata: Metadata = {
   category: "tech",
 };
 
-function BackToHome() {
-  return (
-    <div className="container pt-6">
-      <Link
-        href="https://www.ashgw.me"
-        className="text-muted-foreground hover:text-foreground highlight-underline mb-8 inline-flex items-center gap-2 transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4 font-bold" />
-        <span className="font-bold">Back to Home</span>
-      </Link>
-    </div>
-  );
-}
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={atkinsonHyperlegible.className}>
-        <BackToHome />
+        {/* Back home link */}
+        <div className="container pt-6">
+          <Link
+            href={env.NEXT_PUBLIC_WWW_URL}
+            className="text-muted-foreground hover:text-foreground highlight-underline mb-8 inline-flex items-center gap-2 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 font-bold" />
+            <span className="font-bold">Back to Home</span>
+          </Link>
+        </div>
+        {/* */}
         <Providers>{children}</Providers>
       </body>
       <GoogleAnalytics gaId={env.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID} />
