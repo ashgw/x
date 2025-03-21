@@ -3,9 +3,10 @@ import "@ashgw/css/global";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import localFont from "next/font/local";
+import Link from "next/link";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { ArrowLeft } from "lucide-react";
 
-import { NavBar } from "@ashgw/components";
 import { NamesService } from "@ashgw/cross-runtime";
 import { env } from "@ashgw/env";
 
@@ -97,14 +98,27 @@ export const metadata: Metadata = {
   category: "tech",
 };
 
+function BackToHome() {
+  return (
+    <div className="container pt-6">
+      <Link
+        href="https://www.ashgw.me"
+        className="text-muted-foreground hover:text-foreground highlight-underline mb-8 inline-flex items-center gap-2 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4 font-bold" />
+        <span className="font-bold">Back to Home</span>
+      </Link>
+    </div>
+  );
+}
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={atkinsonHyperlegible.className}>
-        <NavBar />
+        <BackToHome />
         <Providers>{children}</Providers>
       </body>
-      <GoogleAnalytics gaId={env.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID} />
+      <GoogleAnalytics gaId={env.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID} />
     </html>
   );
 }
