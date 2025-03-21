@@ -17,7 +17,6 @@ export default tseslint.config(
             "Use `import { env } from '~/env'` or '@ashgw/env' instead to ensure validated types.",
         },
       ],
-      "@typescript-eslint/consistent-type-imports": "error",
       "no-restricted-imports": [
         "error",
         {
