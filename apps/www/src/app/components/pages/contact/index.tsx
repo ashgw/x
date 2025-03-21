@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
-import { Footer, H1, TextContent } from "@ashgw/components";
+import { Footer, GlowingLink, H1, TextContent } from "@ashgw/components";
 import {
   BOOKING_LINK,
   EMAIL,
