@@ -12,7 +12,8 @@
     "@ashgw/constants": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@nextui-org/react": "catalog:",
-    "@ashgw/env": "workspace:*"
+    "@ashgw/env": "workspace:*",
+    "framer-motion": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
