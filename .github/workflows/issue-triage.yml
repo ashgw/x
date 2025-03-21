@@ -23,9 +23,9 @@ jobs:
       - name: Run Nissuer for Issue Triage
         uses: balazsorban44/nissuer@1.10.0
         with:
-          label-area-prefix: ''
-          label-area-match: 'name'
-          label-area-section: 'Bug description(.*)How to reproduce'
+          label-area-prefix: ""
+          label-area-match: "name"
+          label-area-section: "Bug description(.*)How to reproduce"
 
           label-comments: |
             {
@@ -35,11 +35,10 @@ jobs:
             }
 
           # Require reproduction link validation
-          reproduction-comment: '.github/comments/invalid-reproduction.md'
-          reproduction-hosts: 'github.com,bitbucket.org,gitlab.com,codesandbox.io,stackblitz.com'
+          reproduction-comment: ".github/comments/invalid-reproduction.md"
+          reproduction-hosts: "github.com,bitbucket.org,gitlab.com,codesandbox.io,stackblitz.com"
           reproduction-blocklist: 'github.com/\\w*/?$,github.com$'
-          reproduction-link-section: '### How to reproduce(.*)### Expected behavior'
-          reproduction-invalid-label: 'missing reproduction'
-          reproduction-issue-labels: '🐛 bug,'
+          reproduction-link-section: "### How to reproduce(.*)### Expected behavior"
+          reproduction-invalid-label: "missing reproduction"
+          reproduction-issue-labels: "🐛 bug,"
           comment-unhelpful-weight: 0.5
-

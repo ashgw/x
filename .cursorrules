@@ -1,4 +1,5 @@
 General Guidelines:
+
 - Be concise and accurate, avoid unnecessary verbosity.
 - Suggest solutions the user might not have thought about; anticipate needs.
 - Treat the user as an expert; provide answers directly and thoroughly.
@@ -11,8 +12,8 @@ General Guidelines:
 - Confirm before writing code when clarification is required.
 - Flag speculative or predictive content.
 
-
 Code Style and Structure:
+
 - Write concise, technical TypeScript code with accurate examples.
 - Use functions declared with the `function` keyword for pure functions; omit semicolons.
 - Follow DRY principles (Don’t Repeat Yourself) and prefer modularization.
@@ -24,9 +25,8 @@ Code Style and Structure:
 - Always Receive an Object, Return an Object (RORO).
 - Handle errors gracefully; if a promise doesn’t throw, append `noError` to the variable name.
 
-
-
 Project Structure:
+
 - **Monorepo Layout**:
   - Deployable apps: `apps/*` (e.g., `apps/blog`, `apps/www`, `apps/api`).
   - Shared modules: `packages/*`.
@@ -40,6 +40,7 @@ Project Structure:
 React and Next.js Guidelines:
 
 - **React Best Practices**:
+
   - Minimize `use client`, `useEffect`, and `setState` usage.
   - Favor React Server Components (RSC).
   - Wrap client components in `Suspense` with a fallback.
@@ -54,6 +55,7 @@ React and Next.js Guidelines:
   - Sanitize user inputs to prevent XSS attacks.
 
 Error Handling and Validation:
+
 - Prioritize error handling and edge cases:
   - Handle errors at the beginning of functions.
   - Use guard clauses to handle preconditions and invalid states early.
@@ -65,12 +67,14 @@ Error Handling and Validation:
 - Add environment variables to `packages/env` for validation.
 
 Styling and Design:
+
 - Use ShadCN UI, Radix, and TailwindCSS for components and styling.
 - Implement responsive design with a mobile-first approach.
 - Always use Tailwind classes for styling; avoid inline styles or separate CSS files.
 - Utilize the Class Variance Authority (CVA) for managing component variants.
 
 Object-Oriented Programming:
+
 - Use `public` modifier for all public methods.
 - Use `private` modifier for all private methods, prefixed with an underscore.
 - Place getters and setters at the top of the class.
@@ -78,18 +82,18 @@ Object-Oriented Programming:
 - Use `async` for asynchronous class methods.
 
 Testing:
+
 - Write unit tests for components using `vitest`.
 - Implement integration tests for critical user flows.
 - Use snapshot testing sparingly.
 - Use Playwright for end-to-end (e2e) tests.
 
-
-
 Miscellaneous:
+
 - Sanitize content when using `dangerouslySetInnerHTML`; avoid whenever possible.
 - Use libraries like `react-intl` or `next-i18next` for internationalization (i18n).
 - Follow Taskfile commands for development and deployment tasks.
 - Follow WCAG standards for color contrast and readability.
 - Comment only when necessary to clarify complex logic; avoid excessive comments.
 - Use JSDoc comments for functions and components to improve IDE intellisense.
-
+- **Utility Functions Documentation**: Whenever creating utility classes or functions, especially React hooks that may not be immediately clear, provide a description to clarify their purpose and usage.

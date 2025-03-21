@@ -1,0 +1,27 @@
+{
+  "name": "@ashgw/cross-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit; eslint .",
+    "test": "vitest run --config=vitest.config.ts",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest --config=vitest.config.ts"
+  },
+  "dependencies": {
+    "date-fns": "4.1.0"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "^0.34.6",
+    "ts-roids": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "module"
+}

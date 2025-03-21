@@ -28,7 +28,8 @@
   "exports": {
     "./base": "./base.js",
     "./nextjs": "./nextjs.js",
-    "./react": "./react.js"
+    "./react": "./react.js",
+    "./restricted-env": "./restricted-env.js"
   },
   "prettier": "@ashgw/prettier-config",
   "type": "module"
