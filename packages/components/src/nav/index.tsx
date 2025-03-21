@@ -55,7 +55,7 @@ export function NavBar() {
       </div>
       <div className="mx-2 sm:hidden">
         <AnimatePresence>
-          {isOpened x <DropDownMenu onToggleMenu={handleToggleMenu} />}
+          {isOpened ? <DropDownMenu onToggleMenu={handleToggleMenu} /> : null}
         </AnimatePresence>
       </div>
     </nav>
