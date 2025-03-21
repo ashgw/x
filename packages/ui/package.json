@@ -30,6 +30,7 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
+    "ts-roids": "catalog:",
     "typescript": "catalog:",
     "zod": "catalog:"
   },
