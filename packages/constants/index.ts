@@ -10,3 +10,14 @@ export const BOOKING_LINK = "https://cal.com/ashgw/30min";
 export const SITE_NAME = getSiteName({
   url: env.NEXT_PUBLIC_WWW_URL,
 });
+
+export const LINKS = {
+  npm: "https://www.npmjs.com/~ashgw",
+  crates: "https://crates.io/users/AshGw",
+  pypi: "https://pypi.org/user/AshGw/",
+  keyBase: "https://keybase.io/ashgw",
+  gitHub: "https://github.com/ashgw",
+} as const;
+
+export const GPG_PUBLIC_KEY_INTERNAL_URL =
+  env.NEXT_PUBLIC_WWW_URL + "/api/v1/gpg";

@@ -9,7 +9,7 @@ export function Link({
   ...props
 }: {
   href: string;
-  origin: "blog" | "www";
+  origin?: "blog" | "www";
   children: React.ReactNode;
 }) {
   const SITE_URL =

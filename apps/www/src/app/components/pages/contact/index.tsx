@@ -1,24 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import {
-  TextContent as C,
-  GlowingText,
-} from "@/app/components/reusables/content";
-import { Heading1 as H1 } from "@/app/components/reusables/headers";
-import { ToggleSwitch } from "@/app/components/ui/toggle-switch";
+import { motion } from "framer-motion";
+import { useCopyToClipboard } from "react-use";
+import { toast, Toaster } from "sonner";
+
+import { Footer, H1, TextContent } from "@ashgw/components";
 import {
   BOOKING_LINK,
   EMAIL,
   GPG_PUBLIC_KEY_INTERNAL_URL,
   LINKS,
-} from "@/lib/constants";
-import { motion } from "framer-motion";
-import { useCopyToClipboard } from "react-use";
-import { toast, Toaster } from "sonner";
-
-import { Footer } from "@ashgw/components";
+} from "@ashgw/constants";
+import { ToggleSwitch } from "@ashgw/ui";
 
 export function ContactPage() {
   const [, copyToClipboard] = useCopyToClipboard();
@@ -61,7 +55,7 @@ export function ContactPage() {
                   <span className="">Get in touch</span>
                 </H1>
                 <div className="mx-auto max-w-[600px]">
-                  <C>
+                  <TextContent>
                     I use{" "}
                     <button
                       onClick={async () => {
@@ -71,12 +65,12 @@ export function ContactPage() {
                       <strong className="glows text-white underline">
                         GPG
                       </strong>
-                    </button>{" "}
+                    </button>
                     for secure communication. Feel free to use it for encrypted
                     messages and to verify my
                     <GlowingLink href={LINKS.keyBase} name="identity." />
                     Other than that, you can
-                  </C>
+                  </TextContent>
                 </div>
               </div>
               <div className="mx-auto max-w-sm space-y-4">
@@ -103,14 +97,3 @@ export function ContactPage() {
     </div>
   );
 }
-
-/* 
-  TODO: fix this please 
-*/
-const GlowingLink = ({ href, name }: { href: string; name: string }) => {
-  return (
-    <Link href={href}>
-      <GlowingText>{name}</GlowingText>
-    </Link>
-  );
-};
