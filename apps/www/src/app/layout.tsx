@@ -5,10 +5,10 @@ import type { PropsWithChildren } from "react";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-import { NavBar } from "@ashgw/components";
 import { NamesService } from "@ashgw/cross-runtime";
 import { env } from "@ashgw/env";
 
+import { NavBar } from "./components/nav";
 import { Providers } from "./components/providers";
 
 const atkinsonHyperlegible = localFont({
