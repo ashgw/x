@@ -18,6 +18,3 @@ export const LINKS = {
   keyBase: "https://keybase.io/ashgw",
   gitHub: "https://github.com/ashgw",
 } as const;
-
-export const GPG_PUBLIC_KEY_INTERNAL_URL =
-  env.NEXT_PUBLIC_WWW_URL + "/api/v1/gpg";

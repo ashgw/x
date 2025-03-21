@@ -6,12 +6,7 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { Footer, GlowingLink, H1, TextContent } from "@ashgw/components";
-import {
-  BOOKING_LINK,
-  EMAIL,
-  GPG_PUBLIC_KEY_INTERNAL_URL,
-  LINKS,
-} from "@ashgw/constants";
+import { BOOKING_LINK, EMAIL, LINKS } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
 export function ContactPage() {
@@ -19,7 +14,7 @@ export function ContactPage() {
   const [isToggled, setIsToggled] = useState(false);
 
   async function copyGPG() {
-    const res = await fetch(GPG_PUBLIC_KEY_INTERNAL_URL, {
+    const res = await fetch("/api/v1/gpg", {
       method: "GET",
     });
     if (!res.ok) {

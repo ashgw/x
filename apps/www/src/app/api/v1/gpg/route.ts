@@ -1,33 +1,19 @@
-import { PUBLIC_CONTENT_SOURCE } from '@/lib/constants';
-import { NextRequest, NextResponse } from 'next/server';
-import { NewType } from 'ts-roids';
+import type { NewType } from "ts-roids";
+import { NextResponse } from "next/server";
 
-type Key = NewType<'Key', string>;
+type Key = NewType<"Key", string>;
 type Err = string;
 
-const GPG_FILENAME = 'gpg.asc';
-export async function GET(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _req: NextRequest
-): Promise<NextResponse<Key> | NextResponse<Err>> {
-  try {
-    const res = await fetch(PUBLIC_CONTENT_SOURCE + GPG_FILENAME, {
-      method: 'GET',
-      mode: 'no-cors',
-      next: { revalidate: 36969 },
-    });
-    if (!res.ok) {
-      return new NextResponse('Failed to fetch the public key', {
-        status: 424,
-      });
-    }
+export async function GET(): Promise<NextResponse<Key> | NextResponse<Err>> {
+  const res = await fetch("https://github.com/ashgw.gpg", {
+    method: "GET",
+    next: { revalidate: 36969 },
+  });
 
-    const key = await res.text();
-    return new NextResponse(key);
-  } catch (e) {
-    console.log(e);
-    return new NextResponse('Something unexpected happened', {
-      status: 500,
-    });
+  if (!res.ok) {
+    return new NextResponse("Failed to fetch the public key", { status: 424 });
   }
+
+  const key = await res.text();
+  return new NextResponse(key);
 }
