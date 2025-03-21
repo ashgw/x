@@ -41,7 +41,7 @@ export function Link({
 
   return (
     <NextLink
-      href={href}
+      href={`${href}?utm_source=${SITE_URL}`}
       target="_blank"
       // Using `noopener noreferrer` to prevent security risks such as reverse tabnabbing.
       // More information can be found at https://owasp.org/www-community/attacks/Reverse_Tabnabbing
