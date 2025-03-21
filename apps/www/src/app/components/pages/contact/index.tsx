@@ -65,7 +65,7 @@ export function ContactPage() {
                       <strong className="glows text-white underline">
                         GPG
                       </strong>
-                    </button>
+                    </button>{" "}
                     for secure communication. Feel free to use it for encrypted
                     messages and to verify my
                     <GlowingLink href={LINKS.keyBase} name="identity." />

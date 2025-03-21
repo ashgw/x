@@ -21,7 +21,7 @@ export function H1({ children, id }: HProps) {
         ease: "easeInOut",
       }}
       id={id}
-      className="my-2 text-[2.5rem] font-extrabold leading-10"
+      className="my-2 text-5xl font-bold leading-10" // Changed from text-[2.5rem] to text-5xl
     >
       {children}
     </motion.h1>
