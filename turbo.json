@@ -6,7 +6,7 @@
       "dependsOn": ["^topo"]
     },
     "test": {
-      "outputs": ["coverage/**"],
+      "outputs": ["coverage/**", "test-results/**"],
       "cache": true
     },
     "test:unit-integration": {
