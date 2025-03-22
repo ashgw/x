@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@ashgw/constants": "workspace:*",
+    "@ashgw/env": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@nextui-org/react": "catalog:",
-    "@ashgw/env": "workspace:*",
     "framer-motion": "catalog:"
   },
   "devDependencies": {
@@ -20,11 +20,11 @@
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tailwind-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "ts-roids": "catalog:",
     "@types/react": "catalog:react18",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
+    "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
   "exports": {
