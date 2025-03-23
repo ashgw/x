@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 
 import { CREATOR } from "@ashgw/constants";
-import { env } from "@ashgw/env";
 
 export function CopyRight() {
   return (
@@ -16,7 +15,6 @@ export function CopyRight() {
       <p className="text-secondary-center dimmed-3 flex items-center justify-center text-sm">
         &copy; {new Date().getFullYear()} {CREATOR}. All rights reserved
       </p>
-      {env.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID}
     </motion.div>
   );
 }
