@@ -2,41 +2,14 @@ import "@ashgw/css/global";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { env } from "@ashgw/env";
 import { createMetadata } from "@ashgw/seo";
+import { atkinsonHyperlegible } from "@ashgw/ui";
 
 import { NavBar } from "./components/nav";
 import { Providers } from "./components/providers";
-
-const atkinsonHyperlegible = localFont({
-  src: [
-    {
-      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Italic.ttf",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "./../../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-BoldItalic.ttf",
-      weight: "700",
-      style: "italic",
-    },
-  ],
-  variable: "--font-atkinson-hyperlegible",
-  display: "swap", // Enable font swapping for better performance
-});
 
 const title = "Ashref Gwader";
 const description = "Builing the future.";
