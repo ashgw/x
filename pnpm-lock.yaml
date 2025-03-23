@@ -138,6 +138,9 @@ importers:
       '@ashgw/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@ashgw/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -322,6 +325,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@ashgw/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -682,13 +688,13 @@ importers:
         specifier: workspace:*
         version: link:../env
       lodash.merge:
-        specifier: ^4.6.2
+        specifier: 4.6.2
         version: 4.6.2
       next:
         specifier: 'catalog:'
         version: 15.2.3(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7)
       schema-dts:
-        specifier: ^1.1.5
+        specifier: 1.1.5
         version: 1.1.5
     devDependencies:
       '@ashgw/eslint-config':

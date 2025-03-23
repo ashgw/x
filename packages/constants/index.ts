@@ -10,7 +10,7 @@ export const BOOKING_LINK = "https://cal.com/ashgw/30min";
 export const SITE_NAME =
   getSiteName({
     url: env.NEXT_PUBLIC_WWW_URL,
-  }) ?? "ashgw";
+  }) ?? "A S H G W";
 
 export const LINKS = {
   npm: "https://www.npmjs.com/~ashgw",

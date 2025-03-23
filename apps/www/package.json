@@ -31,6 +31,7 @@
     "@ashgw/cross-runtime": "workspace:*",
     "@ashgw/css": "workspace:*",
     "@ashgw/env": "workspace:*",
+    "@ashgw/seo": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@calcom/embed-react": "1.5.2",
     "@gsap/react": "2.1.0",

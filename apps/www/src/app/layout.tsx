@@ -5,8 +5,8 @@ import type { PropsWithChildren } from "react";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-import { NamesService } from "@ashgw/cross-runtime";
 import { env } from "@ashgw/env";
+import { createMetadata } from "@ashgw/seo";
 
 import { NavBar } from "./components/nav";
 import { Providers } from "./components/providers";
@@ -39,63 +39,11 @@ const atkinsonHyperlegible = localFont({
 });
 
 const title = "Ashref Gwader";
-const description =
-  "Developer, writer, and self-proclaimed modern day philosopher.";
-const url = new URL(env.NEXT_PUBLIC_WWW_URL);
-const kw: string[] = ["Ashref Gwader", "ashgw", "blog", "tech", "TS", "Python"];
+const description = "Builing the future.";
 
-const postImageWidth = 1200; // in pixels
-const postImageHeight = 630;
-const postImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${title}`;
-
-export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
-  title: {
-    default: "Ashref Gwader",
-    template: "%s | Ashgw",
-  },
-  creator: "Ashref Gwader",
-  keywords: kw,
-  description: description,
-  openGraph: {
-    siteName:
-      NamesService.getSiteName({
-        url: env.NEXT_PUBLIC_WWW_URL,
-      }) ?? "ashgw",
-    locale: "en_US",
-    publishedTime: "2023-12-01T09:15:00-0401",
-    title,
-    description,
-    type: "article",
-    url,
-    images: [
-      {
-        url: postImageUrl,
-        width: postImageWidth,
-        height: postImageHeight,
-        alt: title,
-      },
-    ],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [postImageUrl],
-  },
-  category: "tech",
-};
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+export const metadata: Metadata = createMetadata({ title, description });
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
