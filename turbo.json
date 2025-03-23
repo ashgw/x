@@ -56,11 +56,27 @@
       "interactive": true
     }
   },
+
+  "envMode": "strict",
+  "cacheDir": ".turbo/cache",
   "globalEnv": [
     "NEXT_PUBLIC_WWW_URL",
     "NEXT_PUBLIC_BLOG_URL",
     "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID",
-    "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"
+    "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID",
+    "NODE_ENV"
   ],
+  "globalDependencies": [
+    "NEXT_PUBLIC_WWW_URL",
+    "NEXT_PUBLIC_BLOG_URL",
+    "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID",
+    "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID",
+    "NODE_ENV"
+  ],
+  "remoteCache": {
+    "enabled": false
+  },
+  "daemon": true,
+  "dangerouslyDisablePackageManagerCheck": false,
   "globalPassThroughEnv": []
 }
