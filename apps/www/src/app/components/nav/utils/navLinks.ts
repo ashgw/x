@@ -1,3 +1,5 @@
+import { env } from "@ashgw/env";
+
 type Name = "Home" | "Blog" | "About";
 
 interface NavLink {
@@ -7,6 +9,6 @@ interface NavLink {
 
 export const navLinks: readonly NavLink[] = [
   { name: "Home", href: "/" },
-  { name: "Blog", href: "/blog" },
+  { name: "Blog", href: env.NEXT_PUBLIC_BLOG_URL },
   { name: "About", href: "/about" },
 ];
