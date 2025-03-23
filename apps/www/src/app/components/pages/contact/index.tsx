@@ -6,12 +6,15 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { Footer, GlowingLink, H1, TextContent } from "@ashgw/components";
-import { BOOKING_LINK, EMAIL, LINKS } from "@ashgw/constants";
+import { EMAIL, LINKS } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
+
+import { CalBooking } from "./CalBooking";
 
 export function ContactPage() {
   const [, copyToClipboard] = useCopyToClipboard();
   const [isToggled, setIsToggled] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   async function copyGPG() {
     const res = await fetch("/api/v1/gpg", {
@@ -33,8 +36,9 @@ export function ContactPage() {
   const handleToggle = (state: boolean) => {
     setIsToggled(state);
     if (state) {
-      window.location.href = BOOKING_LINK;
+      setShowCalendar(true);
     } else {
+      setShowCalendar(false);
       window.location.href = `mailto:${EMAIL}`;
     }
   };
@@ -83,11 +87,29 @@ export function ContactPage() {
                   />
                 </motion.div>
               </div>
+
+              {showCalendar ? (
+                <motion.div
+                  className="mt-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="mx-auto max-w-4xl">
+                    <div className="rounded-lg p-6 shadow-lg">
+                      <CalBooking
+                        calLink="ashgw/30min"
+                        config={{ theme: "dark" }}
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              ) : null}
             </div>
           </div>
         </section>
       </main>
-      <Footer />
+      {!showCalendar ? <Footer /> : null}
       <Toaster />
     </div>
   );
