@@ -9,7 +9,7 @@ import { Footer, GlowingLink, H1, TextContent } from "@ashgw/components";
 import { EMAIL, LINKS } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
-import { CalBooking } from "./CalBooking";
+import { CalBooking } from "./components/CalBooking";
 
 export function ContactPage() {
   const [, copyToClipboard] = useCopyToClipboard();
