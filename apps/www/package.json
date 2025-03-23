@@ -72,7 +72,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/eslint": "^8.56.1",
     "@types/mdx": "^2.0.10",
-    "@types/node": "^20.11.17",
+    "@types/node": "catalog:",
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
     "@vitest/ui": "catalog:",

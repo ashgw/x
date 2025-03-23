@@ -7,15 +7,21 @@
     "lint": "tsc --noEmit; eslint ."
   },
   "dependencies": {
+    "lodash.merge": "^4.6.2",
+    "next": "catalog:",
     "schema-dts": "^1.1.5"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
+    "@types/lodash.merge": "^4.6.9",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
     "typescript": "catalog:"
   },
   "exports": {
-    ".": "./index.ts"
+    ".": "./src/index.ts"
   },
   "type": "module"
 }

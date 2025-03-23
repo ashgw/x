@@ -26,6 +26,7 @@ catalog:
   # used to load env TS files, like @ashgw/env
   "jiti": "^2.3.3"
   framer-motion: ^10.17.4
+  "@types/node": ^20.11.17
 
 catalogs:
   react18:
