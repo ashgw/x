@@ -603,8 +603,8 @@ importers:
   packages/env:
     dependencies:
       '@ashgw/ts-env':
-        specifier: 1.4.0
-        version: 1.4.0(zod@3.23.8)
+        specifier: ^1.5.0
+        version: 1.5.0(zod@3.23.8)
       dotenv:
         specifier: 16.4.5
         version: 16.4.5
@@ -881,8 +881,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@ashgw/ts-env@1.4.0':
-    resolution: {integrity: sha512-IrQhmf9REzGZsaFl9bjO5hl+0wHlrd4vor1UpuvuCtZOIuCLRax0TOkYzNsrKHgoq9BokZL3EiKee9NxkpXkrw==}
+  '@ashgw/ts-env@1.5.0':
+    resolution: {integrity: sha512-NT582mCDuaSn8hkK0oCXTUEqAdzXmlP5Qj0jIobb6QmChET2MPwgP7jCzhj1hxu7g7aoH5XjDPiGYi4fzHvExQ==}
     peerDependencies:
       zod: '>=3.0.0'
 
@@ -8034,7 +8034,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@ashgw/ts-env@1.4.0(zod@3.23.8)':
+  '@ashgw/ts-env@1.5.0(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 
