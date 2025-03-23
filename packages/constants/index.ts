@@ -18,4 +18,8 @@ export const LINKS = {
   pypi: "https://pypi.org/user/AshGw/",
   keyBase: "https://keybase.io/ashgw",
   gitHub: "https://github.com/ashgw",
+  twitter: {
+    link: "https://x.com/ashrefgwader",
+    handle: "@ashrefgwader",
+  },
 } as const;

@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 import merge from "lodash.merge";
 
+import { CREATOR, LINKS } from "@ashgw/constants";
+import { env } from "@ashgw/env";
+
 type MetadataGenerator = Omit<Metadata, "description" | "title"> & {
   title: string;
   description: string;
   image?: string;
 };
 
-const applicationName = "next-forge";
+const applicationName = "AG Site";
 const author: Metadata["authors"] = {
-  name: "Hayden Bleasel",
-  url: "https://haydenbleasel.com/",
+  name: CREATOR,
+  url: env.NEXT_PUBLIC_WWW_URL,
 };
-const publisher = "Hayden Bleasel";
-const twitterHandle = "@haydenbleasel";
+const publisher = CREATOR;
+const twitterHandle = LINKS.twitter.handle;
 
 export const createMetadata = ({
   title,

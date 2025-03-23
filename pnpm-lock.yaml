@@ -675,6 +675,12 @@ importers:
 
   packages/seo:
     dependencies:
+      '@ashgw/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@ashgw/env':
+        specifier: workspace:*
+        version: link:../env
       lodash.merge:
         specifier: ^4.6.2
         version: 4.6.2
