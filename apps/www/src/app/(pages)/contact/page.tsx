@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   keywords: kw,
   description: description,
   openGraph: {
-    siteName: SITE_NAME ?? env.NEXT_PUBLIC_WWW_URL,
+    siteName: SITE_NAME,
     locale: "en_US",
     publishedTime: "2023-12-01T09:15:00-0401",
     title,

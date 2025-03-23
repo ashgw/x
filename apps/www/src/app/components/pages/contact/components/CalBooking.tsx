@@ -18,9 +18,7 @@ export function CalBooking({ calLink = "ashgw", config }: CalBookingProps) {
   useEffect(() => {
     void (async function () {
       try {
-        // eslint-disable-next-line
         const cal = await getCalApi();
-        // eslint-disable-next-line
         cal("ui", {
           theme: config?.theme ?? "dark",
           styles: { branding: { brandColor: "#6366f1" } },
