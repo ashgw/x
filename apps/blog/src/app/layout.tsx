@@ -12,7 +12,7 @@ import { GoBackHome } from "./components/pages/root";
 import { Providers } from "./components/providers";
 
 const title = "Ashref Gwader";
-const description = "Blog.";
+const description = "Blog";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */

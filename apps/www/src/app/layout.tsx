@@ -12,7 +12,7 @@ import { NavBar } from "./components/nav";
 import { Providers } from "./components/providers";
 
 const title = "Ashref Gwader";
-const description = "Builing the future.";
+const description = "Building the future.";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
