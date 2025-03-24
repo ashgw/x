@@ -33,10 +33,10 @@ const AnimatedCopyButton: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const handleClick = () => {
-    setCopied(!copied);
+    setCopied((prev) => !prev);
 
     setTimeout(() => {
-      setCopied(copied);
+      setCopied((prev) => !prev);
     }, 300);
   };
 
