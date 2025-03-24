@@ -84,9 +84,3 @@ jobs:
     needs: [production-deployemnt]
     uses: ./.github/workflows/blog-production-deployment.yml
     secrets: inherit
-
-  # add this back when you deploy the api
-  # container-registry:
-  #   needs: [production-deployemnt]
-  #   uses: ./.github/workflows/container-registry.yml
-  #   secrets: inherit

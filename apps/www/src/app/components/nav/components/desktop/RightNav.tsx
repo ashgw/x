@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { Button } from "@ashgw/ui";
 
-import { navLinks } from "../../utils/navLinks";
 import { RepoSourceCodeButton } from "../shared/RepoSourceCodeButton";
 
 export function RightNav() {
@@ -12,15 +11,11 @@ export function RightNav() {
         <RepoSourceCodeButton />
       </div>
       <div className="glowsup hidden sm:block">
-        {navLinks
-          .filter(({ name }) => name === "Contact")
-          .map(({ name, href }) => (
-            <Link key={name} href={href}>
-              <Button className="w-full" variant={"navbar"}>
-                {name}
-              </Button>
-            </Link>
-          ))}
+        <Link href="/contact">
+          <Button className="w-full" variant={"navbar"}>
+            Contact
+          </Button>
+        </Link>
       </div>
     </div>
   );
