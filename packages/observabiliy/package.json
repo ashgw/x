@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
-    "@sentry/nextjs": "9.8.0"
+    "@sentry/nextjs": "9.8.0",
+    "next": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

@@ -1,3 +1,4 @@
+import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 import { env } from "@ashgw/env";
@@ -39,12 +40,16 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
 /**
  * Wraps the provided Next.js configuration with Sentry configuration.
  *
- * @param sourceConfig - The original Next.js configuration object.
+ * @param nextConfig - The original Next.js configuration object.
  * @returns The modified configuration object with Sentry integration.
  */
-export const withConfig = (sourceConfig: object): object => {
+export const withConfig = <NC extends NextConfig>({
+  nextConfig,
+}: {
+  nextConfig: NC;
+}): NC => {
   const configWithTranspile = {
-    ...sourceConfig,
+    ...nextConfig,
     transpilePackages: ["@sentry/nextjs"],
   };
 

@@ -7,7 +7,7 @@ import { sentry } from "@ashgw/observability";
 import "@ashgw/env";
 
 const config: NextConfig = sentry.withConfig({
-  ...baseConfig,
+  nextConfig: baseConfig,
 });
 
 export default config;

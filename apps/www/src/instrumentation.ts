@@ -1,3 +1,5 @@
 import { sentry } from "@ashgw/observability";
 
-sentry.init();
+export function register() {
+  sentry.init();
+}
