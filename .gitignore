@@ -53,7 +53,7 @@ next-env.d.ts
 # hushhh
 .env.all
 .env.local
-.env
+.env*
 
 *playground
 *.terraform

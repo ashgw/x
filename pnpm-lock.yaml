@@ -639,6 +639,9 @@ importers:
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      ts-roids:
+        specifier: 'catalog:'
+        version: 1.46.0
       typescript:
         specifier: 'catalog:'
         version: 5.6.3

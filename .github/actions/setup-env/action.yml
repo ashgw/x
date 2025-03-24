@@ -47,6 +47,12 @@ runs:
           ["SENTRY_AUTH_TOKEN"]="${{ inputs.SENTRY_AUTH_TOKEN }}"
         )
 
+        # Determine the correct .env file based on NODE_ENV
+        env_file=".env.development"
+        if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
+          env_file=".env.production"
+        fi
+
         for key in "${!env_vars[@]}"; do
-          echo "${key}='${env_vars[$key]}'" >> .env
+          echo "${key}='${env_vars[$key]}'" >> "$env_file"
         done

@@ -8,7 +8,7 @@
     "clean": "git clean -xdf .cache .next .turbo node_modules",
     "deploy:vercel-preview": "pnpm  vercel deploy --prebuilt",
     "deploy:vercel-prod": "pnpm  vercel deploy --prod --prebuilt",
-    "dev": "pnpm next dev",
+    "dev": "next dev -p 3001",
     "format": "prettier . --write",
     "format-check": "prettier --check .",
     "lint": "pnpm run lint:ts ",
