@@ -33,6 +33,7 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
+      "@typescript-eslint/no-unsafe-assignment": "warn",
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },

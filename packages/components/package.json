@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@ashgw/constants": "workspace:*",
-    "@ashgw/ui": "workspace:*"
+    "@ashgw/env": "workspace:*",
+    "@ashgw/observability": "workspace:*",
+    "@ashgw/ui": "workspace:*",
+    "@nextui-org/react": "catalog:",
+    "framer-motion": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
@@ -21,6 +25,7 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
+    "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
   "exports": {
