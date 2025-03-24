@@ -11,6 +11,7 @@
   "dependencies": {
     "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
+    "@ashgw/observability": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@nextui-org/react": "catalog:",
     "framer-motion": "catalog:"
