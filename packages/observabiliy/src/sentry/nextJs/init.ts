@@ -9,6 +9,7 @@ export const init = (): ReturnType<typeof initSentry> => {
   return initSentry({
     dsn: env.NEXT_PUBLIC_SENTRY_DSN,
     tracesSampler: () => 1,
+    environment: env.NODE_ENV,
     debug: env.NODE_ENV === "development",
     enabled: env.NODE_ENV === "production",
     replaysOnErrorSampleRate: 1.0,

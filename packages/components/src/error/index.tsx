@@ -13,7 +13,7 @@ export interface GlobalErrorProperties {
 
 export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
   useEffect(() => {
-    sentry.captureException(error);
+    sentry.next.captureException(error);
   }, [error]);
 
   return (
