@@ -2,9 +2,10 @@
 
 import type NextError from "next/error";
 import { useEffect } from "react";
-import { captureException } from "@sentry/nextjs";
 
 import { Button, fonts } from "@ashgw/ui";
+
+import { captureException } from "~/utils/sentry";
 
 interface GlobalErrorProperties {
   readonly error: NextError & { digest?: string };
@@ -19,8 +20,13 @@ const GlobalError = ({ error, reset }: GlobalErrorProperties) => {
   return (
     <html lang="en" className={fonts.atkinsonHyperlegible.className}>
       <body>
-        <h1>Oops, something went wrong</h1>
-        <Button onClick={() => reset()}>Try again</Button>
+        <div className="flex h-screen w-full flex-col items-center justify-center gap-6 text-center">
+          <h1 className="text-3xl font-bold">Something went wrong</h1>
+          <p className="max-w-md text-gray-400">
+            We've logged this error and will look into it as soon as possible.
+          </p>
+          <Button onClick={() => reset()}>Try again</Button>
+        </div>
       </body>
     </html>
   );

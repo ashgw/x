@@ -2,10 +2,14 @@
   "name": "@ashgw/next-config",
   "version": "0.1.0",
   "private": true,
+  "dependencies": {
+    "@ashgw/env": "workspace:*"
+  },
   "devDependencies": {
     "next": "catalog:"
   },
   "files": [
-    "base.js"
+    "base.js",
+    "withSentryConfig.ts"
   ]
 }

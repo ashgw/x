@@ -32,6 +32,7 @@
     "@ashgw/css": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/seo": "workspace:*",
+    "@ashgw/observability": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@calcom/embed-react": "1.5.2",
     "@gsap/react": "2.1.0",
