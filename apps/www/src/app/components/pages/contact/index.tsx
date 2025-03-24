@@ -7,6 +7,7 @@ import { toast, Toaster } from "sonner";
 
 import { Footer, GlowingLink, H1, TextContent } from "@ashgw/components";
 import { EMAIL, LINKS } from "@ashgw/constants";
+import { sentry } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
 import { CalBooking } from "./components/CalBooking";
@@ -17,20 +18,27 @@ export function ContactPage() {
   const [showCalendar, setShowCalendar] = useState(false);
 
   async function copyGPG() {
-    const res = await fetch("/api/v1/gpg", {
-      method: "GET",
-    });
-    if (!res.ok) {
-      const failureMessage = await res.text();
-      toast.message("Oops! Looks like something went wrong!", {
-        description: failureMessage,
+    try {
+      const res = await fetch("/api/v1/gpg", {
+        method: "GET",
       });
+      if (!res.ok) {
+        const failureMessage = await res.text();
+        sentry.captureException(failureMessage);
+        toast.message("Oops! Looks like something went wrong!", {
+          description: failureMessage,
+        });
+        return;
+      }
+
+      const key = await res.text();
+      copyToClipboard(key);
+      toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
+        description: "PGP public key block is copied to your clipboard",
+      });
+    } catch (error) {
+      toast.message(sentry.captureException(error));
     }
-    const key = await res.text();
-    copyToClipboard(key);
-    toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
-      description: "PGP public key block is copied to your clipboard",
-    });
   }
 
   const handleToggle = (state: boolean) => {
@@ -39,7 +47,7 @@ export function ContactPage() {
       setShowCalendar(true);
     } else {
       setShowCalendar(false);
-      window.location.href = `mailto:${EMAIL}`;
+      window.location.href = escape(`mailto:${EMAIL}`);
     }
   };
 
