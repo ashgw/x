@@ -76,7 +76,7 @@ export function ContactPage() {
                     for secure communication. Feel free to use it for encrypted
                     messages and to verify my
                     <GlowingLink href={LINKS.keyBase} name="identity." />
-                    Other than that, you can
+                    Other than that, you can either
                   </TextContent>
                 </div>
               </div>
