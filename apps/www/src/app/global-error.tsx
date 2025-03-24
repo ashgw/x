@@ -3,9 +3,8 @@
 import type NextError from "next/error";
 import { useEffect } from "react";
 
+import { sentry } from "@ashgw/observability";
 import { Button, fonts } from "@ashgw/ui";
-
-import { captureException } from "~/utils/sentry";
 
 interface GlobalErrorProperties {
   readonly error: NextError & { digest?: string };
@@ -14,7 +13,7 @@ interface GlobalErrorProperties {
 
 const GlobalError = ({ error, reset }: GlobalErrorProperties) => {
   useEffect(() => {
-    captureException(error);
+    sentry.captureException(error);
   }, [error]);
 
   return (
@@ -22,7 +21,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProperties) => {
       <body>
         <div className="flex h-screen w-full flex-col items-center justify-center gap-6 text-center">
           <h1 className="text-3xl font-bold">Something went wrong</h1>
-          <p className="max-w-md text-gray-400">
+          <p className="max-w-md">
             We've logged this error and will look into it as soon as possible.
           </p>
           <Button onClick={() => reset()}>Try again</Button>

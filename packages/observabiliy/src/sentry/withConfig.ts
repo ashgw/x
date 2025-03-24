@@ -1,15 +1,17 @@
-import { withSentryConfig as withSentryConfigOriginal } from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs";
 
 import { env } from "@ashgw/env";
 
-const sentryConfig: Parameters<typeof withSentryConfigOriginal>[1] = {
+/**
+ * Sentry configuration options for Next.js.
+ * This configuration is used to set up Sentry for error tracking and performance monitoring.
+ *
+ * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/ for all available options.
+ */
+const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   org: env.SENTRY_ORG,
   project: env.SENTRY_PROJECT,
-  silent: !process.env.CI,
-  /*
-   * For all available options, see:
-   * https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-   */
+  silent: env.NODE_ENV === "production",
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
@@ -34,11 +36,17 @@ const sentryConfig: Parameters<typeof withSentryConfigOriginal>[1] = {
   automaticVercelMonitors: true,
 };
 
-export const withSentryConfig = (sourceConfig: object): object => {
+/**
+ * Wraps the provided Next.js configuration with Sentry configuration.
+ *
+ * @param sourceConfig - The original Next.js configuration object.
+ * @returns The modified configuration object with Sentry integration.
+ */
+export const withConfig = (sourceConfig: object): object => {
   const configWithTranspile = {
     ...sourceConfig,
     transpilePackages: ["@sentry/nextjs"],
   };
 
-  return withSentryConfigOriginal(configWithTranspile, sentryConfig);
+  return withSentryConfig(configWithTranspile, sentryConfig);
 };

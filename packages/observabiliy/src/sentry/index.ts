@@ -1,7 +1,9 @@
 import { captureException } from "./error";
-import { initSentry } from "./init";
+import { init } from "./init";
+import { withConfig } from "./withConfig";
 
 export const sentry = {
-  init: initSentry,
+  init,
   captureException,
+  withConfig,
 };

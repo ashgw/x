@@ -12,13 +12,11 @@ export const captureException = (error: unknown): string => {
   } else {
     message = String(error);
   }
-
   try {
     sentryCaptureException(error);
     log.error(`Parsing error: ${message}`);
   } catch (newError) {
     console.error("Error parsing error:", newError);
   }
-
   return message;
 };
