@@ -6,7 +6,7 @@ import { sentry } from "@ashgw/observability";
 // Import the env file to validate at build time.
 import "@ashgw/env";
 
-const config: NextConfig = sentry.withConfig({
+const config: NextConfig = sentry.next.withConfig({
   nextConfig: baseConfig,
 });
 
