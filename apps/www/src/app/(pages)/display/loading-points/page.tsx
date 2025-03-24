@@ -80,7 +80,9 @@ function LoadingScreen() {
   };
 
   useEffect(() => {
-    const interval = setInterval(setConfigs, 3000);
+    const interval = setInterval(() => {
+      setConfigs();
+    }, 3000);
     return () => clearInterval(interval);
   });
 
