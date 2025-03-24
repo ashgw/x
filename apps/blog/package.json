@@ -29,6 +29,7 @@
     "@ashgw/css": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/models": "workspace:*",
+    "@ashgw/observability": "workspace:*",
     "@ashgw/seo": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@gsap/react": "2.1.0",

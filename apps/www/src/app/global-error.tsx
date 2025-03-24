@@ -1,5 +1,6 @@
 "use client";
 
+// TODO: move this to components
 import type NextError from "next/error";
 import { useEffect } from "react";
 

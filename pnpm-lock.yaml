@@ -138,6 +138,9 @@ importers:
       '@ashgw/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@ashgw/observability':
+        specifier: workspace:*
+        version: link:../../packages/observabiliy
       '@ashgw/seo':
         specifier: workspace:*
         version: link:../../packages/seo
