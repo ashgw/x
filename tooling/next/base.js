@@ -13,6 +13,8 @@ const baseConfig = {
     "@ashgw/models",
     "@ashgw/constants",
     "@ashgw/cross-runtime",
+    "@ashgw/observability",
+    "@ashgw/seo",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

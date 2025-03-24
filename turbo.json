@@ -65,17 +65,9 @@
     "NODE_ENV",
     "NEXT_PUBLIC_SENTRY_DSN",
     "SENTRY_ORG",
-    "SENTRY_PROJECT"
-  ],
-  "globalDependencies": [
-    "NEXT_PUBLIC_WWW_URL",
-    "NEXT_PUBLIC_BLOG_URL",
-    "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID",
-    "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID",
-    "NODE_ENV",
-    "NEXT_PUBLIC_SENTRY_DSN",
-    "SENTRY_ORG",
-    "SENTRY_PROJECT"
+    "SENTRY_PROJECT",
+    "NEXT_RUNTIME",
+    "SENTRY_AUTH_TOKEN"
   ],
   "globalPassThroughEnv": []
 }

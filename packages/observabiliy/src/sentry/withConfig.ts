@@ -12,10 +12,14 @@ import { env } from "@ashgw/env";
 const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   org: env.SENTRY_ORG,
   project: env.SENTRY_PROJECT,
+  authToken: env.SENTRY_AUTH_TOKEN,
   silent: env.NODE_ENV === "production",
-
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
+  // This will unlock the capability to search for Replays in Sentry by component name
+  reactComponentAnnotation: {
+    enabled: true,
+  },
 
   /*
    * Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
@@ -24,7 +28,10 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
    * side errors will fail.
    */
   tunnelRoute: "/monitoring",
-
+  // Hides source maps from generated client bundles
+  sourcemaps: {
+    disable: env.NODE_ENV === "production" ? true : false,
+  },
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
 
