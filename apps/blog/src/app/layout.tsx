@@ -11,11 +11,11 @@ import { atkinsonHyperlegible } from "@ashgw/ui";
 import { GoBackHome } from "./components/pages/root";
 import { Providers } from "./components/providers";
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 const title = "Ashref Gwader";
 const description = "Blog.";
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 export const metadata: Metadata = createMetadata({ title, description });
 
 export default function RootLayout({ children }: PropsWithChildren) {
