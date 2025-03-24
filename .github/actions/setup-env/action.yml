@@ -16,6 +16,18 @@ inputs:
   NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
     description: "Google Analytics ID for the blog"
     required: true
+  NEXT_PUBLIC_SENTRY_DSN:
+    description: "Sentry DSN for error tracking"
+    required: true
+  SENTRY_ORG:
+    description: "Sentry organization name"
+    required: true
+  SENTRY_PROJECT:
+    description: "Sentry project name"
+    required: true
+  SENTRY_AUTH_TOKEN:
+    description: "Sentry authentication token"
+    required: true
 
 runs:
   using: composite
@@ -29,6 +41,10 @@ runs:
           ["NEXT_PUBLIC_BLOG_URL"]="${{ inputs.NEXT_PUBLIC_BLOG_URL }}"
           ["NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}"
           ["NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}"
+          ["NEXT_PUBLIC_SENTRY_DSN"]="${{ inputs.NEXT_PUBLIC_SENTRY_DSN }}"
+          ["SENTRY_ORG"]="${{ inputs.SENTRY_ORG }}"
+          ["SENTRY_PROJECT"]="${{ inputs.SENTRY_PROJECT }}"
+          ["SENTRY_AUTH_TOKEN"]="${{ inputs.SENTRY_AUTH_TOKEN }}"
         )
 
         for key in "${!env_vars[@]}"; do
