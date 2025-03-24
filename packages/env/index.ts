@@ -4,7 +4,14 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
-config({ path: path.resolve(__dirname, "../../.env") });
+config({
+  path: path.resolve(
+    __dirname,
+    process.env.NODE_ENV === "production"
+      ? "../../.env.production"
+      : "../../.env.development",
+  ),
+});
 
 const isBrowser = typeof window !== "undefined";
 
