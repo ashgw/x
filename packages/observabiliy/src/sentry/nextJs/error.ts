@@ -3,7 +3,7 @@ import { captureException as sentryCaptureException } from "@sentry/nextjs";
 import { log } from "../../log";
 
 /**
- * Captures an exception and logs the error message and returns it.
+ * Captures an exception and logs the error message, sends it to Sentry and returns it.
  *
  * @returns A string message describing the error.
  */
