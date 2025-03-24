@@ -1,20 +1,34 @@
 import path from "path";
+import type { UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
-config({ path: path.resolve(__dirname, "../../.env") });
+config({
+  path: path.resolve(
+    __dirname,
+    process.env.NODE_ENV === "production"
+      ? "../../.env.production"
+      : "../../.env.development",
+  ),
+});
 
 const isBrowser = typeof window !== "undefined";
 
+const nonPrefixedVars = {
+  NODE_ENV: z.enum(["production", "development", "preview"]),
+  SENTRY_ORG: z.string(),
+  SENTRY_PROJECT: z.string(),
+  NEXT_RUNTIME: z.enum(["nodejs", "edge"]).nullable(),
+  SENTRY_AUTH_TOKEN: z.string().min(20),
+} as const;
+
+type NonPrefixedVarsTuple = UnionToTuple<keyof typeof nonPrefixedVars>;
+
 export const env = createEnv({
   vars: {
-    NODE_ENV: z.enum(["production", "development", "preview"]),
-    SENTRY_ORG: z.string(),
-    SENTRY_PROJECT: z.string(),
-    NEXT_RUNTIME: z.enum(["nodejs", "edge"]).nullable(),
-    SENTRY_AUTH_TOKEN: z.string().min(20),
+    ...nonPrefixedVars,
     // prefixed below
     SENTRY_DSN: z.string().url(),
     WWW_URL: z.string().url(),
@@ -22,13 +36,7 @@ export const env = createEnv({
     WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
     BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
   },
-  disablePrefix: [
-    "NODE_ENV",
-    "SENTRY_ORG",
-    "SENTRY_PROJECT",
-    "NEXT_RUNTIME",
-    "SENTRY_AUTH_TOKEN",
-  ],
+  disablePrefix: [...(Object.keys(nonPrefixedVars) as NonPrefixedVarsTuple)],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
