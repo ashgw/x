@@ -14,4 +14,4 @@ export async function register() {
 }
 
 export const onRequestError: Instrumentation.onRequestError =
-  sentry.lib.captureRequestError;
+  sentry.next.lib.captureRequestError;

@@ -24,7 +24,7 @@ export function ContactPage() {
       });
       if (!res.ok) {
         const failureMessage = await res.text();
-        sentry.captureException(failureMessage);
+        sentry.next.captureException(failureMessage);
         toast.message("Oops! Looks like something went wrong!", {
           description: failureMessage,
         });
@@ -37,7 +37,7 @@ export function ContactPage() {
         description: "PGP public key block is copied to your clipboard",
       });
     } catch (error) {
-      toast.message(sentry.captureException(error));
+      toast.message(sentry.next.captureException(error));
     }
   }
 
