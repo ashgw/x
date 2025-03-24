@@ -12,10 +12,11 @@ export const SITE_NAME =
     url: env.NEXT_PUBLIC_WWW_URL,
   }) ?? "A S H G W";
 
+// slashless links
 export const LINKS = {
   npm: "https://www.npmjs.com/~ashgw",
   crates: "https://crates.io/users/AshGw",
-  pypi: "https://pypi.org/user/AshGw/",
+  pypi: "https://pypi.org/user/AshGw",
   keyBase: "https://keybase.io/ashgw",
   gitHub: "https://github.com/ashgw",
   twitter: {
