@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 
-export const atkinsonHyperlegible = localFont({
+const atkinsonHyperlegible = localFont({
   src: [
     {
       path: "./../../../assets/fonts/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf",
@@ -26,3 +26,7 @@ export const atkinsonHyperlegible = localFont({
   variable: "--font-atkinson-hyperlegible",
   display: "swap", // Enable font swapping for better performance
 });
+
+export const fonts = {
+  atkinsonHyperlegible,
+} as const;

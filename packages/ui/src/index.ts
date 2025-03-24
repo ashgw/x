@@ -6,4 +6,4 @@ export * from "./dropdown-menu";
 export * from "./label";
 export * from "./toggle-switch";
 export * from "./skeleton";
-export * from "./font";
+export * from "./fonts";

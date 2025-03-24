@@ -6,7 +6,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { env } from "@ashgw/env";
 import { createMetadata } from "@ashgw/seo";
-import { atkinsonHyperlegible } from "@ashgw/ui";
+import { fonts } from "@ashgw/ui";
 
 import { NavBar } from "./components/nav";
 import { Providers } from "./components/providers";
@@ -21,7 +21,7 @@ export const metadata: Metadata = createMetadata({ title, description });
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={atkinsonHyperlegible.className}>
+      <body className={fonts.atkinsonHyperlegible.className}>
         <NavBar />
         <Providers>{children}</Providers>
       </body>
