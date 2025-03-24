@@ -14,8 +14,6 @@ import { Providers } from "./components/providers";
 const title = "Ashref Gwader";
 const description = "Building the future.";
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 export const metadata: Metadata = createMetadata({ title, description });
 
 export default function RootLayout({ children }: PropsWithChildren) {
