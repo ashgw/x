@@ -11,7 +11,7 @@ export function TypingAnimation() {
       strings: [
         'I <span class="glows">design.</span>',
         'I <span class="glows">build.</span>',
-        'I <span class="glows">solve</span> software',
+        'I <span class="glows">scale.</span>',
       ],
       typeSpeed: 50,
       loop: true,
