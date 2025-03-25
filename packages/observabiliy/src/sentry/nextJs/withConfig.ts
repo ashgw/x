@@ -55,10 +55,10 @@ export const withConfig = <NC extends NextConfig>({
 }: {
   nextConfig: NC;
 }): NC => {
-  const configWithTranspile = {
+  const nextConfigWithTranspile = {
     ...nextConfig,
     transpilePackages: ["@sentry/nextjs"],
   };
 
-  return withSentryConfig(configWithTranspile, sentryConfig);
+  return withSentryConfig(nextConfigWithTranspile, sentryConfig);
 };

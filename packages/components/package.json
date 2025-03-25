@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
+    "@ashgw/analytics": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
