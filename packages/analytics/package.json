@@ -9,9 +9,9 @@
   "dependencies": {
     "@ashgw/env": "workspace:*",
     "@next/third-parties": "15.0.2",
-    "react": "catalog:react18",
     "posthog-js": "^1.227.0",
-    "posthog-node": "^4.9.0"
+    "posthog-node": "^4.9.0",
+    "react": "catalog:react18"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

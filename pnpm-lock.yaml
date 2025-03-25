@@ -68,10 +68,6 @@ catalogs:
 importers:
 
   .:
-    dependencies:
-      '@withgraphite/graphite-cli':
-        specifier: 1.5.3
-        version: 1.5.3
     devDependencies:
       '@ashgw/prettier-config':
         specifier: workspace:*
@@ -4169,11 +4165,6 @@ packages:
 
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
-
-  '@withgraphite/graphite-cli@1.5.3':
-    resolution: {integrity: sha512-295qc6YAN0l41e8cvrJhFkDsZYVqQv5n+Q9knoy2YAX+21qh8z5NZxYgTmaHEKN/1lTphACkAssS9qG1STqf9g==}
-    engines: {node: '>=16'}
-    hasBin: true
 
   '@xobotyi/scrollbar-width@1.9.5':
     resolution: {integrity: sha512-N8tkAACJx2ww8vFMneJmaAgmjAG1tnVBZJRLRcx061tmsLRZHSEZSLuGWnwPtunsSLvSqXQ2wfp7Mgqg1I+2dQ==}
@@ -8703,18 +8694,6 @@ packages:
   write-file-atomic@3.0.3:
     resolution: {integrity: sha512-AvHcyZ5JnSfq3ioSyjrBkH9yW4m7Ayk8/9My/DD9onKeu/94fwrMocemO2QAJFAlnnDN+ZDS+ZjAR5ua1/PV/Q==}
 
-  ws@8.18.1:
-    resolution: {integrity: sha512-RKW2aJZMXeMxVpnZ6bck+RswznaxmzdULiBr6KY7XkTnW8uvt0iT9H5DkHUChXrc+uurzwa0rVI16n/Xzjdz1w==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   xdg-app-paths@5.1.0:
     resolution: {integrity: sha512-RAQ3WkPf4KTU1A8RtFx3gWywzVKe00tfOPFfl2NDGqbIFENQO4kqAJp7mhQjNj/33W5x5hiWWUdyfPq/5SU3QA==}
     engines: {node: '>=6'}
@@ -12850,16 +12829,6 @@ snapshots:
     dependencies:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
-
-  '@withgraphite/graphite-cli@1.5.3':
-    dependencies:
-      chalk: 4.1.2
-      semver: 7.6.3
-      ws: 8.18.1
-      yargs: 17.7.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
 
   '@xobotyi/scrollbar-width@1.9.5': {}
 
@@ -18004,8 +17973,6 @@ snapshots:
       is-typedarray: 1.0.0
       signal-exit: 3.0.7
       typedarray-to-buffer: 3.1.5
-
-  ws@8.18.1: {}
 
   xdg-app-paths@5.1.0:
     dependencies:
