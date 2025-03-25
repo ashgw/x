@@ -8,7 +8,7 @@ export const GoBackHome = () => {
     <div className="container pt-6">
       <Link
         href={env.NEXT_PUBLIC_WWW_URL}
-        className="text-muted-foreground hover:text-foreground highlight-underline mb-8 inline-flex items-center gap-2 transition-colors"
+        className="text-muted-foreground hover:text-foreground highlight-underline mb-9 ml-2 inline-flex items-center gap-2 transition-colors"
       >
         <ArrowLeft className="h-4 w-4 font-bold" />
         <span className="font-bold">Back to Home</span>
