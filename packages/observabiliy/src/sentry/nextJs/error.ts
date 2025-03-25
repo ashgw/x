@@ -1,27 +1,44 @@
 import { captureException as sentryCaptureException } from "@sentry/nextjs";
 
-import { log } from "../../log";
+import { logger } from "../../log";
+
+type Exception = Parameters<typeof sentryCaptureException>[0];
+type Hint = Parameters<typeof sentryCaptureException>[1];
 
 /**
- * Captures an exception and logs the error message, sends it to Sentry and returns it.
+ * Captures an exception and logs the error message, sends it to Sentry and returns the strinf message.
  *
  * @returns A string message describing the error.
  */
-export const captureException = (error: unknown): string => {
-  let message = "An error occurred";
-
-  if (error instanceof Error) {
-    message = error.message;
-  } else if (error && typeof error === "object" && "message" in error) {
-    message = error.message as string;
-  } else {
-    message = String(error);
-  }
+export const captureException = ({
+  message,
+  error,
+  hint,
+}: {
+  message?: string;
+  error: Exception;
+  hint?: Hint;
+}): string => {
+  const errorMessagePrefix = message ?? "An error occurred";
+  const errorMessage = extractErrorMessage(error);
   try {
-    sentryCaptureException(error);
-    log.error(`Parsing error: ${message}`);
-  } catch (newError) {
-    console.error("Error parsing error:", newError);
+    sentryCaptureException(error, hint);
+    logger.error(`${errorMessagePrefix}: ${errorMessage}`);
+  } catch (ce) {
+    logger.error("CANNOT CAPTURE EXCEPTION:", ce);
   }
-  return message;
+  return errorMessagePrefix;
+};
+
+const extractErrorMessage = (exception: Exception): string => {
+  if (exception instanceof Error) {
+    return exception.message;
+  } else if (
+    exception &&
+    typeof exception === "object" &&
+    "message" in exception
+  ) {
+    return exception.message as string;
+  }
+  return String(exception);
 };

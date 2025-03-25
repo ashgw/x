@@ -24,20 +24,20 @@ export function ContactPage() {
       });
       if (!res.ok) {
         const failureMessage = await res.text();
-        sentry.next.captureException(failureMessage);
-        toast.message("Oops! Looks like something went wrong!", {
-          description: failureMessage,
-        });
-        return;
+        throw new Error(failureMessage);
       }
-
       const key = await res.text();
       copyToClipboard(key);
       toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
         description: "PGP public key block is copied to your clipboard",
       });
     } catch (error) {
-      toast.message(sentry.next.captureException(error));
+      toast.message(
+        sentry.next.captureException({
+          error,
+          message: "Oops! Looks like something went wrong!",
+        }),
+      );
     }
   }
 
