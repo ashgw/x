@@ -117,9 +117,6 @@ importers:
 
   apps/blog:
     dependencies:
-      '@ashgw/api':
-        specifier: workspace:*
-        version: link:../../packages/api
       '@ashgw/components':
         specifier: workspace:*
         version: link:../../packages/components
@@ -527,25 +524,6 @@ importers:
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
-      typescript:
-        specifier: 'catalog:'
-        version: 5.6.3
-
-  packages/api:
-    dependencies:
-      '@ashgw/models':
-        specifier: workspace:*
-        version: link:../models
-    devDependencies:
-      '@ashgw/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint
-      '@ashgw/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/typescript
-      ts-roids:
-        specifier: 'catalog:'
-        version: 1.46.0
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
