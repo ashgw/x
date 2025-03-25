@@ -35,6 +35,8 @@ export const env = createEnv({
     BLOG_URL: z.string().url(),
     WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
     BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
+    POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
+    POSTHOG_HOST: z.string().url(),
   },
   disablePrefix: [...(Object.keys(nonPrefixedVars) as NonPrefixedVarsTuple)],
   prefix: "NEXT_PUBLIC",
@@ -51,6 +53,8 @@ export const env = createEnv({
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
   skipValidation: isBrowser, // Since env vars are already injected at build time, we don't need to validate them at runtime.
 });
