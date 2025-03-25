@@ -19,7 +19,9 @@
     "typescript": "catalog:"
   },
   "exports": {
-    ".": "./src/index.ts"
+    "./posthog-client": "./src/posthog/client.tsx",
+    "./posthog-server": "./src/posthog/server.ts",
+    "./provider": "./src/provider.tsx"
   },
   "type": "module"
 }

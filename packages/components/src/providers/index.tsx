@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-import { AnalyticsProvider } from "@ashgw/analytics";
+import { AnalyticsProvider } from "@ashgw/analytics/provider";
 
 interface ProvidersProps extends PropsWithChildren {
   site: "blog" | "www";

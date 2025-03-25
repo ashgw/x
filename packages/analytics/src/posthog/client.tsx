@@ -1,6 +1,5 @@
 "use client";
 
-import type { PostHog } from "posthog-js";
 import type { PropsWithChildren } from "react";
 import { useEffect } from "react";
 import posthog from "posthog-js";
@@ -26,7 +25,7 @@ export const PostHogProvider = (
           ph.debug();
         }
       },
-    }) as PostHog;
+    });
   }, []);
 
   return <PostHogProviderRaw client={posthog} {...properties} />;
