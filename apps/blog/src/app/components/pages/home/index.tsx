@@ -1,11 +1,11 @@
 import { Footer } from "@ashgw/components";
 
-import { MainSection } from "./components/MainSection";
+import { HeroSection } from "./components/HeroSection";
 
 export function HomePage() {
   return (
     <>
-      <MainSection />
+      <HeroSection />
       <Footer />
     </>
   );
