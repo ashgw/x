@@ -728,9 +728,6 @@ importers:
 
   packages/observabiliy:
     dependencies:
-      '@ashgw/analytics':
-        specifier: workspace:*
-        version: link:../analytics
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
@@ -740,9 +737,6 @@ importers:
       next:
         specifier: 'catalog:'
         version: 15.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7)
-      posthog-js:
-        specifier: 1.130.2
-        version: 1.130.2
     devDependencies:
       '@ashgw/eslint-config':
         specifier: workspace:*
@@ -7243,9 +7237,6 @@ packages:
   postgres-interval@1.2.0:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
-
-  posthog-js@1.130.2:
-    resolution: {integrity: sha512-QR/j9Xs/STK3+VJgqiByeXFKT17LGZZvJtrCdgFhwydp8WfisJw7zrSy7rVDjYS0UeKJJ/3cO/qtlXD3dR2+Eg==}
 
   posthog-js@1.232.6:
     resolution: {integrity: sha512-xMNFpGSCCRDbDV29UtGYIzytXL0oHJEqV/gWAr0V0xNOip4Q4CwqvchKUfSCIMV52eOICtLmo9zUwLvwTOPL2g==}
@@ -16354,11 +16345,6 @@ snapshots:
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
-
-  posthog-js@1.130.2:
-    dependencies:
-      fflate: 0.4.8
-      preact: 10.26.4
 
   posthog-js@1.232.6:
     dependencies:
