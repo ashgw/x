@@ -33,6 +33,21 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
+      // Prevent console.* usage even when imported differently
+      // use { logger } from "@ashgw/logger"
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "MemberExpression[object.name='console']",
+          message:
+            "Use import { logger } from '@ashgw/analytics' instead of console.*",
+        },
+        {
+          selector: "Identifier[name='console']",
+          message:
+            "Use import { logger } from '@ashgw/analytics' instead of console",
+        },
+      ],
       "@typescript-eslint/no-unsafe-assignment": "warn",
       "@typescript-eslint/no-unused-vars": [
         "error",

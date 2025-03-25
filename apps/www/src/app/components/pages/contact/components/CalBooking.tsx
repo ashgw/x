@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 
+import { logger } from "@ashgw/observability";
+
 interface CalBookingProps {
   calLink?: string;
   config?: {
@@ -25,7 +27,7 @@ export function CalBooking({ calLink = "ashgw", config }: CalBookingProps) {
           hideEventTypeDetails: false,
         });
       } catch (error) {
-        console.error("Failed to initialize Cal API:", error);
+        logger.error("Failed to initialize Cal API:", error);
       }
     })();
   }, [config?.theme]);

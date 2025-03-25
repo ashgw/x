@@ -29,7 +29,8 @@
     "./base": "./base.js",
     "./nextjs": "./nextjs.js",
     "./react": "./react.js",
-    "./restricted-env": "./restricted-env.js"
+    "./restricted-env": "./restricted-env.js",
+    "./logging": "./logging.js"
   },
   "prettier": "@ashgw/prettier-config",
   "type": "module"

@@ -25,7 +25,7 @@ export async function GET(): Promise<NextResponse<Script> | NextResponse<Err>> {
     const script = await res.text();
     return new NextResponse(script, { status: 200 });
   } catch (error) {
-    return new NextResponse(sentry.next.captureException(error), {
+    return new NextResponse(sentry.next.captureException({ error }), {
       status: 500,
     });
   }

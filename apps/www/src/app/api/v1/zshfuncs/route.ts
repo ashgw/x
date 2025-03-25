@@ -22,7 +22,7 @@ export async function GET(): Promise<NextResponse<string>> {
     const script = await res.text();
     return NextResponse.json(script, { status: 200 });
   } catch (error) {
-    return NextResponse.json(sentry.next.captureException(error), {
+    return NextResponse.json(sentry.next.captureException({ error }), {
       status: 500,
     });
   }

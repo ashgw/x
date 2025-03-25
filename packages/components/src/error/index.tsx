@@ -8,13 +8,23 @@ import { Button } from "@ashgw/ui";
 
 export interface GlobalErrorProperties {
   readonly error: NextError & { digest?: string };
-  readonly reset: () => void;
+  readonly reset?: () => void;
 }
 
 export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
   useEffect(() => {
-    sentry.next.captureException(error);
+    sentry.next.captureException({
+      error,
+    });
   }, [error]);
+
+  const handleReset = () => {
+    if (reset) {
+      reset();
+    } else {
+      window.location.reload();
+    }
+  };
 
   return (
     <div className="dimmed-3 flex h-screen w-full flex-col items-center justify-center gap-6 text-center">
@@ -22,12 +32,7 @@ export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
       <p className="max-w-md">
         We've logged this error and will look into it as soon as possible.
       </p>
-      <Button
-        variant="navbar"
-        onClick={() => {
-          reset();
-        }}
-      >
+      <Button variant="outline" onClick={handleReset}>
         Try again
       </Button>
     </div>

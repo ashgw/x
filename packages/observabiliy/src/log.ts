@@ -1,5 +1,7 @@
+/* eslint-disable */
 import { env } from "@ashgw/env";
 
-const thirdParty = console; // no need for this shit for my personal site
-
-export const log = env.NODE_ENV === "production" ? thirdParty : console;
+const thirdParty = console;
+const defaultLogger = console;
+export const logger =
+  env.NODE_ENV === "production" ? thirdParty : defaultLogger;

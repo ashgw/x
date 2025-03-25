@@ -83,6 +83,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         if ("name" in answers && typeof answers.name === "string") {
           const pnpmInstall = spawn("pnpm", ["i"], { stdio: "inherit" });
           pnpmInstall.on("error", (error) => {
+            // eslint-disable-next-line no-console
             console.error(`Failed to execute pnpm install: ${error.message}`);
           });
 

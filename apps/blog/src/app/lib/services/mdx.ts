@@ -4,6 +4,7 @@ import type { MaybeUndefined, Optional } from "ts-roids";
 import fm from "front-matter";
 
 import type { MDXData, PostData } from "@ashgw/models";
+import { sentry } from "@ashgw/observability";
 
 export class MdxService {
   private mdxDirectory: string;
@@ -69,7 +70,10 @@ export class MdxService {
       const rawContent = await fsPromises.readFile(filePath, "utf-8");
       return this._parseMDX(rawContent);
     } catch (error) {
-      console.error("Error reading MDX file:", error);
+      sentry.next.captureException({
+        message: "Error reading MDX file",
+        error,
+      });
       return null;
     }
   }
@@ -86,7 +90,7 @@ export class MdxService {
       const mdxFiles = files.filter((file) => path.extname(file) === ".mdx");
       return mdxFiles;
     } catch (error) {
-      console.error("Error reading MDX files:", error);
+      sentry.next.captureException({ error });
       return null;
     }
   }
