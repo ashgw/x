@@ -1,4 +1,4 @@
-feat:
+sfeat:
   - head-branch: ["^feature", "feature", "feat"]
 
 docs:
@@ -58,6 +58,11 @@ observability:
   - changed-files:
       - any-glob-to-any-file:
           - packages/observability/*
+
+analytics:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/analytics/*
 
 build:
   - changed-files:

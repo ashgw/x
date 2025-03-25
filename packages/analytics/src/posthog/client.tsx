@@ -4,6 +4,7 @@ import type { PropsWithChildren } from "react";
 import { useEffect } from "react";
 import posthog from "posthog-js";
 import {
+  PostHogFeature,
   PostHogProvider as PostHogProviderRaw,
   usePostHog,
 } from "posthog-js/react";
@@ -32,3 +33,4 @@ export const PostHogProvider = (
 };
 
 export { usePostHog };
+export { PostHogFeature };
