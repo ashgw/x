@@ -10,7 +10,7 @@ export const BOOKING_LINK = "https://cal.com/ashgw/30min";
 export const SITE_NAME =
   getSiteName({
     url: env.NEXT_PUBLIC_WWW_URL,
-  }) ?? "A S H G W";
+  }) ?? "@ashgw";
 
 // slashless links
 export const LINKS = {

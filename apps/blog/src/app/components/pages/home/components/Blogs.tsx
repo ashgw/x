@@ -3,7 +3,7 @@ import { PostsProvider } from "~/app/components/posts/components/Context";
 import { MdxService } from "~/lib/index";
 
 export async function Blogs() {
-  const posts = await new MdxService("public/blogs").getBlogPosts();
+  const posts = await new MdxService("public/blogs").getPosts();
 
   return (
     <>

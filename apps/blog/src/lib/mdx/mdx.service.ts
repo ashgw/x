@@ -13,7 +13,7 @@ export class MdxService {
     this.baseDir = path.join(process.cwd(), blogDirectory);
   }
 
-  public async getBlogPosts(): Promise<PostData[]> {
+  public async getPosts(): Promise<PostData[]> {
     try {
       const files = await fsPromises.readdir(this.baseDir);
       const mdxFiles = files.filter((file) => path.extname(file) === ".mdx");
@@ -38,7 +38,7 @@ export class MdxService {
     }
   }
 
-  public async getBlogPost(slug: string): Promise<PostData> {
+  public async getPost(slug: string): Promise<PostData> {
     const filePath = path.join(this.baseDir, `${slug}.mdx`);
     try {
       const parsedContent = await this._readMDXFile(filePath);

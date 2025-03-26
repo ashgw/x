@@ -14,7 +14,8 @@ export function ScrollUp() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      // Show when scrolling up and we're at least 100px down the page
+      if (currentScrollY < lastScrollY && currentScrollY > 100) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -45,15 +46,14 @@ export function ScrollUp() {
 
   return (
     <button
-      className={`average-transition md:px-18 fixed bottom-1 right-1 mx-12 my-12 max-h-3 max-w-3 animate-bounce lg:mx-24 xl:mx-[200px] ${isVisible ? "opacity-100 transition-opacity duration-300" : "opacity-0 transition-opacity duration-300"}`}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className={`average-transition md:px-18 fixed bottom-1 right-1 mx-12 my-12 max-h-3 max-w-3 animate-bounce lg:mx-24 xl:mx-[200px] ${
+        isVisible
+          ? "opacity-100 transition-opacity duration-300"
+          : "opacity-0 transition-opacity duration-300"
+      }`}
     >
-      <ChevronUp
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-        id="back-up-top"
-        className="average-transition hover:scale-150 hover:opacity-100"
-      />
+      <ChevronUp className="average-transition hover:scale-150 hover:opacity-100" />
     </button>
   );
 }
