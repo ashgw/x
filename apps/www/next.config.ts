@@ -9,7 +9,6 @@ import "@ashgw/env";
 const config: NextConfig = sentry.next.withConfig({
   nextConfig: {
     ...baseConfig,
-    transpilePackages: ["next-mdx-remote"],
   },
 });
 
