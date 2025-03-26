@@ -1,11 +1,9 @@
 import { Footer } from "@ashgw/components";
 
-import { MdxService } from "~/lib";
+import type { PostData } from "~/lib";
 import { BlogPostData } from "./components/BlogPostData";
 
-export async function BlogPost({ postName }: { postName: string }) {
-  const postData = await new MdxService("public/blogs").getPost(postName);
-
+export function BlogPost({ postData }: { postData: PostData }) {
   return (
     <>
       <main className="pt-5">

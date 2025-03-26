@@ -38,19 +38,19 @@ export class MdxService {
     }
   }
 
-  public async getPost(slug: string): Promise<PostData> {
-    const filePath = path.join(this.baseDir, `${slug}.mdx`);
+  public async getPost(filename: string): Promise<PostData> {
+    const filePath = path.join(this.baseDir, `${filename}.mdx`);
     try {
       const parsedContent = await this._readMDXFile(filePath);
 
       return {
         parsedContent,
-        filename: slug,
+        filename,
       };
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `Failed to read blog post ${slug}`,
+        message: `Failed to read blog post ${filename}`,
         cause: error,
       });
     }
