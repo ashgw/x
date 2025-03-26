@@ -1,6 +1,5 @@
 "use client";
 
-import type { ButtonHTMLAttributes } from "react";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { CheckCheck } from "lucide-react";
@@ -52,7 +51,7 @@ export function Posts({ posts }: PostsProps) {
       setTimeout(() => {
         setVisibleNum((prev) => prev + perLoadVisibleNum);
         setIsLoading(false);
-      }, 300);
+      }, 100);
     }
   }, [isLoadMoreInView, loadMore, setVisibleNum, perLoadVisibleNum]);
 
@@ -77,22 +76,14 @@ export function Posts({ posts }: PostsProps) {
             <Loading glowColor="rgba(255, 255, 255, 0.8)" />
           ) : null
         ) : (
-          <NoMoreImTiredBoss />
+          <div className="-mb-12 flex flex-col items-center justify-center">
+            <CheckCheck className="mt-5 cursor-default" />
+            <div className="py-10"></div>
+            <Footer />
+          </div>
         )}
       </div>
       <ScrollUp />
     </main>
   );
 }
-
-const NoMoreImTiredBoss: React.FC<
-  ButtonHTMLAttributes<HTMLButtonElement>
-> = () => {
-  return (
-    <div className="-mb-12 flex flex-col items-center justify-center">
-      <CheckCheck className="mt-5 cursor-default" />
-      <div className="py-10"></div>
-      <Footer />
-    </div>
-  );
-};

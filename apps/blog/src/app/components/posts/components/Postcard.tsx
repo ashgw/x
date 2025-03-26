@@ -17,7 +17,7 @@ export function PostCard({ postData }: { postData: PostData }) {
                   stringDate: postData.parsedContent.attributes.firstModDate,
                 })}
               </li>
-              <Link href={`/tag/${postData.filename}`}>
+              <Link href={`/${postData.filename}`}>
                 <h2 className="dimmed-4 text-2xl font-bold lg:text-[2.5rem]">
                   {postData.parsedContent.attributes.title}
                 </h2>
