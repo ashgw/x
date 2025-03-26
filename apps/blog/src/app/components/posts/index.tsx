@@ -1,9 +1,8 @@
 "use client";
 
 import type { ButtonHTMLAttributes } from "react";
-import { useEffect } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { CheckCheck, ChevronDown } from "lucide-react";
 
 import { Footer } from "@ashgw/components";
@@ -21,6 +20,9 @@ export function Posts({ posts }: PostsProps) {
   const { visibleNum, setVisibleNum, scrollPosition, setScrollPosition } =
     usePostsContext();
 
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const isLoadMoreInView = useInView(loadMoreRef, { once: false });
+
   const perLoadVisibleNum = 5;
   const filteredPosts = posts.sort((b1, b2) => {
     const date1 = new Date(b1.parsedContent.attributes.firstModDate);
@@ -30,6 +32,7 @@ export function Posts({ posts }: PostsProps) {
 
   const loadMore = visibleNum <= filteredPosts.length;
 
+  // Restore scroll position and handle scroll events
   useEffect(() => {
     if (scrollPosition > 0) {
       window.scrollTo(0, scrollPosition);
@@ -42,6 +45,13 @@ export function Posts({ posts }: PostsProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollPosition, setScrollPosition]);
+
+  // Auto-load more posts when load more button comes into view
+  useEffect(() => {
+    if (isLoadMoreInView && loadMore) {
+      setVisibleNum((prev) => prev + perLoadVisibleNum);
+    }
+  }, [isLoadMoreInView, loadMore, setVisibleNum, perLoadVisibleNum]);
 
   return (
     <main>
@@ -58,7 +68,7 @@ export function Posts({ posts }: PostsProps) {
           <PostCard postData={post} />
         </motion.div>
       ))}
-      <div id="more" className="m-14 flex items-center justify-center">
+      <div ref={loadMoreRef} className="m-14 flex items-center justify-center">
         {loadMore ? (
           <LoadMore
             setVisible={setVisibleNum}
@@ -90,15 +100,13 @@ const LoadMore: React.FC<{
   setVisible: (num: number) => void;
   visNum: number;
   perLoadVisNum: number;
-}> = (props) => {
+}> = ({ setVisible, visNum, perLoadVisNum }) => {
   return (
-    <Link href={"#more"}>
-      <ChevronDown
-        onClick={() => {
-          props.setVisible(props.visNum + props.perLoadVisNum);
-        }}
-        className="mt-5 animate-bounce cursor-pointer"
-      />
-    </Link>
+    <button
+      onClick={() => setVisible(visNum + perLoadVisNum)}
+      className="flex items-center justify-center p-2 transition-transform hover:scale-110"
+    >
+      <ChevronDown className="mt-5 animate-bounce cursor-pointer" />
+    </button>
   );
 };
