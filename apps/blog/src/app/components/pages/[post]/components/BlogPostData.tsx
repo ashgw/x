@@ -3,11 +3,22 @@ import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/ui";
 
 import type { PostData } from "~/lib";
+import {
+  FramerMotionFadeInComponent,
+  ThreeTrafficLightsMovingObjects,
+  YeetMe,
+} from "~/app/components/featured/blog";
 import { ReleaseDate } from "./ReleaseDate";
 
 interface BlogPostPorps {
   postData: PostData;
 }
+
+const featuredComponents = {
+  YeetMe: YeetMe,
+  TTLMO: ThreeTrafficLightsMovingObjects,
+  FramerMotionFadeInComponent: FramerMotionFadeInComponent,
+};
 
 export function BlogPostData({ postData }: BlogPostPorps) {
   return (
@@ -32,7 +43,10 @@ export function BlogPostData({ postData }: BlogPostPorps) {
         </div>
       </div>
       <article className="text-wrap">
-        <MDX source={postData.parsedContent.body} />
+        <MDX
+          source={postData.parsedContent.body}
+          components={featuredComponents}
+        />
       </article>
       <BackUpTop />
     </section>

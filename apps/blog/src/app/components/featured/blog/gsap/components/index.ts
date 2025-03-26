@@ -1,0 +1,1 @@
+export { ThreeTrafficLightsMovingObjects } from "./ThreeTrafficLightsMovingObjects";
