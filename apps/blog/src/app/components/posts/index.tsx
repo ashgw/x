@@ -3,31 +3,25 @@
 import type { ButtonHTMLAttributes } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import BackUpTop from "@/app/components/reusables/back-up-top";
 import { motion } from "framer-motion";
 import { CheckCheck, ChevronDown } from "lucide-react";
 
+import { Footer } from "@ashgw/components";
+
 import type { PostData } from "~/lib/mdx";
 import { PostCard } from "./Postcard";
+import { ScrollUp } from "./ScrollUp";
 
 interface PostsProps {
   posts: PostData[];
-  taggedPostsFileNames?: string[];
 }
 
-export function Posts({ posts, taggedPostsFileNames }: PostsProps) {
+export function Posts({ posts }: PostsProps) {
   const firstLoadVisibleNum = 10;
   const perLoadVisibleNum = 5;
   const [visibleNum, setVisibleNum] = useState<number>(firstLoadVisibleNum);
-
-  let filteredPosts: PostData[] = posts;
-  if (taggedPostsFileNames && taggedPostsFileNames.length > 0) {
-    filteredPosts = posts.filter((post) =>
-      taggedPostsFileNames.includes(post.filename),
-    );
-  }
+  const filteredPosts: PostData[] = posts;
   const loadMore = visibleNum <= filteredPosts.length;
-
   return (
     <main>
       {filteredPosts
@@ -71,7 +65,7 @@ export function Posts({ posts, taggedPostsFileNames }: PostsProps) {
           <NoMoreImTiredBoss />
         )}
       </div>
-      <BackUpTop />
+      <ScrollUp />
     </main>
   );
 }
@@ -87,13 +81,11 @@ const NoMoreImTiredBoss: React.FC<
   );
 };
 
-type LoadMoreProps = {
+const LoadMore: React.FC<{
   setVisible: (num: number) => void;
   visNum: number;
   perLoadVisNum: number;
-};
-
-const LoadMore: React.FC<LoadMoreProps> = (props) => {
+}> = (props) => {
   return (
     <Link href={"#more"}>
       <ChevronDown
