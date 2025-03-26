@@ -1,3 +1,5 @@
+import { createMetadata } from "@ashgw/seo";
+
 import { BlogPost } from "~/app/components/pages/[post]";
 import { MdxService } from "~/lib";
 
@@ -7,10 +9,18 @@ export const generateStaticParams = async () => {
 };
 
 interface PageProps {
-  params: Promise<{ post: string }>;
+  params: Promise<{ postName: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { postName } = await params;
+  return createMetadata({
+    title: postName,
+    description: postName,
+  });
 }
 
 export default async function Page({ params }: PageProps) {
-  const { post } = await params;
-  return <BlogPost postName={post} />;
+  const { postName } = await params;
+  return <BlogPost postName={postName} />;
 }
