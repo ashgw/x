@@ -15,7 +15,6 @@ const baseConfig = {
     "@ashgw/cross-runtime",
     "@ashgw/observability",
     "@ashgw/seo",
-    "next-mdx-remote", // @see https://github.com/vercel/next.js/issues/67573
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */
