@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { DateService } from "@ashgw/cross-runtime";
 
-export function CreationDate({ date }: { date: string }) {
+export function ReleaseDate({ date }: { date: string }) {
   return (
     <motion.p
       animate={{

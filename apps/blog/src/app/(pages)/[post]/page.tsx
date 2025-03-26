@@ -1,30 +1,23 @@
-import Footer from "@/app/components/footer/footer";
-import PostSection from "@/app/components/post/post-section";
+import { createMetadata } from "@ashgw/seo";
 
+import { BlogPost } from "~/app/components/pages/[post]";
 import { MdxService } from "~/lib";
 
-interface RouteParams {
+export const generateStaticParams = async () => {
+  const posts = await new MdxService("public/blogs").getPosts();
+
+  return posts.map((post) => {
+    return createMetadata({
+      title: post.parsedContent.attributes.title,
+      description: post.parsedContent.attributes.seoTitle,
+    });
+  });
+};
+
+interface PageRouteParams {
   params: { post: string };
 }
 
-export const generateStaticParams = async () => {
-  const posts = await new MdxService("/blog/").getPost();
-  if (posts) {
-    return posts.map((post) => ({ post: post.filename }));
-  }
-  return [];
-};
-
-export default async function Blog({ params }: RouteParams) {
-  const post = await getBlogPost(params.post);
-
-  return (
-    <>
-      <main className="pt-5">
-        <PostSection post={post} />
-      </main>
-      <div className="py-10"></div>
-      <Footer />)
-    </>
-  );
+export default function Page({ params }: PageRouteParams) {
+  return <BlogPost postName={params.post} />;
 }

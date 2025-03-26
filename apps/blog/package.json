@@ -27,7 +27,6 @@
     "@ashgw/cross-runtime": "workspace:*",
     "@ashgw/css": "workspace:*",
     "@ashgw/env": "workspace:*",
-    "@ashgw/models": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@ashgw/seo": "workspace:*",
     "@ashgw/ui": "workspace:*",

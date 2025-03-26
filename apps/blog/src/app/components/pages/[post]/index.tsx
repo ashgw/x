@@ -1,19 +1,10 @@
 import { Footer } from "@ashgw/components";
 
 import { MdxService } from "~/lib";
-import { BlogPostData } from "./components/BlogPost";
+import { BlogPostData } from "./components/BlogPostData";
 
-export const generateStaticParams = async () => {
-  const posts = await new MdxService("public/blogs").getPosts();
-  return posts.map((post) => ({ post: post.filename }));
-};
-
-interface RouteParams {
-  params: { post: string };
-}
-
-export async function BlogPost({ params }: RouteParams) {
-  const postData = await new MdxService("public/blogs").getPost(params.post);
+export async function BlogPost({ postName }: { postName: string }) {
+  const postData = await new MdxService("public/blogs").getPost(postName);
 
   return (
     <>

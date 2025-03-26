@@ -15,7 +15,8 @@
     "@ashgw/observability": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@nextui-org/react": "catalog:",
-    "framer-motion": "catalog:"
+    "framer-motion": "catalog:",
+    "next-mdx-remote": "4.4.1"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
