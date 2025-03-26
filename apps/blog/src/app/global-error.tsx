@@ -1,8 +1,23 @@
 "use client";
 
-import type { GlobalErrorProperties } from "@ashgw/components";
-import { ErrorBoundary } from "@ashgw/components";
+import "@ashgw/css/global";
 
-export default function GlobalError({ error, reset }: GlobalErrorProperties) {
-  return <ErrorBoundary error={error} reset={reset} />;
+import type { GlobalErrorProperties } from "@ashgw/components";
+import { ErrorBoundary, Footer } from "@ashgw/components";
+import { fonts } from "@ashgw/ui";
+
+import { GoBackHome } from "./components/pages/root";
+
+export default function GlobalError({ ...props }: GlobalErrorProperties) {
+  return (
+    <html lang="en">
+      <body className={fonts.atkinsonHyperlegible.className}>
+        <GoBackHome />
+        <main className="flex h-screen items-start justify-center pt-20">
+          <ErrorBoundary {...props} />
+        </main>
+      </body>
+      <Footer />
+    </html>
+  );
 }

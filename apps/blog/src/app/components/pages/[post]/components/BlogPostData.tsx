@@ -17,7 +17,7 @@ interface BlogPostPorps {
 const featuredComponents = {
   YeetMe: YeetMe,
   TTLMO: ThreeTrafficLightsMovingObjects,
-  FramerMotionFadeInComponent: FramerMotionFadeInComponent,
+  FramerMotionFadeInComponent,
 };
 
 export function BlogPostData({ postData }: BlogPostPorps) {
