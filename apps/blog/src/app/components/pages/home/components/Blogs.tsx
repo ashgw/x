@@ -1,6 +1,7 @@
+import { Posts } from "~/app/components/posts";
 import { MdxService } from "~/lib/index";
 
-export default async function BlogPage() {
+export async function Blogs() {
   const posts = await new MdxService(
     "./../../../../../../public/blogs",
   ).getBlogPosts();
@@ -14,7 +15,7 @@ export default async function BlogPage() {
         <Posts posts={posts} />
         <div className="h-full w-auto"></div>
       </section>
-      <div className="py-6"></div>
+      <div className="py-6" />
     </>
   );
 }
