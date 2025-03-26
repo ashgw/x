@@ -62,5 +62,15 @@
     "devDependencies",
     "peerDependencies",
     "scripts"
+  ],
+  "ignore": [
+    {
+      "dependency": "@vitest/coverage-v8",
+      "reason": "Ignoring unmet peer dependency warning for vitest"
+    },
+    {
+      "dependency": "next",
+      "reason": "Ignoring version mismatch for Next.js dependencies"
+    }
   ]
 }
