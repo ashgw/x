@@ -1,23 +1,16 @@
-import { createMetadata } from "@ashgw/seo";
-
 import { BlogPost } from "~/app/components/pages/[post]";
 import { MdxService } from "~/lib";
 
 export const generateStaticParams = async () => {
   const posts = await new MdxService("public/blogs").getPosts();
-
-  return posts.map((post) => {
-    return createMetadata({
-      title: post.parsedContent.attributes.title,
-      description: post.parsedContent.attributes.seoTitle,
-    });
-  });
+  return posts.map((post) => ({ post: post.filename }));
 };
 
-interface PageRouteParams {
-  params: { post: string };
+interface PageProps {
+  params: Promise<{ post: string }>;
 }
 
-export default function Page({ params }: PageRouteParams) {
-  return <BlogPost postName={params.post} />;
+export default async function Page({ params }: PageProps) {
+  const { post } = await params;
+  return <BlogPost postName={post} />;
 }

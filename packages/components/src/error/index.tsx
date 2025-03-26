@@ -4,7 +4,7 @@ import type NextError from "next/error";
 import { useEffect } from "react";
 
 import { sentry } from "@ashgw/observability";
-import { Button } from "@ashgw/ui";
+import { Button, toast } from "@ashgw/ui";
 
 export interface GlobalErrorProperties {
   readonly error: NextError & { digest?: string };
@@ -13,9 +13,11 @@ export interface GlobalErrorProperties {
 
 export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
   useEffect(() => {
-    sentry.next.captureException({
-      error,
-    });
+    toast.message(
+      sentry.next.captureException({
+        error,
+      }),
+    );
   }, [error]);
 
   const handleReset = () => {
