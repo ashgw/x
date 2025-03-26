@@ -7,7 +7,10 @@ import { sentry } from "@ashgw/observability";
 import "@ashgw/env";
 
 const config: NextConfig = sentry.next.withConfig({
-  nextConfig: baseConfig,
+  nextConfig: {
+    ...baseConfig,
+    transpilePackages: ["next-mdx-remote"],
+  },
 });
 
 export default config;
