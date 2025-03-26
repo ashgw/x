@@ -1,4 +1,5 @@
 import { Posts } from "~/app/components/posts";
+import { PostsProvider } from "~/app/components/posts/components/Context";
 import { MdxService } from "~/lib/index";
 
 export async function Blogs() {
@@ -10,7 +11,9 @@ export async function Blogs() {
         <h1 className="mb-8 hidden text-2xl font-medium tracking-tighter">
           Unclassified, raw
         </h1>
-        <Posts posts={posts} />
+        <PostsProvider>
+          <Posts posts={posts} />
+        </PostsProvider>
         <div className="h-full w-auto"></div>
       </section>
       <div className="py-6" />
