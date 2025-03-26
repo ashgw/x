@@ -9,8 +9,8 @@ import { CheckCheck, ChevronDown } from "lucide-react";
 import { Footer } from "@ashgw/components";
 
 import type { PostData } from "~/lib/mdx";
-import { PostCard } from "./Postcard";
-import { ScrollUp } from "./ScrollUp";
+import { PostCard } from "./components/Postcard";
+import { ScrollUp } from "./components/ScrollUp";
 
 interface PostsProps {
   posts: PostData[];
