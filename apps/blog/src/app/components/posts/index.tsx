@@ -31,12 +31,10 @@ export function Posts({ posts }: PostsProps) {
   const loadMore = visibleNum <= filteredPosts.length;
 
   useEffect(() => {
-    // Restore scroll position when component mounts
     if (scrollPosition > 0) {
       window.scrollTo(0, scrollPosition);
     }
 
-    // Save scroll position when user scrolls
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
     };

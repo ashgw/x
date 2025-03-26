@@ -1,16 +1,17 @@
 "use client";
 
-import type { PropsWithChildren } from "react";
+import type { Dispatch, PropsWithChildren, SetStateAction } from "react";
+import type { MaybeUndefined } from "ts-roids";
 import { createContext, useContext, useState } from "react";
 
 interface PostsContextType {
   visibleNum: number;
-  setVisibleNum: (num: number) => void;
+  setVisibleNum: Dispatch<SetStateAction<number>>;
   scrollPosition: number;
-  setScrollPosition: (pos: number) => void;
+  setScrollPosition: Dispatch<SetStateAction<number>>;
 }
 
-const PostsContext = createContext<PostsContextType | undefined>(undefined);
+const PostsContext = createContext<MaybeUndefined<PostsContextType>>(undefined);
 
 export function PostsProvider({ children }: PropsWithChildren) {
   const [visibleNum, setVisibleNum] = useState<number>(10); // firstLoadVisibleNum
