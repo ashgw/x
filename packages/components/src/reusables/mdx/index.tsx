@@ -8,10 +8,7 @@ import { Link } from "../link";
 import { Spacer1, Spacer2, Spacer3 } from "../spacers";
 import { TextContent } from "../text";
 
-export function MDX({
-  source,
-  components,
-}: Pick<MDXRemoteProps, "source" | "components">) {
+export function MDX({ source, components }: MDXRemoteProps) {
   return (
     <MDXRemote
       source={source}
