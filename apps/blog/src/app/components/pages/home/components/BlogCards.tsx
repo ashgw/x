@@ -2,7 +2,7 @@ import { Posts } from "~/app/components/posts";
 import { PostsProvider } from "~/app/components/posts/components/Context";
 import { MdxService } from "~/lib/index";
 
-export async function Blogs() {
+export async function BlogCards() {
   const posts = await new MdxService("public/blogs").getPosts();
 
   return (

@@ -1,5 +1,5 @@
-import { Blogs } from "./components/Blogs";
+import { BlogCards } from "./components/BlogCards";
 
 export function HomePage() {
-  return <Blogs />;
+  return <BlogCards />;
 }
