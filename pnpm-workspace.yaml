@@ -34,3 +34,7 @@ catalogs:
     react-dom: 18.3.1
     "@types/react": ^18.3.11
     "@types/react-dom": ^18.3.1
+  next14:
+    # using this for ths blog because of an irritiating bug
+    # @see https://github.com/hashicorp/next-mdx-remote/issues/467
+    next: 14.2.3
