@@ -10,7 +10,7 @@ export interface MetaDataAttributes {
   tags: string[];
 }
 
-export interface MDXData {
+export interface MdxFileData {
   attributes: MetaDataAttributes;
   body: string;
   bodyBegin: number;
@@ -18,6 +18,6 @@ export interface MDXData {
 }
 
 export interface PostData {
-  parsedContent: MDXData;
+  parsedContent: MdxFileData;
   filename: string;
 }

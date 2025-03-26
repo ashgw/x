@@ -41,7 +41,9 @@ export const init = (ops: {
     replaysSessionSampleRate: 0.1,
 
     integrations: [
-      // add the posthog integration when the bug gets resolved
+      // also add the posthog integration when the bug gets resolved
+
+      // no need for replay integration on anything else but the client
       ...(ops.runtime === "browser"
         ? [
             // The replay integration captures user interactions and errors in the browser.

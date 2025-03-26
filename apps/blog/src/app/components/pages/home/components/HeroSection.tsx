@@ -1,103 +1,31 @@
-"use client";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import Posts from "@/app/components/post/posts";
+import { CREATOR } from "@/lib/constants";
+import { pub } from "@/lib/env";
+import { getSiteName } from "@/lib/funcs/site-name";
+import { getBlogPosts } from "@/lib/mdx/content";
 
-import { motion } from "framer-motion";
+import { LoadingScreen } from "@ashgw/components";
 
-import { Button } from "@ashgw/ui";
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
 
-import { Text } from "./Text";
-import { TypingAnimation } from "./TypingAnimation";
-
-export function HeroSection() {
-  const TRANSITION_DURATION = 0.3;
-  const TRANSITION_DELAY = 0.4;
-  const transition = {
-    duration: TRANSITION_DURATION,
-    delay: TRANSITION_DELAY,
-  };
-  return (
-    <motion.section
-      initial={{
-        opacity: 0,
-      }}
-      whileInView={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.3,
-        ease: "easeInOut",
-      }}
-      className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
-    >
-      <div className="container px-4 md:px-4">
-        <div className="flex flex-col items-center space-y-4 text-center">
-          <div className="space-y-2">
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: 50,
-              }}
-              animate={{
-                opacity: 1,
-                x: 0,
-              }}
-              transition={transition}
-            >
-              <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
-                <span className="dimmed-4">
-                  Hey, I&apos;m <span className="glows">AG</span>
-                </span>
-              </h1>
-              <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
-                <TypingAnimation />
-              </h1>
-            </motion.div>
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: -50,
-              }}
-              animate={{
-                opacity: 1,
-                x: 0,
-              }}
-              transition={transition}
-            >
-              <Text>
-                Welcome to my corner on the internet, where it serves as my
-                brain dump for a thing or two I learned throughout the years.
-                Have a look around, if you like what you see
-              </Text>
-            </motion.div>
-          </div>
-          <div className="w-full max-w-sm space-y-2">
-            <motion.div
-              className="grid gap-2"
-              initial={{
-                opacity: 0,
-                scale: 0.8,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-              }}
-              transition={{
-                duration: 0.4,
-                delay: 3,
-              }}
-            >
-              <Button
-                className="glowsup w-full"
-                variant={"navbar"}
-                onClick={() => {
-                  window.location.href = "/contact";
-                }}
-              >
-                Feel free to reach out
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </motion.section>
-  );
+  if (posts) {
+    return (
+      <Suspense fallback={<LoadingScreen />}>
+        <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
+          <h1 className="mb-8 hidden text-2xl font-medium tracking-tighter">
+            Unclassified, raw
+          </h1>
+          <Posts posts={posts} />
+          <div className="h-full w-auto"></div>
+        </section>
+        <div className="py-6"></div>
+      </Suspense>
+    );
+  } else {
+    return notFound();
+  }
 }
