@@ -1,11 +1,11 @@
 "use client";
 
 import type { ButtonHTMLAttributes } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { CheckCheck, ChevronDown } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 
-import { Footer } from "@ashgw/components";
+import { Footer, Loading } from "@ashgw/components";
 
 import type { PostData } from "~/lib/mdx";
 import { usePostsContext } from "./components/Context";
@@ -19,6 +19,7 @@ interface PostsProps {
 export function Posts({ posts }: PostsProps) {
   const { visibleNum, setVisibleNum, scrollPosition, setScrollPosition } =
     usePostsContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const isLoadMoreInView = useInView(loadMoreRef, { once: false });
@@ -32,7 +33,6 @@ export function Posts({ posts }: PostsProps) {
 
   const loadMore = visibleNum <= filteredPosts.length;
 
-  // Restore scroll position and handle scroll events
   useEffect(() => {
     if (scrollPosition > 0) {
       window.scrollTo(0, scrollPosition);
@@ -46,10 +46,13 @@ export function Posts({ posts }: PostsProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollPosition, setScrollPosition]);
 
-  // Auto-load more posts when load more button comes into view
   useEffect(() => {
     if (isLoadMoreInView && loadMore) {
-      setVisibleNum((prev) => prev + perLoadVisibleNum);
+      setIsLoading(true);
+      setTimeout(() => {
+        setVisibleNum((prev) => prev + perLoadVisibleNum);
+        setIsLoading(false);
+      }, 300);
     }
   }, [isLoadMoreInView, loadMore, setVisibleNum, perLoadVisibleNum]);
 
@@ -70,11 +73,9 @@ export function Posts({ posts }: PostsProps) {
       ))}
       <div ref={loadMoreRef} className="m-14 flex items-center justify-center">
         {loadMore ? (
-          <LoadMore
-            setVisible={setVisibleNum}
-            visNum={visibleNum}
-            perLoadVisNum={perLoadVisibleNum}
-          />
+          isLoading ? (
+            <Loading glowColor="rgba(255, 255, 255, 0.8)" />
+          ) : null
         ) : (
           <NoMoreImTiredBoss />
         )}
@@ -93,20 +94,5 @@ const NoMoreImTiredBoss: React.FC<
       <div className="py-10"></div>
       <Footer />
     </div>
-  );
-};
-
-const LoadMore: React.FC<{
-  setVisible: (num: number) => void;
-  visNum: number;
-  perLoadVisNum: number;
-}> = ({ setVisible, visNum, perLoadVisNum }) => {
-  return (
-    <button
-      onClick={() => setVisible(visNum + perLoadVisNum)}
-      className="flex items-center justify-center p-2 transition-transform hover:scale-110"
-    >
-      <ChevronDown className="mt-5 animate-bounce cursor-pointer" />
-    </button>
   );
 };

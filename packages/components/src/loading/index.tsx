@@ -2,6 +2,11 @@
 
 import LoadingPoints from "loading-points";
 
-export function Loading() {
-  return <LoadingPoints glowColor={"rgb(155, 46, 199)"} circleSize={"8px"} />;
+export function Loading(props: { glowColor?: string }) {
+  return (
+    <LoadingPoints
+      glowColor={props.glowColor ?? "rgb(155, 46, 199)"}
+      circleSize={"8px"}
+    />
+  );
 }
