@@ -26,6 +26,12 @@ export function MDX({
         C: TextContent,
         L: Link,
         D: Divider,
+        // Crossed: () => {
+        //   return <></>;
+        // },
+        // Image: () => {
+        //   return <></>;
+        // },
         ...components,
       }}
     />
