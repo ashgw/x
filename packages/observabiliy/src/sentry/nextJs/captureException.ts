@@ -6,7 +6,7 @@ type Exception = Parameters<typeof sentryCaptureException>[0];
 type Hint = Parameters<typeof sentryCaptureException>[1];
 
 /**
- * Captures an exception and logs the error message, sends it to Sentry and returns the strinf message.
+ * Captures an exception and logs the error message, sends it to Sentry and returns the string message.
  *
  * @returns A string message describing the error.
  */
@@ -19,15 +19,15 @@ export const captureException = ({
   error: Exception;
   hint?: Hint;
 }): string => {
-  const errorMessagePrefix = message ?? "An error occurred";
   const errorMessage = extractErrorMessage(error);
+  const userProvivedErrorMessage = message ?? errorMessage;
   try {
     sentryCaptureException(error, hint);
-    logger.error(`${errorMessagePrefix}: ${errorMessage}`);
+    logger.error(`${userProvivedErrorMessage}`);
   } catch (ce) {
     logger.error("CANNOT CAPTURE EXCEPTION:", ce);
   }
-  return errorMessagePrefix;
+  return userProvivedErrorMessage;
 };
 
 const extractErrorMessage = (exception: Exception): string => {

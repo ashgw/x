@@ -1,6 +1,6 @@
 import * as SentryLib from "@sentry/nextjs";
 
-import { captureException } from "./error";
+import { captureException } from "./captureException";
 import { init } from "./init";
 import { withConfig } from "./withConfig";
 
