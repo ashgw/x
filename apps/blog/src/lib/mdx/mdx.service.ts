@@ -1,5 +1,3 @@
-"use server";
-
 import { promises as fsPromises } from "fs";
 import path from "path";
 import fm from "front-matter";

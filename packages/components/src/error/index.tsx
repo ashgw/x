@@ -32,7 +32,7 @@ export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
       <p className="max-w-md">
         We've logged this error and will look into it as soon as possible.
       </p>
-      <Button variant="outline" onClick={handleReset}>
+      <Button variant="navbar" onClick={handleReset}>
         Try again
       </Button>
     </div>
