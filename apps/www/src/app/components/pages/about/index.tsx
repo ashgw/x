@@ -4,6 +4,7 @@ import React from "react";
 
 import { Footer } from "@ashgw/components";
 import { LINKS, REPO_SOURCE } from "@ashgw/constants";
+import { env } from "@ashgw/env";
 
 import AboutCard from "./components/AboutCard";
 import Link from "./components/Link";
@@ -22,9 +23,10 @@ export function AboutPage() {
           <p>
             I&apos;d be glazing myself pretty hard if I wrote a whole section
             here explaining who I am. I&apos;d rather you figure that out by
-            exploring my <Link href={"/blog"} name="blog" />, open source repos,
-            or clicking around at random. But since you&apos;re here, I&apos;m
-            guessing you saw me through something software-related.
+            exploring my <Link href={env.NEXT_PUBLIC_BLOG_URL} name="blog" />,
+            open source repos, or clicking around at random. But since
+            you&apos;re here, I&apos;m guessing you saw me through something
+            software-related.
           </p>
         </AboutCard>
 
