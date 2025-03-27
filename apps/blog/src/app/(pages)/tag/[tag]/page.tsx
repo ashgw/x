@@ -8,10 +8,12 @@ import { MdxService } from "~/lib";
 interface DynamicRouteParams {
   params: { tag: string };
 }
-
 export const generateStaticParams = async () => {
   const posts = await new MdxService("public/blogs").getPosts();
-  return posts.map((post) => ({ post: post.filename }));
+  const tags = Array.from(
+    new Set(posts.flatMap((post) => post.parsedContent.attributes.tags)),
+  );
+  return tags.map((tag) => ({ tag }));
 };
 
 export const metadata: Metadata = createMetadata({
