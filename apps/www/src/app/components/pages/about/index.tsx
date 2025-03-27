@@ -40,7 +40,7 @@ export function AboutPage() {
         </AboutCard>
         <AboutCard title="">
           <p>
-            Software-wise though, I need you to know a a couple of things about
+            Software-wise though, I need you to know a couple of things about
             me. One, I&apos;m not a “backend developer” or “full-stack engineer”
             or “iOS” engineer, and I don&apos;t like to box myself into labels.
             If I don&apos;t know something, I&apos;ll learn it, easy as.
