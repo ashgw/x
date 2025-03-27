@@ -30,7 +30,7 @@ export function PostCard({ postData }: { postData: PostData }) {
                   <Link
                     href={`/tag/${tag}`}
                     key={tag}
-                    className="relative rounded-full px-2 py-1"
+                    className="relative rounded-full border border-white/10 px-4 py-2 text-sm transition-all duration-200 ease-in-out hover:border-white/20"
                   >
                     {tag}
                   </Link>
