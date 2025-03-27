@@ -6,13 +6,13 @@ import { motion } from "framer-motion";
 import { H2 } from "~/app/components/pages/[post]/components/headers";
 
 interface NoTagsFoundProps {
-  allAvailableTags: Set<string>;
+  validTags: Set<string>;
 }
 
-export function NoTagsFound({ allAvailableTags }: NoTagsFoundProps) {
+export function NoTagsFound({ validTags }: NoTagsFoundProps) {
   const randomTagCount = Math.floor(Math.random() * 3) + 4; // Returns 4, 5, or 6
 
-  const shuffledTags = [...allAvailableTags].sort(() => 0.5 - Math.random());
+  const shuffledTags = [...validTags].sort(() => 0.5 - Math.random());
 
   const suggestedTags = shuffledTags.slice(0, randomTagCount);
 
