@@ -16,7 +16,7 @@ jobs:
       - uses: ./.github/actions/vercel-build
         with:
           project_name: www
-          NODE_ENV: production # TODO: remove either deployment type or node env
+          NODE_ENV: production
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
           NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}

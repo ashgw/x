@@ -6,10 +6,28 @@ on:
 
 jobs:
   deploy-production:
-    environment: production
+    name: Trigger Production Deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 1
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
     steps:
-      - uses: re-actors/alls-green@release/v1
-        id: all-green
+      - name: Send Notification
+        uses: actions/github-script@v7
         with:
-          jobs: ${{ toJSON(needs) }}
+          script: |
+            const creator = context.actor
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              event_type: 'production_deploy_started',
+              client_payload: {
+                message: `🚀 Production deployment started by @${creator}`,
+                triggered_at: new Date().toISOString()
+              }
+            })
+      - name: Success
+        run: |
+          echo "::notice title=Production Deploy::Deployment started by @${{ github.actor }} at $(date)"
+          echo "Deployment triggered successfully"
