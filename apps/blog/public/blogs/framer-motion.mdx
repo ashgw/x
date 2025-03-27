@@ -1,6 +1,6 @@
 ---
 title: Framer Motion
-seoTitle: Supercharge Animations in React with Framer Motion 
+seoTitle: Supercharge Animations in React with Framer Motion
 summary: Supercharge animations in React
 isReleased: true
 isSequel: false
@@ -8,9 +8,10 @@ lastModDate: 2020-02-11T09:15:00-0401
 firstModDate: 2020-02-11T09:15:00-0401
 minutesToRead: 4
 tags:
-  - 'react'
-  - 'framer-motion'
+  - "react"
+  - "framer-motion"
 ---
+
 <C>I have a question for you. How would you make this react element, fade in on view?</C>
 <Code
   code=
@@ -30,18 +31,15 @@ language="tsx"
 showLineNumbers={true}
 
 />
+
 <H3>The Traditional Approach</H3>
 <C>
-  You'd create CSS styles for fading, handle state changes, and
-  use the
-  <L href="#IntersectionObserver">IntersectionObserver</L> API. It's effective but
-  requires several steps and can get a bit verbose.
+  You'd create CSS styles for fading, handle state changes, and use the
+  <L href="#IntersectionObserver">IntersectionObserver</L> API. It's effective
+  but requires several steps and can get a bit verbose.
 </C>
 
-
-<C>
- First, Create the fade in style
-</C>
+<C>First, Create the fade in style</C>
 
 <Code
   code=
@@ -64,17 +62,17 @@ showLineNumbers={true}
   code=
 {`const Component: React.FC = () => {
 
-  const [isVisible, setIsVisible] = useState(false);
+const [isVisible, setIsVisible] = useState(false);
 
-  return (
-    <div className="flex items-center justify-center py-2">
-      <div
-        className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`}
-      >
-        <FadingText />
-      </div>
-    </div>
-  );
+return (
+
+<div className="flex items-center justify-center py-2">
+<div
+className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`} >
+<FadingText />
+</div>
+</div>
+);
 };
 `}
 language="tsx"
@@ -90,32 +88,33 @@ showLineNumbers={true}
 <Code
   code={`const Component: React.FC = () => {
 
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+const [isVisible, setIsVisible] = useState(false);
+const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Handle it when in view
-    setIsVisible(!isVisible);
-  }, [ref]);
+useEffect(() => {
+// Handle it when in view
+setIsVisible(!isVisible);
+}, [ref]);
 
-  return (
-    <div className="flex items-center justify-center py-2">
-      <div
-        ref={ref}
-        className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`}
-      >
-        <FadingText />
-      </div>
-    </div>
-  );
+return (
+
+<div className="flex items-center justify-center py-2">
+<div
+ref={ref}
+className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`} >
+<FadingText />
+</div>
+</div>
+);
 };
 `}
-  language="tsx"
-  showLineNumbers={true}
+language="tsx"
+showLineNumbers={true}
 />
+
 <C>
-  But you don't need the state to change when the element mounts, instead you want
-  it to fade in when it comes in view, to make it happen I'll be using the
+  But you don't need the state to change when the element mounts, instead you
+  want it to fade in when it comes in view, to make it happen I'll be using the
   **`IntersectionObserver`** API which basically detects when an element comes
   into or goes out of view within the browser's viewport
 </C>
@@ -143,40 +142,40 @@ import React, { useEffect, useRef, useState } from 'react';
 import './styles.css';
 
 const Component: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+const [isVisible, setIsVisible] = useState(false);
+const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const current = ref.current;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(!isVisible);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (current) {
-      observer.observe(current);
-    }
-    return () => {
-      if (current) {
-        observer.unobserve(current);
-      }
-    };
-  }, [ref]);
+useEffect(() => {
+const current = ref.current;
+const observer = new IntersectionObserver(
+([entry]) => {
+if (entry.isIntersecting) {
+setIsVisible(!isVisible);
+observer.unobserve(entry.target);
+}
+},
+{ threshold: 0.5 }
+);
+if (current) {
+observer.observe(current);
+}
+return () => {
+if (current) {
+observer.unobserve(current);
+}
+};
+}, [ref]);
 
-  return (
-    <div className="flex items-center justify-center py-2">
-      <div
-        ref={ref}
-        className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`}
-      >
-        <FadingText />
-      </div>
-    </div>
-  );
+return (
+
+<div className="flex items-center justify-center py-2">
+<div
+ref={ref}
+className={\`transition-opacity fade-in \${isVisible ? 'visible' : ''}\`} >
+<FadingText />
+</div>
+</div>
+);
 };
 
 export default Component;
@@ -205,15 +204,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const FramerMotionFadeInComponent: React.FC = () => {
-  return (
-    <div className="flex justify-center items-center py-2">
-      <FadingText />
-    </div>
-  );
-};
-`}
-  language="tsx"
-  showLineNumbers={true}
+return (
+
+<div className="flex items-center justify-center py-2">
+  <FadingText />
+</div>
+); }; `} language="tsx" showLineNumbers={true}
 />
 
 <C>
@@ -226,34 +222,33 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const FramerMotionFadeInComponent: React.FC = () => {
-  return (
-     <div className="flex justify-center items-center py-2">
-      <motion.div
-        viewport={{ once: true }} // only run once per load
-        whileInView={{
+return (
+
+<div className="flex justify-center items-center py-2">
+<motion.div
+viewport={{ once: true }} // only run once per load
+whileInView={{
           opacity: 1,
         }}
-        initial={{
+initial={{
           opacity: 0,
         }}
-        transition={{
+transition={{
           duration: 1,
           ease: 'easeInOut',
-        }}
-      >
-        <FadingText />
-      </motion.div>
-      {// the rest of the page}
-    </div>
-  );
+        }} >
+<FadingText />
+</motion.div>
+{// the rest of the page}
+</div>
+);
 };
 `}
-  language="tsx"
-  showLineNumbers={true}
+language="tsx"
+showLineNumbers={true}
 />
-<C>
-  Clean, easy and efficient.
-</C>
+
+<C>Clean, easy and efficient.</C>
 <S3 />
 <H2>Yeet Me</H2>
 <C>
@@ -275,69 +270,66 @@ export default function YeetMe() {
     rotate: 360,
   };
 
-  const animate = {
-    opacity: 1,
-    width: 160,
-    height: 70,
-    borderRadius: 20,
-    scale: 1,
-    boxShadow: '10px 10px 0 rgba(255, 46, 199, 0.2)',
-    rotate: 0,
-  };
+const animate = {
+opacity: 1,
+width: 160,
+height: 70,
+borderRadius: 20,
+scale: 1,
+boxShadow: '10px 10px 0 rgba(255, 46, 199, 0.2)',
+rotate: 0,
+};
 
-  const transition = {
-    duration: 1,
-    type: 'keyframes',
-    ease: 'easeInOut',
-  };
+const transition = {
+duration: 1,
+type: 'keyframes',
+ease: 'easeInOut',
+};
 
-  const whileHover = {
-    cursor: 'grab',
-  };
+const whileHover = {
+cursor: 'grab',
+};
 
-  const whileDrag = {
-    cursor: 'grabbing',
-  };
-  
-  return (
-    <motion.button
-      layout
-      viewport={{ once: true }}
-      className="flex justify-center items-center origin-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500 w-80 h-80"
-      initial={initial}
-      whileInView={animate}
-      transition={transition}
-      whileHover={whileHover}
-      drag
-      whileDrag={whileDrag}
-      dragConstraints={{
-        top: -10,
-        left: -10,
-        right: 10,
-        bottom: 10,
-      }}
-      dragMomentum={true}
-      dragPropagation
-    >
-      <motion.div
-        layout
-        viewport={{ once: true }}
-        className="flex justify-center items-center origin-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-80 h-80"
-        initial={initial}
-        whileInView={animate}
-        transition={transition}
-        whileHover={whileHover}
-        whileDrag={whileDrag}
-        drag
-      >
-        <span className=" font-bold">yeet me</span>
-      </motion.div>
-    </motion.button>
-  );
-}
-`}
-  language="tsx"
-  showLineNumbers={true}
+const whileDrag = {
+cursor: 'grabbing',
+};
+
+return (
+
+<motion.button
+  layout
+  viewport={{ once: true }}
+  className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500"
+  initial={initial}
+  whileInView={animate}
+  transition={transition}
+  whileHover={whileHover}
+  drag
+  whileDrag={whileDrag}
+  dragConstraints={{
+    top: -10,
+    left: -10,
+    right: 10,
+    bottom: 10,
+  }}
+  dragMomentum={true}
+  dragPropagation
+>
+  <motion.div
+    layout
+    viewport={{ once: true }}
+    className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+    initial={initial}
+    whileInView={animate}
+    transition={transition}
+    whileHover={whileHover}
+    whileDrag={whileDrag}
+    drag
+  >
+    <span className="font-bold">yeet me</span>
+  </motion.div>
+</motion.button>
+); } `} language="tsx" showLineNumbers={true}
 />
 
 <C>

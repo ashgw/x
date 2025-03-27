@@ -1,5 +1,5 @@
 ---
-title: CSRF Mitigation 
+title: CSRF Mitigation
 seoTitle: CSRF Mitigation techniques
 summary: If you're vulnerable to XSS, none of this will work
 isReleased: true
@@ -8,20 +8,30 @@ lastModDate: 2020-07-04T09:15:00-0401
 firstModDate: 2020-07-04T09:15:00-0401
 minutesToRead: 7
 tags:
-  - 'csrf'
-  - 'cybersec'
+  - "csrf"
+  - "cybersec"
 ---
 
 <C>
-If you don't rely on a framework to do the heavy lifting for you, or a third party library. As I always say that you have to <L href='/blog/fundamentals'>understand</L> the subject before you abstract it. Here's how to do it manually, but first note that none of the techniques below will work if you're already vulnerable to <L href='https://owasp.org/www-community/attacks/xss/'>XSS.</L>
+  If you don't rely on a framework to do the heavy lifting for you, or a third
+  party library. As I always say that you have to{" "}
+  <L href="/fundamentals">understand</L> the subject before you abstract it.
+  Here's how to do it manually, but first note that none of the techniques below
+  will work if you're already vulnerable to{" "}
+  <L href="https://owasp.org/www-community/attacks/xss/">XSS.</L>
 </C>
 <H2>Where Did The Request Come From?</H2>
-<C>
-If you do not trust the request's origin, block it.
-</C>
+<C>If you do not trust the request's origin, block it.</C>
 <H3>"Origin" Header</H3>
 <C>
-Since the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin'>`Origin`</L> header is being added automatically by browsers as part of the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS'>`CORS`</L> mechanism, you can check and validate the header, to check if the request that is coming in, actually comes from you site, block it if it doesn't
+  Since the{" "}
+  <L href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin">
+    `Origin`
+  </L>{" "}
+  header is being added automatically by browsers as part of the{" "}
+  <L href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">`CORS`</L>{" "}
+  mechanism, you can check and validate the header, to check if the request that
+  is coming in, actually comes from you site, block it if it doesn't
 </C>
 <Code
   code={`if r.Header.Get("Origin") != "https://my-actual-site.com" {
@@ -34,7 +44,9 @@ Since the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Ori
 <H3>"Sec-Fetc-" Headers</H3>
 
 <C>
-Fetch Metadata headers, introduced last year to provide additional context about the resource request. But all you have to know for now is you can use it  to to check the origin  
+  Fetch Metadata headers, introduced last year to provide additional context
+  about the resource request. But all you have to know for now is you can use it
+  to to check the origin
 </C>
 <Code
   code={`if secFetchSite := r.Header.Get("Sec-Fetch-Site"); 
@@ -47,10 +59,21 @@ Fetch Metadata headers, introduced last year to provide additional context about
   showLineNumbers={false}
 />
 <C>
-Learn more about `Sec-Fetch` headers <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode'>here</L> and <L href='https://w3c.github.io/webappsec-fetch-metadata/#sec-fetch-site-header)'>here</L>
+  Learn more about `Sec-Fetch` headers{" "}
+  <L href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode">
+    here
+  </L>{" "}
+  and{" "}
+  <L href="https://w3c.github.io/webappsec-fetch-metadata/#sec-fetch-site-header)">
+    here
+  </L>
 </C>
 <C>
-You can use a combo of these two, just to make sure, if one doesn't exist is altered the other might be used. But solely relying on headers is not sufficient, headers could potentially be tampered with or omitted due to certain browser vulnerabilities, network configurations or proxies misconfigurations. So other techniques should be employed too, like 
+  You can use a combo of these two, just to make sure, if one doesn't exist is
+  altered the other might be used. But solely relying on headers is not
+  sufficient, headers could potentially be tampered with or omitted due to
+  certain browser vulnerabilities, network configurations or proxies
+  misconfigurations. So other techniques should be employed too, like
 </C>
 
 <H2>Anti-CSRF tokens</H2>
@@ -84,60 +107,76 @@ import (
 )
 
 func main() {
-	// Gather the values
+// Gather the values
 
-	// Both HMAC and JWT/JWE secret key
-	secret := getSecretKey("CSRF_SECRET")
-	tokenID := generateSecureRandomValue(32) // Cryptographically secure random value
-	randomValue := generateAntiCollisionValue() // Random value for collision purposes
+    // Both HMAC and JWT/JWE secret key
+    secret := getSecretKey("CSRF_SECRET")
+    tokenID := generateSecureRandomValue(32) // Cryptographically secure random value
+    randomValue := generateAntiCollisionValue() // Random value for collision purposes
 
-	// Create the CSRF Token
+    // Create the CSRF Token
 
-	// HMAC message payload
-	message := fmt.Sprintf("%s!%s", tokenID, randomValue)
-	// Generate the HMAC hash
-	hmacValue := generateHMAC(secret, message)
-	// Combine HMAC hash with message to generate the token
-	csrfToken := fmt.Sprintf("%s.%s", hmacValue, message)
+    // HMAC message payload
+    message := fmt.Sprintf("%s!%s", tokenID, randomValue)
+    // Generate the HMAC hash
+    hmacValue := generateHMAC(secret, message)
+    // Combine HMAC hash with message to generate the token
+    csrfToken := fmt.Sprintf("%s.%s", hmacValue, message)
 
-	fmt.Println("CSRF Token:", csrfToken)
+    fmt.Println("CSRF Token:", csrfToken)
+
 }
 
 func getSecretKey(name string) string {
-	return os.Getenv(name)
+return os.Getenv(name)
 }
 
 func generateSecureRandomValue(length int) string {
-	b := make([]byte, length)
-	rand.Read(b)
-	return hex.EncodeToString(b)
+b := make([]byte, length)
+rand.Read(b)
+return hex.EncodeToString(b)
 }
 
 func generateAntiCollisionValue() string {
-	b := make([]byte, 16)
-	rand.Read(b)
-	return hex.EncodeToString(b)
+b := make([]byte, 16)
+rand.Read(b)
+return hex.EncodeToString(b)
 }
 
 func generateHMAC(secret, message string) string {
-	key := []byte(secret)
-	h := hmac.New(sha256.New, key)
-	h.Write([]byte(message))
-	return hex.EncodeToString(h.Sum(nil))
+key := []byte(secret)
+h := hmac.New(sha256.New, key)
+h.Write([]byte(message))
+return hex.EncodeToString(h.Sum(nil))
 }
 `}
-  language="go"
-  showLineNumbers={false}
+language="go"
+showLineNumbers={false}
 />
+
 <C>
-On the server side, when handling incoming requests, the server decodes or decrypts the JWT or JWE to extract the crypto value. Simultaneously, it decodes the HMAC-CSRF token and verifies its integrity using the stored secret key. If the integrity check fails, the server logs the event and blocks the request. If the integrity is preserved, the server extracts the value from the token.
+  On the server side, when handling incoming requests, the server decodes or
+  decrypts the JWT or JWE to extract the crypto value. Simultaneously, it
+  decodes the HMAC-CSRF token and verifies its integrity using the stored secret
+  key. If the integrity check fails, the server logs the event and blocks the
+  request. If the integrity is preserved, the server extracts the value from the
+  token.
 </C>
 <C>
-If the crypt values that are extracted from the JWT/JWE and the HMAC-CSRF token do not match, it may indicate tampering or unauthorized access. In this case, the server logs the event and blocks the request.
+  If the crypt values that are extracted from the JWT/JWE and the HMAC-CSRF
+  token do not match, it may indicate tampering or unauthorized access. In this
+  case, the server logs the event and blocks the request.
 </C>
 <C>
-You might ask why not block immediately. The reason is that understanding the type of attack is needed. By verifying the integrity of the tokens first, you can determine what the attacker attempted to do. If the cookie exists but its integrity is compromised, it suggests the attacker managed to swap the JWT cookie but couldn't sign it with the secret key. 
-A worse scenario is if the attacker already knows the secret key but is unaware of the random that's supposed to exist in both the CSRF token and the JWT/JWE. This information is vital for understanding the extent of the breach and implementing appropriate countermeasures.
+  You might ask why not block immediately. The reason is that understanding the
+  type of attack is needed. By verifying the integrity of the tokens first, you
+  can determine what the attacker attempted to do. If the cookie exists but its
+  integrity is compromised, it suggests the attacker managed to swap the JWT
+  cookie but couldn't sign it with the secret key. A worse scenario is if the
+  attacker already knows the secret key but is unaware of the random that's
+  supposed to exist in both the CSRF token and the JWT/JWE. This information is
+  vital for understanding the extent of the breach and implementing appropriate
+  countermeasures.
 </C>
 
 <H3>Stateful Services</H3>
@@ -198,7 +237,7 @@ Here's an AJAX example
           });
       });
 
-     
+
 
       function createCSRFTokenContainer() {
         var csrfToken =  'CSRF_TOKEN' // use a template engine,
@@ -207,7 +246,7 @@ Here's an AJAX example
 
         //  div element to hold the hidden token
         var csrfDiv = document.createElement('div');
-        csrfDiv.id = 'csrfTokenDiv'; 
+        csrfDiv.id = 'csrfTokenDiv';
 
         // hidden input field and set its value to the generated CSRF token
         var input = document.createElement('input');
@@ -232,6 +271,7 @@ Here's an AJAX example
       }
     </script>
        <button id="makeRequestButton">Make AJAX Request</button>
+
   </body>
 </html>
 `}
@@ -284,9 +324,19 @@ Read about `Lax` and `Strict` from the official <L href='https://datatracker.iet
 <H2>User Interaction-Based CSRF Defense</H2>
 
 <C>
-Requiring users to authenticate using their password, biometric data, security questions, or <L href="https://en.wikipedia.org/wiki/One-time_password">OTP</L> is a highly effective security measure. But, it can significantly impact user experience, so it's typically used only for critical operations like changing passwords or conducting financial transactions. Avoid using CAPTCHA for this purpose, as it's primarily aimed at preventing automated bot attacks and doesn't provide the necessary level of security for these sensitive activities.
+  Requiring users to authenticate using their password, biometric data, security
+  questions, or{" "}
+  <L href="https://en.wikipedia.org/wiki/One-time_password">OTP</L> is a highly
+  effective security measure. But, it can significantly impact user experience,
+  so it's typically used only for critical operations like changing passwords or
+  conducting financial transactions. Avoid using CAPTCHA for this purpose, as
+  it's primarily aimed at preventing automated bot attacks and doesn't provide
+  the necessary level of security for these sensitive activities.
 </C>
 <H2>HTTP Methods</H2>
 <C>
-Did I mention that for any state changing request,  DON'T USE  <L href='https://datatracker.ietf.org/doc/html/rfc7231#section-4.2.1'>safe methods.</L>
+  Did I mention that for any state changing request, DON'T USE{" "}
+  <L href="https://datatracker.ietf.org/doc/html/rfc7231#section-4.2.1">
+    safe methods.
+  </L>
 </C>

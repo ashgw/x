@@ -1,5 +1,5 @@
 ---
-title:  Async Python. Deep Dive
+title: Async Python. Deep Dive
 seoTitle: How Async Python Works Under The Hood
 summary: How it really works under the hood
 isReleased: true
@@ -8,10 +8,11 @@ lastModDate: 2020-02-02T09:15:00-0401
 firstModDate: 2020-02-02T09:15:00-0401
 minutesToRead: 7
 tags:
-  - 'python'
-  - 'async'
-  - 'typing'
+  - "python"
+  - "async"
+  - "typing"
 ---
+
 <C>
 You may have encountered explanations that appear overly simplistic, merely emphasizing the importance of async programming without going into the mechanics or exploring high-level APIs such as the <L href="https://github.com/python/cpython/tree/main/Lib/asyncio">`asyncio`</L> module in the standard library. Clearly, you already understand the significance and use cases, so let's cut to the chase and see how it actually works.
 </C>
@@ -63,11 +64,12 @@ This object enables you to read a file, line by line without loading the entire 
 file = EfficientFile(file_path='pyproject.toml')
 
 for line in file:
-    print(line)
+print(line)
 `}
 language="python"
 showLineNumbers={true}
 />
+
 <C>An alternative way to read all the lines using the `next()` method:</C>
 <Code
   code=
@@ -127,24 +129,29 @@ Now, this behavior is also associated with coroutines, a `Coroutine` is essentia
     yield some_value
     yield another_value
 
-
 gen = my_generator()
 for value in gen:
-    print(value)
+print(value)
 `}
 language="python"
 showLineNumbers={false}
 />
+
 <C>
-  - \- The first `None` represents the type of the value that can be sent into the generator using the `send()` method (though this is optional and not commonly used).
-  - \- The second `None` represents the type of the value that the generator returns. In most cases, generators don't return a value explicitly, so it's `None`.
-  - \- If the generator doesn't yield any values, you can replace `YieldType` with `None` 
+  - \- The first `None` represents the type of the value that can be sent into
+  the generator using the `send()` method (though this is optional and not
+  commonly used). - \- The second `None` represents the type of the value that
+  the generator returns. In most cases, generators don't return a value
+  explicitly, so it's `None`. - \- If the generator doesn't yield any values,
+  you can replace `YieldType` with `None`
 </C>
 <H2 id="related-objects">Related Objects</H2>
 <C>
-I've referred to `Future`, so what's a future ? it's a combination of both `iterable` and `awaitable` , you might have also encountered an `asynciterable`, this is an object that defines and `aiter` method and returns an `asynciterator`. Lastly there's `AsyncGenerator`, just like `Generator` but it actually it inherits from an ``AsyncIterator`` instead of `Ìterator` 
+  I've referred to `Future`, so what's a future ? it's a combination of both
+  `iterable` and `awaitable` , you might have also encountered an
+  `asynciterable`, this is an object that defines and `aiter` method and returns
+  an `asynciterator`. Lastly there's `AsyncGenerator`, just like `Generator` but
+  it actually it inherits from an ``AsyncIterator`` instead of `Ìterator`
 </C>
 <H2>Read Again</H2>
-<C>
-Seems confusing doesn't it ? 
-</C>
+<C>Seems confusing doesn't it ?</C>

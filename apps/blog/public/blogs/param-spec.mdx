@@ -1,5 +1,5 @@
 ---
-title: ParamSpec 
+title: ParamSpec
 seoTitle: How to annotate @decorators with ParamSpec.
 summary: How to annotate @decorators with ParamSpec.
 isReleased: false
@@ -8,10 +8,11 @@ lastModDate: 2021-10-03T09:15:00-0401
 firstModDate: 2021-10-03T09:15:00-0401
 minutesToRead: 2
 tags:
-  - 'python'
-  - 'typing'
-  - 'paramspec'
+  - "python"
+  - "typing"
+  - "paramspec"
 ---
+
 <C>
     <L href="https://peps.python.org/pep-0612/">PEP 612</L>
     introduced ``ParamSpec``, which you may have encountered.
@@ -23,33 +24,34 @@ Here's a simple decorator
 </C>
 <Code
   code=
-{`from functools import wraps 
+{`from functools import wraps
 
 def decorator(f):
-    @wraps(f)
-    def wrap(*args, **kwargs) -> _T:
-        return f(*args, **kwargs)
-    return wrap
+@wraps(f)
+def wrap(*args, \*\*kwargs) -> \_T:
+return f(*args, \*\*kwargs)
+return wrap
 
 @decorator
-def foo(*args, **kwargs):
-    ...
+def foo(\*args, \*\*kwargs):
+...
 `}
 language="python"
 showLineNumbers={true}
 
 />
+
 <C>How would you type that ?</C>
 <Code
   code=
 {`from typing import  Callable, Any
-from functools import wraps 
+from functools import wraps
 
 def decorator(f: Callable[..., Any]) -> Callable[..., Any]:
-    @wraps(f)
-    def wrap(*args: Any, **kwargs: Any) -> Any:
-        return f(*args, **kwargs)
-    return wrap
+@wraps(f)
+def wrap(*args: Any, \*\*kwargs: Any) -> Any:
+return f(*args, \*\*kwargs)
+return wrap
 `}
 language="python"
 showLineNumbers={true}
@@ -68,27 +70,25 @@ typed as `_PSpec` , this allows us to capture the structure of both args and kwa
 <Code
   code=
 {`from typing import ParamSpec, TypeVar, Callable
-from functools import wraps 
+from functools import wraps
 
-
-_T = TypeVar("_T")
-_PSpec = ParamSpec("_PSpec")
+\_T = TypeVar("\_T")
+\_PSpec = ParamSpec("\_PSpec")
 
 def decorator(f: Callable[_PSpec, _T]) -> Callable[_PSpec, _T]:
-    @wraps(f)
-    def wrap(*args: _PSpec.args, **kwargs: _PSpec.kwargs) -> _T:
-        return f(*args, **kwargs)
-    return wrap
+@wraps(f)
+def wrap(*args: \_PSpec.args, \*\*kwargs: \_PSpec.kwargs) -> \_T:
+return f(*args, \*\*kwargs)
+return wrap
 
 @decorator
-def foo(*args,**kwargs):
-    ...
+def foo(\*args,\*\*kwargs):
+...
 `}
 language="python"
 showLineNumbers={true}
 
 />
-
 
 <C>
   But what if the ``foo`` function 
@@ -121,6 +121,7 @@ language="python"
 showLineNumbers={false}
 
 />
+
 <C>
   So  the decorator function becomes 
 </C>
@@ -136,6 +137,7 @@ language="python"
 showLineNumbers={false}
 
 />
+
 <C>
 Between the wrapper and the return function you can use the params as you like,
  log an action , send metrics, anything.
@@ -159,9 +161,8 @@ language="python"
 showLineNumbers={false}
 
 />
-<C>
-So ``f`` becomes 
-</C>
+
+<C>So ``f`` becomes</C>
 <Code
   id="IntersectionObserver"
   code={`@decorator

@@ -1,5 +1,5 @@
 ---
-title: Python Protocols 
+title: Python Protocols
 seoTitle: How to use Python's "Protocol" type for structural subtyping
 summary: Structural subtyping with the "Protocol" type
 isReleased: true
@@ -8,11 +8,10 @@ lastModDate: 2019-08-03T09:15:00-0401
 firstModDate: 2019-08-03T09:15:00-0401
 minutesToRead: 4
 tags:
-  - 'python'
-  - 'typing'
-  - 'protocols'
+  - "python"
+  - "typing"
+  - "protocols"
 ---
-
 
 <H2>Structural Subtyping</H2>
 <C>
@@ -34,7 +33,6 @@ class OrganicOrganism(Protocol):
 
     def adapts(self) -> None: ...
 
-
 class Human:
 
     def grows(self) -> None: pass
@@ -47,48 +45,44 @@ class Human:
 
     def conscious(self) -> None: pass
 
-
 H: OrganicOrganism = Human()
-O: Human = OrganicOrganism() 
+O: Human = OrganicOrganism()
 `}
 language="python"
 showLineNumbers={true}
 
 />
-<C>Type checking this with <L href='https://mypy.readthedocs.io/en/stable/'>``MyPy``</L>  shows complaints  </C>
+
+<C>
+  Type checking this with{" "}
+  <L href="https://mypy.readthedocs.io/en/stable/">``MyPy``</L> shows complaints{" "}
+</C>
 <Code
-  code=
-{`(.venv) ➜ mypy main.py 
+  code={`(.venv) ➜ mypy main.py 
 main.py:26: error: Cannot instantiate protocol class "OrganicOrganism"  [misc]
 main.py:26: error: Incompatible types in assignment (expression has type "OrganicOrganism", variable has type "Human")  [assignment]
 Found 2 errors in 1 file (checked 1 source file)
 `}
-language="bash"
-showLineNumbers={false}
+  language="bash"
+  showLineNumbers={false}
 />
 
-<C>
-But when you fix it 
-</C>
+<C>But when you fix it</C>
 <Code
-  code=
-{`H: OrganicOrganism = Human()
+  code={`H: OrganicOrganism = Human()
 # O: Human = OrganicOrganism() 
 # no every organism is conscious
 `}
-language="python"
-showLineNumbers={false}
+  language="python"
+  showLineNumbers={false}
 />
-<C>
-You get 
-</C>
+<C>You get</C>
 <Code
-  code=
-{`(.venv) ➜ mypy main.py 
+  code={`(.venv) ➜ mypy main.py 
 Success: no issues found in 1 source file
 `}
-language="bash"
-showLineNumbers={false}
+  language="bash"
+  showLineNumbers={false}
 />
 
 <C>
@@ -128,26 +122,27 @@ Let's say you have various classes representing different request or response ob
   code=
 {`from typing import Optional, Dict, Protocol, runtime_checkable
 
-
 @runtime_checkable
 class RequestProtocol(Protocol):
-    def p_cookie(self, cookie_name: str) -> Optional[str]:
-        ...
-    @property
-    def p_all_cookies(self) -> Dict[str, str]:
-        ...
-    @property
-    def p_is_connection_secure(self) -> bool:
-        ...
+def p_cookie(self, cookie_name: str) -> Optional[str]:
+...
+@property
+def p_all_cookies(self) -> Dict[str, str]:
+...
+@property
+def p_is_connection_secure(self) -> bool:
+...
 
     @property
     def p_base_url(self) -> str:
         ...
+
 `}
 language="python"
 showLineNumbers={false}
 
 />
+
 <C>
 You can extend these different Request objects to where they adhere to the protocol.
 </C>
@@ -156,8 +151,8 @@ You can extend these different Request objects to where they adhere to the proto
 {`from libx import Request
 
 class RequestX(Request):
-    def p_cookie(self, cookie_name: str) -> Optional[str]:
-        return self.cookies.get(cookie_name)
+def p_cookie(self, cookie_name: str) -> Optional[str]:
+return self.cookies.get(cookie_name)
 
     @property
     def p_cookies(self) -> Dict[str, str]:
@@ -170,18 +165,20 @@ class RequestX(Request):
     @property
     def p_base_url(self) -> str:
         return str(self.base_url)
+
 `}
 language="python"
 showLineNumbers={false}
 
 />
+
 <S3/>
 <Code
   code={`from liby import Request
 
 class RequestY(Request):
-    def p_cookie(self, cookie_name: str) -> Optional[str]:
-        return self.cookie(cookie_name)
+def p_cookie(self, cookie_name: str) -> Optional[str]:
+return self.cookie(cookie_name)
 
     @property
     def p_all_cookies(self) -> Dict[str, str]:
@@ -194,9 +191,10 @@ class RequestY(Request):
     @property
     def p_base_url(self) -> str:
         return self.base_url
+
 `}
-  language="python"
-  showLineNumbers={false}
+language="python"
+showLineNumbers={false}
 />
 
 <C>As you can see these different libraries
@@ -211,12 +209,14 @@ class RequestY(Request):
   code={`def process_request(req: RequestProtocol) -> None:
 
     # do anything with the shared methods
-    process_request(req=RequestX(...)) # OK, no type issues 
     process_request(req=RequestX(...)) # OK, no type issues
+    process_request(req=RequestX(...)) # OK, no type issues
+
 `}
-  language="python"
-  showLineNumbers={false}
+language="python"
+showLineNumbers={false}
 />
+
 <C>
 Another use case is using `Protocol` to type function signatures.
 </C>
@@ -226,11 +226,11 @@ Another use case is using `Protocol` to type function signatures.
 
 @runtime_checkable
 class Bar(Protocol):
-    async def __call__(self, foo: Foo) -> None:
-        ...
+async def **call**(self, foo: Foo) -> None:
+...
 `}
-  language="python"
-  showLineNumbers={false}
+language="python"
+showLineNumbers={false}
 />
 
 <C>Any function that is asynchronous, accepts an argument called `foo` of 
@@ -271,18 +271,18 @@ You can also create a function that checks
  the signature of another function, if it adheres to the protocol or not, and provide helpful error messages over why the given object does not adhere to the protocol.
 </C>
 <Code
-  code={`import inspect 
+  code={`import inspect
 
 def check_signature(f: Bar) -> None:
-    sig = inspect.signature(f)
-    if not (
-        "foo" in sig.parameters
-        and sig.parameters["foo"].annotation == Foo
-    ):
-        raise TypeError(
-            f"Given function does not adhere to Bar protocol: {f}"
-        )
+sig = inspect.signature(f)
+if not (
+"foo" in sig.parameters
+and sig.parameters["foo"].annotation == Foo
+):
+raise TypeError(
+f"Given function does not adhere to Bar protocol: {f}"
+)
 `}
-  language="python"
-  showLineNumbers={false}
+language="python"
+showLineNumbers={false}
 />

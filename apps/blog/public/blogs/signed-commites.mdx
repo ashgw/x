@@ -1,6 +1,6 @@
 ---
 title: Verified Commits
-seoTitle:  How to use GPG and SSH to sign commits, on GitHub (guide for the impatient)
+seoTitle: How to use GPG and SSH to sign commits, on GitHub (guide for the impatient)
 summary: Sign commits with SSH and GPG
 isReleased: true
 isSequel: false
@@ -8,10 +8,11 @@ lastModDate: 2019-12-05T09:15:00-0401
 firstModDate: 2019-12-05T09:15:00-0401
 minutesToRead: 4
 tags:
-  - 'SSH'
-  - 'GPG'
-  - 'git'
+  - "SSH"
+  - "GPG"
+  - "git"
 ---
+
 <C>
 *Guide for the impatient*
 </C>
@@ -93,15 +94,22 @@ Go <L href='https://github.com/settings/keys'>here</L>, Under SSH keys section, 
 	signingkey = /home/<YOUR_USERNAME_HERE>/.ssh/github.pub
 
 # other stuff ...`}
-  language="shell"
-  showLineNumbers={false}
+
+language="shell"
+showLineNumbers={false}
 />
+
 <C>
-That's it. If you're wondering what else can be put inside ``~/.gitconfig``   you can checkout mine <L href='https://github.com/AshGw/dotfiles/blob/main/.gitconfig'>here</L>. Now your commits will be verified.
+  That's it. If you're wondering what else can be put inside ``~/.gitconfig``
+  you can checkout mine{" "}
+  <L href="https://github.com/AshGw/dotfiles/blob/main/.gitconfig">here</L>. Now
+  your commits will be verified.
 </C>
 <H2>Connect With SSH, Sign With GPG</H2>
 <C>
-Do the steps above, then try to clone one of your repo's with `SSH`, if not problem occurs, you're good. Next, you must have `gpg` installed. You're probably on ``Debian``, here's how to cop it.
+  Do the steps above, then try to clone one of your repo's with `SSH`, if not
+  problem occurs, you're good. Next, you must have `gpg` installed. You're
+  probably on ``Debian``, here's how to cop it.
 </C>
 <Code
   code={`sudo apt update && install gnupg`}
@@ -109,19 +117,11 @@ Do the steps above, then try to clone one of your repo's with `SSH`, if not prob
   showLineNumbers={false}
 />
 
-<C>
-Verify with: 
-</C>
+<C>Verify with:</C>
 
-<Code
-  code={`gpg -version `}
-  language="shell"
-  showLineNumbers={false}
-/>
+<Code code={`gpg -version `} language="shell" showLineNumbers={false} />
 
-<C>
-Second, if you don't have a key laying around, generate a new one with: 
-</C>
+<C>Second, if you don't have a key laying around, generate a new one with:</C>
 
 <Code
   code={`gpg --full-generate-key`}
@@ -130,18 +130,12 @@ Second, if you don't have a key laying around, generate a new one with:
 />
 
 <C>
-If you've successfully generated your key, then if you list your keys with 
+  If you've successfully generated your key, then if you list your keys with
 </C>
 
-<Code
-  code={`➜  ~ gpg -k `}
-  language="shell"
-  showLineNumbers={false}
-/>
+<Code code={`➜  ~ gpg -k `} language="shell" showLineNumbers={false} />
 
-<C>
-You should get something like this
-</C>
+<C>You should get something like this</C>
 
 <Code
   code={`➜  ~ gpg -k
@@ -152,13 +146,14 @@ pub   rsa4096 2018-02-20 [SC]
 uid           [ultimate] Ashref Gwader (personal) <ashrefgw@proton.me>
 sub   rsa4096 2018-02-20 [E]
 
-➜  ~`}
-  language="shell"
-  showLineNumbers={false}
+➜ ~`}
+language="shell"
+showLineNumbers={false}
 />
 
 <C>
-You see that large number? That's your key ID. Copy it and paste it in your ``~/.gitconfig``  file 
+  You see that large number? That's your key ID. Copy it and paste it in your
+  ``~/.gitconfig`` file
 </C>
 
 <Code
@@ -169,19 +164,16 @@ You see that large number? That's your key ID. Copy it and paste it in your ``~/
 [gpg] # mandatory 
     program = gpg
 
-[commit] # mandatory 
-    gpgsign = true
+[commit] # mandatory
+gpgsign = true
 
 # other stuff...`}
-  language="shell"
-  showLineNumbers={false}
+
+language="shell"
+showLineNumbers={false}
 />
 
-<C>
-Next thing you need to export your public GPG key.
-</C>
-
-
+<C>Next thing you need to export your public GPG key.</C>
 
 <Code
   code={`gpg --armor --export <THAT_KEY_ID> | xclip -selection clipboard`}
@@ -189,9 +181,9 @@ Next thing you need to export your public GPG key.
   showLineNumbers={false}
 />
 
-
 <C>
-If you have `xclip` installed you'll get it copied to your clipboard, else, just run this
+  If you have `xclip` installed you'll get it copied to your clipboard, else,
+  just run this
 </C>
 
 <Code
@@ -212,5 +204,6 @@ You'll get your public key ID, it should start with
 It's a long chain of characters, you can find mine <L href="https://github.com/ashgw.gpg">here</L>, yours will be there too if you use it to sign commits, at  `https://github.com/<YOUR_USERNAME>.gpg`.
 
 Next, take the key you just copied and paste it <L href='https://github.com/settings/gpg/new'>here</L>, give the key a title so you don't forget it and paste the public key.
-That's it, your commits are now verified with your ``GPG`` key, while you're still able to use ``SSH`` with GitHub. You can follow the same steps for other platforms.
+That's it, your commits are now verified with your `GPG` key, while you're still able to use `SSH` with GitHub. You can follow the same steps for other platforms.
+
 </C>
