@@ -11,7 +11,6 @@ const config = sentry.next.withConfig({
   /** @type {import('next').NextConfig} */
   nextConfig: {
     ...baseConfig,
-
     experimental: {
       outputFileTracingIncludes: {
         "/blog": ["./public/**/*"],
@@ -20,6 +19,7 @@ const config = sentry.next.withConfig({
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
     },
+    transpilePackages: ["next-mdx-remote"],
   },
 });
 
