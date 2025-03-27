@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import { env } from "@ashgw/env";
 import { cn } from "@ashgw/ui";
 
-export function Link({
+export function BlogLink({
   href,
   origin = "blog",
   ...props

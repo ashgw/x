@@ -1,4 +1,3 @@
-import { H1, MDX } from "@ashgw/components";
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/ui";
 
@@ -9,6 +8,8 @@ import {
   YeetMe,
 } from "~/app/components/featured/blog";
 import { ScrollUp } from "~/app/components/posts/components/ScrollUp";
+import { H1 } from "./headers";
+import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
 
 interface BlogPostPorps {

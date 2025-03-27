@@ -1,10 +1,3 @@
 export * from "./text";
-export * from "./code";
-export * from "./text";
-export * from "./headers";
-export * from "./spacers";
-export { Divider } from "./Divider";
-export { Link, GlowingLink } from "./link";
 export { LoadingScreen } from "./LoadingScreen";
 export * from "./cookies";
-export * from "./mdx";

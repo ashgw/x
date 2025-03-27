@@ -37,7 +37,7 @@ export const CookieBanner = () => {
       >
         <div className="flex flex-col gap-2">
           <div className="text-sm text-gray-300">
-            <p>This site uses cookies. By using it, you accept cookies.</p>
+            <p>I use cookies btw. So by being here, you accept cookies.</p>
           </div>
           <div className="flex justify-end">
             <Button

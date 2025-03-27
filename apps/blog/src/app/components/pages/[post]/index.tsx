@@ -11,6 +11,7 @@ export function BlogPost({ postData }: { postData: PostData }) {
       </main>
       <div className="py-10"></div>
       <Footer />
+      <div className="h-10"></div>
     </>
   );
 }

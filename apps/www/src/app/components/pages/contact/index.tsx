@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
-import { Footer, GlowingLink, H1, TextContent } from "@ashgw/components";
+import { Footer, TextContent } from "@ashgw/components";
 import { EMAIL, LINKS } from "@ashgw/constants";
 import { sentry } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
+import Link from "../about/components/Link";
 import { CalBooking } from "./components/CalBooking";
 
 export function ContactPage() {
@@ -58,9 +59,23 @@ export function ContactPage() {
           <div className="container px-4 md:px-6">
             <div className="space-y-6 text-center">
               <div className="space-y-2">
-                <H1>
+                <motion.h1
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  initial={{
+                    opacity: 0,
+                    y: -30,
+                  }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                  }}
+                  className="my-2 text-5xl font-bold leading-10"
+                >
                   <span className="">Get in touch</span>
-                </H1>
+                </motion.h1>
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
                     I use{" "}
@@ -75,7 +90,7 @@ export function ContactPage() {
                     </button>{" "}
                     for secure communication. Feel free to use it for encrypted
                     messages and to verify my
-                    <GlowingLink href={LINKS.keyBase} name="identity." />
+                    <Link href={LINKS.keyBase} name="identity."></Link>
                     Other than that, you can either
                   </TextContent>
                 </div>
