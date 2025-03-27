@@ -13,11 +13,11 @@ tags:
   - 'testing'
 ---
 <C>
-The standard library does not really provide helpful practical information over the topic, nor does <L href="https://pytest.org">Pytest</L> docs, so I figured, I'll write a quick blog post on how to do it. There are third party libraries of course for this subject but I'm not a fan of using third parties, unless absolutely necessary, plus you should <L href="/blog/fundamentals">understand</L> how the subject works before abstracting it.
+The standard library does not really provide helpful practical information over the topic, nor does <L href="https://pytest.org">Pytest</L> docs, so I figured, I'll write a quick blog post on how to do it. There are third party libraries of course for this subject but I'm not a fan of using third parties, unless absolutely necessary, plus you should <L href="/fundamentals">understand</L> how the subject works before abstracting it.
 </C>
 
 <C>
- I've <L href="/blog/async-python">previously</L> explained how the whole async concept works under the hood in Python. While not all the details are essential for this task, it's beneficial for grasping the nuances of asynchronous logic before attempting to test it.
+ I've <L href="/async-python">previously</L> explained how the whole async concept works under the hood in Python. While not all the details are essential for this task, it's beneficial for grasping the nuances of asynchronous logic before attempting to test it.
  </C>
 
  <C>
@@ -133,7 +133,7 @@ showLineNumbers={false}
 
 
 <C>
-The `foo`  module has a class that contains another class which has a method that uses <L href="https://www.python-httpx.org/">`httpx`</L> to request API data <L href="/blog/async-python">asynchronously</L>, this is a dummy example of course but you get the picture, we're trying to test the functionality of an object (function) that's two modules deep. 
+The `foo`  module has a class that contains another class which has a method that uses <L href="https://www.python-httpx.org/">`httpx`</L> to request API data <L href="/async-python">asynchronously</L>, this is a dummy example of course but you get the picture, we're trying to test the functionality of an object (function) that's two modules deep. 
 </C>
 <Code
   code=
@@ -157,7 +157,7 @@ How do you mock the ``fetch`` method ?
 
 
 <C>
-For this we will need `AsyncMock` (Python 3.8+), which is an enhanced version of the synchronous <L href="https://docs.python.org/3/library/unittest.mock.html#the-mock-class">`Mock`</L> object, supporting async functions which returns <L href="/blog/async-python#related-objects">awaitables</L> instead of normal functions.  
+For this we will need `AsyncMock` (Python 3.8+), which is an enhanced version of the synchronous <L href="https://docs.python.org/3/library/unittest.mock.html#the-mock-class">`Mock`</L> object, supporting async functions which returns <L href="/async-python#related-objects">awaitables</L> instead of normal functions.  
 </C>
 <Code
   code=
