@@ -1,10 +1,8 @@
+import type { PostData } from "~/lib";
 import { Posts } from "~/app/components/posts";
 import { PostsProvider } from "~/app/components/posts/components/Context";
-import { MdxService } from "~/lib/index";
 
-export async function BlogCards() {
-  const posts = await new MdxService("public/blogs").getPosts();
-
+export function BlogCards({ posts }: { posts: PostData[] }) {
   return (
     <>
       <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">

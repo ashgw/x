@@ -1,5 +1,8 @@
+import { MdxService } from "~/lib/index";
 import { BlogCards } from "./components/BlogCards";
 
-export function HomePage() {
-  return <BlogCards />;
+export async function HomePage() {
+  const posts = await new MdxService("public/blogs").getPosts();
+
+  return <BlogCards posts={posts} />;
 }
