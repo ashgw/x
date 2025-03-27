@@ -13,7 +13,7 @@ const config = sentry.next.withConfig({
     ...baseConfig,
     experimental: {
       outputFileTracingIncludes: {
-        "/blog": ["./public/**/*"],
+        "/": ["./public/**/*"],
       },
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
