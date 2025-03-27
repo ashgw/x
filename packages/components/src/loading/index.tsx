@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingPoints from "loading-points";
+import { LoadingPoints } from "./components/LoadingPoints";
 
 export function Loading(props: { glowColor?: string }) {
   return (
