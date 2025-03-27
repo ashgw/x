@@ -16,13 +16,9 @@ export function TagsPage({ posts, tag }: { posts: PostData[]; tag: string }) {
     post.parsedContent.attributes.tags.forEach((tag) => allTags.add(tag));
   });
 
-  const suggestedTags = Array.from(allTags)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 5);
-
   if (postsWithTag.length > 0) {
     return <BlogCards posts={postsWithTag} />;
   }
 
-  return <NoTagsFound suggestedTags={suggestedTags} />;
+  return <NoTagsFound allAvailableTags={allTags} />;
 }
