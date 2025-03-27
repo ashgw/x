@@ -13,7 +13,10 @@ export default function TagsPage({
   const allTags = new Set<string>("");
 
   posts.forEach((post) => {
-    if (post.parsedContent.attributes.tags.includes(tag)) {
+    if (
+      post.parsedContent.attributes.tags.includes(tag) &&
+      post.parsedContent.attributes.isReleased
+    ) {
       postsWithTag.push(post);
     }
     post.parsedContent.attributes.tags.forEach((tag) => allTags.add(tag));
