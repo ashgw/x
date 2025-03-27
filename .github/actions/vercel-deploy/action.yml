@@ -28,7 +28,7 @@ runs:
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
         else
           cd apps/${{ inputs.project_name }} && \
-          pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-prod --token=${{ inputs.VERCEL_TOKEN }}
+          pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }}
         fi
 
     - name: Notify mfs about the deployment URL
