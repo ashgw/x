@@ -41,7 +41,9 @@ export function Posts({ posts }: PostsProps) {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [scrollPosition, setScrollPosition]);
 
   useEffect(() => {
