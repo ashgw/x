@@ -48,7 +48,7 @@
     "vitest": "catalog:"
   },
   "engines": {
-    "node": ">=20.16.0",
+    "node": "20.x",
     "pnpm": "^9.12.2"
   },
   "homepage": "https://ashgw.me",
