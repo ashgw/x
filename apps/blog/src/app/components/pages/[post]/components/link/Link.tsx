@@ -1,0 +1,56 @@
+import NextLink from "next/link";
+
+import { env } from "@ashgw/env";
+import { cn } from "@ashgw/ui";
+
+export function BlogLink({
+  href,
+  origin = "blog",
+  ...props
+}: {
+  href: string;
+  origin?: "blog" | "www";
+  children: React.ReactNode;
+}) {
+  const SITE_URL =
+    origin === "www" ? env.NEXT_PUBLIC_WWW_URL : env.NEXT_PUBLIC_BLOG_URL;
+
+  const LINK_CLASS_NAME = cn(
+    "average-transition",
+    "gradient-text-purple",
+    "hover:text-white",
+  );
+  if (href.startsWith("#")) {
+    return (
+      <NextLink href={href} className={cn(LINK_CLASS_NAME)} {...props}>
+        {props.children}
+      </NextLink>
+    );
+  }
+  if (href.startsWith("/")) {
+    return (
+      <NextLink
+        href={SITE_URL + href}
+        className={cn(LINK_CLASS_NAME)}
+        {...props}
+      >
+        {props.children}
+      </NextLink>
+    );
+  }
+
+  return (
+    <NextLink
+      href={`${href}?utm_source=${SITE_URL}`}
+      target="_blank"
+      // Using `noopener noreferrer` to prevent security risks such as reverse tabnabbing.
+      // More information can be found at https://owasp.org/www-community/attacks/Reverse_Tabnabbing
+      rel="noopener noreferrer"
+      className={cn(LINK_CLASS_NAME + "hover: bright")}
+      {...props}
+    >
+      {props.children}
+      <span className="hidden pl-1 sm:inline-block">&#8599;</span>
+    </NextLink>
+  );
+}

@@ -1,4 +1,4 @@
-sfeat:
+feat:
   - head-branch: ["^feature", "feature", "feat"]
 
 docs:
