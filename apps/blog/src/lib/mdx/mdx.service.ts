@@ -28,7 +28,7 @@ export class MdxService {
         };
       });
 
-      return Promise.all(blogDataPromises);
+      return await Promise.all(blogDataPromises);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
