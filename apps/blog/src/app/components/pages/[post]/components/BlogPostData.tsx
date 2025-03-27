@@ -1,4 +1,4 @@
-import { BackUpTop, H1, MDX } from "@ashgw/components";
+import { H1, MDX } from "@ashgw/components";
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/ui";
 
@@ -8,6 +8,7 @@ import {
   ThreeTrafficLightsMovingObjects,
   YeetMe,
 } from "~/app/components/featured/blog";
+import { ScrollUp } from "~/app/components/posts/components/ScrollUp";
 import { ReleaseDate } from "./ReleaseDate";
 
 interface BlogPostPorps {
@@ -48,7 +49,7 @@ export function BlogPostData({ postData }: BlogPostPorps) {
           components={featuredComponents}
         />
       </article>
-      <BackUpTop />
+      <ScrollUp />
     </section>
   );
 }

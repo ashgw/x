@@ -46,14 +46,15 @@ export function ScrollUp() {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`average-transition md:px-18 fixed bottom-1 right-1 mx-12 my-12 max-h-3 max-w-3 animate-bounce lg:mx-24 xl:mx-[200px] ${
-        isVisible
-          ? "opacity-100 transition-opacity duration-300"
-          : "opacity-0 transition-opacity duration-300"
-      }`}
+      className={`average-transition md:px-18 fixed bottom-1 right-1 mx-12 my-12 max-h-3 max-w-3 animate-bounce lg:mx-24 xl:mx-[200px] ${isVisible ? "opacity-100 transition-opacity duration-300" : "opacity-0 transition-opacity duration-300"}`}
     >
-      <ChevronUp className="average-transition hover:scale-150 hover:opacity-100" />
+      <ChevronUp
+        onClick={() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        id="back-up-top"
+        className="average-transition hover:scale-150 hover:opacity-100"
+      />
     </button>
   );
 }

@@ -6,6 +6,5 @@ export * from "./spacers";
 export { Divider } from "./Divider";
 export { Link, GlowingLink } from "./link";
 export { LoadingScreen } from "./LoadingScreen";
-export { BackUpTop } from "./BackUpTop";
 export * from "./cookies";
 export * from "./mdx";

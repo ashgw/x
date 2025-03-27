@@ -3,14 +3,6 @@
 import { motion } from "framer-motion";
 
 export function YeetMe() {
-  return (
-    <div className="flex items-center justify-center py-2">
-      <YeetButton />
-    </div>
-  );
-}
-
-export function YeetButton() {
   const initial = {
     opacity: 0,
     borderRadius: 0,
@@ -37,39 +29,42 @@ export function YeetButton() {
   const whileDrag = {
     cursor: "grabbing",
   };
+
   return (
-    <motion.button
-      layout
-      viewport={{ once: true }}
-      className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500"
-      initial={initial}
-      whileInView={animate}
-      transition={transition}
-      whileHover={whileHover}
-      drag
-      whileDrag={whileDrag}
-      dragConstraints={{
-        top: -10,
-        left: -10,
-        right: 10,
-        bottom: 10,
-      }}
-      dragMomentum={true}
-      dragPropagation
-    >
-      <motion.div
+    <div className="flex items-center justify-center py-2">
+      <motion.button
         layout
         viewport={{ once: true }}
-        className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+        className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500"
         initial={initial}
         whileInView={animate}
         transition={transition}
         whileHover={whileHover}
-        whileDrag={whileDrag}
         drag
+        whileDrag={whileDrag}
+        dragConstraints={{
+          top: -10,
+          left: -10,
+          right: 10,
+          bottom: 10,
+        }}
+        dragMomentum={true}
+        dragPropagation
       >
-        <span className="font-bold">yeet me</span>
-      </motion.div>
-    </motion.button>
+        <motion.div
+          layout
+          viewport={{ once: true }}
+          className="flex h-80 w-80 origin-center items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+          initial={initial}
+          whileInView={animate}
+          transition={transition}
+          whileHover={whileHover}
+          whileDrag={whileDrag}
+          drag
+        >
+          <span className="font-bold">yeet me</span>
+        </motion.div>
+      </motion.button>
+    </div>
   );
 }

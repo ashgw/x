@@ -9,7 +9,6 @@ import { Footer, Loading } from "@ashgw/components";
 import type { PostData } from "~/lib/mdx";
 import { usePostsContext } from "./components/Context";
 import { PostCard } from "./components/Postcard";
-import { ScrollUp } from "./components/ScrollUp";
 
 interface PostsProps {
   posts: PostData[];
@@ -83,7 +82,6 @@ export function Posts({ posts }: PostsProps) {
           </div>
         )}
       </div>
-      <ScrollUp />
     </main>
   );
 }
