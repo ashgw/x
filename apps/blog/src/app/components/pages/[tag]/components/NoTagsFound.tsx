@@ -10,9 +10,11 @@ interface NoTagsFoundProps {
 }
 
 export function NoTagsFound({ allAvailableTags }: NoTagsFoundProps) {
-  const suggestedTags = Array.from(allAvailableTags)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 5);
+  const randomTagCount = Math.floor(Math.random() * 3) + 4; // Returns 4, 5, or 6
+
+  const shuffledTags = [...allAvailableTags].sort(() => 0.5 - Math.random());
+
+  const suggestedTags = shuffledTags.slice(0, randomTagCount);
 
   return (
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:px-10">
