@@ -6,10 +6,16 @@ import { motion } from "framer-motion";
 import { H2 } from "~/app/components/pages/[post]/components/headers";
 
 interface NoTagsFoundProps {
-  suggestedTags: string[];
+  validTags: Set<string>;
 }
 
-export function NoTagsFound({ suggestedTags }: NoTagsFoundProps) {
+export function NoTagsFound({ validTags }: NoTagsFoundProps) {
+  const randomTagCount = Math.floor(Math.random() * 3) + 4; // Returns 4, 5, or 6
+
+  const shuffledTags = [...validTags].sort(() => 0.5 - Math.random());
+
+  const suggestedTags = shuffledTags.slice(0, randomTagCount);
+
   return (
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:px-10">
       <motion.div
