@@ -2,6 +2,9 @@
   "name": "@ashgw/blog",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "build": "next build",
     "build:vercel-preview": "vercel build --yes",
