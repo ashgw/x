@@ -4,7 +4,7 @@ import type NextError from "next/error";
 import { useEffect } from "react";
 
 import { sentry } from "@ashgw/observability";
-import { Button } from "@ashgw/ui";
+import { Button, toast } from "@ashgw/ui";
 
 export interface GlobalErrorProperties {
   readonly error: NextError & { digest?: string };
@@ -13,9 +13,11 @@ export interface GlobalErrorProperties {
 
 export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
   useEffect(() => {
-    sentry.next.captureException({
-      error,
-    });
+    toast.message(
+      sentry.next.captureException({
+        error,
+      }),
+    );
   }, [error]);
 
   const handleReset = () => {
@@ -27,12 +29,25 @@ export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
   };
 
   return (
-    <div className="dimmed-3 flex h-screen w-full flex-col items-center justify-center gap-6 text-center">
-      <h1 className="text-3xl font-bold">Something went wrong</h1>
-      <p className="max-w-md">
-        We've logged this error and will look into it as soon as possible.
-      </p>
-      <Button variant="outline" onClick={handleReset}>
+    <div
+      className="dimmed-3 flex h-screen w-full scale-150 flex-col items-center justify-center text-center"
+      style={{
+        padding: "40px 20px",
+        gap: "20px",
+      }}
+    >
+      <div
+        className="flex flex-col"
+        style={{
+          gap: "20px",
+        }}
+      >
+        <h1 className="text-3xl font-bold">Something went wrong</h1>
+        <p className="max-w-md">
+          I've logged this error and will look into it as soon as possible.
+        </p>
+      </div>
+      <Button variant="navbar" onClick={handleReset}>
         Try again
       </Button>
     </div>

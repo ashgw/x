@@ -1,12 +1,8 @@
-import { Footer } from "@ashgw/components";
+import { MdxService } from "~/lib/index";
+import { BlogCards } from "./components/BlogCards";
 
-import { HeroSection } from "./components/HeroSection";
+export async function HomePage() {
+  const posts = await new MdxService("public/blogs").getPosts();
 
-export function HomePage() {
-  return (
-    <>
-      <HeroSection />
-      <Footer />
-    </>
-  );
+  return <BlogCards posts={posts} />;
 }

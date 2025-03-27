@@ -15,7 +15,11 @@ catalog:
   tailwindcss: ^3.4.14
   typescript: ^5.6.3s
   zod: ^3.23.8
-  next: "^15.2.3"
+  next:
+    14.2.3
+    # using this for ths blog because of an irritiating bug
+    # @see https://github.com/hashicorp/next-mdx-remote/issues/467
+
   ts-roids: ^1.46.0 # always update this btw
   "@vitest/ui": ^2.1.8
   vitest: "2.1.8"

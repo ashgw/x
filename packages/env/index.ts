@@ -24,12 +24,13 @@ const nonPrefixedVars = {
   SENTRY_AUTH_TOKEN: z.string().min(20),
 } as const;
 
-type NonPrefixedVarsTuple = UnionToTuple<keyof typeof nonPrefixedVars>;
+const NonPrefixedVarsTuple = Object.keys(nonPrefixedVars) as UnionToTuple<
+  keyof typeof nonPrefixedVars
+>;
 
 export const env = createEnv({
   vars: {
     ...nonPrefixedVars,
-    // prefixed below
     SENTRY_DSN: z.string().url(),
     WWW_URL: z.string().url(),
     BLOG_URL: z.string().url(),
@@ -38,7 +39,7 @@ export const env = createEnv({
     POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
     POSTHOG_HOST: z.string().url(),
   },
-  disablePrefix: [...(Object.keys(nonPrefixedVars) as NonPrefixedVarsTuple)],
+  disablePrefix: [...NonPrefixedVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:

@@ -24,32 +24,32 @@ export const CookieBanner = () => {
     setIsVisible(false);
   };
 
-  if (!isVisible) return null;
-
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.3 }}
-        className="border-glow rounded-3xl border border-gray-700 bg-gray-800 bg-opacity-70 p-4 shadow-md backdrop-blur-md"
-      >
-        <div className="flex flex-col gap-2">
-          <div className="text-sm text-gray-300">
-            <p>This site uses cookies. By using it, you accept cookies.</p>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.3 }}
+          className="border-glow rounded-3xl border border-gray-700 bg-gray-800 bg-opacity-70 p-4 shadow-md backdrop-blur-md"
+        >
+          <div className="flex flex-col gap-2">
+            <div className="text-sm text-gray-300">
+              <p>I use cookies btw. So by being here, you accept cookies.</p>
+            </div>
+            <div className="flex justify-end">
+              <Button
+                variant="outline"
+                onClick={handleAccept}
+                className="text-xs"
+              >
+                Ok, I got it
+              </Button>
+            </div>
           </div>
-          <div className="flex justify-end">
-            <Button
-              variant="outline"
-              onClick={handleAccept}
-              className="text-xs"
-            >
-              Ok, I got it
-            </Button>
-          </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 };
