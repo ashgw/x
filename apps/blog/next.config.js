@@ -16,6 +16,7 @@ const config = sentry.next.withConfig({
       outputFileTracingIncludes: {
         "/blog": ["./public/**/*"],
       },
+      esmExternals: "loose",
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
     },

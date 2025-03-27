@@ -1,5 +1,4 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
-import { MDXRemote } from "next-mdx-remote/rsc";
 
 import { CodeBlock } from "../code";
 import { Divider } from "../Divider";
@@ -8,7 +7,12 @@ import { Link } from "../link";
 import { Spacer1, Spacer2, Spacer3 } from "../spacers";
 import { TextContent } from "../text";
 
-export function MDX({ source, components }: MDXRemoteProps) {
+const MDXRemotePromise = import("next-mdx-remote/rsc").then(
+  (mod) => mod.MDXRemote,
+);
+
+export async function MDX({ source, components }: MDXRemoteProps) {
+  const MDXRemote = await MDXRemotePromise;
   return (
     <MDXRemote
       source={source}
@@ -23,12 +27,6 @@ export function MDX({ source, components }: MDXRemoteProps) {
         C: TextContent,
         L: Link,
         D: Divider,
-        // Crossed: () => {
-        //   return <></>;
-        // },
-        // Image: () => {
-        //   return <></>;
-        // },
         ...components,
       }}
     />
