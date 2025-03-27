@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { createMetadata } from "@ashgw/seo";
 
-import TagsPage from "~/app/components/pages/[tag]";
+import { TagsPage } from "~/app/components/pages/[tag]";
 import { MdxService } from "~/lib";
 
 interface DynamicRouteParams {
