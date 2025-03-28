@@ -7,7 +7,9 @@ export function middleware(request: NextRequest) {
   const targetBaseUrl = process.env.NEXT_PUBLIC_BLOG_URL;
 
   if (pathname.startsWith("/blog")) {
-    const targetUrl = `${targetBaseUrl}${pathname}${search}`;
+    // we needa remove the /blog prefix from the pathname ofc
+    const cleanPath = pathname.replace(/^\/blog/, "");
+    const targetUrl = `${targetBaseUrl}${cleanPath}${search}`;
     return NextResponse.redirect(targetUrl);
   }
 
