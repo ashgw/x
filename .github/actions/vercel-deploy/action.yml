@@ -43,13 +43,13 @@ runs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## 🚀 Preview Deployment Ready! 
+            body: `## Preview Deployment Ready! 
 
-            ### ✨ Project: \`${process.env.PROJECT_NAME}\`
+            ### Project: \`${process.env.PROJECT_NAME}\`
             
-            🔍 **Preview URL:** [Check it out here](${process.env.PREVIEW_URL})
+            **Preview URL:** [Check it out here](${process.env.PREVIEW_URL})
             
             ---
-            
-            > 💡 This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "ready-for-preview" label is added`
+            > [!TIP]
+            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "ready-for-preview" label is added`
           })
