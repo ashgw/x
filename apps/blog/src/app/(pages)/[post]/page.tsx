@@ -1,7 +1,6 @@
-import { Footer } from "@ashgw/components";
 import { createMetadata } from "@ashgw/seo";
 
-import { BlogPost } from "~/app/components/pages/[post]";
+import { BlogPostPage } from "~/app/components/pages/[post]";
 import { MdxService } from "~/lib";
 
 export const generateStaticParams = async () => {
@@ -25,10 +24,5 @@ export async function generateMetadata({ params }: DynamicRouteParams) {
 
 export default async function Page({ params }: DynamicRouteParams) {
   const postData = await new MdxService("public/blogs").getPost(params.post);
-  return (
-    <>
-      <BlogPost postData={postData} />
-      <Footer className="pb-12" />
-    </>
-  );
+  return <BlogPostPage postData={postData} />;
 }
