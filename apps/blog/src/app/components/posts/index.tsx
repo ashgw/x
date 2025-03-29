@@ -3,7 +3,7 @@
 import type { UnionToTuple } from "ts-roids";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { CheckCheck } from "lucide-react";
+import { CheckCheck, SearchX } from "lucide-react";
 
 import { Footer, Loading } from "@ashgw/components";
 
@@ -42,6 +42,7 @@ export function Posts({ posts }: PostsProps) {
       return date2.getTime() - date1.getTime();
     });
 
+  const hasMatches = filteredPosts.length > 0;
   const loadMore = visibleNum <= filteredPosts.length;
 
   useEffect(() => {
@@ -92,33 +93,47 @@ export function Posts({ posts }: PostsProps) {
         ))}
       </div>
 
-      {filteredPosts.slice(0, visibleNum).map((post, index) => (
-        <motion.div
-          key={post.filename}
-          initial={{ opacity: 0, y: -200 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.4,
-            delay: index < 5 ? index * 0.1 : index * 0.05,
-          }}
-        >
-          <PostCard postData={post} />
-        </motion.div>
-      ))}
+      {hasMatches ? (
+        <>
+          {filteredPosts.slice(0, visibleNum).map((post, index) => (
+            <motion.div
+              key={post.filename}
+              initial={{ opacity: 0, y: -200 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.4,
+                delay: index < 5 ? index * 0.1 : index * 0.05,
+              }}
+            >
+              <PostCard postData={post} />
+            </motion.div>
+          ))}
 
-      <div ref={loadMoreRef} className="m-14 flex items-center justify-center">
-        {loadMore ? (
-          isLoading ? (
-            <Loading glowColor="rgba(255, 255, 255, 0.8)" />
-          ) : null
-        ) : (
-          <div className="-mb-12 flex flex-col items-center justify-center">
-            <CheckCheck className="mt-5 cursor-default" />
-            <div className="py-10" />
-            <Footer />
+          <div
+            ref={loadMoreRef}
+            className="m-14 flex items-center justify-center"
+          >
+            {loadMore && isLoading && (
+              <Loading glowColor="rgba(255, 255, 255, 0.8)" />
+            )}
+            {!loadMore && (
+              <div className="-mb-12 flex flex-col items-center justify-center">
+                <CheckCheck className="mt-5 cursor-default" />
+                <div className="py-10" />
+                <Footer />
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-32 flex flex-col items-center gap-4 text-white/40"
+        >
+          <SearchX className="h-16 w-16" strokeWidth={0.5} />
+        </motion.div>
+      )}
     </main>
   );
 }
