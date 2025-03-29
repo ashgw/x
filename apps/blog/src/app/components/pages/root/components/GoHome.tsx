@@ -14,7 +14,7 @@ function GoHomeContent() {
   return (
     <Link
       href={isRootPath ? env.NEXT_PUBLIC_WWW_URL : "/"}
-      className="text-muted-foreground hover:text-foreground highlight-underline mb-4 ml-5 mt-5 inline-flex items-center gap-2 transition-colors"
+      className="dimmed-4 hover:text-foreground highlight-underline mb-4 ml-5 mt-5 inline-flex items-center gap-2 transition-colors"
       style={{ display: "inline-flex", alignItems: "center" }}
     >
       <ChevronLeft
