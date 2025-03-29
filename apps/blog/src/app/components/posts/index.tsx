@@ -40,7 +40,7 @@ export function Posts({ posts }: PostsProps) {
     });
 
   const hasMatches = filteredPosts.length > 0;
-  const loadMore = visibleNum <= filteredPosts.length;
+  const hasMorePosts = visibleNum < filteredPosts.length;
 
   useEffect(() => {
     if (shouldScroll) {
@@ -98,7 +98,7 @@ export function Posts({ posts }: PostsProps) {
           ))}
 
           <div id="more" className="m-14 flex items-center justify-center">
-            {loadMore ? (
+            {hasMorePosts ? (
               <button
                 onClick={handleShowMore}
                 className="cursor-pointer transition-transform hover:scale-150"
