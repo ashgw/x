@@ -1,5 +1,6 @@
 "use client";
 
+import type { UnionToTuple } from "ts-roids";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { CheckCheck } from "lucide-react";
@@ -14,16 +15,16 @@ interface PostsProps {
   posts: PostData[];
 }
 
-const CATEGORIES = ["Software", "Health", "Philosophy"] as const;
-type Category = (typeof CATEGORIES)[number];
+type Category = "Software" | "Health" | "Philosophy";
+
+const CATEGORIES: UnionToTuple<Category> = ["Software", "Health", "Philosophy"];
 
 export function Posts({ posts }: PostsProps) {
   const { visibleNum, setVisibleNum, scrollPosition, setScrollPosition } =
     usePostsContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
+  const [selectedCategory, setSelectedCategory] =
+    useState<Category>("Software");
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const isLoadMoreInView = useInView(loadMoreRef, { once: false });
@@ -32,8 +33,8 @@ export function Posts({ posts }: PostsProps) {
   const filteredPosts = posts
     .filter(
       (post) =>
-        !selectedCategory ||
-        post.parsedContent.attributes.category === selectedCategory,
+        post.parsedContent.attributes.category ===
+        selectedCategory.toLowerCase(),
     )
     .sort((b1, b2) => {
       const date1 = new Date(b1.parsedContent.attributes.firstModDate);
@@ -68,18 +69,20 @@ export function Posts({ posts }: PostsProps) {
     }
   }, [isLoadMoreInView, loadMore, setVisibleNum]);
 
-  const CategoryButton = ({ category }: { category: Category }) => (
-    <button
-      onClick={() => setSelectedCategory(category)}
-      className={`rounded-xl px-4 py-2 transition-all duration-200 ${
-        selectedCategory === category
-          ? "border border-white/30 bg-white/5 text-white"
-          : "dimmed-3 hover:dimmed-4 border border-white/10 hover:border-white/40"
-      }`}
-    >
-      {category}
-    </button>
-  );
+  function CategoryButton({ category }: { category: Category }) {
+    return (
+      <button
+        onClick={() => setSelectedCategory(category)}
+        className={`rounded-xl px-4 py-2 transition-all duration-200 ${
+          selectedCategory === category
+            ? "border border-white/30 bg-white/5 text-white"
+            : "dimmed-3 hover:dimmed-4 border border-white/10 hover:border-white/40"
+        }`}
+      >
+        {category}
+      </button>
+    );
+  }
 
   return (
     <main>
