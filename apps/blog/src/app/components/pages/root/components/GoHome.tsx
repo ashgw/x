@@ -10,7 +10,7 @@ import { env } from "@ashgw/env";
 function GoHomeContent() {
   const pathname = usePathname();
   const isRootPath = pathname === "/";
-
+  const strokeWidth = 2;
   return (
     <Link
       href={isRootPath ? env.NEXT_PUBLIC_WWW_URL : "/"}
@@ -19,15 +19,15 @@ function GoHomeContent() {
       <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-white/10 px-3 py-2 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:pr-5 md:scale-125">
         <ChevronLeft
           className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1 group-hover:brightness-125"
-          strokeWidth={1.1}
+          strokeWidth={strokeWidth}
         />
         <ChevronLeft
           className="-ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:brightness-125"
-          strokeWidth={1.2}
+          strokeWidth={strokeWidth}
         />
         <ChevronLeft
           className="-ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-3 group-hover:brightness-125"
-          strokeWidth={1.5}
+          strokeWidth={strokeWidth}
         />
       </div>
     </Link>

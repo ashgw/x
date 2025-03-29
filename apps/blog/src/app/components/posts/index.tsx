@@ -1,11 +1,11 @@
 "use client";
 
 import type { UnionToTuple } from "ts-roids";
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { CheckCheck, SearchX } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { CheckCheck, ChevronDown } from "lucide-react";
 
-import { Footer, Loading } from "@ashgw/components";
+import { Footer } from "@ashgw/components";
 
 import type { PostData } from "~/lib/mdx";
 import { usePostsContext } from "./components/Context";
@@ -20,14 +20,11 @@ type Category = "Software" | "Health" | "Philosophy";
 const CATEGORIES: UnionToTuple<Category> = ["Software", "Health", "Philosophy"];
 
 export function Posts({ posts }: PostsProps) {
-  const { visibleNum, setVisibleNum, scrollPosition, setScrollPosition } =
-    usePostsContext();
-  const [isLoading, setIsLoading] = useState(false);
+  const { visibleNum, setVisibleNum } = usePostsContext();
   const [selectedCategory, setSelectedCategory] =
     useState<Category>("Software");
+  const [shouldScroll, setShouldScroll] = useState(false);
 
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  const isLoadMoreInView = useInView(loadMoreRef, { once: false });
   const perLoadVisibleNum = 5;
 
   const filteredPosts = posts
@@ -43,32 +40,22 @@ export function Posts({ posts }: PostsProps) {
     });
 
   const hasMatches = filteredPosts.length > 0;
-  const loadMore = visibleNum <= filteredPosts.length;
+  const hasMorePosts = visibleNum < filteredPosts.length;
 
   useEffect(() => {
-    if (scrollPosition > 0) {
-      window.scrollTo(0, scrollPosition);
+    if (shouldScroll) {
+      const lastPost = document.querySelector(
+        `[data-post-index="${visibleNum - 1}"]`,
+      );
+      lastPost?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setShouldScroll(false);
     }
+  }, [visibleNum, shouldScroll]);
 
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [scrollPosition, setScrollPosition]);
-
-  useEffect(() => {
-    if (isLoadMoreInView && loadMore) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setVisibleNum((prev) => prev + perLoadVisibleNum);
-        setIsLoading(false);
-      }, 100);
-    }
-  }, [isLoadMoreInView, loadMore, setVisibleNum]);
+  function handleShowMore() {
+    setVisibleNum((prev) => prev + perLoadVisibleNum);
+    setShouldScroll(true);
+  }
 
   function CategoryButton({ category }: { category: Category }) {
     return (
@@ -98,6 +85,7 @@ export function Posts({ posts }: PostsProps) {
           {filteredPosts.slice(0, visibleNum).map((post, index) => (
             <motion.div
               key={post.filename}
+              data-post-index={index}
               initial={{ opacity: 0, y: -200 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -109,14 +97,15 @@ export function Posts({ posts }: PostsProps) {
             </motion.div>
           ))}
 
-          <div
-            ref={loadMoreRef}
-            className="m-14 flex items-center justify-center"
-          >
-            {loadMore && isLoading && (
-              <Loading glowColor="rgba(255, 255, 255, 0.8)" />
-            )}
-            {!loadMore && (
+          <div id="more" className="m-14 flex items-center justify-center">
+            {hasMorePosts ? (
+              <button
+                onClick={handleShowMore}
+                className="cursor-pointer transition-transform hover:scale-150"
+              >
+                <ChevronDown className="mt-5 scale-125 animate-bounce cursor-pointer" />
+              </button>
+            ) : (
               <div className="-mb-12 flex flex-col items-center justify-center">
                 <CheckCheck className="mt-5 cursor-default" />
                 <div className="py-10" />
@@ -129,9 +118,9 @@ export function Posts({ posts }: PostsProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-32 flex flex-col items-center gap-4 text-white/40"
+          className="dimmed-3 mt-32 text-center"
         >
-          <SearchX className="h-16 w-16" strokeWidth={0.5} />
+          No matches found
         </motion.div>
       )}
     </main>
