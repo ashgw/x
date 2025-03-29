@@ -73,7 +73,7 @@ export function Posts({ posts }: PostsProps) {
       onClick={() => setSelectedCategory(category)}
       className={`rounded-xl px-4 py-2 transition-all duration-200 ${
         selectedCategory === category
-          ? "border border-white/30 bg-white/10 text-white"
+          ? "border border-white/30 bg-white/5 text-white"
           : "dimmed-3 hover:dimmed-4 border border-white/10 hover:border-white/40"
       }`}
     >
