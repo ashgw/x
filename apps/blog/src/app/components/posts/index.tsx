@@ -3,7 +3,7 @@
 import type { UnionToTuple } from "ts-roids";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { CheckCheck, SearchX } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 
 import { Footer, Loading } from "@ashgw/components";
 
@@ -129,9 +129,9 @@ export function Posts({ posts }: PostsProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-32 flex flex-col items-center gap-4 text-white/40"
+          className="dimmed-3 mt-32 text-center"
         >
-          <SearchX className="h-16 w-16" strokeWidth={0.5} />
+          No matches found
         </motion.div>
       )}
     </main>
