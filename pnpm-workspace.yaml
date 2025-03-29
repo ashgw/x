@@ -20,7 +20,7 @@ catalog:
     # using this for ths blog because of an irritiating bug
     # @see https://github.com/hashicorp/next-mdx-remote/issues/467
 
-  ts-roids: ^1.46.0 # always update this btw
+  ts-roids: ^1.47.0 # always update this btw
   "@vitest/ui": ^2.1.8
   vitest: "2.1.8"
   # There's a bug with the latest version as of 01.25
