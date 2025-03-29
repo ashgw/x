@@ -8,6 +8,7 @@ export interface MetaDataAttributes {
   isSequel: boolean;
   minutesToRead: string | number;
   tags: string[];
+  category: "software" | "health" | "philosophy";
 }
 
 export interface MdxFileData {
