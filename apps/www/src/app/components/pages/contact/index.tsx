@@ -17,6 +17,42 @@ export function ContactPage() {
   const [, copyToClipboard] = useCopyToClipboard();
   const [isToggled, setIsToggled] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [emailRevealed, setEmailRevealed] = useState(false);
+
+  const generateObfuscatedEmail = () => {
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const length = EMAIL.length + Math.floor(Math.random() * 5);
+
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    // insert some HTML entities and fake elements to further confuse scrapers
+    return result
+      .split("")
+      .map((char, index) => {
+        if (index % 3 === 0) {
+          return `<span style="display:none">bot@trap.com</span>${char}`;
+        } else if (index % 5 === 0) {
+          return `${char}<span aria-hidden="true">&#8203;</span>`;
+        }
+        return char;
+      })
+      .join("");
+  };
+
+  const obfuscatedEmailHTML = generateObfuscatedEmail();
+
+  function revealEmail(e: React.MouseEvent) {
+    e.preventDefault();
+    setEmailRevealed(true);
+    // smol delay to allow user to see the real email before redirecting
+    setTimeout(() => {
+      window.location.href = `mailto:${EMAIL}`;
+    }, 500);
+  }
 
   async function copyGPG() {
     try {
@@ -48,7 +84,14 @@ export function ContactPage() {
       setShowCalendar(true);
     } else {
       setShowCalendar(false);
-      window.location.href = escape(`mailto:${EMAIL}`);
+      if (emailRevealed) {
+        window.location.href = `mailto:${EMAIL}`;
+      } else {
+        setEmailRevealed(true);
+        setTimeout(() => {
+          window.location.href = `mailto:${EMAIL}`;
+        }, 500);
+      }
     }
   };
 
