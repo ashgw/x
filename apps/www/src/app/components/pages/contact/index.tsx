@@ -28,8 +28,6 @@ export function ContactPage() {
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-
-    // insert some HTML entities and fake elements to further confuse scrapers
     return result
       .split("")
       .map((char, index) => {
