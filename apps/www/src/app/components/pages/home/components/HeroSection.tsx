@@ -31,7 +31,7 @@ export function HeroSection() {
               transition={transition}
             >
               <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
-                <span className="dimmed-4">Welcome to my corner</span>
+                <span className="dimmed-4">Digital Collection About</span>
               </h1>
               <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
                 <TypingAnimation />
@@ -44,9 +44,9 @@ export function HeroSection() {
               transition={transition}
             >
               <Text>
-                Thanks for stopping by. This serves as my brain dump for a thing
-                or two I learned throughout the years. Thoughts, experiments,
-                and conclusions. Have a look around, if you like what you see.
+                Here I share insights from my professional and personal journey,
+                serving as my brain dump for a thing or two I learned throughout
+                the years. Thoughts, experiments, and conclusions
               </Text>
             </motion.div>
           </div>
@@ -61,10 +61,10 @@ export function HeroSection() {
                 className="glowsup w-full"
                 variant="navbar"
                 onClick={() => {
-                  window.location.href = "/contact";
+                  window.location.href = "/blog";
                 }}
               >
-                Let&apos;s talk
+                Read more
               </Button>
             </motion.div>
           </div>

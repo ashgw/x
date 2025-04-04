@@ -14,7 +14,7 @@ export function Text({ children }: PropsWithChildren<NonNullable<unknown>>) {
         duration: 0.3,
         ease: "easeInOut",
       }}
-      className="dimmed-3 mx-2 my-1 max-w-[700px] p-2 font-normal"
+      className="dimmed-3 mx-auto my-1 max-w-[700px] p-2 text-center font-normal"
     >
       {children}
     </motion.p>
