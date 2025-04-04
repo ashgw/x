@@ -9,9 +9,9 @@ export function TypingAnimation() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        'I <span class="glows">design.</span>',
-        'I <span class="glows">build.</span>',
-        'I <span class="glows">scale.</span>',
+        '<span class="glows">Thoughts.</span>',
+        '<span class="glows">Experiments.</span>',
+        '<span class="glows">Findings.</span>',
       ],
       typeSpeed: 50,
       loop: true,
