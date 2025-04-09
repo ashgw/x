@@ -54,7 +54,6 @@ sentry.next.captureException({ error })
 
 When catching errors, log them and report and log to sentry
 
----
 
 
 Let me know if you want this converted to Markdown or embedded in a codebase as a linting guideline.
