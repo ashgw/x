@@ -1,0 +1,60 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Logging & Monitoring Practices
+
+We use a centralized logger defined in the `@ashgw/observability` package. This ensures consistent, structured logging throughout the codebase for better maintainability and observability.
+
+---
+
+## Logger Usage
+
+Always import the logger from the observability package:
+
+```ts
+import { logger } from '@ashgw/observability';
+```
+
+---
+
+## Sentry Integration
+
+Sentry is used for error tracking and performance monitoring. Whenever an error occurs import it
+```ts
+import { sentry } from '@ashgw/observability`
+```
+
+This is not the actual sentry object you get from sentry directly but a wrapper around it
+
+Example use case 
+```ts
+sentry.next.captureException({ error })
+```
+---
+
+## Best Practices
+
+- **Never use `console`** to log anything, always use the logger  
+  Always use the centralized logger to benefit from log levels, structured output, and centralized control.
+
+- **Use appropriate log levels**  
+  ```ts
+  import { logger } from '@ashgw/observability'
+
+  logger.info('Informational message');
+  logger.warn('Warning message');
+  logger.error('Error message', error);
+  ```
+
+---
+
+## Error Handling
+
+When catching errors, log them and report and log to sentry
+
+---
+
+
+Let me know if you want this converted to Markdown or embedded in a codebase as a linting guideline.
