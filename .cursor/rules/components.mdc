@@ -1,5 +1,7 @@
 **Description**: Rules for adding new components and/or removing existing ones  
 **Globs**: `**/*.tsx`
+alwaysApply: true
+---
 
 ### Component Architecture Guidelines
 
