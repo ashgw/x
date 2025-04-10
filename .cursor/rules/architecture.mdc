@@ -48,7 +48,7 @@ Rules:
 
 - Route-specific components live only under their own `pages/{route}` scope — not reused outside.
 - Shared app-level components go under `misc/` — do not cross apps.
-- If one component is used across apps, then insert it under the `packages/components` directory.ame structure applies.
+- If one component is used across apps, then insert it under the `packages/components` directory. The same structure applies.
 - Do **NOT** place more than one React component per file.
 - Components with subcomponents must use a `components/` folder beside `index.tsx`.
 - Avoid `../` imports that escape component scope. If it needs to be shared make it shared.
