@@ -25,7 +25,7 @@ jobs:
   validate-pr:
     # need conventional commit validation so that the CHANGELOG is updated properly
     if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/validate-pr-title.yml
+    uses: ./.github/workflows/pr-validate-title.yml
     secrets: inherit
 
   format:
