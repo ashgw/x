@@ -20,7 +20,7 @@ import { logger } from '@ashgw/observability';
 
 Sentry is used for error tracking and performance monitoring. Whenever an error occurs import it
 ```ts
-import { sentry } from '@ashgw/observability`
++import { sentry } from '@ashgw/observability';
 ```
 
 This is not the actual sentry object you get from sentry directly but a wrapper around it
@@ -49,8 +49,13 @@ sentry.next.captureException({ error })
 
 ## Error Handling
 
-When catching errors, log them and report and log to sentry
++When catching errors, log them and report to Sentry:
 
-
-
-Let me know if you want this converted to Markdown or embedded in a codebase as a linting guideline.
+```ts
+try {
+  // Operation that might fail
+} catch (error) {
+  logger.error('Operation failed', error);
+  sentry.next.captureException({ error });
+}
+```
