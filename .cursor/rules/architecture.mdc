@@ -1,10 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+description: Component Architecture Guidelines
+globs: **/*
 ---
-### Component Architecture Guidelines
-
 In this monorepo, every application under `apps/` or `packages/` follows a strict and consistent component structure. These rules ensure clarity, maintainability, and compatibility with AI tools like Cursor.
 
 ---

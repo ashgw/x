@@ -1,12 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+description: How to add new cursor rules to the project
+globs: .cursor/*
 ---
-# Cursor Rules
-
-How to add new cursor rules to the project
-
 1. Always place rule files in PROJECT_ROOT/.cursor/rules/:
     ```
     .cursor/rules/

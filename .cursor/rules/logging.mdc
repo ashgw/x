@@ -1,10 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+description: Logging & Monitoring Practices
+globs: *.tsx, *.ts
 ---
-# Logging & Monitoring Practices
-
 We use a centralized logger defined in the `@ashgw/observability` package. This ensures consistent, structured logging throughout the codebase for better maintainability and observability.
 
 ---
