@@ -6,7 +6,7 @@ import {
   FramerMotionFadeInComponent,
   ThreeTrafficLightsMovingObjects,
   YeetMe,
-} from "~/app/components/featured/blog";
+} from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/posts/components/ScrollUp";
 import { H1 } from "./headers";
 import { MDX } from "./mdx";

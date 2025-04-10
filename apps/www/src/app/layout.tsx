@@ -7,7 +7,7 @@ import { CookieBanner, Providers } from "@ashgw/components";
 import { createMetadata } from "@ashgw/seo";
 import { fonts } from "@ashgw/ui";
 
-import { NavBar } from "./components/nav";
+import { NavBar } from "~/app/components/misc/nav";
 
 const title = "Ashref Gwader";
 const description = "Building the future.";
