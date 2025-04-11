@@ -50,6 +50,5 @@ runs:
             **Preview URL:** [Check it out here](${process.env.PREVIEW_URL})
             
             ---
-            > [!TIP]
-            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "ready-for-preview" label is added`
+            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
           })

@@ -12,6 +12,6 @@ permissions:
 
 jobs:
   www-deploy-preview:
-    if: github.event.label.name == 'ready-for-preview'
+    if: github.event.label.name == 'deploy-preview'
     uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
     secrets: inherit
