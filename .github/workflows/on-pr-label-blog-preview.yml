@@ -13,5 +13,5 @@ permissions:
 jobs:
   blog-deploy-preview:
     if: github.event.label.name == 'ready-for-preview'
-    uses: ./.github/workflows/blog-preview-deployment.yml
+    uses: ./.github/workflows/reusable/www-preview-deployment.yml
     secrets: inherit
