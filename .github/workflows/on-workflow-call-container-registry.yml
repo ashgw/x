@@ -1,14 +1,14 @@
 name: CI
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 jobs:
-  lint:
-    runs-on: ubuntu-20.04
+  push-container:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
@@ -24,6 +24,13 @@ jobs:
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
 
-      - uses: ./.github/actions/pnpm-install
-      - name: lint
-        run: pnpm lint
+      - name: Version extraction
+        id: get_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+      - name: Building & tagging
+        run: |
+          docker build -t ashgw/mysite:latest -f deployment/dockerfile . && docker build -t ashgw/mysite:${{ steps.get_version.outputs.version }}  -f deployment/dockerfile .
+      - name: Login
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ashgw --password-stdin
+      - name: Pushing to the hub both versions
+        run: docker push ashgw/mysite:latest && docker push ashgw/mysite:${{ steps.get_version.outputs.version }}
