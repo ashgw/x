@@ -25,31 +25,36 @@ jobs:
   validate-pr:
     # need conventional commit validation so that the CHANGELOG is updated properly
     if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/pr-validate-title.yml
+    uses: ./.github/workflows/ci/pr-validate-title.yml
+    secrets: inherit
+
+  summarize-pr:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/ci/pr-summarize.yml
     secrets: inherit
 
   format:
-    uses: ./.github/workflows/format.yml
+    uses: ./.github/workflows/ci/format.yml
     secrets: inherit
 
   dependencies-check:
-    uses: ./.github/workflows/dependencies-check.yml
+    uses: ./.github/workflows/ci/dependencies-check.yml
     secrets: inherit
 
   lint:
-    uses: ./.github/workflows/lint.yml
+    uses: ./.github/workflows/ci/lint.yml
     secrets: inherit
 
   test:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/ci/test.yml
     secrets: inherit
 
   secrets-leaks:
-    uses: ./.github/workflows/secrets-leaks.yml
+    uses: ./.github/workflows/ci/secrets-leaks.yml
     secrets: inherit
 
   build:
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/ci/build.yml
     secrets: inherit
 
   mergeable:
@@ -72,15 +77,15 @@ jobs:
   production-deployemnt:
     if: github.ref == 'refs/heads/main'
     needs: [mergeable]
-    uses: ./.github/workflows/production-deployment.yml
+    uses: ./.github/workflows/ci/production-deployment.yml
     secrets: inherit
 
   www-production-deployemnt:
     needs: [production-deployemnt]
-    uses: ./.github/workflows/www-production-deployment.yml
+    uses: ./.github/workflows/ci/www-production-deployment.yml
     secrets: inherit
 
   blog-production-deployemnt:
     needs: [production-deployemnt]
-    uses: ./.github/workflows/blog-production-deployment.yml
+    uses: ./.github/workflows/ci/blog-production-deployment.yml
     secrets: inherit
