@@ -1,14 +1,13 @@
 name: CI
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 jobs:
-  format:
+  lint:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
@@ -24,5 +23,6 @@ jobs:
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
 
-      - name: format
-        run: pnpm format
+      - uses: ./.github/actions/pnpm-install
+      - name: lint
+        run: pnpm lint
