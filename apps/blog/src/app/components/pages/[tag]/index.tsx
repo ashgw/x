@@ -1,9 +1,9 @@
-import type { PostData } from "~/lib";
+import type { PostDataRo } from "~/server/models";
 import { BlogCards } from "~/app/components/pages/home/components/BlogCards";
 import { NoTagsFound } from "./components/NoTagsFound";
 
-export function TagsPage({ posts, tag }: { posts: PostData[]; tag: string }) {
-  const postsWithTag: PostData[] = [];
+export function TagsPage({ posts, tag }: { posts: PostDataRo[]; tag: string }) {
+  const postsWithTag: PostDataRo[] = [];
 
   const allAvailableTags = new Set<string>("");
 

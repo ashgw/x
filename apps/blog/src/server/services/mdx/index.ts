@@ -40,7 +40,11 @@ export class MdxService {
     }
   }
 
-  public async getPost(filename: string): Promise<PostDataRo> {
+  public async getPost({
+    filename,
+  }: {
+    filename: string;
+  }): Promise<PostDataRo> {
     const filePath = path.join(this.baseDir, `${filename}.mdx`);
     try {
       const parsedContent = await this._readMDXFile(filePath);
