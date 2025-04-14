@@ -1,9 +1,12 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
-export async function createContext(opts: FetchCreateContextFnOptions) {
+export function createContext(_opts: FetchCreateContextFnOptions) {
+  const user = _opts.req.headers.get("username") ?? "anonymous";
+
   return {
-    // Add blog-specific context here
+    user,
+    // Add other blog-specific context here
     // Example: prisma: new PrismaClient()
   };
 }
