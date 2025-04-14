@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const MetaDataAttributesSchemaRo = z.object({
-  title: z.string(),
-  seoTitle: z.string(),
-  summary: z.string(),
+  title: z.string().min(1),
+  seoTitle: z.string().min(1),
+  summary: z.string().min(1),
   firstModDate: z.date(),
   lastModDate: z.date(),
   isReleased: z.boolean(),
@@ -15,9 +15,9 @@ export const MetaDataAttributesSchemaRo = z.object({
 
 export const MdxFileDataSchemaRo = z.object({
   attributes: MetaDataAttributesSchemaRo,
-  body: z.string(),
+  body: z.string().min(1),
   bodyBegin: z.number(),
-  frontMatter: z.string(),
+  frontMatter: z.string().min(1),
 });
 
 export const PostDataSchemaRo = z.object({
