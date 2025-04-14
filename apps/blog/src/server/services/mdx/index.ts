@@ -2,11 +2,10 @@ import { promises as fsPromises } from "fs";
 import path from "path";
 import fm from "front-matter";
 
-import { InternalError } from "@ashgw/observability";
+import { InternalError, sentry } from "@ashgw/observability";
 
 import type { MdxFileDataRo, PostDataRo } from "~/server/models";
 
-// TODO: handle errros here better
 export class MdxService {
   private readonly baseDir: string;
 
@@ -34,7 +33,9 @@ export class MdxService {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
         message: `Failed to read blog posts from directory ${this.baseDir}`,
-        cause: error,
+        cause: sentry.next.captureException({
+          error,
+        }),
       });
     }
   }
@@ -51,8 +52,10 @@ export class MdxService {
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `Failed to read blog post ${filename}`,
-        cause: error,
+        message: `Failed to read blog posts from directory ${this.baseDir}`,
+        cause: sentry.next.captureException({
+          error,
+        }),
       });
     }
   }
@@ -68,8 +71,10 @@ export class MdxService {
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `Failed to read MDX file from ${filePath}`,
-        cause: error,
+        message: `Failed to read blog posts from directory ${this.baseDir}`,
+        cause: sentry.next.captureException({
+          error,
+        }),
       });
     }
   }
