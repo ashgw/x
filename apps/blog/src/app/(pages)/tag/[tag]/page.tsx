@@ -9,9 +9,10 @@ interface DynamicRouteParams {
   params: { tag: string };
 }
 
-export const generateStaticParams = async () => {
-  const posts = trpc.post.getPosts.useQuery({ blogPath: "public/blogs" });
-  if posts.isLO
+export const generateStaticParams = () => {
+  const posts = trpc.client.post.getPosts.useQuery({
+    blogPath: "public/blogs",
+  });
   const tags = Array.from(
     new Set(posts.data?.flatMap((post) => post.parsedContent.attributes.tags)),
   );
@@ -23,8 +24,10 @@ export const metadata: Metadata = createMetadata({
   description: "Sort by tag.",
 });
 
-export default async function Tags({ params }: DynamicRouteParams) {
-  const posts = await new MdxService("public/blogs").getPosts();
-  return <TagsPage posts={posts} tag={params.tag} />;
+export default function Tags({ params }: DynamicRouteParams) {
+  const posts = trpc.client.post.getPosts.useQuery({
+    blogPath: "public/blogs",
+  });
+
+  return <TagsPage posts={posts.data} tag={params.tag} />;
 }
-a;
