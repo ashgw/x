@@ -43,4 +43,6 @@ const authMiddleware = middleware((opts) => {
   });
 });
 
-export const authedProcedure = t.procedure.use(authMiddleware);
+export const authedProcedure = () => {
+  return publicProcedure.use(authMiddleware);
+};
