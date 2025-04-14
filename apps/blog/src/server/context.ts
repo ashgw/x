@@ -7,4 +7,4 @@ export function createContext(_opts: FetchCreateContextFnOptions) {
   };
 }
 
-export type Context = Awaited<ReturnType<typeof createContext>>;
+export type TrpcContext = Awaited<ReturnType<typeof createContext>>;

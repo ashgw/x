@@ -1,10 +1,10 @@
 import { initTRPC } from "@trpc/server";
 import { ZodError } from "zod";
 
-import type { Context } from "./context";
+import type { TrpcContext } from "./context";
 import { transformer } from "./transformer";
 
-const t = initTRPC.context<Context>().create({
+const t = initTRPC.context<TrpcContext>().create({
   transformer,
   errorFormatter({ shape, error }) {
     return {
@@ -20,12 +20,22 @@ const t = initTRPC.context<Context>().create({
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
-
 export const middleware = t.middleware;
 
-const isAuthed = middleware((opts) => {
-  const { ctx } = opts;
+function isAutheticated(input: { ctx: TrpcContext }) {
+  const { ctx } = input;
+  return ctx;
+}
 
+function isAuthorized(input: { ctx: TrpcContext }) {
+  const { ctx } = input;
+  return ctx;
+}
+
+const authMiddleware = middleware((opts) => {
+  const { ctx } = opts;
+  isAutheticated({ ctx });
+  isAuthorized({ ctx });
   return opts.next({
     ctx: {
       ...ctx,
@@ -33,4 +43,4 @@ const isAuthed = middleware((opts) => {
   });
 });
 
-export const authedProcedure = t.procedure.use(isAuthed);
+export const authedProcedure = t.procedure.use(authMiddleware);
