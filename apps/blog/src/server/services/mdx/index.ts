@@ -4,14 +4,17 @@ import fm from "front-matter";
 
 import { InternalError } from "@ashgw/observability";
 
+import type { MdxFileDataRo, PostDataRo } from "~/server/models";
+
+// TODO: handle errros here better
 export class MdxService {
   private readonly baseDir: string;
 
-  constructor(blogDirectory: string) {
-    this.baseDir = path.join(process.cwd(), blogDirectory);
+  constructor(dto: { directory: string }) {
+    this.baseDir = path.join(process.cwd(), dto.directory);
   }
 
-  public async getPosts(): Promise<PostData[]> {
+  public async getPosts(): Promise<PostDataRo[]> {
     try {
       const files = await fsPromises.readdir(this.baseDir);
       const mdxFiles = files.filter((file) => path.extname(file) === ".mdx");
@@ -36,7 +39,7 @@ export class MdxService {
     }
   }
 
-  public async getPost(filename: string): Promise<PostData> {
+  public async getPost(filename: string): Promise<PostDataRo> {
     const filePath = path.join(this.baseDir, `${filename}.mdx`);
     try {
       const parsedContent = await this._readMDXFile(filePath);
@@ -54,11 +57,11 @@ export class MdxService {
     }
   }
 
-  private _parseMDX(content: string): MdxFileData {
-    return fm(content) as MdxFileData;
+  private _parseMDX(content: string): MdxFileDataRo {
+    return fm(content) as MdxFileDataRo;
   }
 
-  private async _readMDXFile(filePath: string): Promise<MdxFileData> {
+  private async _readMDXFile(filePath: string): Promise<MdxFileDataRo> {
     try {
       const rawContent = await fsPromises.readFile(filePath, "utf-8");
       return this._parseMDX(rawContent);
