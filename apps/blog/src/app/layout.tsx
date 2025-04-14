@@ -14,24 +14,17 @@ import { fonts } from "@ashgw/ui";
 import { trpc } from "~/utils/trpc";
 import { GoBackHome } from "./components/pages/root";
 
-const title = "Ashref Gwader";
-const description = "Blog";
-
-export const metadata: Metadata = createMetadata({ title, description });
-
-function getBaseUrl(): string {
-  if (typeof window !== "undefined") return "";
-  if (env.NODE_ENV === "production")
-    return `https://${env.NEXT_PUBLIC_BLOG_URL}`;
-  return "http://localhost:3000";
-}
+export const metadata: Metadata = createMetadata({
+  title: "Ashref Gwader",
+  description: "Blog",
+});
 
 export default function RootLayout({ children }: PropsWithChildren) {
   const queryClient = new QueryClient();
   const trpcClient = trpc.createClient({
     links: [
       httpBatchLink({
-        url: `${getBaseUrl()}/api/trpc`,
+        url: `${env.NEXT_PUBLIC_BLOG_URL}/api/trpc`,
         headers() {
           const heads = new Map(headers());
           heads.set("x-trpc-source", "react");
