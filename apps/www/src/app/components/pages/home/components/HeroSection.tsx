@@ -46,7 +46,7 @@ export function HeroSection() {
               <Text>
                 Here I share insights from my professional and personal journey,
                 serving as my brain dump for a thing or two I learned throughout
-                the years. Thoughts, experiments, and conclusions
+                the years.
               </Text>
             </motion.div>
           </div>
