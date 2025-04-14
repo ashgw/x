@@ -4,8 +4,6 @@ import fm from "front-matter";
 
 import { InternalError } from "@ashgw/observability";
 
-import type { MdxFileData, PostData } from "./mdx.models";
-
 export class MdxService {
   private readonly baseDir: string;
 
