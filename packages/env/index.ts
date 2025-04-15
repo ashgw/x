@@ -10,7 +10,9 @@ config({
     __dirname,
     process.env.NODE_ENV === "production"
       ? "../../.env.production"
-      : "../../.env.development",
+      : process.env.NODE_ENV === "preview"
+        ? "../../.env.preview"
+        : "../../.env.development",
   ),
 });
 
