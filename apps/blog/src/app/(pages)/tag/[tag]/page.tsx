@@ -28,6 +28,14 @@ export default function Tags({ params }: DynamicRouteParams) {
   const posts = trpc.client.post.getPosts.useQuery({
     blogPath: "public/blogs",
   });
-
-  return <TagsPage posts={posts.data} tag={params.tag} />;
+  if (posts.isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (posts.isError) {
+    return <div>Error</div>;
+  }
+  if (posts.data) {
+    return <TagsPage posts={posts.data} tag={params.tag} />;
+  }
+  return <div>No posts found</div>;
 }
