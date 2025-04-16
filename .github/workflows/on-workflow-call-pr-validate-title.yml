@@ -1,8 +1,7 @@
-# this is here for the samentic release with conventional commits, needa make sure no commits are off
+# this is here for the semantic release with conventional commits, needa make sure no commits are off
 name: PR
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 jobs:
