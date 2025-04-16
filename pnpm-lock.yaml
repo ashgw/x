@@ -784,6 +784,22 @@ importers:
         specifier: 'catalog:'
         version: 5.6.3
 
+  packages/types:
+    dependencies:
+      ts-roids:
+        specifier: 1.50.0
+        version: 1.50.0
+    devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@ashgw/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
   packages/ui:
     dependencies:
       '@hookform/resolvers':
@@ -8194,6 +8210,9 @@ packages:
 
   ts-roids@1.47.0:
     resolution: {integrity: sha512-2+K+NeXARn22VTaxInjApWL3fW7GmgU/Yny4vmBC7bQELn8hmmB65RLREOIWT//04kZ/crrldGlb6DWbECzzEQ==}
+
+  ts-roids@1.50.0:
+    resolution: {integrity: sha512-aIO5Be43Ml3WOdBgclbC6LbdltLE0w1sH+Q+yEj92qovjQfCaoaWLyPT2MF2o486TfUr3NYQE67v95ISWQXhYw==}
 
   ts-toolbelt@6.15.5:
     resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
@@ -17369,6 +17388,8 @@ snapshots:
       yn: 3.1.1
 
   ts-roids@1.47.0: {}
+
+  ts-roids@1.50.0: {}
 
   ts-toolbelt@6.15.5: {}
 
