@@ -6,7 +6,7 @@ import { createHydrationHelpers } from "@trpc/react-query/rsc";
 import type { AppRouter } from "~/server/router";
 import { appRouter } from "~/server/router";
 import { createCallerFactory } from "~/trpc/trpc";
-import { createTRPCContext } from "./contex";
+import { createTRPCContext } from "./context";
 import { makeQueryClient } from "./query-client";
 
 // IMPORTANT: Create a stable getter for the query client that
