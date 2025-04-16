@@ -5,6 +5,7 @@ import fm from "front-matter";
 import { InternalError, sentry } from "@ashgw/observability";
 
 import type { MdxFileDataRo, PostDataRo } from "~/server/models";
+import { mdxFileDataSchemaRo } from "~/server/models";
 
 export class BlogService {
   private readonly baseDir: string;
@@ -55,8 +56,10 @@ export class BlogService {
   }
 
   private _parseMDX(content: string): MdxFileDataRo {
+    // fm is unpredictable, so we parse the result with zod
     const result = fm(content);
-    return result as MdxFileDataRo;
+    const parsedResult = mdxFileDataSchemaRo.parse(result);
+    return parsedResult;
   }
 
   private async _readMDXFile(filePath: string): Promise<MdxFileDataRo> {
