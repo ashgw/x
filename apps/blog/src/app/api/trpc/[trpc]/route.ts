@@ -31,8 +31,7 @@ const handler = (req: NextRequest, res: NextResponse) =>
       createTRPCContext({
         res,
         req,
-        info: trpcRequestInfo,
-        resHeaders: res.headers,
+        trpcInfo: trpcRequestInfo,
       }),
   });
 
