@@ -11,7 +11,7 @@ import { env } from "@ashgw/env";
 import { createMetadata } from "@ashgw/seo";
 import { fonts } from "@ashgw/ui";
 
-import { trpc } from "~/utils/trpc";
+import { trpc } from "~/trpc";
 import { GoBackHome } from "./components/pages/root";
 
 export const metadata: Metadata = createMetadata({

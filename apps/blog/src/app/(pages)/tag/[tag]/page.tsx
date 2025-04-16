@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { createMetadata } from "@ashgw/seo";
 
 import { TagsPage } from "~/app/components/pages/[tag]";
-import { trpc } from "~/utils/trpc";
+import { trpc } from "~/trpc";
 
 interface DynamicRouteParams {
   params: { tag: string };
