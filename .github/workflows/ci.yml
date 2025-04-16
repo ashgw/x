@@ -74,6 +74,23 @@ jobs:
           jobs: ${{ toJSON(needs) }}
 
   # This needs my manual permission to dispatch
+  preview-deployemnt:
+    if: github.ref == 'refs/heads/main'
+    needs: [mergeable]
+    uses: ./.github/workflows/on-workflow-call-preview-deployment.yml
+    secrets: inherit
+
+  www-prevew-deployemnt:
+    needs: [preview-deployemnt]
+    uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
+    secrets: inherit
+
+  blog-preview-deployemnt:
+    needs: [preview-deployemnt]
+    uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
+    secrets: inherit
+
+  # same here
   production-deployemnt:
     if: github.ref == 'refs/heads/main'
     needs: [mergeable]
