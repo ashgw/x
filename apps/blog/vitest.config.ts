@@ -13,10 +13,8 @@ export default mergeConfig(
     },
     resolve: {
       alias: {
-        // Add src to the path resolution
-        "~": path.resolve(__dirname, "./src"),
         // @see https://stackoverflow.com/questions/73022020/vitest-not-recognizing-absolute-import
-        "~/lib": path.resolve(__dirname, "./src/lib/"),
+        "~": path.resolve(__dirname, "./src"),
       },
     },
   }),
