@@ -2,7 +2,7 @@ import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
-import { getQueryClient, getTrpcUrl, trpcClient } from "./client";
+import { getQueryClient, getTrpcUrl, trpcClientSideClient } from "./client";
 import { transformer } from "./transformer";
 
 export function TRPCProvider(
@@ -17,7 +17,7 @@ export function TRPCProvider(
   //       render if it suspends and there ais no boundary
   const queryClientInstance = getQueryClient();
   const [trpcClientInstance] = useState(() =>
-    trpcClient.createClient({
+    trpcClientSideClient.createClient({
       links: [
         httpBatchLink({
           url: getTrpcUrl({ siteBaseUrl: props.siteBaseUrl }),
@@ -28,13 +28,13 @@ export function TRPCProvider(
   );
 
   return (
-    <trpcClient.Provider
+    <trpcClientSideClient.Provider
       client={trpcClientInstance}
       queryClient={queryClientInstance}
     >
       <QueryClientProvider client={queryClientInstance}>
         {props.children}
       </QueryClientProvider>
-    </trpcClient.Provider>
+    </trpcClientSideClient.Provider>
   );
 }

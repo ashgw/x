@@ -27,5 +27,5 @@ const caller = createCaller(
   }),
 );
 
-export const { trpc: trpcServer, HydrateClient } =
+export const { trpc: trpcServerSideClient, HydrateClient } =
   createHydrationHelpers<AppRouter>(caller, getQueryClient);
