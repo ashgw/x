@@ -8,7 +8,7 @@ export const metaDataAttributesSchemaRo = z.object({
   title: z.string().min(1),
   seoTitle: z.string().min(1),
   summary: z.string().min(1),
-  // fetching from mdx file, that's why nit a date
+  // fetching from mdx file, that's why not a date
   firstModDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{4}$/),
