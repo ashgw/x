@@ -5,8 +5,6 @@ import { createTRPCReact } from "@trpc/react-query";
 import type { AppRouter } from "~/server/router";
 import { makeQueryClient } from "./query-client";
 
-export const trpcClient = createTRPCReact<AppRouter>();
-
 let clientQueryClientSingleton: Optional<QueryClient> = null;
 
 export function getQueryClient() {
@@ -21,3 +19,5 @@ export function getQueryClient() {
 export function getTrpcUrl(input: { siteBaseUrl: string }) {
   return typeof window !== "undefined" ? "" : `${input.siteBaseUrl}/api/trpc`;
 }
+
+export const trpcClient = createTRPCReact<AppRouter>();
