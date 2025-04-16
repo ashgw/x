@@ -26,7 +26,6 @@ export const mdxFileDataSchemaRo = z.object({
   attributes: metaDataAttributesSchemaRo,
   body: z.string().min(1),
   bodyBegin: z.number(),
-  frontMatter: z.string().min(1),
 });
 
 export const postDataSchemaRo = z.object({
