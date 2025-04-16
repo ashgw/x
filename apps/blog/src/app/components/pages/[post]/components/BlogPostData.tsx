@@ -1,7 +1,7 @@
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/ui";
 
-import type { PostData } from "~/lib";
+import type { PostDataRo } from "~/server/models";
 import {
   FramerMotionFadeInComponent,
   ThreeTrafficLightsMovingObjects,
@@ -13,7 +13,7 @@ import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
 
 interface BlogPostPorps {
-  postData: PostData;
+  postData: PostDataRo;
 }
 
 const featuredComponents = {
@@ -29,10 +29,13 @@ export function BlogPostData({ postData }: BlogPostPorps) {
         {postData.parsedContent.attributes.title}
       </H1>
       <div className="mb-8 flex items-center justify-between text-sm sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
-        <ReleaseDate date={postData.parsedContent.attributes.firstModDate} />
+        <ReleaseDate
+          date={postData.parsedContent.attributes.firstModDate.toISOString()}
+        />
         <div>
           {DateService.isSameMonthAndYear({
-            stringDate: postData.parsedContent.attributes.firstModDate,
+            stringDate:
+              postData.parsedContent.attributes.firstModDate.toISOString(),
           }) ? (
             <div className="average-transition opacity-0 hover:opacity-100">
               <Badge variant={"outlineUpdated"}>Recent</Badge>
