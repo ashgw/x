@@ -24,6 +24,13 @@ export function TRPCProvider(
         httpBatchLink({
           url: getTrpcUrl({ siteBaseUrl: props.siteBaseUrl }),
           transformer,
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              // cors & cookies included
+              credentials: "include",
+            });
+          },
         }),
       ],
     }),
