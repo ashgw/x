@@ -4,6 +4,7 @@ import type { NextRequest, NextResponse } from "next/server";
 import { expect, test } from "vitest";
 
 import type { AppRouter } from "~/server/router";
+import { postDataSchemaRo } from "~/server/models";
 import { appRouter } from "~/server/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
@@ -22,5 +23,5 @@ test("fething a given blog post", async () => {
   };
 
   const post = await caller.post.getPost(input);
-  expect(post).toMatchObject(input);
+  expect(post).toMatchObject(postDataSchemaRo.parse(post));
 });
