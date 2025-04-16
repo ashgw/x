@@ -1,8 +1,8 @@
-import type { PostData } from "~/lib";
+import type { PostDataRo } from "~/server/models";
 import { Posts } from "~/app/components/posts";
 import { PostsProvider } from "~/app/components/posts/components/Context";
 
-export function BlogCards({ posts }: { posts: PostData[] }) {
+export function BlogCards({ posts }: { posts: PostDataRo[] }) {
   return (
     <>
       <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
