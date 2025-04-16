@@ -6,14 +6,14 @@ import {
   getBlogsDtoSchema,
   PostDataSchemaRo,
 } from "../models";
-import { MdxService } from "../services/mdx";
+import { BlogService } from "../services/blog";
 
 export const postRouter = router({
   getPost: publicProcedure
     .input(getBlogDtoSchema)
     .output(PostDataSchemaRo)
     .query(async ({ input }) => {
-      const post = await new MdxService({
+      const post = await new BlogService({
         directory: input.blogPath,
       }).getPost({ filename: input.filename });
       return post;
@@ -23,7 +23,7 @@ export const postRouter = router({
     .input(getBlogsDtoSchema)
     .output(z.array(PostDataSchemaRo))
     .query(async ({ input }) => {
-      const posts = await new MdxService({
+      const posts = await new BlogService({
         directory: input.blogPath,
       }).getPosts();
       return posts;
