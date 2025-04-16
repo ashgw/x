@@ -17,10 +17,10 @@ config({
 const isBrowser = typeof window !== "undefined";
 
 const nonPrefixedVars = {
-  NODE_ENV: z.enum(["production", "development", "preview"]),
+  NODE_ENV: z.enum(["production", "development", "preview", "test"]),
   SENTRY_ORG: z.string(),
   SENTRY_PROJECT: z.string(),
-  NEXT_RUNTIME: z.enum(["nodejs", "edge"]).nullable(),
+  NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
 } as const;
 
