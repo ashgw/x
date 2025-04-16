@@ -14,8 +14,7 @@ export function PostCard({ postData }: { postData: PostDataRo }) {
             <div className="flex flex-col gap-4 lg:gap-6">
               <li className="dimmed-0 ml-5 list-disc">
                 {DateService.formatDate({
-                  stringDate:
-                    postData.parsedContent.attributes.firstModDate.toISOString(),
+                  stringDate: postData.parsedContent.attributes.firstModDate,
                 })}
               </li>
               <Link href={`/${postData.filename}`}>
