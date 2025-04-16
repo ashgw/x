@@ -1,7 +1,7 @@
-import { client } from "./client";
-import { server } from "./server";
+import { trpcClient } from "./client";
+import { trpcServer } from "./server";
 
 export const trpc = {
-  client,
-  server,
+  client: trpcClient,
+  server: trpcServer,
 };

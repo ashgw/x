@@ -1,12 +1,13 @@
 import type { QueryClient } from "@tanstack/react-query";
+import type { Optional } from "ts-roids";
 import { createTRPCReact } from "@trpc/react-query";
 
 import type { AppRouter } from "~/server/root";
 import { makeQueryClient } from "./query-client";
 
-export const client = createTRPCReact<AppRouter>();
+export const trpcClient = createTRPCReact<AppRouter>();
 
-let clientQueryClientSingleton: QueryClient | null = null;
+let clientQueryClientSingleton: Optional<QueryClient> = null;
 
 export function getQueryClient() {
   if (typeof window === "undefined") {
