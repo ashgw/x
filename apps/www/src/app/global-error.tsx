@@ -6,7 +6,7 @@ import type { GlobalErrorProperties } from "@ashgw/components";
 import { ErrorBoundary, Footer } from "@ashgw/components";
 import { fonts } from "@ashgw/ui";
 
-import { NavBar } from "./components/nav";
+import { NavBar } from "~/app/components/misc/nav";
 
 export default function GlobalError({ ...props }: GlobalErrorProperties) {
   return (

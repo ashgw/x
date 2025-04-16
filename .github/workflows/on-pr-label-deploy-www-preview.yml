@@ -11,7 +11,7 @@ permissions:
   issues: write
 
 jobs:
-  blog-deploy-preview:
-    if: github.event.label.name == 'ready-for-preview'
-    uses: ./.github/workflows/blog-preview-deployment.yml
+  www-deploy-preview:
+    if: github.event.label.name == 'deploy-preview'
+    uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
     secrets: inherit
