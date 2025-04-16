@@ -25,3 +25,19 @@ test("fething a given blog post", async () => {
   const post = await caller.post.getPost(input);
   expect(post).toMatchObject(postDataSchemaRo.parse(post));
 });
+
+test("fetching all blog posts", async () => {
+  const ctx = createTRPCContext({
+    req: {} as NextRequest,
+    res: {} as NextResponse,
+    trpcInfo: {} as FetchCreateContextFnOptions["info"],
+  });
+
+  const caller = createCallerFactory(appRouter)(ctx);
+  const posts = await caller.post.getPosts({
+    blogPath: "public/blogs",
+  });
+  for (const post of posts) {
+    expect(() => postDataSchemaRo.parse(post)).not.toThrow();
+  }
+});
