@@ -5,7 +5,7 @@ on:
 
 jobs:
   unit-integration:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18, 19, 20]
