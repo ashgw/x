@@ -16,8 +16,10 @@ export function getQueryClient() {
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
 
+export const trpcUri = "/api/trpc";
+
 export function getTrpcUrl(input: { siteBaseUrl: string }) {
-  return typeof window !== "undefined" ? "" : `${input.siteBaseUrl}/api/trpc`;
+  return typeof window !== "undefined" ? "" : `${input.siteBaseUrl}${trpcUri}`;
 }
 
 export const trpcClient = createTRPCReact<AppRouter>();
