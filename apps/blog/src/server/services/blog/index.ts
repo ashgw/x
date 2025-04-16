@@ -45,6 +45,16 @@ export class BlogService {
   }): Promise<PostDataRo> {
     const filePath = path.join(this.baseDir, `${filename}${this.EXT}`);
     try {
+      try {
+        await fsPromises.access(filePath);
+      } catch (error) {
+        throw new InternalError({
+          code: "NOT_FOUND",
+          message: `Post not found: ${filename}`,
+          cause: sentry.next.captureException({ error }),
+        });
+      }
+
       const metadata = await this._readMDXFile(filePath);
       return {
         parsedContent: metadata,
@@ -56,10 +66,16 @@ export class BlogService {
   }
 
   private _parseMDX(content: string): MdxFileDataRo {
-    // fm is unpredictable, so we parse the result with zod
     const result = fm(content);
-    const parsedResult = mdxFileDataSchemaRo.parse(result);
-    return parsedResult;
+    try {
+      const parsedResult = mdxFileDataSchemaRo.parse(result);
+      return parsedResult;
+    } catch (error) {
+      if (error instanceof Error) {
+        error.message = `MDX parsing validation failed: ${error.message}`;
+      }
+      throw error;
+    }
   }
 
   private async _readMDXFile(filePath: string): Promise<MdxFileDataRo> {
@@ -68,10 +84,17 @@ export class BlogService {
   }
 
   private _wrapError(error: unknown, ctx: string): InternalError {
+    const errorMessage = `BlogService.${ctx} failed in ${this.baseDir}`;
+    sentry.next.captureException({
+      error,
+      withErrorLogging: {
+        message: errorMessage,
+      },
+    });
     return new InternalError({
       code: "INTERNAL_SERVER_ERROR",
-      message: `BlogService.${ctx} failed in ${this.baseDir}`,
-      cause: sentry.next.captureException({ error }),
+      message: errorMessage,
+      cause: errorMessage,
     });
   }
 }
