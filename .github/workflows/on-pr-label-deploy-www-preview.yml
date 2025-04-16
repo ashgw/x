@@ -14,4 +14,6 @@ jobs:
   www-deploy-preview:
     if: github.event.label.name == 'deploy-preview'
     uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
+    with:
+      add_comment: true
     secrets: inherit
