@@ -1,5 +1,3 @@
-import * as fs from "fs";
-import path from "path";
 import type { inferProcedureInput } from "@trpc/server";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { NextRequest, NextResponse } from "next/server";
@@ -32,24 +30,13 @@ test("load and validate all blog posts", async () => {
   }
 });
 
-test("load and validate a single random blog post", async () => {
+test("load and validate a single blog post", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
 
-  const files = fs
-    .readdirSync(BLOG_DIR)
-    .filter((file) => file.endsWith(".mdx"));
-
-  expect(files.length).toBeGreaterThan(0); // Guard: no blog files means broken test setup
-
-  const randomFilename = path.basename(
-    files[Math.floor(Math.random() * files.length)],
-    ".mdx",
-  );
-
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
     blogPath: BLOG_DIR,
-    filename: randomFilename,
+    filename: "branded-types",
   };
 
   const post = await caller.post.getPost(input);
