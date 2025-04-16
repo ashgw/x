@@ -1,5 +1,5 @@
 import path from "path";
-import type { UnionToTuple } from "ts-roids";
+import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
 
@@ -26,8 +26,10 @@ const nonPrefixedVars = {
   SENTRY_AUTH_TOKEN: z.string().min(20),
 } as const;
 
+type NonPrefixedVars = typeof nonPrefixedVars;
+
 const NonPrefixedVarsTuple = Object.keys(nonPrefixedVars) as UnionToTuple<
-  keyof typeof nonPrefixedVars
+  Keys<NonPrefixedVars>
 >;
 
 export const env = createEnv({
