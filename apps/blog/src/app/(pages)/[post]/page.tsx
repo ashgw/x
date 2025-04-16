@@ -1,10 +1,12 @@
 import { createMetadata } from "@ashgw/seo";
 
 import { BlogPostPage } from "~/app/components/pages/[post]";
-import { MdxService } from "~/lib";
+import { trpcServerSideClient } from "~/trpc/server";
 
 export const generateStaticParams = async () => {
-  const posts = await new MdxService("public/blogs").getPosts();
+  const posts = await trpcServerSideClient.post.getPosts({
+    blogPath: "public/blogs",
+  });
   return posts.map((post) => ({ post: post.filename }));
 };
 
@@ -13,7 +15,10 @@ interface DynamicRouteParams {
 }
 
 export async function generateMetadata({ params }: DynamicRouteParams) {
-  const postData = await new MdxService("public/blogs").getPost(params.post);
+  const postData = await trpcServerSideClient.post.getPost({
+    blogPath: "public/blogs",
+    filename: params.post,
+  });
 
   return createMetadata({
     title: postData.filename,
@@ -23,6 +28,9 @@ export async function generateMetadata({ params }: DynamicRouteParams) {
 }
 
 export default async function Page({ params }: DynamicRouteParams) {
-  const postData = await new MdxService("public/blogs").getPost(params.post);
+  const postData = await trpcServerSideClient.post.getPost({
+    blogPath: "public/blogs",
+    filename: params.post,
+  });
   return <BlogPostPage postData={postData} />;
 }

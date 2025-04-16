@@ -6,7 +6,7 @@ import { InternalError, sentry } from "@ashgw/observability";
 
 import type { MdxFileDataRo, PostDataRo } from "~/server/models";
 
-export class MdxService {
+export class BlogService {
   private readonly baseDir: string;
 
   constructor(dto: { directory: string }) {
