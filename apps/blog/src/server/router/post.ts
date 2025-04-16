@@ -1,12 +1,12 @@
 import { z } from "zod";
 
+import { publicProcedure, router } from "../../trpc/trpc";
 import {
   getBlogDtoSchema,
   getBlogsDtoSchema,
   PostDataSchemaRo,
 } from "../models";
 import { MdxService } from "../services/mdx";
-import { publicProcedure, router } from "../trpc";
 
 export const postRouter = router({
   getPost: publicProcedure
