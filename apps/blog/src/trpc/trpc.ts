@@ -24,11 +24,13 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 export const middleware = t.middleware;
 
+// extract this somewhere else if implemented
 function isAutheticated(input: { ctx: TrpcContext }) {
   const { ctx } = input;
   return ctx;
 }
 
+// same here
 function isAuthorized(input: { ctx: TrpcContext }) {
   const { ctx } = input;
   return ctx;
