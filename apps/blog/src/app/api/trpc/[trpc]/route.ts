@@ -10,9 +10,10 @@ import { createTRPCContext } from "~/trpc/context";
 const handler = (req: NextRequest, res: NextResponse) =>
   fetchRequestHandler({
     endpoint: trpcUri,
+    allowMethodOverride: false,
+    allowBatching: true,
     onError(opts) {
-      // actually here add more contex, use the stuff from ops
-      logger.error(opts.error);
+      // actually here add more context to the logger, this is not enough, use the stuff from ops
       sentry.next.captureException({
         error: opts.error,
         hint: {
@@ -22,11 +23,17 @@ const handler = (req: NextRequest, res: NextResponse) =>
           },
         },
       });
+      logger.error(opts.error);
     },
     req,
-    res,
     router: appRouter,
-    createContext: createTRPCContext,
+    createContext: ({ info: trpcRequestInfo }) =>
+      createTRPCContext({
+        res,
+        req,
+        info: trpcRequestInfo,
+        resHeaders: res.headers,
+      }),
   });
 
 export { handler as GET, handler as POST };
