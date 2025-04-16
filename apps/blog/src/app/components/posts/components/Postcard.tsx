@@ -2,9 +2,9 @@ import Link from "next/link";
 
 import { DateService } from "@ashgw/cross-runtime";
 
-import type { PostData } from "~/lib/mdx";
+import type { PostDataRo } from "~/server/models";
 
-export function PostCard({ postData }: { postData: PostData }) {
+export function PostCard({ postData }: { postData: PostDataRo }) {
   return (
     <>
       {postData.parsedContent.attributes.isReleased ||
@@ -14,7 +14,8 @@ export function PostCard({ postData }: { postData: PostData }) {
             <div className="flex flex-col gap-4 lg:gap-6">
               <li className="dimmed-0 ml-5 list-disc">
                 {DateService.formatDate({
-                  stringDate: postData.parsedContent.attributes.firstModDate,
+                  stringDate:
+                    postData.parsedContent.attributes.firstModDate.toISOString(),
                 })}
               </li>
               <Link href={`/${postData.filename}`}>
