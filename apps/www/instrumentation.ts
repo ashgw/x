@@ -1,5 +1,3 @@
-import type { Instrumentation } from "next";
-
 import { env } from "@ashgw/env";
 import { sentry } from "@ashgw/observability";
 
@@ -13,5 +11,4 @@ export async function register() {
   }
 }
 
-export const onRequestError: Instrumentation.onRequestError =
-  sentry.next.lib.captureRequestError;
+export const onRequestError = sentry.next.SentryLib.captureRequestError;

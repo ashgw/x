@@ -33,12 +33,14 @@ export function ContactPage() {
         description: "PGP public key block is copied to your clipboard",
       });
     } catch (error) {
-      toast.message(
-        sentry.next.captureException({
-          error,
-          message: "Oops! Looks like something went wrong!",
-        }),
-      );
+      const errorMessage = "Oops! Looks like something went wrong!";
+      toast.message(errorMessage);
+      sentry.next.captureException({
+        error,
+        withErrorLogging: {
+          message: errorMessage,
+        },
+      });
     }
   }
 

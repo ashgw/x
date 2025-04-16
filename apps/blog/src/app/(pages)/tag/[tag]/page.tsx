@@ -3,13 +3,16 @@ import type { Metadata } from "next";
 import { createMetadata } from "@ashgw/seo";
 
 import { TagsPage } from "~/app/components/pages/[tag]";
-import { MdxService } from "~/lib";
+import { trpcServerSideClient } from "~/trpc/server";
 
 interface DynamicRouteParams {
   params: { tag: string };
 }
+
 export const generateStaticParams = async () => {
-  const posts = await new MdxService("public/blogs").getPosts();
+  const posts = await trpcServerSideClient.post.getPosts({
+    blogPath: "public/blogs",
+  });
   const tags = Array.from(
     new Set(posts.flatMap((post) => post.parsedContent.attributes.tags)),
   );
@@ -22,6 +25,8 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function Tags({ params }: DynamicRouteParams) {
-  const posts = await new MdxService("public/blogs").getPosts();
+  const posts = await trpcServerSideClient.post.getPosts({
+    blogPath: "public/blogs",
+  });
   return <TagsPage posts={posts} tag={params.tag} />;
 }
