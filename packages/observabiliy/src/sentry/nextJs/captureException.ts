@@ -33,7 +33,7 @@ export const captureException = ({
       logger.error(`${errorMessage}`);
     }
   } catch (ce) {
-    logger.error("CANNOT CAPTURE SNTRY EXCEPTION:", ce);
+    logger.error("CANNOT CAPTURE SENTRY EXCEPTION:", ce);
   }
   return errorMessage;
 };
