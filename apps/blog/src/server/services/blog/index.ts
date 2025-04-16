@@ -2,7 +2,7 @@ import { promises as fsPromises } from "fs";
 import path from "path";
 import fm from "front-matter";
 
-import { InternalError, sentry } from "@ashgw/observability";
+import { InternalError, logger, sentry } from "@ashgw/observability";
 
 import type { MdxFileDataRo, PostDataRo } from "~/server/models";
 
@@ -11,6 +11,18 @@ export class BlogService {
 
   constructor(dto: { directory: string }) {
     this.baseDir = path.join(process.cwd(), dto.directory);
+    // Write a file to record the directory name
+    void fsPromises
+      .writeFile(
+        path.join(process.cwd(), ".blog-directory"),
+        dto.directory,
+        "utf-8",
+      )
+      .catch((error) => {
+        sentry.next.captureException({
+          error,
+        });
+      });
   }
 
   public async getPosts(): Promise<PostDataRo[]> {
@@ -30,12 +42,15 @@ export class BlogService {
 
       return Promise.all(blogDataPromises);
     } catch (error) {
+      const errorMessage = `Failed to read blog posts from directory ${this.baseDir}`;
+      sentry.next.captureException({
+        error,
+      });
+      logger.error(errorMessage);
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `Failed to read blog posts from directory ${this.baseDir}`,
-        cause: sentry.next.captureException({
-          error,
-        }),
+        message: errorMessage,
+        cause: error,
       });
     }
   }
