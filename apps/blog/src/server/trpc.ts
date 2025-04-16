@@ -2,7 +2,7 @@ import { initTRPC } from "@trpc/server";
 import { ZodError } from "zod";
 
 import type { TrpcContext } from "./context";
-import { transformer } from "./transformer";
+import { transformer } from "../trpc/transformer";
 
 const t = initTRPC.context<TrpcContext>().create({
   transformer,

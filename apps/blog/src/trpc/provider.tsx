@@ -2,8 +2,7 @@ import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
-import { getQueryClient, getTrpcUrl } from "./client";
-import { trpc } from "./index";
+import { getQueryClient, getTrpcUrl, trpcClient } from "./client";
 import { transformer } from "./transformer";
 
 export function TRPCProvider(
@@ -15,10 +14,10 @@ export function TRPCProvider(
   // NOTE: Avoid useState when initializing the query client if you don't
   //       have a suspense boundary between this and the code that may
   //       suspend because React will throw away the client on the initial
-  //       render if it suspends and there is no boundary
-  const queryClient = getQueryClient();
-  const [trpcClient] = useState(() =>
-    trpc.client.createClient({
+  //       render if it suspends and there ais no boundary
+  const queryClientInstance = getQueryClient();
+  const [trpcClientInstance] = useState(() =>
+    trpcClient.createClient({
       links: [
         httpBatchLink({
           url: getTrpcUrl({ siteBaseUrl: props.siteBaseUrl }),
@@ -27,11 +26,15 @@ export function TRPCProvider(
       ],
     }),
   );
+
   return (
-    <trpc.client.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
+    <trpcClient.Provider
+      client={trpcClientInstance}
+      queryClient={queryClientInstance}
+    >
+      <QueryClientProvider client={queryClientInstance}>
         {props.children}
       </QueryClientProvider>
-    </trpc.client.Provider>
+    </trpcClient.Provider>
   );
 }
