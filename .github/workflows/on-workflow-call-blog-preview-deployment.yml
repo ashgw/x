@@ -2,6 +2,12 @@ name: CI / Blog preview deployment
 
 on:
   workflow_call:
+    inputs:
+      add_comment:
+        description: "Add a comment notification to the PR"
+        required: false
+        type: string
+        default: "false"
 
 permissions:
   pull-requests: write
@@ -35,6 +41,7 @@ jobs:
       - uses: ./.github/actions/vercel-deploy
         with:
           NODE_ENV: preview
+          add_comment: ${{ inputs.add_comment }}
           project_name: blog
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

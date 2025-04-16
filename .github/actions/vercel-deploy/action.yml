@@ -6,6 +6,10 @@ inputs:
   project_name:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
+  add_comment:
+    description: "Add a comment notification to the PR"
+    required: false
+    default: "false"
   NODE_ENV:
     description: "Vercel takes care of this"
     required: true
@@ -26,13 +30,17 @@ runs:
           cd apps/${{ inputs.project_name }} && \
           PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+          echo "::notice title=Preview URL::$PREVIEW_URL"
+          echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         else
           cd apps/${{ inputs.project_name }} && \
-          pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }}
+          PROD_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+          echo "::notice title=Production URL::$PROD_URL"
+          echo "production-url=$PROD_URL" >> $GITHUB_OUTPUT
         fi
 
     - name: Notify mfs about the deployment URL
-      if: ${{ inputs.NODE_ENV == 'preview' }}
+      if: ${{ inputs.NODE_ENV == 'preview' }} && ${{ inputs.add_comment == 'true' }}
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
