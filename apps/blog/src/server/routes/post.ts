@@ -2,15 +2,15 @@ import { z } from "zod";
 
 import { publicProcedure, router } from "../../trpc/trpc";
 import {
-  getBlogDtoSchema,
-  getBlogsDtoSchema,
+  getPostDtoSchema,
+  getPostsDtoSchema,
   PostDataSchemaRo,
 } from "../models";
 import { BlogService } from "../services/blog";
 
 export const postRouter = router({
   getPost: publicProcedure
-    .input(getBlogDtoSchema)
+    .input(getPostDtoSchema)
     .output(PostDataSchemaRo)
     .query(async ({ input }) => {
       const post = await new BlogService({
@@ -20,7 +20,7 @@ export const postRouter = router({
     }),
 
   getPosts: publicProcedure
-    .input(getBlogsDtoSchema)
+    .input(getPostsDtoSchema)
     .output(z.array(PostDataSchemaRo))
     .query(async ({ input }) => {
       const posts = await new BlogService({
