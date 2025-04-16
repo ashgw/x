@@ -22,4 +22,4 @@ export function getTrpcUrl(input: { siteBaseUrl: string }) {
   return typeof window !== "undefined" ? "" : `${input.siteBaseUrl}${trpcUri}`;
 }
 
-export const trpcClient = createTRPCReact<AppRouter>();
+export const trpcClientSideClient = createTRPCReact<AppRouter>();
