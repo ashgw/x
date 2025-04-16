@@ -4,14 +4,14 @@ import { publicProcedure, router } from "../../trpc/trpc";
 import {
   getPostDtoSchema,
   getPostsDtoSchema,
-  PostDataSchemaRo,
+  postDataSchemaRo,
 } from "../models";
 import { BlogService } from "../services/blog";
 
 export const postRouter = router({
   getPost: publicProcedure
     .input(getPostDtoSchema)
-    .output(PostDataSchemaRo)
+    .output(postDataSchemaRo)
     .query(async ({ input }) => {
       const post = await new BlogService({
         directory: input.blogPath,
@@ -21,7 +21,7 @@ export const postRouter = router({
 
   getPosts: publicProcedure
     .input(getPostsDtoSchema)
-    .output(z.array(PostDataSchemaRo))
+    .output(z.array(postDataSchemaRo))
     .query(async ({ input }) => {
       const posts = await new BlogService({
         directory: input.blogPath,

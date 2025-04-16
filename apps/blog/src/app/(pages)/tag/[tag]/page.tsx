@@ -3,18 +3,18 @@ import type { Metadata } from "next";
 import { createMetadata } from "@ashgw/seo";
 
 import { TagsPage } from "~/app/components/pages/[tag]";
-import { trpc } from "~/trpc";
+import { trpcServerSideClient } from "~/trpc/server";
 
 interface DynamicRouteParams {
   params: { tag: string };
 }
 
-export const generateStaticParams = () => {
-  const posts = trpc.client.post.getPosts.useQuery({
+export const generateStaticParams = async () => {
+  const posts = await trpcServerSideClient.post.getPosts({
     blogPath: "public/blogs",
   });
   const tags = Array.from(
-    new Set(posts.data?.flatMap((post) => post.parsedContent.attributes.tags)),
+    new Set(posts.flatMap((post) => post.parsedContent.attributes.tags)),
   );
   return tags.map((tag) => ({ tag }));
 };
@@ -24,18 +24,9 @@ export const metadata: Metadata = createMetadata({
   description: "Sort by tag.",
 });
 
-export default function Tags({ params }: DynamicRouteParams) {
-  const posts = trpc.client.post.getPosts.useQuery({
+export default async function Tags({ params }: DynamicRouteParams) {
+  const posts = await trpcServerSideClient.post.getPosts({
     blogPath: "public/blogs",
   });
-  if (posts.isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (posts.isError) {
-    return <div>Error</div>;
-  }
-  if (posts.data) {
-    return <TagsPage posts={posts.data} tag={params.tag} />;
-  }
-  return <div>No posts found</div>;
+  return <TagsPage posts={posts} tag={params.tag} />;
 }
