@@ -19,7 +19,7 @@ test("fething a given blog post", async () => {
   const caller = createCallerFactory(appRouter)(ctx);
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
     blogPath: "public/blogs",
-    filename: "branded-types.mdx",
+    filename: "branded-types",
   };
 
   const post = await caller.post.getPost(input);
