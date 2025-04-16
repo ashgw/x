@@ -1,9 +1,9 @@
 import { Footer } from "@ashgw/components";
 
-import type { PostData } from "~/lib";
+import type { PostDataRo } from "~/server/models";
 import { BlogPostData } from "./components/BlogPostData";
 
-export function BlogPostPage({ postData }: { postData: PostData }) {
+export function BlogPostPage({ postData }: { postData: PostDataRo }) {
   return (
     <>
       <main className="pt-5">

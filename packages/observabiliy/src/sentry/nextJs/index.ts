@@ -8,5 +8,5 @@ export const next = {
   init,
   captureException,
   withConfig,
-  lib: SentryLib,
+  SentryLib,
 };

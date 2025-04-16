@@ -1,7 +1,7 @@
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/ui";
 
-import type { PostData } from "~/lib";
+import type { PostDataRo } from "~/server/models";
 import {
   FramerMotionFadeInComponent,
   ThreeTrafficLightsMovingObjects,
@@ -13,7 +13,7 @@ import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
 
 interface BlogPostPorps {
-  postData: PostData;
+  postData: PostDataRo;
 }
 
 const featuredComponents = {
