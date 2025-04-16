@@ -25,7 +25,7 @@ export const publicProcedure = t.procedure;
 export const middleware = t.middleware;
 
 // extract this somewhere else if implemented
-function isAutheticated(input: { ctx: TrpcContext }) {
+function isAuthenticated(input: { ctx: TrpcContext }) {
   const { ctx } = input;
   return ctx;
 }
@@ -38,7 +38,7 @@ function isAuthorized(input: { ctx: TrpcContext }) {
 
 const authMiddleware = middleware((opts) => {
   const { ctx } = opts;
-  isAutheticated({ ctx });
+  isAuthenticated({ ctx });
   isAuthorized({ ctx });
   return opts.next({
     ctx: {
