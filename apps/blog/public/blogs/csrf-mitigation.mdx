@@ -22,7 +22,7 @@ If you do not trust the request's origin, block it.
 </C>
 <H3>"Origin" Header</H3>
 <C>
-Since the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin'>`Origin`</L> header is being added automatically by browsers as part of the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS'>`CORS`</L> mechanism, you can check and validate the header, to check if the request that is coming in, actually comes from you site, block it if it doesn't
+Since the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin'>`Origin`</L> header is being added automatically by browsers as part of the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS'>`CORS`</L> mechanism, you can check and validate the header, to check if the request that is coming in, actually comes from you site, block it if it doesn't.
 </C>
 <Code
   code={`if r.Header.Get("Origin") != "https://my-actual-site.com" {
@@ -35,7 +35,7 @@ Since the <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Ori
 <H3>"Sec-Fetc-" Headers</H3>
 
 <C>
-Fetch Metadata headers, introduced last year to provide additional context about the resource request. But all you have to know for now is you can use it  to to check the origin  
+Fetch Metadata headers, introduced last year to provide additional context about the resource request. But all you have to know for now is you can use it to to check the origin as such:
 </C>
 <Code
   code={`if secFetchSite := r.Header.Get("Sec-Fetch-Site"); 
@@ -48,10 +48,10 @@ Fetch Metadata headers, introduced last year to provide additional context about
   showLineNumbers={false}
 />
 <C>
-Learn more about `Sec-Fetch` headers <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode'>here</L> and <L href='https://w3c.github.io/webappsec-fetch-metadata/#sec-fetch-site-header)'>here</L>
+Learn more about `Sec-Fetch` headers <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode'>here</L> and <L href='https://w3c.github.io/webappsec-fetch-metadata/#sec-fetch-site-header)'>here</L>.
 </C>
 <C>
-You can use a combo of these two, just to make sure, if one doesn't exist is altered the other might be used. But solely relying on headers is not sufficient, headers could potentially be tampered with or omitted due to certain browser vulnerabilities, network configurations or proxies misconfigurations. So other techniques should be employed too, like 
+You can use a combo of these two, just to make sure, if one doesn't exist or altered, the other might be used. But solely relying on headers is not sufficient, headers could potentially be tampered with or omitted due to certain browser vulnerabilities, network configurations or proxies misconfigurations. So other techniques should be employed too, like:
 </C>
 
 <H2>Anti-CSRF tokens</H2>
@@ -61,7 +61,8 @@ CSRF tokens are a common and effective technique to prevent Cross-Site Request F
 </C>
 <C>
 When a client makes a request, the server verifies the token's existence and validity against the token stored in the user's session (the mechanism of which the user session is stored might differ). If the token is missing or doesn't match, the request is rejected as potentially malicious. 
-</C><C>
+</C>
+<C>
 There  are two main ways to implement anti-CSRF tokens: 
 </C>
 <H3>Stateless Services</H3>
@@ -248,7 +249,7 @@ Avoid setting cookies with a specific domain to minimize security risks. When a 
 </C><C>
 For session cookies, ensure they are protected by:
 </C><C>
- - \-  Using the `HttpOnly` attribute to prevent client-side scripts from accessing cookies, enhancing security against XSS attacks.
+ - \-  Using the `HttpOnly` attribute to prevent client-side scripts from accessing cookies, thus enhancing security against XSS attacks.
  - \-  Setting the `SameSite` attribute to `Lax` or `Strict` to control cookie behavior in cross-site requests, more <L href='#samesite'>below</L>.
  - \-  Avoid specifying a domain (`Domain=None`) to prevent cookies from being sent in cross-origin requests.
  - \-  Using the `Secure` attribute to ensure that cookies are only sent over HTTPS connections.
@@ -257,7 +258,7 @@ Also, for enhanced security measures, consider cookie prefixes like `__Host-` an
 </C>
 <H3 id="#samesite">About "SameSite" Cookies</H3>
 <C>
-Use the `SameSite` cookie attribute to set your users sessions (older browsers do not support this)
+Use the `SameSite` cookie attribute to set your users sessions (older browsers do not support this).
 </C>
 <Code
   code={`Set-Cookie: SID=xxxxx; SameSite=Strict`}
@@ -275,6 +276,7 @@ Or
 <C>
 Read about `Lax` and `Strict` from the official <L href='https://datatracker.ietf.org/doc/html/draft-west-first-party-cookies-07'>RFC</L>. Here's is basically what they do:
 </C>
+
 <C>
 **``Strict``:** This value prevents cookies from being sent in all cross-site browsing contexts, including regular links. For example: You're logged in your banking account, which means you have a session cookie. If this banking website employs the Strict ``SameSite`` value for its session cookies, and you  click on a link to perform a banking transaction from an external website (like a forum or email) say https://scam-me-please.com , the banking website won't receive the session cookie due to the ``Strict`` setting. Consequently, the user won't be able to complete the transaction because the session information is not sent with the request. 
 </C><C>
