@@ -13,7 +13,6 @@ const handler = (req: NextRequest, res: NextResponse) =>
     allowMethodOverride: false,
     allowBatching: true,
     onError(opts) {
-      // actually here add more context to the logger, this is not enough, use the stuff from ops
       sentry.next.captureException({
         error: opts.error,
         hint: {
