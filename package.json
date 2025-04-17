@@ -32,7 +32,7 @@
   "description": "Building.",
   "devDependencies": {
     "@ashgw/prettier-config": "workspace:*",
-    "@changesets/cli": "2.29.2",
+    "@changesets/cli": "^2.29.2",
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",
     "@turbo/gen": "^2.1.3",
