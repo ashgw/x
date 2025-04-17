@@ -2,7 +2,7 @@
 category: software
 title: Framer Motion
 seoTitle: I started using framer motion, I think I like it
-summary: : I started using framer motion, I think I like it
+summary: I started using framer motion, I think I like it
 isReleased: true
 isSequel: false
 lastModDate: 2020-02-11T09:15:00-0401
@@ -12,25 +12,25 @@ tags:
   - 'react'
   - 'framer-motion'
 ---
-<C>I have a question for you. How would you make this react element, fade in on view?</C>
+
+<C>
+I have a question for you. How would you make this react element, fade in on view?
+</C>
+
 <Code
-  code=
-{`const FadingText: React.FC = () => {
+  code={`const FadingText: React.FC = () => {
   return (
     <h1
-      className=" text-4xl font-bold
-     bg-gradient-to-r from-teal-500 to-indigo-500 
-     text-transparent bg-clip-text "
+      className="text-4xl font-bold bg-gradient-to-r from-teal-500 to-indigo-500 text-transparent bg-clip-text"
     >
       I&apos;m Fading in
     </h1>
   );
-};
-`}
-language="tsx"
-showLineNumbers={true}
-
+};`}
+  language="tsx"
+  showLineNumbers={true}
 />
+
 <H3>The Traditional Approach</H3>
 <C>
   You'd create CSS styles for fading, handle state changes, and
@@ -45,13 +45,12 @@ showLineNumbers={true}
 </C>
 
 <Code
-  code=
-{`.fade-in {
-  opacity: 0;
-}
-.fade-in.visible {
-  opacity: 1;
-}
+  code={`.fade-in {
+    opacity: 0;
+  }
+  .fade-in.visible {
+    opacity: 1;
+  }
 `}
 language="css"
 showLineNumbers={true}
@@ -62,8 +61,7 @@ showLineNumbers={true}
   Then wrap the element in a parent that checks its visibility state and fades it in if it's visible.
 </C>
 <Code
-  code=
-{`const Component: React.FC = () => {
+  code={`const Component: React.FC = () => {
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -76,8 +74,7 @@ showLineNumbers={true}
       </div>
     </div>
   );
-};
-`}
+};`}
 language="tsx"
 showLineNumbers={true}
 
@@ -109,8 +106,7 @@ showLineNumbers={true}
       </div>
     </div>
   );
-};
-`}
+};`}
   language="tsx"
   showLineNumbers={true}
 />
@@ -131,8 +127,7 @@ showLineNumbers={true}
       },
       { threshold: 0.5 } /* trigger when at least 50% of the observed
        element is visible in the viewport. */
-    );
-`}
+    );`}
   language="tsx"
   showLineNumbers={true}
 />
