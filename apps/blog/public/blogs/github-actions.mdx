@@ -25,6 +25,7 @@ tags:
 <C>Every job lives in its own file. Each file follows the same naming pattern:</C>
 <C>on-[trigger]-[type]-[what]</C>
 <C>Like this:</C>
+
 <Code
   code={`
   on-issue-label-check-reproduction
@@ -35,10 +36,12 @@ tags:
   language="bash"
   showLineNumbers={false}
 />
+
 <C>The trigger is the source event like issue or pr</C>  
 <C>The type is what action occurred like label or open</C>  
 <C>The what is what the workflow actually does</C>
 <C>If it’s a scheduled job, it drops the "on-" and starts with "cron"</C>
+
 <Code
   code={`
   cron-daily-summary
@@ -47,7 +50,8 @@ tags:
   language="bash"
   showLineNumbers={false}
 />
-<C>The goal is for the workflow folder to read like a changelog. Not a guessing game.</C>
+
+<C>If a workflow doesn’t fit the formula, or has too shenanigans, sure, name it however you want. Just keep everything that can be structured visibly clear with the formula. When you open the workflows folder, it should read like a timeline, not a guessing game.</C>
 <H2>Keep Workflows Dumb</H2>
 <C>Every workflow file should be as thin as possible. Even if you trigger something directly like `workflow_dispatch`, the logic should live elsewhere.</C>
 <C>Use actions. Use scripts. Keep workflows dumb. Let them route. Let them call the real work.</C>
