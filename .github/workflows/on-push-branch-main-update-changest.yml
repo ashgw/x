@@ -1,4 +1,4 @@
-name: CI / Update changest
+name: CI / update changest
 
 on:
   push:
