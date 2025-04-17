@@ -1,8 +1,8 @@
 ---
 category: software
 title: User Stories
-seoTitle:  How to actually write effective user stories
-summary: How to actually write effective User Stories
+seoTitle: How to actually write effective user stories
+summary: How to actually write effective user stories
 isReleased: true
 isSequel: false
 lastModDate: 2024-04-01T09:15:00-0401
@@ -15,55 +15,47 @@ tags:
 ---
 
 <C>
-A user story is a concise description of a software feature from an end user's perspective, narrated using non-technical language. It typically follows the format: "As a **persona**, I want to **software goal**, so that **result**".
+A **user story** is a description of a software feature from the perspective of the end user, written in plain, non-technical language. The format is simple: 
+**"As a [persona], I want [software goal], so that [result]."**
 </C>
+
 <C>
-The term "end user" can refer to external customers or internal stakeholders benefiting from the feature.
+The term "end user" isn't limited to external customers, it can include internal stakeholders who'll benefit from the feature.
 </C>
+
 <H2>Writing Effective User Stories</H2>
 <C>
-Understand the target audience's demographics and psychographics to define the user persona accurately. Design the feature to address their needs and help them achieve their goals, focusing on user intent rather than technical details. Also
+Most user stories I came accorss suck. To write ones that don't suck, you need to start with a clear understanding of who your users are. Define their personas based on real demographics and behaviors. Build features that solve their problems and help them achieve goals. Focus on their intent, not on the tech jargon.
 </C>
 
-<H3>Adhere to INVEST Criteria</H3>
-<C>
-An effective user story should adhere to the <L href='https://www.agilealliance.org/glossary/invest/'>INVEST</L> criteria to ensure clarity, feasibility, and value delivery:
-</C>
+<H3>Meet the INVEST Criteria</H3>
 
 <C>
- **Independent:** User stories should be self-contained and independent, to enable developemnt and delivery without reliance on other stories.
-</C>
-
-
-
-<C>
-**Valuable:** Each user story should deliver tangible value to the end user or stakeholder, by enhancing functionality, user experience, or productivity.
-</C>
-
-
-
-
-<C>
-**Estimable:** User stories should be sufficiently detailed to allow for <L href='/services/estimates'>estimation</L> of effort and duration required for implementation
-</C>
-
-
-<C>
-**Small:** User stories should be broken down into small, manageable chunks of work that can be completed within a single <L href='/services/deadlines'>sprint.</L>
-</C>
-
-
-
-<C>
-**Negotiable:** User stories should be open to negotiation and refinement throughout the development process to accommodate evolving requirements.
+Effective user stories need to follow the <L href="https://www.agilealliance.org/glossary/invest/">INVEST</L> principles:
 </C>
 
 <C>
-**Testable:** More on this <L href='#testability'>later.</L>
+**Independent:** Stories should stand on their own, without depending on others. Independence equals flexibility.
 </C>
 
 <C>
-**Prioritized:** More on this <L href='#ranking'>later.</L>
+**Valuable:** Deliver something that actually matters to the user. Not just a checkbox feature.
+</C>
+
+<C>
+**Estimable:** Write stories detailed enough to estimate time and effort. Vague stories are trash.
+</C>
+
+<C>
+**Small:** Break down your stories into chunks that fit into a single <L href="/services/deadlines">sprint</L>. If it's too big, it's not a story, it's a mess.
+</C>
+
+<C>
+**Negotiable:** Requirements will evolve. Don't cling to your first draft like it's sacred scripture.
+</C>
+
+<C>
+**Testable:** Write stories in a way that their success can be objectively verified. More on this <L href="#testability">later.</L>
 </C>
 
 <H2>Fixing Common Mistakes in User Stories</H2>
@@ -72,30 +64,19 @@ An effective user story should adhere to the <L href='https://www.agilealliance.
 **Use Consistent Language:** Establish a <L href='/services/glossary'>glossary</L> early in the project to define terms consistently and ensure clarity across all stakeholders
 </C>
 
-
-
-
-
 <C>
 **Focus on User Goals:** Understand the underlying user intent behind each story. Consult real users or representatives to refine requirements accurately.
 </C>
 
-
-
-
 <C>
 **Remove Technical Details If not needed:** Separate user goals from implementation specifics to maintain relevance and flexibility. Should the user get notified by Kafka or a webhook? Does it really matter? The user just wants to get notified, using either technology won't matter, in the end. But will it matter for the user if they receive the notification through email or other means? Yes.
 </C>
-
-
-
 
 <C>
 **Clarifying Roles:** Yes, it's called User Story but, not everyone is a user. Tailor user stories to specific user roles (e.g., manager, admin, architect, <L href='https://www.urbandictionary.com/define.php?term=group%20leader'>group leader?</L>)  to ensure features meet diverse user needs.
 </C>
 
 <H2>Good and Bad User Story Examples</H2>
-
 
 <C>
 You might find these ones in the wild
@@ -142,8 +123,6 @@ Rewrite user stories using Behavior-Driven Development (<L href='https://www.agi
 </C>
 <H2>Gherkin Syntax</H2>
 
-
-
 <C>
 This is how to write user stories in Gherkin syntax
 </C>
@@ -167,7 +146,6 @@ This is how to write user stories in Gherkin syntax
   showLineNumbers={false}
 />
 
-
 <C>
 You see how better it gets? Here's another one
 </C>
@@ -188,8 +166,8 @@ You see how better it gets? Here's another one
   showLineNumbers={false}
 />
 
+<H2 id="ranking">Ranking User Stories</H2>
 
-<H2 id='ranking'>Ranking</H2>
 <C>
-Did I mention that, when a user story is set, it needs a priority level. The method you use might <L href='https://www.altexsoft.com/blog/most-popular-prioritization-techniques-and-methods-moscow-rice-kano-model-walking-skeleton-and-others'>differ</L>, in <L href='/services/full-software-solution'>my projects</L> I use the <L href='https://en.wikipedia.org/wiki/MoSCoW_method'>MoSCoW</L> method.
+Once you've nailed down your user stories, prioritize them. Use frameworks like <L href="https://en.wikipedia.org/wiki/MoSCoW_method">MoSCoW</L> (Must, Should, Could, Won't). I use this method in my projects. It's simple and effective.
 </C>

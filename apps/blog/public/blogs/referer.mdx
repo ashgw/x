@@ -7,17 +7,18 @@ isReleased: true
 isSequel: false
 lastModDate: 2019-12-30T09:15:00-0401
 firstModDate: 2019-12-30T09:15:00-0401
-minutesToRead: 6
+minutesToRead: 13
 tags:
   - 'referer'
   - 'cybersec'
+  - 'http'
 ---
 
 <C>
 The <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer'>Referer</L> header automatically includes the source URL of a transition, like clicking a link, in the request's Referer header. However, this can unintentionally expose some information.
 </C>
 <C>
-So let's explore all the ways which allows us to control this behavior.
+So let's explore all the ways which allow us to control this behavior.
 </C>
 
 <H2>Referrer or Referer?</H2>
@@ -71,7 +72,7 @@ Some plagiarism detection tools or services may use `Referer` information as par
 </C>
 <H2>Risks of Information Leakage</H2>
 <C>
-Browsers automatically populate Referer headers, potentially exposing private URLs like, maybe some URLs with restricted access, or meant for intranet or corporate use. Let's say for example,  a fictional company, "Tech Solutions Inc.," initiating a confidential project codenamed "Skyline" that won't be publicly disclosed until a later date. Internal blogs or tickets related to "Skyline" may inadvertently leak project details through URLs like:
+Browsers automatically populate Referer headers, potentially exposing private URLs like, maybe some URLs with restricted access, or ones that are meant for intranet or corporate use. Let's say for example,  a fictional company, "Tech Solutions Inc.," initiating a confidential project codenamed "Skyline" that won't be publicly disclosed until a later date. Internal blogs or tickets related to "Skyline" may inadvertently leak project details through URLs like:
 </C>
 <Code
   code={`https://ticket.skyline.techsolutions.example.com/{employee}/issue/65148/[internal_confidential]`}
@@ -79,6 +80,9 @@ Browsers automatically populate Referer headers, potentially exposing private UR
   showLineNumbers={false}
 /><C>
 Jumping to an external page from search results can also reveal project details. Despite no direct access
+</C>
+<C>
+It is actually important to note that if the Origin header is sent, it conveys similar information to certain Referrer Policy settings, even if the Referer header is restricted.
 </C>
 <H2>Controlling Referer Behavior</H2>
 <C>
@@ -113,16 +117,13 @@ Several settings are available based on the origin of requests:
 <C>
 The differences among these policies lie in the information they include in the Referer header. For example, with certain policies, the Referer might only show the origin (base URL) rather than the full URL. This provides information about the source without revealing specific page paths or parameters.
 </C>
-<C>
-It's important to note that if the Origin header is sent, it conveys similar information to certain Referrer Policy settings, even if the Referer header is restricted.
-</C>
 <H3>
 `no-referrer`
 </H3>
 <C>
   - \-  **Conditions for Sending:** Don't send anything, completely omit Referer header.
   - \-  **Value Sent:** None.
-  - \-    **Description:** Safest option to prevent information leakage. However, not sending the Referer header can cause issues with certain verifications relying on it. Internal transitions within the same domain won't send the Referer either, making it restrictive for collecting internal metrics. Note that the Origin header remains even when the Referer is omitted.
+  - \-    **Description:** Safest option to prevent information leakage. However, not sending the Referer header can cause issues with certain verifications relying on it. Internal transitions within the same domain won't send the Referer either, making it restrictive for collecting internal metrics. Note though: the Origin header remains even when the Referer is omitted.
 </C>
 
 
@@ -244,7 +245,7 @@ By adding `rel=noreferrer` to `<a>` or `<area>` elements, you can modify the tra
   showLineNumbers={false}
 />
 <C>
-**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate <L href='https://owasp.org/www-community/attacks/Reverse_Tabnabbing'>reverse tabnabbing.</L> attacksFor example:
+**Note:** When using `rel=noreferrer` with `target="_blank"`, it prevents the opener relationship from being established to mitigate <L href='https://owasp.org/www-community/attacks/Reverse_Tabnabbing'>reverse tabnabbing.</L> attacks For example:
 </C>
 <Code
   code={`<a href="https://example.com" rel="noreferrer noopener" target="_blank">`}

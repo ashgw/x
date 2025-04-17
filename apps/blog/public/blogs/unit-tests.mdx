@@ -1,8 +1,8 @@
 ---
 category: software
 title: Unit Tests
-seoTitle:  Things to keep in mind about unit testing
-summary: Things to keep in mind 
+seoTitle: No one likes leg day, but you should never skip it
+summary: Do you skip leg day?
 isReleased: true
 isSequel: false
 lastModDate: 2021-12-14T09:15:00-0401
@@ -10,45 +10,48 @@ firstModDate: 2021-12-14T09:15:00-0401
 minutesToRead: 3
 tags:
   - 'testing'
+  - 'quality'
 ---
 
 <C>
-Unit tests do not only provides a safety net for detecting unintended changes but also serve as living documentation for the code when tests are clear and concise. 
+Let's talk about **unit tests.** Love them or hate them, they're the bedrock of any respectable codebase. Sure, they can feel like a pain in the ass, time consuming, tedious, and sometimes downright annoying. But if you think skipping them is a good idea, you're setting yourself (and your team) up for a world of hurt.
 </C>
+
 <C>
-They're time-consuming, true, but worth the investment. Well-written tests can take up to 30-50% of development time but pay off in increased confidence to refactor, expand and not break the codebase.
+Unit tests aren't written to merely catch bugs. They're your safety net and your **living documentation**. Write them well, and they'll save you in the long run when you need to refactor, expand, or fix something two years down the line. Write them poorly, or worse, skip them, and your future self will hate you (and anyone that touches that code after you).
 </C>
+
+<H2 id='coverage'>100% Code Coverage ≠ Zero Bugs</H2>
 <C>
-Below are a couple of things to know about unit tests
+Let me start with this myth: **100% code coverage means bug-free software.** Wrong. Dead wrong. Just because your tests touch every line of code doesn't mean they're testing what matters. You could have 100% coverage and still miss critical edge cases.
 </C>
-<H2 id='coverage'>100% Code Coverage != 0 Bugs</H2>
+
 <C>
-One common misconception is relying on code coverage metrics as the **sole** indicator of testing completeness. Simply touching a line of code with a test doesn't mean it's adequately tested. Each method should have as many tests as needed, covering various **scenarios** based on its complexity.
- </C>
+On the flip side, aiming for **50% coverage** is setting the bar so low you're practically inviting chaos into your codebase. Don't be that team. There's no magical number to hit, but **80% is a solid target.** 
+</C>
+
 <C>
-Coverage percentage alone doesn't reflect test [quality](). A 100% coverage doesn't guarantee bug-free software. On the other hand, shooting for a as low as 50% coverage sets a very low quality bar, so that's a no go. There's no magical number to hit, numbers can lie sometimes, but usually somewhere around 80% is fair enough.
- </C>
- <C>
-Well usually teams who have 100% coverage, either do have some very good and excellent high quality, composable code, which is quite rare, or, just have it as a front to dismay managers and deceive sponsors. 
- </C>
- <H2>No Preconceived knowledge</H2>
- <C>
+Now, if your team somehow has 100% coverage, congrats. Either you've achieved unicorn-level composable code (very rare) or you're padding numbers to impress clueless managers (much more common). **Numbers can lie.** Don't let metrics fool you into thinking your tests are good. Focus on **quality, not quantity.**
+</C>
+
+<H2>No Preconceived knowledge</H2>
+<C>
 Even if you "know" certain values will never be "X" or "Y". It's essential to test all code paths, not just those reflecting current usage patterns.
- </C>
+</C>
 
 <H2>If You Over Assert, Break  It Down</H2>
- <C>
+<C>
 Over-asserting can make tests brittle and hard to maintain. A good rule is to focus each test on a specific scenario and limit assertions to what's necessary for that specific scenario.
 </C>
 <H2>Re-usable setup</H2>
- <C>
+<C>
 Test preparation should be clean and reusable. Instead of repetitive setup code, use <L href="https://en.wikipedia.org/wiki/Builder_pattern">builders</L> to create test scenarios that can be shared across multiple tests.
 </C>
 <H2>Provide Context (As Much As Possible)</H2>
- <C>
+<C>
 Naming tests appropriately is **essential**, especially as the complexity and size of your codebase increase. Use descriptive names for test files and individual test cases.  This might not seem important nor practical with a smaller projects with smaller test suite (e.g., 20 test files with 5 tests each), it becomes incredibly important as your project grows, if you have as many as 100 test files or even more, you should be thinking about very good names for them, this makes it easier for your team members to not create duplicates. Also good long, yes long descriptive names for each test case is as important if not more,  if a test errors out, you'd have a good idea about what scenario/class/method/case/library or "thing" the test just flagged.
 </C>
- <C>
+<C>
 In JS/TS ecosystem you can have a very good description of test and what should it do.
 </C>
 <Code
@@ -58,7 +61,7 @@ In JS/TS ecosystem you can have a very good description of test and what should 
   language="typescript"
   showLineNumbers={false}
 />
- <C>
+<C>
 In Python for example you don't have this luxury so you have to put the description in it the test name itself.
 </C>
 
@@ -76,7 +79,7 @@ def test_given_wrong_jwe_signin_algorithm_then_error():
   language="python"
   showLineNumbers={false}
 />
- <C>
+<C>
 Instead of
 </C>
 <Code
@@ -93,3 +96,12 @@ def test_jwe2():
   language="python"
   showLineNumbers={false}
 />
+
+<H2 id='final-thoughts'>Unit Tests Are a Pain, But They're Worth It</H2>
+<C>
+Look, I'm not saying unit tests are fun. They're not. But they're needed. They save time in the long run, prevent nightmares, and give you confidence to refactor without breaking everything. Think about construction workers. Sure, they could work faster without safety gear, no harnesses, no nets, just raw speed. But if they fuck up? Someone falls, someone dies, and suddenly the faster timeline doesn't mean shit because now you've got a disaster to clean up instead of a finished project. Unit tests are your safety gear. They slow you down a little upfront, but they make damn sure you're not scrambling to clean up a catastrophe later.
+
+Now, startups? They love skipping this part. It's all 'move fast, break things' until you actually break something important, and suddenly it's all-hands-on-deck fixing a bug that messed prod. And guess what? By the time they're biting it, the team's already grown. Now you've got new engineers staring at spaghetti code with no guardrails, no tests, no confidence that a single line change won't nuke the whole app. That's how you get weeks of firefighting instead of building actual features.
+
+You want to skip unit tests? Fine. Just don't start bitching when your future self, with a bigger team and bigger problems, wants to punch you in the face for being lazy.
+</C>
