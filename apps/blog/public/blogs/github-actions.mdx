@@ -1,0 +1,56 @@
+---
+category: software
+title: GitHub Actions
+seoTitle: Your CI is a mess. Here's how to fix it
+summary: Your CI is a mess. Here's how to fix it
+isReleased: true
+isSequel: false
+lastModDate: 2025-04-17T09:15:00-0401
+firstModDate: 2025-04-17T09:15:00-0401
+minutesToRead: 2
+tags:
+  - 'github'
+  - 'ci'
+---
+
+<C>Once your repo crosses around 15 workflows, it falls apart. CI logic, PR triggers, deploy flows, cron jobs, label events, all jammed into one folder like a digital landfill. GitHub doesn’t let you put workflows (not actions) anywhere else. You can’t separate them. So the mess grows, and your engineering velocity starts bleeding.</C>
+<C>Here’s how I fix it with a structure that actually works at scale.</C>
+<H2>One Entry File: `ci.yaml`</H2>
+<C>This is your entrypoint. It doesn’t do anything except orchestrate. No logic. No steps. No envs (unless shared). Just pure routing. It uses `workflow_call` to dispatch the actual work.</C>
+
+<S />
+<C>This file should read like a flowchart. It decides what runs, in what order, and how concurrency is handled. Nothing else. All actual running jobs are handled elsewhere.</C>
+<H2>Naming: Simple, Predictable, Scannable</H2>
+
+<C>Every job lives in its own file. Each file follows the same naming pattern:</C>
+<C>on-[trigger]-[type]-[what]</C>
+<C>Like this:</C>
+<Code
+  code={`
+  on-issue-label-check-reproduction
+  on-pr-label-deploy-app-preview
+  on-workflow-call-lint
+  on-issue-label-notify
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>The trigger is the source event like issue or pr</C>  
+<C>The type is what action occurred like label or open</C>  
+<C>The what is what the workflow actually does</C>
+<C>If it’s a scheduled job, it drops the "on-" and starts with "cron"</C>
+<Code
+  code={`
+  cron-daily-summary
+  cron-clean-old-sessions
+`}
+  language="bash"
+  showLineNumbers={false}
+/>
+<C>The goal is for the workflow folder to read like a changelog. Not a guessing game.</C>
+<H2>Keep Workflows Dumb</H2>
+<C>Every workflow file should be as thin as possible. Even if you trigger something directly like `workflow_dispatch`, the logic should live elsewhere.</C>
+<C>Use actions. Use scripts. Keep workflows dumb. Let them route. Let them call the real work.</C>
+<C>Actions can be reused, versioned, tested, logged. They can run bash. They can call scripts. They don’t live in the YAML jungle.</C>
+<H2>Why This Works</H2>
+<C>You’ll burn a couple hours setting this up at fist. But it'll pay in spades later on, since you won't have to go through a maze every time you need to add a new job, debug a flow, or onboard a new  hire. Also, AI editors like Cursor and Windsurf will help you 10x your productivity if you stick to patterns, and you'll be able to reason about your CI much easier. Patterns matter more than context here. The more predictable your system, the more useful the AI becomes.</C>
