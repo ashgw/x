@@ -1,0 +1,93 @@
+---
+category: software
+title: Browser Fingerprinting
+seoTitle: Another sneaky tactic to track your online activity
+summary: Another sneaky tactic to track your online activity
+isReleased: true
+isSequel: false
+lastModDate: 2024-05-07T08:15:00-0401
+firstModDate: 2024-05-07T08:15:00-0401
+minutesToRead: 6
+tags:
+  - 'cybersec'
+  - 'privacy'
+---
+
+<C>
+Browser fingerprinting is a tracking technique that identifies and monitors you by collecting a combination of device and browser-specific details. Unlike cookies, which you can manage and are increasingly restricted by browser privacy features, fingerprinting operates at a lower level. It leverages the unique characteristics of your system to create a "fingerprint," which makes it an effective but controversial method of tracking, especially as browsers phase out third-party cookies (by the end of this year).
+</C>
+
+<H2>
+How It Works
+</H2>
+<C>
+It aggregates various system attributes to generate a unique identifier for you. This identifier persists across sessions and is nearly impossible for you to block or remove. Websites collect information such as your <L href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</L> header string, which provides details about your browser, operating system, and device, and your IP address, often used as a starting point for identification. On top of that, details like your screen resolution, color depth, installed fonts, plugins, language, and time zone settings add to the fingerprint.
+</C>
+<C>
+Even more advanced techniques are being used at times to identify you, if the header data is not enough. For instance, WebGL and Canvas API outputs <L href='https://blog.browserscan.net/docs/webgl-fingerprinting'>are used</L> to capture subtle hardware and driver differences, while WebRTC data can reveal your local network IPs under specific conditions. Similarly, the way your browser processes fonts or renders a 2D graphic in the <L href='https://browserleaks.com/canvas'>Canvas API</L> is unique due to minor variances in GPU drivers and rendering engines. Even seemingly innocuous details, such as system clock skew or the order of HTTP headers in requests, can contribute to your fingerprint.
+</C>
+
+<H2>
+The Mechanisms Behind Fingerprinting
+</H2>
+
+<C>
+Browser fingerprinting works because of the inherent variability in how browsers and devices behave. For example, when a graphic is rendered using the Canvas API, the resulting image will have minor variations across different devices, operating systems, or GPUs. Likewise, the Web Audio API can reveal subtle characteristics of your hardware's sound-processing capabilities.
+</C>
+
+
+<C>
+Headers in your HTTP requests are another significant source of information. The sequence of headers, as well as optional ones added by your browser or proxies, can provide clues about your browsing environment. For instance, headers that tell your language preference (Accept-Language), or headers that explicitly state to not track <L href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/DNT'>DNT</L> (deprecated) contribute to your unique profile.
+</C>
+
+
+
+<C>
+Even your choice of browser settings, such as whether you block third-party cookies or use a specific privacy extension, adds to your fingerprint. Ironically, attempts to harden your privacy can sometimes make your browser stand out even more.
+</C>
+
+
+<H2>
+Why Fingerprinting Is So Hard to Avoid
+</H2>
+
+<C>
+Fingerprinting doesn’t rely on client-side storage like cookies, thus, making it extremely challenging to block. Even if you clear cookies or use private browsing, the underlying system characteristics remain consistent. Fingerprinting exploits how your browser interacts with the web, combining these interactions into a persistent identifier.
+</C>
+
+
+<C>
+For instance, your browser's "entropy", which is a measure of how much unique information it reveals, often makes you identifiable. High-entropy features like WebGL, audio fingerprinting, and the way your browser handles JavaScript quirks are difficult to mask entirely. Also, fingerprinting works seamlessly across incognito sessions or VPNs, as these tools don’t alter hardware level details.
+</C>
+
+
+<H2>
+Ethical Concerns
+</H2>
+
+
+<C>
+You typically don’t consent to fingerprinting, and detecting it is almost impossible without specialized tools. This lack of transparency makes it a contentious practice, as it infringes on your ability to control how your data is used.
+</C>
+
+
+
+
+
+<H2>
+Browser Efforts to Combat Fingerprinting
+</H2>
+
+
+<C>
+Modern browsers have taken steps to mitigate fingerprinting, though the battle is far from over. Chrome’s <L href='https://developer.chrome.com/docs/privacy-security/user-agent-client-hints'>User-Agent Client Hints</L>, for example, aim to reduce the amount of identifying information available to trackers. Firefox and Brave have implemented <L href='https://support.mozilla.org/en-US/kb/firefox-protection-against-fingerprinting'>anti-fingerprinting protections</L>, including reducing JavaScript API access that could reveal unique system characteristics.
+</C>
+
+<C>
+Safari’s <L href='https://www.apple.com/safari/docs/Safari_White_Paper_Nov_2019.pdf'>Intelligent Tracking Prevention</L> blocks cross-site tracking by restricting fingerprintable features, while Tor goes further by <L href='https://tb-manual.torproject.org/anti-fingerprinting/'>normalizing browser behavior</L>, such as forcing all users into a uniform resolution and user-agent string. Additionally, Apple’s Private Relay masks your IP address by routing your traffic through proxy servers.
+</C>
+
+
+<C>
+Despite these advancements, trackers are continually evolving. Techniques like <L href='https://brave.com/privacy-updates/6-cname-trickery/'>CNAME cloaking</L>, where third-party trackers disguise themselves as first-party resources, can bypass many of these protections. Machine learning models are now being developed to analyze behavioral patterns, further complicating mitigation efforts.
+</C>
