@@ -1,0 +1,71 @@
+---
+category: software
+title: Bounce Tracking
+seoTitle: As third-party cookies phase out, bounce tracking continues to monitor your behavior
+summary: As third-party cookies phase out, your behavior is still tracked
+isReleased: true
+isSequel: false
+lastModDate: 2023-10-09T08:15:00-0401
+firstModDate: 2023-10-09T08:15:00-0401
+minutesToRead: 4
+tags:
+  - 'http'
+  - 'cybersec'
+  - 'cookies'
+---
+
+<C>
+Bounce tracking is a technique widely used by advertisers, marketers, and analytics platforms to track user behavior across different websites and gather detailed data on your online activity. This method involves redirecting your request through one or more intermediary domains before you reach your intended destination. Instead of going directly to a webpage, your request might pass through a server, such as` ads-tracker.com`, where your data is collected (all the time, without your consent). This could include your IP address, browser type, operating system, cookies, session information, and more.
+</C>
+
+<C>
+The main purpose of bounce tracking is to bypass restrictions on third-party cookies. As modern web browsers become more privacy-conscious, they are increasingly restricting the use of third-party cookies, which are going to be dead by the end of 2024. Bounce tracking circumvents this by storing tracking data in first-party cookies on the target websites. First-party cookies are not subject to the same restrictions as third-party cookies which enables advertisers and analytics platforms to continue monitoring user behavior and linking actions across multiple domains, even when the user attempts to block third-party tracking.
+</C>
+<C>
+This method offers significant benefits to marketers by providing them with valuable insights into user behavior, but it raises serious concerns about user privacy. Many users are unaware that their clicks are being silently rerouted through intermediary tracking servers, without their knowledge or consent. This effectively undermines privacy efforts, including using privacy-focused browsers, VPNs, or extensions designed to block tracking. For users who attempt to limit online surveillance, bounce tracking represents a significant challenge because it works behind the scenes to evade detection.
+</C>
+
+<H2>
+How Bounce Tracking Works
+</H2>
+<C>
+When you click a link, the process generally involves these steps:
+<S/>
+**Request** 
+<S/>
+Your request is routed through a tracking server. Instead of directly accessing `https://example.com`, you might first be redirected to `https://ads-tracker.com/ref?id=partner123&target=https://example.com`. 
+The tracker server records your visit, assigns you a unique ID, and stores this data. Here's how it works: 
+<Code
+  code={`GET /ref?id=partner123&target=https://example.com. HTTP/1.1
+Host: affiliate-tracker.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+Cookie: tracking_id=partner123
+`}
+  language="http"
+  showLineNumbers={false}
+/> 
+**Redirect** 
+<S/>
+
+<Code
+  code={`HTTP/1.1 302 Found
+Location: https://store.com/product
+Set-Cookie: affiliate_id=partner123; Path=/; HttpOnly; Secure
+`}
+  language="http"
+  showLineNumbers={false}
+/> 
+The affiliate tracker collects your data, and the destination site may use JavaScript to read the cookie or query parameters for further tracking.
+</C>
+<H2>
+Mitigation Techniques
+</H2>
+<C>
+**Browsers** 
+<S/>
+Modern browsers have implemented several features to combat bounce tracking and strip tracking parameters. For example, Safari's <L href='https://clearcode.cc/blog/intelligent-tracking-prevention-faq/'>Intelligent Tracking Prevention (ITP)</L> limits first-party cookies from trackers to a 24-hour lifespan and automatically blocks tracking scripts and cross-site cookies. Similarly, Firefox's <L href='https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop'>Enhanced Tracking Protection (ETP)</L> detects bounce tracking patterns, prevents redirects, and removes known tracking parameters like `affiliate_id` and `utm_source`. On top of that, Brave Browser's <L href='https://brave.com/privacy-updates/18-de-amp/'>De-AMP</L> feature bypasses intermediary servers, such as those used by Google AMP, and navigates directly to the original content, further limiting tracking capabilities.
+<S/>
+**Extensions** 
+<S/>
+Privacy tools like <L href='https://pclosmag.com/html/Issues/201907/page06.html'>uBlock Origin</L> and <L href='https://privacybadger.org/'>Privacy Badger</L> block tracking servers and scripts. These tools analyze URL query strings and redirection behaviors to prevent tracking.
+</C>
