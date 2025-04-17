@@ -1,61 +1,67 @@
 ---
 category: software
 title: Pitfalls of A/B Testing
-seoTitle:  Pitfalls  A/B tests for complex decisions
+seoTitle: Pitfalls A/B tests for complex decisions
 summary: The overreliance on A/B tests for complex decisions
-isReleased: false
+isReleased: true
 isSequel: false
-lastModDate: 2024-01-22T09:15:00-0401
-firstModDate: 2024-01-22T09:15:00-0401
+lastModDate: 2023-07-22T09:15:00-0401
+firstModDate: 2023-07-22T09:15:00-0401
 minutesToRead: 5
 tags:
   - 'testing'
 ---
 
 <C>
-Sometimes, conclusions are presented as definitive winners, but these conclusions are often based on the best interpretations possible with the available data, data, that is not quite accurately interpreted.
+A/B testing is often hailed as the holy grail of data-driven decision-making. It's that one magical method that promises to provide clear, actionable insights on everything from design tweaks to feature changes. **But here's the problem:** it's not as foolproof as people think. In fact, it can actually be downright misleading.
+</C>
+
+<H2>The Illusion of Clear Winners</H2>
+<C>
+Sometimes, conclusions are presented as definitive winners, but the truth is far murkier. Those "winners" are typically based on the best interpretation of incomplete data, now data that's often misinterpreted. And what's worse, people don't want to admit that the decisions made weren't based on a thorough analysis of metrics, but rather on shallow assumptions crafted to justify a point of view.
 </C>
 
 <C>
-What's missing is the acknowledgment that the final decision wasn't actually based on a logical understanding of the collected metrics, but merely on a shallow assumptions.
+Why? Because the selective use of data often benefits certain individuals who need the results to support their own agenda. When this happens, you're not making decisions based on a comprehensive understanding of user experience, you're making them based on a biased, incomplete picture of it.
+</C>
+
+<H2>What The Hell Are You Talking About?</H2>
+<C>
+Ok hear me out, you've got a product with several complex features, each costly to maintain and resource-heavy. Two stakeholders are at odds, one says remove the features, the other argues for fixing them. So, they decide to settle it with an A/B test. Smart, right? They'll see which way the users lean, based on data.
 </C>
 
 <C>
-The reason behind emphasizing certain data over others can vary greatly, and mostly this selective use of data or let's say misinterpretation of test results can benefit individuals who want to support a particular idea for their [own benefit](), which leads to decisions being made based on incomplete or let's say biased interpretations of the data, rather than a thorough understanding of the metrics and their true implications.
+They start removing features, one at a time, testing each change. **First test:** feature removed, users remain unaffected. **Second test:** no change. **Third test:** same result. They keep going, gradually removing features based on the lack of visible user dissatisfaction.
 </C>
 
-<H2>What Are You Talking About?</H2>
 <C>
- Say there's a product with multiple complex features, each costly to maintain and very resource-intensive. And now, two stakeholders debate the fate of these features, one of them argues for their removal, the other advocates for fixes. To resolve the dispute, they decide to conduct A/B tests to gauge user responses to feature removal. 
- </C>
-
-
-<C>
-They removed one feature and conducted the first test, the user remained unaffected, they did the second one,  the user remained unaffected, they did it the third time, the same result, so they kept going, progressively removing features based on the previous "unaffected user" results. 
+But then… **users start to churn.** Fast. The gradual removal of features has begun to erode the user experience **cumulatively**. Sure, each individual test showed no immediate impact, but the bigger picture is what A/B tests fail to capture. User satisfaction didn't drop in isolation, it happened over time as the product's value dwindled. But this wasn't caught in the tests because those tests only measured the short-term, isolated effects.
 </C>
 
-
+<H2>The Fallacy of "Enough Data"</H2>
 <C>
-Eventually, a noticeable number of users began to leave, and they were leaving fast. The removal of features has impacted user satisfaction **cumulatively**, not just **individually**. The final test indicates increased user attrition, but attributing this solely to the last removed feature overlooks the broader context of user experience erosion over time.
+The main flaw in this approach is the assumption that enough data was collected to make a decisive call. Here's the truth: users might be dissatisfied, but they won't always show it immediately. They'll keep using the service for a while, searching for alternatives to compensate for the missing features. Until one day, they've been forced to adapt so much that they jump ship entirely.
 </C>
 
-
 <C>
-The primary fallacy in such cases is in the assumption that sufficient data was collected to support decisive actions. User dissatisfaction resulting from feature removals can be multifaceted, users may not be satisfied, but they keep using the service anyway, and since they're dissatisfied, they keep looking for other alternatives as a complement to the missing 
-feature(s), until one day, they remove too much, the user has no option but to leave, this behavior will definitely not get picked up with this form of A/B tests. The tests fail to capture the overall user experience trajectory. 
+That behavior is **Not picked up** in an A/B test. Because the test doesn't account for the long-term, **evolving** experience of the user. It doesn't capture how frustration builds up over time. So yeah, A/B testing in this scenario is utterly inadequate.
 </C>
 
+<H2>Where A/B Testing Works (and Where It Doesn't)</H2>
+<C>
+Don't get me wrong: A/B testing has its place. It's great for simple changes, stuff like testing which CTA converts better, or optimizing a landing page layout. But when it comes to evaluating the **overall user experience**, especially around complex feature changes, A/B testing starts to break down. It just can't capture the full picture.
+</C>
 
 <C>
-I mean, don't get me wrong, A/B testing is a valuable tool when applied appropriately, such as comparing sign-up buttons, landing on webpages, UI changes and stuff like that, it has limitations though, in capturing user satisfaction specifically. 
+A/B testing isn't all bad. It's a useful tool, **when used for the right reasons.** But applying it to make complex, high-stakes decisions is like putting a band-aid on a gunshot wound. It can reinforce preconceived notions, but it's unlikely to reveal the nuanced truths of user satisfaction and behavior.
 </C>
 
 <H2>Conclusion</H2>
 <C>
-So caution is therefore advised in relying solely on these tests for complex decisions, it can inadvertently reinforce preconceived notions rather than reflect nuanced realities. It is after all a valuable analytical tool, its application should be tempered with an understanding of its limitations.
+When you're dealing with intricate user experiences, the picture isn't as simple as testing one button against another. The truth is messy, multifaceted, and often not fully captured in a single test.
 </C>
 
 <C>
-Satisfaction and user behavior are intricate and multifaceted phenomena, way beyond the scope of simple A/B tests. It is important to approach testing with humility and awareness of its potential blind spots.
+So, the next time someone suggests you rely solely on A/B testing for complex decisions, hit pause. Approach with caution, and remember that while A/B testing is valuable, it's not the whole picture.
 </C>
 
