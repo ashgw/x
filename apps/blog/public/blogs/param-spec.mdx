@@ -180,3 +180,23 @@ def foo(x: X,bar: Bar,/, *args: bool, **kwargs: str) -> None:
   language="python"
   showLineNumbers={false}
 />
+
+<C>
+Pytest allows us to define <L href="https://docs.pytest.org/en/stable/explanation/fixtures.html">fixtures</L>, which are functions that set up or provide resources for our tests, so we don't keep redundant logic for each test case. In this case we only have one fixture.
+</C>
+
+<C>
+Btw, for Pytest, when dealing with asynchronous test cases, you have to mark them as ``@pytest.mark.asyncio`` and also install an async plugin, for me I'm using <L href="https://pytest-asyncio.readthedocs.io/en/latest/">`pytest-asyncio`</L>.
+</C>
+
+<C>
+Say I have a library called `playground` where the project structure is as follows (I use <L href="https://python-poetry.org/">poetry</L> btw).
+</C>
+
+<C>
+The `foo` module has a class that contains another class which has a method that uses <L href="https://www.python-httpx.org/">`httpx`</L> to request API data <L href="/blog/async-python">asynchronously</L>, this is a dummy example of course but you get the picture, we're trying to test the functionality of an object (function) that's two classes deep.
+</C>
+
+<C>
+But if it's a <L href="https://docs.python.org/3/library/typing.html#annotating-callables">`Callable`</L> that you're mocking that's not exactly a `@property`, then you must provide a function for it, you can use a lambda if the function is simple, or define a normal function and assign it, if it's complex.
+</C>

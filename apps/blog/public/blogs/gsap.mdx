@@ -1,8 +1,8 @@
 ---
 category: software
 title: GSAP
-seoTitle: Using the newly added useGSAP() hook as a drop-in replacement for UseEffect()
-summary: GSAP just added useGSAP() hook for React
+seoTitle: Using the Newly Added useGSAP() Hook as a Drop-in Replacement for useEffect()
+summary: I'll start using GSAP again thanks to the new useGSAP() hook
 isReleased: true
 isSequel: false
 lastModDate: 2024-01-05T09:15:00-0401
@@ -14,17 +14,21 @@ tags:
 ---
 
 <H2>New Hook Just Dropped</H2>
-<C>
-Over the past few years, I've primarily relied on <L href="/framer-motion">Framer Motion</L> for handling my animations, while incorporating <L href="https://gsap.com/">GSAP</L> from time to time, I found it to be somewhat verbose compared to **Framer**, especially in a **React** context.
 
-But, check this out, yesterday **GSAP** introduced the **``useGSAP()``** hook, an addition to easily integrate **GSAP** with **React**. 
-<S/>
-Prior to this, animating elements involved wrapping them in a **``gsap.Context``** object, then, you had to use the same object's methods like **``.revert()``** or **``.kill()``** within **``useEffect()``** or **``useLayoutEffect()``**'s cleanup function to avoid memory leaks, depending if you're within an **SSR** context or not, along with a mandatory dependency array that you have to keep track of. 
-    <S3/>
-    It's just a lot of overhead really to do something silly like
+<C>
+Over the past few years, I’ve mainly stuck with <L href="/framer-motion">Framer Motion</L> for animations. It’s slick, intuitive, and fits right into **React**. Sure, I’ve dabbled with <L href="https://gsap.com/">GSAP</L>, but tbh it felt too verbose, especially in a React environment.
+
+But, hold up. GSAP just dropped something interesting: the **`useGSAP()`** hook. This is a game-changer for integrating GSAP into React.
 </C>
-<TTLMO/>
-<C>You'd need to</C>
+
+<C>
+Let me backtrack a bit. Before this update, animating with GSAP in React was... tedious. You had to wrap your elements in a **`gsap.Context`**, manually handle cleanup using **`useEffect()`** or **`useLayoutEffect()`**, and be extra careful about memory leaks in **SSR** setups. Oh, and don’t forget the dependency array you had to babysit. All that overhead for something as simple as a spinning box? Yeah, no thanks.
+</C>
+
+<C>
+Here’s what the old way looked like:
+</C>
+
 <Code
   code={`import React, { useRef, useEffect, useLayoutEffect } from 'react';
 import gsap from 'gsap';
@@ -77,15 +81,26 @@ const Component: React.FC = () => {
       </div>
     </div>
   );
-};
-`}
+};`}
   language="tsx"
   showLineNumbers={false}
 />
-<C>This new hook abstracts away these inconveniences, and obviates the need for explicit cleanup. 
-   So the same logic above can be written as </C>
+
+<C>
+Not exactly elegant, right? You’re juggling cleanup, context, and a million little details. Enter **`useGSAP()`**, which simplifies all that nonsense.
+</C>
+
+<C>
+Here’s the same animation logic, but using the new hook:
+</C>
+
 <Code
-  code={`
+  code={`import { useRef } from 'react';
+import { useGSAP } from 'gsap-hook';
+import gsap from 'gsap';
+
+const Component: React.FC = () => {
+  const container = useRef<HTMLDivElement>(null);
   useGSAP(
     () => {
       const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
@@ -111,11 +126,29 @@ const Component: React.FC = () => {
         ease: 'power1.inOut',
       });
     },
-    { scope: container}
+    { scope: container }
   );
-`}
+  return (
+    <div>
+      <div
+        ref={container}
+        className="flex flex-col items-center justify-center gap-10"
+      >
+        <div className="x w-10 h-10 bg-red-400 rounded-2xl animate-pulse"></div>
+        <div className="x w-10 h-10 bg-yellow-400 rounded-2xl animate-pulse"></div>
+        <div className="x w-10 h-10 bg-green-500 rounded-2xl animate-pulse"></div>
+      </div>
+    </div>
+  );
+};`}
   language="tsx"
   showLineNumbers={false}
 />
-<C>It looks hella cleaner IMO, I actually like this update, I mean it's not a lot but hey, it gets the job done
-a lot easier so, I might use even more now, and sorry if you thought this is an educational post where I teach you about **GSAP**, nope, I'm just glad they introduced this new hook, that's it.</C>
+
+<C>
+See how much cleaner that looks? No extra context objects, no manual cleanup, no clutter. It’s just the animation logic and a simple hook. This update isn’t massive, but it makes working with GSAP in React way smoother. I might actually use it more now.
+</C>
+
+<C>
+Anyway, if you thought this was going to be an in-depth GSAP tutorial, sorry to disappoint. I’m just hyped they made this update. Sometimes, it’s the small things that make a big difference.
+</C>
