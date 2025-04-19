@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   validate-pr:
-    # need conventional commit validation so that the CHANGELOG is updated properly
+    # conventional commit validation
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/on-workflow-call-pr-validate-title.yml
     secrets: inherit
@@ -80,8 +80,9 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-update-changelog.yml
     secrets: inherit
 
+  # just a trigger to dispatch
   preview-deployment:
-    needs: [update-changelog]
+    needs: [mergeable]
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/on-workflow-call-preview-deployment.yml
     secrets: inherit
