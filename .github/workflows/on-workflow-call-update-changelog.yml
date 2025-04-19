@@ -22,7 +22,7 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%B)
           SHA=$(git rev-parse --short HEAD)
           SUMMARY=$(llm "Summarize this commit in one sentence: $COMMIT_MSG" | tr -d '\n')
-          echo "[$SHA](https://your-site.com/commits/$SHA) -> $SUMMARY" >> CHANGELOG.md
+          echo "[$SHA](https://github.com/ashgw/ashgw.me/commit/$SHA) -> $SUMMARY" >> CHANGELOG.md
 
       - uses: ./.github/actions/pnpm-install
       - name: run Changeset versioning (if manually updated ofc with `pnpm changelog` => needs a human)
