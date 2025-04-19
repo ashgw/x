@@ -1,0 +1,43 @@
+name: CI / update changelog
+
+on:
+  workflow_call:
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+
+      - name: Update Changelog via Codex
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          codex -a auto-edit --quiet "update CHANGELOG.md to include changes from the most recent merge"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "chore: update changelog via Codex [skip ci]"
+          title: "Auto Update Changelog"
+          body: |
+            Automated changelog update via Codex AI after recent merge.
+          branch: auto-changelog-update
+          delete-branch: true
+          labels: |
+            automated
+            changelog
