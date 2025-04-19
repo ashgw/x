@@ -33,7 +33,7 @@ jobs:
           COMMIT_INFO: ${{ steps.commit.outputs.message }}
         run: |
           npm install -g @openai/codex
-          echo "$COMMIT_INFO" | codex -a auto-edit --quiet "create a .changeset/codex-update.md based on this PR summary"
+          codex -a auto-edit --quiet "Create a .changeset/codex-update.md based on this PR summary: $COMMIT_INFO"
 
       - name: Run Changeset version
         run: pnpm changeset version
