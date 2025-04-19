@@ -12,16 +12,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - uses: ./.github/actions/pnpm-install
+
+      - name: Get last commit info
+        id: commit
+        run: |
+          # Get the full commit message with PR description (works best on a PR merge)
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          # Escape newlines and quotes for GitHub Actions
+          COMMIT_MSG="${COMMIT_MSG//'%'/'%25'}"
+          COMMIT_MSG="${COMMIT_MSG//$'\n'/'%0A'}"
+          COMMIT_MSG="${COMMIT_MSG//$'\r'/'%0D'}"
+          echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
       - name: Generate Changeset via Codex
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          COMMIT_INFO: ${{ steps.commit.outputs.message }}
         run: |
           npm install -g @openai/codex
-          codex -a auto-edit --quiet "create a .changeset/codex-update.md file describing recent changes"
+          echo "$COMMIT_INFO" | codex -a auto-edit --quiet "create a .changeset/codex-update.md based on this PR summary"
 
       - name: Run Changeset version
         run: pnpm changeset version
