@@ -73,16 +73,6 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  # post merge jobs start here >>>
-  update-changelog:
-    needs: [mergeable]
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/on-workflow-call-update-changelog.yml
-    secrets: inherit
-    permissions:
-      pull-requests: write
-      contents: write
-
   # just a trigger to dispatch
   preview-deployment:
     needs: [mergeable]
