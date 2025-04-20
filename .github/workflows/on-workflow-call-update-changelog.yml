@@ -36,6 +36,7 @@ jobs:
       - name: Create Pull Request for changelog update
         uses: peter-evans/create-pull-request@4e1beaa7521e8b457b572c090b25bd3db56bf1c5
         with:
+          token: ${{ secrets.GH_PAT }}
           commit-message: "chore: changelog + version bump [skip ci]"
           branch: chore/changelog-update
           title: "chore: update changelog and version bump"
