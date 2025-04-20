@@ -57,3 +57,5 @@ next-env.d.ts
 
 *playground
 *.terraform
+*.tfstate.backup
+*.tfstate*
