@@ -22,6 +22,7 @@ const nonPrefixedVars = {
   SENTRY_PROJECT: z.string(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
+  DATABASE_URL: z.string().min(1).url(),
 } as const;
 
 type NonPrefixedVars = typeof nonPrefixedVars;
@@ -44,6 +45,7 @@ export const env = createEnv({
   disablePrefix: [...NonPrefixedVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    DATABASE_URL: process.env.DATABASE_URL,
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
       process.env.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,
     NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:

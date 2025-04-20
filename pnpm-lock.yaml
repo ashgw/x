@@ -678,6 +678,9 @@ importers:
       '@prisma/client':
         specifier: 6.6.0
         version: 6.6.0(typescript@5.6.3)
+      prisma-markdown:
+        specifier: 2.0.0
+        version: 2.0.0(@prisma/client@6.6.0(typescript@5.6.3))
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -2727,6 +2730,18 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  '@prisma/debug@6.6.0':
+    resolution: {integrity: sha512-DL6n4IKlW5k2LEXzpN60SQ1kP/F6fqaCgU/McgaYsxSf43GZ8lwtmXLke9efS+L1uGmrhtBUP4npV/QKF8s2ZQ==}
+
+  '@prisma/dmmf@6.6.0':
+    resolution: {integrity: sha512-2LoSX0ZVwIiKck5wMCVxeGg9K9z6CULB8xyTbLF3YTvuhOp+fQozelUphaGZA9jN4MF58z6TfUXIMMPVwtxjbQ==}
+
+  '@prisma/generator-helper@6.6.0':
+    resolution: {integrity: sha512-pKxkyb+tCb5vPaMkK6SdHkK5qkQIPDSw1T3BAfl6XWDwDwnP4f5CsJ6/VaBhtvqZ5bqfUQLvT+slaGrJQXiw9g==}
+
+  '@prisma/generator@6.6.0':
+    resolution: {integrity: sha512-UO1PFYd8Qh0LZoN/9wwAukgoDs8chLqGPho7ZBZejVKv1UpaEJvxgwS+LwlmkQ3Ay0GdsL6mjN8QxEi91xIomQ==}
 
   '@prisma/instrumentation@6.5.0':
     resolution: {integrity: sha512-morJDtFRoAp5d/KENEm+K6Y3PQcn5bCvpJ5a9y3V3DNMrNy/ZSn2zulPGj+ld+Xj2UYVoaMJ8DpBX/o6iF6OiA==}
@@ -7432,6 +7447,13 @@ packages:
     resolution: {integrity: sha512-o1piW0n3tgKIKCwk2vpM/vOV13zjJzvP37Ioze54YlTHE06m4tjEbzg9WsKkvTuyYln2DHjo5pY4qrZGI0otpw==}
     engines: {node: '>=18'}
 
+  prisma-markdown@2.0.0:
+    resolution: {integrity: sha512-vI9J5Mp5fJdFq1PkvtcBi1QszY1nAx68Re/2HvKs7/N2CfVKLk+6czeMSwI2VLXeMMWR2EWF1USkGdy2gJMkQA==}
+    hasBin: true
+    peerDependencies:
+      '@prisma/client': '>= 6.0.0'
+      prisma: '>= 6.0.0'
+
   prismjs@1.27.0:
     resolution: {integrity: sha512-t13BGPUlFDR7wRB5kQDG4jjl7XeuH6jbJGt11JHPL96qwsEHNX2+68tFXqc1/k+/jALsbSWJKUOT/hcYAZ5LkA==}
     engines: {node: '>=6'}
@@ -11167,6 +11189,18 @@ snapshots:
   '@prisma/client@6.6.0(typescript@5.6.3)':
     optionalDependencies:
       typescript: 5.6.3
+
+  '@prisma/debug@6.6.0': {}
+
+  '@prisma/dmmf@6.6.0': {}
+
+  '@prisma/generator-helper@6.6.0':
+    dependencies:
+      '@prisma/debug': 6.6.0
+      '@prisma/dmmf': 6.6.0
+      '@prisma/generator': 6.6.0
+
+  '@prisma/generator@6.6.0': {}
 
   '@prisma/instrumentation@6.5.0(@opentelemetry/api@1.9.0)':
     dependencies:
@@ -16664,6 +16698,11 @@ snapshots:
   pretty-ms@9.1.0:
     dependencies:
       parse-ms: 4.0.0
+
+  prisma-markdown@2.0.0(@prisma/client@6.6.0(typescript@5.6.3)):
+    dependencies:
+      '@prisma/client': 6.6.0(typescript@5.6.3)
+      '@prisma/generator-helper': 6.6.0
 
   prismjs@1.27.0: {}
 
