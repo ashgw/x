@@ -1,6 +1,7 @@
-provider "aws" {
-  region = var.aws_region
-}
+# no need for this anymores
+# provider "aws" {
+#   region = var.aws_region
+# }
 
 # no need for this anymore
 # module "public_content" {
