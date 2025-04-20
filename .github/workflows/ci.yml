@@ -98,18 +98,18 @@ jobs:
     secrets: inherit
 
   # same here
-  production-deployemnt:
+  production-deployment:
     if: github.ref == 'refs/heads/main'
     needs: [mergeable]
     uses: ./.github/workflows/on-workflow-call-production-deployment.yml
     secrets: inherit
 
-  www-production-deployemnt:
-    needs: [production-deployemnt]
+  www-production-deployment:
+    needs: [production-deployment]
     uses: ./.github/workflows/on-workflow-call-www-production-deployment.yml
     secrets: inherit
 
-  blog-production-deployemnt:
-    needs: [production-deployemnt]
+  blog-production-deployment:
+    needs: [production-deployment]
     uses: ./.github/workflows/on-workflow-call-blog-production-deployment.yml
     secrets: inherit

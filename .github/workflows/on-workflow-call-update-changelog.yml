@@ -21,8 +21,10 @@ jobs:
           pip install llm 
           COMMIT_MSG=$(git log -1 --pretty=%B)
           SHA=$(git rev-parse --short HEAD)
-          SUMMARY=$(llm "Summarize this commit in one sentence: $COMMIT_MSG" | tr -d '\n')
-          echo "[$SHA](https://github.com/ashgw/ashgw.me/commit/$SHA) -> $SUMMARY" >> CHANGELOG.md
+          OWNER=$(echo "${{ github.repository }}" | cut -d'/' -f1)
+          REPO=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          SUMMARY=$(llm "Summarize this commit in one sentence (do not syat his commit does.. just directly say it): $COMMIT_MSG" | tr -d '\n')
+          echo "[$SHA](https://github.com/$OWNER/$REPO/commit/$SHA) -> $SUMMARY" >> CHANGELOG.md
 
       - uses: ./.github/actions/pnpm-install
       - name: run Changeset versioning (if manually updated ofc with `pnpm changelog` => needs a human)
