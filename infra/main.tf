@@ -38,21 +38,21 @@ resource "neon_database" "prod_db" {
   project_id = neon_project.main.id
   branch_id  = neon_project.main.default_branch_id
   name       = "prod_db"
-  owner_name = var.db_owner
+  owner_name = neon_project.main.database_user
 }
 
 resource "neon_database" "dev_db" {
   project_id = neon_project.main.id
   branch_id  = neon_branch.development.id
   name       = "dev_db"
-  owner_name = var.db_owner
+  owner_name = neon_project.main.database_user
 }
 
 resource "neon_database" "preview_db" {
   project_id = neon_project.main.id
   branch_id  = neon_branch.preview.id
   name       = "preview_db"
-  owner_name = var.db_owner
+  owner_name = neon_project.main.database_user
 }
 
 # Output connection details
@@ -70,5 +70,15 @@ output "development_branch_id" {
 
 output "preview_branch_id" {
   value = neon_branch.preview.id
+}
+
+# Output the connection details
+output "database_user" {
+  value = neon_project.main.database_user
+}
+
+output "connection_uri" {
+  value     = neon_project.main.connection_uri
+  sensitive = true
 }
 
