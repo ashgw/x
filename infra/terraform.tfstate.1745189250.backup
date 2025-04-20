@@ -1,10 +1,47 @@
 {
   "version": 4,
   "terraform_version": "1.3.0",
-  "serial": 57,
+  "serial": 56,
   "lineage": "842ab499-3270-37e7-9cdf-aefcb1290e6f",
   "outputs": {},
   "resources": [
+    {
+      "module": "module.ecr",
+      "mode": "managed",
+      "type": "aws_ecr_repository",
+      "name": "ecr",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecr:us-east-2:032507467607:repository/ashgw-rg/main-site",
+            "encryption_configuration": [
+              {
+                "encryption_type": "AES256",
+                "kms_key": ""
+              }
+            ],
+            "force_delete": true,
+            "id": "ashgw-rg/main-site",
+            "image_scanning_configuration": [
+              {
+                "scan_on_push": true
+              }
+            ],
+            "image_tag_mutability": "MUTABLE",
+            "name": "ashgw-rg/main-site",
+            "registry_id": "032507467607",
+            "repository_url": "032507467607.dkr.ecr.us-east-2.amazonaws.com/ashgw-rg/main-site",
+            "tags": {},
+            "tags_all": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxMjAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
     {
       "module": "module.public_content",
       "mode": "managed",
