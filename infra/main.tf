@@ -33,6 +33,19 @@ resource "neon_branch" "preview" {
   parent_id  = neon_project.main.default_branch_id
 }
 
+# Create endpoints for each branch
+resource "neon_endpoint" "development" {
+  project_id = neon_project.main.id
+  branch_id  = neon_branch.development.id
+  type       = "read_write"
+}
+
+resource "neon_endpoint" "preview" {
+  project_id = neon_project.main.id
+  branch_id  = neon_branch.preview.id
+  type       = "read_write"
+}
+
 # Create databases for each branch
 resource "neon_database" "prod_db" {
   project_id = neon_project.main.id
@@ -46,6 +59,8 @@ resource "neon_database" "dev_db" {
   branch_id  = neon_branch.development.id
   name       = "dev_db"
   owner_name = neon_project.main.database_user
+
+  depends_on = [neon_endpoint.development]
 }
 
 resource "neon_database" "preview_db" {
@@ -53,6 +68,8 @@ resource "neon_database" "preview_db" {
   branch_id  = neon_branch.preview.id
   name       = "preview_db"
   owner_name = neon_project.main.database_user
+
+  depends_on = [neon_endpoint.preview]
 }
 
 # Output connection details
