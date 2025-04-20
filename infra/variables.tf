@@ -15,3 +15,9 @@ variable "project_name" {
   type        = string
   default     = "ashgw-project"
 }
+
+variable "db_owner" {
+  description = "Database owner name"
+  type        = string
+  default     = "ashgw"
+}

@@ -43,33 +43,37 @@ resource "neon_database" "prod_db" {
   project_id = neon_project.main.id
   branch_id  = neon_branch.production.id
   name       = "prod_db"
+  owner_name = var.db_owner
 }
 
 resource "neon_database" "dev_db" {
   project_id = neon_project.main.id
   branch_id  = neon_branch.development.id
   name       = "dev_db"
+  owner_name = var.db_owner
 }
 
 resource "neon_database" "preview_db" {
   project_id = neon_project.main.id
   branch_id  = neon_branch.preview.id
   name       = "preview_db"
+  owner_name = var.db_owner
 }
 
-# Output connection strings
-output "production_connection_string" {
-  value     = neon_branch.production.database_connection_string
-  sensitive = true
+# Output connection details
+output "project_id" {
+  value = neon_project.main.id
 }
 
-output "development_connection_string" {
-  value     = neon_branch.development.database_connection_string
-  sensitive = true
+output "production_branch_id" {
+  value = neon_branch.production.id
 }
 
-output "preview_connection_string" {
-  value     = neon_branch.preview.database_connection_string
-  sensitive = true
+output "development_branch_id" {
+  value = neon_branch.development.id
+}
+
+output "preview_branch_id" {
+  value = neon_branch.preview.id
 }
 
