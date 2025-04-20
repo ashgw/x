@@ -13,35 +13,30 @@
 #   source = "./container-registry"
 # }
 
+# Create the main project
 resource "neon_project" "main" {
   name = var.project_name
   region_id = "aws-us-east-2"
-}
-
-# Production branch (main)
-resource "neon_branch" "production" {
-  project_id = neon_project.main.id
-  name       = "main"
 }
 
 # Development branch
 resource "neon_branch" "development" {
   project_id = neon_project.main.id
   name       = "dev"
-  parent_id  = neon_branch.production.id
+  parent_id  = neon_project.main.default_branch_id
 }
 
-# Preview branch template (can be cloned for PR previews)
+# Preview branch template
 resource "neon_branch" "preview" {
   project_id = neon_project.main.id
   name       = "preview"
-  parent_id  = neon_branch.production.id
+  parent_id  = neon_project.main.default_branch_id
 }
 
 # Create databases for each branch
 resource "neon_database" "prod_db" {
   project_id = neon_project.main.id
-  branch_id  = neon_branch.production.id
+  branch_id  = neon_project.main.default_branch_id
   name       = "prod_db"
   owner_name = var.db_owner
 }
@@ -66,7 +61,7 @@ output "project_id" {
 }
 
 output "production_branch_id" {
-  value = neon_branch.production.id
+  value = neon_project.main.default_branch_id
 }
 
 output "development_branch_id" {
