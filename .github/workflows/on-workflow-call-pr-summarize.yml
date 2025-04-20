@@ -1,4 +1,4 @@
-name: PR
+name: PR / summarizer
 
 on:
   workflow_call:
