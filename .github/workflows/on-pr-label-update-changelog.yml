@@ -19,10 +19,8 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0 # need full history to write back to PR branch
-
       - name: Install deps
         uses: ./.github/actions/pnpm-install
-
       - name: Generate short summary via LLM and append to global changelog
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
