@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
+    "@prisma/client": "6.6.0",
     "zod": "catalog:"
   },
   "devDependencies": {
