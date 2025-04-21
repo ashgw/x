@@ -7,12 +7,26 @@ import ws from "ws";
 
 import { env } from "@ashgw/env";
 
-import { PrismaClient } from "./generated/client";
+import { PrismaClient as FullPrismaClient } from "./generated/client";
+
+export type DatabaseClient = Omit<
+  FullPrismaClient,
+  | "$connect"
+  | "$disconnect"
+  | "$on"
+  | "$transaction"
+  | "$use"
+  | "$extends"
+  | "$executeRaw"
+  | "$executeRawUnsafe"
+  | "$queryRaw"
+  | "$queryRawUnsafe"
+>;
 
 // This creates a custom property on global (actually globalThis) to store a cached Prisma instance in dev mode.
 // This is required because otherwise, every reload (in next dev, tsx, etc.) creates a new Prisma connection
 const globalForPrisma = global as unknown as {
-  prisma: MaybeUndefined<PrismaClient>;
+  prisma: MaybeUndefined<DatabaseClient>;
 };
 
 neonConfig.webSocketConstructor = ws;
@@ -27,7 +41,7 @@ const adapter = new PrismaNeon(pool);
 // otherwise instantiate a new one. Clean and connection-safe.
 export const db =
   globalForPrisma.prisma ??
-  new PrismaClient({
+  new FullPrismaClient({
     adapter,
     errorFormat: "pretty",
     log:
@@ -39,11 +53,9 @@ export const db =
       timeout: 10000,
       isolationLevel: "ReadCommitted",
     },
-  });
+  }) satisfies DatabaseClient;
 
 // In dev only, we cache this Prisma instance globally to prevent connection overflow.
 if (env.NODE_ENV === "development") {
   globalForPrisma.prisma = db;
 }
-
-export * from "./generated/client";

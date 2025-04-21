@@ -1,13 +1,13 @@
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { NextRequest, NextResponse } from "next/server";
 
-import type { PrismaClient } from "@ashgw/db";
+import type { DatabaseClient } from "@ashgw/db";
 
 export function createTRPCContext(opts: {
   req: NextRequest;
   res: NextResponse;
   trpcInfo: FetchCreateContextFnOptions["info"];
-  db: PrismaClient;
+  db: DatabaseClient;
 }) {
   return {
     req: opts.req,

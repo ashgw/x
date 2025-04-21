@@ -6,6 +6,8 @@ import { logger, sentry } from "@ashgw/observability";
 import { appRouter } from "~/server/router";
 import { trpcUri } from "~/trpc/client";
 import { createTRPCContext } from "~/trpc/context";
+import { db } from "@ashgw/db";
+
 
 const handler = (req: NextRequest, res: NextResponse) =>
   fetchRequestHandler({
@@ -31,6 +33,7 @@ const handler = (req: NextRequest, res: NextResponse) =>
         res,
         req,
         trpcInfo: trpcRequestInfo,
+        db,
       }),
   });
 
