@@ -2,9 +2,6 @@
   "name": "@ashgw/blog",
   "version": "1.0.1",
   "private": true,
-  "engines": {
-    "node": "20.x"
-  },
   "scripts": {
     "build": "next build",
     "build:vercel-preview": "vercel build --yes",
@@ -80,7 +77,7 @@
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@playwright/test": "catalog:",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "catalog:",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/eslint": "^8.56.1",
     "@types/mdx": "^2.0.10",
@@ -100,6 +97,9 @@
     "typescript": "catalog:",
     "vitest": "catalog:",
     "webpack": "^5.96.1"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "keywords": [],
   "license": "ISC",
