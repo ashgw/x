@@ -1,11 +1,7 @@
-provider "aws" {
-  region = var.region
-}
-
 module "blog_storage" {
   source = "./modules/storage"
   
-  environment      = var.environment  # This is used as the current environment
+  environment      = var.environment
   project_name     = var.project_name
   region           = var.region
   allowed_origins  = var.allowed_origins

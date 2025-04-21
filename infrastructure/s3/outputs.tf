@@ -1,27 +1,27 @@
 output "bucket_name" {
+  description = "The name of the S3 bucket"
   value       = module.blog_storage.bucket_name
-  description = "Name of the created S3 bucket"
 }
 
 output "cloudfront_domain_name" {
+  description = "The domain name of the CloudFront distribution"
   value       = module.blog_storage.cloudfront_domain_name
-  description = "Domain name of the CloudFront distribution"
 }
 
 output "iam_user_name" {
+  description = "The name of the IAM user with access to the bucket"
   value       = module.blog_storage.iam_user_name
-  description = "Name of the IAM user with bucket access"
 }
 
 output "access_key_id" {
+  description = "The access key ID for the IAM user"
   value       = module.blog_storage.access_key_id
-  description = "Access key ID for the IAM user"
-  sensitive   = true
+  sensitive   = false
 }
 
 output "access_key_secret" {
+  description = "The secret access key for the IAM user"
   value       = module.blog_storage.access_key_secret
-  description = "Secret access key for the IAM user"
   sensitive   = true
 }
 
