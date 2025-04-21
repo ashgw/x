@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "format": "prettier . --write",
+    "format": "prettier . --write && format:schema",
     "lint": "tsc --noEmit; eslint .",
     "generate": "prisma generate",
     "format:schema": "prisma format",
