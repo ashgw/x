@@ -1,6 +1,5 @@
 import { initTRPC } from "@trpc/server";
 import { ZodError } from "zod";
-import { CustomTRPCError } from "./error";
 import type { TrpcContext } from "./context";
 import { transformer } from "./transformer";
 
@@ -25,22 +24,8 @@ export const publicProcedure = t.procedure;
 export const middleware = t.middleware;
 
 // extract this somewhere else if implemented
-async function isAuthenticated(input: { ctx: TrpcContext }) {
+ function isAuthenticated(input: { ctx: TrpcContext }) {
   const { ctx } = input;
-  const user  = await ctx.db.user.findFirst({
-    where: {
-      email: 'ash@ashgw.com'
-    }
-    , include: {
-      permissions: true
-    }
-  })
-  if (!!user){
-    throw new CustomTRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'You are not authorized to access this resource'
-    })
-  }
   return ctx;
 }
 
@@ -52,7 +37,7 @@ function isAuthorized(input: { ctx: TrpcContext }) {
 
 const authMiddleware = middleware(async (opts) => {
   const { ctx } = opts;
-  await isAuthenticated({ ctx });
+  isAuthenticated({ ctx });
   isAuthorized({ ctx });
   return opts.next({
     ctx: {
