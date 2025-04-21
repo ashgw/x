@@ -32,8 +32,8 @@
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "@types/ws": "8.18.1",
-    "prisma": "6.4.1",
+    "@types/ws": "^8.18.1",
+    "prisma": "^6.4.1",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
