@@ -35,7 +35,7 @@ model User {
 model UserPermission {
   id            String           @id @default(cuid())
   user          User             @relation(fields: [userId], references: [id])
-  userId        String
+  userId        String           @db.VarChar(255)
   action        ActionType
   resource      ResourceType
 
