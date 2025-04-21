@@ -703,6 +703,9 @@ importers:
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@types/node':
+        specifier: 22.14.1
+        version: 22.14.1
       '@types/ws':
         specifier: 8.18.1
         version: 8.18.1
