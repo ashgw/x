@@ -1,10 +1,10 @@
 # S3 Setup
 
-This Terraform module sets up a private S3 bucket infrastructure for ashgw.me blog content with CloudFront distribution.
+This Terraform module sets up a private S3 bucket infrastructure my blog content with CloudFront distribution.
 
-The setup creates a single S3 bucket with three folders (image/, audio/, and mdx/) to store different types of content.
+The creates a single S3 bucket with three folders (image/, audio/, and mdx/) to store different types of content for each dev environment, dev, prod & preview.
 
-Access to the bucket is strictly controlled through a dedicated IAM user (which is me) with limited permissions specific to this bucket only => if credentials are compromised, other AWS resources remain unaffected.
+Access to the bucket is strictly controlled through a dedicated IAM user (which is me) with limited permissions specific to this bucket only.
 
 The S3 bucket itself blocks all public access and serves content exclusively through CloudFront for improved performance, security, and global availability.
 
