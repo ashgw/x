@@ -16,11 +16,13 @@
     "@prisma/client": "6.6.0",
     "prisma-markdown": "2.0.0",
     "server-only": "0.0.1",
+    "ws": "8.18.1",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
+    "@types/ws": "8.18.1",
     "prisma": "6.6.0",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
