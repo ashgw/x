@@ -9,7 +9,6 @@ export default mergeConfig(
   defineProject({
     test: {
       globals: true,
-      exclude: ["**/e2e/**", "**/node_modules/@tailwindcss/typography/**"],
       deps: {
         inline: [/server-only/],
       },
