@@ -30,6 +30,7 @@ resource "neon_endpoint" "preview" {
   type       = "read_write"
 }
 
+
 # Create databases for each branch
 resource "neon_database" "prod_db" {
   project_id = neon_project.main.id
