@@ -1,32 +1,36 @@
 # Multi-environment outputs only
-output "bucket_ids" {
-  description = "Map of environment to bucket ID"
-  value       = { for env, bucket in module.s3_bucket : env => bucket.bucket_name }
+output "bucket_names" {
+  description = "Map of environment to bucket name"
+  value = {
+    dev     = aws_s3_bucket.dev_bucket.bucket
+    preview = aws_s3_bucket.preview_bucket.bucket
+    prod    = aws_s3_bucket.prod_bucket.bucket
+  }
 }
 
 output "bucket_arns" {
   description = "Map of environment to bucket ARN"
-  value       = { for env, bucket in module.s3_bucket : env => bucket.bucket_arn }
+  value = {
+    dev     = aws_s3_bucket.dev_bucket.arn
+    preview = aws_s3_bucket.preview_bucket.arn
+    prod    = aws_s3_bucket.prod_bucket.arn
+  }
 }
 
 output "bucket_domain_names" {
   description = "Map of environment to bucket domain name"
-  value       = { for env, bucket in module.s3_bucket : env => bucket.cloudfront_domain_name }
+  value = {
+    dev     = aws_s3_bucket.dev_bucket.bucket_domain_name
+    preview = aws_s3_bucket.preview_bucket.bucket_domain_name
+    prod    = aws_s3_bucket.prod_bucket.bucket_domain_name
+  }
 }
 
-output "iam_user_names" {
-  description = "Map of environment to IAM user name"
-  value       = { for env, bucket in module.s3_bucket : env => bucket.iam_user_name }
+output "role_arns" {
+  description = "ARNs of the IAM roles"
+  value = {
+    dev     = aws_iam_role.dev_role.arn
+    preview = aws_iam_role.preview_role.arn
+    prod    = aws_iam_role.prod_role.arn
+  }
 }
-
-output "access_key_ids" {
-  description = "Map of environment to access key ID"
-  value       = { for env, bucket in module.s3_bucket : env => bucket.access_key_id }
-  sensitive   = false
-}
-
-output "access_key_secrets" {
-  description = "Map of environment to access key secret"
-  value       = { for env, bucket in module.s3_bucket : env => bucket.access_key_secret }
-  sensitive   = true
-} 

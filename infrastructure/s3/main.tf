@@ -1,11 +1,135 @@
-# Create buckets for all environments at once
-module "s3_bucket" {
-  for_each = toset(var.environments)
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
+  }
+}
+
+# Random IDs for bucket name obfuscation
+resource "random_id" "bucket_suffix" {
+  for_each = var.environment_configs
   
-  source = "./modules/storage"
+  byte_length = each.value.random_suffix_length / 2 # Because each byte becomes 2 hex chars
+}
+
+# S3 Buckets - development (with less protection)
+resource "aws_s3_bucket" "dev_bucket" {
+  # Obfuscated bucket name: project-name-env-randomsuffix
+  bucket = "${var.project_name}-dev-${random_id.bucket_suffix["dev"].hex}"
   
-  environment      = each.key
-  project_name     = var.project_name
-  region           = var.region
-  allowed_origins  = var.allowed_origins
+  force_destroy = true
+  
+  tags = {
+    Name        = "${var.project_name}-dev"
+    Environment = "dev"
+  }
+}
+
+# S3 Buckets - preview (with medium protection)
+resource "aws_s3_bucket" "preview_bucket" {
+  # Obfuscated bucket name: project-name-env-randomsuffix
+  bucket = "${var.project_name}-preview-${random_id.bucket_suffix["preview"].hex}"
+  
+  force_destroy = false
+  
+  tags = {
+    Name        = "${var.project_name}-preview"
+    Environment = "preview"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+# S3 Buckets - production (with maximum protection)
+resource "aws_s3_bucket" "prod_bucket" {
+  # Obfuscated bucket name: project-name-env-randomsuffix
+  bucket = "${var.project_name}-prod-${random_id.bucket_suffix["prod"].hex}"
+  
+  force_destroy = false
+  
+  tags = {
+    Name        = "${var.project_name}-prod"
+    Environment = "prod"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+# Bucket versioning
+resource "aws_s3_bucket_versioning" "dev_bucket_versioning" {
+  bucket = aws_s3_bucket.dev_bucket.id
+  versioning_configuration {
+    status = "Suspended"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "preview_bucket_versioning" {
+  bucket = aws_s3_bucket.preview_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "prod_bucket_versioning" {
+  bucket = aws_s3_bucket.prod_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# CORS configuration
+resource "aws_s3_bucket_cors_configuration" "dev_cors_config" {
+  bucket = aws_s3_bucket.dev_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT", "POST", "DELETE", "HEAD"]
+    allowed_origins = var.allowed_origins
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "preview_cors_config" {
+  bucket = aws_s3_bucket.preview_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT", "POST", "DELETE", "HEAD"]
+    allowed_origins = var.allowed_origins
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "prod_cors_config" {
+  bucket = aws_s3_bucket.prod_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT", "POST", "DELETE", "HEAD"]
+    allowed_origins = var.allowed_origins
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
+# Production bucket-specific configurations
+resource "aws_s3_bucket_public_access_block" "prod_bucket_public_access_block" {
+  bucket = aws_s3_bucket.prod_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
