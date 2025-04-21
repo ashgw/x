@@ -13,9 +13,31 @@ datasource db {
   relationMode = "prisma"
 }
 
-// This is a stub model.
-// Delete it and add your own Prisma models.
-model Page {
-  id   Int    @id @default(autoincrement())
-  name String
+enum Category {
+  SOFTWARE
+  HEALTH
+  PHILOSOPHY
 }
+
+
+model MdxContent {
+  id            String    @id @default(cuid()) 
+  name          String    @unique @db.VarChar(255) // this will be used in the URL 
+  body          String    @db.Text   // just raw MDX content          
+}
+
+model Post {
+  slug          String    @id @db.VarChar(255) // as in the unqiue identifier for the post URL
+  title         String    @db.VarChar(200)  // this will be used in the title & preview card
+  seoTitle      String    @db.VarChar(300)  // this will be used in the SEO title, can be the same as summary if it makes sense
+  summary       String    @db.VarChar(300)      
+  firstModDate  DateTime  @db.Timestamp(3)     
+  lastModDate   DateTime  @updatedAt @db.Timestamp(3)
+  isReleased    Boolean
+  isSequel      Boolean
+  minutesToRead Int       @db.SmallInt         
+  tags          String[]                      
+  category      Category                       
+  body          String    @db.Text             
+}
+
