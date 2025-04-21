@@ -18,7 +18,7 @@ resource "random_id" "bucket_suffix" {
   byte_length = each.value.random_suffix_length / 2 # Because each byte becomes 2 hex chars
 }
 
-# S3 Buckets - development (with less protection)
+# S3 Buckets - development
 resource "aws_s3_bucket" "dev_bucket" {
   # Obfuscated bucket name: project-name-env-randomsuffix
   bucket = "${var.project_name}-dev-${random_id.bucket_suffix["dev"].hex}"
@@ -29,40 +29,35 @@ resource "aws_s3_bucket" "dev_bucket" {
     Name        = "${var.project_name}-dev"
     Environment = "dev"
   }
+  # No prevent_destroy for testing
 }
 
-# S3 Buckets - preview (with medium protection)
+# S3 Buckets - preview
 resource "aws_s3_bucket" "preview_bucket" {
   # Obfuscated bucket name: project-name-env-randomsuffix
   bucket = "${var.project_name}-preview-${random_id.bucket_suffix["preview"].hex}"
   
-  force_destroy = false
+  force_destroy = true
   
   tags = {
     Name        = "${var.project_name}-preview"
     Environment = "preview"
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
+  # No prevent_destroy for testing
 }
 
-# S3 Buckets - production (with maximum protection)
+# S3 Buckets - production
 resource "aws_s3_bucket" "prod_bucket" {
   # Obfuscated bucket name: project-name-env-randomsuffix
   bucket = "${var.project_name}-prod-${random_id.bucket_suffix["prod"].hex}"
   
-  force_destroy = false
+  force_destroy = true
   
   tags = {
     Name        = "${var.project_name}-prod"
     Environment = "prod"
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
+  # No prevent_destroy for testing
 }
 
 # Bucket versioning
