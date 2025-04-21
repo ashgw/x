@@ -7,7 +7,7 @@ export function createTRPCContext(opts: {
   req: NextRequest;
   res: NextResponse;
   trpcInfo: FetchCreateContextFnOptions["info"];
-  db: Awaited<DatabaseClient>;
+  db: DatabaseClient;
 }) {
   return {
     req: opts.req,
