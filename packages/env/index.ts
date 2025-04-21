@@ -10,12 +10,13 @@ config({
     __dirname,
     process.env.NODE_ENV === "production"
       ? "../../.env.production"
-      : "../../.env.development",
+      : "../../.env.development", // preview is already handled by vercel
   ),
 });
 
 const isBrowser = typeof window !== "undefined";
 
+// A.K.A serverside vars
 const nonPrefixedVars = {
   NODE_ENV: z.enum(["production", "development", "preview", "test"]),
   SENTRY_ORG: z.string(),
@@ -23,6 +24,11 @@ const nonPrefixedVars = {
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
   DATABASE_URL: z.string().min(1).url(),
+  S3_BUCKET_NAME: z.string().min(1),
+  S3_BUCKET_REGION: z.string().min(1),
+  S3_BUCKET_ACCESS_KEY_ID: z.string().min(1),
+  S3_BUCKET_SECRET_KEY: z.string().min(1),
+  S3_BUCKET_URL: z.string().url(),
 } as const;
 
 type NonPrefixedVars = typeof nonPrefixedVars;
@@ -45,6 +51,11 @@ export const env = createEnv({
   disablePrefix: [...NonPrefixedVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
+    S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
+    S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
+    S3_BUCKET_SECRET_KEY: process.env.S3_BUCKET_SECRET_KEY,
+    S3_BUCKET_URL: process.env.S3_BUCKET_URL,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
