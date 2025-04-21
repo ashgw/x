@@ -10,7 +10,7 @@
     "studio": "prisma studio",
     "pull": "prisma db pull",
     "push": "prisma db push",
-    "migrate": "prisma migrate dev",
+    "migrate:dev": "prisma migrate dev",
     "migrate:reset": "prisma migrate reset",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:status": "prisma migrate status",
