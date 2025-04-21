@@ -71,6 +71,7 @@ enum UploadType {
   IMAGE
   AUDIO
   MDX
+  OTHER // not specific to the post
 }
 
 // using using s3 buckets rn
