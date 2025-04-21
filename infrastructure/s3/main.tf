@@ -51,13 +51,13 @@ resource "aws_s3_bucket" "prod_bucket" {
   # Obfuscated bucket name: project-name-env-randomsuffix
   bucket = "${var.project_name}-prod-${random_id.bucket_suffix["prod"].hex}"
   
+  // TODO: remove this after testing !IMPORTANT
   force_destroy = true
   
   tags = {
     Name        = "${var.project_name}-prod"
     Environment = "prod"
   }
-  # No prevent_destroy for testing
 }
 
 # Bucket versioning
