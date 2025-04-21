@@ -30,7 +30,15 @@ export const db =
   new PrismaClient({
     adapter,
     errorFormat: "pretty",
-    log: ["query", "info", "warn", "error"],
+    log:
+      env.NODE_ENV === "development"
+        ? ["query", "info", "warn", "error"]
+        : ["error"],
+    transactionOptions: {
+      maxWait: 4000,
+      timeout: 10000,
+      isolationLevel: "ReadCommitted",
+    },
   });
 
 // In dev only, we cache this Prisma instance globally to prevent connection overflow.
