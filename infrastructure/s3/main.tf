@@ -1,13 +1,26 @@
-module "s3_bucket" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.5.0"
+provider "aws" {
+  region = var.region
+}
 
-  bucket = var.project_name
-  acl    = "private"
+module "blog_storage" {
+  source = "./modules/storage"
+  
+  environment      = var.environment  # This is used as the current environment
+  project_name     = var.project_name
+  region           = var.region
+  allowed_origins  = var.allowed_origins
+}
 
-  cors_rule = [{
-    allowed_headers = ["*"]
-    allowed_methods = ["GET", "PUT", "POST", "DELETE", "HEAD"]
-    allowed_origins = var.allowed_origins
-  }]
-} 
+# If you want to create all environments at once, uncomment this:
+/*
+module "multi_environment_storage" {
+  for_each = toset(var.environments)
+  
+  source = "./modules/storage"
+  
+  environment      = each.key
+  project_name     = var.project_name
+  region           = var.region
+  allowed_origins  = var.allowed_origins
+}
+*/ 
