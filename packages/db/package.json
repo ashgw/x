@@ -12,8 +12,8 @@
   "dependencies": {
     "@ashgw/env": "workspace:*",
     "@neondatabase/serverless": "1.0.0",
-    "@prisma/adapter-neon": "6.6.0",
-    "@prisma/client": "6.6.0",
+    "@prisma/adapter-neon": "6.4.1",
+    "@prisma/client": "6.4.1",
     "prisma-markdown": "2.0.0",
     "server-only": "0.0.1",
     "ws": "8.18.1",
@@ -22,9 +22,8 @@
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "@types/node": "22.14.1",
     "@types/ws": "8.18.1",
-    "prisma": "6.6.0",
+    "prisma": "6.4.1",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
