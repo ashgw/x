@@ -1,19 +1,3 @@
-# no need for this anymores
-# provider "aws" {
-#   region = var.aws_region
-# }
-
-# no need for this anymore
-# module "public_content" {
-#   source = "./content/public"
-# }
-
-# # this is gone not used anymore, can delete dawg
-# module "ecr" {
-#   source = "./container-registry"
-# }
-
-# Create the main project
 resource "neon_project" "main" {
   name = var.project_name
   region_id = "aws-us-east-2"

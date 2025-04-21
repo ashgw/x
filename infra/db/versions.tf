@@ -1,10 +1,5 @@
 terraform {
   required_providers {
-    # no need anymore 
-    # aws = {
-    #   source  = "hashicorp/aws"
-    #   version = "~> 4.0"
-    # }
     neon = {
       source = "kislerdm/neon"
       version = "~> 0.2"
