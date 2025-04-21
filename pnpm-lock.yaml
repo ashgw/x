@@ -148,6 +148,9 @@ importers:
       '@ashgw/css':
         specifier: workspace:*
         version: link:../../assets/packaged/css
+      '@ashgw/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@ashgw/env':
         specifier: workspace:*
         version: link:../../packages/env
