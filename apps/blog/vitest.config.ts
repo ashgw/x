@@ -10,6 +10,12 @@ export default mergeConfig(
     test: {
       globals: true,
       exclude: ["**/e2e/**", "**/node_modules/@tailwindcss/typography/**"],
+      deps: {
+        inline: [/server-only/],
+      },
+      mockReset: false,
+      environment: "node",
+      setupFiles: ["./test/setup.ts"],
     },
     resolve: {
       alias: {
