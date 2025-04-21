@@ -19,17 +19,6 @@ enum Category {
   PHILOSOPHY
 }
 
-
-model PostBodyContent {
-  id            String    @id @default(cuid()) 
-  name          String    @unique @db.VarChar(255) // this will be used in the URL 
-  s3Key         String    @db.VarChar(512)   // S3 object key where content is stored
-  contentType   String    @db.VarChar(50)    // MIME type of the content
-  size          Int       // file size in bytes
-  uploadedAt    DateTime  @default(now())
-  lastModified  DateTime  @updatedAt
-}
-
 model Post {
   slug          String    @id @db.VarChar(255) // as in the unqiue identifier for the post URL
   title         String    @db.VarChar(200)  // this will be used in the title & preview card
@@ -47,6 +36,15 @@ model Post {
   category      Category                       
 }
 
+model PostBodyContent {
+  id            String    @id @default(cuid()) 
+  name          String    @unique @db.VarChar(255) // this will be used in the URL 
+  s3Key         String    @db.VarChar(512)   // S3 object key where content is stored
+  contentType   String    @db.VarChar(50)    // MIME type of the content
+  size          Int       // file size in bytes
+  uploadedAt    DateTime  @default(now())
+  lastModified  DateTime  @updatedAt
+}
 
 model Upload {
   id           String   @id @default(cuid())
