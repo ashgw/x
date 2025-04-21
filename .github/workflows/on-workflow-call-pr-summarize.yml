@@ -21,7 +21,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_API_MODEL: "gpt-4o-mini"
+          OPENAI_API_MODEL: "gpt-3.5-turbo"
           exclude: "*.lock,dist/**,*.min.js,*.map"
           max_files: "100"
           owner: "author"
