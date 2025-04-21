@@ -23,7 +23,7 @@
     "@ashgw/env": "workspace:*",
     "@neondatabase/serverless": "1.0.0",
     "@prisma/adapter-neon": "6.4.1",
-    "@prisma/client": "6.4.1",
+    "@prisma/client": "catalog:prisma6",
     "prisma-markdown": "2.0.0",
     "server-only": "0.0.1",
     "ws": "8.18.1",
@@ -33,7 +33,7 @@
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@types/ws": "^8.18.1",
-    "prisma": "^6.4.1",
+    "prisma": "catalog:prisma6",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
   },

@@ -57,6 +57,13 @@ catalogs:
     zod:
       specifier: 3.23.8
       version: 3.23.8
+  prisma6:
+    '@prisma/client':
+      specifier: 6.4.1
+      version: 6.4.1
+    prisma:
+      specifier: 6.4.1
+      version: 6.4.1
   react18:
     '@types/react':
       specifier: ^18.3.11
@@ -688,7 +695,7 @@ importers:
         specifier: 6.4.1
         version: 6.4.1(@neondatabase/serverless@1.0.0)
       '@prisma/client':
-        specifier: 6.4.1
+        specifier: catalog:prisma6
         version: 6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
       prisma-markdown:
         specifier: 2.0.0
@@ -713,7 +720,7 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1
       prisma:
-        specifier: 6.4.1
+        specifier: catalog:prisma6
         version: 6.4.1(typescript@5.6.3)
       ts-roids:
         specifier: 'catalog:'
