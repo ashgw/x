@@ -4,6 +4,11 @@ generator client {
   output          = "../src/generated/client"
 }
 
+generator markdown {
+  provider = "prisma-markdown"
+  output   = "./erd_diagram.md"
+}
+
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
