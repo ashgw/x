@@ -9,6 +9,7 @@ import { env } from "@ashgw/env";
 
 import { PrismaClient as FullPrismaClient } from "./generated/client";
 
+// pruge unused methods
 export type DatabaseClient = Omit<
   FullPrismaClient,
   | "$connect"
@@ -23,7 +24,7 @@ export type DatabaseClient = Omit<
   | "$queryRawUnsafe"
 >;
 
-// This creates a custom property on global (actually globalThis) to store a cached Prisma instance in dev mode.
+// This creates a custom property on global (globalThis for node) to store a cached Prisma instance in dev mode.
 // This is required because otherwise, every reload (in next dev, tsx, etc.) creates a new Prisma connection
 const globalForPrisma = global as unknown as {
   prisma: MaybeUndefined<DatabaseClient>;

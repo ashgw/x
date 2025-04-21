@@ -33,6 +33,8 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
+
+      "@typescript-eslint/no-floating-promises": "error", // prevent async functions from being called without await, annoying as hell
       // Prevent console.* usage even when imported differently
       // use { logger } from "@ashgw/logger"
       "no-restricted-syntax": [
