@@ -3,12 +3,13 @@ import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { NextRequest, NextResponse } from "next/server";
 import { expect, test } from "vitest";
 
+import { db } from "@ashgw/db";
+
 import type { AppRouter } from "~/server/router";
 import { postDataSchemaRo } from "~/server/models";
 import { appRouter } from "~/server/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
-import { db } from "@ashgw/db";
 
 const BLOG_DIR = "public/blogs";
 
@@ -24,7 +25,6 @@ function createTestContext() {
 test("load and validate all blog posts", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
-
   const posts = await caller.post.getPosts({ blogPath: BLOG_DIR });
 
   for (const post of posts) {

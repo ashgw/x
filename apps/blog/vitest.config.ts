@@ -9,7 +9,7 @@ export default mergeConfig(
   defineProject({
     test: {
       globals: true,
-      exclude: ["**/e2e/**"],
+      exclude: ["**/e2e/**", "**/node_modules/@tailwindcss/typography/**"],
     },
     resolve: {
       alias: {
