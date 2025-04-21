@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "format": "prettier . --write",
-    "lint": "tsc --noEmit; eslint .",
+    "lint": "tsc --noEmit; eslint . ",
     "generate": "prisma generate",
     "format:schema": "prisma format",
     "studio": "prisma studio",
