@@ -26,6 +26,57 @@ output "bucket_domain_names" {
   }
 }
 
+# IAM user access keys
+output "dev_user_access" {
+  description = "Development bucket user access credentials"
+  value = {
+    user_name        = aws_iam_user.dev_user.name
+    access_key_id    = aws_iam_access_key.dev_user_key.id
+    bucket_name      = aws_s3_bucket.dev_bucket.bucket
+    bucket_domain    = aws_s3_bucket.dev_bucket.bucket_domain_name
+  }
+}
+
+output "preview_user_access" {
+  description = "Preview bucket user access credentials"
+  value = {
+    user_name        = aws_iam_user.preview_user.name
+    access_key_id    = aws_iam_access_key.preview_user_key.id
+    bucket_name      = aws_s3_bucket.preview_bucket.bucket
+    bucket_domain    = aws_s3_bucket.preview_bucket.bucket_domain_name
+  }
+}
+
+output "prod_user_access" {
+  description = "Production bucket user access credentials"
+  value = {
+    user_name        = aws_iam_user.prod_user.name
+    access_key_id    = aws_iam_access_key.prod_user_key.id
+    bucket_name      = aws_s3_bucket.prod_bucket.bucket
+    bucket_domain    = aws_s3_bucket.prod_bucket.bucket_domain_name
+  }
+}
+
+# Secret access keys - these are sensitive and won't print in console
+output "dev_user_secret" {
+  description = "Development bucket user secret access key"
+  value       = aws_iam_access_key.dev_user_key.secret
+  sensitive   = true
+}
+
+output "preview_user_secret" {
+  description = "Preview bucket user secret access key"
+  value       = aws_iam_access_key.preview_user_key.secret
+  sensitive   = true
+}
+
+output "prod_user_secret" {
+  description = "Production bucket user secret access key"
+  value       = aws_iam_access_key.prod_user_key.secret
+  sensitive   = true
+}
+
+# Role ARNs
 output "role_arns" {
   description = "ARNs of the IAM roles"
   value = {
