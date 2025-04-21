@@ -8,6 +8,7 @@ import { postDataSchemaRo } from "~/server/models";
 import { appRouter } from "~/server/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
+import { db } from "@ashgw/db";
 
 const BLOG_DIR = "public/blogs";
 
@@ -16,6 +17,7 @@ function createTestContext() {
     req: {} as NextRequest,
     res: {} as NextResponse,
     trpcInfo: {} as FetchCreateContextFnOptions["info"],
+    db,
   });
 }
 
