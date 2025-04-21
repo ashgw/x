@@ -46,7 +46,7 @@ const adapter = new PrismaNeon(pool);
 // cache the Prisma client itself
 const db =
   globalForDb.prisma ??
-  new FullPrismaClient({
+  (new FullPrismaClient({
     adapter,
     errorFormat: "pretty",
     log:
@@ -58,7 +58,7 @@ const db =
       timeout: 10000,
       isolationLevel: "ReadCommitted",
     },
-  }) satisfies DatabaseClient;
+  }) satisfies DatabaseClient);
 
 // in dev mode, store both pool and prisma globally to avoid leaks during hot reloads
 if (env.NODE_ENV === "development") {
@@ -67,4 +67,3 @@ if (env.NODE_ENV === "development") {
 }
 
 export { db };
-

@@ -1,13 +1,12 @@
 import type { NextRequest, NextResponse } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
+import { db } from "@ashgw/db";
 import { logger, sentry } from "@ashgw/observability";
 
 import { appRouter } from "~/server/router";
 import { trpcUri } from "~/trpc/client";
 import { createTRPCContext } from "~/trpc/context";
-import { db } from "@ashgw/db";
-
 
 const handler = (req: NextRequest, res: NextResponse) =>
   fetchRequestHandler({

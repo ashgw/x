@@ -1,5 +1,6 @@
 import { initTRPC } from "@trpc/server";
 import { ZodError } from "zod";
+
 import type { TrpcContext } from "./context";
 import { transformer } from "./transformer";
 
@@ -24,7 +25,7 @@ export const publicProcedure = t.procedure;
 export const middleware = t.middleware;
 
 // extract this somewhere else if implemented
- function isAuthenticated(input: { ctx: TrpcContext }) {
+function isAuthenticated(input: { ctx: TrpcContext }) {
   const { ctx } = input;
   return ctx;
 }

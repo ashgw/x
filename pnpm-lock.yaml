@@ -995,6 +995,9 @@ importers:
 
   tooling/tailwind:
     dependencies:
+      '@tailwindcss/typography':
+        specifier: ^0.5.10
+        version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3)))
       postcss:
         specifier: 8.4.47
         version: 8.4.47
@@ -13377,6 +13380,14 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@20.16.15)(typescript@5.6.3))
+
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3)))':
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))
 
   '@tanstack/query-core@5.71.10': {}
 
