@@ -18,7 +18,7 @@ model Post {
   summary        String         @db.VarChar(300) // can or cannot be the same as the SEO title
   firstModDate   DateTime       @db.Timestamp(3)
   lastModDate    DateTime       @updatedAt @db.Timestamp(3)
-  isReleased     Boolean
+  isReleased     Boolean        
   minutesToRead  Int            @db.SmallInt
   tags           String[]       @db.VarChar(15) //  keep them smol for aesthetics
   category       PostCategory
@@ -28,7 +28,7 @@ model Post {
 model User {
   id            String           @id @default(cuid())
   email         String           @unique
-  name          String?
+  name          String?          @db.VarChar(255)
   permissions   UserPermission[]
 }
 
@@ -72,13 +72,13 @@ enum UploadType {
 model Upload {
   id            String           @id @default(cuid())
   key           String           @unique @db.VarChar(512) // s3 key
-  url           String           @db.Text
+  url           String           @db.VarChar(1024)
   type          UploadType
   entityType    ResourceType     @default(POST)
   contentType   String           @db.VarChar(100) // e.g. image/png, audio/mpeg, video/mp4, text/markdown
   size          Int
   uploadedAt    DateTime         @default(now())
-  entityId      String?
+  entityId      String?          @db.VarChar(255)
   post          Post?            @relation("PostUploads", fields: [entityId], references: [slug])
   @@index([entityId])
 }

@@ -30,7 +30,7 @@ CREATE TABLE "Post" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "name" TEXT,
+    "name" VARCHAR(255),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -49,13 +49,13 @@ CREATE TABLE "UserPermission" (
 CREATE TABLE "Upload" (
     "id" TEXT NOT NULL,
     "key" VARCHAR(512) NOT NULL,
-    "url" TEXT NOT NULL,
+    "url" VARCHAR(1024) NOT NULL,
     "type" "UploadType" NOT NULL,
     "entityType" "ResourceType" NOT NULL DEFAULT 'POST',
     "contentType" VARCHAR(100) NOT NULL,
     "size" INTEGER NOT NULL,
     "uploadedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "entityId" TEXT,
+    "entityId" VARCHAR(255),
 
     CONSTRAINT "Upload_pkey" PRIMARY KEY ("id")
 );
