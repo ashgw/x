@@ -15,39 +15,37 @@ datasource db {
   relationMode = "prisma"
 }
 
-
 model Post {
-  slug           String         @id @db.VarChar(255) // will show in the URL, unique for all posts
-  title          String         @db.VarChar(200)
-  seoTitle       String         @db.VarChar(300)
-  summary        String         @db.VarChar(300) // can or cannot be the same as the SEO title
-  firstModDate   DateTime       @db.Timestamp(3)
-  lastModDate    DateTime       @updatedAt @db.Timestamp(3)
-  isReleased     Boolean        
-  minutesToRead  Int            @db.SmallInt
-  tags           String[]     
-  category       PostCategory
-  uploads        Upload[]       @relation("PostUploads") // voice, mdx, image, audio & basically any blob inside the post
-} 
+  slug          String       @id @db.VarChar(255) // will show in the URL, unique for all posts
+  title         String       @db.VarChar(200)
+  seoTitle      String       @db.VarChar(300)
+  summary       String       @db.VarChar(300) // can or cannot be the same as the SEO title
+  firstModDate  DateTime     @db.Timestamp(3)
+  lastModDate   DateTime     @updatedAt @db.Timestamp(3)
+  isReleased    Boolean
+  minutesToRead Int          @db.SmallInt
+  tags          String[]
+  category      PostCategory
+  uploads       Upload[]     @relation("PostUploads") // voice, mdx, image, audio & basically any blob inside the post
+}
 
 model User {
-  id            String           @id @default(cuid())
-  email         String           @unique
-  name          String?          @db.VarChar(255)
-  permissions   UserPermission[]
+  id          String           @id @default(cuid())
+  email       String           @unique
+  name        String?          @db.VarChar(255)
+  permissions UserPermission[]
 }
 
 model UserPermission {
-  id            String           @id @default(cuid()) @db.VarChar(255)
-  user          User             @relation(fields: [userId], references: [id])
-  userId        String           @db.VarChar(255)
-  action        ActionType
-  resource      ResourceType
+  id       String       @id @default(cuid()) @db.VarChar(255)
+  user     User         @relation(fields: [userId], references: [id])
+  userId   String       @db.VarChar(255)
+  action   ActionType
+  resource ResourceType
 
   @@unique([userId, action, resource]) // e.g. isUserAllowed(userId, 'read', 'post')
   @@index([userId])
 }
-
 
 enum PostCategory {
   SOFTWARE
@@ -76,15 +74,16 @@ enum UploadType {
 
 // using using s3 buckets rn
 model Upload {
-  id            String           @id @default(cuid()) @db.VarChar(255)
-  key           String           @unique @db.VarChar(512) // s3 key
-  url           String           @db.VarChar(1024)
-  type          UploadType
-  entityType    ResourceType     @default(POST)
-  contentType   String           @db.VarChar(100) // e.g. image/png, audio/mpeg, video/mp4, text/markdown
-  size          Int
-  uploadedAt    DateTime         @default(now())
-  entityId      String?          @db.VarChar(255)
-  post          Post?            @relation("PostUploads", fields: [entityId], references: [slug])
+  id          String       @id @default(cuid()) @db.VarChar(255)
+  key         String       @unique @db.VarChar(512) // s3 key
+  url         String       @db.VarChar(1024)
+  type        UploadType
+  entityType  ResourceType @default(POST)
+  contentType String       @db.VarChar(100) // e.g. image/png, audio/mpeg, video/mp4, text/markdown
+  size        Int
+  uploadedAt  DateTime     @default(now())
+  entityId    String?      @db.VarChar(255)
+  post        Post?        @relation("PostUploads", fields: [entityId], references: [slug])
+
   @@index([entityId])
 }
