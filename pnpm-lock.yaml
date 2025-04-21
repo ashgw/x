@@ -679,14 +679,14 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@prisma/adapter-neon':
-        specifier: 6.6.0
-        version: 6.6.0(@neondatabase/serverless@1.0.0)
+        specifier: 6.4.1
+        version: 6.4.1(@neondatabase/serverless@1.0.0)
       '@prisma/client':
-        specifier: 6.6.0
-        version: 6.6.0(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
+        specifier: 6.4.1
+        version: 6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
       prisma-markdown:
         specifier: 2.0.0
-        version: 2.0.0(@prisma/client@6.6.0(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))(prisma@6.4.1(typescript@5.6.3))
+        version: 2.0.0(@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))(prisma@6.4.1(typescript@5.6.3))
       server-only:
         specifier: 0.0.1
         version: 0.0.1
@@ -2741,13 +2741,13 @@ packages:
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
 
-  '@prisma/adapter-neon@6.6.0':
-    resolution: {integrity: sha512-UR+Nv1qIHW70JTvGXxKQ9J8lCBALMrZetjqLociykOzt/MVkRR1N0V8Pn6deoRUNEEeaBYL+r2vYqMnS4oaEuQ==}
+  '@prisma/adapter-neon@6.4.1':
+    resolution: {integrity: sha512-9pgh5OR+tJfWCm6VNh6uxtUiBHvSKUBhCfrONMSMKmnYtPiY38bYwb5UXMwR+3CG+f4xmcACv0K7+UHWX8gaSw==}
     peerDependencies:
-      '@neondatabase/serverless': '>0.6.0 <2'
+      '@neondatabase/serverless': ^0.6.0 || ^0.7.0 || ^0.8.0 || ^0.9.0 || ^0.10.0
 
-  '@prisma/client@6.6.0':
-    resolution: {integrity: sha512-vfp73YT/BHsWWOAuthKQ/1lBgESSqYqAWZEYyTdGXyFAHpmewwWL2Iz6ErIzkj4aHbuc6/cGSsE6ZY+pBO04Cg==}
+  '@prisma/client@6.4.1':
+    resolution: {integrity: sha512-A7Mwx44+GVZVexT5e2GF/WcKkEkNNKbgr059xpr5mn+oUm2ZW1svhe+0TRNBwCdzhfIZ+q23jEgsNPvKD9u+6g==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -2767,8 +2767,8 @@ packages:
   '@prisma/dmmf@6.6.0':
     resolution: {integrity: sha512-2LoSX0ZVwIiKck5wMCVxeGg9K9z6CULB8xyTbLF3YTvuhOp+fQozelUphaGZA9jN4MF58z6TfUXIMMPVwtxjbQ==}
 
-  '@prisma/driver-adapter-utils@6.6.0':
-    resolution: {integrity: sha512-hbYdZQsJS1ix924mg3eVpGKQ01ZzDPhI/VnA3Opgz1sNB7QMLNw1kl6sEmwSDbtJlVvZOvRxRZmG2BfkW9eaqA==}
+  '@prisma/driver-adapter-utils@6.4.1':
+    resolution: {integrity: sha512-WIVq6QUzz9HJXNa+6LmyLrW/KHOFQwmXYvpaVVECjwAUaAQXFw4g85i68GFPTYrfozwz5CntdHVVzXxInkk0fA==}
 
   '@prisma/engines-version@6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d':
     resolution: {integrity: sha512-Xq54qw55vaCGrGgIJqyDwOq0TtjZPJEWsbQAHugk99hpDf2jcEeQhUcF+yzEsSqegBaDNLA4IC8Nn34sXmkiTQ==}
@@ -7415,6 +7415,10 @@ packages:
   postgres-array@2.0.0:
     resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
     engines: {node: '>=4'}
+
+  postgres-array@3.0.2:
+    resolution: {integrity: sha512-6faShkdFugNQCLwucjPcY5ARoW1SlbnrZjmGl0IrrqewpvxvhSLHimCVzqeuULCbG0fQv7Dtk1yDbG3xv7Veog==}
+    engines: {node: '>=12'}
 
   postgres-array@3.0.4:
     resolution: {integrity: sha512-nAUSGfSDGOaOAEGwqsRY27GPOea7CNipJPOA7lPbdEpx5Kg3qzdP0AaWC5MlhTWV9s4hFX39nomVZ+C4tnGOJQ==}
@@ -12067,13 +12071,13 @@ snapshots:
 
   '@polka/url@1.0.0-next.28': {}
 
-  '@prisma/adapter-neon@6.6.0(@neondatabase/serverless@1.0.0)':
+  '@prisma/adapter-neon@6.4.1(@neondatabase/serverless@1.0.0)':
     dependencies:
       '@neondatabase/serverless': 1.0.0
-      '@prisma/driver-adapter-utils': 6.6.0
-      postgres-array: 3.0.4
+      '@prisma/driver-adapter-utils': 6.4.1
+      postgres-array: 3.0.2
 
-  '@prisma/client@6.6.0(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)':
+  '@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)':
     optionalDependencies:
       prisma: 6.4.1(typescript@5.6.3)
       typescript: 5.6.3
@@ -12084,9 +12088,9 @@ snapshots:
 
   '@prisma/dmmf@6.6.0': {}
 
-  '@prisma/driver-adapter-utils@6.6.0':
+  '@prisma/driver-adapter-utils@6.4.1':
     dependencies:
-      '@prisma/debug': 6.6.0
+      '@prisma/debug': 6.4.1
 
   '@prisma/engines-version@6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d': {}
 
@@ -17619,6 +17623,8 @@ snapshots:
 
   postgres-array@2.0.0: {}
 
+  postgres-array@3.0.2: {}
+
   postgres-array@3.0.4: {}
 
   postgres-bytea@1.0.0: {}
@@ -17675,9 +17681,9 @@ snapshots:
     dependencies:
       parse-ms: 4.0.0
 
-  prisma-markdown@2.0.0(@prisma/client@6.6.0(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))(prisma@6.4.1(typescript@5.6.3)):
+  prisma-markdown@2.0.0(@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))(prisma@6.4.1(typescript@5.6.3)):
     dependencies:
-      '@prisma/client': 6.6.0(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
+      '@prisma/client': 6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
       '@prisma/generator-helper': 6.6.0
       prisma: 6.4.1(typescript@5.6.3)
 
