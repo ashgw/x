@@ -1,3 +1,0 @@
-[submodule "infra/s3"]
-  path = infra/s3
-	url = https://github.com/ashgw/ashgw-infra-s3.git
