@@ -9,6 +9,8 @@ import { env } from "@ashgw/env";
 
 import { PrismaClient } from "./generated/client";
 
+// This creates a custom property on global (actually globalThis) to store a cached Prisma instance in dev mode.
+// This is required because otherwise, every reload (in next dev, tsx, etc.) creates a new Prisma connection
 const globalForPrisma = global as unknown as {
   prisma: MaybeUndefined<PrismaClient>;
 };
@@ -18,11 +20,21 @@ neonConfig.webSocketConstructor = ws;
 const pool = new Pool({
   connectionString: env.DATABASE_URL,
 });
+
 const adapter = new PrismaNeon(pool);
 
-export const db = globalForPrisma.prisma ?? new PrismaClient({ adapter });
+// creates a singleton db object: use the existing one if it’s already in memory (globalThis.prisma)
+// otherwise instantiate a new one. Clean and connection-safe.
+export const db =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    adapter,
+    errorFormat: "pretty",
+    log: ["query", "info", "warn", "error"],
+  });
 
-if (env.NODE_ENV !== "production") {
+// In dev only, we cache this Prisma instance globally to prevent connection overflow.
+if (env.NODE_ENV === "development") {
   globalForPrisma.prisma = db;
 }
 
