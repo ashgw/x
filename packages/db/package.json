@@ -6,8 +6,17 @@
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint .",
     "generate": "prisma generate",
+    "format:schema": "prisma format",
+    "studio": "prisma studio",
+    "pull": "prisma db pull",
+    "push": "prisma db push",
     "migrate": "prisma migrate dev",
-    "studio": "prisma studio"
+    "migrate:reset": "prisma migrate reset",
+    "migrate:deploy": "prisma migrate deploy",
+    "migrate:status": "prisma migrate status",
+    "migrate:diff": "prisma migrate diff",
+    "seed": "prisma db seed",
+    "validate": "prisma validate"
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
