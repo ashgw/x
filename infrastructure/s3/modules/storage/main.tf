@@ -30,6 +30,36 @@ resource "aws_iam_access_key" "user_key" {
   user = aws_iam_user.bucket_user.name
 }
 
+# Create policy for full S3 bucket access
+resource "aws_iam_policy" "bucket_policy" {
+  name        = "${var.project_name}-${var.environment}-bucket-policy"
+  description = "Policy for full access to the ${var.project_name}-${var.environment} S3 bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"        ],
+        Effect   = "Allow",
+        Resource = [
+          aws_s3_bucket.content_bucket.arn,
+          "${aws_s3_bucket.content_bucket.arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
+# Attach policy to IAM user
+resource "aws_iam_user_policy_attachment" "bucket_policy_attachment" {
+  user       = aws_iam_user.bucket_user.name
+  policy_arn = aws_iam_policy.bucket_policy.arn
+}
+
 # Create CloudFront distribution for the bucket
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
