@@ -23,4 +23,19 @@ output "access_key_secret" {
   value       = module.blog_storage.access_key_secret
   description = "Secret access key for the IAM user"
   sensitive   = true
+}
+
+output "bucket_ids" {
+  description = "The IDs of the buckets"
+  value       = { for env, bucket in module.s3_bucket : env => bucket.bucket_id }
+}
+
+output "bucket_arns" {
+  description = "The ARNs of the buckets"
+  value       = { for env, bucket in module.s3_bucket : env => bucket.bucket_arn }
+}
+
+output "bucket_domain_names" {
+  description = "The domain names of the buckets"
+  value       = { for env, bucket in module.s3_bucket : env => bucket.bucket_domain_name }
 } 

@@ -18,4 +18,10 @@ variable "region" {
 variable "allowed_origins" {
   description = "List of origins allowed to access the bucket"
   type        = list(string)
+}
+
+variable "environments" {
+  description = "List of environments to create buckets for"
+  type        = list(string)
+  default     = ["dev", "prod", "preview"]
 } 

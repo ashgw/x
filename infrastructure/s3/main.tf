@@ -6,11 +6,13 @@ terraform {
   # }
 }
 
-module "blog_storage" {
-  source = "./modules/blog_storage"
+module "s3_bucket" {
+  for_each = toset(var.environments)
   
-  environment     = var.environment
-  project_name    = var.project_name
-  region          = var.region
-  allowed_origins = var.allowed_origins
+  source = "./modules/s3"
+
+  bucket_name      = "${var.project_name}-${each.key}"
+  environment      = each.key
+  region           = var.region
+  allowed_origins  = var.allowed_origins
 } 
