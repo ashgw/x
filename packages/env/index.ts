@@ -23,13 +23,54 @@ const nonPrefixedVars = {
   SENTRY_PROJECT: z.string(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
-  DATABASE_URL: z.string().min(1).url(),
-  S3_BUCKET_NAME: z.string().min(1),
-  S3_BUCKET_REGION: z.string().min(1),
-  S3_BUCKET_ACCESS_KEY_ID: z.string().min(1),
-  S3_BUCKET_SECRET_KEY: z.string().min(1),
-  S3_BUCKET_URL: z.string().url(),
-} as const;
+  DATABASE_URL: z
+    .string()
+    .min(1, "DATABASE_URL is required")
+    .url("Must be a valid URL")
+    .refine(
+      (url) => url.startsWith("postgres://") || url.startsWith("postgresql://"),
+      {
+        message: "Must be a valid Neon Postgres URL",
+      },
+    ),
+
+  S3_BUCKET_NAME: z
+    .string()
+    .min(3, "Bucket name too short")
+    .max(63, "Bucket name too long")
+    .regex(/^[a-z0-9.-]+$/, "Invalid S3 bucket name"),
+
+  S3_BUCKET_REGION: z.enum(
+    [
+      "us-east-1",
+      "us-west-1",
+      "us-west-2",
+      "eu-west-1",
+      "eu-central-1",
+      "ap-southeast-1",
+      "ap-northeast-1",
+      "ap-south-1",
+      "sa-east-1",
+    ],
+    {
+      errorMap: () => ({ message: "Invalid AWS region" }),
+    },
+  ),
+
+  S3_BUCKET_ACCESS_KEY_ID: z.string().min(20, "Secret access key too short"),
+
+  S3_BUCKET_SECRET_KEY: z.string().min(20, "Secret access key too short"),
+
+  S3_BUCKET_URL: z
+    .string()
+    .url("Must be a valid S3 bucket URL")
+    .refine(
+      (url) => url.includes("amazonaws.com") || url.includes("cloudfront.net"),
+      {
+        message: "Must be a valid S3 or CloudFront URL",
+      },
+    ),
+};
 
 type NonPrefixedVars = typeof nonPrefixedVars;
 
