@@ -10,7 +10,7 @@ export default mergeConfig(
     test: {
       globals: true,
       deps: {
-        inline: [/server-only/],
+        inline: [/server-only/], // the server-only package errors out when we're in a broswer env, mock it.
       },
       mockReset: false,
       environment: "node",
