@@ -9,13 +9,13 @@ import { S3Service } from "../s3";
 
 export class BlogService {
   private readonly EXT = ".mdx";
-  private readonly s3Service = new S3Service();
+  private static readonly s3Service = new S3Service();
 
   public async getPosts(): Promise<PostDataRo[]> {
     const folder = "mdx";
 
     try {
-      const keys = await this.s3Service.listAllFilesInFolder({ folder });
+      const keys = await BlogService.s3Service.listAllFilesInFolder({ folder });
       logger.info(`Found ${keys.length} files in S3 folder: ${folder}`);
 
       const mdxKeys = keys.filter((k) => path.extname(k) === this.EXT); // keep full key
@@ -51,9 +51,9 @@ export class BlogService {
 
     try {
       // Check if the file exists in S3
-      await this.s3Service.checkFileExists({ key: s3Key });
+      await BlogService.s3Service.checkFileExists({ key: s3Key });
 
-      const buffer = await this.s3Service.fetchFile({ filename: s3Key });
+      const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
       const rawContent = buffer.toString("utf-8");
       const metadata = this._parseMDX(rawContent, s3Key);
       return {
@@ -71,7 +71,7 @@ export class BlogService {
 
   private async _readMDXFileFromS3(s3Key: string): Promise<MdxFileDataRo> {
     try {
-      const buffer = await this.s3Service.fetchFile({ filename: s3Key });
+      const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
       const rawContent = buffer.toString("utf-8");
       return this._parseMDX(rawContent, s3Key);
     } catch (error) {
