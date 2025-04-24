@@ -6,12 +6,6 @@ import { z } from "zod";
 
 export const getPostDtoSchema = z.object({
   filename: z.string().min(1),
-  blogPath: z.string().min(1),
 });
 
-export const getPostsDtoSchema = z.object({
-  blogPath: z.string().min(1),
-});
-
-export type GetPostsDto = z.infer<typeof getPostsDtoSchema>;
 export type GetPostDto = z.infer<typeof getPostDtoSchema>;

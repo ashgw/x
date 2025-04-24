@@ -1,0 +1,4 @@
+{
+  "extends": "@ashgw/tsconfig/base.json",
+  "exclude": ["src/generated/**"]
+}

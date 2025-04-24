@@ -5,6 +5,8 @@ import type { NextRequest, NextResponse } from "next/server";
 import { cache } from "react";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
+import { db } from "@ashgw/db";
+
 import type { AppRouter } from "~/server/router";
 import { appRouter } from "~/server/router";
 import { createCallerFactory } from "~/trpc/trpc";
@@ -24,6 +26,8 @@ const caller = createCaller(
     req: {} as NextRequest,
     res: {} as NextResponse,
     trpcInfo: {} as FetchCreateContextFnOptions["info"],
+    // only the db works
+    db,
   }),
 );
 

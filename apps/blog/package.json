@@ -2,9 +2,6 @@
   "name": "@ashgw/blog",
   "version": "1.0.1",
   "private": true,
-  "engines": {
-    "node": "20.x"
-  },
   "scripts": {
     "build": "next build",
     "build:vercel-preview": "vercel build --yes",
@@ -30,6 +27,7 @@
     "@ashgw/constants": "workspace:*",
     "@ashgw/cross-runtime": "workspace:*",
     "@ashgw/css": "workspace:*",
+    "@ashgw/db": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@ashgw/seo": "workspace:*",
@@ -46,6 +44,7 @@
     "@trpc/next": "catalog:trpc11",
     "@trpc/react-query": "catalog:trpc11",
     "@trpc/server": "catalog:trpc11",
+    "aws-sdk": "2.1692.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "dinero.js": "2.0.0-alpha.14",
@@ -79,7 +78,7 @@
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@playwright/test": "catalog:",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "catalog:",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/eslint": "^8.56.1",
     "@types/mdx": "^2.0.10",
@@ -99,6 +98,9 @@
     "typescript": "catalog:",
     "vitest": "catalog:",
     "webpack": "^5.96.1"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "keywords": [],
   "license": "ISC",

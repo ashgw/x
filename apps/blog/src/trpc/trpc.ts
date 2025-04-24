@@ -36,7 +36,7 @@ function isAuthorized(input: { ctx: TrpcContext }) {
   return ctx;
 }
 
-const authMiddleware = middleware((opts) => {
+const authMiddleware = middleware(async (opts) => {
   const { ctx } = opts;
   isAuthenticated({ ctx });
   isAuthorized({ ctx });

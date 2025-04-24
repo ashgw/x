@@ -33,6 +33,7 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
+
       // Prevent console.* usage even when imported differently
       // use { logger } from "@ashgw/logger"
       "no-restricted-syntax": [
