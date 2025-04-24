@@ -47,7 +47,7 @@ export class BlogService {
   }: {
     filename: string;
   }): Promise<PostDataRo> {
-    const s3Key = path.join("mdx", `${filename}${this.EXT}`);
+    const s3Key = `mdx/${filename}${this.EXT}`; // always POSIX for S3
 
     try {
       // Check if the file exists in S3
