@@ -44,6 +44,7 @@
     "@trpc/next": "catalog:trpc11",
     "@trpc/react-query": "catalog:trpc11",
     "@trpc/server": "catalog:trpc11",
+    "aws-sdk": "2.1692.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "dinero.js": "2.0.0-alpha.14",
