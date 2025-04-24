@@ -10,31 +10,23 @@ import { S3Service } from "../s3";
 export class BlogService {
   private readonly EXT = ".mdx";
   private readonly s3Service = new S3Service();
-  private readonly baseDir: string;
-
-  constructor(dto: { directory: string }) {
-    this.baseDir = dto.directory;
-  }
 
   public async getPosts(): Promise<PostDataRo[]> {
     const folder = "mdx";
 
     try {
-      const fileNames = await this.s3Service.listAllFilesInFolder({
-        folder,
-      });
+      const keys = await this.s3Service.listAllFilesInFolder({ folder });
+      logger.info(`Found ${keys.length} files in S3 folder: ${folder}`);
 
-      const mdxFiles = fileNames.filter(
-        (file) => path.extname(file) === this.EXT,
-      ); // in case we messed up the content type
+      const mdxKeys = keys.filter((k) => path.extname(k) === this.EXT); // keep full key
+      logger.info(`Found ${mdxKeys.length} MDX files in S3 folder: ${folder}`);
 
       const posts = await Promise.all(
-        mdxFiles.map(async (file) => {
-          const s3Key = path.join(this.baseDir, file);
-          const metadata = await this._readMDXFileFromS3(s3Key);
+        mdxKeys.map(async (key) => {
+          const metadata = await this._readMDXFileFromS3(key); // pass key as-is
           return {
             parsedContent: metadata,
-            filename: path.basename(file, this.EXT),
+            filename: path.basename(key, this.EXT), // strip folder+ext
           };
         }),
       );
@@ -55,7 +47,7 @@ export class BlogService {
   }: {
     filename: string;
   }): Promise<PostDataRo> {
-    const s3Key = path.join(this.baseDir, `${filename}${this.EXT}`);
+    const s3Key = path.join("mdx", `${filename}${this.EXT}`);
 
     try {
       // Check if the file exists in S3

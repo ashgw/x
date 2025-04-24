@@ -76,20 +76,20 @@ export class S3Service {
    */
   public async fetchFile({ filename }: { filename: string }): Promise<Buffer> {
     const res = await this.client
-      .getObject({
-        Bucket: this.bucket,
-        Key: filename,
-      })
+      .getObject({ Bucket: this.bucket, Key: filename })
       .promise();
 
-    if (!res.Body || !(res.Body instanceof Buffer)) {
+    if (!res.Body) {
       throw new InternalError({
         code: "NOT_FOUND",
-        message: `File ${filename} not found or invalid`,
+        message: `File ${filename} not found`,
       });
     }
 
-    return res.Body;
+    // Accept Buffer or generic Uint8Array
+    return Buffer.isBuffer(res.Body)
+      ? res.Body
+      : Buffer.from(res.Body as Uint8Array);
   }
 
   /**

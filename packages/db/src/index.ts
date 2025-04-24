@@ -9,7 +9,7 @@ import { env } from "@ashgw/env";
 
 import { PrismaClient as FullPrismaClient } from "./generated/client";
 
-// purge unused methods
+// keep only the methods you actually call
 export type DatabaseClient = Omit<
   FullPrismaClient,
   | "$connect"
@@ -24,26 +24,32 @@ export type DatabaseClient = Omit<
   | "$queryRawUnsafe"
 >;
 
-// cache both pool and prisma client in globalThis to avoid recreating on hot reloads
+// global cache to survive hot-reloads
 const globalForDb = globalThis as unknown as {
   pool: MaybeUndefined<Pool>;
   prisma: MaybeUndefined<DatabaseClient>;
 };
 
-// configure WebSocket for Neon
+// use ws for Neon
 neonConfig.webSocketConstructor = ws;
 
-// cache the Neon connection pool as well
-const pool =
-  globalForDb.pool ??
-  new Pool({
-    connectionString: env.DATABASE_URL,
-  });
+/**
+ * Hot-reload guard: if the cached object is not
+ * an instance of the current Pool constructor
+ * we drop it and create a fresh one.
+ */
+function isSamePool(obj: unknown): obj is Pool {
+  return obj instanceof Pool;
+}
 
-// create the Prisma adapter using the cached or new pool
+const pool = isSamePool(globalForDb.pool)
+  ? globalForDb.pool
+  : new Pool({
+      connectionString: env.DATABASE_URL,
+    });
+
 const adapter = new PrismaNeon(pool);
 
-// cache the Prisma client itself
 const db =
   globalForDb.prisma ??
   (new FullPrismaClient({
@@ -60,7 +66,7 @@ const db =
     },
   }) satisfies DatabaseClient);
 
-// in dev mode, store both pool and prisma globally to avoid leaks during hot reloads
+// store the singletons in dev to avoid leaks when reloading
 if (env.NODE_ENV === "development") {
   globalForDb.pool = pool;
   globalForDb.prisma = db;
