@@ -51,8 +51,8 @@ resource "aws_s3_bucket" "prod_bucket" {
   # Obfuscated bucket name: project-name-env-randomsuffix
   bucket = "${var.project_name}-prod-${random_id.bucket_suffix["prod"].hex}"
   
-  // TODO: remove this after testing !IMPORTANT
-  force_destroy = true
+  # This is a production bucket, so we don't want to destroy it
+  force_destroy = false
   
   tags = {
     Name        = "${var.project_name}-prod"
