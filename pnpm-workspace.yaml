@@ -6,18 +6,19 @@ packages:
 
 catalog:
   "@nextui-org/react": "2.2.9"
-  eslint: ^9.12.0
-  prettier: ^3.3.3
-  tailwindcss: ^3.4.14
-  typescript: ^5.6.3s
-  zod: ^3.23.8
+  eslint: 9.12.0
+  prettier: 3.3.3
+  tailwindcss: 3.4.14
+  "@tailwindcss/typography": 0.5.10
+  typescript: 5.6.3
+  zod: 3.23.8
   next:
     14.2.3
     # using this for ths blog because of an irritiating bug
     # @see https://github.com/hashicorp/next-mdx-remote/issues/467
 
-  ts-roids: ^1.47.0 # always update this btw
-  "@vitest/ui": ^2.1.8
+  ts-roids: 1.47.0 # always update this btw
+  "@vitest/ui": 2.1.8
   vitest: "2.1.8"
   # There's a bug with the latest version as of 01.25
   # @see https://github.com/vercel/vercel/issues/11097
@@ -40,3 +41,6 @@ catalogs:
     react-dom: 18.3.1
     "@types/react": ^18.3.11
     "@types/react-dom": ^18.3.1
+  prisma6:
+    "@prisma/client": "6.4.1"
+    prisma: "6.4.1"

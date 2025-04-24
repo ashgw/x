@@ -48,6 +48,24 @@ inputs:
   NEXT_PUBLIC_POSTHOG_HOST:
     description: "PostHog host URL"
     required: true
+  DATABASE_URL:
+    description: "Database URL"
+    required: true
+  S3_BUCKET_NAME:
+    description: "S3 bucket name"
+    required: true
+  S3_BUCKET_REGION:
+    description: "S3 bucket region"
+    required: true
+  S3_BUCKET_ACCESS_KEY_ID:
+    description: "S3 bucket access key ID"
+    required: true
+  S3_BUCKET_SECRET_KEY:
+    description: "S3 bucket secret key"
+    required: true
+  S3_BUCKET_URL:
+    description: "S3 bucket URL"
+    required: true
 
 runs:
   using: "composite"
@@ -67,6 +85,12 @@ runs:
         SENTRY_AUTH_TOKEN: ${{ inputs.SENTRY_AUTH_TOKEN }}
         NEXT_PUBLIC_POSTHOG_KEY: ${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}
         NEXT_PUBLIC_POSTHOG_HOST: ${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}
+        DATABASE_URL: ${{ inputs.DATABASE_URL }}
+        S3_BUCKET_NAME: ${{ inputs.S3_BUCKET_NAME }}
+        S3_BUCKET_REGION: ${{ inputs.S3_BUCKET_REGION }}
+        S3_BUCKET_ACCESS_KEY_ID: ${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}
+        S3_BUCKET_SECRET_KEY: ${{ inputs.S3_BUCKET_SECRET_KEY }}
+        S3_BUCKET_URL: ${{ inputs.S3_BUCKET_URL }}
 
     - name: Build for Vercel
       shell: bash

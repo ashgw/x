@@ -23,7 +23,7 @@ ci:
 infra:
   - changed-files:
       - any-glob-to-any-file:
-          - infra/*
+          - infrastructure/*
 
 env:
   - changed-files:

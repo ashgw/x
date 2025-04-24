@@ -22,6 +22,12 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+          S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
+          S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
+          S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
+          S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
 
       - name: build
         shell: bash
