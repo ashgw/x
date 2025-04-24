@@ -11,8 +11,6 @@ import { appRouter } from "~/server/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
 
-const BLOG_DIR = "public/blogs";
-
 function createTestContext() {
   return createTRPCContext({
     req: {} as NextRequest,
@@ -25,7 +23,7 @@ function createTestContext() {
 test("load and validate all blog posts", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
-  const posts = await caller.post.getPosts({ blogPath: BLOG_DIR });
+  const posts = await caller.post.getPosts();
 
   for (const post of posts) {
     expect(() => postDataSchemaRo.parse(post)).not.toThrow();
@@ -37,7 +35,6 @@ test("load and validate a single blog post", async () => {
   const caller = createCallerFactory(appRouter)(ctx);
 
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
-    blogPath: BLOG_DIR,
     filename: "branded-types",
   };
 
