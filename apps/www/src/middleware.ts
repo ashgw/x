@@ -6,7 +6,6 @@ import { BOOKING_LINK } from "@ashgw/constants";
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // Blog redirect
   if (pathname.startsWith("/blog")) {
     // eslint-disable-next-line no-restricted-properties
     const targetBaseUrl = process.env.NEXT_PUBLIC_BLOG_URL;
