@@ -1,10 +1,7 @@
 {
   "name": "@ashgw/www",
-  "version": "1.84.0",
+  "version": "1.84.1",
   "private": true,
-  "engines": {
-    "node": "20.x"
-  },
   "scripts": {
     "build": "next build",
     "build:vercel-preview": "vercel build --yes",
@@ -74,7 +71,7 @@
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@playwright/test": "catalog:",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "catalog:",
     "@types/eslint": "^8.56.1",
     "@types/mdx": "^2.0.10",
     "@types/node": "catalog:",
@@ -93,6 +90,9 @@
     "vercel": "catalog:",
     "vitest": "catalog:",
     "webpack": "^5.96.1"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "keywords": [],
   "license": "ISC",

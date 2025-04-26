@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   validate-pr:
-    # need conventional commit validation so that the CHANGELOG is updated properly
+    # conventional commit validation
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/on-workflow-call-pr-validate-title.yml
     secrets: inherit
@@ -73,36 +73,36 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  # This needs my manual permission to dispatch
-  preview-deployemnt:
-    if: github.ref == 'refs/heads/main'
+  # just a trigger to dispatch
+  preview-deployment:
     needs: [mergeable]
+    if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/on-workflow-call-preview-deployment.yml
     secrets: inherit
 
   www-prevew-deployemnt:
-    needs: [preview-deployemnt]
+    needs: [preview-deployment]
     uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
     secrets: inherit
 
   blog-preview-deployemnt:
-    needs: [preview-deployemnt]
+    needs: [preview-deployment]
     uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
     secrets: inherit
 
   # same here
-  production-deployemnt:
+  production-deployment:
     if: github.ref == 'refs/heads/main'
     needs: [mergeable]
     uses: ./.github/workflows/on-workflow-call-production-deployment.yml
     secrets: inherit
 
-  www-production-deployemnt:
-    needs: [production-deployemnt]
+  www-production-deployment:
+    needs: [production-deployment]
     uses: ./.github/workflows/on-workflow-call-www-production-deployment.yml
     secrets: inherit
 
-  blog-production-deployemnt:
-    needs: [production-deployemnt]
+  blog-production-deployment:
+    needs: [production-deployment]
     uses: ./.github/workflows/on-workflow-call-blog-production-deployment.yml
     secrets: inherit

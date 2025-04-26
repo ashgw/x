@@ -1,40 +1,44 @@
-import { promises as fsPromises } from "fs";
 import path from "path";
 import fm from "front-matter";
 
-import { InternalError, sentry } from "@ashgw/observability";
+import { InternalError, logger } from "@ashgw/observability";
 
 import type { MdxFileDataRo, PostDataRo } from "~/server/models";
 import { mdxFileDataSchemaRo } from "~/server/models";
+import { S3Service } from "../s3";
 
 export class BlogService {
-  private readonly baseDir: string;
   private readonly EXT = ".mdx";
-
-  constructor(dto: { directory: string }) {
-    this.baseDir = path.join(process.cwd(), dto.directory);
-  }
+  private static readonly s3Service = new S3Service();
 
   public async getPosts(): Promise<PostDataRo[]> {
+    const folder = "mdx";
+
     try {
-      const files = await fsPromises.readdir(this.baseDir);
-      const mdxFiles = files.filter((file) => path.extname(file) === this.EXT);
+      const keys = await BlogService.s3Service.listAllFilesInFolder({ folder });
+      logger.info(`Found ${keys.length} files in S3 folder: ${folder}`);
+
+      const mdxKeys = keys.filter((k) => path.extname(k) === this.EXT); // keep full key
+      logger.info(`Found ${mdxKeys.length} MDX files in S3 folder: ${folder}`);
 
       const posts = await Promise.all(
-        mdxFiles.map(async (file) => {
-          const metadata = await this._readMDXFile(
-            path.join(this.baseDir, file),
-          );
+        mdxKeys.map(async (key) => {
+          const metadata = await this._readMDXFileFromS3(key); // pass key as-is
           return {
             parsedContent: metadata,
-            filename: path.basename(file, this.EXT),
+            filename: path.basename(key, this.EXT), // strip folder+ext
           };
         }),
       );
 
       return posts;
     } catch (error) {
-      throw this._wrapError(error, "getPosts");
+      logger.error("Failed to get posts", error);
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: `Failed to get posts from S3 folder: ${folder}`,
+        cause: error,
+      });
     }
   }
 
@@ -43,58 +47,52 @@ export class BlogService {
   }: {
     filename: string;
   }): Promise<PostDataRo> {
-    const filePath = path.join(this.baseDir, `${filename}${this.EXT}`);
-    try {
-      try {
-        await fsPromises.access(filePath);
-      } catch (error) {
-        throw new InternalError({
-          code: "NOT_FOUND",
-          message: `Post not found: ${filename}`,
-          cause: sentry.next.captureException({ error }),
-        });
-      }
+    const s3Key = `mdx/${filename}${this.EXT}`; // always POSIX for S3
 
-      const metadata = await this._readMDXFile(filePath);
+    try {
+      // Check if the file exists in S3
+      await BlogService.s3Service.checkFileExists({ key: s3Key });
+
+      const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
+      const rawContent = buffer.toString("utf-8");
+      const metadata = this._parseMDX(rawContent, s3Key);
       return {
         parsedContent: metadata,
         filename,
       };
     } catch (error) {
-      throw this._wrapError(error, `getPost(${filename})`);
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: `Post not found: ${filename} in S3 at ${s3Key}`,
+        cause: error,
+      });
     }
   }
 
-  private _parseMDX(content: string): MdxFileDataRo {
-    const result = fm(content);
+  private async _readMDXFileFromS3(s3Key: string): Promise<MdxFileDataRo> {
     try {
-      const parsedResult = mdxFileDataSchemaRo.parse(result);
-      return parsedResult;
+      const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
+      const rawContent = buffer.toString("utf-8");
+      return this._parseMDX(rawContent, s3Key);
     } catch (error) {
-      if (error instanceof Error) {
-        error.message = `MDX parsing validation failed: ${error.message}`;
-      }
-      throw error;
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Could not read MDX file from S3: ${s3Key}`,
+        cause: error,
+      });
     }
   }
 
-  private async _readMDXFile(filePath: string): Promise<MdxFileDataRo> {
-    const rawContent = await fsPromises.readFile(filePath, "utf-8");
-    return this._parseMDX(rawContent);
-  }
-
-  private _wrapError(error: unknown, ctx: string): InternalError {
-    const errorMessage = `BlogService.${ctx} failed in ${this.baseDir}`;
-    sentry.next.captureException({
-      error,
-      withErrorLogging: {
-        message: errorMessage,
-      },
-    });
-    return new InternalError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: errorMessage,
-      cause: errorMessage,
-    });
+  private _parseMDX(content: string, filePath: string): MdxFileDataRo {
+    try {
+      const parsed = fm(content);
+      return mdxFileDataSchemaRo.parse(parsed);
+    } catch (error) {
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `MDX parsing failed for file: ${filePath} with content: ${content.slice(0, 100)}`,
+        cause: error,
+      });
+    }
   }
 }

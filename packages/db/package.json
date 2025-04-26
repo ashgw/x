@@ -1,0 +1,44 @@
+{
+  "name": "@ashgw/db",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier . --write",
+    "format:schema": "prisma format",
+    "generate": "prisma generate",
+    "lint": "tsc --noEmit; eslint . ",
+    "migrate:deploy": "prisma migrate deploy",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:diff": "prisma migrate diff",
+    "migrate:reset": "prisma migrate reset",
+    "migrate:status": "prisma migrate status",
+    "postinstall": "prisma generate",
+    "pull": "prisma db pull",
+    "push": "prisma db push",
+    "seed": "prisma db seed",
+    "studio": "prisma studio",
+    "validate": "prisma validate"
+  },
+  "dependencies": {
+    "@ashgw/env": "workspace:*",
+    "@neondatabase/serverless": "1.0.0",
+    "@prisma/adapter-neon": "6.4.1",
+    "@prisma/client": "catalog:prisma6",
+    "prisma-markdown": "2.0.0",
+    "server-only": "0.0.1",
+    "ws": "8.18.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "@types/ws": "^8.18.1",
+    "prisma": "catalog:prisma6",
+    "ts-roids": "catalog:",
+    "typescript": "catalog:"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "type": "module"
+}

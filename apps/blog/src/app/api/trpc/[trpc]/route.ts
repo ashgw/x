@@ -1,6 +1,7 @@
 import type { NextRequest, NextResponse } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
+import { db } from "@ashgw/db";
 import { logger, sentry } from "@ashgw/observability";
 
 import { appRouter } from "~/server/router";
@@ -13,7 +14,6 @@ const handler = (req: NextRequest, res: NextResponse) =>
     allowMethodOverride: false,
     allowBatching: true,
     onError(opts) {
-      // actually here add more context to the logger, this is not enough, use the stuff from ops
       sentry.next.captureException({
         error: opts.error,
         hint: {
@@ -32,6 +32,7 @@ const handler = (req: NextRequest, res: NextResponse) =>
         res,
         req,
         trpcInfo: trpcRequestInfo,
+        db,
       }),
   });
 

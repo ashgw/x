@@ -56,4 +56,11 @@ next-env.d.ts
 .env*
 
 *playground
-*.terraform
+**/.terraform/
+*.tfstate.backup
+*.tfstate*
+*.tfvars
+*.tfvars.json
+
+
+

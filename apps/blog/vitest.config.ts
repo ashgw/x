@@ -9,7 +9,12 @@ export default mergeConfig(
   defineProject({
     test: {
       globals: true,
-      exclude: ["**/e2e/**"],
+      deps: {
+        inline: [/server-only/], // the server-only package errors out when we're in a broswer env, mock it.
+      },
+      mockReset: false,
+      environment: "node",
+      setupFiles: ["./test/setup.ts"],
     },
     resolve: {
       alias: {

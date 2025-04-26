@@ -1,0 +1,23 @@
+name: Cron / Delete abandoned branches
+
+on:
+  # daily at midnight
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  cleanup_old_branches:
+    runs-on: ubuntu-latest
+    name: Satisfy my repo CDO
+    steps:
+      - name: Delete those pesky dead branches
+        uses: phpdocker-io/github-actions-delete-abandoned-branches@v2
+        id: delete-abandoned-branches
+        with:
+          github_token: ${{ github.token }}
+          last_commit_age_days: 120
+          ignore_branches: main
+          dry_run: no
+
+      - name: Get output
+        run: "echo 'Deleted branches: ${{ steps.delete-abandoned-branches.outputs.deleted_branches }}'"

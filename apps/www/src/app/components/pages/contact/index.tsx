@@ -50,7 +50,7 @@ export function ContactPage() {
       setShowCalendar(true);
     } else {
       setShowCalendar(false);
-      window.location.href = escape(`mailto:${EMAIL}`);
+      window.location.href = `mailto:${EMAIL}`;
     }
   };
 
