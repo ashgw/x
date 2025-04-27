@@ -6,7 +6,7 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
-import { BOOKING_LINK, EMAIL, LINKS } from "@ashgw/constants";
+import { EMAIL, LINKS } from "@ashgw/constants";
 import { sentry } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
@@ -123,7 +123,7 @@ export function ContactPage() {
                   <div className="mx-auto max-w-4xl">
                     <div className="rounded-lg p-6 shadow-lg">
                       <CalBooking
-                        calLink={BOOKING_LINK}
+                        calLink="ashgw/default"
                         config={{ theme: "dark" }}
                       />
                     </div>
