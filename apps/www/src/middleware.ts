@@ -1,8 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { BOOKING_LINK } from "@ashgw/constants";
-
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
@@ -15,9 +13,8 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/booking")) {
-    const targetBaseUrl = BOOKING_LINK;
     const cleanPath = pathname.replace(/^\/booking/, "");
-    const targetUrl = `${targetBaseUrl}${cleanPath}${search}`;
+    const targetUrl = `https://cal.com/ashgw/default${cleanPath}${search}`;
     return NextResponse.redirect(targetUrl);
   }
 
