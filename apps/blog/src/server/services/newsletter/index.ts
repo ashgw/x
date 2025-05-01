@@ -4,7 +4,7 @@ import { sentry } from "@ashgw/observability";
 import { CustomTRPCError } from "~/trpc/error";
 
 export class NewsletterService {
-  public static async subscribe({ email }: { email: string }) {
+  public static async subscribe({ email }: { email: string }): Promise<void> {
     try {
       const response = await fetch("https://api.kit.com/v4/subscribers", {
         method: "POST",
@@ -20,8 +20,6 @@ export class NewsletterService {
       if (!response.ok) {
         throw new Error("Failed to subscribe");
       }
-
-      return { success: true };
     } catch (error) {
       sentry.next.captureException({
         error,

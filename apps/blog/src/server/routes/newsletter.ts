@@ -1,11 +1,10 @@
-import { z } from "zod";
-
 import { publicProcedure, router } from "../../trpc/trpc";
+import { newsletterSubscribeDtoSchema } from "../models/newsletter";
 import { NewsletterService } from "../services/newsletter";
 
 export const newsletterRouter = router({
   subscribe: publicProcedure
-    .input(z.object({ email: z.string().email() }))
+    .input(newsletterSubscribeDtoSchema)
     .query(async ({ input }) => {
       await NewsletterService.subscribe({
         email: input.email,
