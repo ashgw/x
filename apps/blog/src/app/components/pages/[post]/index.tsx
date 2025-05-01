@@ -1,6 +1,5 @@
-import { Footer } from "@ashgw/components";
-
 import type { PostDataRo } from "~/server/models";
+import { Newsletter } from "~/app/components/misc/newsletter";
 import { BlogPostData } from "./components/BlogPostData";
 
 export function BlogPostPage({ postData }: { postData: PostDataRo }) {
@@ -10,7 +9,7 @@ export function BlogPostPage({ postData }: { postData: PostDataRo }) {
         <BlogPostData postData={postData} />
       </main>
       <div className="py-10"></div>
-      <Footer className="pb-12" />
+      <Newsletter className="pb-12" />
     </>
   );
 }
