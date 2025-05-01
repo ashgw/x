@@ -1,5 +1,5 @@
 import type { PostDataRo } from "~/server/models";
-import { Newsletter } from "~/app/components/misc/newsletter";
+import { Newsletter } from "~/app/components/pages/[post]/components/newsletter";
 import { BlogPostData } from "./components/BlogPostData";
 
 export function BlogPostPage({ postData }: { postData: PostDataRo }) {
