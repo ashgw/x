@@ -59,7 +59,7 @@ export function Newsletter() {
             type="email"
             {...register("email", { required: true })}
             placeholder="your@email.com"
-            className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-white/5 px-3 text-sm font-medium text-[#B0B0B0] focus:border-white/30 focus:outline-none"
+            className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-transparent px-3 text-sm font-medium text-[#B0B0B0] outline-none transition-all duration-300 ease-in-out selection:bg-white/10 hover:border-white/20 focus:border-white/30 focus:ring-0 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-[#B0B0B0] [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] focus:[&:-webkit-autofill]:bg-transparent"
           />
 
           <Button
@@ -72,7 +72,7 @@ export function Newsletter() {
           </Button>
         </form>
         <p className="dimmed-3 mt-4 text-center text-sm">
-          Extension of this blog and my Twitter. Weekly updates.
+          Subscribe to my newsletter. The extension of this blog and my Twitter.
         </p>
       </div>
       <Toaster position="bottom-right" />

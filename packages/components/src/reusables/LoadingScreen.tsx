@@ -1,9 +1,9 @@
-import { Loading } from "@ashgw/components";
+import { LoadingPoints } from "@ashgw/ui";
 
 export function LoadingScreen() {
   return (
     <div className="flex h-screen items-center justify-center">
-      <Loading />
+      <LoadingPoints />
     </div>
   );
 }
