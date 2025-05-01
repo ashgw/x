@@ -12,12 +12,7 @@ import { newsletterSubscribeDtoSchema } from "~/server/models/newsletter";
 import { trpcClientSideClient } from "~/trpc/client";
 
 export function Newsletter() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm<NewsletterSubscribeDto>({
+  const { register, handleSubmit, reset } = useForm<NewsletterSubscribeDto>({
     resolver: zodResolver(newsletterSubscribeDtoSchema),
   });
 
@@ -36,8 +31,8 @@ export function Newsletter() {
       },
     });
 
-  const onSubmit = (data: NewsletterSubscribeDto) => {
-    subscribeMutation.mutate({
+  const onSubmit = async (data: NewsletterSubscribeDto) => {
+    await subscribeMutation.mutateAsync({
       email: data.email,
     });
   };
@@ -66,9 +61,10 @@ export function Newsletter() {
             className="glowsup shrink-0"
             variant="navbar"
             type="submit"
-            disabled={isSubmitting}
+            disabled={subscribeMutation.isPending}
+            loading={subscribeMutation.isPending}
           >
-            {isSubmitting ? "…" : "Subscribe"}
+            Subscribe
           </Button>
         </form>
         <p className="dimmed-3 mt-4 text-center text-sm">
