@@ -1,10 +1,12 @@
 "use client";
 
+import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
+import { logger } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
 import type { NewsletterSubscribeDto } from "~/server/models/newsletter";
@@ -14,12 +16,13 @@ import { trpcClientSideClient } from "~/trpc/client";
 export function Newsletter() {
   const { register, handleSubmit, reset } = useForm<NewsletterSubscribeDto>({
     resolver: zodResolver(newsletterSubscribeDtoSchema),
+    mode: "onChange",
   });
 
   const subscribeMutation =
     trpcClientSideClient.newsletter.subscribe.useMutation({
       onSuccess: () => {
-        toast.success("Success!", {
+        toast.success("Subscribed!", {
           description: "Thank you for subscribing.",
         });
         reset();
@@ -31,7 +34,15 @@ export function Newsletter() {
       },
     });
 
-  const onSubmit = async (data: NewsletterSubscribeDto) => {
+  const submitHandler: SubmitHandler<NewsletterSubscribeDto> = async (
+    data,
+    error,
+  ) => {
+    if (error) {
+      logger.debug("Something went wrong with the form", {
+        error,
+      });
+    }
     await subscribeMutation.mutateAsync({
       email: data.email,
     });
@@ -47,7 +58,7 @@ export function Newsletter() {
     >
       <div className="relative mx-auto flex max-w-[600px] flex-col items-center p-8 before:absolute before:left-1/2 before:top-0 before:h-[1px] before:w-full before:-translate-x-1/2 before:bg-white/15 sm:before:w-[450px] md:before:w-[550px] lg:before:w-[650px] xl:before:w-[750px]">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(submitHandler)}
           className="flex w-full max-w-[480px] items-center justify-center gap-3"
         >
           <input
