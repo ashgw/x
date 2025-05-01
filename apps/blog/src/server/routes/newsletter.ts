@@ -5,7 +5,7 @@ import { NewsletterService } from "../services";
 export const newsletterRouter = router({
   subscribe: publicProcedure
     .input(newsletterSubscribeDtoSchema)
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       await NewsletterService.subscribe({
         email: input.email,
       });

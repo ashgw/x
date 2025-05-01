@@ -21,21 +21,25 @@ export function Newsletter() {
     resolver: zodResolver(newsletterSubscribeDtoSchema),
   });
 
-  const onSubmit = (data: NewsletterSubscribeDto) => {
-    const response = trpcClientSideClient.newsletter.subscribe.useQuery({
-      email: data.email,
+  const subscribeMutation =
+    trpcClientSideClient.newsletter.subscribe.useMutation({
+      onSuccess: () => {
+        toast.success("Success!", {
+          description: "Thank you for subscribing.",
+        });
+        reset();
+      },
+      onError: () => {
+        toast.error("Something went wrong", {
+          description: "Please try again later",
+        });
+      },
     });
 
-    if (!response.isError) {
-      toast.error("Something went wrong", {
-        description: "Please try again later",
-      });
-    } else {
-      toast.success("Success!", {
-        description: "Thank you for subscribing.",
-      });
-      reset();
-    }
+  const onSubmit = (data: NewsletterSubscribeDto) => {
+    subscribeMutation.mutate({
+      email: data.email,
+    });
   };
 
   return (
