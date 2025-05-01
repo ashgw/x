@@ -61,6 +61,7 @@
     "NODE_ENV",
     "SENTRY_ORG",
     "KIT_API_KEY",
+    "KIT_FORM_ID",
     "NEXT_RUNTIME",
     "DATABASE_URL",
     "SENTRY_PROJECT",

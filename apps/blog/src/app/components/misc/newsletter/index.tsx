@@ -64,7 +64,7 @@ export function Newsletter() {
 
           <Button
             className="glowsup shrink-0"
-            variant="navbarMin"
+            variant="navbar"
             type="submit"
             disabled={isSubmitting}
           >

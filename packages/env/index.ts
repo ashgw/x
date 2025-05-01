@@ -23,7 +23,8 @@ const nonPrefixedVars = {
   SENTRY_PROJECT: z.string(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
-  KIT_API_KEY: z.string().min(20).startsWith("kit_"),
+  KIT_API_KEY: z.string().min(10),
+  KIT_FORM_ID: z.string().min(7),
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required")
@@ -93,6 +94,7 @@ export const env = createEnv({
   disablePrefix: [...NonPrefixedVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    KIT_FORM_ID: process.env.KIT_FORM_ID,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
