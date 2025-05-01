@@ -2,7 +2,6 @@
 const baseConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@ashgw/ui",
@@ -15,6 +14,12 @@ const baseConfig = {
     "@ashgw/cross-runtime",
     "@ashgw/observability",
     "@ashgw/seo",
+    "@ashgw/vitest",
+    "@ashgw/playwright",
+    "@ashgw/eslint",
+    "@ashgw/typescript",
+    "@ashgw/db",
+    "@ashgw/analytics",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

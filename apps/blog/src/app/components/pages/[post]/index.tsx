@@ -9,7 +9,7 @@ export function BlogPostPage({ postData }: { postData: PostDataRo }) {
         <BlogPostData postData={postData} />
       </main>
       <div className="py-10"></div>
-      <Newsletter className="pb-12" />
+      <Newsletter />
     </>
   );
 }

@@ -1,4 +1,9 @@
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import { createJiti } from "jiti";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const jiti = createJiti(import.meta.url);
 
@@ -12,8 +17,10 @@ const config = sentry.next.withConfig({
   nextConfig: {
     ...baseConfig,
     experimental: {
+      // @see https://github.com/vercel/next.js/discussions/64155
+      outputFileTracingRoot: join(__dirname, "../../"),
       outputFileTracingIncludes: {
-        "/": ["./public/**/*"],
+        "/": ["./public/**/*"], // prblem with vercel
       },
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
