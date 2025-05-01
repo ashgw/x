@@ -17,10 +17,9 @@ const config = sentry.next.withConfig({
   nextConfig: {
     ...baseConfig,
     experimental: {
-      // @see https://github.com/vercel/next.js/discussions/64155
-      outputFileTracingRoot: join(__dirname, "../../"),
+      outputFileTracingRoot: join(__dirname, "../../"), // @see https://github.com/vercel/next.js/discussions/64155
       outputFileTracingIncludes: {
-        "/": ["./public/**/*"], // prblem with vercel
+        "/": ["./public/**/*"], // problem with vercel
       },
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
