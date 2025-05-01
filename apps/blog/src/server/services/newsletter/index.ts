@@ -1,7 +1,5 @@
 import { env } from "@ashgw/env";
-import { sentry } from "@ashgw/observability";
-
-import { CustomTRPCError } from "~/trpc/error";
+import { InternalError } from "@ashgw/observability";
 
 export class NewsletterService {
   public static async subscribe({ email }: { email: string }): Promise<void> {
@@ -21,15 +19,10 @@ export class NewsletterService {
         throw new Error("Failed to subscribe");
       }
     } catch (error) {
-      sentry.next.captureException({
-        error,
-        withErrorLogging: {
-          message: "Failed to subscribe to newsletter",
-        },
-      });
-      throw new CustomTRPCError({
+      throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to subscribe to newsletter",
+        cause: error,
       });
     }
   }

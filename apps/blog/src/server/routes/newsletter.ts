@@ -1,6 +1,6 @@
 import { publicProcedure, router } from "../../trpc/trpc";
 import { newsletterSubscribeDtoSchema } from "../models/newsletter";
-import { NewsletterService } from "../services/newsletter";
+import { NewsletterService } from "../services";
 
 export const newsletterRouter = router({
   subscribe: publicProcedure
