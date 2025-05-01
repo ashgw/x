@@ -48,7 +48,7 @@ export function Newsletter({ className }: { className?: string }) {
       initial={{ opacity: 0 }}
       transition={{ duration: 1, ease: "easeInOut" }}
     >
-      <div className="slower-transition mx-auto flex max-w-[600px] flex-col items-center rounded-[2rem] border border-white/10 p-8 shadow">
+      <div className="slower-transition mx-auto flex max-w-[600px] flex-col items-center p-8 shadow">
         <form
           onSubmit={handleSubmit}
           className="flex w-full max-w-[480px] items-center justify-center gap-3"
@@ -71,7 +71,6 @@ export function Newsletter({ className }: { className?: string }) {
             {isLoading ? "…" : "Subscribe"}
           </Button>
         </form>
-
         <p className="dimmed-3 mt-4 text-center text-sm">
           Extension of this blog and my Twitter. Weekly updates.
         </p>
