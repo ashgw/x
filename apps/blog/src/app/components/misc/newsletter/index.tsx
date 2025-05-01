@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast, Toaster } from "sonner";
 
+import { env } from "@ashgw/env";
 import { sentry } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
@@ -16,8 +17,23 @@ export function Newsletter({ className }: { className?: string }) {
     setIsLoading(true);
 
     try {
-      // swap this for your real API
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const response = await fetch("https://api.kit.com/v4/subscribers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.KIT_API_KEY}`,
+        },
+        body: JSON.stringify({
+          email,
+          // Optional: Add any additional subscriber data here
+          // customFields: {},
+          // tags: []
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to subscribe");
+      }
 
       toast.success("Success!", {
         description: "Thank you for subscribing.",

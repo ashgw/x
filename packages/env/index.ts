@@ -23,6 +23,7 @@ const nonPrefixedVars = {
   SENTRY_PROJECT: z.string(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
+  KIT_API_KEY: z.string().min(20).startsWith("kit_"),
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required")
@@ -98,6 +99,7 @@ export const env = createEnv({
     S3_BUCKET_SECRET_KEY: process.env.S3_BUCKET_SECRET_KEY,
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
     NODE_ENV: process.env.NODE_ENV,
+    KIT_API_KEY: process.env.KIT_API_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
