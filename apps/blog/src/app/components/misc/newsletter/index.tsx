@@ -48,7 +48,7 @@ export function Newsletter({ className }: { className?: string }) {
       initial={{ opacity: 0 }}
       transition={{ duration: 1, ease: "easeInOut" }}
     >
-      <div className="slower-transition mx-auto flex max-w-[600px] flex-col items-center p-8 shadow">
+      <div className="relative mx-auto flex max-w-[600px] flex-col items-center p-8 before:absolute before:left-1/2 before:top-0 before:h-[1px] before:w-full before:-translate-x-1/2 before:bg-white/15 sm:before:w-[450px] md:before:w-[550px] lg:before:w-[650px] xl:before:w-[750px]">
         <form
           onSubmit={handleSubmit}
           className="flex w-full max-w-[480px] items-center justify-center gap-3"
