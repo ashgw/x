@@ -39,6 +39,7 @@ jobs:
           S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
+          KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
           # deployment specific, not needed for build
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
