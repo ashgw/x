@@ -22,8 +22,8 @@ export function Newsletter() {
   const subscribeMutation =
     trpcClientSideClient.newsletter.subscribe.useMutation({
       onSuccess: () => {
-        toast.success("Subscribed!", {
-          description: "Thank you for subscribing.",
+        toast.success("You're in!", {
+          description: "Welcome aboard. Thanks for joining!",
         });
         reset();
       },
