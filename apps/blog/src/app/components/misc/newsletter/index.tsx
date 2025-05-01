@@ -1,64 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
-import { env } from "@ashgw/env";
-import { sentry } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
-export function Newsletter({ className }: { className?: string }) {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+import type { NewsletterSubscribeDto } from "~/server/models/newsletter";
+import { newsletterSubscribeDtoSchema } from "~/server/models/newsletter";
+import { trpcClientSideClient } from "~/trpc/client";
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+export function Newsletter() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<NewsletterSubscribeDto>({
+    resolver: zodResolver(newsletterSubscribeDtoSchema),
+  });
 
-    try {
-      const response = await fetch("https://api.kit.com/v4/subscribers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${env.KIT_API_KEY}`,
-        },
-        body: JSON.stringify({
-          email,
-          // Optional: Add any additional subscriber data here
-          // customFields: {},
-          // tags: []
-        }),
-      });
+  const onSubmit = (data: NewsletterSubscribeDto) => {
+    const response = trpcClientSideClient.newsletter.subscribe.useQuery({
+      email: data.email,
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to subscribe");
-      }
-
-      toast.success("Success!", {
-        description: "Thank you for subscribing.",
-      });
-
-      setEmail("");
-    } catch (error) {
+    if (!response.isError) {
       toast.error("Something went wrong", {
         description: "Please try again later",
       });
-
-      sentry.next.captureException({
-        error,
-        withErrorLogging: {
-          message: "Failed to subscribe to newsletter",
-        },
+    } else {
+      toast.success("Success!", {
+        description: "Thank you for subscribing.",
       });
-    } finally {
-      setIsLoading(false);
+      reset();
     }
   };
 
   return (
     <motion.div
-      className={`mx-auto w-full max-w-[1280px] px-2 sm:px-10 ${className ?? ""}`}
+      className={`mx-auto w-full max-w-[1280px] px-2 sm:px-10`}
       viewport={{ once: true }}
       whileInView={{ opacity: 1 }}
       initial={{ opacity: 0 }}
@@ -66,15 +48,13 @@ export function Newsletter({ className }: { className?: string }) {
     >
       <div className="relative mx-auto flex max-w-[600px] flex-col items-center p-8 before:absolute before:left-1/2 before:top-0 before:h-[1px] before:w-full before:-translate-x-1/2 before:bg-white/15 sm:before:w-[450px] md:before:w-[550px] lg:before:w-[650px] xl:before:w-[750px]">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex w-full max-w-[480px] items-center justify-center gap-3"
         >
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email", { required: true })}
             placeholder="your@email.com"
-            required
             className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-white/5 px-3 text-sm font-medium text-[#B0B0B0] focus:border-white/30 focus:outline-none"
           />
 
@@ -82,9 +62,9 @@ export function Newsletter({ className }: { className?: string }) {
             className="glowsup shrink-0"
             variant="navbarMin"
             type="submit"
-            disabled={isLoading}
+            disabled={isSubmitting}
           >
-            {isLoading ? "…" : "Subscribe"}
+            {isSubmitting ? "…" : "Subscribe"}
           </Button>
         </form>
         <p className="dimmed-3 mt-4 text-center text-sm">
