@@ -66,6 +66,9 @@ inputs:
   S3_BUCKET_URL:
     description: "S3 bucket URL"
     required: true
+  KIT_API_KEY:
+    description: "Kit API key"
+    required: true
 
 runs:
   using: "composite"
@@ -91,6 +94,7 @@ runs:
         S3_BUCKET_ACCESS_KEY_ID: ${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}
         S3_BUCKET_SECRET_KEY: ${{ inputs.S3_BUCKET_SECRET_KEY }}
         S3_BUCKET_URL: ${{ inputs.S3_BUCKET_URL }}
+        KIT_API_KEY: ${{ inputs.KIT_API_KEY }}
 
     - name: Build for Vercel
       shell: bash

@@ -57,6 +57,7 @@
     "next-themes": "0.3.0",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
+    "react-hook-form": "7.53.0",
     "react-syntax-highlighter": "15.5.0",
     "react-use": "17.5.0",
     "sass": "1.69.7",
