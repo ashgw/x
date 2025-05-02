@@ -8,3 +8,4 @@ export * from "./toggle-switch";
 export * from "./skeleton";
 export * from "./fonts";
 export * from "./toast";
+export * from "./loading";

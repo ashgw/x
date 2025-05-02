@@ -18,8 +18,12 @@ export function getQueryClient() {
 
 export const trpcUri = "/api/trpc";
 
-export function getTrpcUrl(input: { siteBaseUrl: string }) {
-  return typeof window !== "undefined" ? "" : `${input.siteBaseUrl}${trpcUri}`;
+const isBrowser = typeof window !== "undefined";
+
+export function getTrpcUrl({ siteBaseUrl }: { siteBaseUrl: string }) {
+  // For client-side requests, use relative path
+  // For server-side requests, use full URL
+  return isBrowser ? trpcUri : `${siteBaseUrl}${trpcUri}`;
 }
 
 export const trpcClientSideClient = createTRPCReact<AppRouter>();

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { publicProcedure, router } from "../../trpc/trpc";
 import { getPostDtoSchema, postDataSchemaRo } from "../models";
-import { BlogService } from "../services/blog";
+import { BlogService } from "../services";
 
 const blogService = new BlogService(); // for pools
 

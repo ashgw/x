@@ -13,13 +13,13 @@ const config = sentry.next.withConfig({
     ...baseConfig,
     experimental: {
       outputFileTracingIncludes: {
-        "/": ["./public/**/*"],
+        "/": ["./public/**/*"], // problem with vercel
       },
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
     },
-    transpilePackages: ["next-mdx-remote"],
+    transpilePackages: ["next-mdx-remote"], //  this is yet anoher Next 14 specifc bug
   },
 });
 
