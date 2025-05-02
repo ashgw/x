@@ -16,11 +16,12 @@ const config = sentry.next.withConfig({
   /** @type {import('next').NextConfig} */
   nextConfig: {
     ...baseConfig,
+    output: "standalone",
     experimental: {
+      outputFileTracingRoot: path.join(__dirname, "../../"),
       outputFileTracingIncludes: {
         "/": ["./public/**/*"], // problem with vercel
       },
-      outputFileTracingRoot: path.join(__dirname, "../../"),
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
