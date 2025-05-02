@@ -1,9 +1,4 @@
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { createJiti } from "jiti";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const jiti = createJiti(import.meta.url);
 
@@ -24,7 +19,7 @@ const config = sentry.next.withConfig({
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
     },
-    transpilePackages: ["next-mdx-remote"],
+    transpilePackages: ["next-mdx-remote"], //  this is yet anoher Next 14 specifc bug
   },
 });
 
