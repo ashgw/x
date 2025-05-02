@@ -1,9 +1,4 @@
-import path from "path";
-import { fileURLToPath } from "url";
 import { createJiti } from "jiti";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const jiti = createJiti(import.meta.url);
 
@@ -16,9 +11,7 @@ const config = sentry.next.withConfig({
   /** @type {import('next').NextConfig} */
   nextConfig: {
     ...baseConfig,
-    output: "standalone",
     experimental: {
-      outputFileTracingRoot: path.join(__dirname, "../../"),
       outputFileTracingIncludes: {
         "/": ["./public/**/*"], // problem with vercel
       },
