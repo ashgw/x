@@ -73,12 +73,6 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  deploy-blog-tester:
-    uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
-    with:
-      NODE_ENV: "preview" # TODO: actually change ofc
-    secrets: inherit
-
   # just a trigger to dispatch
   preview-deployment:
     needs: [mergeable]

@@ -1,4 +1,4 @@
-name: CI / Blog preview deployment
+name: CD / Blog preview deployment
 
 on:
   workflow_call:
@@ -10,45 +10,13 @@ on:
         default: "false"
 
 permissions:
-  pull-requests: write
-  contents: read
-  issues: write
+  pull-requests: write # needed for adding comments
+  contents: read # needed for reading secrets
+  issues: write # needed for adding comments
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/vercel-build
-        with:
-          project_name: blog
-          NODE_ENV: preview
-          NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
-          NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
-          NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
-          NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
-          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
-          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-          S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
-          S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
-          S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
-          S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
-          KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
-          # deployment specific, not needed for build
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BLOG_PROJECT_ID }}
-
-      - uses: ./.github/actions/vercel-deploy
-        with:
-          NODE_ENV: preview
-          add_comment: ${{ inputs.add_comment }}
-          project_name: blog
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  deploy-blog-tester:
+    uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
+    with:
+      NODE_ENV: "preview"
+    secrets: inherit
