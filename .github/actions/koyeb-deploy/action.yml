@@ -71,7 +71,7 @@ runs:
           echo "Deploying to preview environment"
           DEPLOY_TARGET="${{ inputs.SERVICE_NAME }}/${{ inputs.SERVICE_NAME }}-preview"
         else
-          echo "Unknown NODE_ENV: ${{ inputs.NODE_ENV }}"
+          echo "Unknown NODE_ENV: ${{ inputs.NODE_ENV }}" # this never happens but anyway
           exit 1
         fi
 
