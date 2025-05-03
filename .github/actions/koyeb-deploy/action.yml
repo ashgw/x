@@ -27,22 +27,29 @@ runs:
     - name: Login to DockerHub
       run: echo "${{ inputs.DOCKERHUB_TOKEN }}" | docker login -u "${{ inputs.DOCKERHUB_USERNAME }}" --password-stdin
       shell: bash
-    - name: Build and Push Docker Latest Image
+
+    - name: Build Docker Image
       run: |
-        docker build -t "ashgw/${{ inputs.SERVICE_NAME }}:latest" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
+        docker build -t "ashgw/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
+      shell: bash
+
+    - name: Tag and Push Production Image
+      if: inputs.NODE_ENV == 'production'
+      run: |
+        docker tag "ashgw/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" "ashgw/${{ inputs.SERVICE_NAME }}:latest"
         docker push "ashgw/${{ inputs.SERVICE_NAME }}:latest"
       shell: bash
 
-    - name: Push the preview image
+    - name: Push Preview Image
+      if: inputs.NODE_ENV == 'preview'
       run: |
-        docker tag ashgw/${{ inputs.SERVICE_NAME }}:latest ashgw/${{ inputs.SERVICE_NAME }}:preview
-        docker push ashgw/${{ inputs.SERVICE_NAME }}:preview
+        docker push "ashgw/${{ inputs.SERVICE_NAME }}:preview"
       shell: bash
 
     - name: Install Koyeb CLI and Redeploy
       shell: bash
       run: |
-        # Create the Koyeb config file directly, docs suck dawg
+        # Create the Koyeb config file directly
         cat > $HOME/.koyeb.yaml << EOF
         debug: false
         organization: ""
@@ -54,5 +61,17 @@ runs:
         curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
         export PATH=$HOME/.koyeb/bin:$PATH
 
-        # Now directly use the CLI with the config file
-        koyeb service redeploy blog/blog
+        # Determine target based on NODE_ENV
+        if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
+          echo "Deploying to production environment"
+          DEPLOY_TARGET="${{ inputs.SERVICE_NAME }}/${{ inputs.SERVICE_NAME }}"
+        elif [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
+          echo "Deploying to preview environment"
+          DEPLOY_TARGET="${{ inputs.SERVICE_NAME }}/${{ inputs.SERVICE_NAME }}-preview"
+        else
+          echo "Unknown NODE_ENV: ${{ inputs.NODE_ENV }}"
+          exit 1
+        fi
+
+        # Now directly use the CLI with the config file and targeted environment
+        koyeb service redeploy $DEPLOY_TARGET
