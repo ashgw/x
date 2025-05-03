@@ -5,9 +5,9 @@ ARG PORT=3001
 FROM node:${NODE_VERSION}-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+WORKDIR /app
 COPY . .
 RUN corepack enable
-WORKDIR /app
 
 # Build the application
 RUN pnpm --filter @ashgw/blog build
