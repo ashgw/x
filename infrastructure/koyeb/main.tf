@@ -1,5 +1,5 @@
 resource "koyeb_app" "blog" {
-  name = var.app_name
+  name = "blog-terraform-3"
 }
 
 resource "koyeb_service" "blog" {
@@ -30,7 +30,7 @@ resource "koyeb_service" "blog" {
     regions = [var.region]
     
     docker {
-      image = var.docker_image
+      image = "ashgw/blog:latest"
     }
     
     env {

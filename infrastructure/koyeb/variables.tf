@@ -19,7 +19,20 @@ variable "service_name" {
 variable "docker_image" {
   description = "Docker image to deploy"
   type        = string
-  default     = "ashgw/blog:latest"
+  default     = "docker.io/ashgw/blog:latest"
+}
+
+variable "docker_username" {
+  description = "Docker registry username"
+  type        = string
+  default     = ""
+}
+
+variable "docker_password" {
+  description = "Docker registry password"
+  type        = string
+  default     = ""
+  sensitive   = true
 }
 
 variable "port" {
@@ -38,11 +51,11 @@ variable "environment_variables" {
 variable "instance_type" {
   description = "Koyeb instance type"
   type        = string
-  default     = "micro"
+  default     = "micro" // smol blog frfr
 }
 
 variable "region" {
-  description = "Koyeb deployment region"
+  description = "Region to deploy to"
   type        = string
-  default     = "fra"
+  default     = "fra" // lowkey faster in frankfurt
 }

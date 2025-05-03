@@ -2,35 +2,66 @@
 
 This directory contains Terraform configuration for deploying and managing the blog app on Koyeb.
 
-## Setup
+## Current Deployment
 
-Set your Koyeb API token as an environment variable:
+The Terraform configuration deploys:
+
+- A Koyeb app named "blog-terraform"
+- A service that runs the "ashgw/blog:latest" Docker image
+- Environment variables configuration
+- Port configuration (3001)
+- Routes configuration (/ → port 3001)
+- Instance type (micro)
+
+## Usage
+
+### Initial Setup
+
+1. Set your Koyeb API token as an environment variable:
 
 ```bash
 export KOYEB_TOKEN="your-koyeb-token"
 ```
 
-Alternatively, the token is stored in the `terraform.tfvars` file.
-
-## Usage
-
-Initialize Terraform:
+2. Initialize Terraform:
 
 ```bash
 terraform init
 ```
 
-Plan the changes:
+### Deploy or Update
+
+Apply the configuration:
 
 ```bash
-terraform plan -out tf.plan
+terraform apply
 ```
 
-Apply the changes:
+Or apply without confirmation:
 
 ```bash
-terraform apply tf.plan
+terraform apply -auto-approve
 ```
+
+### View Resources
+
+View the created resources and their IDs:
+
+```bash
+terraform output
+```
+
+### Clean Up
+
+To destroy the resources:
+
+```bash
+terraform destroy
+```
+
+## Relationship to GitHub Actions
+
+This Terraform configuration is separate from the GitHub Actions workflow that deploys to the main "blog" app. The GitHub workflow uses the Koyeb CLI to deploy to the production instance, while this Terraform configuration manages a separate "blog-terraform" instance for infrastructure testing.
 
 ## Resources Created
 
