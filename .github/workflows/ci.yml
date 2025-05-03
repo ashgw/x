@@ -76,7 +76,7 @@ jobs:
   blog-test-deploy: # TODO: remove this
     uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
     with:
-      NODE_ENV: "preview" # there's a problem with preview now, needs testing first
+      NODE_ENV: "production" # there's a problem with preview now, needs testing first
     secrets: inherit
 
   # just a trigger to dispatch
