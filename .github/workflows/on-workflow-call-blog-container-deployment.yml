@@ -50,7 +50,7 @@ jobs:
         run: |
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           export PATH=$HOME/.koyeb/bin:$PATH
-          koyeb auth login --token "${{ secrets.KOYEB_TOKEN }}"
+          koyeb login --token "${{ secrets.KOYEB_TOKEN }}"
           koyeb service redeploy blog/blog
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
