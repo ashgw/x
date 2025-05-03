@@ -1,4 +1,4 @@
-name: CD / Docker Blog Deployment
+name: CD / Docker App Deployment
 
 on:
   workflow_call:
