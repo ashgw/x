@@ -1,5 +1,5 @@
 resource "koyeb_app" "blog" {
-  name = "blog-terraform-3"
+  name = "blog" // this is the prod name G
 }
 
 resource "koyeb_service" "blog" {
