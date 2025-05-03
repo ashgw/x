@@ -1,0 +1,10 @@
+
+koyeb_token = ""
+
+docker_username = ""
+docker_password = ""
+
+environment_variables = {
+  NODE_ENV = "production"
+  PORT     = "3001"
+}
