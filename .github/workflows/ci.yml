@@ -73,6 +73,12 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
+  blog-test-deploy: # TODO: remove this
+    uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
+    with:
+      NODE_ENV: "preview" # there's a problem with preview now, needs testing first
+    secrets: inherit
+
   # just a trigger to dispatch
   preview-deployment:
     needs: [mergeable]
