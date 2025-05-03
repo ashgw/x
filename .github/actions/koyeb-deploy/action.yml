@@ -84,7 +84,7 @@ runs:
         koyeb service redeploy $DEPLOY_TARGET
 
     - name: Notify about preview deployment
-      if: inputs.NODE_ENV == 'preview'
+      if: ${{ inputs.NODE_ENV == 'preview' }}
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
