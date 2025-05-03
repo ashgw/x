@@ -3,6 +3,10 @@ name: CD / Blog to Koyeb
 on:
   workflow_dispatch:
   workflow_call:
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
   deploy:
