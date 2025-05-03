@@ -10,6 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.NODE_ENV }} # either "production" or "preview", none more none less
     steps:
       - uses: actions/checkout@v4
       # - uses: ./.github/actions/pnpm-install # no need here since Dockerfile has it
