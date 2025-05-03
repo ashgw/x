@@ -45,12 +45,21 @@ jobs:
         run: |
           docker tag ashgw/blog:latest ashgw/blog:${{ env.DATE_TAG }}
           docker push ashgw/blog:${{ env.DATE_TAG }}
-
       - name: Install Koyeb CLI and Redeploy
         run: |
+          # Create the Koyeb config file directly, docs suck dawg
+          cat > $HOME/.koyeb.yaml << EOF
+          debug: false
+          organization: ""
+          token: ${{ secrets.KOYEB_TOKEN }}
+          url: https://app.koyeb.com
+          EOF
+
+          # Install and configure CLI
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           export PATH=$HOME/.koyeb/bin:$PATH
-          koyeb login --token "${{ secrets.KOYEB_TOKEN }}"
+
+          # Now directly use the CLI with the config file
           koyeb service redeploy blog/blog
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
