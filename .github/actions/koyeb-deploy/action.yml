@@ -32,11 +32,12 @@ runs:
 
     - name: Build Docker Image
       run: |
-        if [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
-          docker build --build-arg IS_PREVIEW=true -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-        else
-          docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-        fi
+        # if [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
+        #   docker build --build-arg IS_PREVIEW=true -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
+        # else
+        #   docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
+        # fi
+        docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
       shell: bash
 
     - name: Tag and Push Production Image
