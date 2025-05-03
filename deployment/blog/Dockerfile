@@ -13,10 +13,6 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @ashgw/blog build
 
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=${PORT}
-
 USER node
 EXPOSE ${PORT}
 
