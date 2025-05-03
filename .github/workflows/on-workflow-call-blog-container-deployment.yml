@@ -1,4 +1,4 @@
-name: CD / Blog to Koyeb
+name: CD / Docker Blog Deployment
 
 on:
   workflow_call:

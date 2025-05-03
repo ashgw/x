@@ -13,7 +13,6 @@ inputs:
   DOCKERHUB_USERNAME:
     description: "DockerHub username"
     required: true
-    default: "ashgw"
   KOYEB_TOKEN:
     description: "Koyeb API token"
     required: true
@@ -30,20 +29,20 @@ runs:
 
     - name: Build Docker Image
       run: |
-        docker build -t "ashgw/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
+        docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
       shell: bash
 
     - name: Tag and Push Production Image
       if: inputs.NODE_ENV == 'production'
       run: |
-        docker tag "ashgw/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" "ashgw/${{ inputs.SERVICE_NAME }}:latest"
-        docker push "ashgw/${{ inputs.SERVICE_NAME }}:latest"
+        docker tag "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:latest"
+        docker push "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:latest"
       shell: bash
 
     - name: Push Preview Image
       if: inputs.NODE_ENV == 'preview'
       run: |
-        docker push "ashgw/${{ inputs.SERVICE_NAME }}:preview"
+        docker push "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:preview"
       shell: bash
 
     - name: Install Koyeb CLI and Redeploy
