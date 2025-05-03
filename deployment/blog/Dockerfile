@@ -37,4 +37,4 @@ COPY --from=builder /app/packages ./packages
 EXPOSE ${PORT}
 
 # Start the application
-CMD ["node_modules/.bin/next", "start", "-p", "${PORT}"] 
+CMD ["sh", "-c", "node_modules/.bin/next start -p $PORT"]
