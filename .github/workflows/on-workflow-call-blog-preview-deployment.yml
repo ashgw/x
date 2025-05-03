@@ -15,7 +15,7 @@ permissions:
   issues: write # needed for adding comments
 
 jobs:
-  deploy-blog-tester:
+  deploy:
     uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
     with:
       NODE_ENV: "preview"

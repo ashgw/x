@@ -4,11 +4,7 @@ This directory contains Terraform configuration for deploying and managing the b
 
 ### Initial Setup
 
-1. Set your Koyeb API token as an environment variable:
-
-```bash
-export KOYEB_TOKEN="your-koyeb-token"
-```
+1. Decrypt the tfvars file
 
 2. Run `tf`
 
