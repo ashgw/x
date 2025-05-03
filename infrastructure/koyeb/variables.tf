@@ -22,6 +22,12 @@ variable "docker_image" {
   default     = "docker.io/ashgw/blog:latest"
 }
 
+variable "docker_image_preview" {
+  description = "Docker image to deploy for preview environment"
+  type        = string
+  default     = "docker.io/ashgw/blog:preview"
+}
+
 variable "docker_username" {
   description = "Docker registry username"
   type        = string
