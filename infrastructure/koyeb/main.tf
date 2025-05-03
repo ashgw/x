@@ -79,7 +79,7 @@ resource "koyeb_service" "blog_preview" {
     regions = [var.region]
     
     docker {
-      image = var.docker_image
+      image = var.docker_image_preview
     }
     
     env {
