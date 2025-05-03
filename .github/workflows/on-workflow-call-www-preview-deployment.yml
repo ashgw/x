@@ -1,4 +1,4 @@
-name: CI / WWW preview deployment
+name: CD / WWW preview deployment
 
 on:
   workflow_call:

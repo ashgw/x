@@ -1,4 +1,4 @@
-name: CI / WWW production deployment
+name: CD / WWW production deployment
 
 on:
   workflow_call:
