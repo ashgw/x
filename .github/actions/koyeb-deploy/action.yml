@@ -21,7 +21,7 @@ inputs:
     required: true
   GITHUB_TOKEN:
     description: "GitHub token for PR comments"
-    required: false
+    required: true
 
 runs:
   using: "composite"
