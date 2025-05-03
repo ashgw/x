@@ -17,6 +17,9 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 FROM deps AS builder
 RUN pnpm --filter @ashgw/blog build
 
+# Create public directory if it doesn't exist
+RUN mkdir -p /app/apps/blog/public
+
 # Production stage
 FROM node:${NODE_VERSION}-alpine AS runner
 WORKDIR /app
