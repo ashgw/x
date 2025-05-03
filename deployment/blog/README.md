@@ -5,6 +5,13 @@ From root
 docker build -t ashgw-blog -f deployment/blog/Dockerfile .
 ```
 
+For the preview image run
+
+```bash
+docker build --build-arg IS_PREVIEW=true -t ashgw-blog -f deployment/blog/Dockerfile .
+
+```
+
 ```bash
 # Run the container
 docker run -p 3001:3001 ashgw-blog

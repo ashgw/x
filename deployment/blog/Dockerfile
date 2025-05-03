@@ -1,6 +1,7 @@
 # TODO: add layering later and shit if needed, this just works dawg & fuck vercel, look what they have me doing
 ARG NODE_VERSION=20
 ARG PORT=3001
+ARG IS_PREVIEW=false
 
 FROM node:${NODE_VERSION}-alpine AS base
 ENV PNPM_HOME="/pnpm"
@@ -10,7 +11,11 @@ WORKDIR /app
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm --filter @ashgw/blog build
+RUN if [ "$IS_PREVIEW" = "true" ]; then \
+      pnpm --filter @ashgw/blog build:preview; \
+    else \
+      pnpm --filter @ashgw/blog build; \
+    fi
 
 USER node
 EXPOSE ${PORT}
