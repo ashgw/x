@@ -9,7 +9,7 @@ RUN corepack enable
 WORKDIR /app
 COPY . .
 
-# Install dependencies
+# Install dependencies for all workspaces
 FROM base AS deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
@@ -28,16 +28,19 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=${PORT}
 
-# Copy necessary files
-COPY --from=builder /app/apps/blog/next.config.js ./
-COPY --from=builder /app/apps/blog/package.json ./
-COPY --from=builder /app/apps/blog/public ./public
-COPY --from=builder /app/apps/blog/.next ./.next
+# Copy only the necessary files from the monorepo
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/apps/blog/package.json ./
+COPY --from=builder /app/apps/blog/.next ./.next
+COPY --from=builder /app/apps/blog/next.config.js ./next.config.js
+COPY --from=builder /app/apps/blog/public ./public
 
-# Expose the port
+# For Next.js standalone mode
+COPY --from=builder /app/apps/blog/.next/standalone ./
+
+USER node
 EXPOSE ${PORT}
 
 # Start the application
-CMD ["sh", "-c", "node_modules/.bin/next start -p $PORT"]
+CMD ["node", "server.js"]
