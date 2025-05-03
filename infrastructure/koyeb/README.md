@@ -4,7 +4,8 @@ This directory contains Terraform configuration for deploying and managing the b
 
 ### Initial Setup
 
-1. Decrypt the tfvars file
+1. Decrypt the tfvars fi
+le
 
 2. Run `tf`
 
@@ -20,9 +21,3 @@ This Terraform configuration now provisions two separate Koyeb applications:
 
 To deploy both environments:
 
-```bash
-terraform plan
-terraform apply
-```
-
-After a successful apply you'll have both the `blog` (prod) and `blog-preview` (preview) apps running in Koyeb.
