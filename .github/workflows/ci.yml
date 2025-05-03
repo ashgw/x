@@ -75,6 +75,8 @@ jobs:
 
   deploy-blog-tester:
     uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
+    with:
+      NODE_ENV: "production" # TODO: actually change ofc
     secrets: inherit
 
   # just a trigger to dispatch
