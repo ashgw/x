@@ -5,8 +5,6 @@ const jiti = createJiti(import.meta.url);
 const baseConfig = jiti("@ashgw/next-config/base.js");
 const { sentry } = jiti("@ashgw/observability");
 
-
-
 jiti("@ashgw/env");
 
 const config = sentry.next.withConfig({
