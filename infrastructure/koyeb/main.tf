@@ -30,7 +30,7 @@ resource "koyeb_service" "blog" {
     regions = [var.region]
     
     docker {
-      image = "ashgw/blog:latest"
+      image = var.docker_image
     }
     
     env {
