@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   deploy:
-    uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       NODE_ENV: "preview"
     secrets: inherit
