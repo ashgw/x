@@ -41,10 +41,16 @@ jobs:
           docker build -t "ashgw/blog:latest" -f deployment/blog/Dockerfile .
           docker push "ashgw/blog:latest"
 
-      - name: Push date-tagged image
+      - name: Push the preview image
+        run: |
+          docker tag ashgw/blog:latest ashgw/blog:preview
+          docker push ashgw/blog:preview
+
+      - name: Push date-tagged image just incase I fuckup
         run: |
           docker tag ashgw/blog:latest ashgw/blog:${{ env.DATE_TAG }}
           docker push ashgw/blog:${{ env.DATE_TAG }}
+
       - name: Install Koyeb CLI and Redeploy
         run: |
           # Create the Koyeb config file directly, docs suck dawg
