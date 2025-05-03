@@ -29,7 +29,5 @@ jobs:
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
-
-      - uses: ./.github/actions/pnpm-install
       - name: lint
         run: pnpm lint

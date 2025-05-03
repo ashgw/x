@@ -1,19 +1,22 @@
-# this is deactivated
-name: CI
+name: CD / Docker Blog Deployment
 
 on:
   workflow_call:
+    inputs:
+      NODE_ENV:
+        required: true
+        type: string
 
 jobs:
-  push-container:
-    if: github.ref == 'refs/heads/main'
+  deploy:
     runs-on: ubuntu-latest
+    # environment: ${{ inputs.NODE_ENV }} # this is needed since some secrets are valid (not fake) only in this env type & higher
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/pnpm-install
+      # - uses: ./.github/actions/pnpm-install # no need here since Dockerfile has it
       - uses: ./.github/actions/setup-env
         with:
-          NODE_ENV: "production"
+          NODE_ENV: ${{ inputs.NODE_ENV }}
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
           NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
@@ -32,13 +35,11 @@ jobs:
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
 
-      - name: Version extraction
-        id: get_version
-        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
-      - name: Building & tagging
-        run: |
-          docker build -t ashgw/mysite:latest -f deployment/dockerfile . && docker build -t ashgw/mysite:${{ steps.get_version.outputs.version }}  -f deployment/dockerfile .
-      - name: Login
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ashgw --password-stdin
-      - name: Pushing to the hub both versions
-        run: docker push ashgw/mysite:latest && docker push ashgw/mysite:${{ steps.get_version.outputs.version }}
+      - uses: ./.github/actions/koyeb-deploy
+        with:
+          NODE_ENV: ${{ inputs.NODE_ENV }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVICE_NAME: "blog" # only blog for now, can also be "www"

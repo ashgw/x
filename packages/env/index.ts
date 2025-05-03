@@ -10,7 +10,9 @@ config({
     __dirname,
     process.env.NODE_ENV === "production"
       ? "../../.env.production"
-      : "../../.env.development", // preview is already handled by vercel
+      : process.env.NODE_ENV === "preview"
+        ? "../../.env.preview"
+        : "../../.env.development",
   ),
 });
 
