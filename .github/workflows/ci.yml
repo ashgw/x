@@ -73,6 +73,10 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
+  deploy-blog-tester:
+    uses: ./.github/workflows/on-workflow-call-blog-container-deployment.yml
+    secrets: inherit
+
   # just a trigger to dispatch
   preview-deployment:
     needs: [mergeable]
