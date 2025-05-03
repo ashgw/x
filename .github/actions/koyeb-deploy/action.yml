@@ -90,12 +90,12 @@ runs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## Koyeb Preview Deployment Ready! 
+            body: `## ${process.env.SERVICE_NAME} Preview Deployment Ready! 
 
             ### Service: \`${process.env.SERVICE_NAME}\`
             
             **Preview URL:** [Check it out here](https://${process.env.SERVICE_NAME}-preview.ashgw.me)
             
             ---
-            > This preview environment reflects the changes in this PR.`
+            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
           })
