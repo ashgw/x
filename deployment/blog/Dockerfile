@@ -9,8 +9,7 @@ RUN corepack enable
 WORKDIR /app
 COPY . .
 
-# Install dependencies and build
-RUN pnpm install --frozen-lockfile
+# just build
 RUN pnpm --filter @ashgw/blog build
 
 USER node
