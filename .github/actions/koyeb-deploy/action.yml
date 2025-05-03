@@ -1,0 +1,58 @@
+name: Koyeb Preview Deployment
+
+description: Build and deploy Docker image to Koyeb
+
+inputs:
+  NODE_ENV:
+    description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed & redeployed & where)"
+    required: true
+    default: "preview"
+  DOCKERHUB_TOKEN:
+    description: "DockerHub token"
+    required: true
+  DOCKERHUB_USERNAME:
+    description: "DockerHub username"
+    required: true
+    default: "ashgw"
+  KOYEB_TOKEN:
+    description: "Koyeb API token"
+    required: true
+  SERVICE_NAME:
+    description: "Koyeb service name, either 'blog' or 'www' or whatever app, you're running"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Login to DockerHub
+      run: echo "${{ inputs.DOCKERHUB_TOKEN }}" | docker login -u "${{ inputs.DOCKERHUB_USERNAME }}" --password-stdin
+      shell: bash
+    - name: Build and Push Docker Latest Image
+      run: |
+        docker build -t "ashgw/${{ inputs.SERVICE_NAME }}:latest" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
+        docker push "ashgw/${{ inputs.SERVICE_NAME }}:latest"
+      shell: bash
+
+    - name: Push the preview image
+      run: |
+        docker tag ashgw/${{ inputs.SERVICE_NAME }}:latest ashgw/${{ inputs.SERVICE_NAME }}:preview
+        docker push ashgw/${{ inputs.SERVICE_NAME }}:preview
+      shell: bash
+
+    - name: Install Koyeb CLI and Redeploy
+      shell: bash
+      run: |
+        # Create the Koyeb config file directly, docs suck dawg
+        cat > $HOME/.koyeb.yaml << EOF
+        debug: false
+        organization: ""
+        token: ${{ inputs.KOYEB_TOKEN }}
+        url: https://app.koyeb.com
+        EOF
+
+        # Install and configure CLI
+        curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
+        export PATH=$HOME/.koyeb/bin:$PATH
+
+        # Now directly use the CLI with the config file
+        koyeb service redeploy blog/blog
