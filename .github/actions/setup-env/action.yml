@@ -88,7 +88,7 @@ runs:
         if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
           env_file=".env.production"
         elif [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
-          env_file=".env.preview"
+          env_file=".env.production" # patch for now, TODO: remove
         fi
 
         for key in "${!env_vars[@]}"; do
