@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 services:
   main_service:
     build:
@@ -6,10 +6,10 @@ services:
       dockerfile: deployment/dockerfile
     container_name: mysite
     ports:
-      - '3000:3000'
+      - "3000:3000"
     restart: always
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: 250M
