@@ -19,6 +19,9 @@ inputs:
   SERVICE_NAME:
     description: "Koyeb service name, either 'blog' or 'www' or whatever app, you're running"
     required: true
+  GITHUB_TOKEN:
+    description: "GitHub token for PR comments"
+    required: false
 
 runs:
   using: "composite"
@@ -74,3 +77,25 @@ runs:
 
         # Now directly use the CLI with the config file and targeted environment
         koyeb service redeploy $DEPLOY_TARGET
+
+    - name: Notify about preview deployment
+      if: inputs.NODE_ENV == 'preview'
+      uses: actions/github-script@v6
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        SERVICE_NAME: ${{ inputs.SERVICE_NAME }}
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## Koyeb Preview Deployment Ready! 
+
+            ### Service: \`${process.env.SERVICE_NAME}\`
+            
+            **Preview URL:** [Check it out here](https://${process.env.SERVICE_NAME}-preview.ashgw.me)
+            
+            ---
+            > This preview environment reflects the changes in this PR.`
+          })
