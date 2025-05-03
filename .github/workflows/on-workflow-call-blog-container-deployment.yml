@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.NODE_ENV }} # this is needed since some secrets are valid (not fake) only in this env type & higher
+    # environment: ${{ inputs.NODE_ENV }} # this is needed since some secrets are valid (not fake) only in this env type & higher
     steps:
       - uses: actions/checkout@v4
       # - uses: ./.github/actions/pnpm-install # no need here since Dockerfile has it
