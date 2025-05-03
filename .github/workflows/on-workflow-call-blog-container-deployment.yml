@@ -51,6 +51,6 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           export PATH=$HOME/.koyeb/bin:$PATH
           koyeb auth login --token "${{ secrets.KOYEB_TOKEN }}"
-          koyeb service redeploy superior-silvia/blog-service
+          koyeb service redeploy blog/blog
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
