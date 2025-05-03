@@ -48,7 +48,8 @@ jobs:
 
       - name: Install Koyeb CLI and Redeploy
         run: |
-          curl -fsSL https://cli.koyeb.com/install.sh | sh
+          curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
+          export PATH=$HOME/.koyeb/bin:$PATH
           koyeb auth login --token "${{ secrets.KOYEB_TOKEN }}"
           koyeb service redeploy docker-blog/latest
         env:
