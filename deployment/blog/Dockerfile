@@ -5,11 +5,11 @@ ARG PORT=3001
 FROM node:${NODE_VERSION}-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+COPY . .
 RUN corepack enable
 WORKDIR /app
-COPY . .
 
-# just build
+# Build the application
 RUN pnpm --filter @ashgw/blog build
 
 USER node
