@@ -5,6 +5,8 @@
     "paths": {
       "~/*": ["./src/*"]
     },
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
     "module": "esnext",
     "plugins": [
       {

@@ -1,4 +1,9 @@
 {
   "extends": "@ashgw/tsconfig/base.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src"],
   "exclude": ["src/generated/**"]
 }

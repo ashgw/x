@@ -8,10 +8,10 @@ export class PostMapper {
       filename: post.slug,
       parsedContent: {
         attributes: {
-          firstModDate: post.firstModDate,
+          firstModDate: post.firstModDate.toISOString(),
           isReleased: post.isReleased,
-          isSequel: post.isSequel,
-          lastModDate: post.lastModDate,
+          isSequel: false, // TODO: remove this on submit
+          lastModDate: post.lastModDate.toISOString(),
           minutesToRead: post.minutesToRead,
           seoTitle: post.seoTitle,
           summary: post.summary,
@@ -19,6 +19,8 @@ export class PostMapper {
           title: post.title,
           category: this.mapCategory(post.category),
         },
+        body: "TODO: fill this actually",
+        bodyBegin: 0,
       },
     };
   }

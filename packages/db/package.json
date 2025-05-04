@@ -2,11 +2,34 @@
   "name": "@ashgw/db",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    },
+    "./raw": {
+      "import": "./src/raw.ts",
+      "types": "./src/raw.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "raw": [
+        "src/raw.ts"
+      ],
+      "*": [
+        "src/index.ts"
+      ]
+    }
+  },
   "scripts": {
     "format": "prettier . --write",
     "format:schema": "prisma format",
     "generate": "prisma generate",
-    "lint": "tsc --noEmit; eslint . ",
+    "lint": "tsc --noEmit && eslint .",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "migrate:diff": "prisma migrate diff",
@@ -17,7 +40,8 @@
     "push": "prisma db push",
     "seed": "prisma db seed",
     "studio": "prisma studio",
-    "validate": "prisma validate"
+    "validate": "prisma validate",
+    "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
@@ -36,10 +60,5 @@
     "prisma": "catalog:prisma6",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
-  },
-  "exports": {
-    ".": "./src/index.ts",
-    "./raw": "./src/raw.ts"
-  },
-  "type": "module"
+  }
 }
