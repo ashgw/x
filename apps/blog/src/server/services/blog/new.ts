@@ -3,9 +3,9 @@ import fm from "front-matter";
 
 import { InternalError } from "@ashgw/observability";
 
-import type { TrpcContext } from "../../../trpc/context";
 import type { S3Service } from "../s3";
 import type { MdxContentRo, PostDetailRo } from "~/server/models";
+import type { TrpcContext } from "~/trpc/context";
 import { PostMapper } from "~/server/mappers";
 import { mdxContentSchemaRo } from "~/server/models";
 import { PostQueryHelper } from "~/server/query-helpers";
