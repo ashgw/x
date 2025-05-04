@@ -17,4 +17,3 @@ export class PostQueryHelper {
     } satisfies Prisma.PostInclude;
   }
 }
-
