@@ -25,7 +25,7 @@ export class PostMapper {
       category: this.mapCategory({
         category: post.category,
       }),
-      mdxContent,
+      mdxContent: mdxContent,
     };
   }
 

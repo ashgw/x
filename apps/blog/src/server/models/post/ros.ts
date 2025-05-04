@@ -5,9 +5,9 @@
 import { z } from "zod";
 
 export enum PostCategoryEnum {
-  SOFTWARE = "software",
-  HEALTH = "health",
-  PHILOSOPHY = "philosophy",
+  SOFTWARE = "SOFTWARE", // TODO;: actually lwoercase this since it will ruin the schema parsing logic
+  HEALTH = "HEALTH",
+  PHILOSOPHY = "PHILOSOPHY",
 }
 
 export const mdxContentSchemaRo = z.object({
