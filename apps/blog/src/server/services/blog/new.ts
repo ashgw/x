@@ -1,8 +1,12 @@
+import fm from "front-matter";
+
 import { InternalError } from "@ashgw/observability";
 
 import type { TrpcContext } from "../../../trpc/context";
 import type { S3Service } from "../s3";
+import type { MdxFileContentRo } from "~/server/models";
 import { PostMapper } from "~/server/mappers";
+import { mdxFileContentSchemaRo } from "~/server/models";
 import { PostQueryHelper } from "~/server/query-helpers";
 
 export class BlogService {
@@ -13,7 +17,8 @@ export class BlogService {
 
   public async getPost({ slug }: { slug: string }) {
     const _fileContent = await this.s3Service.fetchFile({
-      key: "mdx" + "/" + slug,
+      filename: slug,
+      folder: "mdx",
     });
     const post = await this.ctx.db.post.findUnique({
       where: {
@@ -26,11 +31,31 @@ export class BlogService {
     if (!post) {
       throw new InternalError({
         code: "NOT_FOUND",
-        message: "Cannot find a post with the given slug" + slug,
+        message: "Cannot find a post with the given slug: " + slug,
       });
     }
+
     const _postDetailRo = PostMapper.toDetailRo({
       post,
     });
+  }
+
+  private _parseMDX({
+    content,
+    filePath,
+  }: {
+    content: string;
+    filePath: string;
+  }): MdxFileContentRo {
+    try {
+      const parsed = fm(content);
+      return mdxFileContentSchemaRo.parse(parsed);
+    } catch (error) {
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `MDX parsing failed for file: ${filePath} with content: ${content.slice(0, 100)}`,
+        cause: error,
+      });
+    }
   }
 }

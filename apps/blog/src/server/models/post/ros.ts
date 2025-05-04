@@ -10,8 +10,14 @@ export enum PostCategoryEnum {
   PHILOSOPHY = "philosophy",
 }
 
-const metaDataAttributesSchemaRo = z.object({
-  title: z.string().min(1),
+export const mdxContentSchemaRo = z.object({
+  bodys: z.string().min(1),
+  bodyBegin: z.number(), // needed for MDX parsing
+});
+
+export const postSchemaRo = z.object({
+  slug: z.string().min(1),
+  title: z.string().min(3),
   seoTitle: z.string().min(1),
   summary: z.string().min(1),
   // fetching from mdx file, that's why not a date
@@ -25,20 +31,5 @@ const metaDataAttributesSchemaRo = z.object({
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
   category: z.nativeEnum(PostCategoryEnum),
+  mdxContent: mdxContentSchemaRo,
 });
-
-export const mdxFileContentSchemaRo = z.object({
-  attributes: metaDataAttributesSchemaRo,
-  mdxContent: z.object({
-    uri: z.string().min(10),
-  }),
-  bodyBegin: z.number(), // needed for MDX parsing
-});
-
-export const postDetailSchemaRo = z.object({
-  slug: z.string().min(1),
-  parsedContent: mdxFileContentSchemaRo,
-});
-
-export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
-export type MdxFileContentRo = z.infer<typeof mdxFileContentSchemaRo>;

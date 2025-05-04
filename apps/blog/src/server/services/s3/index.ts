@@ -66,6 +66,18 @@ export class S3Service {
     return this._listKeysWithPrefix({ prefix: `${folder}/` });
   }
 
+  public async fetchFile<F extends Folder>({
+    filename,
+    folder,
+  }: {
+    folder: F;
+    filename: string;
+  }) {
+    return this.fetchAnyFile({
+      key: folder + "/" + filename,
+    });
+  }
+
   /**
    * fetchFile
    *
@@ -74,7 +86,7 @@ export class S3Service {
    * @param key - The key of the file in S3
    * @throws InternalError if the object does not exist or the Body is not a Buffer
    */
-  public async fetchFile({ key }: { key: string }): Promise<Buffer> {
+  public async fetchAnyFile({ key }: { key: string }): Promise<Buffer> {
     const res = await this.client
       .getObject({ Bucket: this.bucket, Key: key })
       .promise();

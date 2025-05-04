@@ -49,7 +49,9 @@ export class BlogService {
       // Check if the file exists in S3
       await BlogService.s3Service.checkFileExists({ key: s3Key });
 
-      const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
+      const buffer = await BlogService.s3Service.fetchAnyFile({
+        filename: s3Key,
+      });
       const rawContent = buffer.toString("utf-8");
       const metadata = this._parseMDX(rawContent, s3Key);
       return {
@@ -67,7 +69,9 @@ export class BlogService {
 
   private async _readMDXFileFromS3(s3Key: string): Promise<MdxFileContentRo> {
     try {
-      const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
+      const buffer = await BlogService.s3Service.fetchAnyFile({
+        filename: s3Key,
+      });
       const rawContent = buffer.toString("utf-8");
       return this._parseMDX(rawContent, s3Key);
     } catch (error) {
