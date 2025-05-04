@@ -1,26 +1,36 @@
-import type { DatabaseClient } from "@ashgw/db";
+import { InternalError } from "@ashgw/observability";
+
+import type { TrpcContext } from "../../../trpc/context";
+import type { S3Service } from "../s3";
+import { PostMapper } from "~/server/mappers";
+import { PostQueryHelper } from "~/server/query-helpers";
 
 export class BlogService {
-  constructor(private readonly db: DatabaseClient) {}
+  constructor(
+    private readonly ctx: TrpcContext,
+    private s3Service: S3Service,
+  ) {}
 
   public async getPost({ slug }: { slug: string }) {
-    const post = await this.db.post.findUnique({
+    const _fileContent = await this.s3Service.fetchFile({
+      key: "mdx" + "/" + slug,
+    });
+    const post = await this.ctx.db.post.findUnique({
       where: {
         slug,
       },
       include: {
-        mdxContent: {
-          select: {
-            url: true,
-            key: true,
-            size: true,
-            type: true,
-          },
-        },
+        ...PostQueryHelper.detailInclude(),
       },
     });
     if (!post) {
-      throw new Error("Post not found");
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: "Cannot find a post with the given slug" + slug,
+      });
     }
+    const _postDetailRo = PostMapper.toDetailRo({
+      post,
+    });
   }
 }

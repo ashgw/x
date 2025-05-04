@@ -71,18 +71,18 @@ export class S3Service {
    *
    * Downloads the object at `filename` from S3 and returns its body as a Buffer.
    *
-   * @param filename - The key of the file in S3
+   * @param key - The key of the file in S3
    * @throws InternalError if the object does not exist or the Body is not a Buffer
    */
-  public async fetchFile({ filename }: { filename: string }): Promise<Buffer> {
+  public async fetchFile({ key }: { key: string }): Promise<Buffer> {
     const res = await this.client
-      .getObject({ Bucket: this.bucket, Key: filename })
+      .getObject({ Bucket: this.bucket, Key: key })
       .promise();
 
     if (!res.Body) {
       throw new InternalError({
         code: "NOT_FOUND",
-        message: `File ${filename} not found`,
+        message: `File ${key} not found`,
       });
     }
 
