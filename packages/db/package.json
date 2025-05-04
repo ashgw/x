@@ -38,7 +38,8 @@
     "typescript": "catalog:"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./raw": "./src/raw.ts"
   },
   "type": "module"
 }
