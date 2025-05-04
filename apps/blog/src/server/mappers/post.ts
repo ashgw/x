@@ -10,8 +10,8 @@ export class PostMapper {
       parsedContent: {
         attributes: {
           firstModDate: post.firstModDate.toISOString(),
+          lastModDate: post.mdxContent.uploadedAt.toISOString(),
           isReleased: post.isReleased,
-          lastModDate: post.lastModDate.toISOString(),
           minutesToRead: post.minutesToRead,
           seoTitle: post.seoTitle,
           summary: post.summary,
@@ -21,7 +21,9 @@ export class PostMapper {
             category: post.category,
           }),
         },
-        body: "TODO: fill this up",
+        mdxContent: {
+          uri: post.mdxContent.key,
+        },
         bodyBegin: 0,
       },
     };

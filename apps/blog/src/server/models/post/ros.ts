@@ -23,7 +23,9 @@ const metaDataAttributesSchemaRo = z.object({
 
 const mdxFileDataSchemaRo = z.object({
   attributes: metaDataAttributesSchemaRo,
-  body: z.string().min(1),
+  mdxContent: z.object({
+    uri: z.string().min(10),
+  }),
   bodyBegin: z.number(), // needed for MDX parsing
 });
 
