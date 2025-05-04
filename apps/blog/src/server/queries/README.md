@@ -9,5 +9,7 @@
 These are TS types written as 
 
 ```
-<Entity><Detail|List|...<Query>
+<Entity><Intent><Query>
 ```
+- `PostDetailQuery`
+- `PostAdminQuery`

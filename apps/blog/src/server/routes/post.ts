@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 import { publicProcedure, router } from "../../trpc/trpc";
-import { getPostDtoSchema, postDetailSchemaRo } from "../models";
+import { postDetailSchemaRo, postGetSchemaDto } from "../models";
 import { BlogService } from "../services";
 
 const blogService = new BlogService(); // for pools
 
 export const postRouter = router({
   getPost: publicProcedure
-    .input(getPostDtoSchema)
+    .input(postGetSchemaDto)
     .output(postDetailSchemaRo)
     .query(async ({ input }) => {
       const post = await blogService.getPost({

@@ -1,11 +1,11 @@
 // Follow this naming convention for zod schemas and types
-// <action>-<Entity(s)>-dtoSchema for zod schemas
-// <Action>-<Entity(s)>-dto for the types of the dtos
+// <entity><action>SchemaDto for zod schemas
+// <entity><action>Dto for the types of the dtos
 
 import { z } from "zod";
 
-export const getPostDtoSchema = z.object({
+export const postGetSchemaDto = z.object({
   filename: z.string().min(1),
 });
 
-export type GetPostDto = z.infer<typeof getPostDtoSchema>;
+export type PostGetDto = z.infer<typeof postGetSchemaDto>;
