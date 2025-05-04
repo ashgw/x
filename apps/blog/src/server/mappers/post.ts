@@ -1,16 +1,15 @@
 import type { Post, PostCategory } from "@ashgw/db/raw";
 
-import type { PostDataRo } from "../models";
+import type { PostDetailRo } from "../models";
 
 export class PostMapper {
-  public static ro({ post }: { post: Post }): PostDataRo {
+  public static toDetailRo({ post }: { post: Post }): PostDetailRo {
     return {
       filename: post.slug,
       parsedContent: {
         attributes: {
           firstModDate: post.firstModDate.toISOString(),
           isReleased: post.isReleased,
-          isSequel: false, // TODO: remove this on submit
           lastModDate: post.lastModDate.toISOString(),
           minutesToRead: post.minutesToRead,
           seoTitle: post.seoTitle,
@@ -24,9 +23,10 @@ export class PostMapper {
       },
     };
   }
+
   private static mapCategory(
     category: PostCategory,
-  ): PostDataRo["parsedContent"]["attributes"]["category"] {
+  ): PostDetailRo["parsedContent"]["attributes"]["category"] {
     switch (category) {
       case "HEALTH":
         return "health";

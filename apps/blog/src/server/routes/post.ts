@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { publicProcedure, router } from "../../trpc/trpc";
-import { getPostDtoSchema, postDataSchemaRo } from "../models";
+import { getPostDtoSchema, postDetailSchemaRo } from "../models";
 import { BlogService } from "../services";
 
 const blogService = new BlogService(); // for pools
@@ -9,7 +9,7 @@ const blogService = new BlogService(); // for pools
 export const postRouter = router({
   getPost: publicProcedure
     .input(getPostDtoSchema)
-    .output(postDataSchemaRo)
+    .output(postDetailSchemaRo)
     .query(async ({ input }) => {
       const post = await blogService.getPost({
         filename: input.filename,
@@ -18,7 +18,7 @@ export const postRouter = router({
     }),
 
   getPosts: publicProcedure
-    .output(z.array(postDataSchemaRo))
+    .output(z.array(postDetailSchemaRo))
     .query(async () => {
       const posts = await blogService.getPosts();
       return posts;

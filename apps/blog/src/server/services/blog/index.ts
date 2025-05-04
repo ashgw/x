@@ -3,7 +3,7 @@ import fm from "front-matter";
 
 import { InternalError, logger } from "@ashgw/observability";
 
-import type { MdxFileDataRo, PostDataRo } from "~/server/models";
+import type { MdxFileDataRo, PostDetailRo } from "~/server/models";
 import { mdxFileDataSchemaRo } from "~/server/models";
 import { S3Service } from "../s3";
 
@@ -11,7 +11,7 @@ export class BlogService {
   private readonly EXT = ".mdx";
   private static readonly s3Service = new S3Service();
 
-  public async getPosts(): Promise<PostDataRo[]> {
+  public async getPosts(): Promise<PostDetailRo[]> {
     const folder = "mdx";
 
     try {
@@ -46,7 +46,7 @@ export class BlogService {
     filename,
   }: {
     filename: string;
-  }): Promise<PostDataRo> {
+  }): Promise<PostDetailRo> {
     const s3Key = `mdx/${filename}${this.EXT}`; // always POSIX for S3
 
     try {

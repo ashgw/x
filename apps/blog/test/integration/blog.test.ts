@@ -6,7 +6,7 @@ import { expect, test } from "vitest";
 import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/server/router";
-import { postDataSchemaRo } from "~/server/models";
+import { postDetailSchemaRo } from "~/server/models";
 import { appRouter } from "~/server/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
@@ -26,7 +26,7 @@ test("load and validate all blog posts", async () => {
   const posts = await caller.post.getPosts();
 
   for (const post of posts) {
-    expect(() => postDataSchemaRo.parse(post)).not.toThrow();
+    expect(() => postDetailSchemaRo.parse(post)).not.toThrow();
   }
 });
 
@@ -40,5 +40,5 @@ test("load and validate a single blog post", async () => {
 
   const post = await caller.post.getPost(input);
 
-  expect(post).toMatchObject(postDataSchemaRo.parse(post));
+  expect(post).toMatchObject(postDetailSchemaRo.parse(post));
 });

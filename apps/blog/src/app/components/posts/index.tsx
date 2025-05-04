@@ -7,12 +7,12 @@ import { CheckCheck, ChevronDown } from "lucide-react";
 
 import { Footer } from "@ashgw/components";
 
-import type { PostDataRo } from "~/server/models";
+import type { PostDetailRo } from "~/server/models";
 import { usePostsContext } from "./components/Context";
 import { PostCard } from "./components/Postcard";
 
 interface PostsProps {
-  posts: PostDataRo[];
+  posts: PostDetailRo[];
 }
 
 type Category = "Software" | "Health" | "Philosophy";
