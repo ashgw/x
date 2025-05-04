@@ -26,7 +26,9 @@ model Post {
   minutesToRead Int          @db.SmallInt
   tags          String[]
   category      PostCategory
-  uploads       Upload[]     @relation("PostUploads") // voice, mdx, image, audio & basically any blob inside the post
+  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [id])
+  mdxContentId  String       @unique @db.VarChar(255)
+  // will be adding other uploads here when I add them, audio, video, etc
 }
 
 model User {
@@ -72,6 +74,7 @@ enum UploadType {
   OTHER // not specific to the post
 }
 
+
 // using using s3 buckets rn
 model Upload {
   id          String       @id @default(cuid()) @db.VarChar(255)
@@ -82,8 +85,5 @@ model Upload {
   contentType String       @db.VarChar(100) // e.g. image/png, audio/mpeg, video/mp4, text/markdown
   size        Int
   uploadedAt  DateTime     @default(now())
-  entityId    String?      @db.VarChar(255)
-  post        Post?        @relation("PostUploads", fields: [entityId], references: [slug])
-
-  @@index([entityId])
+  post        Post?        @relation("PostMdxContent")
 }
