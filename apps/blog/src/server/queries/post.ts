@@ -7,7 +7,14 @@ export type PostDetailQuery = Prisma.PostGetPayload<{
 export class PostQueryHelper {
   public static detailInclude() {
     return {
+      ...this.includeWithMdx(),
+    } satisfies Prisma.PostInclude;
+  }
+
+  private static includeWithMdx() {
+    return {
       mdxContent: true,
     } satisfies Prisma.PostInclude;
   }
 }
+

@@ -4,6 +4,12 @@
 
 import { z } from "zod";
 
+export enum PostCategoryEnum {
+  SOFTWARE = "software",
+  HEALTH = "health",
+  PHILOSOPHY = "philosophy",
+}
+
 const metaDataAttributesSchemaRo = z.object({
   title: z.string().min(1),
   seoTitle: z.string().min(1),
@@ -18,7 +24,7 @@ const metaDataAttributesSchemaRo = z.object({
   isReleased: z.boolean(),
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
-  category: z.enum(["software", "health", "philosophy"]),
+  category: z.nativeEnum(PostCategoryEnum),
 });
 
 const mdxFileDataSchemaRo = z.object({

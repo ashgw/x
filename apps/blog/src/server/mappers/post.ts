@@ -2,6 +2,7 @@ import type { PostCategory } from "@ashgw/db/raw";
 
 import type { PostDetailRo } from "../models";
 import type { PostDetailQuery } from "../queries";
+import { PostCategoryEnum } from "../models";
 
 export class PostMapper {
   public static toDetailRo({ post }: { post: PostDetailQuery }): PostDetailRo {
@@ -33,14 +34,14 @@ export class PostMapper {
     category,
   }: {
     category: PostCategory;
-  }): PostDetailRo["parsedContent"]["attributes"]["category"] {
+  }): PostCategoryEnum {
     switch (category) {
       case "HEALTH":
-        return "health";
+        return PostCategoryEnum.HEALTH;
       case "PHILOSOPHY":
-        return "philosophy";
+        return PostCategoryEnum.PHILOSOPHY;
       case "SOFTWARE":
-        return "software";
+        return PostCategoryEnum.SOFTWARE;
     }
   }
 }
