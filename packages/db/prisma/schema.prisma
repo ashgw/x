@@ -17,9 +17,9 @@ datasource db {
 
 model Post {
   slug          String       @id @db.VarChar(255) // will show in the URL, unique for all posts
-  title         String       @db.VarChar(200)
-  seoTitle      String       @db.VarChar(300)
-  summary       String       @db.VarChar(300) // can or cannot be the same as the SEO title
+  title         String       @db.VarChar(30)
+  seoTitle      String       @db.VarChar(100)
+  summary       String       @db.VarChar(100) // can or cannot be the same as the SEO title
   firstModDate  DateTime     @db.Timestamp(3)
   lastModDate   DateTime     @updatedAt @db.Timestamp(3)
   isReleased    Boolean

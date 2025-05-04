@@ -66,7 +66,6 @@ const db =
     },
   }) satisfies DatabaseClient);
 
-
 // store the singletons in dev to avoid leaks when reloading
 if (env.NODE_ENV === "development") {
   globalForDb.pool = pool;
