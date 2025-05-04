@@ -6,7 +6,7 @@ import type { PostDetailQuery } from "../queries";
 export class PostMapper {
   public static toDetailRo({ post }: { post: PostDetailQuery }): PostDetailRo {
     return {
-      filename: post.slug,
+      slug: post.slug,
       parsedContent: {
         attributes: {
           firstModDate: post.firstModDate.toISOString(),

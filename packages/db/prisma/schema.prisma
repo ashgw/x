@@ -26,7 +26,7 @@ model Post {
   minutesToRead Int          @db.SmallInt
   tags          String[]
   category      PostCategory
-  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [id])
+  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key])
   mdxContentId  String       @unique @db.VarChar(255)
   // will be adding other uploads here when I add them, audio, video, etc
 }
@@ -77,13 +77,10 @@ enum UploadType {
 
 // using using s3 buckets rn
 model Upload {
-  id          String       @id @default(cuid()) @db.VarChar(255)
-  key         String       @unique @db.VarChar(512) // s3 key
-  url         String       @db.VarChar(1024)
+  key         String       @id @db.VarChar(512) // s3 key
   type        UploadType
   entityType  ResourceType @default(POST)
   contentType String       @db.VarChar(100) // e.g. image/png, audio/mpeg, video/mp4, text/markdown
-  size        Int
   uploadedAt  DateTime     @default(now())
   post        Post?        @relation("PostMdxContent")
 }
