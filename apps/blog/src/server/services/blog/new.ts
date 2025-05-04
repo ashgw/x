@@ -37,20 +37,24 @@ export class BlogService {
         message: "Cannot find a post with the given slug: " + slug,
       });
     }
+    const fontMatterMdxBodyContent = this._parseMDX({
+      content: mdxFileContentBuffer.toString("utf-8"),
+      slug,
+    });
 
     const postDetailRo = PostMapper.toDetailRo({
       post,
-      mdxBodyContent: mdxFileContentBuffer.toString("utf-8"),
+      mdxContent: fontMatterMdxBodyContent,
     });
     return postDetailRo;
   }
 
   private _parseMDX({
     content,
-    filePath,
+    slug,
   }: {
     content: string;
-    filePath: string;
+    slug: string;
   }): MdxContentRo {
     try {
       const parsed: FrontMatterResult<"none"> = fm(content);
@@ -58,7 +62,7 @@ export class BlogService {
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `MDX parsing failed for file: ${filePath} with content: ${content.slice(0, 100)}`,
+        message: `MDX parsing failed for file: ${slug} with content: ${content.slice(0, 100)}`,
         cause: error,
       });
     }

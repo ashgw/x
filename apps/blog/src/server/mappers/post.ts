@@ -1,16 +1,16 @@
 import type { PostCategory } from "@ashgw/db/raw";
 
-import type { PostDetailRo } from "../models";
+import type { MdxContentRo, PostDetailRo } from "../models";
 import type { PostDetailQuery } from "../query-helpers";
 import { PostCategoryEnum } from "../models";
 
 export class PostMapper {
   public static toDetailRo({
     post,
-    mdxBodyContent,
+    mdxContent,
   }: {
     post: PostDetailQuery;
-    mdxBodyContent: string;
+    mdxContent: MdxContentRo;
   }): PostDetailRo {
     return {
       slug: post.slug,
@@ -25,10 +25,7 @@ export class PostMapper {
       category: this.mapCategory({
         category: post.category,
       }),
-      mdxContent: {
-        bodyBegin: 0,
-        body: mdxBodyContent,
-      },
+      mdxContent,
     };
   }
 
