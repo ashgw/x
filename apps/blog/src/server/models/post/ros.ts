@@ -4,7 +4,7 @@
 
 import { z } from "zod";
 
-export const metaDataAttributesSchemaRo = z.object({
+const metaDataAttributesSchemaRo = z.object({
   title: z.string().min(1),
   seoTitle: z.string().min(1),
   summary: z.string().min(1),
@@ -21,17 +21,15 @@ export const metaDataAttributesSchemaRo = z.object({
   category: z.enum(["software", "health", "philosophy"]),
 });
 
-export const mdxFileDataSchemaRo = z.object({
+const mdxFileDataSchemaRo = z.object({
   attributes: metaDataAttributesSchemaRo,
   body: z.string().min(1),
-  bodyBegin: z.number(),
+  bodyBegin: z.number(), // needed for MDX parsing
 });
 
 export const postDetailSchemaRo = z.object({
+  slug: z.string().min(1),
   parsedContent: mdxFileDataSchemaRo,
-  filename: z.string(),
 });
 
-export type MetaDataAttributesRo = z.infer<typeof metaDataAttributesSchemaRo>;
-export type MdxFileDataRo = z.infer<typeof mdxFileDataSchemaRo>;
 export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
