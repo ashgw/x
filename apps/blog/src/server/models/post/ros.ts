@@ -27,7 +27,7 @@ const metaDataAttributesSchemaRo = z.object({
   category: z.nativeEnum(PostCategoryEnum),
 });
 
-const mdxFileDataSchemaRo = z.object({
+export const mdxFileContentSchemaRo = z.object({
   attributes: metaDataAttributesSchemaRo,
   mdxContent: z.object({
     uri: z.string().min(10),
@@ -37,7 +37,8 @@ const mdxFileDataSchemaRo = z.object({
 
 export const postDetailSchemaRo = z.object({
   slug: z.string().min(1),
-  parsedContent: mdxFileDataSchemaRo,
+  parsedContent: mdxFileContentSchemaRo,
 });
 
 export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
+export type MdxFileContentRo = z.infer<typeof mdxFileContentSchemaRo>;

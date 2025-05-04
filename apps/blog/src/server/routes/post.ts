@@ -12,7 +12,7 @@ export const postRouter = router({
     .output(postDetailSchemaRo)
     .query(async ({ input }) => {
       const post = await blogService.getPost({
-        filename: input.filename,
+        slug: input.slug,
       });
       return post;
     }),

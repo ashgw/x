@@ -5,7 +5,7 @@
 import { z } from "zod";
 
 export const postGetSchemaDto = z.object({
-  filename: z.string().min(1),
+  slug: z.string().min(1),
 });
 
 export type PostGetDto = z.infer<typeof postGetSchemaDto>;

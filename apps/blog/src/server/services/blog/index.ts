@@ -3,8 +3,8 @@ import fm from "front-matter";
 
 import { InternalError, logger } from "@ashgw/observability";
 
-import type { MdxFileDataRo, PostDetailRo } from "~/server/models";
-import { mdxFileDataSchemaRo } from "~/server/models";
+import type { MdxFileContentRo, PostDetailRo } from "~/server/models";
+import { mdxFileContentSchemaRo } from "~/server/models";
 import { S3Service } from "../s3";
 
 export class BlogService {
@@ -26,7 +26,7 @@ export class BlogService {
           const metadata = await this._readMDXFileFromS3(key); // pass key as-is
           return {
             parsedContent: metadata,
-            filename: path.basename(key, this.EXT), // strip folder+ext
+            slug: path.basename(key, this.EXT), // strip folder+ext
           };
         }),
       );
@@ -42,12 +42,8 @@ export class BlogService {
     }
   }
 
-  public async getPost({
-    filename,
-  }: {
-    filename: string;
-  }): Promise<PostDetailRo> {
-    const s3Key = `mdx/${filename}${this.EXT}`; // always POSIX for S3
+  public async getPost({ slug }: { slug: string }): Promise<PostDetailRo> {
+    const s3Key = `mdx/${slug}${this.EXT}`; // always POSIX for S3
 
     try {
       // Check if the file exists in S3
@@ -58,18 +54,18 @@ export class BlogService {
       const metadata = this._parseMDX(rawContent, s3Key);
       return {
         parsedContent: metadata,
-        filename,
+        slug,
       };
     } catch (error) {
       throw new InternalError({
         code: "NOT_FOUND",
-        message: `Post not found: ${filename} in S3 at ${s3Key}`,
+        message: `Post not found: ${slug} in S3 at ${s3Key}`,
         cause: error,
       });
     }
   }
 
-  private async _readMDXFileFromS3(s3Key: string): Promise<MdxFileDataRo> {
+  private async _readMDXFileFromS3(s3Key: string): Promise<MdxFileContentRo> {
     try {
       const buffer = await BlogService.s3Service.fetchFile({ filename: s3Key });
       const rawContent = buffer.toString("utf-8");
@@ -83,10 +79,10 @@ export class BlogService {
     }
   }
 
-  private _parseMDX(content: string, filePath: string): MdxFileDataRo {
+  private _parseMDX(content: string, filePath: string): MdxFileContentRo {
     try {
       const parsed = fm(content);
-      return mdxFileDataSchemaRo.parse(parsed);
+      return mdxFileContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
