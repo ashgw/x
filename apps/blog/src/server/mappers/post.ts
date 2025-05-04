@@ -7,6 +7,7 @@ import { PostCategoryEnum } from "../models";
 export class PostMapper {
   public static toDetailRo({
     post,
+    mdxBodyContent,
   }: {
     post: PostDetailQuery;
     mdxBodyContent: string;
@@ -26,7 +27,7 @@ export class PostMapper {
       }),
       mdxContent: {
         bodyBegin: 0,
-        body: post.mdxContent.key,
+        body: mdxBodyContent,
       },
     };
   }
