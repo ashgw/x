@@ -1,9 +1,10 @@
-import type { Post, PostCategory } from "@ashgw/db/raw";
+import type { PostCategory } from "@ashgw/db/raw";
 
 import type { PostDetailRo } from "../models";
+import type { PostDetailQuery } from "../queries";
 
 export class PostMapper {
-  public static toDetailRo({ post }: { post: Post }): PostDetailRo {
+  public static toDetailRo({ post }: { post: PostDetailQuery }): PostDetailRo {
     return {
       filename: post.slug,
       parsedContent: {
@@ -16,17 +17,21 @@ export class PostMapper {
           summary: post.summary,
           tags: post.tags,
           title: post.title,
-          category: this.mapCategory(post.category),
+          category: this.mapCategory({
+            category: post.category,
+          }),
         },
-        body: "TODO: fill this actually",
+        body: "TODO: fill this up",
         bodyBegin: 0,
       },
     };
   }
 
-  private static mapCategory(
-    category: PostCategory,
-  ): PostDetailRo["parsedContent"]["attributes"]["category"] {
+  private static mapCategory({
+    category,
+  }: {
+    category: PostCategory;
+  }): PostDetailRo["parsedContent"]["attributes"]["category"] {
     switch (category) {
       case "HEALTH":
         return "health";
