@@ -1,31 +1,32 @@
 import type { PostCategory } from "@ashgw/db/raw";
 
 import type { PostDetailRo } from "../models";
-import type { PostDetailQuery } from "../queries";
+import type { PostDetailQuery } from "../query-helpers";
 import { PostCategoryEnum } from "../models";
 
 export class PostMapper {
-  public static toDetailRo({ post }: { post: PostDetailQuery }): PostDetailRo {
+  public static toDetailRo({
+    post,
+  }: {
+    post: PostDetailQuery;
+    mdxBodyContent: string;
+  }): PostDetailRo {
     return {
       slug: post.slug,
-      parsedContent: {
-        attributes: {
-          firstModDate: post.firstModDate.toISOString(),
-          lastModDate: post.mdxContent.uploadedAt.toISOString(),
-          isReleased: post.isReleased,
-          minutesToRead: post.minutesToRead,
-          seoTitle: post.seoTitle,
-          summary: post.summary,
-          tags: post.tags,
-          title: post.title,
-          category: this.mapCategory({
-            category: post.category,
-          }),
-        },
-        mdxContent: {
-          uri: post.mdxContent.key,
-        },
+      title: post.title,
+      seoTitle: post.seoTitle,
+      summary: post.summary,
+      firstModDate: post.firstModDate.toISOString(),
+      lastModDate: post.lastModDate.toISOString(),
+      isReleased: post.isReleased,
+      minutesToRead: post.minutesToRead,
+      tags: post.tags,
+      category: this.mapCategory({
+        category: post.category,
+      }),
+      mdxContent: {
         bodyBegin: 0,
+        body: post.mdxContent.key,
       },
     };
   }

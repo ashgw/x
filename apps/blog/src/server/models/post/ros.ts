@@ -11,11 +11,11 @@ export enum PostCategoryEnum {
 }
 
 export const mdxContentSchemaRo = z.object({
-  bodys: z.string().min(1),
+  body: z.string().min(1),
   bodyBegin: z.number(), // needed for MDX parsing
 });
 
-export const postSchemaRo = z.object({
+export const postDetailSchemaRo = z.object({
   slug: z.string().min(1),
   title: z.string().min(3),
   seoTitle: z.string().min(1),
@@ -33,3 +33,6 @@ export const postSchemaRo = z.object({
   category: z.nativeEnum(PostCategoryEnum),
   mdxContent: mdxContentSchemaRo,
 });
+
+export type MdxContentRo = z.infer<typeof mdxContentSchemaRo>;
+export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
