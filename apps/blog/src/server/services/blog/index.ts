@@ -13,6 +13,7 @@ export class BlogService {
 
   public async getPosts(): Promise<PostDetailRo[]> {
     const folder = "mdx";
+    attributes: metaDataAttributesSchemaRo,
 
     try {
       const keys = await BlogService.s3Service.listAllFilesInFolder({ folder });

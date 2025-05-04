@@ -1,12 +1,13 @@
+import type { FrontMatterResult } from "front-matter";
 import fm from "front-matter";
 
 import { InternalError } from "@ashgw/observability";
 
 import type { TrpcContext } from "../../../trpc/context";
 import type { S3Service } from "../s3";
-import type { MdxFileContentRo } from "~/server/models";
+import type { MdxContentRo, PostDetailRo } from "~/server/models";
 import { PostMapper } from "~/server/mappers";
-import { mdxFileContentSchemaRo } from "~/server/models";
+import { mdxContentSchemaRo } from "~/server/models";
 import { PostQueryHelper } from "~/server/query-helpers";
 
 export class BlogService {
@@ -15,11 +16,12 @@ export class BlogService {
     private s3Service: S3Service,
   ) {}
 
-  public async getPost({ slug }: { slug: string }) {
-    const _fileContent = await this.s3Service.fetchFile({
+  public async getPost({ slug }: { slug: string }): Promise<PostDetailRo> {
+    const mdxFileContentBuffer = await this.s3Service.fetchFile({
       filename: slug,
       folder: "mdx",
     });
+
     const post = await this.ctx.db.post.findUnique({
       where: {
         slug,
@@ -28,6 +30,7 @@ export class BlogService {
         ...PostQueryHelper.detailInclude(),
       },
     });
+
     if (!post) {
       throw new InternalError({
         code: "NOT_FOUND",
@@ -35,9 +38,11 @@ export class BlogService {
       });
     }
 
-    const _postDetailRo = PostMapper.toDetailRo({
+    const postDetailRo = PostMapper.toDetailRo({
       post,
+      mdxBodyContent: mdxFileContentBuffer.toString("utf-8"),
     });
+    return postDetailRo;
   }
 
   private _parseMDX({
@@ -46,10 +51,10 @@ export class BlogService {
   }: {
     content: string;
     filePath: string;
-  }): MdxFileContentRo {
+  }): MdxContentRo {
     try {
-      const parsed = fm(content);
-      return mdxFileContentSchemaRo.parse(parsed);
+      const parsed: FrontMatterResult<"none"> = fm(content);
+      return mdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
