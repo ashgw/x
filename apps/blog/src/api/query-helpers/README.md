@@ -4,12 +4,13 @@
 <Entity>QueryHelper`
 ```
 
-### Query 
+### Query
 
-These are TS types written as 
+These are TS types written as
 
 ```
 <Entity><Intent><Query>
 ```
+
 - `PostDetailQuery`
 - `PostAdminQuery`

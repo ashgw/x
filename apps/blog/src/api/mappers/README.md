@@ -1,6 +1,7 @@
-### Mapper Classes 
+### Mapper Classes
+
 <Entity>Mapper`
 
-### Mapper Methods 
+### Mapper Methods
 
 to<Shape>Ro / from<Shape>Dto
