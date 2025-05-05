@@ -1,4 +1,17 @@
 import { db } from "@ashgw/db";
+import { S3Service } from "@ashgw/services";
+
+import { blogs } from "./data/blogs";
+
+export const uploadFile = async () => {
+  const s3Service = new S3Service();
+  await s3Service.uploadFile({
+    filename: "branded-types.mdx",
+    folder: "mdx",
+    body: Buffer.from(""),
+    contentType: "text/markdown",
+  });
+};
 
 // TODO: change this whole implementation in the newt PR since this is mad dumb G
 export const seed = async () => {

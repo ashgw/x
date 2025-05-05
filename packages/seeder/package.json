@@ -24,6 +24,7 @@
   "dependencies": {
     "@ashgw/db": "workspace:*",
     "@ashgw/env": "workspace:*",
+    "@ashgw/services": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {

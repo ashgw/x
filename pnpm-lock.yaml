@@ -820,6 +820,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
+      '@ashgw/services':
+        specifier: workspace:*
+        version: link:../services
       zod:
         specifier: 'catalog:'
         version: 3.23.8
