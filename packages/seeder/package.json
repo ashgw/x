@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "@ashgw/db": "workspace:*",
-    "@ashgw/services": "workspace:*"
+    "@ashgw/services": "workspace:*",
+    "tsx": "4.19.4"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
