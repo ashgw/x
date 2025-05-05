@@ -29,6 +29,7 @@ catalog:
   framer-motion: ^10.17.4
   "@types/node": ^20.11.17
   "@tanstack/react-query": "5.71.10"
+  "aws-sdk": "2.1692.0"
 
 catalogs:
   trpc11:

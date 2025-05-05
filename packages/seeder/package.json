@@ -24,12 +24,13 @@
   "dependencies": {
     "@ashgw/db": "workspace:*",
     "@ashgw/services": "workspace:*",
-    "tsx": "4.19.4"
+    "aws-sdk": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "ts-roids": "catalog:",
+    "tsx": "4.19.4",
     "typescript": "catalog:"
   }
 }
