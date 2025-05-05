@@ -1,8 +1,8 @@
-import type { PostDetailRo } from "~/api/models";
-import { Posts } from "~/app/components/posts";
-import { PostsProvider } from "~/app/components/posts/components/Context";
+import type { PostCardRo } from "~/api/models";
+import { PostCards } from "~/app/components/postCards";
+import { PostsProvider } from "~/app/components/postCards/components/Context";
 
-export function BlogCards({ posts }: { posts: PostDetailRo[] }) {
+export function BlogCards({ posts }: { posts: PostCardRo[] }) {
   return (
     <>
       <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
@@ -10,7 +10,7 @@ export function BlogCards({ posts }: { posts: PostDetailRo[] }) {
           Unclassified, raw
         </h1>
         <PostsProvider>
-          <Posts posts={posts} />
+          <PostCards posts={posts} />
         </PostsProvider>
         <div className="h-full w-auto"></div>
       </section>

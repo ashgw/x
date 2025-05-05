@@ -21,7 +21,7 @@ function capitalizeFirst(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function Posts({ posts }: PostsProps) {
+export function PostCards({ posts }: PostsProps) {
   const { visibleNum, setVisibleNum } = usePostsContext();
   const [selectedCategory, setSelectedCategory] =
     useState<Category>("SOFTWARE");

@@ -1,15 +1,9 @@
-import type { PostDetailRo } from "~/api/models";
+import type { PostCardRo } from "~/api/models";
 import { BlogCards } from "~/app/components/pages/home/components/BlogCards";
 import { NoTagsFound } from "./components/NoTagsFound";
 
-export function TagsPage({
-  posts,
-  tag,
-}: {
-  posts: PostDetailRo[];
-  tag: string;
-}) {
-  const postsWithTag: PostDetailRo[] = [];
+export function TagsPage({ posts, tag }: { posts: PostCardRo[]; tag: string }) {
+  const postsWithTag: PostCardRo[] = [];
 
   const allAvailableTags = new Set<string>("");
 
