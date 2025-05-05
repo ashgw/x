@@ -12,7 +12,7 @@ export class PostQueryHelper {
   public static detailInclude() {
     return {
       ...this.cardInclude(),
-      ...this.includeWithMdx(),
+      ...this._includeWithMdx(),
     } satisfies Prisma.PostInclude;
   }
 
@@ -29,7 +29,7 @@ export class PostQueryHelper {
     } satisfies Prisma.PostWhereInput;
   }
 
-  private static includeWithMdx() {
+  private static _includeWithMdx() {
     return {
       mdxContent: true,
     } satisfies Prisma.PostInclude;
