@@ -71,7 +71,10 @@ export class NewsletterService {
       const errorMessage =
         data.errors?.join(", ") ?? data.message ?? "Unknown error";
 
-      throw new Error(`Kit API error (${res.status}): ${errorMessage}`);
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Kit API error (${res.status}): ${errorMessage}`,
+      });
     }
   }
 }
