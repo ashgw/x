@@ -209,9 +209,6 @@ importers:
       '@trpc/server':
         specifier: catalog:trpc11
         version: 11.0.2(typescript@5.6.3)
-      aws-sdk:
-        specifier: 2.1692.0
-        version: 2.1692.0
       class-variance-authority:
         specifier: 0.7.0
         version: 0.7.0
@@ -873,6 +870,28 @@ importers:
       '@types/react-dom':
         specifier: catalog:react18
         version: 18.3.5(@types/react@18.3.18)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
+  packages/services:
+    dependencies:
+      '@ashgw/env':
+        specifier: workspace:*
+        version: link:../env
+      '@ashgw/observability':
+        specifier: workspace:*
+        version: link:../observabiliy
+      aws-sdk:
+        specifier: 2.1692.0
+        version: 2.1692.0
+    devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@ashgw/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
       typescript:
         specifier: 'catalog:'
         version: 5.6.3

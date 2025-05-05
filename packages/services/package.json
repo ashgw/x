@@ -7,7 +7,9 @@
     "lint": "tsc --noEmit; eslint ."
   },
   "dependencies": {
-    "@ashgw/env": "workspace:*"
+    "@ashgw/env": "workspace:*",
+    "@ashgw/observability": "workspace:*",
+    "aws-sdk": "2.1692.0"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
