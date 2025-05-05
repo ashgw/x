@@ -45,7 +45,6 @@ export const seed = async () => {
   for (const blog of blogs) {
     const mdxKey = `mdx/${blog.slug}.mdx`;
 
-    // 1. Upload MDX file to S3
     await uploadFileRaw({
       filename: `${blog.slug}.mdx`,
       folder: "mdx",
@@ -53,7 +52,6 @@ export const seed = async () => {
       contentType: "text/markdown",
     });
 
-    // 2. Upsert Upload record
     await db.upload.upsert({
       where: { key: mdxKey },
       update: {},
@@ -62,11 +60,9 @@ export const seed = async () => {
         type: "MDX",
         entityType: "POST",
         contentType: "text/markdown",
-        // uploadedAt will default to now()
       },
     });
 
-    // 3. Upsert Post record
     await db.post.upsert({
       where: { slug: blog.slug },
       update: {
