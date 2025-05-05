@@ -1,26 +1,28 @@
 // Follow this naming convention for zod schemas and types
-// <entity(s)>-schemaRo for zod schemas
-// <Entity(s)>-Ro for the types of the schemas
+// <entity(s)>-<Intent/View>schemaRo for zod schemas
+// <Entity(s)>-<Intent/View>Ro for the types of the schemas
 
 import { z } from "zod";
 
+// Enums
 export enum PostCategoryEnum {
   SOFTWARE = "SOFTWARE",
   HEALTH = "HEALTH",
   PHILOSOPHY = "PHILOSOPHY",
 }
 
+// ========== Schemas ==========
+
 export const mdxContentSchemaRo = z.object({
   body: z.string().min(1),
   bodyBegin: z.number(), // needed for MDX parsing
 });
 
-export const postDetailSchemaRo = z.object({
+export const postCardSchemaRo = z.object({
   slug: z.string().min(1),
   title: z.string().min(3),
   seoTitle: z.string().min(1),
   summary: z.string().min(1),
-  // fetching from mdx file, that's why not a date
   firstModDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{4}$/),
@@ -31,8 +33,14 @@ export const postDetailSchemaRo = z.object({
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
   category: z.nativeEnum(PostCategoryEnum),
+});
+
+export const postDetailSchemaRo = postCardSchemaRo.extend({
   mdxContent: mdxContentSchemaRo,
 });
 
+// ========== Types (inferred from schemas) ==========
+
 export type MdxContentRo = z.infer<typeof mdxContentSchemaRo>;
+export type PostCardRo = z.infer<typeof postCardSchemaRo>;
 export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;

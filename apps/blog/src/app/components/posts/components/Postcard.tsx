@@ -2,31 +2,28 @@ import Link from "next/link";
 
 import { DateService } from "@ashgw/cross-runtime";
 
-import type { PostDetailRo } from "~/api/models";
+import type { PostCardRo } from "~/api/models";
 
-export function PostCard({ postData }: { postData: PostDetailRo }) {
+export function PostCard({ postData }: { postData: PostCardRo }) {
   return (
     <>
-      {postData.parsedContent.attributes.isReleased ||
-      postData.parsedContent.attributes.isSequel ? (
+      {postData.isReleased ? (
         <div className="glowsup-dimmed slower-transition hover:slower-translate mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
           <div className="slower-transition group flex flex-col gap-4 rounded-[2rem] border border-white/10 p-5 shadow hover:scale-110 hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
             <div className="flex flex-col gap-4 lg:gap-6">
               <li className="dimmed-0 ml-5 list-disc">
                 {DateService.formatDate({
-                  stringDate: postData.parsedContent.attributes.firstModDate,
+                  stringDate: postData.firstModDate,
                 })}
               </li>
-              <Link href={`/${postData.filename}`}>
+              <Link href={`/${postData.slug}`}>
                 <h2 className="dimmed-4 text-2xl font-bold lg:text-[2.5rem]">
-                  {postData.parsedContent.attributes.title}
+                  {postData.title}
                 </h2>
-                <p className="dimmed-3 mt-3 lg:text-xl">
-                  {postData.parsedContent.attributes.summary}
-                </p>
+                <p className="dimmed-3 mt-3 lg:text-xl">{postData.summary}</p>
               </Link>
               <div className="dimmed-4 flex flex-wrap items-center gap-[0.625rem] text-sm">
-                {postData.parsedContent.attributes.tags.map((tag) => (
+                {postData.tags.map((tag) => (
                   <Link
                     href={`/tag/${tag}`}
                     key={tag}
@@ -36,15 +33,14 @@ export function PostCard({ postData }: { postData: PostDetailRo }) {
                   </Link>
                 ))}
                 <div className="dimmed-1">
-                  {postData.parsedContent.attributes.minutesToRead
-                    ? postData.parsedContent.attributes.minutesToRead +
-                      " minutes"
+                  {postData.minutesToRead
+                    ? postData.minutesToRead + " minutes"
                     : "\u221e" + " minutes"}
                 </div>
               </div>
             </div>
             <Link
-              href={`/tag/${postData.filename}`}
+              href={`/tag/${postData.slug}`}
               className="relative h-full overflow-hidden rounded-[2rem]"
             />
           </div>
