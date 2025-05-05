@@ -1,3 +1,5 @@
+import type { PostCategory } from "@ashgw/db/raw";
+
 interface Blog {
   slug: string;
   title: string;
@@ -8,7 +10,7 @@ interface Blog {
   lastModDate: Date;
   minutesToRead: number;
   tags: string[];
-  category: string;
+  category: PostCategory;
   mdxContentRaw: string;
 }
 

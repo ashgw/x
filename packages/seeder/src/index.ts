@@ -15,33 +15,60 @@ export const uploadFile = async () => {
 
 // TODO: change this whole implementation in the newt PR since this is mad dumb G
 export const seed = async () => {
-  const mdxKey = "mdx/branded-types.mdx";
-  await db.upload.upsert({
-    where: { key: mdxKey },
-    update: {},
-    create: {
-      key: mdxKey,
-      type: "MDX",
-      entityType: "POST",
-      contentType: "text/markdown",
-      // uploadedAt will default to now()
-    },
-  });
+  const s3Service = new S3Service();
 
-  // 2. Create the Post, referencing the Upload
-  await db.post.create({
-    data: {
-      slug: "branded-types", // You need to provide a unique slug
-      title: "Branded Types",
-      seoTitle: "Write Safer TypeScript with Branded Types",
-      summary: "Write safer TypeScript with branded types",
-      isReleased: true,
-      firstModDate: new Date("2024-04-27T09:15:00-04:01"),
-      lastModDate: new Date("2024-04-27T09:15:00-04:01"),
-      minutesToRead: 4,
-      tags: ["typescript", "typing"],
-      category: "SOFTWARE",
-      mdxContentId: mdxKey,
-    },
-  });
+  for (const blog of blogs) {
+    const mdxKey = `mdx/${blog.slug}.mdx`;
+
+    // 1. Upload MDX file to S3
+    await s3Service.uploadFile({
+      filename: `${blog.slug}.mdx`,
+      folder: "mdx",
+      body: Buffer.from(blog.mdxContentRaw, "utf-8"),
+      contentType: "text/markdown",
+    });
+
+    // 2. Upsert Upload record
+    await db.upload.upsert({
+      where: { key: mdxKey },
+      update: {},
+      create: {
+        key: mdxKey,
+        type: "MDX",
+        entityType: "POST",
+        contentType: "text/markdown",
+        // uploadedAt will default to now()
+      },
+    });
+
+    // 3. Upsert Post record
+    await db.post.upsert({
+      where: { slug: blog.slug },
+      update: {
+        title: blog.title,
+        seoTitle: blog.seoTitle,
+        summary: blog.summary,
+        isReleased: blog.isReleased,
+        firstModDate: blog.firstModDate,
+        lastModDate: blog.lastModDate,
+        minutesToRead: blog.minutesToRead,
+        tags: blog.tags,
+        category: blog.category,
+        mdxContentId: mdxKey,
+      },
+      create: {
+        slug: blog.slug,
+        title: blog.title,
+        seoTitle: blog.seoTitle,
+        summary: blog.summary,
+        isReleased: blog.isReleased,
+        firstModDate: blog.firstModDate,
+        lastModDate: blog.lastModDate,
+        minutesToRead: blog.minutesToRead,
+        tags: blog.tags,
+        category: blog.category,
+        mdxContentId: mdxKey,
+      },
+    });
+  }
 };
