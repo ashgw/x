@@ -13,7 +13,7 @@ export enum PostCategoryEnum {
 
 // ========== Schemas ==========
 
-export const mdxContentSchemaRo = z.object({
+export const fontMatterMdxContentSchemaRo = z.object({
   body: z.string().min(1),
   bodyBegin: z.number(), // needed for MDX parsing
 });
@@ -36,11 +36,13 @@ export const postCardSchemaRo = z.object({
 });
 
 export const postDetailSchemaRo = postCardSchemaRo.extend({
-  mdxContent: mdxContentSchemaRo,
+  fontMatterMdxContent: fontMatterMdxContentSchemaRo,
 });
 
 // ========== Types (inferred from schemas) ==========
 
-export type MdxContentRo = z.infer<typeof mdxContentSchemaRo>;
+export type fontMatterMdxContentRo = z.infer<
+  typeof fontMatterMdxContentSchemaRo
+>;
 export type PostCardRo = z.infer<typeof postCardSchemaRo>;
 export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;

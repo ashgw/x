@@ -44,7 +44,7 @@ export function BlogPostData({ postData }: BlogPostPorps) {
       </div>
       <article className="text-wrap">
         <MDX
-          source={postData.mdxContent.body}
+          source={postData.fontMatterMdxContent.body}
           components={featuredComponents}
         />
       </article>

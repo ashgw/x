@@ -1,6 +1,10 @@
 import type { PostCategory as DbPostCategory } from "@ashgw/db/raw";
 
-import type { MdxContentRo, PostCardRo, PostDetailRo } from "../models";
+import type {
+  fontMatterMdxContentRo,
+  PostCardRo,
+  PostDetailRo,
+} from "../models";
 import type { PostCardQuery, PostDetailQuery } from "../query-helpers";
 import { PostCategoryEnum } from "../models";
 
@@ -24,14 +28,14 @@ export class PostMapper {
 
   public static toDetailRo({
     post,
-    mdxContent,
+    fontMatterMdxContent,
   }: {
     post: PostDetailQuery;
-    mdxContent: MdxContentRo;
+    fontMatterMdxContent: fontMatterMdxContentRo;
   }): PostDetailRo {
     return {
       ...this.toCardRo({ post }),
-      mdxContent: mdxContent,
+      fontMatterMdxContent,
     };
   }
 

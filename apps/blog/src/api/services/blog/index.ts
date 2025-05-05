@@ -5,9 +5,13 @@ import type { DatabaseClient } from "@ashgw/db";
 import { InternalError } from "@ashgw/observability";
 
 import type { S3Service } from "../s3";
-import type { MdxContentRo, PostCardRo, PostDetailRo } from "~/api/models";
+import type {
+  fontMatterMdxContentRo,
+  PostCardRo,
+  PostDetailRo,
+} from "~/api/models";
 import { PostMapper } from "~/api/mappers";
-import { mdxContentSchemaRo } from "~/api/models";
+import { fontMatterMdxContentSchemaRo } from "~/api/models";
 import { PostQueryHelper } from "~/api/query-helpers";
 
 export class BlogService {
@@ -58,15 +62,17 @@ export class BlogService {
         message: "Cannot find a post with the given slug: " + slug,
       });
     }
-    const fontMatterMdxBodyContent = this._parseMDX({
+
+    const fontMatterMdxContent = this._parseMDX({
       content: mdxFileContentBuffer.toString("utf-8"),
       slug,
     });
 
     const postDetailRo = PostMapper.toDetailRo({
       post,
-      mdxContent: fontMatterMdxBodyContent,
+      fontMatterMdxContent,
     });
+
     return postDetailRo;
   }
 
@@ -76,10 +82,10 @@ export class BlogService {
   }: {
     content: string;
     slug: string;
-  }): MdxContentRo {
+  }): fontMatterMdxContentRo {
     try {
       const parsed: FrontMatterResult<"none"> = fm(content);
-      return mdxContentSchemaRo.parse(parsed);
+      return fontMatterMdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
