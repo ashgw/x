@@ -23,7 +23,7 @@ function createTestContext() {
 test("load and validate all blog posts", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
-  const posts = await caller.post.getPosts();
+  const posts = await caller.post.getPostCards();
 
   for (const post of posts) {
     expect(() => postDetailSchemaRo.parse(post)).not.toThrow();
@@ -35,7 +35,7 @@ test("load and validate a single blog post", async () => {
   const caller = createCallerFactory(appRouter)(ctx);
 
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
-    filename: "branded-types",
+    slug: "branded-types",
   };
 
   const post = await caller.post.getPost(input);
