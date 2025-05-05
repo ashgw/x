@@ -16,7 +16,7 @@ export const postRouter = router({
     .output(postDetailSchemaRo)
     .query(async ({ input, ctx }) => {
       const blogService = new BlogService({
-        ctx,
+        db: ctx.db,
         s3Service,
       });
       return await blogService.getDetailPost({ slug: input.slug });
@@ -27,7 +27,7 @@ export const postRouter = router({
     .output(z.array(postCardSchemaRo))
     .query(async ({ ctx }) => {
       const blogService = new BlogService({
-        ctx,
+        db: ctx.db,
         s3Service,
       });
       return await blogService.getPostCards();

@@ -1,26 +1,26 @@
 import type { FrontMatterResult } from "front-matter";
 import fm from "front-matter";
 
+import type { DatabaseClient } from "@ashgw/db";
 import { InternalError } from "@ashgw/observability";
 
 import type { S3Service } from "../s3";
 import type { MdxContentRo, PostCardRo, PostDetailRo } from "~/api/models";
-import type { TrpcContext } from "~/trpc/context";
 import { PostMapper } from "~/api/mappers";
 import { mdxContentSchemaRo } from "~/api/models";
 import { PostQueryHelper } from "~/api/query-helpers";
 
 export class BlogService {
-  private readonly ctx: TrpcContext;
+  private readonly db: DatabaseClient;
   private readonly s3Service: S3Service;
 
-  constructor({ ctx, s3Service }: { ctx: TrpcContext; s3Service: S3Service }) {
-    this.ctx = ctx;
+  constructor({ db, s3Service }: { db: DatabaseClient; s3Service: S3Service }) {
+    this.db = db;
     this.s3Service = s3Service;
   }
 
   public async getPostCards(): Promise<PostCardRo[]> {
-    const posts = await this.ctx.db.post.findMany({
+    const posts = await this.db.post.findMany({
       where: PostQueryHelper.whereReleasedToPublic(),
       include: PostQueryHelper.cardInclude(),
     });
@@ -44,7 +44,7 @@ export class BlogService {
       folder: "mdx",
     });
 
-    const post = await this.ctx.db.post.findUnique({
+    const post = await this.db.post.findUnique({
       where: {
         slug,
         ...PostQueryHelper.whereReleasedToPublic(),
