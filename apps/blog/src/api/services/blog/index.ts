@@ -43,11 +43,6 @@ export class BlogService {
   }: {
     slug: string;
   }): Promise<PostDetailRo> {
-    const mdxFileContentBuffer = await this.s3Service.fetchFileInFolder({
-      filename: slug,
-      folder: "mdx",
-    });
-
     const post = await this.db.post.findUnique({
       where: {
         slug,
@@ -62,6 +57,10 @@ export class BlogService {
         message: "Cannot find a post with the given slug: " + slug,
       });
     }
+
+    const mdxFileContentBuffer = await this.s3Service.fetchAnyFile({
+      key: post.mdxContent.key,
+    });
 
     const fontMatterMdxContent = this._parseMDX({
       content: mdxFileContentBuffer.toString("utf-8"),

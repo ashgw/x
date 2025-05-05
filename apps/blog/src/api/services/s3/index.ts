@@ -43,30 +43,6 @@ export class S3Service {
   }
 
   /**
-   * listAllFiles
-   *
-   * Returns a promise resolving to an array of all keys in the bucket.
-   */
-  public async listAllFiles(): Promise<string[]> {
-    return this._listKeysWithPrefix({ prefix: "" });
-  }
-
-  /**
-   * listAllFilesInFolder
-   *
-   * Lists all keys under a specific folder prefix, e.g. "mdx/".
-   *
-   * @param folder - One of the predefined Folder values
-   */
-  public async listAllFilesInFolder({
-    folder,
-  }: {
-    folder: Folder;
-  }): Promise<string[]> {
-    return this._listKeysWithPrefix({ prefix: `${folder}/` });
-  }
-
-  /**
    * fetchFileInFolder
    *
    * Downloads a file from a specific folder in S3 and returns its body as a Buffer.
@@ -153,106 +129,6 @@ export class S3Service {
         code: "INTERNAL_SERVER_ERROR",
         message: `Upload failed for key "${key}"`,
         cause: err,
-      });
-    }
-  }
-
-  /**
-   * listDecomposed
-   *
-   * Fetches all file keys and splits them into separate arrays
-   * based on the four known folder prefixes.
-   *
-   * @returns An object mapping each folder to its list of keys
-   */
-  public async listDecomposed(): Promise<{
-    mdx: string[];
-    voice: string[];
-    image: string[];
-    other: string[];
-  }> {
-    const all = await this.listAllFiles();
-    return {
-      mdx: all.filter((key) => key.startsWith("mdx/")),
-      voice: all.filter((key) => key.startsWith("voice/")),
-      image: all.filter((key) => key.startsWith("image/")),
-      other: all.filter(
-        (key) =>
-          !key.startsWith("mdx/") &&
-          !key.startsWith("voice/") &&
-          !key.startsWith("image/"),
-      ),
-    };
-  }
-
-  /**
-   * _listKeysWithPrefix (private)
-   *
-   * Utility method that pages through S3 listObjectsV2 results,
-   * collecting all keys matching the given prefix.
-   *
-   * @param prefix - Key prefix to filter on (empty string = all keys)
-   * @returns An array of keys under the specified prefix
-   */
-  private async _listKeysWithPrefix({
-    prefix,
-  }: {
-    prefix: string;
-  }): Promise<string[]> {
-    const objects: string[] = [];
-    let ContinuationToken: string | undefined;
-
-    do {
-      const res = await this.client
-        .listObjectsV2({
-          Bucket: this.bucket,
-          Prefix: prefix,
-          ContinuationToken,
-        })
-        .promise();
-
-      res.Contents?.forEach((obj) => {
-        if (obj.Key) objects.push(obj.Key);
-      });
-
-      ContinuationToken = res.IsTruncated
-        ? res.NextContinuationToken
-        : undefined;
-    } while (ContinuationToken);
-
-    return objects;
-  }
-
-  /**
-   * checkFileExists
-   *
-   * Performs a headObject call to determine if a key exists.
-   *
-   * @param key - The object key to check
-   * @returns true if the object exists, false if S3 returns NotFound
-   * @throws InternalError for any other S3 errors
-   */
-  public async checkFileExists({ key }: { key: string }): Promise<boolean> {
-    try {
-      await this.client
-        .headObject({
-          Bucket: this.bucket,
-          Key: key,
-        })
-        .promise();
-
-      return true;
-    } catch (error) {
-      // S3 returns a code "NotFound" when the object does not exist
-      if ((error as { code?: string }).code === "NotFound") {
-        return false;
-      }
-
-      // Wrap any other error in our InternalError type
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: `Failed to check if file exists in S3: ${key}`,
-        cause: error,
       });
     }
   }
