@@ -13,6 +13,7 @@ export enum PostCategoryEnum {
 
 // ========== Schemas ==========
 
+// this comes from fm library API directly
 export const fontMatterMdxContentSchemaRo = z.object({
   body: z.string().min(1),
   bodyBegin: z.number(), // needed for MDX parsing
