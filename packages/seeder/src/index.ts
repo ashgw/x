@@ -13,7 +13,6 @@ export const uploadFile = async () => {
   });
 };
 
-// TODO: change this whole implementation in the newt PR since this is mad dumb G
 export const seed = async () => {
   const s3Service = new S3Service();
 
