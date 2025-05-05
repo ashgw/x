@@ -23,9 +23,7 @@
   },
   "dependencies": {
     "@ashgw/db": "workspace:*",
-    "@ashgw/env": "workspace:*",
-    "@ashgw/services": "workspace:*",
-    "zod": "catalog:"
+    "@ashgw/services": "workspace:*"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
