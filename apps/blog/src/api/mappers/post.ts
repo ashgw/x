@@ -1,4 +1,4 @@
-import type { PostCategory } from "@ashgw/db/raw";
+import type { PostCategory as DbPostCategory } from "@ashgw/db/raw";
 
 import type { MdxContentRo, PostCardRo, PostDetailRo } from "../models";
 import type { PostCardQuery, PostDetailQuery } from "../query-helpers";
@@ -38,7 +38,7 @@ export class PostMapper {
   private static _mapCategory({
     category,
   }: {
-    category: PostCategory;
+    category: DbPostCategory;
   }): PostCategoryEnum {
     switch (category) {
       case "HEALTH":

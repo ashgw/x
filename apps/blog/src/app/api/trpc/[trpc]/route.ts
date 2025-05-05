@@ -27,11 +27,11 @@ const handler = (req: NextRequest, res: NextResponse) =>
     },
     req,
     router: appRouter,
-    createContext: ({ info: trpcRequestInfo }) =>
+    createContext: ({ info: trpcInfo }) =>
       createTRPCContext({
         res,
         req,
-        trpcInfo: trpcRequestInfo,
+        trpcInfo,
         db,
       }),
   });
