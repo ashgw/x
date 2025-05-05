@@ -20,6 +20,15 @@ export class PostQueryHelper {
     return {} satisfies Prisma.PostInclude;
   }
 
+  public static whereReleasedToPublic() {
+    return {
+      isReleased: true,
+      firstModDate: {
+        lte: new Date(), // I might finish the blog before the release date
+      },
+    } satisfies Prisma.PostWhereInput;
+  }
+
   private static includeWithMdx() {
     return {
       mdxContent: true,

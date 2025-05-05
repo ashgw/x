@@ -21,13 +21,10 @@ export class BlogService {
 
   public async getPostCards(): Promise<PostCardRo[]> {
     const posts = await this.ctx.db.post.findMany({
-      where: {
-        isReleased: true,
-      },
-      include: {
-        ...PostQueryHelper.cardInclude(),
-      },
+      where: PostQueryHelper.whereReleasedToPublic(),
+      include: PostQueryHelper.cardInclude(),
     });
+
     if (posts.length === 0) {
       throw new InternalError({
         code: "NOT_FOUND",
@@ -50,11 +47,9 @@ export class BlogService {
     const post = await this.ctx.db.post.findUnique({
       where: {
         slug,
-        isReleased: true,
+        ...PostQueryHelper.whereReleasedToPublic(),
       },
-      include: {
-        ...PostQueryHelper.detailInclude(),
-      },
+      include: PostQueryHelper.detailInclude(),
     });
 
     if (!post) {
