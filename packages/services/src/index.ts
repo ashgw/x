@@ -1,1 +1,1 @@
-export * from "./s3";
+export { S3Service } from "./s3";
