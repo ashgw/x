@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { DateService } from "@ashgw/cross-runtime";
 
-import type { PostDetailRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 
 export function PostCard({ postData }: { postData: PostDetailRo }) {
   return (

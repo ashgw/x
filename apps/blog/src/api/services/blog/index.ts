@@ -4,11 +4,11 @@ import fm from "front-matter";
 import { InternalError } from "@ashgw/observability";
 
 import type { S3Service } from "../s3";
-import type { MdxContentRo, PostDetailRo } from "~/server/models";
+import type { MdxContentRo, PostDetailRo } from "~/api/models";
 import type { TrpcContext } from "~/trpc/context";
-import { PostMapper } from "~/server/mappers";
-import { mdxContentSchemaRo } from "~/server/models";
-import { PostQueryHelper } from "~/server/query-helpers";
+import { PostMapper } from "~/api/mappers";
+import { mdxContentSchemaRo } from "~/api/models";
+import { PostQueryHelper } from "~/api/query-helpers";
 
 export class BlogService {
   private readonly ctx: TrpcContext;

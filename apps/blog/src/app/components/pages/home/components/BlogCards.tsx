@@ -1,4 +1,4 @@
-import type { PostDetailRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 import { Posts } from "~/app/components/posts";
 import { PostsProvider } from "~/app/components/posts/components/Context";
 

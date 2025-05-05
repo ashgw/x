@@ -9,8 +9,8 @@ import { toast, Toaster } from "sonner";
 import { logger } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
-import type { NewsletterSubscribeDto } from "~/server/models/newsletter";
-import { newsletterSubscribeDtoSchema } from "~/server/models/newsletter";
+import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
+import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";
 import { trpcClientSideClient } from "~/trpc/client";
 
 export function Newsletter() {

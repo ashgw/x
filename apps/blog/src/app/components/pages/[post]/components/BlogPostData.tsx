@@ -1,7 +1,7 @@
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 import {
   FramerMotionFadeInComponent,
   ThreeTrafficLightsMovingObjects,

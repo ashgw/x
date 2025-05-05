@@ -1,4 +1,4 @@
-import type { PostDetailRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 import { BlogCards } from "~/app/components/pages/home/components/BlogCards";
 import { NoTagsFound } from "./components/NoTagsFound";
 

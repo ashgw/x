@@ -7,7 +7,7 @@ import { CheckCheck, ChevronDown } from "lucide-react";
 
 import { Footer } from "@ashgw/components";
 
-import type { PostDetailRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 import { usePostsContext } from "./components/Context";
 import { PostCard } from "./components/Postcard";
 

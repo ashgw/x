@@ -1,4 +1,4 @@
-import type { PostDetailRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 import { Newsletter } from "~/app/components/pages/[post]/components/newsletter";
 import { BlogPostData } from "./components/BlogPostData";
 

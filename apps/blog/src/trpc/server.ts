@@ -7,8 +7,8 @@ import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
 import { db } from "@ashgw/db";
 
-import type { AppRouter } from "~/server/router";
-import { appRouter } from "~/server/router";
+import type { AppRouter } from "~/api/router";
+import { appRouter } from "~/api/router";
 import { createCallerFactory } from "~/trpc/trpc";
 import { createTRPCContext } from "./context";
 import { makeQueryClient } from "./query-client";

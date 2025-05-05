@@ -3,8 +3,8 @@ import fm from "front-matter";
 
 import { InternalError, logger } from "@ashgw/observability";
 
-import type { MdxFileContentRo, PostDetailRo } from "~/server/models";
-import { mdxFileContentSchemaRo } from "~/server/models";
+import type { MdxFileContentRo, PostDetailRo } from "~/api/models";
+import { mdxFileContentSchemaRo } from "~/api/models";
 import { S3Service } from "../s3";
 
 export class BlogService {
