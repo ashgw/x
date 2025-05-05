@@ -40,8 +40,7 @@
     "push": "prisma db push",
     "seed": "prisma db seed",
     "studio": "prisma studio",
-    "validate": "prisma validate",
-    "build": "tsc -p tsconfig.build.json"
+    "validate": "prisma validate"
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
