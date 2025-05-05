@@ -22,14 +22,14 @@ export class PostMapper {
       isReleased: post.isReleased,
       minutesToRead: post.minutesToRead,
       tags: post.tags,
-      category: this.mapCategory({
+      category: this._mapCategory({
         category: post.category,
       }),
       mdxContent: mdxContent,
     };
   }
 
-  private static mapCategory({
+  private static _mapCategory({
     category,
   }: {
     category: PostCategory;
