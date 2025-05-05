@@ -4,8 +4,8 @@ import { BlogPostPage } from "~/app/components/pages/[post]";
 import { trpcServerSideClient } from "~/trpc/server";
 
 export const generateStaticParams = async () => {
-  const posts = await trpcServerSideClient.post.getPosts();
-  return posts.map((post) => ({ post: post.filename }));
+  const posts = await trpcServerSideClient.post.getPostCards();
+  return posts.map((post) => ({ post: post.slug }));
 };
 
 interface DynamicRouteParams {
@@ -14,13 +14,13 @@ interface DynamicRouteParams {
 
 export async function generateMetadata({ params }: DynamicRouteParams) {
   const postData = await trpcServerSideClient.post.getPost({
-    filename: params.post,
+    slug: params.post,
   });
 
   return createMetadata({
-    title: postData.filename,
-    description: postData.parsedContent.attributes.seoTitle,
-    keywords: postData.parsedContent.attributes.tags,
+    title: postData.slug,
+    description: postData.seoTitle,
+    keywords: postData.tags,
   });
 }
 
