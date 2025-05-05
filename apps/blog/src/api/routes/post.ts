@@ -13,8 +13,7 @@ export const postRouter = router({
         ctx,
         s3Service,
       });
-      const post = await blogService.getPost({ slug: input.slug });
-      return post;
+      return await blogService.getPost({ slug: input.slug });
     }),
 
   // getPosts: publicProcedure
