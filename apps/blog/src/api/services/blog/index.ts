@@ -2,9 +2,9 @@ import type { FrontMatterResult } from "front-matter";
 import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
+import type { S3Service } from "@ashgw/services";
 import { InternalError } from "@ashgw/observability";
 
-import type { S3Service } from "../s3";
 import type {
   fontMatterMdxContentRo,
   PostCardRo,

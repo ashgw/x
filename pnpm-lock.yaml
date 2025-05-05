@@ -170,6 +170,9 @@ importers:
       '@ashgw/seo':
         specifier: workspace:*
         version: link:../../packages/seo
+      '@ashgw/services':
+        specifier: workspace:*
+        version: link:../../packages/services
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../../packages/ui
