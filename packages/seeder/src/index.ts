@@ -97,3 +97,13 @@ export const seed = async () => {
     });
   }
 };
+
+async function main() {
+  await uploadFile();
+  await seed();
+}
+
+main().catch((error) => {
+  console.error("Error in main execution:", error);
+  process.exit(1);
+});
