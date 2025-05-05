@@ -1,0 +1,35 @@
+{
+  "name": "@ashgw/seeder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/index.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit && eslint .",
+    "seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@ashgw/env": "workspace:*",
+    "@ashgw/db": "workspace:*",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "ts-roids": "catalog:",
+    "typescript": "catalog:"
+  }
+}
