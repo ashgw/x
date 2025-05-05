@@ -1,24 +1,63 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode", // Code formatter using Prettier
-    "ms-vscode.vscode-typescript-next", // Latest TypeScript features support in VS Code
-    "Prisma.prisma", // Prisma syntax highlighting, completion, and formatting
-    "unifiedjs.vscode-mdx", // MDX language support, for JSX in Markdown files
-    "Zignd.html-css-class-completion", // Autocomplete for HTML and CSS class names
-    "csstools.postcss", // PostCSS language support and syntax highlighting
-    "bradlc.vscode-tailwindcss", // IntelliSense for Tailwind CSS classes
-    "DavidAnson.vscode-markdownlint", // Markdown linting for consistent documentation style
-    "yzhang.markdown-all-in-one", // Enhanced Markdown support with shortcuts and table of contents generator
-    "dbaeumer.vscode-eslint", // ESLint integration for linting JavaScript and TypeScript
-    "ban.spellright", // Spell check for various languages, especially useful in docs
-    "stripe.vscode-stripe", // Stripe integration for payments-related development
-    "rebornix.project-snippets", // Share project-specific snippets across team members
-    "inlang.vs-code-extension", // Improved developer experience for internationalization (i18n)
-    "eamodio.gitlens", // Enhances Git capabilities, such as blame annotations and history tracking
-    "yoavbls.pretty-ts-errors", // Makes TypeScript errors more readable and understandable
-    "expo.vscode-expo-tools", // Tools for developing with Expo, useful for React Native apps
-    "orta.vscode-jest", // Integration for Jest testing, includes results and error reporting
-    "github.vscode-pull-request-github", // Manage GitHub pull requests and issues directly in VS Code
-    "usernamehw.errorlens" // Highlights and shows errors directly in the code editor for better visibility
+    "ahmadawais.shades-of",
+    "akamud.vscode-theme-onedark",
+    "alexanderalekseenko.darky-purple-theme",
+    "ban.spellright",
+    "bierner.markdown-emoji",
+    "bourhaouta.tailwindshades",
+    "bradlc.vscode-tailwindcss",
+    "buuug7.gbk2utf8",
+    "christian-kohler.npm-intellisense",
+    "csstools.postcss",
+    "davidanson.vscode-markdownlint",
+    "dbaeumer.vscode-eslint",
+    "docker.docker",
+    "drewxs.tokyo-night-dark",
+    "eamodio.gitlens",
+    "endormi.2077-theme",
+    "enkia.tokyo-night",
+    "esbenp.prettier-vscode",
+    "expo.vscode-expo-tools",
+    "github.copilot",
+    "github.copilot-chat",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "hashicorp.terraform",
+    "inlang.vs-code-extension",
+    "jinno.codelens-sample",
+    "johnpapa.winteriscoming",
+    "me-dutour-mathieu.vscode-github-actions",
+    "ms-azuretools.vscode-docker",
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "ms-python.debugpy",
+    "ms-python.mypy-type-checker",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode.vscode-typescript-next",
+    "orta.vscode-jest",
+    "orta.vscode-twoslash-queries",
+    "prisma.prisma",
+    "rebornix.project-snippets",
+    "redhat.vscode-yaml",
+    "ritwickdey.liveserver",
+    "sallar.vscode-duotone-dark",
+    "sclu1034.justfile",
+    "sldobri.bunker",
+    "s-nlf-fh.glassit",
+    "stripe.vscode-stripe",
+    "thomaz.preparing",
+    "tomoki1207.pdf",
+    "unifiedjs.vscode-mdx",
+    "unthrottled.doki-theme",
+    "usernamehw.errorlens",
+    "vscodevim.vim",
+    "wallabyjs.console-ninja",
+    "yile-ou.paddy-color-theme",
+    "yoavbls.pretty-ts-errors",
+    "yzhang.markdown-all-in-one",
+    "zhuangtongfa.material-theme",
+    "zignd.html-css-class-completion"
   ]
 }
