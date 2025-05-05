@@ -1,17 +1,11 @@
 import type { PostCategory } from "@ashgw/db/raw";
 
-import type { MdxContentRo, PostDetailRo } from "../models";
-import type { PostDetailQuery } from "../query-helpers";
+import type { MdxContentRo, PostCardRo, PostDetailRo } from "../models";
+import type { PostCardQuery, PostDetailQuery } from "../query-helpers";
 import { PostCategoryEnum } from "../models";
 
 export class PostMapper {
-  public static toDetailRo({
-    post,
-    mdxContent,
-  }: {
-    post: PostDetailQuery;
-    mdxContent: MdxContentRo;
-  }): PostDetailRo {
+  public static toCardRo({ post }: { post: PostCardQuery }): PostCardRo {
     return {
       slug: post.slug,
       title: post.title,
@@ -25,6 +19,18 @@ export class PostMapper {
       category: this._mapCategory({
         category: post.category,
       }),
+    };
+  }
+
+  public static toDetailRo({
+    post,
+    mdxContent,
+  }: {
+    post: PostDetailQuery;
+    mdxContent: MdxContentRo;
+  }): PostDetailRo {
+    return {
+      ...this.toCardRo({ post }),
       mdxContent: mdxContent,
     };
   }
