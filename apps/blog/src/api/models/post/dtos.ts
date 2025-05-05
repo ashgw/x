@@ -4,6 +4,7 @@
 
 import { z } from "zod";
 
+// ========== Schemas ==========
 export const postGetSchemaDto = z.object({
   slug: z.string().min(1),
 });

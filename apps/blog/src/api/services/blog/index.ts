@@ -4,7 +4,7 @@ import fm from "front-matter";
 import { InternalError } from "@ashgw/observability";
 
 import type { S3Service } from "../s3";
-import type { MdxContentRo, PostDetailRo } from "~/api/models";
+import type { MdxContentRo, PostCardRo, PostDetailRo } from "~/api/models";
 import type { TrpcContext } from "~/trpc/context";
 import { PostMapper } from "~/api/mappers";
 import { mdxContentSchemaRo } from "~/api/models";
@@ -19,7 +19,29 @@ export class BlogService {
     this.s3Service = s3Service;
   }
 
-  public async getPost({ slug }: { slug: string }): Promise<PostDetailRo> {
+  public async getPostCards(): Promise<PostCardRo[]> {
+    const posts = await this.ctx.db.post.findMany({
+      where: {
+        isReleased: true,
+      },
+      include: {
+        ...PostQueryHelper.cardInclude(),
+      },
+    });
+    if (posts.length === 0) {
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: "No posts found at all",
+      });
+    }
+    return posts.map((post) => PostMapper.toCardRo({ post }));
+  }
+
+  public async getDetailPost({
+    slug,
+  }: {
+    slug: string;
+  }): Promise<PostDetailRo> {
     const mdxFileContentBuffer = await this.s3Service.fetchFile({
       filename: slug,
       folder: "mdx",
@@ -28,6 +50,7 @@ export class BlogService {
     const post = await this.ctx.db.post.findUnique({
       where: {
         slug,
+        isReleased: true,
       },
       include: {
         ...PostQueryHelper.detailInclude(),

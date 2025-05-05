@@ -1,5 +1,11 @@
+import { z } from "zod";
+
 import { publicProcedure, router } from "../../trpc/trpc";
-import { postDetailSchemaRo, postGetSchemaDto } from "../models";
+import {
+  postCardSchemaRo,
+  postDetailSchemaRo,
+  postGetSchemaDto,
+} from "../models";
 import { BlogService, S3Service } from "../services";
 
 const s3Service = new S3Service();
@@ -13,13 +19,17 @@ export const postRouter = router({
         ctx,
         s3Service,
       });
-      return await blogService.getPost({ slug: input.slug });
+      return await blogService.getDetailPost({ slug: input.slug });
     }),
 
-  // getPosts: publicProcedure
-  //   .output(z.array(postDetailSchemaRo))
-  //   .query(async () => {
-  //     const posts = await blogService.getPosts();
-  //     return posts;
-  //   }),
+  getPostCards: publicProcedure
+    .input(z.void())
+    .output(z.array(postCardSchemaRo))
+    .query(async ({ ctx }) => {
+      const blogService = new BlogService({
+        ctx,
+        s3Service,
+      });
+      return await blogService.getPostCards();
+    }),
 });

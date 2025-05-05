@@ -1,14 +1,15 @@
+import { z } from "zod";
+
 import { publicProcedure, router } from "../../trpc/trpc";
 import { newsletterSubscribeDtoSchema } from "../models/newsletter";
-import { newsletterSubscribeRo } from "../models/newsletter/ros";
 import { NewsletterService } from "../services";
 
 export const newsletterRouter = router({
   subscribe: publicProcedure
     .input(newsletterSubscribeDtoSchema)
-    .output(newsletterSubscribeRo)
+    .output(z.void())
     .mutation(async ({ input }) => {
-      return await NewsletterService.subscribe({
+      await NewsletterService.subscribe({
         email: input.email,
       });
     }),
