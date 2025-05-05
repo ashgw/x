@@ -5,12 +5,18 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
+const nodeEnv = process.env.NODE_ENV as
+  | "production"
+  | "development"
+  | "preview" // since node doesn't support preview env
+  | "test";
+
 config({
   path: path.resolve(
     __dirname,
-    process.env.NODE_ENV === "production"
+    nodeEnv === "production"
       ? "../../.env.production"
-      : process.env.NODE_ENV === "preview"
+      : nodeEnv === "preview"
         ? "../../.env.preview"
         : "../../.env.development",
   ),
