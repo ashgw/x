@@ -1,5 +1,5 @@
 import type { PostCardRo } from "~/api/models";
-import { BlogCards } from "~/app/components/pages/home/components/BlogCards";
+import { PostCardsPage } from "~/app/components/pages/home/components/PostCardsPage";
 import { NoTagsFound } from "./components/NoTagsFound";
 
 export function TagsPage({ posts, tag }: { posts: PostCardRo[]; tag: string }) {
@@ -15,7 +15,7 @@ export function TagsPage({ posts, tag }: { posts: PostCardRo[]; tag: string }) {
   });
 
   if (postsWithTag.length > 0) {
-    return <BlogCards posts={postsWithTag} />;
+    return <PostCardsPage posts={postsWithTag} />;
   }
 
   return <NoTagsFound validTags={allAvailableTags} />;

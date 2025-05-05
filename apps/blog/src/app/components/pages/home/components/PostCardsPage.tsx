@@ -2,7 +2,7 @@ import type { PostCardRo } from "~/api/models";
 import { PostCards } from "~/app/components/postCards";
 import { PostsProvider } from "~/app/components/postCards/components/Context";
 
-export function BlogCards({ posts }: { posts: PostCardRo[] }) {
+export function PostCardsPage({ posts }: { posts: PostCardRo[] }) {
   return (
     <>
       <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">

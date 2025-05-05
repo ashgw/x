@@ -1,8 +1,8 @@
 import { trpcServerSideClient } from "~/trpc/server";
-import { BlogCards } from "./components/BlogCards";
+import { PostCardsPage } from "./components/PostCardsPage";
 
 export async function HomePage() {
   const posts = await trpcServerSideClient.post.getPostCards();
 
-  return <BlogCards posts={posts} />;
+  return <PostCardsPage posts={posts} />;
 }
