@@ -1,11 +1,39 @@
+import pkg from "aws-sdk";
+
 import { db } from "@ashgw/db";
-import { S3Service } from "@ashgw/services";
+import { env } from "@ashgw/env";
 
 import { blogs } from "./data/blogs";
 
+const s3 = new pkg.S3({
+  region: env.S3_BUCKET_REGION,
+  accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
+  secretAccessKey: env.S3_BUCKET_SECRET_KEY,
+});
+
+async function uploadFileRaw({
+  filename,
+  folder,
+  body,
+  contentType,
+}: {
+  filename: string;
+  folder: string;
+  body: Buffer;
+  contentType: string;
+}) {
+  await s3
+    .putObject({
+      Bucket: env.S3_BUCKET_NAME,
+      Key: `${folder}/${filename}`,
+      Body: body,
+      ContentType: contentType,
+    })
+    .promise();
+}
+
 export const uploadFile = async () => {
-  const s3Service = new S3Service();
-  await s3Service.uploadFile({
+  await uploadFileRaw({
     filename: "branded-types.mdx",
     folder: "mdx",
     body: Buffer.from(""),
@@ -14,13 +42,11 @@ export const uploadFile = async () => {
 };
 
 export const seed = async () => {
-  const s3Service = new S3Service();
-
   for (const blog of blogs) {
     const mdxKey = `mdx/${blog.slug}.mdx`;
 
     // 1. Upload MDX file to S3
-    await s3Service.uploadFile({
+    await uploadFileRaw({
       filename: `${blog.slug}.mdx`,
       folder: "mdx",
       body: Buffer.from(blog.mdxContentRaw, "utf-8"),

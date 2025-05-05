@@ -1,4 +1,5 @@
 import path from "path";
+import { fileURLToPath } from "url";
 import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
@@ -10,6 +11,8 @@ const nodeEnv = process.env.NODE_ENV as
   | "development"
   | "preview" // since node doesn't support preview env
   | "test";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 config({
   path: path.resolve(

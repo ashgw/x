@@ -1,4 +1,5 @@
-import "server-only";
+// TODO: uncomment this
+// import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
 import { neonConfig, Pool } from "@neondatabase/serverless";
