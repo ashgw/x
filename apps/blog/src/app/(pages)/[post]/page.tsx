@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: DynamicRouteParams) {
 
 export default async function Page({ params }: DynamicRouteParams) {
   const postData = await trpcServerSideClient.post.getPost({
-    filename: params.post,
+    slug: params.post,
   });
 
   return <BlogPostPage postData={postData} />;
