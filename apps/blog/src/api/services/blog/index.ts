@@ -39,7 +39,7 @@ export class BlogService {
   }: {
     slug: string;
   }): Promise<PostDetailRo> {
-    const mdxFileContentBuffer = await this.s3Service.fetchFile({
+    const mdxFileContentBuffer = await this.s3Service.fetchFileInFolder({
       filename: slug,
       folder: "mdx",
     });

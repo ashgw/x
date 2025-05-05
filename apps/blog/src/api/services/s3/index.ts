@@ -66,24 +66,35 @@ export class S3Service {
     return this._listKeysWithPrefix({ prefix: `${folder}/` });
   }
 
-  public async fetchFile<F extends Folder>({
+  /**
+   * fetchFileInFolder
+   *
+   * Downloads a file from a specific folder in S3 and returns its body as a Buffer.
+   *
+   * @param folder - The folder in the S3 bucket (must be one of the predefined Folder values)
+   * @param filename - The name of the file within the folder
+   * @returns The file contents as a Buffer
+   * @throws InternalError if the object does not exist or the Body is not a Buffer
+   */
+  public async fetchFileInFolder<F extends Folder>({
     filename,
     folder,
   }: {
     folder: F;
     filename: string;
-  }) {
+  }): Promise<Buffer> {
     return this.fetchAnyFile({
-      key: folder + "/" + filename,
+      key: `${folder}/${filename}`,
     });
   }
 
   /**
-   * fetchFile
+   * fetchAnyFile
    *
-   * Downloads the object at `filename` from S3 and returns its body as a Buffer.
+   * Downloads the object at the given key from S3 and returns its body as a Buffer.
    *
-   * @param key - The key of the file in S3
+   * @param key - The full key of the file in S3 (including folder if needed)
+   * @returns The file contents as a Buffer
    * @throws InternalError if the object does not exist or the Body is not a Buffer
    */
   public async fetchAnyFile({ key }: { key: string }): Promise<Buffer> {
