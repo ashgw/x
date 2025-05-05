@@ -22,8 +22,8 @@
     "seed": "prisma db seed"
   },
   "dependencies": {
-    "@ashgw/env": "workspace:*",
     "@ashgw/db": "workspace:*",
+    "@ashgw/env": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
