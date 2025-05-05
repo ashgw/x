@@ -14,15 +14,10 @@ export function TagsPage({
   const allAvailableTags = new Set<string>("");
 
   posts.forEach((post) => {
-    if (
-      post.parsedContent.attributes.tags.includes(tag) &&
-      post.parsedContent.attributes.isReleased
-    ) {
+    if (post.tags.includes(tag) && post.isReleased) {
       postsWithTag.push(post);
     }
-    post.parsedContent.attributes.tags.forEach((tag) =>
-      allAvailableTags.add(tag),
-    );
+    post.tags.forEach((tag) => allAvailableTags.add(tag));
   });
 
   if (postsWithTag.length > 0) {

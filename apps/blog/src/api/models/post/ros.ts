@@ -5,7 +5,7 @@
 import { z } from "zod";
 
 export enum PostCategoryEnum {
-  SOFTWARE = "SOFTWARE", // TODO;: actually lwoercase this since it will ruin the schema parsing logic
+  SOFTWARE = "SOFTWARE",
   HEALTH = "HEALTH",
   PHILOSOPHY = "PHILOSOPHY",
 }

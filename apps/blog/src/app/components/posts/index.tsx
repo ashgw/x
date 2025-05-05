@@ -1,6 +1,5 @@
 "use client";
 
-import type { UnionToTuple } from "ts-roids";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCheck, ChevronDown } from "lucide-react";
@@ -8,6 +7,7 @@ import { CheckCheck, ChevronDown } from "lucide-react";
 import { Footer } from "@ashgw/components";
 
 import type { PostDetailRo } from "~/api/models";
+import { PostCategoryEnum } from "~/api/models";
 import { usePostsContext } from "./components/Context";
 import { PostCard } from "./components/Postcard";
 
@@ -15,27 +15,28 @@ interface PostsProps {
   posts: PostDetailRo[];
 }
 
-type Category = "Software" | "Health" | "Philosophy";
+type Category = `${PostCategoryEnum}`;
 
-const CATEGORIES: UnionToTuple<Category> = ["Software", "Health", "Philosophy"];
+function capitalizeFirst(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 export function Posts({ posts }: PostsProps) {
   const { visibleNum, setVisibleNum } = usePostsContext();
   const [selectedCategory, setSelectedCategory] =
-    useState<Category>("Software");
+    useState<Category>("SOFTWARE");
+
   const [shouldScroll, setShouldScroll] = useState(false);
 
   const perLoadVisibleNum = 5;
 
   const filteredPosts = posts
-    .filter(
-      (post) =>
-        post.parsedContent.attributes.category ===
-        selectedCategory.toLowerCase(),
-    )
+    .filter((post) => {
+      return post.category === selectedCategory;
+    })
     .sort((b1, b2) => {
-      const date1 = new Date(b1.parsedContent.attributes.firstModDate);
-      const date2 = new Date(b2.parsedContent.attributes.firstModDate);
+      const date1 = new Date(b1.firstModDate);
+      const date2 = new Date(b2.firstModDate);
       return date2.getTime() - date1.getTime();
     });
 
@@ -67,7 +68,7 @@ export function Posts({ posts }: PostsProps) {
             : "dimmed-3 hover:dimmed-4 border border-white/10 hover:border-white/40"
         }`}
       >
-        {category}
+        {capitalizeFirst(category.toLowerCase())}
       </button>
     );
   }
@@ -75,7 +76,7 @@ export function Posts({ posts }: PostsProps) {
   return (
     <main>
       <div className="flex justify-center gap-4 md:-mb-9 md:-mr-32">
-        {CATEGORIES.map((category) => (
+        {Object.values(PostCategoryEnum).map((category) => (
           <CategoryButton key={category} category={category} />
         ))}
       </div>
@@ -84,7 +85,7 @@ export function Posts({ posts }: PostsProps) {
         <>
           {filteredPosts.slice(0, visibleNum).map((post, index) => (
             <motion.div
-              key={post.filename}
+              key={post.slug}
               data-post-index={index}
               initial={{ opacity: 0, y: -200 }}
               animate={{ opacity: 1, y: 0 }}
