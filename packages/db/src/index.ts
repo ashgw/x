@@ -32,6 +32,7 @@ const globalForDb = globalThis as unknown as {
 };
 
 // if you have build errors @see https://github.com/prisma/prisma/discussions/21346#discussioncomment-9292320
+// for more info @see http://neon.tech/docs/guides/prisma#connect-to-neon-from-prisma
 neonConfig.webSocketConstructor = ws;
 
 /**
