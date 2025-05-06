@@ -714,7 +714,7 @@ importers:
         version: 0.0.1
       ws:
         specifier: 8.18.1
-        version: 8.18.1
+        version: 8.18.1(bufferutil@4.0.9)
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -728,6 +728,9 @@ importers:
       '@types/ws':
         specifier: ^8.18.1
         version: 8.18.1
+      bufferutil:
+        specifier: 4.0.9
+        version: 4.0.9
       prisma:
         specifier: catalog:prisma6
         version: 6.4.1(typescript@5.6.3)
@@ -5171,6 +5174,10 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
+
+  bufferutil@4.0.9:
+    resolution: {integrity: sha512-WDtdLmJvAuNNPzByAYpRo2rF1Mmradw6gvWsQKf63476DDXmomT9zUiGypLcG4ibIM67vhAj8jJRdbmEws2Aqw==}
+    engines: {node: '>=6.14.2'}
 
   busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
@@ -15931,6 +15938,10 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
+  bufferutil@4.0.9:
+    dependencies:
+      node-gyp-build: 4.8.4
+
   busboy@1.6.0:
     dependencies:
       streamsearch: 1.1.0
@@ -21074,7 +21085,9 @@ snapshots:
       signal-exit: 3.0.7
       typedarray-to-buffer: 3.1.5
 
-  ws@8.18.1: {}
+  ws@8.18.1(bufferutil@4.0.9):
+    optionalDependencies:
+      bufferutil: 4.0.9
 
   xdg-app-paths@5.1.0:
     dependencies:

@@ -31,7 +31,6 @@ const globalForDb = globalThis as unknown as {
   prisma: MaybeUndefined<DatabaseClient>;
 };
 
-// Uncomment this line - it's needed for Node.js environments
 neonConfig.webSocketConstructor = ws;
 
 /**
