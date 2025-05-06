@@ -6,7 +6,7 @@ import { expect, test } from "vitest";
 import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/api/router";
-import { postDetailSchemaRo } from "~/api/models";
+import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
@@ -26,7 +26,7 @@ test("load and validate all blog posts", async () => {
   const posts = await caller.post.getPostCards();
 
   for (const post of posts) {
-    expect(() => postDetailSchemaRo.parse(post)).not.toThrow();
+    expect(() => postCardSchemaRo.parse(post)).not.toThrow();
   }
 });
 
