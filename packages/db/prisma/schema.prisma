@@ -27,7 +27,7 @@ model Post {
   tags          String[]     @db.VarChar(255)
   category      PostCategory
   mdxContentId  String       @unique @db.VarChar(255)
-  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key])
+  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
 }
 
 model Upload {
