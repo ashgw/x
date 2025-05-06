@@ -1,3 +1,4 @@
+import type { MaybeUndefined } from "ts-roids";
 import { S3 } from "aws-sdk";
 
 import { env } from "@ashgw/env";
@@ -133,3 +134,13 @@ export class S3Service {
     }
   }
 }
+
+declare global {
+  // eslint-disable-next-line no-var
+  var _s3Client: MaybeUndefined<S3Service>;
+}
+
+// This ensures singleton across hot reloads in dev
+export const s3Client = global._s3Client ?? new S3Service();
+
+if (env.NODE_ENV !== "production") global._s3Client = s3Client;
