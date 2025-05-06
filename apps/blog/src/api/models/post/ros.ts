@@ -24,12 +24,8 @@ export const postCardSchemaRo = z.object({
   title: z.string().min(3),
   seoTitle: z.string().min(1),
   summary: z.string().min(1),
-  firstModDate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{4}$/),
-  lastModDate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{4}$/),
+  firstModDate: z.date(),
+  lastModDate: z.date(),
   isReleased: z.boolean(),
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
