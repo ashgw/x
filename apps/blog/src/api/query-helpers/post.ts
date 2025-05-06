@@ -17,6 +17,7 @@ export class PostQueryHelper {
   }
 
   public static cardInclude() {
+    // intentionally returns no relations for card list views
     return {} satisfies Prisma.PostInclude;
   }
 

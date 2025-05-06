@@ -20,7 +20,7 @@ model Post {
   title         String       @db.VarChar(30)
   seoTitle      String       @db.VarChar(100)
   summary       String       @db.VarChar(100)
-  firstModDate  DateTime
+  firstModDate  DateTime     @default(now())
   lastModDate   DateTime     @updatedAt
   isReleased    Boolean
   minutesToRead Int          @db.SmallInt
