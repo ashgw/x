@@ -29,7 +29,7 @@
     "format": "prettier . --write",
     "format:schema": "prisma format",
     "generate": "prisma generate",
-    "lint": "tsc --noEmit && eslint .",
+    "lint": "tsc --noEmit && eslint . && prisma validate",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "migrate:diff": "prisma migrate diff",

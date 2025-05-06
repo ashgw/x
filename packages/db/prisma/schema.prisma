@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
   output          = "../src/generated/client"
+  previewFeatures = ["driverAdapters"]
 }
 
 generator markdown {
@@ -16,19 +16,27 @@ datasource db {
 }
 
 model Post {
-  slug          String       @id @db.VarChar(255) // will show in the URL, unique for all posts
+  slug          String       @id @db.VarChar(255)
   title         String       @db.VarChar(30)
   seoTitle      String       @db.VarChar(100)
-  summary       String       @db.VarChar(100) // can or cannot be the same as the SEO title
-  firstModDate  DateTime     @db.Timestamp(3)
-  lastModDate   DateTime     @updatedAt @db.Timestamp(3)
+  summary       String       @db.VarChar(100)
+  firstModDate  DateTime
+  lastModDate   DateTime     @updatedAt
   isReleased    Boolean
   minutesToRead Int          @db.SmallInt
   tags          String[]
   category      PostCategory
-  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key])
   mdxContentId  String       @unique @db.VarChar(255)
-  // will be adding other uploads here when I add them, audio, video, etc
+  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key])
+}
+
+model Upload {
+  key         String       @id @db.VarChar(512)
+  type        UploadType
+  entityType  ResourceType @default(POST)
+  contentType String       @db.VarChar(100)
+  uploadedAt  DateTime     @default(now())
+  post        Post?        @relation("PostMdxContent")
 }
 
 enum PostCategory {
@@ -45,16 +53,5 @@ enum UploadType {
   IMAGE
   AUDIO
   MDX
-  OTHER 
-}
-
-
-// using using s3 buckets rn
-model Upload {
-  key         String       @id @db.VarChar(512) // s3 key
-  type        UploadType
-  entityType  ResourceType @default(POST)
-  contentType String       @db.VarChar(100) // e.g. image/png, audio/mpeg, video/mp4, text/markdown
-  uploadedAt  DateTime     @default(now())
-  post        Post?        @relation("PostMdxContent")
+  OTHER
 }
