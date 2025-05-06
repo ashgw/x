@@ -35,9 +35,13 @@ export function BlogPostData({ postData }: BlogPostPorps) {
             <div className="average-transition opacity-0 hover:opacity-100">
               <Badge variant={"outlineUpdated"}>Recent</Badge>
             </div>
+          ) : postData.firstModDate !== postData.lastModDate ? (
+            <div className="average-transition opacity-0 hover:opacity-100">
+              <Badge variant={"outlineArchive"}>Updated</Badge>
+            </div>
           ) : (
             <div className="average-transition opacity-0 hover:opacity-100">
-              <Badge variant={"outlineArchive"}>Archive</Badge>
+              <Badge variant={"outlineUpdated"}>Archive</Badge>
             </div>
           )}
         </div>
