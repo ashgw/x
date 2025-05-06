@@ -823,6 +823,9 @@ importers:
       '@ashgw/db':
         specifier: workspace:*
         version: link:../db
+      '@ashgw/env':
+        specifier: workspace:*
+        version: link:../env
       aws-sdk:
         specifier: 2.1692.0
         version: 2.1692.0
