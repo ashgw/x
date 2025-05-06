@@ -35,21 +35,38 @@ const nonPrefixedVars = {
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
   KIT_API_KEY: z.string().min(10),
+  // @see https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#recommended-connection-pool-size-1
+  // here append the &connection_limit=1 (or 2, 3..) to the DATABASE_URL
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required")
     .url("Must be a valid URL")
     .refine(
+      (url) => {
+        const regex = /connection_limit=(\d+)$/;
+        const match = regex.exec(url);
+        const limit = parseInt(match?.[1] ?? "0");
+        return limit >= 1 && limit <= 7;
+      },
+      {
+        message: "Connection limit must be between 1 and 7",
+      },
+    )
+    .refine(
       (url) => url.startsWith("postgres://") || url.startsWith("postgresql://"),
       {
         message: "Must be a valid Neon Postgres URL",
       },
-    ),
+    )
+    .refine((url) => url.includes(".neon."), {
+      message: "Must be a Neon database URL",
+    }),
 
   S3_BUCKET_NAME: z
     .string()
     .min(3, "Bucket name too short")
     .max(63, "Bucket name too long")
+
     .regex(/^[a-z0-9.-]+$/, "Invalid S3 bucket name"),
 
   S3_BUCKET_REGION: z.enum(
