@@ -14,12 +14,12 @@ export const postRouter = router({
   getPost: publicProcedure
     .input(postGetSchemaDto)
     .output(postDetailSchemaRo)
-    .query(async ({ input, ctx: { db } }) => {
+    .query(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
         storageClient,
       });
-      return await blogService.getDetailPost({ slug: input.slug });
+      return await blogService.getDetailPost({ slug });
     }),
 
   getPostCards: publicProcedure
