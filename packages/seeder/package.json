@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@ashgw/db": "workspace:*",
-    "@ashgw/services": "workspace:*",
     "aws-sdk": "catalog:"
   },
   "devDependencies": {

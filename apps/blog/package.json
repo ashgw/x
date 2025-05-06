@@ -32,7 +32,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@ashgw/seo": "workspace:*",
-    "@ashgw/services": "workspace:*",
+    "@ashgw/storage": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@dinero.js/currencies": "2.0.0-alpha.14",
     "@gsap/react": "2.1.0",

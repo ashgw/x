@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-import { s3Client } from "@ashgw/services";
-
+import { s3Client } from "../../../../../packages/storage/src";
 import { publicProcedure, router } from "../../trpc/trpc";
 import {
   postCardSchemaRo,

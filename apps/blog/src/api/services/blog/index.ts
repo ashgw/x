@@ -2,7 +2,7 @@ import type { FrontMatterResult } from "front-matter";
 import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
-import type { S3Client } from "@ashgw/services";
+import type { S3Client } from "@ashgw/storage";
 import { InternalError } from "@ashgw/observability";
 
 import type {
