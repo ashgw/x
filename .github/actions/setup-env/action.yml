@@ -83,14 +83,15 @@ runs:
           ["KIT_API_KEY"]="${{ inputs.KIT_API_KEY }}"
         )
 
-        # Determine the correct .env file based on NODE_ENV
-        env_file=".env.development"
-        if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
-          env_file=".env.production"
-        elif [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
-          env_file=".env.production" # there's a bug rn & I'm too busy to fix it, let it be
-        fi
+        # Create all three env files with the same content, runners will determine which one to use
+        env_files=(".env.development" ".env.preview" ".env.production")
 
-        for key in "${!env_vars[@]}"; do
-          echo "${key}='${env_vars[$key]}'" >> "$env_file"
+        for env_file in "${env_files[@]}"; do
+          # Create or clear the file
+          > "$env_file"
+          
+          # Add all environment variables to the file
+          for key in "${!env_vars[@]}"; do
+            echo "${key}='${env_vars[$key]}'" >> "$env_file"
+          done
         done
