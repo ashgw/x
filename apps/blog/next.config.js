@@ -12,9 +12,6 @@ const config = sentry.next.withConfig({
   nextConfig: {
     ...baseConfig,
     experimental: {
-      outputFileTracingIncludes: {
-        "/": ["./public/**/*"], // problem with vercel
-      },
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
