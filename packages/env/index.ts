@@ -12,6 +12,7 @@ const nodeEnv = process.env.NODE_ENV as
   | "preview" // since node doesn't support preview env
   | "test";
 
+// for the @ashgw/seeder to import correctly
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 config({
@@ -77,10 +78,6 @@ const nonPrefixedVars = {
     },
   ),
 
-  S3_BUCKET_ACCESS_KEY_ID: z.string().min(20, "Secret access key too short"),
-
-  S3_BUCKET_SECRET_KEY: z.string().min(20, "Secret access key too short"),
-
   S3_BUCKET_URL: z
     .string()
     .url("Must be a valid S3 bucket URL")
@@ -90,6 +87,9 @@ const nonPrefixedVars = {
         message: "Must be a valid S3 or CloudFront URL",
       },
     ),
+  // the IAM user data, refer to the infra directory over how it's setup
+  S3_BUCKET_ACCESS_KEY_ID: z.string().min(20, "Secret access key too short"),
+  S3_BUCKET_SECRET_KEY: z.string().min(20, "Secret access key too short"),
 };
 
 type NonPrefixedVars = typeof nonPrefixedVars;
@@ -134,5 +134,5 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
-  skipValidation: isBrowser, // Since env vars are already injected at build time, we don't need to validate them at runtime.
+  skipValidation: isBrowser, // since env vars are already injected at build time, we don't need to validate them at runtime.
 });
