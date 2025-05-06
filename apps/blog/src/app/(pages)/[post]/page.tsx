@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: DynamicRouteParams) {
   });
 
   return createMetadata({
-    title: postData.slug,
+    title: postData.title,
     description: postData.seoTitle,
     keywords: postData.tags,
   });
