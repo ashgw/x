@@ -21,3 +21,6 @@ const config = sentry.next.withConfig({
 });
 
 export default config;
+
+console.log("BUILD ENV CHECK:");
+console.log("NODE_ENV", process.env.NODE_ENV);
