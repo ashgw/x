@@ -35,7 +35,7 @@ test("load and validate a single blog post", async () => {
   const caller = createCallerFactory(appRouter)(ctx);
 
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
-    slug: "branded-types",
+    slug: "branded-types", // already have this one seeded
   };
 
   const post = await caller.post.getPost(input);
