@@ -2,8 +2,9 @@
 // import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
-import { Pool as NeonPool } from "@neondatabase/serverless";
+import { neonConfig, Pool as NeonPool } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
+import ws from "ws";
 
 import { env } from "@ashgw/env";
 
@@ -30,8 +31,8 @@ const globalForDb = globalThis as unknown as {
   prisma: MaybeUndefined<DatabaseClient>;
 };
 
-// no need for this now
-// neonConfig.webSocketConstructor = ws;
+// Uncomment this line - it's needed for Node.js environments
+neonConfig.webSocketConstructor = ws;
 
 /**
  * Hot-reload guard: if the cached object is not
