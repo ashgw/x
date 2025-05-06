@@ -8,7 +8,7 @@ export function TagsPage({ posts, tag }: { posts: PostCardRo[]; tag: string }) {
   const allAvailableTags = new Set<string>("");
 
   posts.forEach((post) => {
-    if (post.tags.includes(tag) && post.isReleased) {
+    if (post.tags.includes(tag)) {
       postsWithTag.push(post);
     }
     post.tags.forEach((tag) => allAvailableTags.add(tag));
