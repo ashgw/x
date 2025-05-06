@@ -1,18 +1,35 @@
-// TODO: uncomment this
-// import "server-only";
+import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
 import { neonConfig, Pool } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import ws from "ws";
 
 import { env } from "@ashgw/env";
+import { logger } from "@ashgw/observability";
 
-import { PrismaClient as FullPrismaClient } from "./generated/client";
+import { PrismaClient } from "./generated/client";
 
-// keep only the methods you actually call
+const isBuildProcess =
+  process.env.NODE_ENV === "production" && typeof window === "undefined";
+
+// only go ahead & import WebSocket in a Node.js environment that's not a build process
+if (typeof window === "undefined" && !isBuildProcess) {
+  // this is a safe way to conditionally import WebSocket without require()
+  // and without triggering the import during build time
+  import("ws")
+    .then((wsModule) => {
+      neonConfig.webSocketConstructor = wsModule.default;
+    })
+    .catch((err) => {
+      // silent fail during build is acceptable
+      if (process.env.NODE_ENV === "development") {
+        logger.error("Failed to import WebSocket:", err);
+      }
+    });
+}
+
 export type DatabaseClient = Omit<
-  FullPrismaClient,
+  PrismaClient,
   | "$connect"
   | "$disconnect"
   | "$on"
@@ -25,35 +42,21 @@ export type DatabaseClient = Omit<
   | "$queryRawUnsafe"
 >;
 
-// global cache to survive hot-reloads
+// Global cache for hot reload
 const globalForDb = globalThis as unknown as {
   pool: MaybeUndefined<Pool>;
   prisma: MaybeUndefined<DatabaseClient>;
 };
 
-// use ws for Neon
-neonConfig.webSocketConstructor = ws;
+function createPrismaClient(): DatabaseClient {
+  const pool =
+    globalForDb.pool instanceof Pool
+      ? globalForDb.pool
+      : new Pool({ connectionString: env.DATABASE_URL });
 
-/**
- * Hot-reload guard: if the cached object is not
- * an instance of the current Pool constructor
- * we drop it and create a fresh one.
- */
-function isSamePool(obj: unknown): obj is Pool {
-  return obj instanceof Pool;
-}
+  const adapter = new PrismaNeon(pool);
 
-const pool = isSamePool(globalForDb.pool)
-  ? globalForDb.pool
-  : new Pool({
-      connectionString: env.DATABASE_URL,
-    });
-
-const adapter = new PrismaNeon(pool);
-
-const db =
-  globalForDb.prisma ??
-  (new FullPrismaClient({
+  const prisma = new PrismaClient({
     adapter,
     errorFormat: "pretty",
     log:
@@ -65,12 +68,15 @@ const db =
       timeout: 10000,
       isolationLevel: "ReadCommitted",
     },
-  }) satisfies DatabaseClient);
+  });
 
-// store the singletons in dev to avoid leaks when reloading
-if (env.NODE_ENV === "development") {
-  globalForDb.pool = pool;
-  globalForDb.prisma = db;
+  // Store pool and client in dev for HMR
+  if (env.NODE_ENV === "development") {
+    globalForDb.pool = pool;
+    globalForDb.prisma = prisma;
+  }
+
+  return prisma;
 }
 
-export { db };
+export const db = globalForDb.prisma ?? createPrismaClient();

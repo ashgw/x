@@ -694,6 +694,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
+      '@ashgw/observability':
+        specifier: workspace:*
+        version: link:../observabiliy
       '@neondatabase/serverless':
         specifier: 1.0.0
         version: 1.0.0
