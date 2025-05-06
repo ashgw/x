@@ -1,9 +1,9 @@
 import type { Readable } from "stream";
 import type { MaybeUndefined } from "ts-roids";
 import {
+  S3Client as AwsS3Client,
   GetObjectCommand,
   PutObjectCommand,
-  S3Client,
 } from "@aws-sdk/client-s3";
 
 import { env } from "@ashgw/env";
@@ -16,11 +16,11 @@ export const folders = ["mdx", "voice", "image", "other"] as const;
 export type Folder = (typeof folders)[number];
 
 export class S3Service {
-  private readonly client: S3Client;
+  private readonly client: AwsS3Client;
   private readonly bucket: string;
 
   constructor() {
-    this.client = new S3Client({
+    this.client = new AwsS3Client({
       region: env.S3_BUCKET_REGION,
       credentials: {
         accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
@@ -90,7 +90,9 @@ export class S3Service {
   private async streamToBuffer(stream: Readable): Promise<Buffer> {
     const chunks: Uint8Array[] = [];
     for await (const chunk of stream) {
-      chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
+      chunks.push(
+        typeof chunk === "string" ? Buffer.from(chunk) : (chunk as Uint8Array),
+      );
     }
     return Buffer.concat(chunks);
   }
