@@ -1,4 +1,5 @@
 import type { FrontMatterResult } from "front-matter";
+import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
@@ -81,23 +82,19 @@ export class BlogService {
   }
 
   private _parseMDX({
-    content: rawContent,
+    content,
     slug,
   }: {
     content: string;
     slug: string;
   }): fontMatterMdxContentRo {
     try {
-      const parsed: FrontMatterResult<"none"> = {
-        bodyBegin: 0,
-        body: rawContent,
-        attributes: null,
-      };
+      const parsed: FrontMatterResult<"none"> = fm(content);
       return fontMatterMdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `MDX parsing failed for conent: ${slug} with content: ${rawContent.slice(0, 100)}`,
+        message: `MDX parsing failed for conent: ${slug} with content: ${content.slice(0, 100)}`,
         cause: error,
       });
     }
