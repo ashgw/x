@@ -12,6 +12,9 @@ const config = sentry.next.withConfig({
   nextConfig: {
     ...baseConfig,
     experimental: {
+      outputFileTracingIncludes: {
+        "/": ["./public/**/*"],
+      },
       esmExternals: "loose",
       productionBrowserSourceMaps: true,
       pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
@@ -21,6 +24,3 @@ const config = sentry.next.withConfig({
 });
 
 export default config;
-
-console.log("BUILD ENV CHECK:");
-console.log("NODE_ENV", process.env.NODE_ENV);
