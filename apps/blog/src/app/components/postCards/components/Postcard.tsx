@@ -13,7 +13,7 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
             <div className="flex flex-col gap-4 lg:gap-6">
               <li className="dimmed-0 ml-5 list-disc">
                 {DateService.formatDate({
-                  stringDate: postData.firstModDate,
+                  stringDate: postData.firstModDate.toISOString(),
                 })}
               </li>
               <Link href={`/${postData.slug}`}>

@@ -27,10 +27,10 @@ export function BlogPostData({ postData }: BlogPostPorps) {
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       <H1 id={postData.title}>{postData.title}</H1>
       <div className="mb-8 flex items-center justify-between text-sm sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
-        <ReleaseDate date={postData.firstModDate} />
+        <ReleaseDate date={postData.firstModDate.toISOString()} />
         <div>
           {DateService.isSameMonthAndYear({
-            stringDate: postData.firstModDate,
+            stringDate: postData.firstModDate.toISOString(),
           }) ? (
             <div className="average-transition opacity-0 hover:opacity-100">
               <Badge variant={"outlineUpdated"}>Recent</Badge>
