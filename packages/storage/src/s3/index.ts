@@ -1,9 +1,11 @@
+import { setTimeout } from "timers/promises";
 import type { Readable } from "stream";
 import type { MaybeUndefined } from "ts-roids";
 import {
   S3Client as AwsS3Client,
   GetObjectCommand,
   PutObjectCommand,
+  S3ServiceException,
 } from "@aws-sdk/client-s3";
 
 import { env } from "@ashgw/env";
@@ -15,9 +17,16 @@ import { InternalError } from "@ashgw/observability";
 export const folders = ["mdx", "voice", "image", "other"] as const;
 export type Folder = (typeof folders)[number];
 
+// Add retry constant
+const MAX_RETRIES = 3;
+
 export class S3Service {
   private readonly client: AwsS3Client;
   private readonly bucket: string;
+  // Add cache with TTL
+  private readonly cache: Map<string, { data: Buffer; timestamp: number }> =
+    new Map<string, { data: Buffer; timestamp: number }>();
+  private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
   constructor() {
     this.client = new AwsS3Client({
@@ -41,18 +50,48 @@ export class S3Service {
   }
 
   public async fetchAnyFile({ key }: { key: string }): Promise<Buffer> {
-    const { Body } = await this.client.send(
-      new GetObjectCommand({ Bucket: this.bucket, Key: key }),
-    );
-
-    if (!Body) {
-      throw new InternalError({
-        code: "NOT_FOUND",
-        message: `File ${key} not found`,
-      });
+    // check cache first
+    const cached = this.cache.get(key);
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.data;
     }
 
-    return this.streamToBuffer(Body as Readable);
+    let attempts = 0;
+    let lastError: unknown;
+
+    while (attempts < MAX_RETRIES) {
+      try {
+        const { Body } = await this.client.send(
+          new GetObjectCommand({ Bucket: this.bucket, Key: key }),
+        );
+
+        if (!Body) {
+          throw new InternalError({
+            code: "NOT_FOUND",
+            message: `File ${key} not found`,
+          });
+        }
+
+        const buffer = await this.streamToBuffer(Body as Readable);
+        this.cache.set(key, { data: buffer, timestamp: Date.now() });
+        return buffer;
+      } catch (err) {
+        lastError = err;
+        attempts++;
+
+        if (
+          err instanceof S3ServiceException &&
+          (err.name === "SlowDown" || err.name === "RequestTimeout")
+        ) {
+          await setTimeout(Math.pow(2, attempts) * 100);
+          continue;
+        }
+
+        throw this.formatError(err, key);
+      }
+    }
+
+    throw this.formatError(lastError, key);
   }
 
   public async uploadFile({
@@ -67,23 +106,39 @@ export class S3Service {
     contentType?: string;
   }): Promise<void> {
     const key = `${folder}/${filename}`;
+    let attempts = 0;
+    let lastError: unknown;
 
-    try {
-      await this.client.send(
-        new PutObjectCommand({
-          Bucket: this.bucket,
-          Key: key,
-          Body: body,
-          ContentType: contentType,
-        }),
-      );
-    } catch (err) {
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: `Upload failed for key "${key}"`,
-        cause: err,
-      });
+    while (attempts < MAX_RETRIES) {
+      try {
+        await this.client.send(
+          new PutObjectCommand({
+            Bucket: this.bucket,
+            Key: key,
+            Body: body,
+            ContentType: contentType,
+          }),
+        );
+
+        this.cache.set(key, { data: body, timestamp: Date.now() });
+        return;
+      } catch (err) {
+        lastError = err;
+        attempts++;
+
+        if (
+          err instanceof S3ServiceException &&
+          (err.name === "SlowDown" || err.name === "RequestTimeout")
+        ) {
+          await setTimeout(Math.pow(2, attempts) * 100);
+          continue;
+        }
+
+        throw this.formatError(err, key);
+      }
     }
+
+    throw this.formatError(lastError, key);
   }
 
   /** Convert a Node stream returned by AWS SDK v3 into a Buffer. */
@@ -95,6 +150,22 @@ export class S3Service {
       );
     }
     return Buffer.concat(chunks);
+  }
+
+  private formatError(err: unknown, key: string): Error {
+    if (err instanceof S3ServiceException && err.name === "NoSuchKey") {
+      return new InternalError({
+        code: "NOT_FOUND",
+        message: `File ${key} not found`,
+        cause: err,
+      });
+    }
+
+    return new InternalError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `S3 operation failed for key "${key}"`,
+      cause: err,
+    });
   }
 }
 
