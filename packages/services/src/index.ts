@@ -1,1 +1,1 @@
-export { S3Service } from "./s3";
+export { s3Client, type S3Client } from "./s3";

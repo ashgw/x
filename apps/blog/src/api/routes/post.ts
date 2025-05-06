@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { S3Service } from "@ashgw/services";
+import { s3Client } from "@ashgw/services";
 
 import { publicProcedure, router } from "../../trpc/trpc";
 import {
@@ -10,16 +10,14 @@ import {
 } from "../models";
 import { BlogService } from "../services";
 
-const s3Service = new S3Service();
-
 export const postRouter = router({
   getPost: publicProcedure
     .input(postGetSchemaDto)
     .output(postDetailSchemaRo)
-    .query(async ({ input, ctx }) => {
+    .query(async ({ input, ctx: { db } }) => {
       const blogService = new BlogService({
-        db: ctx.db,
-        s3Service,
+        db,
+        s3Client,
       });
       return await blogService.getDetailPost({ slug: input.slug });
     }),
@@ -27,10 +25,10 @@ export const postRouter = router({
   getPostCards: publicProcedure
     .input(z.void())
     .output(z.array(postCardSchemaRo))
-    .query(async ({ ctx }) => {
+    .query(async ({ ctx: { db } }) => {
       const blogService = new BlogService({
-        db: ctx.db,
-        s3Service,
+        db,
+        s3Client,
       });
       return await blogService.getPostCards();
     }),

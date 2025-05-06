@@ -142,5 +142,6 @@ declare global {
 
 // This ensures singleton across hot reloads in dev
 export const s3Client = global._s3Client ?? new S3Service();
+export type S3Client = typeof s3Client;
 
 if (env.NODE_ENV !== "production") global._s3Client = s3Client;

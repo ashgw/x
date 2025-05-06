@@ -2,7 +2,7 @@ import type { FrontMatterResult } from "front-matter";
 import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
-import type { S3Service } from "@ashgw/services";
+import type { S3Client } from "@ashgw/services";
 import { InternalError } from "@ashgw/observability";
 
 import type {
@@ -16,11 +16,11 @@ import { PostQueryHelper } from "~/api/query-helpers";
 
 export class BlogService {
   private readonly db: DatabaseClient;
-  private readonly s3Service: S3Service;
+  private readonly s3Client: S3Client;
 
-  constructor({ db, s3Service }: { db: DatabaseClient; s3Service: S3Service }) {
+  constructor({ db, s3Client }: { db: DatabaseClient; s3Client: S3Client }) {
     this.db = db;
-    this.s3Service = s3Service;
+    this.s3Client = s3Client;
   }
 
   public async getPostCards(): Promise<PostCardRo[]> {
@@ -58,7 +58,7 @@ export class BlogService {
       });
     }
 
-    const mdxFileContentBuffer = await this.s3Service.fetchAnyFile({
+    const mdxFileContentBuffer = await this.s3Client.fetchAnyFile({
       key: post.mdxContent.key,
     });
 
