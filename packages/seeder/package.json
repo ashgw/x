@@ -19,7 +19,7 @@
   "scripts": {
     "format": "prettier . --write",
     "lint": "tsc --noEmit && eslint .",
-    "seed": "tsx src/index.ts"
+    "seed": "export NODE_ENV=development && tsx src/index.ts"
   },
   "dependencies": {
     "@ashgw/db": "workspace:*",
