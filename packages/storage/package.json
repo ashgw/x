@@ -9,7 +9,7 @@
   "dependencies": {
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
-    "aws-sdk": "catalog:"
+    "@aws-sdk/client-s3": "3.803.0"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
