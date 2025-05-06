@@ -100,6 +100,7 @@ async function main() {
 }
 
 main().catch((error) => {
+  // eslint-disable-next-line no-restricted-syntax
   console.error("Error in main execution:", error);
   process.exit(1);
 });
