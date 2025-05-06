@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { s3Client } from "../../../../../packages/storage/src";
+import { storageClient } from "@ashgw/storage";
+
 import { publicProcedure, router } from "../../trpc/trpc";
 import {
   postCardSchemaRo,
@@ -16,7 +17,7 @@ export const postRouter = router({
     .query(async ({ input, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
-        s3Client,
+        storageClient,
       });
       return await blogService.getDetailPost({ slug: input.slug });
     }),
@@ -27,7 +28,7 @@ export const postRouter = router({
     .query(async ({ ctx: { db } }) => {
       const blogService = new BlogService({
         db,
-        s3Client,
+        storageClient,
       });
       return await blogService.getPostCards();
     }),
