@@ -39,7 +39,7 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
             </div>
           </div>
           <Link
-            href={`/tag/${postData.slug}`}
+            href={postData.slug}
             className="relative h-full overflow-hidden rounded-[2rem]"
           />
         </div>
