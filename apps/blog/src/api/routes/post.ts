@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { storageClient } from "@ashgw/storage";
 
-import { publicProcedure, router } from "../../trpc/trpc";
+import { publicProcedure, router } from "~/trpc/trpc";
 import {
   postCardSchemaRo,
   postDetailSchemaRo,
