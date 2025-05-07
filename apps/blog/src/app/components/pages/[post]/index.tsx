@@ -1,8 +1,8 @@
-import type { PostDataRo } from "~/server/models";
+import type { PostDetailRo } from "~/api/models";
 import { Newsletter } from "~/app/components/pages/[post]/components/newsletter";
 import { BlogPostData } from "./components/BlogPostData";
 
-export function BlogPostPage({ postData }: { postData: PostDataRo }) {
+export function BlogPostPage({ postData }: { postData: PostDetailRo }) {
   return (
     <>
       <main className="pt-5">

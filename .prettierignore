@@ -1,2 +1,2 @@
-
-apps/blog/public/blogs
+# Ignore all MDX files
+**/*.mdx

@@ -10,10 +10,8 @@ interface DynamicRouteParams {
 }
 
 export const generateStaticParams = async () => {
-  const posts = await trpcServerSideClient.post.getPosts();
-  const tags = Array.from(
-    new Set(posts.flatMap((post) => post.parsedContent.attributes.tags)),
-  );
+  const posts = await trpcServerSideClient.post.getPostCards();
+  const tags = Array.from(new Set(posts.flatMap((post) => post.tags)));
   return tags.map((tag) => ({ tag }));
 };
 
@@ -23,6 +21,6 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function Tags({ params }: DynamicRouteParams) {
-  const posts = await trpcServerSideClient.post.getPosts();
+  const posts = await trpcServerSideClient.post.getPostCards();
   return <TagsPage posts={posts} tag={params.tag} />;
 }

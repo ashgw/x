@@ -1,0 +1,37 @@
+{
+  "name": "@ashgw/seeder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/index.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit && eslint .",
+    "seed": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@ashgw/db": "workspace:*",
+    "@ashgw/env": "workspace:*",
+    "@ashgw/ts-env": "catalog:",
+    "aws-sdk": "2.1692.0"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "ts-roids": "catalog:",
+    "tsx": "^4.19.4",
+    "typescript": "catalog:"
+  }
+}

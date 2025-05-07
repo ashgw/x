@@ -15,6 +15,7 @@ export default mergeConfig(
       mockReset: false,
       environment: "node",
       setupFiles: ["./test/setup.ts"],
+      testTimeout: 15000,
     },
     resolve: {
       alias: {
