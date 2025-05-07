@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@ashgw/db": "workspace:*",
+    "@ashgw/env": "workspace:*",
     "@ashgw/ts-env": "catalog:",
     "aws-sdk": "2.1692.0"
   },

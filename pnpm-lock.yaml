@@ -826,6 +826,9 @@ importers:
       '@ashgw/db':
         specifier: workspace:*
         version: link:../db
+      '@ashgw/env':
+        specifier: workspace:*
+        version: link:../env
       '@ashgw/ts-env':
         specifier: 'catalog:'
         version: 1.5.3(zod@3.24.2)
