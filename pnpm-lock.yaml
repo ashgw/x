@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@ashgw/ts-env':
+      specifier: 1.5.3
+      version: 1.5.3
     '@nextui-org/react':
       specifier: 2.2.9
       version: 2.2.9
@@ -744,7 +747,7 @@ importers:
   packages/env:
     dependencies:
       '@ashgw/ts-env':
-        specifier: 1.5.3
+        specifier: 'catalog:'
         version: 1.5.3(zod@3.23.8)
       dotenv:
         specifier: 16.4.5
@@ -823,9 +826,9 @@ importers:
       '@ashgw/db':
         specifier: workspace:*
         version: link:../db
-      '@ashgw/env':
-        specifier: workspace:*
-        version: link:../env
+      '@ashgw/ts-env':
+        specifier: 'catalog:'
+        version: 1.5.3(zod@3.24.2)
       aws-sdk:
         specifier: 2.1692.0
         version: 2.1692.0
@@ -9727,6 +9730,10 @@ snapshots:
   '@ashgw/ts-env@1.5.3(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
+
+  '@ashgw/ts-env@1.5.3(zod@3.24.2)':
+    dependencies:
+      zod: 3.24.2
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:
