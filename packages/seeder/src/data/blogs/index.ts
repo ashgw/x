@@ -1,7 +1,12 @@
 import { readFileSync } from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 import type { PostCategory } from "@ashgw/db/raw";
+
+// Fix for __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface Blog {
   slug: string;
