@@ -1,4 +1,5 @@
 import type { FrontMatterResult } from "front-matter";
+import type { Optional } from "ts-roids";
 import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
@@ -48,7 +49,7 @@ export class BlogService {
     slug,
   }: {
     slug: string;
-  }): Promise<PostDetailRo> {
+  }): Promise<Optional<PostDetailRo>> {
     const post = await this.db.post.findUnique({
       where: {
         slug,
@@ -58,10 +59,8 @@ export class BlogService {
     });
 
     if (!post) {
-      throw new InternalError({
-        code: "NOT_FOUND",
-        message: "Cannot find a post with the given slug: " + slug,
-      });
+      // no need to throw here, since user might just be fucking around with the URL
+      return null;
     }
 
     const mdxFileContentBuffer = await this.storageClient.fetchAnyFile({

@@ -13,12 +13,13 @@ import { BlogService } from "../services";
 export const postRouter = router({
   getPost: publicProcedure
     .input(postGetSchemaDto)
-    .output(postDetailSchemaRo)
+    .output(postDetailSchemaRo.nullable()) // not found is not an error
     .query(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
         storageClient,
       });
+
       return await blogService.getDetailPost({ slug });
     }),
 
@@ -30,6 +31,7 @@ export const postRouter = router({
         db,
         storageClient,
       });
+
       return await blogService.getPostCards();
     }),
 });
