@@ -75,6 +75,8 @@ const nonPrefixedVars = {
         message: "Must be a valid S3 or CloudFront URL",
       },
     ),
+
+  KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
 
 type NonPrefixedVars = typeof nonPrefixedVars;
@@ -97,6 +99,7 @@ export const env = createEnv({
   disablePrefix: [...NonPrefixedVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
