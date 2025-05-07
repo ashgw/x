@@ -44,9 +44,9 @@ export function HeroSection() {
               transition={transition}
             >
               <Text>
-                Here I share insights from my professional and personal journey,
-                serving as my brain dump for a thing or two I learned throughout
-                the years.
+                This site is an extension of my memory, where scattered thoughts
+                and observations become something more concrete than tweets or
+                decentralized notes.
               </Text>
             </motion.div>
           </div>
