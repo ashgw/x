@@ -17,7 +17,7 @@ export const postCardSchemaRo = z.object({
   slug: z.string().min(1),
   title: z.string().min(3),
   seoTitle: z.string().min(1),
-  summary: z.string().min(1),
+  summary: z.string().min(1).max(90),
   firstModDate: z.date(),
   lastModDate: z.date(),
   isReleased: z.boolean(),
