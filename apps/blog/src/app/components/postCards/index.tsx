@@ -11,14 +11,13 @@ import { PostCategoryEnum } from "~/api/models";
 import { usePostsContext } from "./components/Context";
 import { PostCard } from "./components/Postcard";
 
-interface PostsProps {
-  posts: PostCardRo[];
-}
-
 type Category = `${PostCategoryEnum}`;
 
 function capitalizeFirst(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+interface PostsProps {
+  posts: PostCardRo[];
 }
 
 export function PostCards({ posts }: PostsProps) {

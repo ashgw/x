@@ -13,12 +13,6 @@ export enum PostCategoryEnum {
 
 // ========== Schemas ==========
 
-// this comes from fm library API directly
-export const fontMatterMdxContentSchemaRo = z.object({
-  body: z.string().min(1),
-  bodyBegin: z.number(), // needed for MDX parsing
-});
-
 export const postCardSchemaRo = z.object({
   slug: z.string().min(1),
   title: z.string().min(3),
@@ -30,6 +24,12 @@ export const postCardSchemaRo = z.object({
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
   category: z.nativeEnum(PostCategoryEnum),
+});
+
+// this comes from fm library API directly
+export const fontMatterMdxContentSchemaRo = z.object({
+  body: z.string().min(1),
+  bodyBegin: z.number(), // needed for MDX parsing
 });
 
 export const postDetailSchemaRo = postCardSchemaRo.extend({
