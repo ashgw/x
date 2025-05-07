@@ -3,7 +3,7 @@ import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
-import { InternalError, logger } from "@ashgw/observability";
+import { InternalError } from "@ashgw/observability";
 
 import type {
   fontMatterMdxContentRo,
@@ -41,7 +41,6 @@ export class BlogService {
         message: "No posts found at all",
       });
     }
-    logger.log({ posts }, "posts found");
     return posts.map((post) => PostMapper.toCardRo({ post }));
   }
 
@@ -64,7 +63,6 @@ export class BlogService {
         message: "Cannot find a post with the given slug: " + slug,
       });
     }
-    logger.log({ post }, "post found: " + post.summary);
 
     const mdxFileContentBuffer = await this.storageClient.fetchAnyFile({
       key: post.mdxContent.key,
@@ -79,7 +77,6 @@ export class BlogService {
       post,
       fontMatterMdxContent,
     });
-    logger.log({ postDetailRo }, "post detail ro");
     return postDetailRo;
   }
 
@@ -92,7 +89,6 @@ export class BlogService {
   }): fontMatterMdxContentRo {
     try {
       const parsed: FrontMatterResult<"none"> = fm(content);
-      logger.log({ parsed }, "parsed MDX");
       return fontMatterMdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({

@@ -1,4 +1,4 @@
-// TODO: uncomment this
+// uncomment this for more strictness, if you're doing crazy db shenanigans
 // import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
