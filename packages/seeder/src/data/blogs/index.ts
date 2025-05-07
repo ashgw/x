@@ -4,7 +4,6 @@ import { fileURLToPath } from "url";
 
 import type { PostCategory } from "@ashgw/db/raw";
 
-// Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -25,14 +24,10 @@ interface Blog {
 function getCorresponsingMdxContent(slug: string): string {
   const filePath = path.join(__dirname, `${slug}.mdx`);
   const fileContent = readFileSync(filePath, "utf-8");
-
-  // Remove front matter if it exists (content between --- markers)
   if (fileContent.startsWith("---")) {
     const parts = fileContent.split("---");
-    // Skip first part (empty) and second part (front matter)
     return parts.slice(2).join("---").trim();
   }
-
   return fileContent.trim();
 }
 
