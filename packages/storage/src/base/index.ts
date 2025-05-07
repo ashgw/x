@@ -1,7 +1,7 @@
 export const folders = ["mdx", "voice", "image", "other"] as const;
 export type Folder = (typeof folders)[number];
 
-export abstract class BaseStorageClient {
+export abstract class BaseStorageSerivce {
   public abstract fetchFileInFolder<F extends Folder>(params: {
     folder: F;
     filename: string;
