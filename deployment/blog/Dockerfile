@@ -1,4 +1,4 @@
-# TODO: add layering later and shit if needed, this just works dawg & fuck vercel, look what they have me doing
+# TODO: add layering later 
 ARG NODE_VERSION=20
 ARG PORT=3001
 ARG IS_PREVIEW=false

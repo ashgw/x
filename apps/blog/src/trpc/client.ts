@@ -2,7 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import type { Optional } from "ts-roids";
 import { createTRPCReact } from "@trpc/react-query";
 
-import type { AppRouter } from "~/server/router";
+import type { AppRouter } from "~/api/router";
 import { makeQueryClient } from "./query-client";
 
 let clientQueryClientSingleton: Optional<QueryClient> = null;

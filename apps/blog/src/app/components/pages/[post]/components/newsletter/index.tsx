@@ -9,8 +9,8 @@ import { toast, Toaster } from "sonner";
 import { logger } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
-import type { NewsletterSubscribeDto } from "~/server/models/newsletter";
-import { newsletterSubscribeDtoSchema } from "~/server/models/newsletter";
+import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
+import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";
 import { trpcClientSideClient } from "~/trpc/client";
 
 export function Newsletter() {
@@ -63,7 +63,7 @@ export function Newsletter() {
         >
           <input
             type="email"
-            {...register("email", { required: true })}
+            {...register("email")}
             placeholder="your@email.com"
             className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-transparent px-3 text-sm font-medium text-[#B0B0B0] outline-none transition-all duration-300 ease-in-out selection:bg-white/10 hover:border-white/20 focus:border-white/30 focus:ring-0 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-[#B0B0B0] [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] focus:[&:-webkit-autofill]:bg-transparent"
           />
@@ -79,7 +79,7 @@ export function Newsletter() {
           </Button>
         </form>
         <p className="dimmed-3 mt-4 text-center text-sm">
-          Subscribe to my newsletter. The extension of this blog and my Twitter.
+          Subscribe to my newsletter. The extension of these thoughts and more.
         </p>
       </div>
       <Toaster position="bottom-right" />

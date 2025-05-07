@@ -5,14 +5,17 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
+// for ESM and CommonJS
+let rootDir = process.cwd();
+
+rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
+
 config({
   path: path.resolve(
-    __dirname,
+    rootDir,
     process.env.NODE_ENV === "production"
       ? "../../.env.production"
-      : process.env.NODE_ENV === "preview"
-        ? "../../.env.preview"
-        : "../../.env.development",
+      : "../../.env.development",
   ),
 });
 
@@ -25,7 +28,6 @@ const nonPrefixedVars = {
   SENTRY_PROJECT: z.string(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
-  KIT_API_KEY: z.string().min(10),
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required")
@@ -73,6 +75,8 @@ const nonPrefixedVars = {
         message: "Must be a valid S3 or CloudFront URL",
       },
     ),
+
+  KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
 
 type NonPrefixedVars = typeof nonPrefixedVars;
@@ -95,13 +99,13 @@ export const env = createEnv({
   disablePrefix: [...NonPrefixedVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
     S3_BUCKET_SECRET_KEY: process.env.S3_BUCKET_SECRET_KEY,
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
     NODE_ENV: process.env.NODE_ENV,
-    KIT_API_KEY: process.env.KIT_API_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,

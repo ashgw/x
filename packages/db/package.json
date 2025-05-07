@@ -2,11 +2,34 @@
   "name": "@ashgw/db",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    },
+    "./raw": {
+      "import": "./src/raw.ts",
+      "types": "./src/raw.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "raw": [
+        "src/raw.ts"
+      ],
+      "*": [
+        "src/index.ts"
+      ]
+    }
+  },
   "scripts": {
     "format": "prettier . --write",
     "format:schema": "prisma format",
     "generate": "prisma generate",
-    "lint": "tsc --noEmit; eslint . ",
+    "lint": "tsc --noEmit && eslint .",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "migrate:diff": "prisma migrate diff",
@@ -21,6 +44,7 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
+    "@ashgw/observability": "workspace:*",
     "@neondatabase/serverless": "1.0.0",
     "@prisma/adapter-neon": "6.4.1",
     "@prisma/client": "catalog:prisma6",
@@ -33,12 +57,9 @@
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@types/ws": "^8.18.1",
+    "bufferutil": "^4.0.9",
     "prisma": "catalog:prisma6",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
-  },
-  "exports": {
-    ".": "./src/index.ts"
-  },
-  "type": "module"
+  }
 }

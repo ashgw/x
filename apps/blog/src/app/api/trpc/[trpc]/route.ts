@@ -4,7 +4,7 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { db } from "@ashgw/db";
 import { logger, sentry } from "@ashgw/observability";
 
-import { appRouter } from "~/server/router";
+import { appRouter } from "~/api/router";
 import { trpcUri } from "~/trpc/client";
 import { createTRPCContext } from "~/trpc/context";
 
@@ -27,11 +27,11 @@ const handler = (req: NextRequest, res: NextResponse) =>
     },
     req,
     router: appRouter,
-    createContext: ({ info: trpcRequestInfo }) =>
+    createContext: ({ info: trpcInfo }) =>
       createTRPCContext({
         res,
         req,
-        trpcInfo: trpcRequestInfo,
+        trpcInfo,
         db,
       }),
   });

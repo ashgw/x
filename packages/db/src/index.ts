@@ -1,7 +1,8 @@
-import "server-only";
+// uncomment this for more strictness, if you're doing crazy db shenanigans
+// import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
-import { neonConfig, Pool } from "@neondatabase/serverless";
+import { neonConfig, Pool as NeonPool } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import ws from "ws";
 
@@ -26,11 +27,12 @@ export type DatabaseClient = Omit<
 
 // global cache to survive hot-reloads
 const globalForDb = globalThis as unknown as {
-  pool: MaybeUndefined<Pool>;
+  pool: MaybeUndefined<NeonPool>;
   prisma: MaybeUndefined<DatabaseClient>;
 };
 
-// use ws for Neon
+// if you have build errors @see https://github.com/prisma/prisma/discussions/21346#discussioncomment-9292320
+// for more info @see http://neon.tech/docs/guides/prisma#connect-to-neon-from-prisma
 neonConfig.webSocketConstructor = ws;
 
 /**
@@ -38,13 +40,13 @@ neonConfig.webSocketConstructor = ws;
  * an instance of the current Pool constructor
  * we drop it and create a fresh one.
  */
-function isSamePool(obj: unknown): obj is Pool {
-  return obj instanceof Pool;
+function isSamePool(obj: unknown): obj is NeonPool {
+  return obj instanceof NeonPool;
 }
 
 const pool = isSamePool(globalForDb.pool)
   ? globalForDb.pool
-  : new Pool({
+  : new NeonPool({
       connectionString: env.DATABASE_URL,
     });
 

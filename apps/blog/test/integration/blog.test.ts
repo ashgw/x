@@ -5,9 +5,9 @@ import { expect, test } from "vitest";
 
 import { db } from "@ashgw/db";
 
-import type { AppRouter } from "~/server/router";
-import { postDataSchemaRo } from "~/server/models";
-import { appRouter } from "~/server/router";
+import type { AppRouter } from "~/api/router";
+import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
+import { appRouter } from "~/api/router";
 import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
 
@@ -23,10 +23,10 @@ function createTestContext() {
 test("load and validate all blog posts", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
-  const posts = await caller.post.getPosts();
+  const posts = await caller.post.getPostCards();
 
   for (const post of posts) {
-    expect(() => postDataSchemaRo.parse(post)).not.toThrow();
+    expect(() => postCardSchemaRo.parse(post)).not.toThrow();
   }
 });
 
@@ -35,10 +35,10 @@ test("load and validate a single blog post", async () => {
   const caller = createCallerFactory(appRouter)(ctx);
 
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
-    filename: "branded-types",
+    slug: "branded-types", // already have this one seeded
   };
 
   const post = await caller.post.getPost(input);
 
-  expect(post).toMatchObject(postDataSchemaRo.parse(post));
+  expect(post).toMatchObject(postDetailSchemaRo.parse(post));
 });
