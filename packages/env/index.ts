@@ -1,26 +1,16 @@
 import path from "path";
-import { fileURLToPath } from "url";
 import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
-const nodeEnv = process.env.NODE_ENV as
-  | "production"
-  | "development"
-  | "preview" // since node doesn't support preview env
-  | "test";
-
-// for the @ashgw/seeder to import correctly
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 config({
   path: path.resolve(
     __dirname,
-    nodeEnv === "production"
+    process.env.NODE_ENV === "production"
       ? "../../.env.production"
-      : nodeEnv === "preview"
+      : process.env.NODE_ENV === "preview"
         ? "../../.env.preview"
         : "../../.env.development",
   ),
