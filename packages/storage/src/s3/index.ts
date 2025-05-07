@@ -11,24 +11,23 @@ import {
 import { env } from "@ashgw/env";
 import { InternalError } from "@ashgw/observability";
 
-/**
- * Top‑level folders in the bucket.
- */
-export const folders = ["mdx", "voice", "image", "other"] as const;
-export type Folder = (typeof folders)[number];
+import type { Folder } from "../base";
+import { BaseStorageClient } from "../base";
 
 // Add retry constant
 const MAX_RETRIES = 3;
 
-export class S3Service {
-  private readonly client: AwsS3Client;
-  private readonly bucket: string;
-  // Add cache with TTL
-  private readonly cache: Map<string, { data: Buffer; timestamp: number }> =
-    new Map<string, { data: Buffer; timestamp: number }>();
-  private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+export class S3Service extends BaseStorageClient {
+  protected readonly cache = new Map<
+    string,
+    { data: Buffer; timestamp: number }
+  >();
+  protected readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+  protected readonly client: AwsS3Client;
+  protected readonly bucket: string;
 
   constructor() {
+    super();
     this.client = new AwsS3Client({
       region: env.S3_BUCKET_REGION,
       credentials: {
@@ -152,7 +151,7 @@ export class S3Service {
     return Buffer.concat(chunks);
   }
 
-  private formatError(err: unknown, key: string): Error {
+  protected formatError(err: unknown, key: string): Error {
     if (err instanceof S3ServiceException && err.name === "NoSuchKey") {
       return new InternalError({
         code: "NOT_FOUND",
