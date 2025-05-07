@@ -79,7 +79,7 @@ export function Newsletter() {
           </Button>
         </form>
         <p className="dimmed-3 mt-4 text-center text-sm">
-          Subscribe to my newsletter. The extension of this blog and my Twitter.
+          Subscribe to my newsletter. The extension of these thoughts and more.
         </p>
       </div>
       <Toaster position="bottom-right" />
