@@ -15,9 +15,6 @@ const config = sentry.next.withConfig({
       outputFileTracingIncludes: {
         "/": ["./public/**/*"],
       },
-      esmExternals: "loose",
-      productionBrowserSourceMaps: true,
-      pageExtensions: ["js", "ts", "jsx", "tsx", "mdx"],
     },
     transpilePackages: ["next-mdx-remote"], //  this is yet anoher Next 14 specifc bug
   },
