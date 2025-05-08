@@ -44,9 +44,7 @@ export function HeroSection() {
               transition={transition}
             >
               <Text>
-                This site is an extension of my memory, where scattered thoughts
-                and observations become something more concrete than tweets or
-                decentralized notes.
+                This site is an extension of my memory, where scattered thoughts become something more concrete than decentralized notes.
               </Text>
             </motion.div>
           </div>
