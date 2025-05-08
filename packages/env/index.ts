@@ -14,7 +14,7 @@ config({
   path: path.resolve(
     rootDir,
     process.env.NODE_ENV === "production"
-      ? "../../.env.production"
+      ? "../../.env.production" 
       : "../../.env.development",
   ),
 });
