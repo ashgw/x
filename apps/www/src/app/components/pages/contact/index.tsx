@@ -7,7 +7,7 @@ import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
 import { EMAIL, LINKS } from "@ashgw/constants";
-import { sentry } from "@ashgw/observability";
+import { monitor } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
 import Link from "../about/components/Link";
@@ -35,7 +35,7 @@ export function ContactPage() {
     } catch (error) {
       const errorMessage = "Oops! Looks like something went wrong!";
       toast.message(errorMessage);
-      sentry.next.captureException({
+      monitor.next.captureException({
         error,
         withErrorLogging: {
           message: errorMessage,

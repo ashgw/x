@@ -1,7 +1,7 @@
-import { sentry } from "@ashgw/observability";
+import { monitor } from "@ashgw/observability";
 
 export function register() {
-  sentry.next.init({
+  monitor.next.init({
     runtime: "browser",
   });
 }
