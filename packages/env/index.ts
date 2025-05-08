@@ -5,9 +5,8 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env";
 
-// for ESM and CommonJS
+// for compatibility with ESM and CommonJS
 let rootDir = process.cwd();
-
 rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
 
 config({
@@ -15,7 +14,9 @@ config({
     rootDir,
     process.env.NODE_ENV === "production"
       ? "../../.env.production"
-      : "../../.env.development",
+      : process.env.NODE_ENV === "preview"
+        ? "../../.env.preview"
+        : "../../.env.development",
   ),
 });
 
