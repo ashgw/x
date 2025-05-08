@@ -1,5 +1,5 @@
 import { env } from "@ashgw/env";
-import { sentry } from "@ashgw/observability";
+import { monitor } from "@ashgw/observability";
 
 export async function register() {
   if (env.NEXT_RUNTIME === "nodejs") {
@@ -11,4 +11,4 @@ export async function register() {
   }
 }
 
-export const onRequestError = sentry.next.SentryLib.captureRequestError;
+export const onRequestError = monitor.next.SentryLib.captureRequestError;

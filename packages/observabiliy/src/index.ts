@@ -1,3 +1,3 @@
 export * from "./log";
-export * from "./sentry";
+export { sentry as monitor } from "./sentry";
 export * from "./error";
