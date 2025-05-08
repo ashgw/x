@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { sentry } from "@ashgw/observability";
+import { monitor } from "@ashgw/observability";
 
 export async function GET(): Promise<NextResponse<string>> {
   try {
@@ -22,7 +22,7 @@ export async function GET(): Promise<NextResponse<string>> {
     const script = await res.text();
     return NextResponse.json(script, { status: 200 });
   } catch (error) {
-    return NextResponse.json(sentry.next.captureException({ error }), {
+    return NextResponse.json(monitor.next.captureException({ error }), {
       status: 500,
     });
   }

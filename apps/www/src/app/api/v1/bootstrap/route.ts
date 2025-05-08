@@ -1,7 +1,7 @@
 import type { NewType } from "ts-roids";
 import { NextResponse } from "next/server";
 
-import { sentry } from "@ashgw/observability";
+import { monitor } from "@ashgw/observability";
 
 type Script = NewType<"Key", string>;
 type Err = string;
@@ -25,7 +25,7 @@ export async function GET(): Promise<NextResponse<Script> | NextResponse<Err>> {
     const script = await res.text();
     return new NextResponse(script, { status: 200 });
   } catch (error) {
-    return new NextResponse(sentry.next.captureException({ error }), {
+    return new NextResponse(monitor.next.captureException({ error }), {
       status: 500,
     });
   }

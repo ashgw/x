@@ -2,7 +2,7 @@ import type { NextRequest, NextResponse } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { db } from "@ashgw/db";
-import { logger, sentry } from "@ashgw/observability";
+import { logger, monitor } from "@ashgw/observability";
 
 import { appRouter } from "~/api/router";
 import { trpcUri } from "~/trpc/client";
@@ -14,7 +14,7 @@ const handler = (req: NextRequest, res: NextResponse) =>
     allowMethodOverride: false,
     allowBatching: true,
     onError(opts) {
-      sentry.next.captureException({
+      monitor.next.captureException({
         error: opts.error,
         hint: {
           extra: {
