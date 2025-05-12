@@ -1,22 +1,27 @@
-name: CD / WWW production deployment
+name: CI / Database Migration
 
 on:
   workflow_call:
-
-permissions:
-  pull-requests: write
-  contents: read
-  issues: write
+    inputs:
+      environment:
+        required: true
+        type: string
+        description: "Environment to run migrations on (preview/production)"
+      with_deploy:
+        required: false
+        type: boolean
+        description: "Whether to run the deploy step"
 
 jobs:
-  deploy:
+  migrate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/vercel-build
+      - uses: ./.github/actions/pnpm-install
+      - uses: ./.github/actions/setup-env
         with:
-          project_name: www
-          NODE_ENV: production
+          NODE_ENV: ${{ inputs.environment }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
           NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
@@ -26,27 +31,15 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
-          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_sssPUBLIC_POSTHOG_HOST }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
           S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
-          # deployment specific, not needed for build
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
 
       - uses: ./.github/actions/db-migrate
         with:
-          with_deploy: true
+          with_deploy: ${{ inputs.with_deploy }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
-      - uses: ./.github/actions/vercel-deploy
-        with:
-          NODE_ENV: production
-          project_name: www
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -57,6 +57,13 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-build.yml
     secrets: inherit
 
+  db-migration:
+    uses: ./.github/workflows/on-workflow-call-db-migrate.yml
+    secrets: inherit
+    with:
+      environment: development
+      with_deploy: false
+
   mergeable:
     if: always()
     needs:
@@ -66,6 +73,7 @@ jobs:
       - secrets-leaks
       - build
       - dependencies-check
+      - db-migration
     runs-on: ubuntu-latest
     steps:
       - uses: re-actors/alls-green@release/v1
