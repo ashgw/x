@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0 # need full history to write back to PR branch
+          fetch-depth: 0
 
       # - name: Generate short summary via LLM and append to global changelog
       #   env:
@@ -33,15 +33,34 @@ jobs:
       #     echo "[$SHA](https://github.com/$OWNER/$REPO/commit/$SHA) -> $SUMMARY" >> CHANGELOG.md
 
       - uses: ./.github/actions/pnpm-install
+
       - name: Run Changeset versioning
         run: pnpm changeset version
 
-      - name: Commit and push to PR branch
+      - name: Create changelog PR
         env:
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RANDOM_SUFFIX: ${{ github.run_id }}
         run: |
+          # Create a new branch with a random name
+          BRANCH_NAME="changelog-update-${PR_NUMBER}-${RANDOM_SUFFIX}"
+          git checkout -b "${BRANCH_NAME}"
+
+          # Configure git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Commit changes
           git add CHANGELOG.md .
           git commit -m "chore: changelog + version bump" || echo "Nothing to commit"
-          git push origin HEAD:"${HEAD_REF}"
+
+          # Push to new branch
+          git push origin "${BRANCH_NAME}"
+
+          # Create PR
+          gh pr create \
+            --title "chore: changelog update for PR #${PR_NUMBER}" \
+            --body "This PR contains changelog updates and version bumps for PR #${PR_NUMBER}" \
+            --base "${GITHUB_HEAD_REF}" \
+            --head "${BRANCH_NAME}"
