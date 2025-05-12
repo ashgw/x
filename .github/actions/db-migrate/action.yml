@@ -17,6 +17,7 @@ runs:
     - name: Check for schema drift
       shell: bash
       run: |
+        export DATABASE_URL=$DATABASE_URL
         pnpm --filter @ashgw/db exec prisma migrate diff \
         --from-url="$DATABASE_URL" \
         --to-schema-datamodel=./prisma/schema.prisma \
