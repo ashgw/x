@@ -1,0 +1,35 @@
+name: CI / DB Migrate
+
+description: Run database migrations
+
+inputs:
+  with_deploy:
+    required: false
+    default: "false"
+    description: "Whether to run the deploy step"
+  DATABASE_URL:
+    required: true
+    description: "The database URL"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check for schema drift
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate diff \
+        --from-url="$DATABASE_URL" \
+        --to-schema-datamodel=./prisma/schema.prisma \
+        --script > migration.sql
+
+        chmod +x .github/scripts/check-migration-safety.sh
+        .github/scripts/check-migration-safety.sh migration.sql
+
+    - name: Validate migrations
+      run: pnpm --filter @ashgw/db migrate:status
+      shell: bash
+
+    - name: Run migrations
+      if: ${{ inputs.with_deploy }} == true
+      run: pnpm --filter @ashgw/db migrate:deploy
+      shell: bash

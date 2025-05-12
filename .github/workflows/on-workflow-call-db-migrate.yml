@@ -7,7 +7,7 @@ on:
         required: true
         type: string
         description: "Environment to run migrations on (preview/production)"
-      WITH_DEPLOY:
+      with_deploy:
         required: false
         type: boolean
         description: "Whether to run the deploy step"
@@ -40,24 +40,7 @@ jobs:
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
 
-      - name: export DATABASE_URL to work around inner package issue
-        run: |
-          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
-
-      - name: Check for schema drift
-        shell: bash
-        run: |
-          pnpm --filter @ashgw/db exec prisma migrate diff \
-          --from-url="$DATABASE_URL" \
-          --to-schema-datamodel=./prisma/schema.prisma \
-          --script > migration.sql
-
-          chmod +x .github/scripts/check-migration-safety.sh
-          .github/scripts/check-migration-safety.sh migration.sql
-
-      - name: Validate migrations
-        run: pnpm --filter @ashgw/db migrate:status
-
-      - name: Run migrations
-        if: success() && inputs.WITH_DEPLOY == true
-        run: pnpm --filter @ashgw/db migrate:deploy
+      - uses: ./.github/actions/db-migrate
+        with:
+          with_deploy: ${{ inputs.with_deploy }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

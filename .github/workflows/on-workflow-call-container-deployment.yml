@@ -35,6 +35,11 @@ jobs:
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
 
+      - uses: ./.github/actions/db-migrate
+        with:
+          with_deploy: true
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - uses: ./.github/actions/koyeb-deploy
         with:
           NODE_ENV: ${{ inputs.NODE_ENV }}
