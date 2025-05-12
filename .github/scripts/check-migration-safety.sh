@@ -14,8 +14,8 @@ check_pattern() {
     local message=$2
     if grep -i "$pattern" "$MIGRATION_FILE" > /dev/null; then
         echo "::error::$message"
-        echo "Found in migration:"
-        grep -i "$pattern" "$MIGRATION_FILE"
+        # Don't expose the actual migration content
+        echo "::error::Found unsafe migration pattern. Please review the migration file."
         exit 1
     fi
 }
@@ -26,8 +26,8 @@ warn_pattern() {
     local message=$2
     if grep -i "$pattern" "$MIGRATION_FILE" > /dev/null; then
         echo "::warning::$message"
-        echo "Found in migration:"
-        grep -i "$pattern" "$MIGRATION_FILE"
+        # Don't expose the actual migration content
+        echo "::warning::Found migration pattern that requires review."
     fi
 }
 
@@ -46,7 +46,7 @@ warn_pattern "CREATE INDEX" "WARNING: New indexes being created!"
 # Check for data migration statements
 if grep -i "UPDATE.*SET" "$MIGRATION_FILE" > /dev/null; then
     echo "::warning::WARNING: Migration contains data updates!"
-    echo "Please verify data migration strategy!"
+    echo "::warning::Please verify data migration strategy!"
 fi
 
 echo "Migration safety check completed." 
