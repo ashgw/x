@@ -14,10 +14,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set environment variables
+      shell: bash
+      run: echo "DATABASE_URL=${{ inputs.DATABASE_URL }}" >> $GITHUB_ENV
+
     - name: Check for schema drift
       shell: bash
       run: |
-        export DATABASE_URL="${{ inputs.DATABASE_URL }}"
         pnpm --filter @ashgw/db exec prisma migrate diff \
         --from-url="$DATABASE_URL" \
         --to-schema-datamodel=./prisma/schema.prisma \
@@ -27,10 +30,10 @@ runs:
         .github/scripts/check-migration-safety.sh migration.sql
 
     - name: Validate migrations
-      run: pnpm --filter @ashgw/db migrate:status
       shell: bash
+      run: pnpm --filter @ashgw/db migrate:status
 
     - name: Run migrations
       if: ${{ inputs.with_deploy }} == true
-      run: pnpm --filter @ashgw/db migrate:deploy
       shell: bash
+      run: pnpm --filter @ashgw/db migrate:deploy
