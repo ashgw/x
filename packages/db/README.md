@@ -12,3 +12,10 @@
 | `prisma migrate diff`   | dev, CI            | Compares two schema states (used for drift detection)             |
 | `prisma db seed`        | dev, preview       | Runs seed script (usually triggered by `migrate reset`)           |
 | `prisma validate`       | dev, CI            | Validates that `schema.prisma` is syntactically correct           |
+
+```bash
+pnpm --filter @ashgw/db exec prisma migrate diff \
+  --from-url="$DATABASE_URL" \
+  --to-schema-datamodel=./prisma/schema.prisma \
+  --script
+```
