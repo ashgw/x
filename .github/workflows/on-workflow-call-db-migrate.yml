@@ -7,6 +7,10 @@ on:
         required: true
         type: string
         description: "Environment to run migrations on (preview/production)"
+      WITH_DEPLOY:
+        required: false
+        type: boolean
+        description: "Whether to run the deploy step"
 
 jobs:
   migrate:
@@ -55,5 +59,5 @@ jobs:
         run: pnpm --filter @ashgw/db migrate:status
 
       - name: Run migrations
-        if: success()
+        if: success() && inputs.WITH_DEPLOY == true
         run: pnpm --filter @ashgw/db migrate:deploy
