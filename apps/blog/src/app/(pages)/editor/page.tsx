@@ -180,6 +180,7 @@ export function EditorPage() {
         {
           ...data,
           slug: data.title.toLowerCase().replace(/\s+/g, "-"),
+          seoTitle: data.title,
           firstModDate: new Date(),
           lastModDate: new Date(),
           minutesToRead,
@@ -278,10 +279,8 @@ export function EditorPage() {
                           className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
                         >
                           <span>
-                            {field.value
-                              ? field.value.charAt(0) +
-                                field.value.slice(1).toLowerCase()
-                              : "Select category"}
+                            {field.value.charAt(0) +
+                              field.value.slice(1).toLowerCase()}
                           </span>
                           <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
                         </Button>
@@ -371,7 +370,7 @@ export function EditorPage() {
               <textarea
                 placeholder="Write your blog content in MDX..."
                 className="h-[500px] w-full rounded-md border p-2 font-mono"
-                {...register("content")}
+                {...register("mdxContent")}
               />
               <div className="flex justify-end gap-2">
                 <Button
