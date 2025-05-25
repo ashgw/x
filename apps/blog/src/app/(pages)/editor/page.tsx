@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
 
 import { logger } from "@ashgw/observability";
 import {
@@ -54,58 +55,106 @@ const dummyBlogs: PostDetailRo[] = [
   },
 ];
 
+interface BlogFormValues {
+  title: string;
+  summary: string;
+  category: PostCategoryEnum | "";
+  tags: string[];
+  isReleased: boolean;
+  content: string;
+}
+
 export function EditorPage() {
+  // Blog list state (simulate DB)
+  const [blogs, setBlogs] = useState<Blog[]>(dummyBlogs);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
-  const [title, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
-  const [category, setCategory] = useState<PostCategoryEnum | "">("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState("");
-  const [isReleased, setIsReleased] = useState(false);
-  const [content, setContent] = useState("");
+  const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
 
-  // Auto-calculate minutes to read (200 wpm)
-  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
+  // Tag input state (for adding tags)
+  const [tagInput, setTagInput] = useState("");
+
+  // React Hook Form
+  const { register, handleSubmit, setValue, reset, control, watch } =
+    useForm<BlogFormValues>({
+      defaultValues: {
+        title: "",
+        summary: "",
+        category: "",
+        tags: [],
+        isReleased: false,
+        content: "",
+      },
+    });
+
+  // Watch for content to calculate word count
+  const content = watch("content");
+  const tags = watch("tags");
+  const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
   const minutesToRead =
     wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
 
-  // Tag add/remove handlers
+  // Add tag
   function handleAddTag() {
     const newTag = tagInput.trim();
     if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag]);
+      setValue("tags", [...tags, newTag]);
     }
     setTagInput("");
   }
+  // Remove tag
   function handleRemoveTag(tag: string) {
-    setTags(tags.filter((t) => t !== tag));
+    setValue(
+      "tags",
+      tags.filter((t) => t !== tag),
+    );
   }
 
-  // Mock edit handler
+  // Edit blog: load values into form
   function handleEditBlog(blog: Blog) {
-    setTitle(blog.title);
-    setSummary(blog.summary);
-    setCategory(blog.category);
-    setTags(blog.tags);
-    setIsReleased(blog.isReleased);
-    setContent(blog.fontMatterMdxContent.body);
+    setEditingBlog(blog);
+    reset({
+      title: blog.title,
+      summary: blog.summary,
+      category: blog.category,
+      tags: blog.tags,
+      isReleased: blog.isReleased,
+      content: blog.fontMatterMdxContent.body,
+    });
     logger.info("Editing blog:", blog);
   }
 
-  // Mock delete handler
+  // Add new blog: clear form
+  function handleNewBlog() {
+    setEditingBlog(null);
+    reset({
+      title: "",
+      summary: "",
+      category: "",
+      tags: [],
+      isReleased: false,
+      content: "",
+    });
+  }
+
+  // Delete blog: open modal
   function handleDeleteBlog(blog: Blog) {
     setBlogToDelete(blog);
     setShowDeleteModal(true);
   }
 
+  // Confirm delete: remove from list
   function confirmDelete() {
     if (blogToDelete) {
-      logger.info("Deleting blog:", blogToDelete);
-      // Here you would call your real delete logic
+      setBlogs((prev) => prev.filter((b) => b.slug !== blogToDelete.slug));
+      logger.info("Deleted blog:", blogToDelete);
     }
     setShowDeleteModal(false);
     setBlogToDelete(null);
+    // If editing the deleted blog, reset form
+    if (editingBlog && blogToDelete && editingBlog.slug === blogToDelete.slug) {
+      handleNewBlog();
+    }
   }
 
   function cancelDelete() {
@@ -113,12 +162,49 @@ export function EditorPage() {
     setBlogToDelete(null);
   }
 
+  // On submit: log data (simulate save)
+  function onSubmit(data: BlogFormValues) {
+    logger.info("Form submitted:", data);
+    // If editing, update; else, add new
+    if (editingBlog) {
+      setBlogs((prev) =>
+        prev.map((b) =>
+          b.slug === editingBlog.slug
+            ? {
+                ...b,
+                ...data,
+                lastModDate: new Date(),
+                fontMatterMdxContent: {
+                  ...b.fontMatterMdxContent,
+                  body: data.content,
+                  bodyBegin: 0,
+                },
+              }
+            : b,
+        ),
+      );
+    } else {
+      setBlogs((prev) => [
+        {
+          ...data,
+          slug: data.title.toLowerCase().replace(/\s+/g, "-"),
+          firstModDate: new Date(),
+          lastModDate: new Date(),
+          minutesToRead,
+          fontMatterMdxContent: { body: data.content, bodyBegin: 0 },
+        } as Blog,
+        ...prev,
+      ]);
+    }
+    handleNewBlog();
+  }
+
   return (
     <div className="container mx-auto p-8">
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Blog Editor</h1>
-        <Button variant="squared:default">
+        <Button variant="squared:default" onClick={handleNewBlog}>
           <Plus className="mr-2 h-4 w-4" />
           New Blog
         </Button>
@@ -131,7 +217,7 @@ export function EditorPage() {
           <div className="bg-card rounded-lg border p-4">
             <h2 className="mb-4 text-lg font-semibold">Blogs</h2>
             <div className="space-y-2">
-              {dummyBlogs.map((blog) => (
+              {blogs.map((blog) => (
                 <div
                   key={blog.slug}
                   className="flex items-center justify-between rounded-md border p-3"
@@ -139,7 +225,8 @@ export function EditorPage() {
                   <div>
                     <h3 className="font-medium">{blog.title}</h3>
                     <p className="text-muted-foreground text-sm">
-                      Last modified: {blog.lastModDate.toLocaleDateString()}
+                      Last modified:{" "}
+                      {new Date(blog.lastModDate).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -169,65 +256,70 @@ export function EditorPage() {
         <div className="lg:col-span-2">
           <div className="bg-card rounded-lg border p-4">
             <h2 className="mb-4 text-lg font-semibold">Editor</h2>
-            <div className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               {/* Title */}
               <input
                 type="text"
                 placeholder="Blog Title"
                 className="w-full rounded-md border p-2"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                {...register("title", { required: true })}
               />
               {/* Summary */}
               <textarea
                 placeholder="Summary (1-2 sentences)"
                 className="w-full rounded-md border p-2"
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)}
+                {...register("summary", { required: true, maxLength: 120 })}
                 rows={2}
                 maxLength={120}
               />
               {/* Category */}
               <div>
                 <label className="mb-1 block font-medium">Category</label>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
-                    >
-                      <span>
-                        {category
-                          ? category.charAt(0) + category.slice(1).toLowerCase()
-                          : "Select category"}
-                      </span>
-                      <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-popover w-full min-w-[10rem] rounded-md border p-1 shadow-lg">
-                    <DropdownMenuLabel>Select a category</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    {Object.values(PostCategoryEnum).map((cat) => (
-                      <DropdownMenuItem
-                        key={cat}
-                        onSelect={() => setCategory(cat)}
-                        className={
-                          "flex cursor-pointer items-center gap-2 rounded px-3 py-2 transition-colors" +
-                          (cat === category
-                            ? " bg-accent text-accent-foreground"
-                            : " hover:bg-muted focus:bg-muted")
-                        }
-                      >
-                        {cat === category && (
-                          <Check className="text-primary h-4 w-4" />
-                        )}
-                        <span>
-                          {cat.charAt(0) + cat.slice(1).toLowerCase()}
-                        </span>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Controller
+                  control={control}
+                  name="category"
+                  render={({ field }) => (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
+                        >
+                          <span>
+                            {field.value
+                              ? field.value.charAt(0) +
+                                field.value.slice(1).toLowerCase()
+                              : "Select category"}
+                          </span>
+                          <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="bg-popover w-full min-w-[10rem] rounded-md border p-1 shadow-lg">
+                        <DropdownMenuLabel>Select a category</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {Object.values(PostCategoryEnum).map((cat) => (
+                          <DropdownMenuItem
+                            key={cat}
+                            onSelect={() => field.onChange(cat)}
+                            className={
+                              "flex cursor-pointer items-center gap-2 rounded px-3 py-2 transition-colors" +
+                              (cat === field.value
+                                ? " bg-accent text-accent-foreground"
+                                : " hover:bg-muted focus:bg-muted")
+                            }
+                          >
+                            {cat === field.value && (
+                              <Check className="text-primary h-4 w-4" />
+                            )}
+                            <span>
+                              {cat.charAt(0) + cat.slice(1).toLowerCase()}
+                            </span>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                />
               </div>
               {/* Tags */}
               <div>
@@ -263,7 +355,12 @@ export function EditorPage() {
                       }
                     }}
                   />
-                  <Button size="sm" variant="outline" onClick={handleAddTag}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    type="button"
+                    onClick={handleAddTag}
+                  >
                     Add
                   </Button>
                 </div>
@@ -271,11 +368,7 @@ export function EditorPage() {
               {/* isReleased toggle and metadata */}
               <div className="flex items-center gap-6">
                 <label className="flex cursor-pointer items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={isReleased}
-                    onChange={() => setIsReleased((v) => !v)}
-                  />
+                  <input type="checkbox" {...register("isReleased")} />
                   <span>Released</span>
                 </label>
                 <span className="text-muted-foreground text-sm">
@@ -286,20 +379,27 @@ export function EditorPage() {
               <textarea
                 placeholder="Write your blog content in MDX..."
                 className="h-[500px] w-full rounded-md border p-2 font-mono"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+                {...register("content")}
               />
               <div className="flex justify-end gap-2">
-                <Button variant="squared:outline">Cancel</Button>
-                <Button variant="squared:default">Save</Button>
+                <Button
+                  variant="squared:outline"
+                  type="button"
+                  onClick={handleNewBlog}
+                >
+                  Cancel
+                </Button>
+                <Button variant="squared:default" type="submit">
+                  Save
+                </Button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
+      {showDeleteModal ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-card w-full max-w-md rounded-lg border p-6 shadow-lg">
             <h3 className="mb-2 text-lg font-bold">Delete Blog</h3>
@@ -319,7 +419,7 @@ export function EditorPage() {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
