@@ -6,29 +6,44 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { logger } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
-// Dummy data for now
-interface Blog {
-  id: number;
-  title: string;
-  lastModified: string;
-  status: string;
-  content?: string;
-}
+import type { PostDetailRo } from "~/api/models/post";
+import { PostCategoryEnum } from "~/api/models/post";
 
-const dummyBlogs: Blog[] = [
+type Blog = PostDetailRo;
+
+const dummyBlogs: PostDetailRo[] = [
   {
-    id: 1,
     title: "Cholesterol",
-    lastModified: "2024-02-07",
-    status: "Published",
+    seoTitle: "How bad science hijacked medicine and destroyed public health",
+    summary: "How bad science hijacked medicine and destroyed public health",
+    firstModDate: new Date("2025-02-07T09:15:00-0401"),
+    lastModDate: new Date("2025-02-07T09:15:00-0401"),
+    isReleased: true,
+    minutesToRead: 17,
+    tags: ["cholesterol", "statins", "fat"],
+    category: PostCategoryEnum.HEALTH,
+    slug: "cholesterol",
+    fontMatterMdxContent: {
+      body: "I recently visited the doctor...", // truncated for brevity
+      bodyBegin: 0,
+    },
   },
   {
-    id: 2,
     title: "Code or Capital",
-    lastModified: "2023-12-14",
-    status: "Published",
+    seoTitle: "There's hobbyist code and there's business code.",
+    summary: "There's hobbyist code and there's business code.",
+    firstModDate: new Date("2023-12-14T19:45:00-0401"),
+    lastModDate: new Date("2023-12-14T19:45:00-0401"),
+    isReleased: true,
+    minutesToRead: 3,
+    tags: ["code", "capital", "quality"],
+    category: PostCategoryEnum.SOFTWARE,
+    slug: "code-or-capital",
+    fontMatterMdxContent: {
+      body: "There are two distinct modes...", // truncated for brevity
+      bodyBegin: 0,
+    },
   },
-  // Add more dummy blogs as needed
 ];
 
 export function EditorPage() {
@@ -40,7 +55,7 @@ export function EditorPage() {
   // Mock edit handler
   function handleEditBlog(blog: Blog) {
     setTitle(blog.title);
-    setContent(blog.content ?? "");
+    setContent(blog.fontMatterMdxContent.body);
     logger.info("Editing blog:", blog);
   }
 
@@ -84,13 +99,13 @@ export function EditorPage() {
             <div className="space-y-2">
               {dummyBlogs.map((blog) => (
                 <div
-                  key={blog.id}
+                  key={blog.slug}
                   className="flex items-center justify-between rounded-md border p-3"
                 >
                   <div>
                     <h3 className="font-medium">{blog.title}</h3>
                     <p className="text-muted-foreground text-sm">
-                      Last modified: {blog.lastModified}
+                      Last modified: {blog.lastModDate.toLocaleDateString()}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -145,8 +160,8 @@ export function EditorPage() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed flex items-center justify-center">
-          <div className="w-full max-w-md rounded-lg border p-6 shadow-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-card w-full max-w-md rounded-lg border p-6 shadow-lg">
             <h3 className="mb-2 text-lg font-bold">Delete Blog</h3>
             <p className="text-muted-foreground mb-4 text-sm">
               Are you sure you want to delete{" "}
@@ -169,5 +184,4 @@ export function EditorPage() {
   );
 }
 
-// For architecture rule compliance
 export default EditorPage;
