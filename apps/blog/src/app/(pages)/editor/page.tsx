@@ -3,7 +3,7 @@
 import type { Optional } from "ts-roids";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
+import { Check, Pencil, Plus, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { logger } from "@ashgw/observability";
@@ -314,7 +314,6 @@ export function EditorPage() {
                             >
                               {field.value.charAt(0) +
                                 field.value.slice(1).toLowerCase()}
-                              <ChevronDown className="ml-2 h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent
