@@ -1,4 +1,4 @@
-// uncomment this for more strictness, if you're doing crazy db shenanigans in the frontend
+// uncomment this for more strictness, if you're doing crazy db shenanigans in the forntend
 // import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
