@@ -50,11 +50,37 @@ export function EditorPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
   const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [category, setCategory] = useState<PostCategoryEnum | "">("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+  const [isReleased, setIsReleased] = useState(false);
   const [content, setContent] = useState("");
+
+  // Auto-calculate minutes to read (200 wpm)
+  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
+  const minutesToRead =
+    wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
+
+  // Tag add/remove handlers
+  function handleAddTag() {
+    const newTag = tagInput.trim();
+    if (newTag && !tags.includes(newTag)) {
+      setTags([...tags, newTag]);
+    }
+    setTagInput("");
+  }
+  function handleRemoveTag(tag: string) {
+    setTags(tags.filter((t) => t !== tag));
+  }
 
   // Mock edit handler
   function handleEditBlog(blog: Blog) {
     setTitle(blog.title);
+    setSummary(blog.summary);
+    setCategory(blog.category);
+    setTags(blog.tags);
+    setIsReleased(blog.isReleased);
     setContent(blog.fontMatterMdxContent.body);
     logger.info("Editing blog:", blog);
   }
@@ -136,43 +162,98 @@ export function EditorPage() {
           <div className="bg-card rounded-lg border p-4">
             <h2 className="mb-4 text-lg font-semibold">Editor</h2>
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Blog Title"
-                    className="w-full rounded-md border p-2"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Slug"
-                    className="mt-2 w-full rounded-md border p-2"
-                    value={title}
-                    readOnly
-                  />
+              {/* Title */}
+              <input
+                type="text"
+                placeholder="Blog Title"
+                className="w-full rounded-md border p-2"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              {/* Summary */}
+              <textarea
+                placeholder="Summary (1-2 sentences)"
+                className="w-full rounded-md border p-2"
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                rows={2}
+                maxLength={120}
+              />
+              {/* Category */}
+              <div>
+                <label className="mb-1 block font-medium">Category</label>
+                <select
+                  className="w-full rounded-md border p-2"
+                  value={category}
+                  onChange={(e) =>
+                    setCategory(e.target.value as PostCategoryEnum)
+                  }
+                >
+                  <option value="" disabled>
+                    Select category
+                  </option>
+                  {Object.values(PostCategoryEnum).map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat.charAt(0) + cat.slice(1).toLowerCase()}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* Tags */}
+              <div>
+                <label className="mb-1 block font-medium">Tags</label>
+                <div className="mb-2 flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        className="ml-1 text-red-500 hover:text-red-700"
+                        onClick={() => handleRemoveTag(tag)}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
                 </div>
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => blogToDelete && handleEditBlog(blogToDelete)}
-                  >
-                    <Pencil className="mr-1 h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    color="danger"
-                    onClick={() =>
-                      blogToDelete && handleDeleteBlog(blogToDelete)
-                    }
-                  >
-                    <Trash2 className="mr-1 h-4 w-4" />
+                  <input
+                    type="text"
+                    className="flex-1 rounded-md border p-2"
+                    placeholder="Add tag"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddTag();
+                      }
+                    }}
+                  />
+                  <Button size="sm" variant="outline" onClick={handleAddTag}>
+                    Add
                   </Button>
                 </div>
               </div>
+              {/* isReleased toggle and metadata */}
+              <div className="flex items-center gap-6">
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={isReleased}
+                    onChange={() => setIsReleased((v) => !v)}
+                  />
+                  <span>Released</span>
+                </label>
+                <span className="text-muted-foreground text-sm">
+                  {minutesToRead > 0 && `${minutesToRead} min read`} (
+                  {wordCount} words)
+                </span>
+              </div>
+              {/* Content */}
               <textarea
                 placeholder="Write your blog content in MDX..."
                 className="h-[500px] w-full rounded-md border p-2 font-mono"
