@@ -1,5 +1,6 @@
 "use client";
 
+import type { Optional } from "ts-roids";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
@@ -66,8 +67,9 @@ const dummyBlogs: PostDetailRo[] = [
 export function EditorPage() {
   const [blogs, setBlogs] = useState<PostDetailRo[]>(dummyBlogs);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [blogToDelete, setBlogToDelete] = useState<PostDetailRo | null>(null);
-  const [editingBlog, setEditingBlog] = useState<PostDetailRo | null>(null);
+  const [blogToDelete, setBlogToDelete] =
+    useState<Optional<PostDetailRo>>(null);
+  const [editingBlog, setEditingBlog] = useState<Optional<PostDetailRo>>(null);
   const [tagInput, setTagInput] = useState("");
 
   const form = useForm<PostEditorDto>({
