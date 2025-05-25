@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { logger } from "@ashgw/observability";
 import {
   Button,
+  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -307,16 +308,18 @@ export function EditorPage() {
                           <DropdownMenuTrigger asChild>
                             <Button
                               variant="outline"
-                              className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
+                              className="w-full justify-between"
                             >
-                              <span>
-                                {field.value.charAt(0) +
-                                  field.value.slice(1).toLowerCase()}
-                              </span>
-                              <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
+                              <div className="flex w-full items-center justify-between">
+                                <span>
+                                  {field.value.charAt(0) +
+                                    field.value.slice(1).toLowerCase()}
+                                </span>
+                                <ChevronDown className="h-4 w-4 opacity-70" />
+                              </div>
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent className="bg-popover w-full min-w-[10rem] rounded-md border p-1 shadow-lg">
+                          <DropdownMenuContent>
                             <DropdownMenuLabel>
                               Select a category
                             </DropdownMenuLabel>
@@ -324,13 +327,12 @@ export function EditorPage() {
                             {Object.values(PostCategoryEnum).map((cat) => (
                               <DropdownMenuItem
                                 key={cat}
-                                onSelect={() => field.onChange(cat)}
-                                className={
-                                  "flex cursor-pointer items-center gap-2 rounded px-3 py-2 transition-colors" +
-                                  (cat === field.value
-                                    ? " bg-accent text-accent-foreground"
-                                    : " hover:bg-muted focus:bg-muted")
-                                }
+                                onClick={() => field.onChange(cat)}
+                                className={cn(
+                                  "flex cursor-pointer items-center gap-2",
+                                  cat === field.value &&
+                                    "bg-accent text-accent-foreground",
+                                )}
                               >
                                 {cat === field.value && (
                                   <Check className="text-primary h-4 w-4" />
