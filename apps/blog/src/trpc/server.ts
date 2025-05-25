@@ -13,14 +13,7 @@ import { createCallerFactory } from "~/trpc/trpc";
 import { createTRPCContext } from "./context";
 import { makeQueryClient } from "./query-client";
 
-// IMPORTANT: Create a stable getter for the query client that
-//            will return the same client during the same request.
-
-const getQueryClient = cache(makeQueryClient);
-
-const createCaller = createCallerFactory(appRouter);
-
-const caller = createCaller(
+const caller = createCallerFactory(appRouter)(
   createTRPCContext({
     // since these are empty do not use them for anything other than server side simple fetching, don't check for them
     req: {} as NextRequest,
@@ -30,6 +23,10 @@ const caller = createCaller(
     db,
   }),
 );
+
+// IMPORTANT: Create a stable getter for the query client that
+//            will return the same client during the same request.
+const getQueryClient = cache(makeQueryClient);
 
 // use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
 export const { trpc: trpcServerSideClient, HydrateClient } =

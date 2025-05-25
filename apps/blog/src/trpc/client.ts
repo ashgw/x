@@ -7,8 +7,10 @@ import { makeQueryClient } from "./query-client";
 
 let clientQueryClientSingleton: Optional<QueryClient> = null;
 
+const isServer = typeof window === "undefined";
+
 export function getQueryClient() {
-  if (typeof window === "undefined") {
+  if (isServer) {
     // Server: always make a new query client
     return makeQueryClient();
   }
@@ -18,7 +20,7 @@ export function getQueryClient() {
 
 export const trpcUri = "/api/trpc";
 
-const isBrowser = typeof window !== "undefined";
+const isBrowser = !isServer;
 
 export function getTrpcUrl({ siteBaseUrl }: { siteBaseUrl: string }) {
   // For client-side requests, use relative path
