@@ -136,13 +136,43 @@ export function EditorPage() {
           <div className="bg-card rounded-lg border p-4">
             <h2 className="mb-4 text-lg font-semibold">Editor</h2>
             <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Blog Title"
-                className="w-full rounded-md border p-2"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <div className="flex items-center justify-between">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Blog Title"
+                    className="w-full rounded-md border p-2"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Slug"
+                    className="mt-2 w-full rounded-md border p-2"
+                    value={title}
+                    readOnly
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => blogToDelete && handleEditBlog(blogToDelete)}
+                  >
+                    <Pencil className="mr-1 h-4 w-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    color="danger"
+                    onClick={() =>
+                      blogToDelete && handleDeleteBlog(blogToDelete)
+                    }
+                  >
+                    <Trash2 className="mr-1 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
               <textarea
                 placeholder="Write your blog content in MDX..."
                 className="h-[500px] w-full rounded-md border p-2 font-mono"
