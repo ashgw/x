@@ -307,13 +307,13 @@ export function EditorPage() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
-                              variant="outline"
-                              className="flex w-full items-center justify-between"
                               type="button"
+                              variant="outline"
+                              className="w-full"
                             >
                               {field.value.charAt(0) +
                                 field.value.slice(1).toLowerCase()}
-                              <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
+                              <ChevronDown className="ml-2 h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent
@@ -327,19 +327,16 @@ export function EditorPage() {
                             {Object.values(PostCategoryEnum).map((cat) => (
                               <DropdownMenuItem
                                 key={cat}
-                                onSelect={() => field.onChange(cat)}
-                                className={cn(
-                                  "flex cursor-pointer items-center gap-2",
-                                  cat === field.value &&
-                                    "bg-accent text-accent-foreground",
-                                )}
+                                onClick={() => field.onChange(cat)}
                               >
-                                {cat === field.value && (
-                                  <Check className="text-primary h-4 w-4" />
-                                )}
-                                <span>
-                                  {cat.charAt(0) + cat.slice(1).toLowerCase()}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                  {cat === field.value && (
+                                    <Check className="h-4 w-4" />
+                                  )}
+                                  <span>
+                                    {cat.charAt(0) + cat.slice(1).toLowerCase()}
+                                  </span>
+                                </div>
                               </DropdownMenuItem>
                             ))}
                           </DropdownMenuContent>
