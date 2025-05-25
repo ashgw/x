@@ -7,16 +7,23 @@ import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
 import { logger } from "@ashgw/observability";
-import { Button } from "@ashgw/ui";
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@ashgw/ui";
 
 import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
 import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";
 import { trpcClientSideClient } from "~/trpc/client";
 
 export function Newsletter() {
-  const { register, handleSubmit, reset } = useForm<NewsletterSubscribeDto>({
+  const form = useForm<NewsletterSubscribeDto>({
     resolver: zodResolver(newsletterSubscribeDtoSchema),
-    mode: "onChange",
+    mode: "onBlur",
   });
 
   const subscribeMutation =
@@ -25,7 +32,7 @@ export function Newsletter() {
         toast.success("You're in!", {
           description: "Welcome aboard. Thanks for joining!",
         });
-        reset();
+        form.reset();
       },
       onError: () => {
         toast.error("Something went wrong", {
@@ -34,18 +41,16 @@ export function Newsletter() {
       },
     });
 
-  const submitHandler: SubmitHandler<NewsletterSubscribeDto> = async (
-    data,
-    error,
-  ) => {
-    if (error) {
-      logger.debug("Something went wrong with the form", {
+  const submitHandler: SubmitHandler<NewsletterSubscribeDto> = async (data) => {
+    try {
+      await subscribeMutation.mutateAsync({
+        email: data.email,
+      });
+    } catch (error) {
+      logger.debug("Newsletter subscription failed", {
         error,
       });
     }
-    await subscribeMutation.mutateAsync({
-      email: data.email,
-    });
   };
 
   return (
@@ -57,27 +62,43 @@ export function Newsletter() {
       transition={{ duration: 1, ease: "easeInOut" }}
     >
       <div className="relative mx-auto flex max-w-[600px] flex-col items-center p-8 before:absolute before:left-1/2 before:top-0 before:h-[1px] before:w-full before:-translate-x-1/2 before:bg-white/15 sm:before:w-[450px] md:before:w-[550px] lg:before:w-[650px] xl:before:w-[750px]">
-        <form
-          onSubmit={handleSubmit(submitHandler)}
-          className="flex w-full max-w-[480px] items-center justify-center gap-3"
-        >
-          <input
-            type="email"
-            {...register("email")}
-            placeholder="your@email.com"
-            className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-transparent px-3 text-sm font-medium text-[#B0B0B0] outline-none transition-all duration-300 ease-in-out selection:bg-white/10 hover:border-white/20 focus:border-white/30 focus:ring-0 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-[#B0B0B0] [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] focus:[&:-webkit-autofill]:bg-transparent"
-          />
-
-          <Button
-            className="glowsup shrink-0"
-            variant="navbar"
-            type="submit"
-            disabled={subscribeMutation.isPending}
-            loading={subscribeMutation.isPending}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(submitHandler)}
+            className="flex w-full max-w-[480px] flex-col items-center justify-center gap-3"
           >
-            Subscribe
-          </Button>
-        </form>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <div className="flex w-full items-center gap-3">
+                      <input
+                        type="email"
+                        {...field}
+                        placeholder="your@email.com"
+                        className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-transparent px-3 text-sm font-medium text-[#B0B0B0] outline-none transition-all duration-300 ease-in-out selection:bg-white/10 hover:border-white/20 focus:border-white/30 focus:ring-0 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-[#B0B0B0] [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] focus:[&:-webkit-autofill]:bg-transparent"
+                      />
+                      <Button
+                        className="glowsup shrink-0"
+                        variant="navbar"
+                        type="submit"
+                        disabled={subscribeMutation.isPending}
+                        loading={subscribeMutation.isPending}
+                      >
+                        {subscribeMutation.isPending
+                          ? "Subscribing..."
+                          : "Subscribe"}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
         <p className="dimmed-3 mt-4 text-center text-sm">
           Subscribe to my newsletter. The extension of these thoughts and more.
         </p>

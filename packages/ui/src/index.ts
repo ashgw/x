@@ -9,3 +9,4 @@ export * from "./skeleton";
 export * from "./fonts";
 export * from "./toast";
 export * from "./loading";
+export * from "./form";
