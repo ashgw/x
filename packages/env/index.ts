@@ -22,8 +22,8 @@ config({
 
 const isBrowser = typeof window !== "undefined";
 
-// A.K.A serverside vars
-const nonPrefixedVars = {
+// AKA non predfixed vars
+const serverSideVars = {
   NODE_ENV: z.enum(["production", "development", "preview", "test"]),
   SENTRY_ORG: z.string(),
   SENTRY_PROJECT: z.string(),
@@ -80,15 +80,15 @@ const nonPrefixedVars = {
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
 
-type NonPrefixedVars = typeof nonPrefixedVars;
+type ServerSideVars = typeof serverSideVars;
 
-const NonPrefixedVarsTuple = Object.keys(nonPrefixedVars) as UnionToTuple<
-  Keys<NonPrefixedVars>
+const ServerSideVarsTuple = Object.keys(serverSideVars) as UnionToTuple<
+  Keys<ServerSideVars>
 >;
 
 export const env = createEnv({
   vars: {
-    ...nonPrefixedVars,
+    ...serverSideVars,
     SENTRY_DSN: z.string().url(),
     WWW_URL: z.string().url(),
     BLOG_URL: z.string().url(),
@@ -97,7 +97,7 @@ export const env = createEnv({
     POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
     POSTHOG_HOST: z.string().url(),
   },
-  disablePrefix: [...NonPrefixedVarsTuple],
+  disablePrefix: [...ServerSideVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
     KIT_API_KEY: process.env.KIT_API_KEY,
