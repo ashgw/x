@@ -6,7 +6,7 @@ import restrictEnvAccess from "@ashgw/eslint-config/restricted-env";
 /** @type {import('typescript-eslint').Config} */
 export default [
   {
-    ignores: [".next/**"],
+    ignores: [".next/**", ".vercel"],
   },
   ...baseConfig,
   ...reactConfig,

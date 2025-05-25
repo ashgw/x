@@ -37,7 +37,7 @@ export function ContactPage() {
       toast.message(errorMessage);
       monitor.next.captureException({
         error,
-        withErrorLogging: {
+        logErrorWith: {
           message: errorMessage,
         },
       });
