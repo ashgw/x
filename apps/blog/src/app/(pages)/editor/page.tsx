@@ -1,9 +1,9 @@
 "use client";
 
-import type { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { logger } from "@ashgw/observability";
 import {
@@ -14,12 +14,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Textarea,
 } from "@ashgw/ui";
 
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
-import { PostCategoryEnum } from "~/api/models/post";
-
-type Blog = PostDetailRo;
+import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 
 const dummyBlogs: PostDetailRo[] = [
   {
@@ -57,74 +63,28 @@ const dummyBlogs: PostDetailRo[] = [
 ];
 
 export function EditorPage() {
-  const [blogs, setBlogs] = useState<Blog[]>(dummyBlogs);
+  const [blogs, setBlogs] = useState<PostDetailRo[]>(dummyBlogs);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
-  const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
-
-  // Tag input state (for adding tags)
+  const [blogToDelete, setBlogToDelete] = useState<PostDetailRo | null>(null);
+  const [editingBlog, setEditingBlog] = useState<PostDetailRo | null>(null);
   const [tagInput, setTagInput] = useState("");
 
-  // React Hook Form
-  const { register, handleSubmit, setValue, reset, control, watch } =
-    useForm<PostEditorDto>({
-      mode: "onChange",
-      defaultValues: {
-        title: "",
-        summary: "",
-        category: PostCategoryEnum.SOFTWARE,
-        tags: [],
-        isReleased: false,
-        mdxContent: "",
-      },
-    });
-
-  const submitHandler: SubmitHandler<PostEditorDto> = async (data, error) => {
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    if (error) {
-      logger.debug("Something went wrong with the form", {
-        error,
-      });
-    }
-    logger.info("Form submitted:", data);
-    // If editing, update; else, add new
-    if (editingBlog) {
-      setBlogs((prev) =>
-        prev.map((b) =>
-          b.slug === editingBlog.slug
-            ? {
-                ...b,
-                ...data,
-                lastModDate: new Date(),
-                fontMatterMdxContent: {
-                  ...b.fontMatterMdxContent,
-                  body: data.mdxContent,
-                  bodyBegin: 0,
-                },
-              }
-            : b,
-        ),
-      );
-    } else {
-      setBlogs((prev) => [
-        {
-          ...data,
-          slug: data.title.toLowerCase().replace(/\s+/g, "-"), // no need for it here, but get this functionily in teh backend later
-          seoTitle: data.title,
-          firstModDate: new Date(),
-          lastModDate: new Date(),
-          minutesToRead,
-          fontMatterMdxContent: { body: data.mdxContent, bodyBegin: 0 },
-        },
-        ...prev,
-      ]);
-    }
-    handleNewBlog();
-  };
+  const form = useForm<PostEditorDto>({
+    resolver: zodResolver(postEditorSchemaDto),
+    mode: "onChange",
+    defaultValues: {
+      title: "",
+      summary: "",
+      category: PostCategoryEnum.SOFTWARE,
+      tags: [],
+      isReleased: false,
+      mdxContent: "",
+    },
+  });
 
   // Watch for content to calculate word count
-  const content = watch("mdxContent");
-  const tags = watch("tags");
+  const content = form.watch("mdxContent");
+  const tags = form.watch("tags");
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
   const minutesToRead =
     wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
@@ -133,22 +93,22 @@ export function EditorPage() {
   function handleAddTag() {
     const newTag = tagInput.trim();
     if (newTag && !tags.includes(newTag)) {
-      setValue("tags", [...tags, newTag]);
+      form.setValue("tags", [...tags, newTag]);
     }
     setTagInput("");
   }
   // Remove tag
   function handleRemoveTag(tag: string) {
-    setValue(
+    form.setValue(
       "tags",
       tags.filter((t) => t !== tag),
     );
   }
 
   // Edit blog: load values into form
-  function handleEditBlog(blog: Blog) {
+  function handleEditBlog(blog: PostDetailRo) {
     setEditingBlog(blog);
-    reset({
+    form.reset({
       title: blog.title,
       summary: blog.summary,
       category: blog.category,
@@ -162,7 +122,7 @@ export function EditorPage() {
   // Add new blog: clear form
   function handleNewBlog() {
     setEditingBlog(null);
-    reset({
+    form.reset({
       title: "",
       summary: "",
       category: PostCategoryEnum.SOFTWARE,
@@ -173,7 +133,7 @@ export function EditorPage() {
   }
 
   // Delete blog: open modal
-  function handleDeleteBlog(blog: Blog) {
+  function handleDeleteBlog(blog: PostDetailRo) {
     setBlogToDelete(blog);
     setShowDeleteModal(true);
   }
@@ -195,6 +155,50 @@ export function EditorPage() {
   function cancelDelete() {
     setShowDeleteModal(false);
     setBlogToDelete(null);
+  }
+
+  async function onSubmit(data: PostEditorDto) {
+    try {
+      // TODO: Replace with actual API call
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      if (editingBlog) {
+        setBlogs((prev) =>
+          prev.map((b) =>
+            b.slug === editingBlog.slug
+              ? {
+                  ...b,
+                  ...data,
+                  lastModDate: new Date(),
+                  fontMatterMdxContent: {
+                    ...b.fontMatterMdxContent,
+                    body: data.mdxContent,
+                    bodyBegin: 0,
+                  },
+                }
+              : b,
+          ),
+        );
+      } else {
+        setBlogs((prev) => [
+          {
+            ...data,
+            slug: data.title.toLowerCase().replace(/\s+/g, "-"),
+            seoTitle: data.title,
+            firstModDate: new Date(),
+            lastModDate: new Date(),
+            minutesToRead,
+            fontMatterMdxContent: { body: data.mdxContent, bodyBegin: 0 },
+          },
+          ...prev,
+        ]);
+      }
+
+      handleNewBlog();
+    } catch (error) {
+      logger.error("Failed to save blog post", { error });
+      // TODO: Add toast notification for error
+    }
   }
 
   return (
@@ -254,142 +258,194 @@ export function EditorPage() {
         <div className="lg:col-span-2">
           <div className="bg-card rounded-lg border p-4">
             <h2 className="mb-4 text-lg font-semibold">Editor</h2>
-            <form className="space-y-4" onSubmit={handleSubmit(submitHandler)}>
-              {/* Title */}
-              <input
-                type="text"
-                placeholder="Blog Title"
-                className="w-full rounded-md border p-2"
-                {...register("title", { required: true })}
-              />
-              {/* Summary */}
-              <textarea
-                placeholder="Summary (1-2 sentences)"
-                className="w-full rounded-md border p-2"
-                {...register("summary", { required: true, maxLength: 120 })}
-                rows={2}
-                maxLength={120}
-              />
-              {/* Category */}
-              <div>
-                <label className="mb-1 block font-medium">Category</label>
-                <Controller
-                  control={control}
-                  name="category"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="title"
                   render={({ field }) => (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
-                        >
-                          <span>
-                            {field.value.charAt(0) +
-                              field.value.slice(1).toLowerCase()}
-                          </span>
-                          <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="bg-popover w-full min-w-[10rem] rounded-md border p-1 shadow-lg">
-                        <DropdownMenuLabel>Select a category</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        {Object.values(PostCategoryEnum).map((cat) => (
-                          <DropdownMenuItem
-                            key={cat}
-                            onSelect={() => field.onChange(cat)}
-                            className={
-                              "flex cursor-pointer items-center gap-2 rounded px-3 py-2 transition-colors" +
-                              (cat === field.value
-                                ? " bg-accent text-accent-foreground"
-                                : " hover:bg-muted focus:bg-muted")
-                            }
-                          >
-                            {cat === field.value && (
-                              <Check className="text-primary h-4 w-4" />
-                            )}
-                            <span>
-                              {cat.charAt(0) + cat.slice(1).toLowerCase()}
-                            </span>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <FormItem>
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Blog Title" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
-              </div>
-              {/* Tags */}
-              <div>
-                <label className="mb-1 block font-medium">Tags</label>
-                <div className="mb-2 flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        className="ml-1 text-red-500 hover:text-red-700"
-                        onClick={() => handleRemoveTag(tag)}
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
+
+                <FormField
+                  control={form.control}
+                  name="summary"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Summary</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Summary (1-2 sentences)"
+                          {...field}
+                          rows={2}
+                          maxLength={120}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
+                            >
+                              <span>
+                                {field.value.charAt(0) +
+                                  field.value.slice(1).toLowerCase()}
+                              </span>
+                              <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="bg-popover w-full min-w-[10rem] rounded-md border p-1 shadow-lg">
+                            <DropdownMenuLabel>
+                              Select a category
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {Object.values(PostCategoryEnum).map((cat) => (
+                              <DropdownMenuItem
+                                key={cat}
+                                onSelect={() => field.onChange(cat)}
+                                className={
+                                  "flex cursor-pointer items-center gap-2 rounded px-3 py-2 transition-colors" +
+                                  (cat === field.value
+                                    ? " bg-accent text-accent-foreground"
+                                    : " hover:bg-muted focus:bg-muted")
+                                }
+                              >
+                                {cat === field.value && (
+                                  <Check className="text-primary h-4 w-4" />
+                                )}
+                                <span>
+                                  {cat.charAt(0) + cat.slice(1).toLowerCase()}
+                                </span>
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <div className="mb-2 flex flex-wrap gap-2">
+                          {field.value.map((tag) => (
+                            <span
+                              key={tag}
+                              className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
+                            >
+                              {tag}
+                              <button
+                                type="button"
+                                className="ml-1 text-red-500 hover:text-red-700"
+                                onClick={() => handleRemoveTag(tag)}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <Input
+                            type="text"
+                            className="flex-1 rounded-md border p-2"
+                            placeholder="Add tag"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddTag();
+                              }
+                            }}
+                          />
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            type="button"
+                            onClick={handleAddTag}
+                          >
+                            Add
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex items-center gap-6">
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input type="checkbox" {...form.register("isReleased")} />
+                    <span>Released</span>
+                  </label>
+                  <span className="text-muted-foreground text-sm">
+                    {`${minutesToRead} min read`} ({wordCount} words)
+                  </span>
                 </div>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    className="flex-1 rounded-md border p-2"
-                    placeholder="Add tag"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddTag();
-                      }
-                    }}
-                  />
+
+                <FormField
+                  control={form.control}
+                  name="mdxContent"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Content</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Write your blog content in MDX..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex justify-end gap-2">
                   <Button
-                    size="sm"
-                    variant="outline"
+                    variant="squared:outline"
                     type="button"
-                    onClick={handleAddTag}
+                    onClick={() => form.reset()}
                   >
-                    Add
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="squared:default"
+                    type="submit"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    {form.formState.isSubmitting ? "Saving..." : "Save"}
                   </Button>
                 </div>
-              </div>
-              {/* isReleased toggle and metadata */}
-              <div className="flex items-center gap-6">
-                <label className="flex cursor-pointer items-center gap-2">
-                  <input type="checkbox" {...register("isReleased")} />
-                  <span>Released</span>
-                </label>
-                <span className="text-muted-foreground text-sm">
-                  {`${minutesToRead} min read`} ({wordCount} words)
-                </span>
-              </div>
-              {/* Content */}
-              <textarea
-                placeholder="Write your blog content in MDX..."
-                className="h-[500px] w-full rounded-md border p-2 font-mono"
-                {...register("mdxContent")}
-              />
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="squared:outline"
-                  type="button"
-                  onClick={handleNewBlog}
-                >
-                  Cancel
-                </Button>
-                <Button variant="squared:default" type="submit">
-                  Save
-                </Button>
-              </div>
-            </form>
+              </form>
+            </Form>
           </div>
         </div>
       </div>
