@@ -27,7 +27,7 @@ export function TRPCProvider(
           fetch(url, options) {
             return fetch(url, {
               ...options,
-              // cors & cookies included
+              // CORS & cookies included
               credentials: "include",
             });
           },

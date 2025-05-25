@@ -5,8 +5,8 @@ import { db } from "@ashgw/db";
 import { logger, monitor } from "@ashgw/observability";
 
 import { appRouter } from "~/api/router";
-import { trpcUri } from "~/trpc/client";
 import { createTRPCContext } from "~/trpc/context";
+import { trpcUri } from "~/trpc/endpoint";
 
 const handler = (req: NextRequest, res: NextResponse) =>
   fetchRequestHandler({

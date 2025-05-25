@@ -17,17 +17,11 @@ import { PostQueryHelper } from "~/api/query-helpers";
 
 export class BlogService {
   private readonly db: DatabaseClient;
-  private readonly storageClient: StorageClient;
+  private readonly storage: StorageClient;
 
-  constructor({
-    db,
-    storageClient,
-  }: {
-    db: DatabaseClient;
-    storageClient: StorageClient;
-  }) {
+  constructor({ db, storage }: { db: DatabaseClient; storage: StorageClient }) {
     this.db = db;
-    this.storageClient = storageClient;
+    this.storage = storage;
   }
 
   public async getPostCards(): Promise<PostCardRo[]> {
@@ -63,7 +57,7 @@ export class BlogService {
       return null;
     }
 
-    const mdxFileContentBuffer = await this.storageClient.fetchAnyFile({
+    const mdxFileContentBuffer = await this.storage.fetchAnyFile({
       key: post.mdxContent.key,
     });
 
@@ -87,7 +81,7 @@ export class BlogService {
     slug: string;
   }): fontMatterMdxContentRo {
     try {
-      const parsed: FrontMatterResult<"none"> = fm(content);
+      const parsed: FrontMatterResult<":"> = fm(content);
       return fontMatterMdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
