@@ -1,10 +1,21 @@
+"use client";
+
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
+import { logger } from "@ashgw/observability";
 import { Button } from "@ashgw/ui";
 
 // Dummy data for now
-const dummyBlogs = [
+interface Blog {
+  id: number;
+  title: string;
+  lastModified: string;
+  status: string;
+  content?: string;
+}
+
+const dummyBlogs: Blog[] = [
   {
     id: 1,
     title: "Cholesterol",
@@ -20,30 +31,28 @@ const dummyBlogs = [
   // Add more dummy blogs as needed
 ];
 
-export default function EditorPage() {
-  const [selectedBlog, setSelectedBlog] = useState(null);
+export function EditorPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [blogToDelete, setBlogToDelete] = useState(null);
+  const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   // Mock edit handler
-  function handleEditBlog(blog) {
-    setSelectedBlog(blog);
+  function handleEditBlog(blog: Blog) {
     setTitle(blog.title);
-    setContent(blog.content || "");
-    console.log("Editing blog:", blog);
+    setContent(blog.content ?? "");
+    logger.info("Editing blog:", blog);
   }
 
   // Mock delete handler
-  function handleDeleteBlog(blog) {
+  function handleDeleteBlog(blog: Blog) {
     setBlogToDelete(blog);
     setShowDeleteModal(true);
   }
 
   function confirmDelete() {
     if (blogToDelete) {
-      console.log("Deleting blog:", blogToDelete);
+      logger.info("Deleting blog:", blogToDelete);
       // Here you would call your real delete logic
     }
     setShowDeleteModal(false);
@@ -126,8 +135,8 @@ export default function EditorPage() {
                 onChange={(e) => setContent(e.target.value)}
               />
               <div className="flex justify-end gap-2">
-                <Button variant="ghost">Cancel</Button>
-                <Button color="primary">Save</Button>
+                <Button variant="squared:outline">Cancel</Button>
+                <Button variant="squared:default">Save</Button>
               </div>
             </div>
           </div>
@@ -159,3 +168,6 @@ export default function EditorPage() {
     </div>
   );
 }
+
+// For architecture rule compliance
+export default EditorPage;
