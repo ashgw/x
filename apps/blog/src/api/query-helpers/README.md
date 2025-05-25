@@ -1,10 +1,4 @@
-### Query Static Clasess (these only static contain methods)
-
-```
-<Entity>QueryHelper`
-```
-
-### Query
+### Query Helpers
 
 These are TS types written as
 
