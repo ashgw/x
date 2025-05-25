@@ -4,12 +4,7 @@
 
 import { z } from "zod";
 
-// Enums
-export enum PostCategoryEnum {
-  SOFTWARE = "SOFTWARE",
-  HEALTH = "HEALTH",
-  PHILOSOPHY = "PHILOSOPHY",
-}
+import { PostCategoryEnum } from "./shared";
 
 // ========== Schemas ==========
 

@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum } from "~/api/models/post";
 
 type Blog = PostDetailRo;
@@ -55,17 +55,7 @@ const dummyBlogs: PostDetailRo[] = [
   },
 ];
 
-interface BlogFormValues {
-  title: string;
-  summary: string;
-  category: PostCategoryEnum | "";
-  tags: string[];
-  isReleased: boolean;
-  content: string;
-}
-
 export function EditorPage() {
-  // Blog list state (simulate DB)
   const [blogs, setBlogs] = useState<Blog[]>(dummyBlogs);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
@@ -76,19 +66,20 @@ export function EditorPage() {
 
   // React Hook Form
   const { register, handleSubmit, setValue, reset, control, watch } =
-    useForm<BlogFormValues>({
+    useForm<PostEditorDto>({
       defaultValues: {
         title: "",
         summary: "",
-        category: "",
+        category: PostCategoryEnum.SOFTWARE,
         tags: [],
         isReleased: false,
-        content: "",
+        mdxContent:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       },
     });
 
   // Watch for content to calculate word count
-  const content = watch("content");
+  const content = watch("mdxContent");
   const tags = watch("tags");
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
   const minutesToRead =
@@ -119,7 +110,7 @@ export function EditorPage() {
       category: blog.category,
       tags: blog.tags,
       isReleased: blog.isReleased,
-      content: blog.fontMatterMdxContent.body,
+      mdxContent: blog.fontMatterMdxContent.body,
     });
     logger.info("Editing blog:", blog);
   }
@@ -130,10 +121,11 @@ export function EditorPage() {
     reset({
       title: "",
       summary: "",
-      category: "",
+      category: PostCategoryEnum.SOFTWARE,
       tags: [],
       isReleased: false,
-      content: "",
+      mdxContent:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     });
   }
 
@@ -163,7 +155,7 @@ export function EditorPage() {
   }
 
   // On submit: log data (simulate save)
-  function onSubmit(data: BlogFormValues) {
+  function onSubmit(data: PostEditorDto) {
     logger.info("Form submitted:", data);
     // If editing, update; else, add new
     if (editingBlog) {
@@ -176,7 +168,7 @@ export function EditorPage() {
                 lastModDate: new Date(),
                 fontMatterMdxContent: {
                   ...b.fontMatterMdxContent,
-                  body: data.content,
+                  body: data.mdxContent,
                   bodyBegin: 0,
                 },
               }
@@ -191,7 +183,7 @@ export function EditorPage() {
           firstModDate: new Date(),
           lastModDate: new Date(),
           minutesToRead,
-          fontMatterMdxContent: { body: data.content, bodyBegin: 0 },
+          fontMatterMdxContent: { body: data.mdxContent, bodyBegin: 0 },
         } as Blog,
         ...prev,
       ]);
