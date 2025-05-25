@@ -30,6 +30,7 @@ catalog:
   "@types/node": ^20.11.17
   "@tanstack/react-query": "5.71.10"
   "@ashgw/ts-env": 1.5.3
+  react-hook-form: "7.53.0"
 
 catalogs:
   trpc11:
