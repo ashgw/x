@@ -3,6 +3,7 @@ import type { Optional } from "ts-roids";
 import { createTRPCReact } from "@trpc/react-query";
 
 import type { AppRouter } from "~/api/router";
+import { trpcUri } from "./endpoint";
 import { makeQueryClient } from "./query-client";
 
 let clientQueryClientSingleton: Optional<QueryClient> = null;
@@ -17,8 +18,6 @@ export function getQueryClient() {
   // Browser: use singleton pattern to keep the same query client
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
-
-export const trpcUri = "/api/trpc";
 
 const isBrowser = !isServer;
 
