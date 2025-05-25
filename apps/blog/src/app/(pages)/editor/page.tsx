@@ -308,18 +308,18 @@ export function EditorPage() {
                           <DropdownMenuTrigger asChild>
                             <Button
                               variant="outline"
-                              className="w-full justify-between"
+                              className="flex w-full items-center justify-between"
+                              type="button"
                             >
-                              <div className="flex w-full items-center justify-between">
-                                <span>
-                                  {field.value.charAt(0) +
-                                    field.value.slice(1).toLowerCase()}
-                                </span>
-                                <ChevronDown className="h-4 w-4 opacity-70" />
-                              </div>
+                              {field.value.charAt(0) +
+                                field.value.slice(1).toLowerCase()}
+                              <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent>
+                          <DropdownMenuContent
+                            align="end"
+                            className="w-[200px]"
+                          >
                             <DropdownMenuLabel>
                               Select a category
                             </DropdownMenuLabel>
@@ -327,7 +327,7 @@ export function EditorPage() {
                             {Object.values(PostCategoryEnum).map((cat) => (
                               <DropdownMenuItem
                                 key={cat}
-                                onClick={() => field.onChange(cat)}
+                                onSelect={() => field.onChange(cat)}
                                 className={cn(
                                   "flex cursor-pointer items-center gap-2",
                                   cat === field.value &&
