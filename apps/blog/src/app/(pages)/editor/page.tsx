@@ -1,10 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Check, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
 
 import { logger } from "@ashgw/observability";
-import { Button } from "@ashgw/ui";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models/post";
 import { PostCategoryEnum } from "~/api/models/post";
@@ -182,22 +190,44 @@ export function EditorPage() {
               {/* Category */}
               <div>
                 <label className="mb-1 block font-medium">Category</label>
-                <select
-                  className="w-full rounded-md border p-2"
-                  value={category}
-                  onChange={(e) =>
-                    setCategory(e.target.value as PostCategoryEnum)
-                  }
-                >
-                  <option value="" disabled>
-                    Select category
-                  </option>
-                  {Object.values(PostCategoryEnum).map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat.charAt(0) + cat.slice(1).toLowerCase()}
-                    </option>
-                  ))}
-                </select>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="bg-background hover:bg-accent focus:ring-accent flex w-full items-center justify-between rounded-md border px-3 py-2 text-left font-normal focus:ring-2"
+                    >
+                      <span>
+                        {category
+                          ? category.charAt(0) + category.slice(1).toLowerCase()
+                          : "Select category"}
+                      </span>
+                      <ChevronDown className="ml-2 h-4 w-4 opacity-70" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-popover w-full min-w-[10rem] rounded-md border p-1 shadow-lg">
+                    <DropdownMenuLabel>Select a category</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {Object.values(PostCategoryEnum).map((cat) => (
+                      <DropdownMenuItem
+                        key={cat}
+                        onSelect={() => setCategory(cat)}
+                        className={
+                          "flex cursor-pointer items-center gap-2 rounded px-3 py-2 transition-colors" +
+                          (cat === category
+                            ? " bg-accent text-accent-foreground"
+                            : " hover:bg-muted focus:bg-muted")
+                        }
+                      >
+                        {cat === category && (
+                          <Check className="text-primary h-4 w-4" />
+                        )}
+                        <span>
+                          {cat.charAt(0) + cat.slice(1).toLowerCase()}
+                        </span>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               {/* Tags */}
               <div>
@@ -249,8 +279,7 @@ export function EditorPage() {
                   <span>Released</span>
                 </label>
                 <span className="text-muted-foreground text-sm">
-                  {minutesToRead > 0 && `${minutesToRead} min read`} (
-                  {wordCount} words)
+                  {`${minutesToRead} min read`} ({wordCount} words)
                 </span>
               </div>
               {/* Content */}
