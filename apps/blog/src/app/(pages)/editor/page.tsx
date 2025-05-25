@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@ashgw/ui";
@@ -20,6 +21,40 @@ const dummyBlogs = [
 ];
 
 export default function EditorPage() {
+  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [blogToDelete, setBlogToDelete] = useState(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  // Mock edit handler
+  function handleEditBlog(blog) {
+    setSelectedBlog(blog);
+    setTitle(blog.title);
+    setContent(blog.content || "");
+    console.log("Editing blog:", blog);
+  }
+
+  // Mock delete handler
+  function handleDeleteBlog(blog) {
+    setBlogToDelete(blog);
+    setShowDeleteModal(true);
+  }
+
+  function confirmDelete() {
+    if (blogToDelete) {
+      console.log("Deleting blog:", blogToDelete);
+      // Here you would call your real delete logic
+    }
+    setShowDeleteModal(false);
+    setBlogToDelete(null);
+  }
+
+  function cancelDelete() {
+    setShowDeleteModal(false);
+    setBlogToDelete(null);
+  }
+
   return (
     <div className="container mx-auto p-8">
       {/* Header */}
@@ -52,18 +87,18 @@ export default function EditorPage() {
                   <div className="flex gap-2">
                     <Button
                       size="sm"
-                      variant="ghost"
-                      startIcon={<Pencil className="h-4 w-4" />}
+                      variant="outline"
+                      onClick={() => handleEditBlog(blog)}
                     >
-                      Edit
+                      <Pencil className="mr-1 h-4 w-4" />
                     </Button>
                     <Button
                       size="sm"
-                      variant="ghost"
+                      variant="outline"
                       color="danger"
-                      startIcon={<Trash2 className="h-4 w-4" />}
+                      onClick={() => handleDeleteBlog(blog)}
                     >
-                      Delete
+                      <Trash2 className="mr-1 h-4 w-4" />
                     </Button>
                   </div>
                 </div>
@@ -81,10 +116,14 @@ export default function EditorPage() {
                 type="text"
                 placeholder="Blog Title"
                 className="w-full rounded-md border p-2"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
               <textarea
                 placeholder="Write your blog content in MDX..."
                 className="h-[500px] w-full rounded-md border p-2 font-mono"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               />
               <div className="flex justify-end gap-2">
                 <Button variant="ghost">Cancel</Button>
@@ -94,6 +133,29 @@ export default function EditorPage() {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-card w-full max-w-md rounded-lg border p-6 shadow-lg">
+            <h3 className="mb-2 text-lg font-bold">Delete Blog</h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              Are you sure you want to delete{" "}
+              <span className="font-semibold">{blogToDelete?.title}</span>?
+              <br />
+              <span className="text-red-500">This action is irreversible.</span>
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button variant="ghost" onClick={cancelDelete}>
+                Cancel
+              </Button>
+              <Button color="danger" onClick={confirmDelete}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
