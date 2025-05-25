@@ -1,5 +1,6 @@
 "use client";
 
+import type { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { Check, ChevronDown, Pencil, Plus, Trash2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
@@ -67,16 +68,59 @@ export function EditorPage() {
   // React Hook Form
   const { register, handleSubmit, setValue, reset, control, watch } =
     useForm<PostEditorDto>({
+      mode: "onChange",
       defaultValues: {
         title: "",
         summary: "",
         category: PostCategoryEnum.SOFTWARE,
         tags: [],
         isReleased: false,
-        mdxContent:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        mdxContent: "",
       },
     });
+
+  const submitHandler: SubmitHandler<PostEditorDto> = async (data, error) => {
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    if (error) {
+      logger.debug("Something went wrong with the form", {
+        error,
+      });
+    }
+    logger.info("Form submitted:", data);
+    // If editing, update; else, add new
+    if (editingBlog) {
+      setBlogs((prev) =>
+        prev.map((b) =>
+          b.slug === editingBlog.slug
+            ? {
+                ...b,
+                ...data,
+                lastModDate: new Date(),
+                fontMatterMdxContent: {
+                  ...b.fontMatterMdxContent,
+                  body: data.mdxContent,
+                  bodyBegin: 0,
+                },
+              }
+            : b,
+        ),
+      );
+    } else {
+      setBlogs((prev) => [
+        {
+          ...data,
+          slug: data.title.toLowerCase().replace(/\s+/g, "-"), // no need for it here, but get this functionily in teh backend later
+          seoTitle: data.title,
+          firstModDate: new Date(),
+          lastModDate: new Date(),
+          minutesToRead,
+          fontMatterMdxContent: { body: data.mdxContent, bodyBegin: 0 },
+        },
+        ...prev,
+      ]);
+    }
+    handleNewBlog();
+  };
 
   // Watch for content to calculate word count
   const content = watch("mdxContent");
@@ -124,8 +168,7 @@ export function EditorPage() {
       category: PostCategoryEnum.SOFTWARE,
       tags: [],
       isReleased: false,
-      mdxContent:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      mdxContent: "",
     });
   }
 
@@ -152,44 +195,6 @@ export function EditorPage() {
   function cancelDelete() {
     setShowDeleteModal(false);
     setBlogToDelete(null);
-  }
-
-  // On submit: log data (simulate save)
-  function onSubmit(data: PostEditorDto) {
-    logger.info("Form submitted:", data);
-    // If editing, update; else, add new
-    if (editingBlog) {
-      setBlogs((prev) =>
-        prev.map((b) =>
-          b.slug === editingBlog.slug
-            ? {
-                ...b,
-                ...data,
-                lastModDate: new Date(),
-                fontMatterMdxContent: {
-                  ...b.fontMatterMdxContent,
-                  body: data.mdxContent,
-                  bodyBegin: 0,
-                },
-              }
-            : b,
-        ),
-      );
-    } else {
-      setBlogs((prev) => [
-        {
-          ...data,
-          slug: data.title.toLowerCase().replace(/\s+/g, "-"),
-          seoTitle: data.title,
-          firstModDate: new Date(),
-          lastModDate: new Date(),
-          minutesToRead,
-          fontMatterMdxContent: { body: data.mdxContent, bodyBegin: 0 },
-        } as Blog,
-        ...prev,
-      ]);
-    }
-    handleNewBlog();
   }
 
   return (
@@ -249,7 +254,7 @@ export function EditorPage() {
         <div className="lg:col-span-2">
           <div className="bg-card rounded-lg border p-4">
             <h2 className="mb-4 text-lg font-semibold">Editor</h2>
-            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-4" onSubmit={handleSubmit(submitHandler)}>
               {/* Title */}
               <input
                 type="text"
