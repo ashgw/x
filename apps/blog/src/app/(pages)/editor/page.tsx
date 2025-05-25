@@ -69,7 +69,7 @@ export function EditorPage() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Blog Editor</h1>
-        <Button color="primary">
+        <Button variant="squared:default">
           <Plus className="mr-2 h-4 w-4" />
           New Blog
         </Button>
@@ -85,7 +85,7 @@ export function EditorPage() {
               {dummyBlogs.map((blog) => (
                 <div
                   key={blog.id}
-                  className="hover:bg-accent flex items-center justify-between rounded-md border p-3"
+                  className="flex items-center justify-between rounded-md border p-3"
                 >
                   <div>
                     <h3 className="font-medium">{blog.title}</h3>
@@ -145,8 +145,8 @@ export function EditorPage() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-card w-full max-w-md rounded-lg border p-6 shadow-lg">
+        <div className="fixed flex items-center justify-center">
+          <div className="w-full max-w-md rounded-lg border p-6 shadow-lg">
             <h3 className="mb-2 text-lg font-bold">Delete Blog</h3>
             <p className="text-muted-foreground mb-4 text-sm">
               Are you sure you want to delete{" "}
@@ -155,10 +155,10 @@ export function EditorPage() {
               <span className="text-red-500">This action is irreversible.</span>
             </p>
             <div className="flex justify-end gap-2">
-              <Button variant="ghost" onClick={cancelDelete}>
+              <Button variant="squared:outline" onClick={cancelDelete}>
                 Cancel
               </Button>
-              <Button color="danger" onClick={confirmDelete}>
+              <Button variant="squared:default" onClick={confirmDelete}>
                 Delete
               </Button>
             </div>
