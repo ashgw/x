@@ -27,4 +27,4 @@ export function getTrpcUrl({ siteBaseUrl }: { siteBaseUrl: string }) {
   return isBrowser ? trpcUri : `${siteBaseUrl}${trpcUri}`;
 }
 
-export const trpcClientSideClient = createTRPCReact<AppRouter>();
+export const trpcClientSide = createTRPCReact<AppRouter>();

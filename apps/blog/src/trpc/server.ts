@@ -29,5 +29,5 @@ const caller = createCallerFactory(appRouter)(
 const getQueryClient = cache(makeQueryClient);
 
 // use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
-export const { trpc: trpcServerSideClient, HydrateClient } =
+export const { trpc: trpcServerSide, HydrateClient } =
   createHydrationHelpers<AppRouter>(caller, getQueryClient);

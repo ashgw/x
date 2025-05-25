@@ -18,7 +18,7 @@ import {
 
 import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
 import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";
-import { trpcClientSideClient } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/client";
 
 export function Newsletter() {
   const form = useForm<NewsletterSubscribeDto>({
@@ -26,20 +26,19 @@ export function Newsletter() {
     mode: "onBlur",
   });
 
-  const subscribeMutation =
-    trpcClientSideClient.newsletter.subscribe.useMutation({
-      onSuccess: () => {
-        toast.success("You're in!", {
-          description: "Welcome aboard. Thanks for joining!",
-        });
-        form.reset();
-      },
-      onError: () => {
-        toast.error("Something went wrong", {
-          description: "Please try again later",
-        });
-      },
-    });
+  const subscribeMutation = trpcClientSide.newsletter.subscribe.useMutation({
+    onSuccess: () => {
+      toast.success("You're in!", {
+        description: "Welcome aboard. Thanks for joining!",
+      });
+      form.reset();
+    },
+    onError: () => {
+      toast.error("Something went wrong", {
+        description: "Please try again later",
+      });
+    },
+  });
 
   const submitHandler: SubmitHandler<NewsletterSubscribeDto> = async (data) => {
     try {
