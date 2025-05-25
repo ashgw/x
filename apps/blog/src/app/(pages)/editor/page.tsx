@@ -355,45 +355,47 @@ export function EditorPage() {
                     <FormItem>
                       <FormLabel>Tags</FormLabel>
                       <FormControl>
-                        <div className="mb-2 flex flex-wrap gap-2">
-                          {field.value.map((tag) => (
-                            <span
-                              key={tag}
-                              className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
-                            >
-                              {tag}
-                              <button
-                                type="button"
-                                className="ml-1 text-red-500 hover:text-red-700"
-                                onClick={() => handleRemoveTag(tag)}
+                        <div>
+                          <div className="mb-2 flex flex-wrap gap-2">
+                            {field.value.map((tag) => (
+                              <span
+                                key={tag}
+                                className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
                               >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Input
-                            type="text"
-                            className="flex-1 rounded-md border p-2"
-                            placeholder="Add tag"
-                            value={tagInput}
-                            onChange={(e) => setTagInput(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                handleAddTag();
-                              }
-                            }}
-                          />
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            type="button"
-                            onClick={handleAddTag}
-                          >
-                            Add
-                          </Button>
+                                {tag}
+                                <button
+                                  type="button"
+                                  className="ml-1 text-red-500 hover:text-red-700"
+                                  onClick={() => handleRemoveTag(tag)}
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <Input
+                              type="text"
+                              className="flex-1 rounded-md border p-2"
+                              placeholder="Add tag"
+                              value={tagInput}
+                              onChange={(e) => setTagInput(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  e.preventDefault();
+                                  handleAddTag();
+                                }
+                              }}
+                            />
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              type="button"
+                              onClick={handleAddTag}
+                            >
+                              Add
+                            </Button>
+                          </div>
                         </div>
                       </FormControl>
                       <FormMessage />
