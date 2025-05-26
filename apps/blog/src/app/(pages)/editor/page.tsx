@@ -1,6 +1,6 @@
 "use client";
 
-import type { Optional } from "ts-roids";
+import type { NotIncluded, Optional, Prune } from "ts-roids";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Pencil, Plus, Trash2 } from "lucide-react";
@@ -27,6 +27,15 @@ import {
 
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
+
+export type ModalState<T> =
+  | {
+      visible: true;
+      entity: T;
+    }
+  | {
+      visible: false;
+    };
 
 const dummyBlogs: PostDetailRo[] = [
   {
@@ -64,11 +73,15 @@ const dummyBlogs: PostDetailRo[] = [
 ];
 
 export function EditorPage() {
+  const [editModal, setEditModal] = useState<ModalState<PostDetailRo>>({
+    visible: false,
+  });
+
+  const [deleteModal, setDeleteModal] = useState<ModalState<PostDetailRo>>({
+    visible: false,
+  });
+
   const [blogs, setBlogs] = useState<PostDetailRo[]>(dummyBlogs);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [blogToDelete, setBlogToDelete] =
-    useState<Optional<PostDetailRo>>(null);
-  const [editingBlog, setEditingBlog] = useState<Optional<PostDetailRo>>(null);
   const [tagInput, setTagInput] = useState("");
 
   const form = useForm<PostEditorDto>({
@@ -109,7 +122,7 @@ export function EditorPage() {
 
   // Edit blog: load values into form
   function handleEditBlog(blog: PostDetailRo) {
-    setEditingBlog(blog);
+    setEditModal({ visible: true, entity: blog });
     form.reset({
       title: blog.title,
       summary: blog.summary,
@@ -123,7 +136,7 @@ export function EditorPage() {
 
   // Add new blog: clear form
   function handleNewBlog() {
-    setEditingBlog(null);
+    setEditModal({ visible: false });
     form.reset({
       title: "",
       summary: "",
@@ -136,27 +149,30 @@ export function EditorPage() {
 
   // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
-    setBlogToDelete(blog);
-    setShowDeleteModal(true);
+    setDeleteModal({ visible: true, entity: blog });
   }
 
   // Confirm delete: remove from list
   function confirmDelete() {
-    if (blogToDelete) {
-      setBlogs((prev) => prev.filter((b) => b.slug !== blogToDelete.slug));
-      logger.info("Deleted blog:", blogToDelete);
+    if (deleteModal.visible) {
+      setBlogs((prev) =>
+        prev.filter((b) => b.slug !== deleteModal.entity.slug),
+      );
+      logger.info("Deleted blog:", deleteModal.entity);
+
+      // If editing the deleted blog, reset form
+      if (
+        editModal.visible &&
+        editModal.entity.slug === deleteModal.entity.slug
+      ) {
+        handleNewBlog();
+      }
     }
-    setShowDeleteModal(false);
-    setBlogToDelete(null);
-    // If editing the deleted blog, reset form
-    if (editingBlog && blogToDelete && editingBlog.slug === blogToDelete.slug) {
-      handleNewBlog();
-    }
+    setDeleteModal({ visible: false });
   }
 
   function cancelDelete() {
-    setShowDeleteModal(false);
-    setBlogToDelete(null);
+    setDeleteModal({ visible: false });
   }
 
   async function onSubmit(data: PostEditorDto) {
@@ -164,10 +180,10 @@ export function EditorPage() {
       // TODO: Replace with actual API call
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      if (editingBlog) {
+      if (editModal.visible) {
         setBlogs((prev) =>
           prev.map((b) =>
-            b.slug === editingBlog.slug
+            b.slug === editModal.entity.slug
               ? {
                   ...b,
                   ...data,
@@ -452,13 +468,13 @@ export function EditorPage() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal ? (
+      {deleteModal.visible && deleteModal.entity ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-card w-full max-w-md rounded-lg border p-6 shadow-lg">
             <h3 className="mb-2 text-lg font-bold">Delete Blog</h3>
             <p className="text-muted-foreground mb-4 text-sm">
               Are you sure you want to delete{" "}
-              <span className="font-semibold">{blogToDelete?.title}</span>?
+              <span className="font-semibold">{deleteModal.entity.title}</span>?
               <br />
               <span className="text-red-500">This action is irreversible.</span>
             </p>
