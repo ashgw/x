@@ -305,8 +305,6 @@ export function EditorPage() {
                         <Textarea
                           placeholder="Summary (1-2 sentences)"
                           {...field}
-                          rows={2}
-                          maxLength={120}
                         />
                       </FormControl>
                       <FormMessage />
