@@ -38,11 +38,7 @@ export abstract class BaseStorageSerivce {
     filename: string;
   }): Promise<string>;
 
-  /**
-   * Deletes any file from storage using its full key
-   * @param params Delete parameters including the full key
-   * @returns The key of the deleted file
-   */
-  protected abstract _deleteAnyFile(params: { key: string }): Promise<string>;
-  protected abstract _fetchAnyFile(params: { key: string }): Promise<Buffer>;
+  public abstract deleteAnyFile(params: { key: string }): Promise<string>;
+  public abstract fetchAnyFile(params: { key: string }): Promise<Buffer>;
+  public abstract uploadAnyFile(params: { key: string }): Promise<string>;
 }

@@ -62,7 +62,7 @@ export class S3Service extends BaseStorageSerivce {
     folder: F;
     filename: string;
   }): Promise<Buffer> {
-    return this._fetchAnyFile({ key: `${folder}/${filename}` });
+    return this.fetchAnyFile({ key: `${folder}/${filename}` });
   }
 
   public override async uploadFile({
@@ -77,41 +77,7 @@ export class S3Service extends BaseStorageSerivce {
     contentType?: string;
   }): Promise<string> {
     const key = `${folder}/${filename}`;
-    let attempts = 0;
-    let lastError: unknown;
-
-    while (attempts < MAX_RETRIES) {
-      try {
-        await this.client.send(
-          new PutObjectCommand({
-            Bucket: this.bucket,
-            Key: key,
-            Body: body,
-            ContentType: contentType,
-          }),
-        );
-
-        this.cache.set(key, { data: body, timestamp: Date.now() });
-        this._pruneCache();
-
-        return key;
-      } catch (err) {
-        lastError = err;
-        attempts++;
-
-        if (
-          err instanceof S3ServiceException &&
-          (err.name === "SlowDown" || err.name === "RequestTimeout")
-        ) {
-          await setTimeout(Math.pow(2, attempts) * 100);
-          continue;
-        }
-
-        throw this._formatError(err, key);
-      }
-    }
-
-    throw this._formatError(lastError, key);
+    return this.uploadAnyFile({ key, body, contentType });
   }
 
   /**
@@ -129,10 +95,14 @@ export class S3Service extends BaseStorageSerivce {
     filename: string;
   }): Promise<string> {
     const key = `${folder}/${filename}`;
-    return this._deleteAnyFile({ key });
+    return this.deleteAnyFile({ key });
   }
 
-  protected async _deleteAnyFile({ key }: { key: string }): Promise<string> {
+  public override async deleteAnyFile({
+    key,
+  }: {
+    key: string;
+  }): Promise<string> {
     let attempts = 0;
     let lastError: unknown;
 
@@ -165,7 +135,7 @@ export class S3Service extends BaseStorageSerivce {
     throw this._formatError(lastError, key);
   }
 
-  protected override async _fetchAnyFile({
+  public override async fetchAnyFile({
     key,
   }: {
     key: string;
@@ -197,6 +167,53 @@ export class S3Service extends BaseStorageSerivce {
         this._pruneCache();
 
         return buffer;
+      } catch (err) {
+        lastError = err;
+        attempts++;
+
+        if (
+          err instanceof S3ServiceException &&
+          (err.name === "SlowDown" || err.name === "RequestTimeout")
+        ) {
+          await setTimeout(Math.pow(2, attempts) * 100);
+          continue;
+        }
+
+        throw this._formatError(err, key);
+      }
+    }
+
+    throw this._formatError(lastError, key);
+  }
+
+  public override async uploadAnyFile({
+    key,
+    body,
+    contentType,
+  }: {
+    key: string;
+    body: Buffer;
+    contentType?: string;
+  }): Promise<string> {
+    let attempts = 0;
+    let lastError: unknown;
+
+    while (attempts < MAX_RETRIES) {
+      try {
+        await this.client.send(
+          new PutObjectCommand({
+            Bucket: this.bucket,
+            Key: key,
+            Body: body,
+            ContentType: contentType,
+          }),
+        );
+
+        // Update cache
+        this.cache.set(key, { data: body, timestamp: Date.now() });
+        this._pruneCache();
+
+        return key;
       } catch (err) {
         lastError = err;
         attempts++;

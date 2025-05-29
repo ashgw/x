@@ -57,7 +57,7 @@ export class BlogService {
     return await Promise.all(
       posts.map(async (post) => {
         try {
-          const mdxFileContentBuffer = await this.storage.fetchFile({
+          const mdxFileContentBuffer = await this.storage.fetchAnyFile({
             key: post.mdxContent.key,
           });
 
@@ -106,7 +106,7 @@ export class BlogService {
       return null;
     }
 
-    const mdxFileContentBuffer = await this.storage._fetchAnyFile({
+    const mdxFileContentBuffer = await this.storage.fetchAnyFile({
       key: post.mdxContent.key,
     });
 
