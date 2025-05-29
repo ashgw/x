@@ -297,11 +297,7 @@ export function PostEditorForm({
               />
             </motion.div>
 
-            <motion.div
-              className="flex justify-end gap-2"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-            >
+            <div className="flex justify-end gap-2">
               <Button
                 variant="squared:outline"
                 type="button"
@@ -318,7 +314,7 @@ export function PostEditorForm({
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </Button>
-            </motion.div>
+            </div>
           </motion.form>
         </Form>
       </motion.div>
