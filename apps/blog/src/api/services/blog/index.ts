@@ -267,7 +267,7 @@ export class BlogService {
 
   public async deletePost(slug: string): Promise<void> {
     try {
-      // Find the post to get the MDX content key
+      // Find the post first
       const post = await this.db.post.findUnique({
         where: { slug },
         include: { mdxContent: true },
@@ -280,39 +280,47 @@ export class BlogService {
         });
       }
 
+      await this.db.$transaction(async (tx) => {
+        // 1. Delete the post (which should cascade to the Upload)
+        await tx.post.delete({
+          where: { slug },
+        });
+
+        // 2. Verify the upload is gone (double-check)
+        // TODO: remove after testing
+        const uploadExists = await tx.upload.findUnique({
+          where: { key: post.mdxContent.key },
+        });
+
+        if (uploadExists) {
+          // If cascade didn't work, explicitly delete
+          await tx.upload.delete({
+            where: { key: post.mdxContent.key },
+          });
+        }
+      });
+
+      // After DB transaction succeeds, delete from S3
       try {
-        const key = await this.storage.deleteFile({
+        await this.storage.deleteFile({
           filename: `${slug}.mdx`,
           folder: "mdx",
         });
-        logger.info("MDX content file emptied", { key });
-      } catch (deleteError) {
-        logger.warn(
-          "Failed to empty MDX content file, continuing with post deletion",
-          {
-            key: post.mdxContent.key,
-            error: deleteError,
-          },
-        );
-      }
-
-      // Delete the post (will cascade delete the MDX content entry in DB)
-      await this.db.post.delete({
-        where: { slug },
-      });
-      logger.info("Post deleted successfully", { slug });
-    } catch (error) {
-      logger.error("Failed to delete post", { error, slug });
-      if (error instanceof Error) {
-        throw new InternalError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to delete post",
-          cause: error,
+      } catch (s3Error) {
+        // Log but don't fail the operation - file can be cleaned up later
+        logger.error("Failed to delete MDX file from storage", {
+          key: post.mdxContent.key,
+          error: s3Error,
         });
       }
+
+      logger.info("Post and associated content deleted successfully", { slug });
+    } catch (error) {
+      logger.error("Failed to delete post", { error, slug });
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to delete post: Unknown error",
+        message: "Failed to delete post",
+        cause: error,
       });
     }
   }

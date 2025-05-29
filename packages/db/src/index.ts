@@ -16,7 +16,7 @@ export type DatabaseClient = Omit<
   | "$connect"
   | "$disconnect"
   | "$on"
-  | "$transaction"
+  // | "$transaction"
   | "$use"
   | "$extends"
   | "$executeRaw"
