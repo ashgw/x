@@ -13,12 +13,12 @@ import { env } from "@ashgw/env";
 import { InternalError } from "@ashgw/observability";
 
 import type { Folder } from "../base";
-import { BaseStorageSerivce } from "../base";
+import { BaseStorageService } from "../base";
 
 // Add retry constant
 const MAX_RETRIES = 3;
 
-export class S3Service extends BaseStorageSerivce {
+export class S3Service extends BaseStorageService {
   /**
    * In-memory cache for S3 objects with timestamp for TTL tracking.
    * @private
