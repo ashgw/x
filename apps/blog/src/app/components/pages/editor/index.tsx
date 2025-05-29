@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
@@ -17,6 +17,7 @@ import { BlogList } from "./components/BlogList";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
+import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
@@ -53,56 +54,10 @@ export function EditorPage() {
   const utils = trpcClientSide.useUtils();
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
 
-  const filteredAndSortedBlogs = useMemo(() => {
-    if (!postsQuery.data) return [];
-
-    // Apply filtering
-    let filtered = [...postsQuery.data];
-
-    // Status filter
-    if (sortOptions.statusFilter !== "all") {
-      const isReleased = sortOptions.statusFilter === "released";
-      filtered = filtered.filter((blog) => blog.isReleased === isReleased);
-    }
-
-    // Category filter
-    if (sortOptions.categoryFilter !== "all") {
-      filtered = filtered.filter(
-        (blog) => blog.category === sortOptions.categoryFilter,
-      );
-    }
-
-    // Tag filter
-    if (sortOptions.tagFilter !== null) {
-      const tagToFilter = sortOptions.tagFilter;
-      filtered = filtered.filter((blog) => blog.tags.includes(tagToFilter));
-    }
-
-    // Apply sorting
-    return filtered.sort((a, b) => {
-      const aValue = a[sortOptions.sortField];
-      const bValue = b[sortOptions.sortField];
-
-      // Handle dates for proper comparison
-      if (
-        sortOptions.sortField === "lastModDate" ||
-        sortOptions.sortField === "firstModDate"
-      ) {
-        const dateA = new Date(aValue).getTime();
-        const dateB = new Date(bValue).getTime();
-        return sortOptions.sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-      }
-
-      // For string values like title
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sortOptions.sortOrder === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      return 0;
-    });
-  }, [postsQuery.data, sortOptions]);
+  const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
+    postsQuery.data,
+    sortOptions,
+  );
 
   const createMutation = trpcClientSide.post.createPost.useMutation({
     onSuccess: () => {
