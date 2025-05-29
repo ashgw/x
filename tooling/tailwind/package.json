@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "catalog:",
-    "postcss": "8.4.47",
+    "postcss": "8.5.4",
     "tailwindcss": "catalog:",
     "tailwindcss-animate": "1.0.7"
   },
