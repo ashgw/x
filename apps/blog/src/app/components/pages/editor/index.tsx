@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
@@ -54,14 +54,27 @@ export function EditorPage() {
 
   const utils = trpcClientSide.useUtils();
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
-  const { blogFromUrl, isLoadingBlog, blogSlug } = useQueryParamBlog();
 
-  // Load blog from URL query parameter if present
-  useEffect(() => {
-    if (blogFromUrl && blogSlug) {
-      handleEditBlog(blogFromUrl);
-    }
-  }, [blogFromUrl, blogSlug, handleEditBlog]);
+  // Edit blog: load values into form
+  const handleEditBlog = useCallback(
+    (blog: PostDetailRo) => {
+      setEditModal({ visible: true, entity: blog });
+      form.reset({
+        title: blog.title,
+        summary: blog.summary,
+        category: blog.category,
+        tags: blog.tags,
+        isReleased: blog.isReleased,
+        mdxContent: blog.fontMatterMdxContent.body,
+      });
+      logger.info("Editing blog", { slug: blog.slug });
+    },
+    [form],
+  );
+
+  const { isLoadingBlog } = useQueryParamBlog({
+    onBlogFound: handleEditBlog,
+  });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
     postsQuery.data,
@@ -118,20 +131,6 @@ export function EditorPage() {
       });
     },
   });
-
-  // Edit blog: load values into form
-  function handleEditBlog(blog: PostDetailRo) {
-    setEditModal({ visible: true, entity: blog });
-    form.reset({
-      title: blog.title,
-      summary: blog.summary,
-      category: blog.category,
-      tags: blog.tags,
-      isReleased: blog.isReleased,
-      mdxContent: blog.fontMatterMdxContent.body,
-    });
-    logger.info("Editing blog", { slug: blog.slug });
-  }
 
   // Add new blog: clear form
   function handleNewBlog() {
