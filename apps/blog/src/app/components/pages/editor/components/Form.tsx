@@ -2,7 +2,7 @@ import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useState } from "react";
 import { Check } from "lucide-react";
 
-import { WordCounter } from "@ashgw/cross-runtime";
+import { WordCounterService } from "@ashgw/cross-runtime";
 import {
   Button,
   DropdownMenu,
@@ -41,8 +41,8 @@ export function PostEditorForm({
 
   const content = watch("mdxContent");
   const tags = watch("tags");
-  const wordCount = WordCounter.countWords(content);
-  const minutesToRead = WordCounter.countMinutesToRead(content);
+  const wordCount = WordCounterService.countWords(content);
+  const minutesToRead = WordCounterService.countMinutesToRead(content);
 
   function _handleAddTag() {
     const newTag = tagInput.trim();

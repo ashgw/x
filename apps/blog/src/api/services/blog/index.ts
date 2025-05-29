@@ -4,7 +4,7 @@ import fm from "front-matter";
 
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
-import { WordCounter } from "@ashgw/cross-runtime";
+import { WordCounterService } from "@ashgw/cross-runtime";
 import { InternalError, logger } from "@ashgw/observability";
 
 import type {
@@ -157,7 +157,9 @@ export class BlogService {
       });
 
       const now = new Date();
-      const minutesToRead = WordCounter.countMinutesToRead(data.mdxContent);
+      const minutesToRead = WordCounterService.countMinutesToRead(
+        data.mdxContent,
+      );
 
       const post = await this.db.post.create({
         data: {
@@ -185,16 +187,10 @@ export class BlogService {
       });
     } catch (error) {
       logger.error("Failed to create post", { error });
-      if (error instanceof Error) {
-        throw new InternalError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to create post",
-          cause: error,
-        });
-      }
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to create post: Unknown error",
+        message: "Failed to create post",
+        cause: error,
       });
     }
   }
@@ -226,7 +222,9 @@ export class BlogService {
         contentType: "text/markdown",
       });
 
-      const minutesToRead = WordCounter.countMinutesToRead(data.mdxContent);
+      const minutesToRead = WordCounterService.countMinutesToRead(
+        data.mdxContent,
+      );
 
       // Update post in db
       const post = await this.db.post.update({

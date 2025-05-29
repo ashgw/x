@@ -1,4 +1,4 @@
-export class WordCounter {
+export class WordCounterService {
   public static countWords(text: string): number {
     return text.trim().split(/\s+/).filter(Boolean).length;
   }
