@@ -193,49 +193,9 @@ export function EditorPage() {
           isLoading={postsQuery.isLoading || isLoadingBlog}
         />
         {showEditorSkeleton ? (
-          <div className="border-border bg-card col-span-2 rounded-lg border p-6">
-            <div className="space-y-6">
-              {/* Title */}
-              <div>
-                <Skeleton className="mb-2 h-4 w-16" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-
-              {/* Summary */}
-              <div>
-                <Skeleton className="mb-2 h-4 w-24" />
-                <Skeleton className="h-24 w-full" />
-              </div>
-
-              {/* Category */}
-              <div>
-                <Skeleton className="mb-2 h-4 w-20" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-
-              {/* Tags */}
-              <div>
-                <Skeleton className="mb-2 h-4 w-12" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-
-              {/* Released checkbox */}
-              <div className="flex items-center">
-                <Skeleton className="mr-2 h-4 w-4" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-
-              {/* Content */}
-              <div>
-                <Skeleton className="mb-2 h-4 w-20" />
-                <Skeleton className="h-52 w-full" />
-              </div>
-
-              {/* Buttons */}
-              <div className="flex justify-end gap-3">
-                <Skeleton className="h-9 w-24" />
-                <Skeleton className="h-9 w-24" />
-              </div>
+          <div className="lg:col-span-2">
+            <div className="bg-card rounded-lg border p-4">
+              <Skeleton className="w-full" />
             </div>
           </div>
         ) : (
