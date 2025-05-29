@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Check,
@@ -57,9 +58,10 @@ export function SortOptions({
   blogs,
 }: SortOptionsProps) {
   // Extract all unique tags from the blogs
-  const allTags = Array.from(
-    new Set(blogs.flatMap((blog) => blog.tags)),
-  ).sort();
+  const allTags = useMemo(
+    () => Array.from(new Set(blogs.flatMap((blog) => blog.tags))).sort(),
+    [blogs],
+  );
 
   // Helper to update sort options
   const updateOptions = (newOptions: Partial<SortOptions>) => {
