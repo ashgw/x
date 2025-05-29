@@ -1,6 +1,26 @@
 import type { UseFormReturn } from "react-hook-form";
+import { Check } from "lucide-react";
+
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Textarea,
+} from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
+import { PostCategoryEnum } from "~/api/models/post";
 
 interface PostEditorFormProps {
   form: UseFormReturn<PostEditorDto>;
@@ -11,10 +31,11 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
   const {
     reset,
     control,
+    register,
     setValue,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
   return (
@@ -24,7 +45,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <FormField
-              control={form.control}
+              control={control}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -38,7 +59,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="summary"
               render={({ field }) => (
                 <FormItem>
@@ -55,7 +76,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="category"
               render={({ field }) => (
                 <FormItem>
@@ -99,7 +120,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="tags"
               render={({ field }) => (
                 <FormItem>
@@ -155,7 +176,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
 
             <div className="flex items-center gap-6">
               <label className="flex cursor-pointer items-center gap-2">
-                <input type="checkbox" {...form.register("isReleased")} />
+                <input type="checkbox" {...register("isReleased")} />
                 <span>Released</span>
               </label>
               <span className="text-muted-foreground text-sm">
@@ -164,7 +185,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
             </div>
 
             <FormField
-              control={form.control}
+              control={control}
               name="mdxContent"
               render={({ field }) => (
                 <FormItem>
@@ -184,16 +205,16 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
               <Button
                 variant="squared:outline"
                 type="button"
-                onClick={() => form.reset()}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>
               <Button
                 variant="squared:default"
                 type="submit"
-                disabled={form.formState.isSubmitting}
+                disabled={isSubmitting}
               >
-                {form.formState.isSubmitting ? "Saving..." : "Save"}
+                {isSubmitting ? "Saving..." : "Save"}
               </Button>
             </div>
           </form>
