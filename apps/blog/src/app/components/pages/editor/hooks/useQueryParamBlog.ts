@@ -30,17 +30,21 @@ export function useQueryParamBlog({
         postsQuery.isSuccess &&
         !postsQuery.data.some((post) => post.slug === blogSlug),
       retry: 1,
-      onError: (error) => {
-        logger.error("Failed to load blog from URL", {
-          error,
-          blogSlug,
-        });
-        toast.error("Failed to load blog", {
-          description: "The blog post could not be found",
-        });
-      },
     },
   );
+
+  // Handle errors from the specific post query
+  useEffect(() => {
+    if (getPostQuery.isError) {
+      logger.error("Failed to load blog from URL", {
+        error: getPostQuery.error,
+        blogSlug,
+      });
+      toast.error("Failed to load blog", {
+        description: "The blog post could not be found",
+      });
+    }
+  }, [getPostQuery.isError, getPostQuery.error, blogSlug]);
 
   // Find blog either from the getAllPosts query or from the getPost query
   const blogFromUrl = blogSlug
