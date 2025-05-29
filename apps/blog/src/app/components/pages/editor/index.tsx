@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
@@ -9,6 +9,7 @@ import { toast, Toaster } from "sonner";
 import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 
+import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
@@ -28,6 +29,15 @@ export function EditorPage() {
     },
   );
 
+  // Add sort options state
+  const [sortOptions, setSortOptions] = useState<SortOptionsType>({
+    sortField: "lastModDate",
+    sortOrder: "desc",
+    statusFilter: "all",
+    categoryFilter: "all",
+    tagFilter: null,
+  });
+
   const form = useForm<PostEditorDto>({
     // TODO: fix this fr
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,8 +54,59 @@ export function EditorPage() {
   });
 
   const utils = trpcClientSide.useUtils();
-
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+
+  // Apply sorting and filtering to the blog posts
+  const filteredAndSortedBlogs = useMemo(() => {
+    if (!postsQuery.data) return [];
+
+    // Apply filtering
+    let filtered = [...postsQuery.data];
+
+    // Status filter
+    if (sortOptions.statusFilter !== "all") {
+      const isReleased = sortOptions.statusFilter === "released";
+      filtered = filtered.filter((blog) => blog.isReleased === isReleased);
+    }
+
+    // Category filter
+    if (sortOptions.categoryFilter !== "all") {
+      filtered = filtered.filter(
+        (blog) => blog.category === sortOptions.categoryFilter,
+      );
+    }
+
+    // Tag filter
+    if (sortOptions.tagFilter !== null) {
+      const tagToFilter = sortOptions.tagFilter;
+      filtered = filtered.filter((blog) => blog.tags.includes(tagToFilter));
+    }
+
+    // Apply sorting
+    return filtered.sort((a, b) => {
+      const aValue = a[sortOptions.sortField];
+      const bValue = b[sortOptions.sortField];
+
+      // Handle dates for proper comparison
+      if (
+        sortOptions.sortField === "lastModDate" ||
+        sortOptions.sortField === "firstModDate"
+      ) {
+        const dateA = new Date(aValue).getTime();
+        const dateB = new Date(bValue).getTime();
+        return sortOptions.sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+      }
+
+      // For string values like title
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        return sortOptions.sortOrder === "asc"
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      return 0;
+    });
+  }, [postsQuery.data, sortOptions]);
 
   const createMutation = trpcClientSide.post.createPost.useMutation({
     onSuccess: () => {
@@ -156,10 +217,15 @@ export function EditorPage() {
 
   return (
     <div className="container mx-auto p-8">
-      <Header onClick={handleNewBlog} />
+      <Header
+        onClick={handleNewBlog}
+        sortOptions={sortOptions}
+        onSortOptionsChange={setSortOptions}
+        blogs={postsQuery.data ?? []}
+      />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <BlogList
-          blogs={postsQuery.data ?? []}
+          blogs={filteredAndSortedBlogs}
           onEdit={handleEditBlog}
           onDelete={handleDeleteBlog}
           isLoading={postsQuery.isLoading}
