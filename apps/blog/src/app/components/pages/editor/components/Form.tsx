@@ -1,4 +1,5 @@
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 import { WordCounterService } from "@ashgw/cross-runtime";
@@ -51,8 +52,14 @@ export function PostEditorForm({
   const { reset, control, register, watch, handleSubmit } = form;
 
   const content = watch("mdxContent");
-  const wordCount = WordCounterService.countWords(content);
-  const minutesToRead = WordCounterService.countMinutesToRead(content);
+
+  const { wordCount, minutesToRead } = useMemo(
+    () => ({
+      wordCount: WordCounterService.countWords(content),
+      minutesToRead: WordCounterService.countMinutesToRead(content),
+    }),
+    [content],
+  );
 
   return (
     <motion.div

@@ -17,7 +17,7 @@ export const postEditorSchemaDto = z.object({
   category: z.nativeEnum(PostCategoryEnum),
   tags: z.array(z.string().max(10).min(1)), // too big looks ugly
   isReleased: z.boolean(),
-  mdxContent: z.string().min(100),
+  mdxContent: z.string().min(10),
 });
 
 export const postUpdatePostSchemaDto = z.object({
