@@ -47,6 +47,10 @@ interface SortOptionsProps {
   blogs: PostDetailRo[];
 }
 
+const formatCategoryName = (category: string): string => {
+  return category.charAt(0) + category.slice(1).toLowerCase();
+};
+
 export function SortOptions({
   options,
   onOptionsChange,
@@ -277,8 +281,7 @@ export function SortOptions({
               <Filter className="h-4 w-4" />
               {options.categoryFilter !== "all" && (
                 <Badge className="ml-1 px-1 py-0 text-xs">
-                  {options.categoryFilter.charAt(0) +
-                    options.categoryFilter.slice(1).toLowerCase()}
+                  {formatCategoryName(options.categoryFilter)}
                 </Badge>
               )}
             </Button>
@@ -308,9 +311,7 @@ export function SortOptions({
                   onClick={() => updateOptions({ categoryFilter: category })}
                   className="flex items-center justify-between"
                 >
-                  <span>
-                    {category.charAt(0) + category.slice(1).toLowerCase()}
-                  </span>
+                  <span>{formatCategoryName(category)}</span>
                   {options.categoryFilter === category && (
                     <Check className="h-4 w-4" />
                   )}
