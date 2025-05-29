@@ -1,34 +1,18 @@
 "use client";
 
+import type { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { ModalState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
-  Textarea,
-} from "@ashgw/ui";
 
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { BlogList } from "./components/BlogList";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
+import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
 
 const dummyBlogs: PostDetailRo[] = [
@@ -76,7 +60,6 @@ export function EditorPage() {
   });
 
   const [blogs, setBlogs] = useState<PostDetailRo[]>(dummyBlogs);
-  const [tagInput, setTagInput] = useState("");
 
   const form = useForm<PostEditorDto>({
     resolver: zodResolver(postEditorSchemaDto),
@@ -91,28 +74,10 @@ export function EditorPage() {
     },
   });
 
-  // Watch for content to calculate word count
   const content = form.watch("mdxContent");
-  const tags = form.watch("tags");
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
   const minutesToRead =
     wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
-
-  // Add tag
-  function handleAddTag() {
-    const newTag = tagInput.trim();
-    if (newTag && !tags.includes(newTag)) {
-      form.setValue("tags", [...tags, newTag]);
-    }
-    setTagInput("");
-  }
-  // Remove tag
-  function handleRemoveTag(tag: string) {
-    form.setValue(
-      "tags",
-      tags.filter((t) => t !== tag),
-    );
-  }
 
   // Edit blog: load values into form
   function handleEditBlog(blog: PostDetailRo) {
@@ -169,11 +134,10 @@ export function EditorPage() {
     setDeleteModal({ visible: false });
   }
 
-  async function onSubmit(data: PostEditorDto) {
+  const onSubmit: SubmitHandler<PostEditorDto> = async (data, _err) => {
     try {
       // TODO: Replace with actual API call
       await new Promise((resolve) => setTimeout(resolve, 500));
-
       if (editModal.visible) {
         setBlogs((prev) =>
           prev.map((b) =>
@@ -211,7 +175,7 @@ export function EditorPage() {
       logger.error("Failed to save blog post", { error });
       // TODO: Add toast notification for error
     }
-  }
+  };
 
   return (
     <div className="container mx-auto p-8">
@@ -222,197 +186,7 @@ export function EditorPage() {
           onEdit={handleEditBlog}
           onDelete={handleDeleteBlog}
         />
-        {/* Editor */}
-        <div className="lg:col-span-2">
-          <div className="bg-card rounded-lg border p-4">
-            <h2 className="mb-4 text-lg font-semibold">Editor</h2>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Blog Title" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="summary"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Summary</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Summary (1-2 sentences)"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <FormControl>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="w-full"
-                            >
-                              {field.value.charAt(0) +
-                                field.value.slice(1).toLowerCase()}
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="end"
-                            className="w-[200px]"
-                          >
-                            <DropdownMenuLabel>
-                              Select a category
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            {Object.values(PostCategoryEnum).map((cat) => (
-                              <DropdownMenuItem
-                                key={cat}
-                                onClick={() => field.onChange(cat)}
-                              >
-                                <div className="flex items-center gap-2">
-                                  {cat === field.value && (
-                                    <Check className="h-4 w-4" />
-                                  )}
-                                  <span>
-                                    {cat.charAt(0) + cat.slice(1).toLowerCase()}
-                                  </span>
-                                </div>
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="tags"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tags</FormLabel>
-                      <FormControl>
-                        <div>
-                          <div className="mb-2 flex flex-wrap gap-2">
-                            {field.value.map((tag) => (
-                              <span
-                                key={tag}
-                                className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
-                              >
-                                {tag}
-                                <button
-                                  type="button"
-                                  className="ml-1 text-red-500 hover:text-red-700"
-                                  onClick={() => handleRemoveTag(tag)}
-                                >
-                                  ×
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                          <div className="flex gap-2">
-                            <Input
-                              type="text"
-                              className="flex-1 rounded-md border p-2"
-                              placeholder="Add tag"
-                              value={tagInput}
-                              onChange={(e) => setTagInput(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  e.preventDefault();
-                                  handleAddTag();
-                                }
-                              }}
-                            />
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              type="button"
-                              onClick={handleAddTag}
-                            >
-                              Add
-                            </Button>
-                          </div>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex items-center gap-6">
-                  <label className="flex cursor-pointer items-center gap-2">
-                    <input type="checkbox" {...form.register("isReleased")} />
-                    <span>Released</span>
-                  </label>
-                  <span className="text-muted-foreground text-sm">
-                    {`${minutesToRead} min read`} ({wordCount} words)
-                  </span>
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="mdxContent"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Content</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Write your blog content in MDX..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="squared:outline"
-                    type="button"
-                    onClick={() => form.reset()}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="squared:default"
-                    type="submit"
-                    disabled={form.formState.isSubmitting}
-                  >
-                    {form.formState.isSubmitting ? "Saving..." : "Save"}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
-        </div>
+        <PostEditorForm form={form} onSubmit={onSubmit} />
       </div>
       {deleteModal.visible ? (
         <ConfirmBlogDeleteModal
