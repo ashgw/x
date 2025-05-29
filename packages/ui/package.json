@@ -33,7 +33,7 @@
     "react": "catalog:react18",
     "ts-roids": "catalog:",
     "typescript": "catalog:",
-    "zod": "catalog:"
+    "zod": "3.23.8"
   },
   "exports": {
     ".": {
@@ -51,7 +51,7 @@
   "license": "MIT",
   "peerDependencies": {
     "react": "catalog:react18",
-    "zod": "catalog:"
+    "zod": "3.23.8"
   },
   "prettier": "@ashgw/prettier-config",
   "type": "module"
