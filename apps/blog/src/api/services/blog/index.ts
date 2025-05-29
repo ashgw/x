@@ -57,7 +57,7 @@ export class BlogService {
     return await Promise.all(
       posts.map(async (post) => {
         try {
-          const mdxFileContentBuffer = await this.storage.fetchAnyFile({
+          const mdxFileContentBuffer = await this.storage.fetchFile({
             key: post.mdxContent.key,
           });
 
@@ -106,7 +106,7 @@ export class BlogService {
       return null;
     }
 
-    const mdxFileContentBuffer = await this.storage.fetchAnyFile({
+    const mdxFileContentBuffer = await this.storage._fetchAnyFile({
       key: post.mdxContent.key,
     });
 
@@ -204,7 +204,6 @@ export class BlogService {
     data: PostEditorDto,
   ): Promise<PostDetailRo> {
     try {
-      // Find the post
       const existingPost = await this.db.post.findUnique({
         where: { slug },
         include: PostQueryHelper.detailInclude(),

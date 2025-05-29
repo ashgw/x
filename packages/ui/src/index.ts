@@ -13,3 +13,4 @@ export * from "./form";
 export * from "./input";
 export * from "./textarea";
 export * from "./model-state";
+export * from "./scroll-area";
