@@ -193,12 +193,50 @@ export function EditorPage() {
           isLoading={postsQuery.isLoading || isLoadingBlog}
         />
         {showEditorSkeleton ? (
-          <div className="border-border bg-card col-span-2 space-y-4 rounded-lg border p-6">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-8 w-1/3" />
-            <Skeleton className="h-8 w-1/2" />
-            <Skeleton className="h-64 w-full" />
+          <div className="border-border bg-card col-span-2 rounded-lg border p-6">
+            <div className="space-y-6">
+              {/* Title */}
+              <div>
+                <Skeleton className="mb-2 h-4 w-16" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+
+              {/* Summary */}
+              <div>
+                <Skeleton className="mb-2 h-4 w-24" />
+                <Skeleton className="h-24 w-full" />
+              </div>
+
+              {/* Category */}
+              <div>
+                <Skeleton className="mb-2 h-4 w-20" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+
+              {/* Tags */}
+              <div>
+                <Skeleton className="mb-2 h-4 w-12" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+
+              {/* Released checkbox */}
+              <div className="flex items-center">
+                <Skeleton className="mr-2 h-4 w-4" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+
+              {/* Content */}
+              <div>
+                <Skeleton className="mb-2 h-4 w-20" />
+                <Skeleton className="h-52 w-full" />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-3">
+                <Skeleton className="h-9 w-24" />
+                <Skeleton className="h-9 w-24" />
+              </div>
+            </div>
           </div>
         ) : (
           <PostEditorForm
