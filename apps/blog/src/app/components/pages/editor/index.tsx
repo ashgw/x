@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
-import type { ModalState } from "@ashgw/ui";
+import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
@@ -18,15 +18,16 @@ import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
 
 export function EditorPage() {
-  const [editModal, setEditModal] = useState<ModalState<PostDetailRo>>({
+  const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
     visible: false,
   });
 
-  const [deleteModal, setDeleteModal] = useState<ModalState<PostDetailRo>>({
-    visible: false,
-  });
+  const [deleteModal, setDeleteModal] = useState<EntityViewState<PostDetailRo>>(
+    {
+      visible: false,
+    },
+  );
 
-  // Set up form with validation
   const form = useForm<PostEditorDto>({
     // TODO: fix this fr
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,8 +43,7 @@ export function EditorPage() {
     },
   });
 
-  // Set up queries and mutations
-  const utils = trpcClientSide.useContext();
+  const utils = trpcClientSide.useUtils();
 
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
 
@@ -141,7 +141,6 @@ export function EditorPage() {
     setDeleteModal({ visible: false });
   }
 
-  // Form submission handler
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
     if (editModal.visible) {
       updateMutation.mutate({

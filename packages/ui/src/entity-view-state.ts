@@ -1,4 +1,4 @@
-export type ModalState<T> =
+export type EntityViewState<T> =
   | {
       visible: true;
       entity: T;
