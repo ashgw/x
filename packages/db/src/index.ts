@@ -16,7 +16,7 @@ export type DatabaseClient = Omit<
   | "$connect"
   | "$disconnect"
   | "$on"
-  | "$transaction"
+  // | "$transaction"
   | "$use"
   | "$extends"
   | "$executeRaw"
@@ -48,6 +48,8 @@ const pool = isSamePool(globalForDb.pool)
   ? globalForDb.pool
   : new NeonPool({
       connectionString: env.DATABASE_URL,
+      max: 10,
+      connectionTimeoutMillis: 15000,
     });
 
 const adapter = new PrismaNeon(pool);
@@ -62,8 +64,8 @@ const db =
         ? ["query", "info", "warn", "error"]
         : ["error"],
     transactionOptions: {
-      maxWait: 4000,
-      timeout: 10000,
+      maxWait: 10000,
+      timeout: 30000,
       isolationLevel: "ReadCommitted",
     },
   }) satisfies DatabaseClient);

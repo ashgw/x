@@ -48,7 +48,6 @@
     "@trpc/server": "catalog:trpc11",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
-    "dinero.js": "2.0.0-alpha.14",
     "framer-motion": "catalog:",
     "front-matter": "4.0.2",
     "gsap": "3.12.5",
@@ -58,7 +57,7 @@
     "next-themes": "0.3.0",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
-    "react-hook-form": "7.53.0",
+    "react-hook-form": "catalog:",
     "react-syntax-highlighter": "15.5.0",
     "react-use": "17.5.0",
     "sass": "1.69.7",
@@ -68,8 +67,7 @@
     "tailwind-merge": "2.5.4",
     "tailwind-variants": "0.1.20",
     "tailwindcss-animate": "1.0.7",
-    "typed.js": "2.1.0",
-    "zod": "catalog:"
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
