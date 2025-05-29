@@ -7,7 +7,7 @@ import {
   ThreeTrafficLightsMovingObjects,
   YeetMe,
 } from "~/app/components/misc/featured/blog";
-import { ScrollUp } from "~/app/components/postCards/components/ScrollUp";
+import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
 import { H1 } from "./headers";
 import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
