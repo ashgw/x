@@ -1,4 +1,5 @@
-import type { UseFormReturn } from "react-hook-form";
+import type { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { useState } from "react";
 import { Check } from "lucide-react";
 
 import {
@@ -24,7 +25,7 @@ import { PostCategoryEnum } from "~/api/models/post";
 
 interface PostEditorFormProps {
   form: UseFormReturn<PostEditorDto>;
-  onSubmit: (data: PostEditorDto) => void;
+  onSubmit: SubmitHandler<PostEditorDto>;
 }
 
 export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
@@ -35,8 +36,31 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
     setValue,
     watch,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = form;
+
+  const [tagInput, setTagInput] = useState("");
+
+  const content = watch("mdxContent");
+  const tags = watch("tags");
+  const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
+  const minutesToRead =
+    wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
+
+  function _handleAddTag() {
+    const newTag = tagInput.trim();
+    if (newTag && !tags.includes(newTag)) {
+      form.setValue("tags", [...tags, newTag]);
+    }
+    setTagInput("");
+  }
+
+  function _handleRemoveTag(tag: string) {
+    setValue(
+      "tags",
+      tags.filter((t) => t !== tag),
+    );
+  }
 
   return (
     <div className="lg:col-span-2">
@@ -137,7 +161,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
                             <button
                               type="button"
                               className="ml-1 text-red-500 hover:text-red-700"
-                              onClick={() => handleRemoveTag(tag)}
+                              onClick={() => _handleRemoveTag(tag)}
                             >
                               ×
                             </button>
@@ -154,7 +178,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
                               e.preventDefault();
-                              handleAddTag();
+                              _handleAddTag();
                             }
                           }}
                         />
@@ -162,7 +186,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
                           size="sm"
                           variant="outline"
                           type="button"
-                          onClick={handleAddTag}
+                          onClick={_handleAddTag}
                         >
                           Add
                         </Button>
