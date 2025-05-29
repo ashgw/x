@@ -47,6 +47,6 @@ const authMiddleware = middleware(async (opts) => {
   });
 });
 
-export const authedProcedure = () => {
-  return publicProcedure.use(authMiddleware);
-};
+export const authedProcedure = publicProcedure.use(authMiddleware);
+
+export const adminProcedure = authedProcedure.use(authMiddleware);

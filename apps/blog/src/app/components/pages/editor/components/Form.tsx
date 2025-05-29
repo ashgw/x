@@ -2,6 +2,7 @@ import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useState } from "react";
 import { Check } from "lucide-react";
 
+import { WordCounter } from "@ashgw/cross-runtime";
 import {
   Button,
   DropdownMenu,
@@ -26,26 +27,22 @@ import { PostCategoryEnum } from "~/api/models/post";
 interface PostEditorFormProps {
   form: UseFormReturn<PostEditorDto>;
   onSubmit: SubmitHandler<PostEditorDto>;
+  isSubmitting?: boolean;
 }
 
-export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
-  const {
-    reset,
-    control,
-    register,
-    setValue,
-    watch,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = form;
+export function PostEditorForm({
+  form,
+  onSubmit,
+  isSubmitting,
+}: PostEditorFormProps) {
+  const { reset, control, register, setValue, watch, handleSubmit } = form;
 
   const [tagInput, setTagInput] = useState("");
 
   const content = watch("mdxContent");
   const tags = watch("tags");
-  const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
-  const minutesToRead =
-    wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
+  const wordCount = WordCounter.countWords(content);
+  const minutesToRead = WordCounter.countMinutesToRead(content);
 
   function _handleAddTag() {
     const newTag = tagInput.trim();
@@ -217,6 +214,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
                   <FormControl>
                     <Textarea
                       placeholder="Write your blog content in MDX..."
+                      className="min-h-[300px]"
                       {...field}
                     />
                   </FormControl>
@@ -230,6 +228,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
                 variant="squared:outline"
                 type="button"
                 onClick={() => reset()}
+                disabled={isSubmitting}
               >
                 Cancel
               </Button>
@@ -237,6 +236,7 @@ export function PostEditorForm({ form, onSubmit }: PostEditorFormProps) {
                 variant="squared:default"
                 type="submit"
                 disabled={isSubmitting}
+                loading={isSubmitting}
               >
                 {isSubmitting ? "Saving..." : "Save"}
               </Button>

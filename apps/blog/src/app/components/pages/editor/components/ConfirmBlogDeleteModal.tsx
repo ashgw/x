@@ -1,9 +1,12 @@
+import { Button } from "@ashgw/ui";
+
 import type { PostDetailRo } from "~/api/models";
 
 export function ConfirmBlogDeleteModal(props: {
   blog: PostDetailRo;
   onConfirm: () => void;
   onCancel: () => void;
+  isDeleting?: boolean;
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -16,11 +19,20 @@ export function ConfirmBlogDeleteModal(props: {
           <span className="text-red-500">This action is irreversible.</span>
         </p>
         <div className="flex justify-end gap-2">
-          <Button variant="squared:outline" onClick={props.onCancel}>
+          <Button
+            variant="squared:outline"
+            onClick={props.onCancel}
+            disabled={props.isDeleting}
+          >
             Cancel
           </Button>
-          <Button variant="squared:default" onClick={props.onConfirm}>
-            Delete
+          <Button
+            variant="squared:default"
+            onClick={props.onConfirm}
+            disabled={props.isDeleting}
+            loading={props.isDeleting}
+          >
+            {props.isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </div>
       </div>

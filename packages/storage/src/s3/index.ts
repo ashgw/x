@@ -115,6 +115,15 @@ export class S3Service extends BaseStorageSerivce {
     throw this.formatError(lastError, key);
   }
 
+  /**
+   * Uploads a file to the specified S3 folder
+   * @param params Upload parameters object
+   * @param params.folder The folder to upload to (mdx, voice, image, other)
+   * @param params.filename The name of the file to upload
+   * @param params.body The file content as Buffer
+   * @param params.contentType Optional MIME type of the file
+   * @returns The full path/key of the uploaded file (e.g. "mdx/my-blog-post.mdx")
+   */
   public override async uploadFile({
     folder,
     filename,
@@ -125,7 +134,7 @@ export class S3Service extends BaseStorageSerivce {
     filename: string;
     body: Buffer;
     contentType?: string;
-  }): Promise<void> {
+  }): Promise<string> {
     const key = `${folder}/${filename}`;
     let attempts = 0;
     let lastError: unknown;
@@ -144,7 +153,7 @@ export class S3Service extends BaseStorageSerivce {
         this.cache.set(key, { data: body, timestamp: Date.now() });
         this._pruneCache();
 
-        return;
+        return key;
       } catch (err) {
         lastError = err;
         attempts++;

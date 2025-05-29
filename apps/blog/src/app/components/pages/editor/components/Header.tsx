@@ -2,7 +2,11 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@ashgw/ui";
 
-export function Header({ onClick }: { onClick: () => void }) {
+interface HeaderProps {
+  onClick: () => void;
+}
+
+export function Header({ onClick }: HeaderProps): JSX.Element {
   return (
     <div className="mb-8 flex items-center justify-between">
       <h1 className="text-2xl font-bold">Blog Editor</h1>

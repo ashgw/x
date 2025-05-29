@@ -8,6 +8,10 @@ export type PostCardQuery = Prisma.PostGetPayload<{
   include: ReturnType<typeof PostQueryHelper.cardInclude>;
 }>;
 
+export type PostAdminQuery = Prisma.PostGetPayload<{
+  include: ReturnType<typeof PostQueryHelper.adminInclude>;
+}>;
+
 export class PostQueryHelper {
   public static detailInclude() {
     return {
@@ -21,11 +25,17 @@ export class PostQueryHelper {
     return {} satisfies Prisma.PostInclude;
   }
 
+  public static adminInclude() {
+    return {
+      ...this.detailInclude(),
+    } satisfies Prisma.PostInclude;
+  }
+
   public static whereReleasedToPublic() {
     return {
       isReleased: true,
       firstModDate: {
-        lte: new Date(), // I might finish the blog before the release date
+        lte: new Date(),
       },
     } satisfies Prisma.PostWhereInput;
   }

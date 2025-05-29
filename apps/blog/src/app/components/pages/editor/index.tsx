@@ -4,51 +4,18 @@ import type { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 
 import type { ModalState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
+import { trpcClientSide } from "~/trpc/client";
 import { BlogList } from "./components/BlogList";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
-
-const dummyBlogs: PostDetailRo[] = [
-  {
-    title: "Cholesterol",
-    seoTitle: "How bad science hijacked medicine and destroyed public health",
-    summary: "How bad science hijacked medicine and destroyed public health",
-    firstModDate: new Date("2025-02-07T09:15:00-0401"),
-    lastModDate: new Date("2025-02-07T09:15:00-0401"),
-    isReleased: true,
-    minutesToRead: 17,
-    tags: ["cholesterol", "statins", "fat"],
-    category: PostCategoryEnum.HEALTH,
-    slug: "cholesterol",
-    fontMatterMdxContent: {
-      body: "I recently visited the doctor...", // truncated for brevity
-      bodyBegin: 0,
-    },
-  },
-  {
-    title: "Code or Capital",
-    seoTitle: "There's hobbyist code and there's business code.",
-    summary: "There's hobbyist code and there's business code.",
-    firstModDate: new Date("2023-12-14T19:45:00-0401"),
-    lastModDate: new Date("2023-12-14T19:45:00-0401"),
-    isReleased: true,
-    minutesToRead: 3,
-    tags: ["code", "capital", "quality"],
-    category: PostCategoryEnum.SOFTWARE,
-    slug: "code-or-capital",
-    fontMatterMdxContent: {
-      body: "There are two distinct modes...", // truncated for brevity
-      bodyBegin: 0,
-    },
-  },
-];
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<ModalState<PostDetailRo>>({
@@ -59,10 +26,11 @@ export function EditorPage() {
     visible: false,
   });
 
-  const [blogs, setBlogs] = useState<PostDetailRo[]>(dummyBlogs);
-
+  // Set up form with validation
   const form = useForm<PostEditorDto>({
-    resolver: zodResolver(postEditorSchemaDto),
+    // TODO: fix this fr
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(postEditorSchemaDto as any),
     mode: "onChange",
     defaultValues: {
       title: "",
@@ -74,10 +42,61 @@ export function EditorPage() {
     },
   });
 
-  const content = form.watch("mdxContent");
-  const wordCount = content.trim().split(/\s+/).filter(Boolean).length || 0;
-  const minutesToRead =
-    wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 200)) : 0;
+  // Set up queries and mutations
+  const utils = trpcClientSide.useContext();
+
+  const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+
+  const createMutation = trpcClientSide.post.createPost.useMutation({
+    onSuccess: () => {
+      toast.success("Blog post created successfully");
+      void utils.post.getAllPosts.invalidate();
+      handleNewBlog();
+    },
+    onError: (error) => {
+      logger.error("Failed to create post", { error });
+      toast.error("Failed to create post", {
+        description: error.message,
+      });
+    },
+  });
+
+  const updateMutation = trpcClientSide.post.updatePost.useMutation({
+    onSuccess: () => {
+      toast.success("Blog post updated successfully");
+      void utils.post.getAllPosts.invalidate();
+      handleNewBlog();
+    },
+    onError: (error) => {
+      logger.error("Failed to update post", { error });
+      toast.error("Failed to update post", {
+        description: error.message || "Please try again later",
+      });
+    },
+  });
+
+  const deleteMutation = trpcClientSide.post.deletePost.useMutation({
+    onSuccess: () => {
+      toast.success("Blog post deleted successfully");
+      void utils.post.getAllPosts.invalidate();
+      setDeleteModal({ visible: false });
+
+      // If editing the deleted blog, reset form
+      if (
+        editModal.visible &&
+        deleteModal.visible &&
+        editModal.entity.slug === deleteModal.entity.slug
+      ) {
+        handleNewBlog();
+      }
+    },
+    onError: (error) => {
+      logger.error("Failed to delete post", { error });
+      toast.error("Failed to delete post", {
+        description: error.message || "Please try again later",
+      });
+    },
+  });
 
   // Edit blog: load values into form
   function handleEditBlog(blog: PostDetailRo) {
@@ -90,7 +109,7 @@ export function EditorPage() {
       isReleased: blog.isReleased,
       mdxContent: blog.fontMatterMdxContent.body,
     });
-    logger.info("Editing blog:", blog);
+    logger.info("Editing blog", { slug: blog.slug });
   }
 
   // Add new blog: clear form
@@ -111,90 +130,56 @@ export function EditorPage() {
     setDeleteModal({ visible: true, entity: blog });
   }
 
-  // Confirm delete: remove from list
+  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
-      setBlogs((prev) =>
-        prev.filter((b) => b.slug !== deleteModal.entity.slug),
-      );
-      logger.info("Deleted blog:", deleteModal.entity);
-
-      // If editing the deleted blog, reset form
-      if (
-        editModal.visible &&
-        editModal.entity.slug === deleteModal.entity.slug
-      ) {
-        handleNewBlog();
-      }
+      deleteMutation.mutate({ slug: deleteModal.entity.slug });
     }
-    setDeleteModal({ visible: false });
   }
 
   function cancelDelete() {
     setDeleteModal({ visible: false });
   }
 
-  const onSubmit: SubmitHandler<PostEditorDto> = async (data, _err) => {
-    try {
-      // TODO: Replace with actual API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      if (editModal.visible) {
-        setBlogs((prev) =>
-          prev.map((b) =>
-            b.slug === editModal.entity.slug
-              ? {
-                  ...b,
-                  ...data,
-                  lastModDate: new Date(),
-                  fontMatterMdxContent: {
-                    ...b.fontMatterMdxContent,
-                    body: data.mdxContent,
-                    bodyBegin: 0,
-                  },
-                }
-              : b,
-          ),
-        );
-      } else {
-        setBlogs((prev) => [
-          {
-            ...data,
-            slug: data.title.toLowerCase().replace(/\s+/g, "-"),
-            seoTitle: data.title,
-            firstModDate: new Date(),
-            lastModDate: new Date(),
-            minutesToRead,
-            fontMatterMdxContent: { body: data.mdxContent, bodyBegin: 0 },
-          },
-          ...prev,
-        ]);
-      }
-
-      handleNewBlog();
-    } catch (error) {
-      logger.error("Failed to save blog post", { error });
-      // TODO: Add toast notification for error
+  // Form submission handler
+  const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
+    if (editModal.visible) {
+      updateMutation.mutate({
+        slug: editModal.entity.slug,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
     }
   };
+
+  const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   return (
     <div className="container mx-auto p-8">
       <Header onClick={handleNewBlog} />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <BlogList
-          blogs={blogs}
+          blogs={postsQuery.data ?? []}
           onEdit={handleEditBlog}
           onDelete={handleDeleteBlog}
+          isLoading={postsQuery.isLoading}
         />
-        <PostEditorForm form={form} onSubmit={onSubmit} />
+        <PostEditorForm
+          form={form}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+        />
       </div>
-      {deleteModal.visible ? (
+      {deleteModal.visible && (
         <ConfirmBlogDeleteModal
           blog={deleteModal.entity}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
+          isDeleting={deleteMutation.isPending}
         />
-      ) : null}
+      )}
+      <Toaster position="bottom-right" />
     </div>
   );
 }

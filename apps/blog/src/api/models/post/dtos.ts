@@ -20,6 +20,17 @@ export const postEditorSchemaDto = z.object({
   mdxContent: z.string().min(100),
 });
 
+export const postUpdatePostSchemaDto = z.object({
+  slug: z.string().min(1),
+  data: postEditorSchemaDto,
+});
+
+export const postDeleteSchemaDto = z.object({
+  slug: z.string().min(1),
+});
+
 // ========== Types ==========
 export type PostGetDto = z.infer<typeof postGetSchemaDto>;
 export type PostEditorDto = z.infer<typeof postEditorSchemaDto>;
+export type PostUpdatePostDto = z.infer<typeof postUpdatePostSchemaDto>;
+export type PostDeleteDto = z.infer<typeof postDeleteSchemaDto>;
