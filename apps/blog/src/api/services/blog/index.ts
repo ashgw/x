@@ -206,7 +206,9 @@ export class BlogService {
     try {
       const existingPost = await this.db.post.findUnique({
         where: { slug },
-        include: PostQueryHelper.detailInclude(),
+        select: {
+          slug: true,
+        },
       });
 
       if (!existingPost) {
@@ -216,26 +218,17 @@ export class BlogService {
         });
       }
 
-      // Extract the filename from the key path
-      const keyParts = existingPost.mdxContent.key.split("/");
-
-      // If we can't parse the key correctly, use a default approach
-      let filename = `${slug}.mdx`;
-      if (keyParts.length >= 2) {
-        filename = keyParts[keyParts.length - 1];
-      }
-
       // Update MDX content
       await this.storage.uploadFile({
         folder: "mdx",
-        filename,
+        filename: `${slug}.mdx`,
         body: Buffer.from(data.mdxContent),
         contentType: "text/markdown",
       });
 
       const minutesToRead = WordCounter.countMinutesToRead(data.mdxContent);
 
-      // Update post in database
+      // Update post in db
       const post = await this.db.post.update({
         where: { slug },
         data: {
@@ -289,44 +282,26 @@ export class BlogService {
         });
       }
 
-      // The key format is "folder/filename.ext", so we extract the filename
-      const key = post.mdxContent.key;
-      const keyParts = key.split("/");
-
-      // If we can't parse the key correctly, just log and continue with deletion
-      if (keyParts.length < 2) {
-        logger.warn("Unusual key format for MDX content", { key });
-      } else {
-        const folder = keyParts[0] as "mdx";
-        const filename = keyParts[keyParts.length - 1];
-
-        // We try to delete the file but continue even if this fails
-        try {
-          // We would normally use deleteFile but it's not available
-          // Use uploadFile with empty content as a workaround
-          await this.storage.uploadFile({
-            folder,
-            filename,
-            body: Buffer.from(""), // Empty file effectively "deletes" content
-            contentType: "text/plain",
-          });
-          logger.info("MDX content file emptied", { key });
-        } catch (deleteError) {
-          logger.warn(
-            "Failed to empty MDX content file, continuing with post deletion",
-            {
-              key,
-              error: deleteError,
-            },
-          );
-        }
+      try {
+        const key = await this.storage.deleteFile({
+          filename: `${slug}.mdx`,
+          folder: "mdx",
+        });
+        logger.info("MDX content file emptied", { key });
+      } catch (deleteError) {
+        logger.warn(
+          "Failed to empty MDX content file, continuing with post deletion",
+          {
+            key: post.mdxContent.key,
+            error: deleteError,
+          },
+        );
       }
 
       // Delete the post (will cascade delete the MDX content entry in DB)
       await this.db.post.delete({
         where: { slug },
       });
-
       logger.info("Post deleted successfully", { slug });
     } catch (error) {
       logger.error("Failed to delete post", { error, slug });
