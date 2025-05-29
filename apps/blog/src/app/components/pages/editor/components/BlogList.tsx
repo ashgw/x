@@ -1,8 +1,6 @@
 import { memo } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { toast } from "sonner";
 
-import { logger } from "@ashgw/observability";
 import { Button, ScrollArea, Skeleton } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models/post";
@@ -35,21 +33,6 @@ const BlogItem = memo(
     const animateAnimation = shouldReduceMotion
       ? { opacity: 1 }
       : { opacity: 1, x: 0 };
-
-    const copyLinkToClipboard = () => {
-      try {
-        const url = new URL(window.location.href);
-        url.search = `?blog=${blog.slug}`;
-        void navigator.clipboard.writeText(url.toString());
-        toast.success("Link copied to clipboard", {
-          description:
-            "Share this URL to let others edit this blog post directly",
-        });
-      } catch (error) {
-        logger.error("Failed to copy link to clipboard", { error });
-        toast.error("Failed to copy link to clipboard");
-      }
-    };
 
     return (
       <motion.div
@@ -91,9 +74,6 @@ const BlogItem = memo(
             onClick={() => onDelete(blog)}
           >
             Delete
-          </Button>
-          <Button variant="secondary" size="sm" onClick={copyLinkToClipboard}>
-            Copy Link
           </Button>
         </motion.div>
       </motion.div>
