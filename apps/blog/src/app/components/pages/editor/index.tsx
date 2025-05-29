@@ -8,6 +8,7 @@ import { toast, Toaster } from "sonner";
 
 import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
+import { Skeleton } from "@ashgw/ui";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
@@ -72,7 +73,7 @@ export function EditorPage() {
     [form],
   );
 
-  const { isLoadingBlog } = useQueryParamBlog({
+  const { isLoadingBlog, blogSlug } = useQueryParamBlog({
     onBlogFound: handleEditBlog,
   });
 
@@ -173,6 +174,8 @@ export function EditorPage() {
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
+  // Show editor loading state only when we're expecting to load a blog from URL
+  const showEditorSkeleton = isLoadingBlog && !!blogSlug;
 
   return (
     <div className="container mx-auto p-8">
@@ -189,11 +192,21 @@ export function EditorPage() {
           onDelete={handleDeleteBlog}
           isLoading={postsQuery.isLoading || isLoadingBlog}
         />
-        <PostEditorForm
-          form={form}
-          onSubmit={onSubmit}
-          isSubmitting={isSubmitting}
-        />
+        {showEditorSkeleton ? (
+          <div className="border-border bg-card col-span-2 space-y-4 rounded-lg border p-6">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-8 w-1/3" />
+            <Skeleton className="h-8 w-1/2" />
+            <Skeleton className="h-64 w-full" />
+          </div>
+        ) : (
+          <PostEditorForm
+            form={form}
+            onSubmit={onSubmit}
+            isSubmitting={isSubmitting}
+          />
+        )}
       </div>
       {deleteModal.visible && (
         <ConfirmBlogDeleteModal
