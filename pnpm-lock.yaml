@@ -947,9 +947,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.6.3
-      zod:
-        specifier: 3.23.8
-        version: 3.23.8
 
   tooling/eslint:
     dependencies:
