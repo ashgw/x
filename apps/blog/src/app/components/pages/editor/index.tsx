@@ -70,7 +70,7 @@ export function EditorPage() {
     onError: (error) => {
       logger.error("Failed to update post", { error });
       toast.error("Failed to update post", {
-        description: error.message || "Please try again later",
+        description: error.message,
       });
     },
   });
@@ -93,7 +93,7 @@ export function EditorPage() {
     onError: (error) => {
       logger.error("Failed to delete post", { error });
       toast.error("Failed to delete post", {
-        description: error.message || "Please try again later",
+        description: error.message,
       });
     },
   });
