@@ -29,7 +29,6 @@ export function EditorPage() {
     },
   );
 
-  // Add sort options state
   const [sortOptions, setSortOptions] = useState<SortOptionsType>({
     sortField: "lastModDate",
     sortOrder: "desc",
@@ -54,7 +53,6 @@ export function EditorPage() {
   const utils = trpcClientSide.useUtils();
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
 
-  // Apply sorting and filtering to the blog posts
   const filteredAndSortedBlogs = useMemo(() => {
     if (!postsQuery.data) return [];
 
