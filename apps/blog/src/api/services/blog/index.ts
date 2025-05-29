@@ -125,7 +125,14 @@ export class BlogService {
   public async createPost(data: PostEditorDto): Promise<PostDetailRo> {
     try {
       // Generate slug from title
-      const slug = data.title.toLowerCase().replace(/\s+/g, "-");
+      const slug = data.title
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+        .trim()
+        .replace(/\s+/g, "-") // Replace spaces with hyphens
+        .replace(/-+/g, "-"); // Replace multiple hyphens with single hyphen
 
       // Check if slug already exists
       const existingPost = await this.db.post.findUnique({

@@ -40,5 +40,9 @@ export abstract class BaseStorageService {
 
   public abstract deleteAnyFile(params: { key: string }): Promise<string>;
   public abstract fetchAnyFile(params: { key: string }): Promise<Buffer>;
-  public abstract uploadAnyFile(params: { key: string }): Promise<string>;
+  public abstract uploadAnyFile(params: {
+    key: string;
+    body: Buffer;
+    contentType?: string;
+  }): Promise<string>;
 }
