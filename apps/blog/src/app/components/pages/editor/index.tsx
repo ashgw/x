@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
 import { useForm } from "react-hook-form";
 
+import type { ModalState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 import {
   Button,
@@ -29,15 +30,6 @@ import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { BlogList } from "./components/BlogList";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { Header } from "./components/Header";
-
-export type ModalState<T> =
-  | {
-      visible: true;
-      entity: T;
-    }
-  | {
-      visible: false;
-    };
 
 const dummyBlogs: PostDetailRo[] = [
   {
