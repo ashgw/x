@@ -45,7 +45,7 @@ export class BlogService {
     const posts = await this.db.post.findMany({
       include: PostQueryHelper.adminInclude(),
       orderBy: {
-        lastModDate: "desc",
+        firstModDate: "desc",
       },
     });
 
