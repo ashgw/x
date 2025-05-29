@@ -39,9 +39,7 @@ export function EditorPage() {
   });
 
   const form = useForm<PostEditorDto>({
-    // TODO: fix this fr
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(postEditorSchemaDto as any),
+    resolver: zodResolver(postEditorSchemaDto),
     mode: "onChange",
     defaultValues: {
       title: "",
