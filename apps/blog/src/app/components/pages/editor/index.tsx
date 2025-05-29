@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
@@ -18,6 +18,7 @@ import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
+import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
@@ -53,6 +54,14 @@ export function EditorPage() {
 
   const utils = trpcClientSide.useUtils();
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+  const { blogFromUrl, isLoadingBlog, blogSlug } = useQueryParamBlog();
+
+  // Load blog from URL query parameter if present
+  useEffect(() => {
+    if (blogFromUrl && blogSlug) {
+      handleEditBlog(blogFromUrl);
+    }
+  }, [blogFromUrl, blogSlug, handleEditBlog]);
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
     postsQuery.data,
@@ -179,7 +188,7 @@ export function EditorPage() {
           blogs={filteredAndSortedBlogs}
           onEdit={handleEditBlog}
           onDelete={handleDeleteBlog}
-          isLoading={postsQuery.isLoading}
+          isLoading={postsQuery.isLoading || isLoadingBlog}
         />
         <PostEditorForm
           form={form}
