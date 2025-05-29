@@ -1,29 +1,41 @@
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
 
 import { WordCounterService } from "@ashgw/cross-runtime";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
-  Textarea,
-} from "@ashgw/ui";
+import { Form } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
-import { PostCategoryEnum } from "~/api/models/post";
+import { CategoryField } from "./fields/CategoryField";
+import { ContentField } from "./fields/ContentField";
+import { SummaryField } from "./fields/SummaryField";
+import { TagsField } from "./fields/TagsField";
+import { TitleField } from "./fields/TitleField";
+import { FormButtons } from "./FormButtons";
+import { WordCountDisplay } from "./WordCountDisplay";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 20,
+    },
+  },
+};
 
 interface PostEditorFormProps {
   form: UseFormReturn<PostEditorDto>;
@@ -36,54 +48,11 @@ export function PostEditorForm({
   onSubmit,
   isSubmitting,
 }: PostEditorFormProps) {
-  const { reset, control, register, setValue, watch, handleSubmit } = form;
-
-  const [tagInput, setTagInput] = useState("");
+  const { reset, control, register, watch, handleSubmit } = form;
 
   const content = watch("mdxContent");
-  const tags = watch("tags");
   const wordCount = WordCounterService.countWords(content);
   const minutesToRead = WordCounterService.countMinutesToRead(content);
-
-  function _handleAddTag() {
-    const newTag = tagInput.trim();
-    if (newTag && !tags.includes(newTag)) {
-      form.setValue("tags", [...tags, newTag]);
-    }
-    setTagInput("");
-  }
-
-  function _handleRemoveTag(tag: string) {
-    setValue(
-      "tags",
-      tags.filter((t) => t !== tag),
-    );
-  }
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-      },
-    },
-  };
 
   return (
     <motion.div
@@ -119,149 +88,19 @@ export function PostEditorForm({
             animate="visible"
           >
             <motion.div variants={itemVariants}>
-              <FormField
-                control={control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Blog Title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <TitleField control={control} />
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <FormField
-                control={control}
-                name="summary"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Summary</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Summary (1-2 sentences)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <SummaryField control={control} />
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <FormField
-                control={control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            className="w-full"
-                          >
-                            {field.value.charAt(0) +
-                              field.value.slice(1).toLowerCase()}
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-[200px]">
-                          <DropdownMenuLabel>
-                            Select a category
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {Object.values(PostCategoryEnum).map((cat) => (
-                            <DropdownMenuItem
-                              key={cat}
-                              onClick={() => field.onChange(cat)}
-                            >
-                              <div className="flex items-center gap-2">
-                                {cat === field.value && (
-                                  <Check className="h-4 w-4" />
-                                )}
-                                <span>
-                                  {cat.charAt(0) + cat.slice(1).toLowerCase()}
-                                </span>
-                              </div>
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <CategoryField control={control} />
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <FormField
-                control={control}
-                name="tags"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tags</FormLabel>
-                    <FormControl>
-                      <div>
-                        <div className="mb-2 flex flex-wrap gap-2">
-                          {field.value.map((tag, index) => (
-                            <motion.span
-                              key={tag}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{
-                                duration: 0.3,
-                                delay: index * 0.05,
-                              }}
-                              className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
-                            >
-                              {tag}
-                              <button
-                                type="button"
-                                className="ml-1 text-red-500 hover:text-red-700"
-                                onClick={() => _handleRemoveTag(tag)}
-                              >
-                                ×
-                              </button>
-                            </motion.span>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Input
-                            type="text"
-                            className="flex-1 rounded-md border p-2"
-                            placeholder="Add tag"
-                            value={tagInput}
-                            onChange={(e) => setTagInput(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                _handleAddTag();
-                              }
-                            }}
-                          />
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            type="button"
-                            onClick={_handleAddTag}
-                          >
-                            Add
-                          </Button>
-                        </div>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <TagsField form={form} />
             </motion.div>
 
             <motion.div
@@ -272,49 +111,17 @@ export function PostEditorForm({
                 <input type="checkbox" {...register("isReleased")} />
                 <span>Released</span>
               </label>
-              <span className="text-muted-foreground text-sm">
-                {`${minutesToRead} min read`} ({wordCount} words)
-              </span>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <FormField
-                control={control}
-                name="mdxContent"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Content</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Write your blog content in MDX..."
-                        className="min-h-[300px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <WordCountDisplay
+                wordCount={wordCount}
+                minutesToRead={minutesToRead}
               />
             </motion.div>
 
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="squared:outline"
-                type="button"
-                onClick={() => reset()}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="squared:default"
-                type="submit"
-                disabled={isSubmitting}
-                loading={isSubmitting}
-              >
-                {isSubmitting ? "Saving..." : "Save"}
-              </Button>
-            </div>
+            <motion.div variants={itemVariants}>
+              <ContentField control={control} />
+            </motion.div>
+
+            <FormButtons onReset={() => reset()} isSubmitting={isSubmitting} />
           </motion.form>
         </Form>
       </motion.div>
