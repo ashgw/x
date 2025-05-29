@@ -3,6 +3,7 @@ import type { Readable } from "stream";
 import type { MaybeUndefined } from "ts-roids";
 import {
   S3Client as AwsS3Client,
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3ServiceException,
@@ -12,12 +13,12 @@ import { env } from "@ashgw/env";
 import { InternalError } from "@ashgw/observability";
 
 import type { Folder } from "../base";
-import { BaseStorageSerivce } from "../base";
+import { BaseStorageService } from "../base";
 
 // Add retry constant
 const MAX_RETRIES = 3;
 
-export class S3Service extends BaseStorageSerivce {
+export class S3Service extends BaseStorageService {
   /**
    * In-memory cache for S3 objects with timestamp for TTL tracking.
    * @private
@@ -54,7 +55,7 @@ export class S3Service extends BaseStorageSerivce {
     this.bucket = env.S3_BUCKET_NAME;
   }
 
-  public override async fetchFileInFolder<F extends Folder>({
+  public override async fetchFile<F extends Folder>({
     folder,
     filename,
   }: {
@@ -62,6 +63,76 @@ export class S3Service extends BaseStorageSerivce {
     filename: string;
   }): Promise<Buffer> {
     return this.fetchAnyFile({ key: `${folder}/${filename}` });
+  }
+
+  public override async uploadFile({
+    folder,
+    filename,
+    body,
+    contentType,
+  }: {
+    folder: Folder;
+    filename: string;
+    body: Buffer;
+    contentType?: string;
+  }): Promise<string> {
+    const key = `${folder}/${filename}`;
+    return this.uploadAnyFile({ key, body, contentType });
+  }
+
+  /**
+   * Deletes a file from the specified S3 folder
+   * @param params Delete parameters object
+   * @param params.folder The folder containing the file to delete
+   * @param params.filename The name of the file to delete
+   * @returns The key of the deleted file
+   */
+  public async deleteFile<F extends Folder>({
+    folder,
+    filename,
+  }: {
+    folder: F;
+    filename: string;
+  }): Promise<string> {
+    const key = `${folder}/${filename}`;
+    return this.deleteAnyFile({ key });
+  }
+
+  public override async deleteAnyFile({
+    key,
+  }: {
+    key: string;
+  }): Promise<string> {
+    let attempts = 0;
+    let lastError: unknown;
+
+    while (attempts < MAX_RETRIES) {
+      try {
+        await this.client.send(
+          new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
+        );
+
+        // Remove from cache if exists
+        this.cache.delete(key);
+
+        return key;
+      } catch (err) {
+        lastError = err;
+        attempts++;
+
+        if (
+          err instanceof S3ServiceException &&
+          (err.name === "SlowDown" || err.name === "RequestTimeout")
+        ) {
+          await setTimeout(Math.pow(2, attempts) * 100);
+          continue;
+        }
+
+        throw this._formatError(err, key);
+      }
+    }
+
+    throw this._formatError(lastError, key);
   }
 
   public override async fetchAnyFile({
@@ -91,7 +162,7 @@ export class S3Service extends BaseStorageSerivce {
           });
         }
 
-        const buffer = await this.streamToBuffer(Body as Readable);
+        const buffer = await this._streamToBuffer(Body as Readable);
         this.cache.set(key, { data: buffer, timestamp: Date.now() });
         this._pruneCache();
 
@@ -108,25 +179,22 @@ export class S3Service extends BaseStorageSerivce {
           continue;
         }
 
-        throw this.formatError(err, key);
+        throw this._formatError(err, key);
       }
     }
 
-    throw this.formatError(lastError, key);
+    throw this._formatError(lastError, key);
   }
 
-  public override async uploadFile({
-    folder,
-    filename,
+  public override async uploadAnyFile({
+    key,
     body,
     contentType,
   }: {
-    folder: Folder;
-    filename: string;
+    key: string;
     body: Buffer;
     contentType?: string;
-  }): Promise<void> {
-    const key = `${folder}/${filename}`;
+  }): Promise<string> {
     let attempts = 0;
     let lastError: unknown;
 
@@ -141,10 +209,11 @@ export class S3Service extends BaseStorageSerivce {
           }),
         );
 
+        // Update cache
         this.cache.set(key, { data: body, timestamp: Date.now() });
         this._pruneCache();
 
-        return;
+        return key;
       } catch (err) {
         lastError = err;
         attempts++;
@@ -157,15 +226,31 @@ export class S3Service extends BaseStorageSerivce {
           continue;
         }
 
-        throw this.formatError(err, key);
+        throw this._formatError(err, key);
       }
     }
 
-    throw this.formatError(lastError, key);
+    throw this._formatError(lastError, key);
+  }
+
+  private _formatError(err: unknown, key: string): Error {
+    if (err instanceof S3ServiceException && err.name === "NoSuchKey") {
+      return new InternalError({
+        code: "NOT_FOUND",
+        message: `File ${key} not found`,
+        cause: err,
+      });
+    }
+
+    return new InternalError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `S3 operation failed for key "${key}"`,
+      cause: err,
+    });
   }
 
   /** Convert a Node stream returned by AWS SDK v3 into a Buffer. */
-  private async streamToBuffer(stream: Readable): Promise<Buffer> {
+  private async _streamToBuffer(stream: Readable): Promise<Buffer> {
     const chunks: Uint8Array[] = [];
     for await (const chunk of stream) {
       chunks.push(
@@ -191,22 +276,6 @@ export class S3Service extends BaseStorageSerivce {
         this.cache.delete(entryKey);
       }
     }
-  }
-
-  protected formatError(err: unknown, key: string): Error {
-    if (err instanceof S3ServiceException && err.name === "NoSuchKey") {
-      return new InternalError({
-        code: "NOT_FOUND",
-        message: `File ${key} not found`,
-        cause: err,
-      });
-    }
-
-    return new InternalError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: `S3 operation failed for key "${key}"`,
-      cause: err,
-    });
   }
 }
 

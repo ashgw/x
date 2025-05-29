@@ -4,10 +4,10 @@ import { NotFound } from "@ashgw/components";
 import { createMetadata } from "@ashgw/seo";
 
 import { BlogPostPage } from "~/app/components/pages/[post]";
-import { trpcServerSideClient } from "~/trpc/server";
+import { trpcServerSide } from "~/trpc/server";
 
 export const generateStaticParams = async () => {
-  const posts = await trpcServerSideClient.post.getPostCards();
+  const posts = await trpcServerSide.post.getPostCards();
   return posts.map((post) => ({ post: post.slug }));
 };
 
@@ -18,7 +18,7 @@ interface DynamicRouteParams {
 export async function generateMetadata({
   params,
 }: DynamicRouteParams): Promise<Metadata> {
-  const postData = await trpcServerSideClient.post.getPost({
+  const postData = await trpcServerSide.post.getPost({
     slug: params.post,
   });
 
@@ -37,7 +37,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: DynamicRouteParams) {
-  const postData = await trpcServerSideClient.post.getPost({
+  const postData = await trpcServerSide.post.getPost({
     slug: params.post,
   });
 

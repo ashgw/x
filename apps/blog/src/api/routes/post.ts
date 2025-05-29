@@ -2,11 +2,14 @@ import { z } from "zod";
 
 import { storage } from "@ashgw/storage";
 
-import { publicProcedure, router } from "~/trpc/trpc";
+import { adminProcedure, publicProcedure, router } from "~/trpc/trpc";
 import {
   postCardSchemaRo,
+  postDeleteSchemaDto,
   postDetailSchemaRo,
+  postEditorSchemaDto,
   postGetSchemaDto,
+  postUpdatePostSchemaDto,
 } from "../models";
 import { BlogService } from "../services";
 
@@ -32,5 +35,50 @@ export const postRouter = router({
         storage,
       });
       return await blogService.getPostCards();
+    }),
+
+  // Admin endpoints
+  getAllPosts: adminProcedure
+    .input(z.void())
+    .output(z.array(postDetailSchemaRo))
+    .query(async ({ ctx: { db } }) => {
+      const blogService = new BlogService({
+        db,
+        storage,
+      });
+      return await blogService.getAllPosts();
+    }),
+
+  createPost: adminProcedure
+    .input(postEditorSchemaDto)
+    .output(postDetailSchemaRo)
+    .mutation(async ({ input, ctx: { db } }) => {
+      const blogService = new BlogService({
+        db,
+        storage,
+      });
+      return await blogService.createPost(input);
+    }),
+
+  updatePost: adminProcedure
+    .input(postUpdatePostSchemaDto)
+    .output(postDetailSchemaRo)
+    .mutation(async ({ input, ctx: { db } }) => {
+      const blogService = new BlogService({
+        db,
+        storage,
+      });
+      return await blogService.updatePost(input.slug, input.data);
+    }),
+
+  deletePost: adminProcedure
+    .input(postDeleteSchemaDto)
+    .output(z.void())
+    .mutation(async ({ input, ctx: { db } }) => {
+      const blogService = new BlogService({
+        db,
+        storage,
+      });
+      await blogService.deletePost(input.slug);
     }),
 });
