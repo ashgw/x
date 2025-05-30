@@ -7,11 +7,7 @@ import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models";
-import {
-  FramerMotionFadeInComponent,
-  ThreeTrafficLightsMovingObjects,
-  YeetMe,
-} from "~/app/components/misc/featured/blog";
+import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
 import { H1 } from "./headers";
 import { MDX } from "./mdx";
@@ -20,12 +16,6 @@ import { ReleaseDate } from "./ReleaseDate";
 interface BlogPostPorps {
   postData: PostDetailRo;
 }
-
-const featuredComponents = {
-  YeetMe: YeetMe,
-  TTLMO: ThreeTrafficLightsMovingObjects,
-  FramerMotionFadeInComponent,
-};
 
 export function BlogPostData({ postData }: BlogPostPorps) {
   return (

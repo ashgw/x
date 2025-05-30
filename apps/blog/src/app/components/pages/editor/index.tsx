@@ -211,7 +211,7 @@ export function EditorPage() {
           </div>
         ) : (
           <div className="lg:col-span-2">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <PostEditorForm
                 key="editor"
                 form={form}

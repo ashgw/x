@@ -9,11 +9,7 @@ import { logger } from "@ashgw/observability";
 import { Badge, Skeleton } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
-import {
-  FramerMotionFadeInComponent,
-  ThreeTrafficLightsMovingObjects,
-  YeetMe,
-} from "~/app/components/misc/featured/blog";
+import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { H1 } from "../../[post]/components/headers";
 
 // Dynamically import MDX component to avoid ES Module issues
@@ -30,12 +26,6 @@ interface BlogPreviewProps {
   formData: PostEditorDto;
   title: string;
 }
-
-const featuredComponents = {
-  YeetMe: YeetMe,
-  TTLMO: ThreeTrafficLightsMovingObjects,
-  FramerMotionFadeInComponent,
-};
 
 export function BlogPreview({ isVisible, formData, title }: BlogPreviewProps) {
   const [mdxContent, setMdxContent] = useState<string>("");
@@ -63,7 +53,7 @@ export function BlogPreview({ isVisible, formData, title }: BlogPreviewProps) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.2 }} // Faster toggle transition
     >
       <motion.div
         className="bg-card max-h-[850px] overflow-y-auto rounded-lg border p-6"

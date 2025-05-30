@@ -71,7 +71,7 @@ export function PostEditorForm({
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.2 }}
     >
       <motion.div
         className="bg-card rounded-lg border p-4"
