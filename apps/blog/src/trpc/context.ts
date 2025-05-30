@@ -32,6 +32,7 @@ export async function createTRPCContext(opts: {
 }
 
 export type TrpcContext = Awaited<ReturnType<typeof createTRPCContext>>;
+
 export type InnerTrpcContext = Awaited<
   ReturnType<typeof createInnerTRPCContext>
 >;
