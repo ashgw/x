@@ -202,10 +202,13 @@ export class BlogService {
     }
   }
 
-  public async updatePost(
-    slug: string,
-    data: PostEditorDto,
-  ): Promise<PostDetailRo> {
+  public async updatePost({
+    data,
+    slug,
+  }: {
+    slug: string;
+    data: PostEditorDto;
+  }): Promise<PostDetailRo> {
     try {
       const existingPost = await this.db.post.findUnique({
         where: { slug },
