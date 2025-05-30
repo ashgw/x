@@ -4,3 +4,7 @@ export const COOKIE_NAMES = {
   CSRF_TOKEN: "_csrf_token",
   SESSION_ID: "_lksx_ssid",
 } as const;
+
+export const HEADER_NAMES = {
+  CSRF_TOKEN: "x-csrf-token",
+} as const;

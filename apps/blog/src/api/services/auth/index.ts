@@ -8,7 +8,7 @@ import { InternalError, logger } from "@ashgw/observability";
 import type { UserLoginDto, UserRegisterDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
-import { AUTH_COOKIES_MAX_AGE } from "./consts";
+import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
 import { CookieService } from "./Cookie.service";
 
 export class AuthService {
@@ -57,7 +57,7 @@ export class AuthService {
       req: this.req,
     });
 
-    const csrfHeaderToken = this.req.headers.get("x-csrf-token");
+    const csrfHeaderToken = this.req.headers.get(HEADER_NAMES.CSRF_TOKEN);
 
     if (!csrfCookieToken || !csrfHeaderToken) {
       const message = `No CSRF token found, login again`;
