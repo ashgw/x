@@ -36,19 +36,27 @@ function isAuthorized({
   }
 }
 
-export const authMiddleware = (input: { requiredRole: UserRoleEnum }) =>
+export const authMiddleware = (input: {
+  withAuthorization?: {
+    requiredRole: UserRoleEnum;
+  };
+}) =>
   middleware(async (opts) => {
     const { ctx } = opts;
     const user = await isAuthenticated({
       ctx: ctx,
     });
-    isAuthorized({
-      requiredRole: input.requiredRole,
-      user,
-    });
+    if (input.withAuthorization) {
+      isAuthorized({
+        requiredRole: input.withAuthorization.requiredRole,
+        user,
+      });
+    }
+
     return opts.next({
       ctx: {
         ...ctx,
+        user,
       },
     });
   });
