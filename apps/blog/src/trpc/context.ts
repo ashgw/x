@@ -3,8 +3,6 @@ import type { NextRequest, NextResponse } from "next/server";
 
 import type { DatabaseClient } from "@ashgw/db";
 
-import { AuthService } from "~/api/services";
-
 // @see https://trpc.io/docs/server/context
 
 export function createInnerTRPCContext(opts: { db: DatabaseClient }) {
@@ -13,7 +11,7 @@ export function createInnerTRPCContext(opts: { db: DatabaseClient }) {
   };
 }
 
-export async function createTRPCContext(opts: {
+export function createTRPCContext(opts: {
   req: NextRequest;
   res: NextResponse;
   trpcInfo: FetchCreateContextFnOptions["info"];
@@ -22,16 +20,11 @@ export async function createTRPCContext(opts: {
   const innerContext = createInnerTRPCContext({
     db: opts.db,
   });
-  const user = await new AuthService({
-    db: opts.db,
-    req: opts.req,
-    res: opts.res,
-  }).me();
+
   return {
     ...innerContext,
     req: opts.req,
     res: opts.res,
-    user,
   };
 }
 

@@ -8,7 +8,7 @@ import type { AppRouter } from "~/api/router";
 import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
 import { createInnerTRPCContext } from "~/trpc/context";
-import { createCallerFactory } from "~/trpc/trpc";
+import { createCallerFactory } from "~/trpc/root";
 
 function createTestContext() {
   const innerContext = createInnerTRPCContext({
@@ -16,7 +16,6 @@ function createTestContext() {
   });
   return {
     ...innerContext,
-    user: null,
     req: {} as NextRequest,
     res: {} as NextResponse,
   };

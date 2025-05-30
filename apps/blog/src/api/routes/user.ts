@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { publicProcedure, router } from "~/trpc/trpc";
+import { publicProcedure, router } from "~/trpc/root";
 import {
   userLoginSchemaDto,
   userRegisterSchemaDto,

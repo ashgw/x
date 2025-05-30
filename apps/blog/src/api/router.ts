@@ -1,4 +1,4 @@
-import { router } from "../trpc/trpc";
+import { router } from "../trpc/root";
 import { newsletterRouter } from "./routes/newsletter";
 import { postRouter } from "./routes/post";
 import { userRouter } from "./routes/user";
