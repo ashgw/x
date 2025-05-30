@@ -12,10 +12,13 @@ const roleRank: Record<UserRoleEnum, number> = {
   ADMIN: 1, // DO NOT CHANGE THE RANKING OF THE ROLES
 };
 
-function hasSufficientRole(
-  userRole: UserRoleEnum,
-  requiredRole: UserRoleEnum,
-): boolean {
+function hasSufficientRole({
+  requiredRole,
+  userRole,
+}: {
+  userRole: UserRoleEnum;
+  requiredRole: UserRoleEnum;
+}): boolean {
   return roleRank[userRole] >= roleRank[requiredRole];
 }
 
@@ -43,7 +46,12 @@ function isAuthorized({
   user: UserRo;
   requiredRole: UserRoleEnum;
 }): void {
-  if (!hasSufficientRole(user.role, requiredRole)) {
+  if (
+    !hasSufficientRole({
+      requiredRole,
+      userRole: user.role,
+    })
+  ) {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "You don't have permission to access this resource",

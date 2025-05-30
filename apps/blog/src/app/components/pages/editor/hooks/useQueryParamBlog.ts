@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { logger } from "@ashgw/observability";
@@ -18,8 +18,24 @@ export function useQueryParamBlog({
   onBlogFound,
   skipLoading = false,
 }: UseQueryParamBlogProps = {}) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const blogSlug = searchParams.get("blog");
+
+  // Security check for sensitive data in URL
+  useEffect(() => {
+    const sensitiveParams = ["email", "password", "token", "key"];
+    const hasSensitiveData = sensitiveParams.some((param) =>
+      searchParams.has(param),
+    );
+
+    if (hasSensitiveData) {
+      // Clean URL by redirecting to just the blog param if exists
+      logger.warn("Sensitive data detected in URL - redirecting to clean URL");
+      const cleanUrl = blogSlug ? `/editor?blog=${blogSlug}` : "/editor";
+      router.replace(cleanUrl);
+    }
+  }, [searchParams, blogSlug, router]);
 
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
 
