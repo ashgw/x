@@ -27,6 +27,7 @@ export function BlogPostData({ postData }: BlogPostPorps) {
             variant="outline"
             size="icon"
             className="h-9 w-9 rounded-full"
+            aria-label={`Edit blog post: ${postData.title}`}
           >
             <Edit className="h-4 w-4" />
           </Button>

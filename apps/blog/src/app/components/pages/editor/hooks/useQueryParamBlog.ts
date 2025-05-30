@@ -61,7 +61,7 @@ export function useQueryParamBlog({
 
   // Loading state - either getAllPosts is loading or getPost is loading
   const isLoadingBlog =
-    (!!blogSlug && postsQuery.isLoading) || getPostQuery.isLoading;
+    !!blogSlug && (postsQuery.isLoading || getPostQuery.isLoading);
 
   return {
     blogFromUrl,
