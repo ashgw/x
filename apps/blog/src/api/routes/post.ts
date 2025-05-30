@@ -9,7 +9,7 @@ import {
   postDetailSchemaRo,
   postEditorSchemaDto,
   postGetSchemaDto,
-  postUpdatePostSchemaDto,
+  postUpdateSchemaDto,
 } from "../models";
 import { BlogService } from "../services";
 
@@ -61,7 +61,7 @@ export const postRouter = router({
     }),
 
   updatePost: adminProcedure
-    .input(postUpdatePostSchemaDto)
+    .input(postUpdateSchemaDto)
     .output(postDetailSchemaRo)
     .mutation(async ({ input, ctx: { db } }) => {
       const blogService = new BlogService({
