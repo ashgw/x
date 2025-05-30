@@ -13,27 +13,27 @@ export const userRouter = router({
     .input(userRegisterSchemaDto)
     .output(userSchemaRo)
     .mutation(async ({ input, ctx }) => {
-      return await new AuthService({ db: ctx.db }).register(input);
+      return await new AuthService({ ctx }).register(input);
     }),
 
   login: publicProcedure
     .input(userLoginSchemaDto)
     .output(userSchemaRo)
     .mutation(async ({ input, ctx }) => {
-      return await new AuthService({ db: ctx.db }).login(input);
+      return await new AuthService({ ctx }).login(input);
     }),
 
   logout: publicProcedure
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      return await new AuthService({ db: ctx.db }).logout();
+      return await new AuthService({ ctx }).logout();
     }),
 
   me: publicProcedure
     .input(z.void())
     .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
-      return await new AuthService({ db: ctx.db }).me();
+      return await new AuthService({ ctx }).me();
     }),
 });

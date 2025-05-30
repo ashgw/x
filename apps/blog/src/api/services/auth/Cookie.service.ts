@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import type { SerializeOptions } from "cookie";
+import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
-import { cookies } from "next/headers";
 
 import { env } from "@ashgw/env";
 
@@ -17,30 +17,30 @@ const securedCookieOptions = {
 } satisfies SerializeOptions;
 
 class SessionCookieService {
-  public get(): Optional<string> {
-    const cookie = cookies().get(COOKIE_NAMES.SESSION_ID);
+  public get({ req }: { req: NextRequest }): Optional<string> {
+    const cookie = req.cookies.get(COOKIE_NAMES.SESSION_ID);
     return cookie?.value ?? null;
   }
 
-  public set(input: { value: string }) {
-    cookies().set(COOKIE_NAMES.SESSION_ID, input.value, {
+  public set({ res, value }: { res: NextResponse; value: string }) {
+    res.cookies.set(COOKIE_NAMES.SESSION_ID, value, {
       ...securedCookieOptions,
     });
   }
 
-  public clear() {
-    cookies().delete(COOKIE_NAMES.SESSION_ID);
+  public clear({ res }: { res: NextResponse }) {
+    res.cookies.delete(COOKIE_NAMES.SESSION_ID);
   }
 }
 
 class CSRFCookieService {
-  public get(): Optional<string> {
-    const cookie = cookies().get(COOKIE_NAMES.CSRF_TOKEN);
+  public get({ req }: { req: NextRequest }): Optional<string> {
+    const cookie = req.cookies.get(COOKIE_NAMES.CSRF_TOKEN);
     return cookie?.value ?? null;
   }
 
-  public set() {
-    cookies().set(COOKIE_NAMES.CSRF_TOKEN, randomBytes(32).toString("hex"), {
+  public set({ res }: { res: NextResponse }) {
+    res.cookies.set(COOKIE_NAMES.CSRF_TOKEN, randomBytes(32).toString("hex"), {
       ...securedCookieOptions,
       //  only in prod, protect against subdomain takeover
       ...(env.NODE_ENV === "production" && {
@@ -50,8 +50,8 @@ class CSRFCookieService {
     });
   }
 
-  public clear() {
-    cookies().delete(COOKIE_NAMES.CSRF_TOKEN);
+  public clear({ res }: { res: NextResponse }) {
+    res.cookies.delete(COOKIE_NAMES.CSRF_TOKEN);
   }
 }
 

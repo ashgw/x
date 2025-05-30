@@ -1,20 +1,20 @@
 import { pbkdf2Sync, randomBytes } from "crypto";
 import type { Optional } from "ts-roids";
 
-import type { DatabaseClient } from "@ashgw/db";
 import { InternalError, logger } from "@ashgw/observability";
 
 import type { UserLoginDto, UserRegisterDto, UserRo } from "~/api/models";
+import type { TrpcContext } from "~/trpc/context";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 import { AUTH_COOKIES_MAX_AGE } from "./consts";
 import { CookieService } from "./Cookie.service";
 
 export class AuthService {
-  private readonly db: DatabaseClient;
+  private readonly ctx: TrpcContext;
 
-  constructor({ db }: { db: DatabaseClient }) {
-    this.db = db;
+  constructor({ ctx }: { ctx: TrpcContext }) {
+    this.ctx = ctx;
   }
 
   public async me(): Promise<Optional<UserRo>> {
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   public async getUserWithSession(): Promise<UserRo> {
-    const sessionId = CookieService.session.get();
+    const sessionId = CookieService.session.get({ req: this.ctx.req });
     if (!sessionId) {
       logger.info("No session cookie found");
       throw new InternalError({
@@ -39,7 +39,7 @@ export class AuthService {
         message: `No session cookie found`,
       });
     }
-    const session = await this.db.session.findUnique({
+    const session = await this.ctx.db.session.findUnique({
       where: { id: sessionId },
       include: {
         user: {
@@ -69,20 +69,28 @@ export class AuthService {
 
   public async logout() {
     logger.info("Logging out user");
-    const sessionId = CookieService.session.get();
+    const sessionId = CookieService.session.get({
+      req: this.ctx.req,
+    });
     if (!sessionId) {
       logger.info("No session cookie found, user is not logged in");
-      CookieService.csrf.clear();
+      CookieService.csrf.clear({
+        res: this.ctx.res,
+      });
       return;
     }
     logger.info("Session cookie found, logging out user", { sessionId });
     try {
-      await this.db.session.delete({
+      await this.ctx.db.session.delete({
         where: { id: sessionId },
       });
       logger.info("User logged out", { sessionId });
-      CookieService.csrf.clear();
-      CookieService.session.clear();
+      CookieService.csrf.clear({
+        res: this.ctx.res,
+      });
+      CookieService.session.clear({
+        res: this.ctx.res,
+      });
     } catch (error) {
       logger.error("Failed to logout user", { error, sessionId });
       throw new InternalError({
@@ -95,7 +103,7 @@ export class AuthService {
 
   public async login({ email, password }: UserLoginDto): Promise<UserRo> {
     logger.info("Logging in user", { email });
-    const user = await this.db.user.findUnique({
+    const user = await this.ctx.db.user.findUnique({
       where: { email },
       include: {
         ...UserQueryHelper.withSessionsInclude(),
@@ -135,7 +143,7 @@ export class AuthService {
   }: UserRegisterDto): Promise<UserRo> {
     logger.info("Registering user", { email });
     try {
-      const existingUser = await this.db.user.findUnique({
+      const existingUser = await this.ctx.db.user.findUnique({
         where: { email },
         select: {
           email: true,
@@ -151,7 +159,7 @@ export class AuthService {
       }
       logger.info("Creating user", { email, name });
       const passwordHash = this._hashPassword(password);
-      const user = await this.db.user.create({
+      const user = await this.ctx.db.user.create({
         data: {
           email,
           passwordHash,
@@ -184,7 +192,9 @@ export class AuthService {
   }
 
   public validateCsrfToken(input: { requestCsrfHeaderValue: string }): boolean {
-    const csrfCookie = CookieService.csrf.get();
+    const csrfCookie = CookieService.csrf.get({
+      req: this.ctx.req,
+    });
     const csrfHeader = input.requestCsrfHeaderValue;
     if (!csrfCookie || !csrfHeader || csrfCookie !== csrfHeader) {
       logger.warn("CSRF validation failed");
@@ -198,7 +208,7 @@ export class AuthService {
 
   private async _createSessionAndSetCookies(input: { userId: string }) {
     const expiresAt = new Date(Date.now() + AUTH_COOKIES_MAX_AGE);
-    const session = await this.db.session.create({
+    const session = await this.ctx.db.session.create({
       data: {
         userId: input.userId,
         expiresAt,
@@ -208,8 +218,11 @@ export class AuthService {
         userId: true,
       },
     });
-    CookieService.csrf.set();
+    CookieService.csrf.set({
+      res: this.ctx.res,
+    });
     CookieService.session.set({
+      res: this.ctx.res,
       value: session.id,
     });
   }
