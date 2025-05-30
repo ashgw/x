@@ -28,7 +28,7 @@ interface SoundProviderProps {
 
 export function SoundProvider({
   children,
-  audioPath = "./../../../../assets/audio/focus_sound.wav", // Default audio path
+  audioPath = "/audio/focus_sound.wav", // Fixed to use public directory path
   initialPlayState = false,
 }: SoundProviderProps) {
   const [isPlaying, setIsPlaying] = useState(initialPlayState);

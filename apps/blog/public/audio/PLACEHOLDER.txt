@@ -1,5 +1,0 @@
-Please add your audio file (background-ambience.mp3 or similar) to this directory.
-
-Audio files are typically too large for version control systems, 
-so you may want to add *.mp3 to your .gitignore file if these 
-aren't meant to be tracked. 
