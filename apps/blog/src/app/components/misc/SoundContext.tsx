@@ -48,15 +48,21 @@ export function SoundProvider({
         audioRef.current = new Audio(audioPath);
         audioRef.current.loop = true; // Ensure audio loops infinitely
 
-        // Add event listeners
-        audioRef.current.addEventListener("canplaythrough", () => {
-          setIsLoading(false);
-        });
-
-        audioRef.current.addEventListener("error", (e) => {
+        const handleCanPlayThrough = () => setIsLoading(false);
+        const handleError = (e: Event) => {
           logger.error("Audio loading error", { error: e });
           setIsLoading(false);
-        });
+        };
+
+        audioRef.current.addEventListener(
+          "canplaythrough",
+          handleCanPlayThrough,
+        );
+        audioRef.current.addEventListener("error", handleError);
+
+        // Store event listeners for cleanup
+        audioRef.current.handleCanPlayThrough = handleCanPlayThrough;
+        audioRef.current.handleError = handleError;
       }
     } catch (error) {
       logger.error("Failed to initialize audio", { error });
@@ -65,10 +71,20 @@ export function SoundProvider({
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = "";
-        audioRef.current = null;
+        const audio = audioRef.current;
+        if (audio.handleCanPlayThrough) {
+          audio.removeEventListener(
+            "canplaythrough",
+            audio.handleCanPlayThrough,
+          );
+        }
+        if (audio.handleError) {
+          audio.removeEventListener("error", audio.handleError);
+        }
+        audio.pause();
+        audio.src = "";
       }
+      audioRef.current = null;
     };
   }, [audioPath]);
 
