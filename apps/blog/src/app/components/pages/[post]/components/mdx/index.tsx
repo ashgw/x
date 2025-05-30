@@ -1,4 +1,5 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 import { TextContent } from "@ashgw/components";
 
@@ -8,13 +9,7 @@ import { H1, H2, H3 } from "../headers";
 import { BlogLink } from "../link/Link";
 import { Spacer1, Spacer2, Spacer3 } from "../spacers";
 
-// had a bug where it can't load esm modules
-const MDXRemotePromise = import("next-mdx-remote/rsc").then(
-  (mod) => mod.MDXRemote,
-);
-
-export async function MDX({ source, components }: MDXRemoteProps) {
-  const MDXRemote = await MDXRemotePromise;
+export function MDX({ source, components }: MDXRemoteProps) {
   return (
     <MDXRemote
       source={source}
