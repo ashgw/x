@@ -9,6 +9,10 @@ export function SoundToggle() {
 
   return (
     <motion.button
+      aria-label={
+        isLoading ? "Loading sound" : `Turn sound ${isPlaying ? "off" : "on"}`
+      }
+      aria-pressed={isPlaying}
       onClick={toggleSound}
       className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-lg bg-black/90 px-4 py-3 text-white shadow-lg backdrop-blur-md"
       whileHover={{ scale: 1.02 }}
