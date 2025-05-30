@@ -35,6 +35,12 @@ export function SoundProvider({
   const [isPlaying, setIsPlaying] = useState(initialPlayState);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Store event handlers in refs to keep them across re-renders
+  const handleCanPlayThroughRef = useRef<() => void>(() => setIsLoading(false));
+  const handleErrorRef = useRef<(e: Event) => void>((e) => {
+    logger.error("Audio loading error", { error: e });
+    setIsLoading(false);
+  });
 
   // Initialize audio element
   useEffect(() => {
@@ -48,21 +54,12 @@ export function SoundProvider({
         audioRef.current = new Audio(audioPath);
         audioRef.current.loop = true; // Ensure audio loops infinitely
 
-        const handleCanPlayThrough = () => setIsLoading(false);
-        const handleError = (e: Event) => {
-          logger.error("Audio loading error", { error: e });
-          setIsLoading(false);
-        };
-
+        // Add event listeners
         audioRef.current.addEventListener(
           "canplaythrough",
-          handleCanPlayThrough,
+          handleCanPlayThroughRef.current,
         );
-        audioRef.current.addEventListener("error", handleError);
-
-        // Store event listeners for cleanup
-        audioRef.current.handleCanPlayThrough = handleCanPlayThrough;
-        audioRef.current.handleError = handleError;
+        audioRef.current.addEventListener("error", handleErrorRef.current);
       }
     } catch (error) {
       logger.error("Failed to initialize audio", { error });
@@ -72,15 +69,12 @@ export function SoundProvider({
     return () => {
       if (audioRef.current) {
         const audio = audioRef.current;
-        if (audio.handleCanPlayThrough) {
-          audio.removeEventListener(
-            "canplaythrough",
-            audio.handleCanPlayThrough,
-          );
-        }
-        if (audio.handleError) {
-          audio.removeEventListener("error", audio.handleError);
-        }
+        // Remove event listeners
+        audio.removeEventListener(
+          "canplaythrough",
+          handleCanPlayThroughRef.current,
+        );
+        audio.removeEventListener("error", handleErrorRef.current);
         audio.pause();
         audio.src = "";
       }
