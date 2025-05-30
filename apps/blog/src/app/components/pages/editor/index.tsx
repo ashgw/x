@@ -15,6 +15,8 @@ import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
+import { SoundProvider } from "../../misc/SoundContext";
+import { SoundToggle } from "../../misc/SoundToggle";
 import { BlogList } from "./components/BlogList";
 import { BlogPreview } from "./components/BlogPreview";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
@@ -22,6 +24,9 @@ import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
+
+// Audio source - replace with your actual audio file path
+const BACKGROUND_AUDIO = "/audio/background-ambience.mp3";
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
@@ -209,69 +214,76 @@ export function EditorPage() {
   const formValues = form.watch();
 
   return (
-    <div className="container mx-auto p-8">
-      <Header
-        onClick={handleNewBlog}
-        sortOptions={sortOptions}
-        onSortOptionsChange={setSortOptions}
-        blogs={postsQuery.data ?? []}
-        isPreviewEnabled={showPreview}
-        onTogglePreview={togglePreview}
-      />
-      <div
-        className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
-      >
-        <BlogList
-          blogs={filteredAndSortedBlogs}
-          onEdit={handleEditBlog}
-          onDelete={handleDeleteBlog}
-          isLoading={postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)}
+    <SoundProvider initialAudioSrc={BACKGROUND_AUDIO}>
+      <div className="container mx-auto p-8">
+        <Header
+          onClick={handleNewBlog}
+          sortOptions={sortOptions}
+          onSortOptionsChange={setSortOptions}
+          blogs={postsQuery.data ?? []}
+          isPreviewEnabled={showPreview}
+          onTogglePreview={togglePreview}
         />
-        {showEditorSkeleton ? (
-          <div className="lg:col-span-2">
-            <div className="bg-card rounded-lg border p-4">
-              <Skeleton className="w-full" />
+        <div
+          className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
+        >
+          <BlogList
+            blogs={filteredAndSortedBlogs}
+            onEdit={handleEditBlog}
+            onDelete={handleDeleteBlog}
+            isLoading={
+              postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
+            }
+          />
+          {showEditorSkeleton ? (
+            <div className="lg:col-span-2">
+              <div className="bg-card rounded-lg border p-4">
+                <Skeleton className="w-full" />
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="lg:col-span-2">
-            <AnimatePresence mode="wait" initial={false}>
-              <PostEditorForm
-                key="editor"
-                form={form}
-                onSubmit={onSubmit}
-                isSubmitting={isSubmitting}
-                isHidden={showPreview}
-              />
-              {showPreview ? (
-                <BlogPreview
-                  key="preview"
-                  isVisible={showPreview}
-                  formData={formValues}
-                  title={
-                    editModal.visible ? editModal.entity.title : "Preview Title"
-                  }
-                  creationDate={
-                    editModal.visible
-                      ? editModal.entity.firstModDate.toISOString()
-                      : new Date().toISOString()
-                  }
+          ) : (
+            <div className="lg:col-span-2">
+              <AnimatePresence mode="wait" initial={false}>
+                <PostEditorForm
+                  key="editor"
+                  form={form}
+                  onSubmit={onSubmit}
+                  isSubmitting={isSubmitting}
+                  isHidden={showPreview}
                 />
-              ) : null}
-            </AnimatePresence>
-          </div>
-        )}
+                {showPreview ? (
+                  <BlogPreview
+                    key="preview"
+                    isVisible={showPreview}
+                    formData={formValues}
+                    title={
+                      editModal.visible
+                        ? editModal.entity.title
+                        : "Preview Title"
+                    }
+                    creationDate={
+                      editModal.visible
+                        ? editModal.entity.firstModDate.toISOString()
+                        : new Date().toISOString()
+                    }
+                  />
+                ) : null}
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+        {deleteModal.visible ? (
+          <ConfirmBlogDeleteModal
+            blog={deleteModal.entity}
+            onConfirm={confirmDelete}
+            onCancel={cancelDelete}
+            isDeleting={deleteMutation.isPending}
+          />
+        ) : null}
+        <SoundToggle />
+        <Toaster position="bottom-right" />
       </div>
-      {deleteModal.visible ? (
-        <ConfirmBlogDeleteModal
-          blog={deleteModal.entity}
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
-          isDeleting={deleteMutation.isPending}
-        />
-      ) : null}
-      <Toaster position="bottom-right" />
-    </div>
+    </SoundProvider>
   );
 }
 
