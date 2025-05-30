@@ -25,9 +25,6 @@ import { Header } from "./components/Header";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
-// Audio source - replace with your actual audio file path
-const BACKGROUND_AUDIO = "/audio/background-ambience.mp3";
-
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
     visible: false,
@@ -214,7 +211,7 @@ export function EditorPage() {
   const formValues = form.watch();
 
   return (
-    <SoundProvider initialAudioSrc={BACKGROUND_AUDIO}>
+    <SoundProvider>
       <div className="container mx-auto p-8">
         <Header
           onClick={handleNewBlog}

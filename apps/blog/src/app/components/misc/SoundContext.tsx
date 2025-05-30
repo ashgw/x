@@ -15,75 +15,87 @@ import { logger } from "@ashgw/observability";
 interface SoundContextType {
   isPlaying: boolean;
   toggleSound: () => void;
-  setAudioSrc: (src: string) => void;
+  isLoading: boolean;
 }
 
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
 
 interface SoundProviderProps {
   children: ReactNode;
-  initialAudioSrc?: string;
+  audioPath?: string;
   initialPlayState?: boolean;
 }
 
 export function SoundProvider({
   children,
-  initialAudioSrc = "",
+  audioPath = "./../../../../assets/audio/focus_sound.wav", // Default audio path
   initialPlayState = false,
 }: SoundProviderProps) {
   const [isPlaying, setIsPlaying] = useState(initialPlayState);
-  const [audioSrc, setAudioSrc] = useState(initialAudioSrc);
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Initialize audio element
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Create audio element if not exists
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-      audioRef.current.loop = true;
-    }
+    try {
+      setIsLoading(true);
 
-    // Update source if changed
-    if (audioSrc && audioRef.current.src !== audioSrc) {
-      audioRef.current.src = audioSrc;
+      // Create audio element if not exists
+      if (!audioRef.current) {
+        audioRef.current = new Audio(audioPath);
+        audioRef.current.loop = true; // Ensure audio loops infinitely
+
+        // Add event listeners
+        audioRef.current.addEventListener("canplaythrough", () => {
+          setIsLoading(false);
+        });
+
+        audioRef.current.addEventListener("error", (e) => {
+          logger.error("Audio loading error", { error: e });
+          setIsLoading(false);
+        });
+      }
+    } catch (error) {
+      logger.error("Failed to initialize audio", { error });
+      setIsLoading(false);
     }
 
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.src = "";
         audioRef.current = null;
       }
     };
-  }, [audioSrc]);
+  }, [audioPath]);
 
   // Handle play state changes
   useEffect(() => {
-    if (!audioRef.current || !audioSrc) return;
+    if (!audioRef.current) return;
 
     if (isPlaying) {
-      audioRef.current.play().catch((error) => {
+      const playPromise = audioRef.current.play();
+
+      // Handle play promise to catch autoplay blocking
+      playPromise.catch((error) => {
         logger.error("Audio playback failed", { error });
         setIsPlaying(false);
       });
     } else {
       audioRef.current.pause();
     }
-  }, [isPlaying, audioSrc]);
+  }, [isPlaying]);
 
   const toggleSound = useCallback(() => {
     setIsPlaying((prev) => !prev);
   }, []);
 
-  const setAudioSource = useCallback((src: string) => {
-    setAudioSrc(src);
-  }, []);
-
   const value = {
     isPlaying,
     toggleSound,
-    setAudioSrc: setAudioSource,
+    isLoading,
   };
 
   return (

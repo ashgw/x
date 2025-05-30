@@ -1,23 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 
 import { useSound } from "./SoundContext";
 
-interface SoundToggleProps {
-  audioSrc?: string;
-}
-
-export function SoundToggle({ audioSrc }: SoundToggleProps) {
-  const { isPlaying, toggleSound, setAudioSrc } = useSound();
-
-  // Set audio source if provided
-  useEffect(() => {
-    if (audioSrc) {
-      setAudioSrc(audioSrc);
-    }
-  }, [audioSrc, setAudioSrc]);
+export function SoundToggle() {
+  const { isPlaying, toggleSound, isLoading } = useSound();
 
   return (
     <motion.button
@@ -28,12 +16,13 @@ export function SoundToggle({ audioSrc }: SoundToggleProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      disabled={isLoading}
     >
       {/* Sound wave icon */}
       <motion.div
         className="relative h-5 w-5"
         initial={{ opacity: 0.8 }}
-        animate={{ opacity: isPlaying ? 1 : 0.7 }}
+        animate={{ opacity: isLoading ? 0.5 : isPlaying ? 1 : 0.7 }}
       >
         <svg
           width="20"
@@ -70,10 +59,10 @@ export function SoundToggle({ audioSrc }: SoundToggleProps) {
         <motion.span
           className="text-xs font-medium uppercase tracking-wider"
           animate={{
-            opacity: isPlaying ? 1 : 0.7,
+            opacity: isLoading ? 0.5 : isPlaying ? 1 : 0.7,
           }}
         >
-          SOUND {isPlaying ? "ON" : "OFF"}
+          {isLoading ? "LOADING..." : `SOUND ${isPlaying ? "ON" : "OFF"}`}
         </motion.span>
       </div>
     </motion.button>
