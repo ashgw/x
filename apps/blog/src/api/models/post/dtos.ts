@@ -12,8 +12,8 @@ export const postGetSchemaDto = z.object({
 });
 
 export const postEditorSchemaDto = z.object({
-  title: z.string().min(2), // the slug will be the same basically
-  summary: z.string().max(120).min(20), // SEO title will be the same for now
+  title: z.string().min(2).max(30), // the slug will be the same basically
+  summary: z.string().max(90).min(20), // SEO title will be the same for now, 90 chars so it looks good on cards layout
   category: z.nativeEnum(PostCategoryEnum),
   tags: z.array(z.string().max(10).min(1)), // too big looks ugly
   isReleased: z.boolean(),
