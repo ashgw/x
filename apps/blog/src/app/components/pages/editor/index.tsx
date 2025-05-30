@@ -3,6 +3,7 @@
 import type { SubmitHandler } from "react-hook-form";
 import { useCallback, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
@@ -210,18 +211,25 @@ export function EditorPage() {
           </div>
         ) : (
           <div className="lg:col-span-2">
-            <PostEditorForm
-              form={form}
-              onSubmit={onSubmit}
-              isSubmitting={isSubmitting}
-            />
-            <BlogPreview
-              isVisible={showPreview}
-              formData={formValues}
-              title={
-                editModal.visible ? editModal.entity.title : "Preview Title"
-              }
-            />
+            <AnimatePresence mode="wait">
+              <PostEditorForm
+                key="editor"
+                form={form}
+                onSubmit={onSubmit}
+                isSubmitting={isSubmitting}
+                isHidden={showPreview}
+              />
+              {showPreview && (
+                <BlogPreview
+                  key="preview"
+                  isVisible={showPreview}
+                  formData={formValues}
+                  title={
+                    editModal.visible ? editModal.entity.title : "Preview Title"
+                  }
+                />
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>

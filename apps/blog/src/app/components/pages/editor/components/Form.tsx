@@ -42,12 +42,14 @@ interface PostEditorFormProps {
   form: UseFormReturn<PostEditorDto>;
   onSubmit: SubmitHandler<PostEditorDto>;
   isSubmitting?: boolean;
+  isHidden?: boolean;
 }
 
 export function PostEditorForm({
   form,
   onSubmit,
   isSubmitting,
+  isHidden = false,
 }: PostEditorFormProps) {
   const { reset, control, register, watch, handleSubmit } = form;
 
@@ -61,12 +63,15 @@ export function PostEditorForm({
     [content],
   );
 
+  if (isHidden) return null;
+
   return (
     <motion.div
-      className="lg:col-span-2"
+      className="w-full"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.5 }}
     >
       <motion.div
         className="bg-card rounded-lg border p-4"

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { logger } from "@ashgw/observability";
@@ -58,16 +58,25 @@ export function BlogPreview({ isVisible, formData, title }: BlogPreviewProps) {
   }
 
   return (
-    <AnimatePresence>
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      transition={{ duration: 0.5 }}
+    >
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.4 }}
-        className="bg-card mt-4 rounded-lg border p-6"
+        className="bg-card max-h-[850px] overflow-y-auto rounded-lg border p-6"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.4,
+          type: "spring",
+          stiffness: 100,
+        }}
       >
         <motion.h2
-          className="mb-4 text-lg font-semibold"
+          className="bg-card sticky top-0 z-10 mb-4 py-2 text-lg font-semibold"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -96,6 +105,6 @@ export function BlogPreview({ isVisible, formData, title }: BlogPreviewProps) {
           </article>
         </section>
       </motion.div>
-    </AnimatePresence>
+    </motion.div>
   );
 }
