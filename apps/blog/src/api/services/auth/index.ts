@@ -52,6 +52,35 @@ export class AuthService {
         message: `No session cookie found`,
       });
     }
+
+    const csrfCookieToken = CookieService.csrf.get({
+      req: this.req,
+    });
+
+    const csrfHeaderToken = this.req.headers.get("x-csrf-token");
+
+    if (!csrfCookieToken || !csrfHeaderToken) {
+      const message = `No CSRF token found, login again`;
+      logger.info(message);
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message,
+      });
+    }
+
+    if (csrfCookieToken !== csrfHeaderToken) {
+      const message = `CSRF token mismatch, possible tampering`;
+      logger.warn(message, {
+        csrfCookieToken,
+        csrfHeaderToken,
+      });
+
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message,
+      });
+    }
+
     const session = await this.db.session.findUnique({
       where: { id: sessionId },
       include: {
@@ -70,13 +99,15 @@ export class AuthService {
         message: `No session found for this user`,
       });
     }
+
     if (session.expiresAt < new Date()) {
       logger.info("Session expired", { sessionId });
       throw new InternalError({
         code: "UNAUTHORIZED",
-        message: `Session expired, login again`,
+        message: `Session expired`,
       });
     }
+
     return UserMapper.toUserRo({ user: session.user });
   }
 
