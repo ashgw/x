@@ -219,7 +219,7 @@ export function EditorPage() {
                 isSubmitting={isSubmitting}
                 isHidden={showPreview}
               />
-              {showPreview && (
+              {showPreview ? (
                 <BlogPreview
                   key="preview"
                   isVisible={showPreview}
@@ -228,19 +228,19 @@ export function EditorPage() {
                     editModal.visible ? editModal.entity.title : "Preview Title"
                   }
                 />
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
         )}
       </div>
-      {deleteModal.visible && (
+      {deleteModal.visible ? (
         <ConfirmBlogDeleteModal
           blog={deleteModal.entity}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
           isDeleting={deleteMutation.isPending}
         />
-      )}
+      ) : null}
       <Toaster position="bottom-right" />
     </div>
   );
