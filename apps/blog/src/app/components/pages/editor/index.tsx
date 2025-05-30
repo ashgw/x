@@ -1,23 +1,27 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
 import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
+import { Skeleton } from "@ashgw/ui";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 import { BlogList } from "./components/BlogList";
+import { BlogPreview } from "./components/BlogPreview";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
+import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
@@ -29,6 +33,22 @@ export function EditorPage() {
       visible: false,
     },
   );
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (deleteModal.visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [deleteModal.visible]);
 
   const [sortOptions, setSortOptions] = useState<SortOptionsType>({
     sortField: "lastModDate",
@@ -53,6 +73,31 @@ export function EditorPage() {
 
   const utils = trpcClientSide.useUtils();
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+
+  // Edit blog: load values into form
+  const handleEditBlog = useCallback(
+    (blog: PostDetailRo) => {
+      // Don't load blog content if we're in the process of deleting
+      if (isDeletingBlog) return;
+
+      setEditModal({ visible: true, entity: blog });
+      form.reset({
+        title: blog.title,
+        summary: blog.summary,
+        category: blog.category,
+        tags: blog.tags,
+        isReleased: blog.isReleased,
+        mdxContent: blog.fontMatterMdxContent.body,
+      });
+      logger.info("Editing blog", { slug: blog.slug });
+    },
+    [form, isDeletingBlog],
+  );
+
+  const { isLoadingBlog, blogSlug } = useQueryParamBlog({
+    onBlogFound: handleEditBlog,
+    skipLoading: showPreview || isDeletingBlog, // Skip loading if in preview mode or deleting
+  });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
     postsQuery.data,
@@ -92,6 +137,7 @@ export function EditorPage() {
       toast.success("Blog post deleted successfully");
       void utils.post.getAllPosts.invalidate();
       setDeleteModal({ visible: false });
+      setIsDeletingBlog(false);
 
       // If editing the deleted blog, reset form
       if (
@@ -107,22 +153,9 @@ export function EditorPage() {
       toast.error("Failed to delete post", {
         description: error.message,
       });
+      setIsDeletingBlog(false);
     },
   });
-
-  // Edit blog: load values into form
-  function handleEditBlog(blog: PostDetailRo) {
-    setEditModal({ visible: true, entity: blog });
-    form.reset({
-      title: blog.title,
-      summary: blog.summary,
-      category: blog.category,
-      tags: blog.tags,
-      isReleased: blog.isReleased,
-      mdxContent: blog.fontMatterMdxContent.body,
-    });
-    logger.info("Editing blog", { slug: blog.slug });
-  }
 
   // Add new blog: clear form
   function handleNewBlog() {
@@ -139,6 +172,7 @@ export function EditorPage() {
 
   // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
+    setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
@@ -151,7 +185,12 @@ export function EditorPage() {
 
   function cancelDelete() {
     setDeleteModal({ visible: false });
+    setIsDeletingBlog(false);
   }
+
+  const togglePreview = useCallback(() => {
+    setShowPreview((prev) => !prev);
+  }, []);
 
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
     if (editModal.visible) {
@@ -165,6 +204,9 @@ export function EditorPage() {
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
+  // Show editor loading state only when we're expecting to load a blog from URL
+  const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isDeletingBlog;
+  const formValues = form.watch();
 
   return (
     <div className="container mx-auto p-8">
@@ -173,28 +215,61 @@ export function EditorPage() {
         sortOptions={sortOptions}
         onSortOptionsChange={setSortOptions}
         blogs={postsQuery.data ?? []}
+        isPreviewEnabled={showPreview}
+        onTogglePreview={togglePreview}
       />
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div
+        className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
+      >
         <BlogList
           blogs={filteredAndSortedBlogs}
           onEdit={handleEditBlog}
           onDelete={handleDeleteBlog}
-          isLoading={postsQuery.isLoading}
+          isLoading={postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)}
         />
-        <PostEditorForm
-          form={form}
-          onSubmit={onSubmit}
-          isSubmitting={isSubmitting}
-        />
+        {showEditorSkeleton ? (
+          <div className="lg:col-span-2">
+            <div className="bg-card rounded-lg border p-4">
+              <Skeleton className="w-full" />
+            </div>
+          </div>
+        ) : (
+          <div className="lg:col-span-2">
+            <AnimatePresence mode="wait" initial={false}>
+              <PostEditorForm
+                key="editor"
+                form={form}
+                onSubmit={onSubmit}
+                isSubmitting={isSubmitting}
+                isHidden={showPreview}
+              />
+              {showPreview ? (
+                <BlogPreview
+                  key="preview"
+                  isVisible={showPreview}
+                  formData={formValues}
+                  title={
+                    editModal.visible ? editModal.entity.title : "Preview Title"
+                  }
+                  creationDate={
+                    editModal.visible
+                      ? editModal.entity.firstModDate.toISOString()
+                      : new Date().toISOString()
+                  }
+                />
+              ) : null}
+            </AnimatePresence>
+          </div>
+        )}
       </div>
-      {deleteModal.visible && (
+      {deleteModal.visible ? (
         <ConfirmBlogDeleteModal
           blog={deleteModal.entity}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
           isDeleting={deleteMutation.isPending}
         />
-      )}
+      ) : null}
       <Toaster position="bottom-right" />
     </div>
   );

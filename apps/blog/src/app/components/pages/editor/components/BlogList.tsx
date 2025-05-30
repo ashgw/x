@@ -53,7 +53,7 @@ const BlogItem = memo(
           <span>{new Date(blog.lastModDate).toLocaleDateString()}</span>
         </div>
         <motion.div
-          className="flex gap-2"
+          className="flex flex-wrap gap-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
