@@ -161,7 +161,7 @@ export class AuthService {
       });
     }
     logger.info("User found", { userId: user.id });
-    logger.info("Checking password", { password });
+    logger.info("Checking user password");
 
     if (!this._verifyPassword(password, user.passwordHash)) {
       logger.warn("Invalid password", { email });

@@ -48,8 +48,8 @@ export function LoginModal(props: {
   };
 
   const loginMutation = trpcClientSide.user.login.useMutation({
-    onSuccess: async () => {
-      await utils.user.me.invalidate();
+    onSuccess: () => {
+      void utils.user.me.invalidate();
       toast.success("Successfully logged in", {
         description: "You can now create and edit blog posts.",
       });
@@ -106,12 +106,7 @@ export function LoginModal(props: {
         </motion.p>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            noValidate
-            method="dialog"
-            autoComplete="off"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0 }}
