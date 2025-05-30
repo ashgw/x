@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,20 @@ export function EditorPage() {
   );
 
   const [showPreview, setShowPreview] = useState(false);
+  const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (deleteModal.visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [deleteModal.visible]);
 
   const [sortOptions, setSortOptions] = useState<SortOptionsType>({
     sortField: "lastModDate",
@@ -63,6 +77,9 @@ export function EditorPage() {
   // Edit blog: load values into form
   const handleEditBlog = useCallback(
     (blog: PostDetailRo) => {
+      // Don't load blog content if we're in the process of deleting
+      if (isDeletingBlog) return;
+
       setEditModal({ visible: true, entity: blog });
       form.reset({
         title: blog.title,
@@ -74,11 +91,12 @@ export function EditorPage() {
       });
       logger.info("Editing blog", { slug: blog.slug });
     },
-    [form],
+    [form, isDeletingBlog],
   );
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
     onBlogFound: handleEditBlog,
+    skipLoading: showPreview || isDeletingBlog, // Skip loading if in preview mode or deleting
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
@@ -119,6 +137,7 @@ export function EditorPage() {
       toast.success("Blog post deleted successfully");
       void utils.post.getAllPosts.invalidate();
       setDeleteModal({ visible: false });
+      setIsDeletingBlog(false);
 
       // If editing the deleted blog, reset form
       if (
@@ -134,6 +153,7 @@ export function EditorPage() {
       toast.error("Failed to delete post", {
         description: error.message,
       });
+      setIsDeletingBlog(false);
     },
   });
 
@@ -152,6 +172,7 @@ export function EditorPage() {
 
   // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
+    setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
@@ -164,6 +185,7 @@ export function EditorPage() {
 
   function cancelDelete() {
     setDeleteModal({ visible: false });
+    setIsDeletingBlog(false);
   }
 
   const togglePreview = useCallback(() => {
@@ -183,7 +205,7 @@ export function EditorPage() {
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   // Show editor loading state only when we're expecting to load a blog from URL
-  const showEditorSkeleton = isLoadingBlog && !!blogSlug;
+  const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isDeletingBlog;
   const formValues = form.watch();
 
   return (
@@ -196,12 +218,14 @@ export function EditorPage() {
         isPreviewEnabled={showPreview}
         onTogglePreview={togglePreview}
       />
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div
+        className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
+      >
         <BlogList
           blogs={filteredAndSortedBlogs}
           onEdit={handleEditBlog}
           onDelete={handleDeleteBlog}
-          isLoading={postsQuery.isLoading || isLoadingBlog}
+          isLoading={postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)}
         />
         {showEditorSkeleton ? (
           <div className="lg:col-span-2">
