@@ -1,7 +1,8 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
 import type { TrpcContext } from "./context";
+import { UserRoleEnum } from "~/api/models";
 import { transformer } from "./transformer";
 
 const t = initTRPC.context<TrpcContext>().create({
@@ -24,28 +25,44 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 export const middleware = t.middleware;
 
-// extract this somewhere else if implemented
-function isAuthenticated(input: { ctx: TrpcContext }) {
-  const { ctx } = input;
+function isAuthenticated(ctx: TrpcContext) {
+  if (!ctx.user) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be logged in to access this resource",
+    });
+  }
   return ctx;
 }
 
-// same here
-function isAuthorized(input: { ctx: TrpcContext }) {
-  const { ctx } = input;
+function isAuthorized({
+  ctx,
+  requiredRole,
+}: {
+  ctx: TrpcContext;
+  requiredRole: UserRoleEnum;
+}) {
+  if (ctx.user?.role !== requiredRole) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "You don't have permission to access this resource",
+    });
+  }
   return ctx;
 }
 
-const authMiddleware = middleware(async (opts) => {
-  const { ctx } = opts;
-  isAuthenticated({ ctx });
-  isAuthorized({ ctx });
-  return opts.next({
-    ctx: {
-      ...ctx,
-    },
+const authMiddleware = (input: { requiredRole: UserRoleEnum }) =>
+  middleware(async (opts) => {
+    const { ctx } = opts;
+    isAuthenticated(ctx);
+    isAuthorized({ ctx, requiredRole: input.requiredRole });
+    return opts.next({
+      ctx: {
+        ...ctx,
+      },
+    });
   });
-});
 
-export const authedProcedure = publicProcedure.use(authMiddleware);
-export const adminProcedure = authedProcedure;
+export const adminProcedure = publicProcedure.use(
+  authMiddleware({ requiredRole: UserRoleEnum.ADMIN }),
+);

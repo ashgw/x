@@ -1,6 +1,4 @@
 import type { inferProcedureInput } from "@trpc/server";
-import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import type { NextRequest, NextResponse } from "next/server";
 import { expect, test } from "vitest";
 
 import { db } from "@ashgw/db";
@@ -8,21 +6,24 @@ import { db } from "@ashgw/db";
 import type { AppRouter } from "~/api/router";
 import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
-import { createTRPCContext } from "~/trpc/context";
+import { createInnerTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/trpc";
+import type { NextRequest, NextResponse } from "next/server";
 
 function createTestContext() {
-  return createTRPCContext({
-    req: {} as NextRequest,
-    res: {} as NextResponse,
-    trpcInfo: {} as FetchCreateContextFnOptions["info"],
+  return createInnerTRPCContext({
     db,
   });
 }
 
 test("load and validate all blog posts", async () => {
-  const ctx = createTestContext();
-  const caller = createCallerFactory(appRouter)(ctx);
+  const innerContext = createTestContext();
+  const caller = createCallerFactory(appRouter)({
+    ...innerContext,
+    user: null,
+    req: {} as NextRequest,
+    res: {} as NextResponse,
+  });
   const posts = await caller.post.getPostCards();
 
   for (const post of posts) {

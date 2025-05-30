@@ -78,6 +78,10 @@ const serverSideVars = {
     ),
 
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
+
+  RESEND_API_KEY: z.string().min(20).startsWith("re_"),
+
+  COOKIE_SECRET: z.string().min(32),
 };
 
 type ServerSideVars = typeof serverSideVars;
@@ -121,6 +125,8 @@ export const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    COOKIE_SECRET: process.env.COOKIE_SECRET,
   },
   skipValidation: isBrowser, // Since env vars are already injected at build time, we don't need to validate them at runtime.
 });

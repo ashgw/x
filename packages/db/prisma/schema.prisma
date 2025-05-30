@@ -28,6 +28,8 @@ model Post {
   category      PostCategory
   mdxContentId  String       @unique @db.VarChar(255)
   mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
+  
+  @@index([mdxContentId])
 }
 
 model Upload {
@@ -37,6 +39,27 @@ model Upload {
   contentType String       @db.VarChar(100)
   uploadedAt  DateTime     @default(now())
   post        Post?        @relation("PostMdxContent")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  role          UserRole  @default(VISITOR)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
 }
 
 enum PostCategory {
@@ -54,4 +77,9 @@ enum UploadType {
   AUDIO
   MDX
   OTHER
+}
+
+enum UserRole {
+  ADMIN
+  VISITOR
 }

@@ -48,6 +48,7 @@
     "@trpc/server": "catalog:trpc11",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
+    "cookie": "1.0.2",
     "framer-motion": "catalog:",
     "front-matter": "4.0.2",
     "gsap": "3.12.5",
