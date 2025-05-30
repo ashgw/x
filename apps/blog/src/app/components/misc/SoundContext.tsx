@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import type { MaybeUndefined } from "ts-roids";
 import {
   createContext,
   useCallback,
@@ -18,7 +19,7 @@ interface SoundContextType {
   isLoading: boolean;
 }
 
-const SoundContext = createContext<SoundContextType | undefined>(undefined);
+const SoundContext = createContext<MaybeUndefined<SoundContextType>>(undefined);
 
 interface SoundProviderProps {
   children: ReactNode;
@@ -28,7 +29,7 @@ interface SoundProviderProps {
 
 export function SoundProvider({
   children,
-  audioPath = "/audio/focus_sound.wav", // Fixed to use public directory path
+  audioPath = "/audio/focus_sound.wav",
   initialPlayState = false,
 }: SoundProviderProps) {
   const [isPlaying, setIsPlaying] = useState(initialPlayState);
