@@ -5,6 +5,7 @@ import { Button } from "@ashgw/ui";
 
 import type { SortOptions as SortOptionsType } from "./SortOptions";
 import type { PostDetailRo } from "~/api/models/post";
+import { PreviewToggle } from "./PreviewToggle";
 import { SortOptions } from "./SortOptions";
 
 interface HeaderProps {
@@ -12,6 +13,8 @@ interface HeaderProps {
   sortOptions: SortOptionsType;
   onSortOptionsChange: (options: SortOptionsType) => void;
   blogs: PostDetailRo[];
+  isPreviewEnabled: boolean;
+  onTogglePreview: () => void;
 }
 
 export function Header({
@@ -19,6 +22,8 @@ export function Header({
   sortOptions,
   onSortOptionsChange,
   blogs,
+  isPreviewEnabled,
+  onTogglePreview,
 }: HeaderProps): JSX.Element {
   return (
     <motion.div
@@ -40,20 +45,26 @@ export function Header({
         >
           Blog Editor
         </motion.h1>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.4,
-            delay: 0.2,
-          }}
-          whileHover={{ scale: 1.05 }}
-        >
-          <Button variant="squared:default" onClick={onClick}>
-            <Plus className="mr-2 h-4 w-4" />
-            New Blog
-          </Button>
-        </motion.div>
+        <div className="flex items-center gap-3">
+          <PreviewToggle
+            isPreviewEnabled={isPreviewEnabled}
+            onToggle={onTogglePreview}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              delay: 0.2,
+            }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Button variant="squared:default" onClick={onClick}>
+              <Plus className="mr-2 h-4 w-4" />
+              New Blog
+            </Button>
+          </motion.div>
+        </div>
       </div>
       <motion.div
         className="w-full"

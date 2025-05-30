@@ -15,6 +15,7 @@ import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 import { BlogList } from "./components/BlogList";
+import { BlogPreview } from "./components/BlogPreview";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
@@ -31,6 +32,8 @@ export function EditorPage() {
       visible: false,
     },
   );
+
+  const [showPreview, setShowPreview] = useState(false);
 
   const [sortOptions, setSortOptions] = useState<SortOptionsType>({
     sortField: "lastModDate",
@@ -162,6 +165,10 @@ export function EditorPage() {
     setDeleteModal({ visible: false });
   }
 
+  const togglePreview = useCallback(() => {
+    setShowPreview((prev) => !prev);
+  }, []);
+
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
     if (editModal.visible) {
       updateMutation.mutate({
@@ -176,6 +183,7 @@ export function EditorPage() {
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   // Show editor loading state only when we're expecting to load a blog from URL
   const showEditorSkeleton = isLoadingBlog && !!blogSlug;
+  const formValues = form.watch();
 
   return (
     <div className="container mx-auto p-8">
@@ -184,6 +192,8 @@ export function EditorPage() {
         sortOptions={sortOptions}
         onSortOptionsChange={setSortOptions}
         blogs={postsQuery.data ?? []}
+        isPreviewEnabled={showPreview}
+        onTogglePreview={togglePreview}
       />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <BlogList
@@ -199,11 +209,20 @@ export function EditorPage() {
             </div>
           </div>
         ) : (
-          <PostEditorForm
-            form={form}
-            onSubmit={onSubmit}
-            isSubmitting={isSubmitting}
-          />
+          <div className="lg:col-span-2">
+            <PostEditorForm
+              form={form}
+              onSubmit={onSubmit}
+              isSubmitting={isSubmitting}
+            />
+            <BlogPreview
+              isVisible={showPreview}
+              formData={formValues}
+              title={
+                editModal.visible ? editModal.entity.title : "Preview Title"
+              }
+            />
+          </div>
         )}
       </div>
       {deleteModal.visible && (
