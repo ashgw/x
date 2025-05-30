@@ -62,15 +62,6 @@ export function BlogPreview({
           stiffness: 100,
         }}
       >
-        <motion.h2
-          className="bg-card sticky top-0 z-10 mb-4 py-2 text-lg font-semibold"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          Preview
-        </motion.h2>
-
         <section className="container mx-auto">
           <div className="flex items-center justify-between">
             <H1 id={formData.title || title}>{formData.title || title}</H1>
