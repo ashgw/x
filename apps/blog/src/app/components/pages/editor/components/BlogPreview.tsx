@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { logger } from "@ashgw/observability";
 import { Badge, Skeleton } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
@@ -25,9 +24,15 @@ interface BlogPreviewProps {
   isVisible: boolean;
   formData: PostEditorDto;
   title: string;
+  creationDate: string;
 }
 
-export function BlogPreview({ isVisible, formData, title }: BlogPreviewProps) {
+export function BlogPreview({
+  isVisible,
+  formData,
+  title,
+  creationDate,
+}: BlogPreviewProps) {
   const [mdxContent, setMdxContent] = useState<string>("");
 
   // Update MDX content whenever form data changes
@@ -37,15 +42,7 @@ export function BlogPreview({ isVisible, formData, title }: BlogPreviewProps) {
 
   if (!isVisible) return null;
 
-  // Format the current date for display
-  let formattedDate = "Today";
-  try {
-    formattedDate = DateService.formatDate({
-      stringDate: new Date().toISOString(),
-    });
-  } catch (error) {
-    logger.error("Error formatting date:", error);
-  }
+  const formattedDate = DateService.formatDate({ stringDate: creationDate });
 
   return (
     <motion.div

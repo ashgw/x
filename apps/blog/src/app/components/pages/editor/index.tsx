@@ -251,6 +251,11 @@ export function EditorPage() {
                   title={
                     editModal.visible ? editModal.entity.title : "Preview Title"
                   }
+                  creationDate={
+                    editModal.visible
+                      ? editModal.entity.firstModDate.toISOString()
+                      : new Date().toISOString()
+                  }
                 />
               ) : null}
             </AnimatePresence>
