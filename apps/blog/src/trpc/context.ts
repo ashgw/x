@@ -22,7 +22,11 @@ export async function createTRPCContext(opts: {
   const innerContext = createInnerTRPCContext({
     db: opts.db,
   });
-  const user = await new AuthService({ db: opts.db }).me();
+  const user = await new AuthService({
+    db: opts.db,
+    req: opts.req,
+    res: opts.res,
+  }).me();
   return {
     ...innerContext,
     req: opts.req,
