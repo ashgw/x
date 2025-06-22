@@ -83,7 +83,7 @@ runs:
           ["KIT_API_KEY"]="${{ inputs.KIT_API_KEY }}"
         )
 
-        # Create all three env files with the same content, runners will determine which one to use
+        # Create all three env files with the same content, runners will determine which one to use & which values were passed from which environment
         env_files=(".env.development" ".env.preview" ".env.production")
 
         for env_file in "${env_files[@]}"; do
