@@ -18,7 +18,7 @@ async function uploadFileRaw({
   contentType,
 }: {
   filename: string;
-  folder: string;
+  folder: "mdx";
   body: Buffer;
   contentType: string;
 }) {
@@ -32,25 +32,16 @@ async function uploadFileRaw({
     .promise();
 }
 
-export const uploadFile = async () => {
-  await uploadFileRaw({
-    filename: "branded-types.mdx",
-    folder: "mdx",
-    body: Buffer.from(""),
-    contentType: "text/markdown",
-  });
-};
-
 export const seed = async () => {
+  const mdxFolder = "mdx";
   for (const blog of blogs) {
-    const mdxKey = `mdx/${blog.slug}.mdx`;
-
     await uploadFileRaw({
       filename: `${blog.slug}.mdx`,
-      folder: "mdx",
+      folder: mdxFolder,
       body: Buffer.from(blog.mdxContentRaw, "utf-8"),
       contentType: "text/markdown",
     });
+    const mdxKey = `${mdxFolder}/${blog.slug}.mdx`; // AKA the Upload table primary key
 
     await db.upload.upsert({
       where: { key: mdxKey },
@@ -95,7 +86,6 @@ export const seed = async () => {
 };
 
 async function main() {
-  await uploadFile();
   await seed();
 }
 
