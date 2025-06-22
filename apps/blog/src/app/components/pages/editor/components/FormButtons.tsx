@@ -17,7 +17,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
   const router = useRouter();
   const { user, isLoading } = useAuth();
 
-  const showLoginButton = !isLoading && !!user;
+  const showLoginButton = !isLoading && !user;
 
   return (
     <div className="flex justify-end gap-2">

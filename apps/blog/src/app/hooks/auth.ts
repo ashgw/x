@@ -37,7 +37,7 @@ export function useAuth(): UseAuthReturn {
         return false;
       }
 
-      return !!user;
+      return !user;
     },
     [isLoading, user, router],
   );
