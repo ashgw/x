@@ -24,7 +24,7 @@ model Post {
   lastModDate   DateTime     @updatedAt
   isReleased    Boolean
   minutesToRead Int          @db.SmallInt
-  tags          String[]     @db.VarChar(255)
+  tags          String[]     @db.VarChar(10)
   category      PostCategory
   mdxContentId  String       @unique @db.VarChar(255)
   mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
