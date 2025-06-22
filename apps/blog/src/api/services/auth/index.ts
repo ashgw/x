@@ -30,9 +30,10 @@ export class AuthService {
     this.res = res;
   }
 
+  // safe me, doesn't error whe the user is found
   public async me(): Promise<Optional<UserRo>> {
     try {
-      return await this.getUserWithSession();
+      return await this._getUserWithSession();
     } catch (error) {
       if (error instanceof InternalError) {
         if (error.code === "UNAUTHORIZED") {
@@ -41,74 +42,6 @@ export class AuthService {
       }
       throw error;
     }
-  }
-
-  public async getUserWithSession(): Promise<UserRo> {
-    const sessionId = CookieService.session.get({ req: this.req });
-    if (!sessionId) {
-      logger.info("No session cookie found");
-      throw new InternalError({
-        code: "UNAUTHORIZED",
-        message: `No session cookie found`,
-      });
-    }
-
-    const csrfCookieToken = CookieService.csrf.get({
-      req: this.req,
-    });
-
-    const csrfHeaderToken = this.req.headers.get(HEADER_NAMES.CSRF_TOKEN);
-
-    if (!csrfCookieToken || !csrfHeaderToken) {
-      const message = `No CSRF token found, login again`;
-      logger.info(message);
-      throw new InternalError({
-        code: "UNAUTHORIZED",
-        message,
-      });
-    }
-
-    if (csrfCookieToken !== csrfHeaderToken) {
-      const message = `CSRF token mismatch, possible tampering`;
-      logger.warn(message, {
-        csrfCookieToken,
-        csrfHeaderToken,
-      });
-
-      throw new InternalError({
-        code: "UNAUTHORIZED",
-        message,
-      });
-    }
-
-    const session = await this.db.session.findUnique({
-      where: { id: sessionId },
-      include: {
-        user: {
-          include: {
-            ...UserQueryHelper.withSessionsInclude(),
-          },
-        },
-      },
-    });
-
-    if (!session) {
-      logger.info("Session not found", { sessionId });
-      throw new InternalError({
-        code: "UNAUTHORIZED",
-        message: `No session found for this user`,
-      });
-    }
-
-    if (session.expiresAt < new Date()) {
-      logger.info("Session expired", { sessionId });
-      throw new InternalError({
-        code: "UNAUTHORIZED",
-        message: `Session expired`,
-      });
-    }
-
-    return UserMapper.toUserRo({ user: session.user });
   }
 
   public async logout() {
@@ -300,5 +233,73 @@ export class AuthService {
       logger.error("Password verification error", { error });
       return false;
     }
+  }
+
+  private async _getUserWithSession(): Promise<UserRo> {
+    const sessionId = CookieService.session.get({ req: this.req });
+    if (!sessionId) {
+      logger.info("No session cookie found");
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message: `No session cookie found`,
+      });
+    }
+
+    const csrfCookieToken = CookieService.csrf.get({
+      req: this.req,
+    });
+
+    const csrfHeaderToken = this.req.headers.get(HEADER_NAMES.CSRF_TOKEN);
+
+    if (!csrfCookieToken || !csrfHeaderToken) {
+      const message = `No CSRF token found, login again`;
+      logger.info(message);
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message,
+      });
+    }
+
+    if (csrfCookieToken !== csrfHeaderToken) {
+      const message = `CSRF token mismatch, possible tampering`;
+      logger.warn(message, {
+        csrfCookieToken,
+        csrfHeaderToken,
+      });
+
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message,
+      });
+    }
+
+    const session = await this.db.session.findUnique({
+      where: { id: sessionId },
+      include: {
+        user: {
+          include: {
+            ...UserQueryHelper.withSessionsInclude(),
+          },
+        },
+      },
+    });
+
+    if (!session) {
+      logger.info("Session not found", { sessionId });
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message: `No session found for this user`,
+      });
+    }
+
+    if (session.expiresAt < new Date()) {
+      logger.info("Session expired", { sessionId });
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message: `Session expired`,
+      });
+    }
+
+    return UserMapper.toUserRo({ user: session.user });
   }
 }

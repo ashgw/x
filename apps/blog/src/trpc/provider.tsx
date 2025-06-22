@@ -8,6 +8,7 @@ import { COOKIE_NAMES, HEADER_NAMES } from "~/api/services/auth/consts";
 import { getQueryClient, getTrpcUrl, trpcClientSide } from "./client";
 import { transformer } from "./transformer";
 
+// we need to send the CSRF token cookie with every request
 const getCsrfTokenCookie = (): string =>
   document.cookie
     .split("; ")

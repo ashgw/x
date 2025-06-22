@@ -10,8 +10,8 @@ export const sessionSchemaRo = z.object({
 
 export const userSchemaRo = z.object({
   id: z.string(),
-  email: z.string().email(),
-  name: z.string().nullable(),
+  email: z.string().max(255).email(),
+  name: z.string().min(1).max(30).nullable(),
   role: z.nativeEnum(UserRoleEnum),
   sessions: z.array(sessionSchemaRo),
 });

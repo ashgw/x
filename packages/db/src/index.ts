@@ -10,13 +10,13 @@ import { env } from "@ashgw/env";
 
 import { PrismaClient as FullPrismaClient } from "./generated/client";
 
-// keep only the methods you actually call
+// keeping only the methods I actually call
 export type DatabaseClient = Omit<
   FullPrismaClient,
+  // | "$transaction"
   | "$connect"
   | "$disconnect"
   | "$on"
-  // | "$transaction"
   | "$use"
   | "$extends"
   | "$executeRaw"

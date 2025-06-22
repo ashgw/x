@@ -1,6 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -21,11 +22,20 @@ import {
 
 import type { UserLoginDto } from "~/api/models";
 import { userLoginSchemaDto } from "~/api/models";
+import { useAuth } from "~/app/hooks/auth";
 import { trpcClientSide } from "~/trpc/client";
 
 export function LoginPage() {
   const router = useRouter();
+  const { user, isLoading } = useAuth();
   const utils = trpcClientSide.useUtils();
+
+  // If already logged in, redirect to editor
+  useEffect(() => {
+    if (!isLoading && !!user) {
+      router.push("/editor");
+    }
+  }, [isLoading, user, router]);
 
   const form = useForm<UserLoginDto>({
     resolver: zodResolver(userLoginSchemaDto),
@@ -55,6 +65,15 @@ export function LoginPage() {
   const onSubmit: SubmitHandler<UserLoginDto> = (data) => {
     loginMutation.mutate(data);
   };
+
+  // Show loading state or render the form
+  if (isLoading) {
+    return (
+      <div className="container mx-auto flex max-w-md items-center justify-center px-4 py-16">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto max-w-md px-4 py-16">

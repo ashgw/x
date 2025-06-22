@@ -5,19 +5,19 @@ import { LockIcon } from "lucide-react";
 
 import { Button } from "@ashgw/ui";
 
-import { trpcClientSide } from "~/trpc/client";
+import { useAuth } from "~/app/hooks/auth";
 
 interface FormButtonsProps {
   onReset: () => void;
   isSubmitting?: boolean;
 }
 
+// TODO: fix this eslint error
 export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
   const router = useRouter();
-  const { data: user, isLoading } = trpcClientSide.user.me.useQuery();
+  const { user, isLoading } = useAuth();
 
-  const isLoggedIn = !!user;
-  const showLoginButton = !isLoading && !isLoggedIn;
+  const showLoginButton = !isLoading && !!user;
 
   return (
     <div className="flex justify-end gap-2">

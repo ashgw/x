@@ -47,17 +47,7 @@ const serverSideVars = {
     .regex(/^[a-z0-9.-]+$/, "Invalid S3 bucket name"),
 
   S3_BUCKET_REGION: z.enum(
-    [
-      "us-east-1",
-      "us-west-1",
-      "us-west-2",
-      "eu-west-1",
-      "eu-central-1",
-      "ap-southeast-1",
-      "ap-northeast-1",
-      "ap-south-1",
-      "sa-east-1",
-    ],
+    ["us-east-1", "us-west-1", "us-west-2", "eu-west-1"], // I don't deploy anywhere else
     {
       errorMap: () => ({ message: "Invalid AWS region" }),
     },
