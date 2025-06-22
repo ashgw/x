@@ -161,7 +161,7 @@ export class AuthService {
     email,
     password,
     name,
-  }: UserRegisterDto): Promise<UserRo> {
+  }: UserRegisterDto): Promise<void> {
     logger.info("Registering user", { email });
     try {
       const existingUser = await this.db.user.findUnique({
@@ -172,10 +172,10 @@ export class AuthService {
       });
 
       if (existingUser) {
-        logger.warn("User already exists", { email });
+        logger.warn("User with the given email already exists", { email });
         throw new InternalError({
           code: "CONFLICT",
-          message: "User with this email already exists",
+          message: "User with this email already exists", // a smartass would use this to basically reverse engineer a couple of emails
         });
       }
       logger.info("Creating user", { email, name });
@@ -198,8 +198,6 @@ export class AuthService {
       await this._createSession({
         userId: user.id,
       });
-
-      return UserMapper.toUserRo({ user });
     } catch (error) {
       logger.error("Registration failed", { error, email });
       if (error instanceof InternalError) {

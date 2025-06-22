@@ -23,7 +23,7 @@ export const userRouter = router({
 
   register: publicProcedure
     .input(userRegisterSchemaDto)
-    .output(userSchemaRo)
+    .output(z.void())
     .mutation(async ({ input, ctx }) => {
       return await new AuthService({
         db: ctx.db,
