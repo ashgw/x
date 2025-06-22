@@ -14,26 +14,27 @@ const securedCookieOptions = {
   path: "/",
   secure: env.NODE_ENV === "production" || env.NODE_ENV === "preview",
   maxAge: AUTH_COOKIES_MAX_AGE,
+  httpOnly: true, // prevents JS from altering the cookie
 } satisfies SerializeOptions;
 
-class SessionCookieService {
+class _SessionCookieService {
   public get({ req }: { req: NextRequest }): Optional<string> {
-    const cookie = req.cookies.get(COOKIE_NAMES.SESSION_ID);
+    const cookie = req.cookies.get(COOKIE_NAMES.SESSION);
     return cookie?.value ?? null;
   }
 
   public set({ res, value }: { res: NextResponse; value: string }) {
-    res.cookies.set(COOKIE_NAMES.SESSION_ID, value, {
+    res.cookies.set(COOKIE_NAMES.SESSION, value, {
       ...securedCookieOptions,
     });
   }
 
   public clear({ res }: { res: NextResponse }) {
-    res.cookies.delete(COOKIE_NAMES.SESSION_ID);
+    res.cookies.delete(COOKIE_NAMES.SESSION);
   }
 }
 
-class CSRFCookieService {
+class _CSRFCookieService {
   public get({ req }: { req: NextRequest }): Optional<string> {
     const cookie = req.cookies.get(COOKIE_NAMES.CSRF_TOKEN);
     return cookie?.value ?? null;
@@ -42,11 +43,11 @@ class CSRFCookieService {
   public set({ res }: { res: NextResponse }) {
     res.cookies.set(COOKIE_NAMES.CSRF_TOKEN, randomBytes(32).toString("hex"), {
       ...securedCookieOptions,
-      //  only in prod, protect against subdomain takeover
+      httpOnly: false, // the frontend needs to access this cookie, so it's disabled here
+      //  only in prod, protect against subdomain takeover, nothing to lose in preview
       ...(env.NODE_ENV === "production" && {
         domain: env.NEXT_PUBLIC_BLOG_URL,
       }),
-      httpOnly: false, // the frontend needs to access this cookie
     });
   }
 
@@ -56,6 +57,6 @@ class CSRFCookieService {
 }
 
 export class CookieService {
-  public static session = new SessionCookieService();
-  public static csrf = new CSRFCookieService();
+  public static session = new _SessionCookieService();
+  public static csrf = new _CSRFCookieService();
 }

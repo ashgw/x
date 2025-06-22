@@ -44,6 +44,45 @@ export class AuthService {
     }
   }
 
+  // this is not used yet, but will be, or is it?
+  public async clearUserSessions({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<void> {
+    logger.info("Clearning active user sessions");
+    try {
+      const user = await this.db.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          sessions: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+      if (user?.sessions) {
+        const allSessionIds: string[] = user.sessions.map(({ id }) => id);
+        await this.db.session.deleteMany({
+          where: {
+            id: {
+              in: allSessionIds,
+            },
+          },
+        });
+      }
+    } catch (error) {
+      logger.error("Error occured when removing user sessions");
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to remove user sessions",
+        cause: error,
+      });
+    }
+  }
   public async logout() {
     logger.info("Logging out user");
     const sessionId = CookieService.session.get({
@@ -61,13 +100,13 @@ export class AuthService {
       await this.db.session.delete({
         where: { id: sessionId },
       });
-      logger.info("User logged out", { sessionId });
       CookieService.csrf.clear({
         res: this.res,
       });
       CookieService.session.clear({
         res: this.res,
       });
+      logger.info("User logged out", { sessionId });
     } catch (error) {
       logger.error("Failed to logout user", { error, sessionId });
       throw new InternalError({
@@ -87,27 +126,32 @@ export class AuthService {
       },
     });
     if (!user) {
-      logger.warn("User not found", { email });
+      logger.warn("User not found for: ", { email });
       throw new InternalError({
         code: "NOT_FOUND",
         message: "User not found",
       });
     }
-    logger.info("User found", { userId: user.id });
+    logger.info("User found for: ", { userId: user.id });
     logger.info("Checking user password");
 
-    if (!this._verifyPassword(password, user.passwordHash)) {
-      logger.warn("Invalid password", { email });
+    if (
+      !this._verifyPassword({
+        plainPassword: password,
+        storedHash: user.passwordHash,
+      })
+    ) {
+      logger.warn("Invalid password for: ", { email });
       throw new InternalError({
         code: "UNAUTHORIZED",
         message: "Invalid password",
       });
     }
-    logger.info("Password is valid", { email });
+    logger.info("Password is valid for: ", { email });
     logger.info("checking if user has session");
     if (user.sessions.length === 0) {
       logger.info("User has no session, creating new session");
-      await this._createSessionAndSetCookies({ userId: user.id });
+      await this._createSession({ userId: user.id });
     }
     logger.info("User has session, returning user");
     return UserMapper.toUserRo({ user });
@@ -151,9 +195,10 @@ export class AuthService {
         userId: user.id,
       });
 
-      await this._createSessionAndSetCookies({
+      await this._createSession({
         userId: user.id,
       });
+
       return UserMapper.toUserRo({ user });
     } catch (error) {
       logger.error("Registration failed", { error, email });
@@ -168,6 +213,7 @@ export class AuthService {
     }
   }
 
+  // TODO: here needs more work gang
   public validateCsrfToken(input: { requestCsrfHeaderValue: string }): boolean {
     const csrfCookie = CookieService.csrf.get({
       req: this.req,
@@ -183,7 +229,7 @@ export class AuthService {
     return true;
   }
 
-  private async _createSessionAndSetCookies(input: { userId: string }) {
+  private async _createSession(input: { userId: string }) {
     const expiresAt = new Date(Date.now() + AUTH_COOKIES_MAX_AGE);
     const session = await this.db.session.create({
       data: {
@@ -213,7 +259,13 @@ export class AuthService {
     return `${salt}:${hash}`;
   }
 
-  private _verifyPassword(password: string, storedHash: string): boolean {
+  private _verifyPassword({
+    plainPassword,
+    storedHash,
+  }: {
+    plainPassword: string;
+    storedHash: string;
+  }): boolean {
     try {
       const [salt, originalHash] = storedHash.split(":");
 
@@ -224,7 +276,7 @@ export class AuthService {
       }
 
       // Hash the input password with the same salt
-      const hash = pbkdf2Sync(password, salt, 1000, 32, "sha256").toString(
+      const hash = pbkdf2Sync(plainPassword, salt, 1000, 32, "sha256").toString(
         "hex",
       );
       // Compare the calculated hash with the stored hash
