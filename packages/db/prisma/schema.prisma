@@ -36,16 +36,16 @@ model Upload {
   key         String       @id @db.VarChar(512)
   type        UploadType
   entityType  ResourceType @default(POST)
-  contentType String       @db.VarChar(100) // like image/npg or whatever
+  contentType String       @db.VarChar(100) // like image/png or whatever
   uploadedAt  DateTime     @default(now())
   post        Post?        @relation("PostMdxContent")
 }
 
 model User {
   id            String    @id @default(cuid())
-  email         String    @unique // TODO: make it max 255
-  name          String? // TODO: make this smaller & required
-  passwordHash  String
+  email         String    @unique @db.VarChar(255)
+  name          String?  @db.VarChar(30)
+  passwordHash  String   @db.VarChar(1024)
   role          UserRole  @default(VISITOR)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
