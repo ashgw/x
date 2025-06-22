@@ -1,15 +1,24 @@
-import { UserRoleEnum } from "~/api/models";
-import { authMiddleware } from "./middlewares/auth";
-import { t } from "./t";
+import { initTRPC } from "@trpc/server";
+import { ZodError } from "zod";
+
+import type { TrpcContext } from "./context";
+import { transformer } from "./transformer";
+
+export const t = initTRPC.context<TrpcContext>().create({
+  transformer,
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    };
+  },
+});
 
 export const createCallerFactory = t.createCallerFactory;
 export const router = t.router;
-export const publicProcedure = t.procedure;
-
-export const adminProcedure = publicProcedure.use(
-  authMiddleware({
-    withAuthorization: {
-      requiredRole: UserRoleEnum.ADMIN,
-    },
-  }),
-);
+export const procedure = t.procedure;
+export const middleware = t.middleware;
