@@ -44,7 +44,7 @@ model Upload {
 model User {
   id            String    @id @default(cuid())
   email         String    @unique @db.VarChar(255)
-  name          String?  @db.VarChar(30)
+  name          String  @db.VarChar(30)
   passwordHash  String   @db.VarChar(1024)
   role          UserRole  @default(VISITOR)
   createdAt     DateTime  @default(now())

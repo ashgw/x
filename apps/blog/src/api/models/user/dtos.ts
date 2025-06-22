@@ -7,7 +7,7 @@ export const userLoginSchemaDto = z.object({
 });
 
 export const userRegisterSchemaDto = userLoginSchemaDto.extend({
-  name: z.string().min(2).max(30).optional(),
+  name: z.string().min(2).max(30),
 });
 
 // ========== Types ==========
