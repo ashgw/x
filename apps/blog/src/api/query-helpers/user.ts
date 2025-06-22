@@ -4,31 +4,19 @@ export type UserWithSessionsQuery = Prisma.UserGetPayload<{
   include: ReturnType<typeof UserQueryHelper.withSessionsInclude>;
 }>;
 
-export type SessionQuery = Prisma.SessionGetPayload<{
-  select: ReturnType<typeof UserQueryHelper.sessionSelect>;
-}>;
-
 export class UserQueryHelper {
   public static withSessionsInclude() {
     return {
       sessions: {
-        select: this.sessionSelect(),
+        select: this._sessionSelect(),
       },
     } satisfies Prisma.UserInclude;
   }
 
-  public static sessionSelect() {
+  private static _sessionSelect() {
     return {
       expiresAt: true,
       id: true,
     } satisfies Prisma.SessionSelect;
   }
-
-  // public static activeSessionWhere() {
-  //   return {
-  //     expiresAt: {
-  //       gt: new Date(),
-  //     },
-  //   } satisfies Prisma.SessionWhereInput;
-  // }
 }
