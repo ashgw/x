@@ -8,8 +8,7 @@ export const authMiddleware = (input: {
     requiredRole: UserRoleEnum;
   };
 }) =>
-  middleware(async (opts) => {
-    const { ctx } = opts;
+  middleware(async ({ ctx, next }) => {
     const user = await isAuthenticated({ ctx });
 
     if (input.withAuthorization) {
@@ -19,7 +18,7 @@ export const authMiddleware = (input: {
       });
     }
 
-    return opts.next({
+    return next({
       ctx: {
         ...ctx,
         user,
