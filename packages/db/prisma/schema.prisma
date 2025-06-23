@@ -24,11 +24,11 @@ model Post {
   lastModDate   DateTime     @updatedAt
   isReleased    Boolean
   minutesToRead Int          @db.SmallInt
-  tags          String[]     @db.VarChar(10)
+  tags          String[]     @db.VarChar(20)
   category      PostCategory
   mdxContentId  String       @unique @db.VarChar(255)
   mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
-  
+
   @@index([mdxContentId])
 }
 
@@ -58,7 +58,7 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
-  
+
   @@index([userId])
 }
 
