@@ -1,7 +1,11 @@
-import { trpcServerSide } from "~/trpc/server";
+import { HydrateClient, trpcServerSide } from "~/trpc/server";
 import { PostCardsPage } from "./components/PostCardsPage";
 
 export async function HomePage() {
   const posts = await trpcServerSide.post.getPostCards();
-  return <PostCardsPage posts={posts} />;
+  return (
+    <HydrateClient>
+      <PostCardsPage posts={posts} />
+    </HydrateClient>
+  );
 }
