@@ -13,17 +13,17 @@ const handler = (req: NextRequest, res: NextResponse) =>
     endpoint: trpcUri,
     allowMethodOverride: false,
     allowBatching: true,
-    onError(opts) {
+    onError({ error, path, input }) {
       monitor.next.captureException({
-        error: opts.error,
+        error,
         hint: {
           extra: {
-            path: opts.path,
-            input: opts.input,
+            path,
+            input,
           },
         },
       });
-      logger.error(opts.error);
+      logger.error(`>>> tRPC Error on '${path}'`, error);
     },
     req,
     router: appRouter,
