@@ -10,7 +10,7 @@ export const newsletterRouter = router({
     .input(newsletterSubscribeDtoSchema)
     .output(z.void())
     .mutation(async ({ input }) => {
-      await NewsletterService.subscribe({
+      return await NewsletterService.subscribe({
         email: input.email,
       });
     }),
