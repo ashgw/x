@@ -32,15 +32,14 @@ export function TRPCProvider(
         httpBatchLink({
           url: getTrpcUrl({ siteBaseUrl: props.siteBaseUrl }),
           transformer,
+          headers: {
+            [HEADER_NAMES.CSRF_TOKEN]: getCsrfTokenCookie(),
+          },
           fetch(url, options) {
             return fetch(url, {
               ...options,
               // CORS & cookies included
               credentials: "include",
-              headers: {
-                ...options?.headers,
-                [HEADER_NAMES.CSRF_TOKEN]: getCsrfTokenCookie(),
-              },
             });
           },
         }),

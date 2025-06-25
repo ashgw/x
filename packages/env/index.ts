@@ -3,7 +3,7 @@ import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
 
-import { createEnv } from "@ashgw/ts-env";
+import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 
 // for compatibility with ESM and CommonJS
 let rootDir = process.cwd();
@@ -85,8 +85,8 @@ export const env = createEnv({
     ...serverSideVars,
     SENTRY_DSN: z.string().url(),
     WWW_URL: z.string().url(),
-    BLOG_URL: z.string().url(),
     WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
+    BLOG_URL: z.string().url(),
     BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
     POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
     POSTHOG_HOST: z.string().url(),
@@ -103,6 +103,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    COOKIE_SECRET: process.env.COOKIE_SECRET,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
@@ -115,8 +117,6 @@ export const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
-    COOKIE_SECRET: process.env.COOKIE_SECRET,
   },
   skipValidation: isBrowser, // Since env vars are already injected at build time, we don't need to validate them at runtime.
 });
