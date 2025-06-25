@@ -3,7 +3,7 @@ import type { NextRequest, NextResponse } from "next/server";
 
 import type { DatabaseClient } from "@ashgw/db";
 
-// @see https://trpc.io/docs/server/context
+import type { UserRo } from "~/api/models";
 
 export function createInnerTRPCContext(opts: { db: DatabaseClient }) {
   return {
@@ -28,8 +28,10 @@ export function createTRPCContext(opts: {
   };
 }
 
-export type TrpcContext = Awaited<ReturnType<typeof createTRPCContext>>;
-
 export type InnerTrpcContext = Awaited<
   ReturnType<typeof createInnerTRPCContext>
 >;
+
+export type TrpcContext = Awaited<ReturnType<typeof createTRPCContext>>;
+
+export type TrpcAuthedContext = TrpcContext & { user: UserRo };
