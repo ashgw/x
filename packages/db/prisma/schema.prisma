@@ -4,9 +4,9 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
-generator markdown {
-  provider = "prisma-markdown"
-  output   = "./erd_diagram.md"
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
 }
 
 datasource db {
