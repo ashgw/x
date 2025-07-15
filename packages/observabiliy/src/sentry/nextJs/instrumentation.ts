@@ -1,6 +1,3 @@
-// no need for an env check here to check if browser or server, since
-// we're not using Posthog integration with the broswer rn, it's defined tho
-
 import { init } from "./init";
 
 export const initializeServer = () => {
@@ -9,6 +6,7 @@ export const initializeServer = () => {
   });
 };
 
+// this is not used for now, but we'll keep it here for future reference
 export const initializeClient = () => {
   init({
     runtime: "browser",

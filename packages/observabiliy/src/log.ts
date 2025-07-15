@@ -11,7 +11,7 @@ const defaultLogger = console;
 export const logger =
   env.NODE_ENV === "production" ? thirdParty : defaultLogger;
 
-// not used rn
+// not used rn, use this with `next.js` config
 export const withLogging = (config: NextConfig): NextConfig => {
   return withLogtail(config);
 };

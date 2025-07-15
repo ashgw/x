@@ -1,4 +1,4 @@
-// uncomment this for more strictness, if you're doing crazy db shenanigans in the forntend
+// uncomment this for more strictness, if you're doing crazy db shenanigans in the frontend
 // import "server-only";
 
 import type { MaybeUndefined } from "ts-roids";
@@ -13,7 +13,7 @@ import { PrismaClient as FullPrismaClient } from "./generated/client";
 // keeping only the methods I actually call
 export type DatabaseClient = Omit<
   FullPrismaClient,
-  // | "$transaction"
+  // | "$transaction" //  need it for some, might change
   | "$connect"
   | "$disconnect"
   | "$on"
