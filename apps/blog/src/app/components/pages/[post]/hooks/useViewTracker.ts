@@ -21,14 +21,7 @@ export function useViewTracker({
   const hasTracked = useRef(false);
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
 
-  const trackViewMutation = trpcClientSide.view.trackView.useMutation({
-    onSuccess: () => {
-      logger.info("View tracked successfully", { postSlug });
-    },
-    onError: (error) => {
-      logger.error("Failed to track view", { error, postSlug });
-    },
-  });
+  const trackViewMutation = trpcClientSide.view.trackView.useMutation();
 
   useEffect(() => {
     if (!enabled || !postSlug || hasTracked.current) {

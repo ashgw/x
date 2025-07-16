@@ -22,7 +22,7 @@ export class ViewService {
     postSlug,
     ipAddress,
     userAgent,
-  }: ViewTrackingData): Promise<{ isNewView: boolean }> {
+  }: ViewTrackingData): Promise<void> {
     try {
       // Generate fingerprint for deduplication
       const fingerprint = this._generateFingerprint({
@@ -47,7 +47,6 @@ export class ViewService {
           postSlug,
           fingerprint,
         });
-        return { isNewView: false };
       }
 
       await this.db.postView.create({
@@ -60,7 +59,6 @@ export class ViewService {
       });
 
       logger.info("View tracked successfully", { postSlug, fingerprint });
-      return { isNewView: true };
     } catch (error) {
       logger.error("Failed to track view", { error, postSlug });
       throw new InternalError({
