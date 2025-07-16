@@ -1,11 +1,13 @@
+import { z } from "zod";
+
 import { publicProcedure, router } from "~/trpc/trpc";
-import { trackViewResponseSchemaRo, trackViewSchemaDto } from "../models/view";
+import { trackViewSchemaDto } from "../models/view";
 import { ViewService } from "../services/view";
 
 export const viewRouter = router({
   trackView: publicProcedure
     .input(trackViewSchemaDto)
-    .output(trackViewResponseSchemaRo)
+    .output(z.void())
     .mutation(async ({ input: { postSlug }, ctx: { db, req } }) => {
       const viewService = new ViewService({ db });
       const headersList = req.headers;
@@ -14,7 +16,7 @@ export const viewRouter = router({
         headersList.get("x-real-ip") ??
         "127.0.0.1";
       const userAgent = headersList.get("user-agent") ?? "unknown";
-      return await viewService.trackView({
+      await viewService.trackView({
         postSlug,
         ipAddress,
         userAgent,

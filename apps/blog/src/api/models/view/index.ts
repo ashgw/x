@@ -7,13 +7,7 @@ export const trackViewSchemaDto = z.object({
 });
 
 // ========== ROs ==========
-
-export const trackViewResponseSchemaRo = z.object({
-  success: z.boolean(),
-  alreadyViewed: z.boolean(),
-});
-
+//
 // ========== Types ==========
 
 export type TrackViewDto = z.infer<typeof trackViewSchemaDto>;
-export type TrackViewResponseRo = z.infer<typeof trackViewResponseSchemaRo>;

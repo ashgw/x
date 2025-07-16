@@ -22,12 +22,8 @@ export function useViewTracker({
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
 
   const trackViewMutation = trpcClientSide.view.trackView.useMutation({
-    onSuccess: (data) => {
-      if (data.alreadyViewed) {
-        logger.info("View already tracked for post", { postSlug });
-      } else {
-        logger.info("View tracked successfully", { postSlug });
-      }
+    onSuccess: () => {
+      logger.info("View tracked successfully", { postSlug });
     },
     onError: (error) => {
       logger.error("Failed to track view", { error, postSlug });

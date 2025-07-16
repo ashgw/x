@@ -11,6 +11,7 @@ interface ViewTrackingData {
 
 export class ViewService {
   private readonly db: DatabaseClient;
+  private static readonly DEDUPLICATION_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
   constructor({ db }: { db: DatabaseClient }) {
     this.db = db;
@@ -35,7 +36,7 @@ export class ViewService {
           fingerprint,
           postSlug,
           createdAt: {
-            gte: new Date(Date.now() - 24 * 60 * 60 * 1000), // 24 hours ago
+            gte: new Date(Date.now() - ViewService.DEDUPLICATION_WINDOW_MS),
           },
         },
       });
