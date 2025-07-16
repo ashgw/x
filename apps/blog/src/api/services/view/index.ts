@@ -12,6 +12,7 @@ interface ViewTrackingData {
 export class ViewService {
   private readonly db: DatabaseClient;
   private static readonly DEDUPLICATION_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
+  private static readonly MAX_IP_HASH_LENGTH = 45;
 
   constructor({ db }: { db: DatabaseClient }) {
     this.db = db;
@@ -83,6 +84,6 @@ export class ViewService {
     return createHash("sha256")
       .update(ipAddress)
       .digest("hex")
-      .substring(0, 45);
+      .substring(0, ViewService.MAX_IP_HASH_LENGTH);
   }
 }
