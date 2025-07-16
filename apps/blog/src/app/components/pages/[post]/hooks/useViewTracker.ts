@@ -1,5 +1,6 @@
 "use client";
 
+import type { Optional } from "ts-roids";
 import { useEffect, useRef } from "react";
 
 import { logger } from "@ashgw/observability";
@@ -18,7 +19,7 @@ export function useViewTracker({
   delay = 3000, // 3 seconds default delay
 }: UseViewTrackerProps) {
   const hasTracked = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
 
   const trackViewMutation = trpcClientSide.view.trackView.useMutation({
     onSuccess: (data) => {
@@ -69,15 +70,6 @@ export function useViewTracker({
       }
     };
   }, [postSlug, enabled, delay, trackViewMutation]);
-
-  // Clear timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   return {
     isTracking: trackViewMutation.isPending,
