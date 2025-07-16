@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Edit } from "lucide-react";
+import { Edit, Eye } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
@@ -9,6 +9,8 @@ import { Badge, Button } from "@ashgw/ui";
 import type { PostDetailRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
+import { formatViews } from "~/utils/formatViews";
+import { useViewTracker } from "../hooks/useViewTracker";
 import { H1 } from "./headers";
 import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
@@ -18,6 +20,13 @@ interface BlogPostPorps {
 }
 
 export function BlogPostData({ postData }: BlogPostPorps) {
+  // Track view for this post
+  useViewTracker({
+    postSlug: postData.slug,
+    enabled: true,
+    delay: 2000, // 2 seconds delay
+  });
+
   return (
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       <div className="flex items-center justify-between">
@@ -34,7 +43,13 @@ export function BlogPostData({ postData }: BlogPostPorps) {
         </Link>
       </div>
       <div className="mb-8 flex items-center justify-between text-sm sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
-        <ReleaseDate date={postData.firstModDate.toISOString()} />
+        <div className="flex items-center gap-4">
+          <ReleaseDate date={postData.firstModDate.toISOString()} />
+          <div className="flex items-center gap-1 text-white/60">
+            <Eye className="h-3 w-3" />
+            <span>{formatViews(postData.views)} views</span>
+          </div>
+        </div>
         <div>
           {DateService.isSameMonthAndYear({
             stringDate: postData.firstModDate.toISOString(),

@@ -1,171 +1,97 @@
-import { memo } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+"use client";
 
-import { Button, ScrollArea, Skeleton } from "@ashgw/ui";
+import { Edit, Eye, Trash2 } from "lucide-react";
+
+import { DateService } from "@ashgw/cross-runtime";
+import { Badge } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models/post";
+import { PostCategoryEnum } from "~/api/models/post";
+import { formatViews } from "~/utils/formatViews";
 
-interface BlogListProps {
+export interface BlogListProps {
   blogs: PostDetailRo[];
   onEdit: (blog: PostDetailRo) => void;
   onDelete: (blog: PostDetailRo) => void;
-  isLoading?: boolean;
 }
 
-const BlogItem = memo(
-  ({
-    blog,
-    index,
-    onEdit,
-    onDelete,
-    shouldReduceMotion,
-  }: {
-    blog: PostDetailRo;
-    index: number;
-    onEdit: (blog: PostDetailRo) => void;
-    onDelete: (blog: PostDetailRo) => void;
-    shouldReduceMotion: boolean;
-  }) => {
-    const initialAnimation = shouldReduceMotion
-      ? { opacity: 0 }
-      : { opacity: 0, x: -30 };
-
-    const animateAnimation = shouldReduceMotion
-      ? { opacity: 1 }
-      : { opacity: 1, x: 0 };
-
-    return (
-      <motion.div
-        key={blog.slug}
-        initial={initialAnimation}
-        animate={animateAnimation}
-        transition={{
-          duration: shouldReduceMotion ? 0.2 : 0.4,
-          delay: shouldReduceMotion ? 0 : index * 0.05,
-          type: shouldReduceMotion ? "tween" : "spring",
-          stiffness: shouldReduceMotion ? undefined : 100,
-        }}
-        className="rounded-md border-b p-3 pb-4 last:border-0 last:pb-0"
-      >
-        <h3 className="font-medium">{blog.title}</h3>
-        <div className="text-muted-foreground mb-2 flex text-xs">
-          <span className="mr-2">{blog.isReleased ? "Released" : "Draft"}</span>
-          <span>{new Date(blog.lastModDate).toLocaleDateString()}</span>
-        </div>
-        <motion.div
-          className="flex flex-wrap gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: shouldReduceMotion ? 0.1 : 0.3,
-            delay: shouldReduceMotion ? 0 : 0.1 + index * 0.05,
-          }}
-        >
-          <Button
-            variant="squared:outline"
-            size="sm"
-            onClick={() => onEdit(blog)}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => onDelete(blog)}
-          >
-            Delete
-          </Button>
-        </motion.div>
-      </motion.div>
-    );
-  },
-);
-
-export const BlogList = memo(
-  ({ blogs, onEdit, onDelete, isLoading }: BlogListProps) => {
-    const shouldReduceMotion = useReducedMotion();
-
-    if (isLoading) {
-      return (
-        <motion.div
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: shouldReduceMotion ? 0.2 : 0.4 }}
-          className="bg-card rounded-lg border p-4"
-        >
-          <h2 className="mb-4 text-lg font-semibold">Posts</h2>
-          <div className="space-y-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.7 }}
-                transition={{
-                  duration: shouldReduceMotion ? 0.1 : 0.3,
-                  delay: shouldReduceMotion ? 0 : i * 0.05,
-                }}
-                className="border-b pb-4 last:border-0 last:pb-0"
-              >
-                <Skeleton className="mb-2 h-6 w-3/4" />
-                <Skeleton className="mb-1 h-4 w-1/2" />
-                <Skeleton className="h-4 w-1/3" />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      );
+export function BlogList({ blogs, onEdit, onDelete }: BlogListProps) {
+  const getCategoryColor = (category: PostCategoryEnum) => {
+    switch (category) {
+      case PostCategoryEnum.SOFTWARE:
+        return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+      case PostCategoryEnum.HEALTH:
+        return "bg-green-500/20 text-green-400 border-green-500/30";
+      case PostCategoryEnum.PHILOSOPHY:
+        return "bg-purple-500/20 text-purple-400 border-purple-500/30";
+      default:
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
+  };
 
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: shouldReduceMotion ? 0.2 : 0.4 }}
-        className="bg-card rounded-lg border p-4"
-      >
-        <motion.h2
-          initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: shouldReduceMotion ? 0.1 : 0.3,
-            delay: shouldReduceMotion ? 0 : 0.1,
-          }}
-          className="mb-4 text-lg font-semibold"
-        >
-          Posts
-        </motion.h2>
-        {blogs.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: shouldReduceMotion ? 0.2 : 0.5,
-              delay: shouldReduceMotion ? 0 : 0.2,
-            }}
-            className="text-muted-foreground py-8 text-center"
+  return (
+    <div className="space-y-4">
+      <h2 className="text-xl font-semibold">Blog Posts ({blogs.length})</h2>
+      <div className="space-y-2">
+        {blogs.map((blog) => (
+          <div
+            key={blog.slug}
+            className="flex items-center justify-between rounded-lg border border-white/10 p-4 hover:border-white/20"
           >
-            No posts found. Create your first post by clicking "New Blog".
-          </motion.div>
-        ) : (
-          <ScrollArea className="h-[850px] pr-4">
-            <div className="space-y-4">
-              {blogs.map((blog, index) => (
-                <BlogItem
-                  key={blog.slug}
-                  blog={blog}
-                  index={index}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  shouldReduceMotion={!!shouldReduceMotion}
-                />
-              ))}
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium">{blog.title}</h3>
+                <Badge
+                  className={`text-xs ${getCategoryColor(blog.category)}`}
+                  variant="outline"
+                >
+                  {blog.category}
+                </Badge>
+                {blog.isReleased ? (
+                  <Badge variant="outlineUpdated" className="text-xs">
+                    Published
+                  </Badge>
+                ) : (
+                  <Badge variant="outlineArchive" className="text-xs">
+                    Draft
+                  </Badge>
+                )}
+              </div>
+              <p className="text-sm text-white/60">{blog.summary}</p>
+              <div className="mt-2 flex items-center gap-4 text-xs text-white/50">
+                <span>
+                  {DateService.formatDate({
+                    stringDate: blog.firstModDate.toISOString(),
+                  })}
+                </span>
+                <span>•</span>
+                <span>{blog.tags.join(", ")}</span>
+                <span>•</span>
+                <div className="flex items-center gap-1">
+                  <Eye className="h-3 w-3" />
+                  <span>{formatViews(blog.views)} views</span>
+                </div>
+              </div>
             </div>
-          </ScrollArea>
-        )}
-      </motion.div>
-    );
-  },
-);
-
-BlogItem.displayName = "BlogItem";
-BlogList.displayName = "BlogList";
+            <div className="flex gap-2">
+              <button
+                onClick={() => onEdit(blog)}
+                className="rounded p-2 hover:bg-white/10"
+                aria-label={`Edit ${blog.title}`}
+              >
+                <Edit className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => onDelete(blog)}
+                className="rounded p-2 hover:bg-red-500/20"
+                aria-label={`Delete ${blog.title}`}
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -19,11 +19,12 @@ export const postCardSchemaRo = z.object({
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
   category: z.nativeEnum(PostCategoryEnum),
+  views: z.number().default(0),
 });
 
 // this comes from fm library API directly
 export const fontMatterMdxContentSchemaRo = z.object({
-  body: z.string().min(1),
+  body: z.string(),
   bodyBegin: z.number(), // needed for MDX parsing
 });
 

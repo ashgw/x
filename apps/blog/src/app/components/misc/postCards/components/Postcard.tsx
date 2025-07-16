@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { Eye } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
 
 import type { PostCardRo } from "~/api/models";
+import { formatViews } from "~/utils/formatViews";
 
 export function PostCard({ postData }: { postData: PostCardRo }) {
   return (
@@ -31,10 +33,17 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
                   {tag}
                 </Link>
               ))}
-              <div className="dimmed-1">
-                {postData.minutesToRead
-                  ? postData.minutesToRead + " minutes"
-                  : "\u221e" + " minutes"}
+              <div className="dimmed-1 flex items-center gap-2">
+                <span>
+                  {postData.minutesToRead
+                    ? postData.minutesToRead + " minutes"
+                    : "\u221e" + " minutes"}
+                </span>
+                <span className="text-white/20">•</span>
+                <div className="flex items-center gap-1">
+                  <Eye className="h-3 w-3" />
+                  <span>{formatViews(postData.views)}</span>
+                </div>
               </div>
             </div>
           </div>

@@ -149,6 +149,9 @@ importers:
 
   apps/blog:
     dependencies:
+      '@ashgw/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       '@ashgw/components':
         specifier: workspace:*
         version: link:../../packages/components
