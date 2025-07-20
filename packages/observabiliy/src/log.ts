@@ -1,8 +1,7 @@
 /* eslint-disable */
-import { NextConfig } from "next";
-import { log, withLogtail } from "@logtail/next";
+import type { NextConfig } from "next";
+import { withLogtail } from "@logtail/next";
 
-// import { log } from "@logtail/next";
 import { env } from "@ashgw/env";
 
 // add OT if shit get serious

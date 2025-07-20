@@ -193,7 +193,11 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: {
-          body: data.mdxContent,
+          body: {
+            compiledSource: data.mdxContent,
+            scope: {},
+            frontmatter: {},
+          },
           bodyBegin: 0,
         },
       });
@@ -260,7 +264,11 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: {
-          body: data.mdxContent,
+          body: {
+            compiledSource: data.mdxContent,
+            scope: {},
+            frontmatter: {},
+          },
           bodyBegin: 0,
         },
       });
