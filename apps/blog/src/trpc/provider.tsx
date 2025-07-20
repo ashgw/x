@@ -8,12 +8,19 @@ import { COOKIE_NAMES, HEADER_NAMES } from "~/api/services/auth/consts";
 import { getQueryClient, getTrpcUrl, trpcClientSide } from "./client";
 import { transformer } from "./transformer";
 
+const isBrowser = typeof window !== "undefined";
+
 // we need to send the CSRF token cookie with every request
-const getCsrfTokenCookie = (): string =>
-  document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(COOKIE_NAMES.CSRF_TOKEN))
-    ?.split("=")[1] ?? "";
+const getCsrfTokenCookie = (): string => {
+  if (isBrowser)
+    return (
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(COOKIE_NAMES.CSRF_TOKEN))
+        ?.split("=")[1] ?? ""
+    );
+  return "";
+};
 
 export function TRPCProvider(
   props: Readonly<{
@@ -32,14 +39,15 @@ export function TRPCProvider(
         httpBatchLink({
           url: getTrpcUrl({ siteBaseUrl: props.siteBaseUrl }),
           transformer,
-          headers: {
-            [HEADER_NAMES.CSRF_TOKEN]: getCsrfTokenCookie(),
-          },
           fetch(url, options) {
             return fetch(url, {
               ...options,
               // CORS & cookies included
               credentials: "include",
+              headers: {
+                ...options?.headers,
+                [HEADER_NAMES.CSRF_TOKEN]: getCsrfTokenCookie(),
+              },
             });
           },
         }),

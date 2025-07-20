@@ -33,19 +33,6 @@ function getCorresponsingMdxContent(slug: string): string {
 
 export const blogs: Blog[] = [
   {
-    slug: "branded-types",
-    title: "Branded Types",
-    seoTitle: "Write Safer TypeScript with Branded Types",
-    summary: "Write safer TypeScript with branded types",
-    isReleased: true,
-    firstModDate: new Date("2024-04-27T09:15:00-04:00"),
-    lastModDate: new Date("2024-04-27T09:15:00-04:00"),
-    minutesToRead: 4,
-    tags: ["typescript", "typing"],
-    category: "SOFTWARE",
-    mdxContentRaw: getCorresponsingMdxContent("branded-types"),
-  },
-  {
     slug: "distributive-types",
     title: "Distributive Types",
     seoTitle: "The unintended side effects of TypeScript's distributive types",
@@ -283,19 +270,6 @@ export const blogs: Blog[] = [
     tags: ["deadlines", "quality", "management"],
     category: "SOFTWARE",
     mdxContentRaw: getCorresponsingMdxContent("deadlines"),
-  },
-  {
-    slug: "debates",
-    title: "Debates",
-    seoTitle: "I won't debate you",
-    summary: "I won't debate you",
-    isReleased: true,
-    firstModDate: new Date("2024-01-01T19:45:00-04:00"),
-    lastModDate: new Date("2024-01-01T19:45:00-04:00"),
-    minutesToRead: 3,
-    tags: ["debates", "communication"],
-    category: "PHILOSOPHY",
-    mdxContentRaw: getCorresponsingMdxContent("debates"),
   },
   {
     slug: "frontend-perf",
