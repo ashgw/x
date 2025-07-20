@@ -55,7 +55,7 @@
     "loading-points": "1.1.0",
     "lucide-react": "0.309.0",
     "next": "catalog:",
-    "next-mdx-remote": "5.0.0",
+    "next-mdx-remote": "4.4.1",
     "next-themes": "0.3.0",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
