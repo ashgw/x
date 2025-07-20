@@ -39,8 +39,9 @@
     "pull": "prisma db pull",
     "push": "prisma db push",
     "seed": "prisma db seed",
+    "start": "docker compose -f compose.yml up -d"
     "studio": "prisma studio",
-    "validate": "prisma validate"
+    "validate": "prisma validate",
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
