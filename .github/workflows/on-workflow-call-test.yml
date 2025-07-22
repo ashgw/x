@@ -26,15 +26,16 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          # Use postgres as hostname since that's the service name in GitHub Actions
-          PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
+          # Need to use the service name 'postgres' as the host since we're in the GitHub Actions network
+          PG_CONNECTION_STRING: postgresql://postgres:postgres@postgres:5432/main
         ports:
           - 4444:4444
+          - 4445:4445 # WebSocket port needed by Neon proxy
         options: >-
           --health-cmd "curl -f http://localhost:4444/health || exit 1"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
@@ -53,7 +54,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: postgres://postgres:postgres@localhost:4444/main
+          # Use postgresql:// protocol and localhost since we're accessing from outside the container
+          DATABASE_URL: postgresql://postgres:postgres@localhost:4444/main
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
           S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
@@ -63,7 +65,7 @@ jobs:
 
       - name: Setup Database Schema
         run: |
-          export DATABASE_URL="postgres://postgres:postgres@localhost:4444/main"
+          export DATABASE_URL="postgresql://postgres:postgres@localhost:4444/main"
           pnpm --filter @ashgw/db exec prisma migrate deploy
 
       - name: Running code tests
@@ -89,15 +91,16 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          # Use postgres as hostname since that's the service name in GitHub Actions
-          PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
+          # Need to use the service name 'postgres' as the host since we're in the GitHub Actions network
+          PG_CONNECTION_STRING: postgresql://postgres:postgres@postgres:5432/main
         ports:
           - 4444:4444
+          - 4445:4445 # WebSocket port needed by Neon proxy
         options: >-
           --health-cmd "curl -f http://localhost:4444/health || exit 1"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
@@ -114,7 +117,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: postgres://postgres:postgres@localhost:4444/main
+          # Use postgresql:// protocol and localhost since we're accessing from outside the container
+          DATABASE_URL: postgresql://postgres:postgres@localhost:4444/main
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
           S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
@@ -123,7 +127,7 @@ jobs:
 
       - name: Setup Database Schema
         run: |
-          export DATABASE_URL="postgres://postgres:postgres@localhost:4444/main"
+          export DATABASE_URL="postgresql://postgres:postgres@localhost:4444/main"
           pnpm --filter @ashgw/db exec prisma migrate deploy
 
       - name: Install dependencies
