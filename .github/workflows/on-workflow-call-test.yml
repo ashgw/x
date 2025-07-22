@@ -35,9 +35,36 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Simple sleep to ensure services are up
-      - name: Wait for services
-        run: sleep 5
+      # Install psql for connection testing
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      # Wait for services and verify connection
+      - name: Wait for services and verify connection
+        run: |
+          echo "Waiting for PostgreSQL..."
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            sleep 1
+          done
+
+          echo "Waiting for Neon proxy..."
+          sleep 5
+
+          echo "Testing connection through Neon proxy..."
+          max_attempts=30
+          attempt=1
+          while ! PGPASSWORD=postgres psql -h localhost -p 4444 -U postgres -d main -c '\q' > /dev/null 2>&1; do
+            if [ $attempt -ge $max_attempts ]; then
+              echo "Failed to connect to Neon proxy after $max_attempts attempts"
+              exit 1
+            fi
+            echo "Attempt $attempt: Neon proxy not ready, waiting..."
+            sleep 2
+            attempt=$((attempt + 1))
+          done
+          echo "Successfully connected through Neon proxy!"
 
       - uses: ./.github/actions/setup-env
         with:
@@ -95,9 +122,36 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
 
-      # Simple sleep to ensure services are up
-      - name: Wait for services
-        run: sleep 5
+      # Install psql for connection testing
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      # Wait for services and verify connection
+      - name: Wait for services and verify connection
+        run: |
+          echo "Waiting for PostgreSQL..."
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            sleep 1
+          done
+
+          echo "Waiting for Neon proxy..."
+          sleep 5
+
+          echo "Testing connection through Neon proxy..."
+          max_attempts=30
+          attempt=1
+          while ! PGPASSWORD=postgres psql -h localhost -p 4444 -U postgres -d main -c '\q' > /dev/null 2>&1; do
+            if [ $attempt -ge $max_attempts ]; then
+              echo "Failed to connect to Neon proxy after $max_attempts attempts"
+              exit 1
+            fi
+            echo "Attempt $attempt: Neon proxy not ready, waiting..."
+            sleep 2
+            attempt=$((attempt + 1))
+          done
+          echo "Successfully connected through Neon proxy!"
 
       - uses: ./.github/actions/setup-env
         with:
