@@ -26,7 +26,7 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
+          PG_CONNECTION_STRING: ${{ secrets.DATABASE_URL_LOCALHOST }}
         ports:
           - 4444:4444
     steps:
@@ -47,7 +47,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: "postgres://postgres:postgres@localhost:4444/main"
+          DATABASE_URL: ${{ secrets.DATABASE_URL_LOCALHOST }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
           S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
@@ -60,7 +60,9 @@ jobs:
           timeout 30s bash -c 'until curl -s http://localhost:4444/health; do sleep 1; done'
 
       - name: Setup Database Schema
-        run: pnpm --filter @ashgw/db exec prisma migrate deploy
+        run: |
+          export DATABASE_URL="${{ secrets.DATABASE_URL_LOCALHOST }}"
+          pnpm --filter @ashgw/db exec prisma migrate deploy
 
       - name: Running code tests
         run: pnpm test:unit-integration
@@ -85,7 +87,7 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
+          PG_CONNECTION_STRING: ${{ secrets.DATABASE_URL_LOCALHOST }}
         ports:
           - 4444:4444
     steps:
@@ -104,7 +106,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: "postgres://postgres:postgres@localhost:4444/main"
+          DATABASE_URL: ${{ secrets.DATABASE_URL_LOCALHOST }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
           S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
@@ -116,7 +118,9 @@ jobs:
           timeout 30s bash -c 'until curl -s http://localhost:4444/health; do sleep 1; done'
 
       - name: Setup Database Schema
-        run: pnpm --filter @ashgw/db exec prisma migrate deploy
+        run: |
+          export DATABASE_URL="${{ secrets.DATABASE_URL_LOCALHOST }}"
+          pnpm --filter @ashgw/db exec prisma migrate deploy
 
       - name: Install dependencies
         run: npm install -g pnpm &&  pnpm install --frozen-lockfile
