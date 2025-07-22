@@ -26,22 +26,10 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          PG_CONNECTION_STRING: postgresql://postgres:postgres@postgres:5432/main
-          # Make services bind to all interfaces
-          PROXY_LISTEN_ADDR: 0.0.0.0:4432
-          HTTP_LISTEN_ADDR: 0.0.0.0:7001
-          MGMT_LISTEN_ADDR: 0.0.0.0:7000
-          WSS_LISTEN_ADDR: 0.0.0.0:4445
-          # Disable features we don't need
-          DISABLE_METRICS: "true"
-          DISABLE_PARQUET_UPLOAD: "true"
-          DISABLE_REGIONAL_REDIS: "true"
+          # Match the exact connection string from your working compose file
+          PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
         ports:
           - 4444:4444
-          - 4445:4445
-          - 4432:4432
-          - 7000:7000
-          - 7001:7001
         options: >-
           --health-cmd "curl -f http://localhost:4444/health || exit 1"
           --health-interval 10s
@@ -101,22 +89,10 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          PG_CONNECTION_STRING: postgresql://postgres:postgres@postgres:5432/main
-          # Make services bind to all interfaces
-          PROXY_LISTEN_ADDR: 0.0.0.0:4432
-          HTTP_LISTEN_ADDR: 0.0.0.0:7001
-          MGMT_LISTEN_ADDR: 0.0.0.0:7000
-          WSS_LISTEN_ADDR: 0.0.0.0:4445
-          # Disable features we don't need
-          DISABLE_METRICS: "true"
-          DISABLE_PARQUET_UPLOAD: "true"
-          DISABLE_REGIONAL_REDIS: "true"
+          # Match the exact connection string from your working compose file
+          PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
         ports:
           - 4444:4444
-          - 4445:4445
-          - 4432:4432
-          - 7000:7000
-          - 7001:7001
         options: >-
           --health-cmd "curl -f http://localhost:4444/health || exit 1"
           --health-interval 10s
