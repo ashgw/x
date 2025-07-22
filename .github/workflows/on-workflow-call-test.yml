@@ -26,11 +26,22 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          # Need to use the service name 'postgres' as the host since we're in the GitHub Actions network
           PG_CONNECTION_STRING: postgresql://postgres:postgres@postgres:5432/main
+          # Make services bind to all interfaces
+          PROXY_LISTEN_ADDR: 0.0.0.0:4432
+          HTTP_LISTEN_ADDR: 0.0.0.0:7001
+          MGMT_LISTEN_ADDR: 0.0.0.0:7000
+          WSS_LISTEN_ADDR: 0.0.0.0:4445
+          # Disable features we don't need
+          DISABLE_METRICS: "true"
+          DISABLE_PARQUET_UPLOAD: "true"
+          DISABLE_REGIONAL_REDIS: "true"
         ports:
           - 4444:4444
-          - 4445:4445 # WebSocket port needed by Neon proxy
+          - 4445:4445
+          - 4432:4432
+          - 7000:7000
+          - 7001:7001
         options: >-
           --health-cmd "curl -f http://localhost:4444/health || exit 1"
           --health-interval 10s
@@ -54,7 +65,6 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          # Use postgresql:// protocol and localhost since we're accessing from outside the container
           DATABASE_URL: postgresql://postgres:postgres@localhost:4444/main
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
@@ -91,11 +101,22 @@ jobs:
       neon-proxy:
         image: ghcr.io/timowilhelm/local-neon-http-proxy:main
         env:
-          # Need to use the service name 'postgres' as the host since we're in the GitHub Actions network
           PG_CONNECTION_STRING: postgresql://postgres:postgres@postgres:5432/main
+          # Make services bind to all interfaces
+          PROXY_LISTEN_ADDR: 0.0.0.0:4432
+          HTTP_LISTEN_ADDR: 0.0.0.0:7001
+          MGMT_LISTEN_ADDR: 0.0.0.0:7000
+          WSS_LISTEN_ADDR: 0.0.0.0:4445
+          # Disable features we don't need
+          DISABLE_METRICS: "true"
+          DISABLE_PARQUET_UPLOAD: "true"
+          DISABLE_REGIONAL_REDIS: "true"
         ports:
           - 4444:4444
-          - 4445:4445 # WebSocket port needed by Neon proxy
+          - 4445:4445
+          - 4432:4432
+          - 7000:7000
+          - 7001:7001
         options: >-
           --health-cmd "curl -f http://localhost:4444/health || exit 1"
           --health-interval 10s
@@ -117,7 +138,6 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          # Use postgresql:// protocol and localhost since we're accessing from outside the container
           DATABASE_URL: postgresql://postgres:postgres@localhost:4444/main
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
