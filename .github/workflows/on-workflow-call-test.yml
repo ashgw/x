@@ -29,31 +29,15 @@ jobs:
           PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
         ports:
           - 4444:4444
-        options: >-
-          --health-cmd "curl -sf http://localhost:4444/health"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Add explicit wait for services
-      - name: Wait for PostgreSQL
-        run: |
-          until pg_isready -h localhost -p 5432 -U postgres; do
-            echo "Waiting for PostgreSQL..."
-            sleep 1
-          done
-
-      - name: Wait for Neon Proxy
-        run: |
-          until curl -sf http://localhost:4444/health > /dev/null 2>&1; do
-            echo "Waiting for Neon Proxy..."
-            sleep 1
-          done
+      # Simple sleep to ensure services are up
+      - name: Wait for services
+        run: sleep 5
 
       - uses: ./.github/actions/setup-env
         with:
@@ -107,29 +91,13 @@ jobs:
           PG_CONNECTION_STRING: postgres://postgres:postgres@postgres:5432/main
         ports:
           - 4444:4444
-        options: >-
-          --health-cmd "curl -sf http://localhost:4444/health"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pnpm-install
 
-      # Add explicit wait for services
-      - name: Wait for PostgreSQL
-        run: |
-          until pg_isready -h localhost -p 5432 -U postgres; do
-            echo "Waiting for PostgreSQL..."
-            sleep 1
-          done
-
-      - name: Wait for Neon Proxy
-        run: |
-          until curl -sf http://localhost:4444/health > /dev/null 2>&1; do
-            echo "Waiting for Neon Proxy..."
-            sleep 1
-          done
+      # Simple sleep to ensure services are up
+      - name: Wait for services
+        run: sleep 5
 
       - uses: ./.github/actions/setup-env
         with:
