@@ -30,16 +30,11 @@ jobs:
         ports:
           - 4444:4444
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/pnpm-install
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      # Install psql for connection testing
+      # Install PostgreSQL client first
       - name: Install PostgreSQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client
+          sudo apt-get install -y postgresql-client curl
 
       # Wait for services and verify connection
       - name: Wait for services and verify connection
@@ -50,14 +45,15 @@ jobs:
           done
 
           echo "Waiting for Neon proxy..."
-          sleep 5
+          sleep 10
 
           echo "Testing connection through Neon proxy..."
           max_attempts=30
           attempt=1
-          while ! PGPASSWORD=postgres psql -h localhost -p 4444 -U postgres -d main -c '\q' > /dev/null 2>&1; do
+          while ! PGPASSWORD=postgres psql -h localhost -p 4444 -U postgres -d main -c '\l' > /dev/null 2>&1; do
             if [ $attempt -ge $max_attempts ]; then
               echo "Failed to connect to Neon proxy after $max_attempts attempts"
+              docker logs $(docker ps -q --filter "ancestor=ghcr.io/timowilhelm/local-neon-http-proxy:main")
               exit 1
             fi
             echo "Attempt $attempt: Neon proxy not ready, waiting..."
@@ -65,6 +61,11 @@ jobs:
             attempt=$((attempt + 1))
           done
           echo "Successfully connected through Neon proxy!"
+
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pnpm-install
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - uses: ./.github/actions/setup-env
         with:
@@ -119,14 +120,11 @@ jobs:
         ports:
           - 4444:4444
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/pnpm-install
-
-      # Install psql for connection testing
+      # Install PostgreSQL client first
       - name: Install PostgreSQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client
+          sudo apt-get install -y postgresql-client curl
 
       # Wait for services and verify connection
       - name: Wait for services and verify connection
@@ -137,14 +135,15 @@ jobs:
           done
 
           echo "Waiting for Neon proxy..."
-          sleep 5
+          sleep 10
 
           echo "Testing connection through Neon proxy..."
           max_attempts=30
           attempt=1
-          while ! PGPASSWORD=postgres psql -h localhost -p 4444 -U postgres -d main -c '\q' > /dev/null 2>&1; do
+          while ! PGPASSWORD=postgres psql -h localhost -p 4444 -U postgres -d main -c '\l' > /dev/null 2>&1; do
             if [ $attempt -ge $max_attempts ]; then
               echo "Failed to connect to Neon proxy after $max_attempts attempts"
+              docker logs $(docker ps -q --filter "ancestor=ghcr.io/timowilhelm/local-neon-http-proxy:main")
               exit 1
             fi
             echo "Attempt $attempt: Neon proxy not ready, waiting..."
@@ -152,6 +151,9 @@ jobs:
             attempt=$((attempt + 1))
           done
           echo "Successfully connected through Neon proxy!"
+
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pnpm-install
 
       - uses: ./.github/actions/setup-env
         with:
