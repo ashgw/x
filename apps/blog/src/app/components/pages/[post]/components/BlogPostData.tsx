@@ -20,11 +20,10 @@ interface BlogPostPorps {
 }
 
 export function BlogPostData({ postData }: BlogPostPorps) {
-  // Track view for this post
   useViewTracker({
     postSlug: postData.slug,
     enabled: true,
-    delay: 2000, // 2 seconds delay
+    delay: 2000,
   });
 
   return (
@@ -42,12 +41,18 @@ export function BlogPostData({ postData }: BlogPostPorps) {
           </Button>
         </Link>
       </div>
+
       <div className="mb-8 flex items-center justify-between text-sm sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
-        <div className="flex items-center gap-4">
+        <div className="text-muted-foreground flex items-center gap-4">
           <ReleaseDate date={postData.firstModDate.toISOString()} />
-          <div className="flex items-center gap-1 text-white/60">
-            <Eye className="h-3 w-3" />
-            <span>{formatViews(postData.views)} views</span>
+          <div
+            className="flex items-center gap-1"
+            title={`${postData.views} views`}
+          >
+            <Eye className="h-3 w-3 opacity-70" />
+            <span className="text-sm opacity-70">
+              {formatViews(postData.views)}
+            </span>
           </div>
         </div>
         <div>
@@ -64,6 +69,7 @@ export function BlogPostData({ postData }: BlogPostPorps) {
           )}
         </div>
       </div>
+
       <article className="text-wrap">
         <MDX
           source={postData.fontMatterMdxContent.body}
