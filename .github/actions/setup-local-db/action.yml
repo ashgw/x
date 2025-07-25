@@ -1,35 +1,29 @@
-name: "Setup Local Database"
-description: "Sets up a local PostgreSQL database for testing"
+name: "Start DB and Neon Proxy (local)"
+description: "Runs Postgres and local-neon-http-proxy using docker-compose"
 
 runs:
   using: "composite"
   steps:
-    - name: Set up Docker
+    - name: Install Docker Compose + deps
       shell: bash
       run: |
-        # Export UID/GID for Docker compose
-        echo "UID=$(id -u)" >> $GITHUB_ENV
-        echo "GID=$(id -g)" >> $GITHUB_ENV
+        sudo apt-get update
+        sudo apt-get install -y docker-compose curl postgresql-client
 
-    - name: Start local database
+    - name: Start Postgres + Proxy via Compose
       shell: bash
-      run: |
-        cd packages/db
-        docker compose up -d
-        # Wait for database to be ready
-        timeout 30s bash -c 'until docker exec ashgw_local_pg pg_isready -U postgres; do sleep 1; done'
-        cd ../..
+      working-directory: packages/db
+      run: docker-compose -f compose.yml up -d
 
-    - name: Run database migrations
+    - name: Wait for Proxy to be ready
       shell: bash
       run: |
-        export DATABASE_URL="postgres://postgres:postgres@localhost:5432/main"
-        cd packages/db
-        npx prisma migrate deploy
-        cd ../..
-
-    - name: Run database seeder
-      shell: bash
-      run: |
-        export DATABASE_URL="postgres://postgres:postgres@localhost:5432/main"
-        pnpm --filter @ashgw/seeder seed
+        echo "⏳ Waiting for Neon proxy on port 4444..."
+        for i in {1..30}; do
+          if curl --fail http://localhost:4444/health; then
+            echo "✅ Neon proxy is up"
+            break
+          fi
+          echo "Waiting ($i)..."
+          sleep 2
+        done

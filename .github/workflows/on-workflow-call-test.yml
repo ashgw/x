@@ -10,55 +10,15 @@ jobs:
       matrix:
         node-version: [18, 19, 20]
 
-    services:
-      db:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: main
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
-
-      neon:
-        image: ghcr.io/timowilhelm/local-neon-http-proxy:main
-        ports:
-          - 4444:4444
-        env:
-          PG_CONNECTION_STRING: postgres://postgres:postgres@db:5432/main
-        options: >-
-          --health-cmd "curl --fail http://localhost:4444/health || exit 1"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
-
     steps:
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client curl
-
-      - name: Wait for proxy to be ready
-        run: |
-          for i in $(seq 1 30); do
-            if curl --fail http://localhost:4444/health; then
-              echo "Neon proxy is ready"
-              break
-            fi
-            echo "Waiting for Neon proxy ($i)..."
-            sleep 2
-          done
-
       - uses: actions/checkout@v4
 
       - uses: ./.github/actions/pnpm-install
         with:
           node-version: ${{ matrix.node-version }}
+
+      # Replace services with setup-local-db action
+      - uses: ./.github/actions/setup-local-db
 
       - uses: ./.github/actions/setup-env
         with:
@@ -93,55 +53,15 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: main
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
-
-      neon:
-        image: ghcr.io/timowilhelm/local-neon-http-proxy:main
-        ports:
-          - 4444:4444
-        env:
-          PG_CONNECTION_STRING: postgres://postgres:postgres@db:5432/main
-        options: >-
-          --health-cmd "curl --fail http://localhost:4444/health || exit 1"
-          --health-interval 3s
-          --health-timeout 2s
-          --health-retries 10
-
     steps:
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client curl
-
-      - name: Wait for proxy to be ready
-        run: |
-          for i in $(seq 1 30); do
-            if curl --fail http://localhost:4444/health; then
-              echo "Neon proxy is ready"
-              break
-            fi
-            echo "Waiting for Neon proxy ($i)..."
-            sleep 2
-          done
-
       - uses: actions/checkout@v4
 
       - uses: ./.github/actions/pnpm-install
         with:
           node-version: 20 # or matrix like above
+
+      # Replace services with setup-local-db action
+      - uses: ./.github/actions/setup-local-db
 
       - uses: ./.github/actions/setup-env
         with:
