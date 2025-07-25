@@ -13,4 +13,9 @@ runs:
     - name: Start Postgres + Proxy via Compose
       shell: bash
       working-directory: packages/db
-      run: docker-compose -f compose.yml up -d
+      run: |
+        docker-compose -f compose.yml up -d
+        # Give containers a moment to fully initialize
+        sleep 10
+        # Quick test to make sure proxy is responding
+        PGPASSWORD=postgres psql "postgres://postgres:postgres@localhost:4444/main?sslmode=disable" -c '\l'
