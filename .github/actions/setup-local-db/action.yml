@@ -15,15 +15,8 @@ runs:
       working-directory: packages/db
       run: docker-compose -f compose.yml up -d
 
-    - name: Wait for Proxy to be ready
+    - name: Test connection
       shell: bash
       run: |
-        echo "⏳ Waiting for Neon proxy on port 4444..."
-        for i in {1..30}; do
-          if curl --fail http://localhost:4444/health; then
-            echo "✅ Neon proxy is up"
-            break
-          fi
-          echo "Waiting ($i)..."
-          sleep 2
-        done
+        echo "Testing connection through proxy..."
+        PGPASSWORD=postgres psql "postgres://postgres:postgres@localhost:4444/main?sslmode=disable" -c '\l'
