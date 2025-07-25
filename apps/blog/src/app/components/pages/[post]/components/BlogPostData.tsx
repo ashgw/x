@@ -43,8 +43,9 @@ export function BlogPostData({ postData }: BlogPostPorps) {
       </div>
 
       <div className="mb-8 flex items-center justify-between text-sm sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
-        <div className="text-muted-foreground flex items-center gap-4">
+        <div className="text-muted-foreground flex items-center gap-2">
           <ReleaseDate date={postData.firstModDate.toISOString()} />
+          <span className="scale-150 select-none text-white/40">·</span>
           <div
             className="flex items-center gap-1"
             title={`${postData.views} views`}

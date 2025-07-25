@@ -11,12 +11,13 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
     <div className="glowsup-dimmed slower-transition hover:slower-translate mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
       <div className="slower-transition group flex flex-col gap-4 rounded-[2rem] border border-white/10 p-5 shadow hover:scale-110 hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
         <div className="flex flex-col gap-4 lg:gap-6">
-          <div className="text-muted-foreground flex items-center gap-4 px-1 text-sm">
+          <div className="text-muted-foreground flex items-center gap-2 px-1 text-sm">
             <span>
               {DateService.formatDate({
                 stringDate: postData.firstModDate.toISOString(),
               })}
             </span>
+            <span className="mx-1 scale-150 select-none text-white/40">·</span>
             <span
               className="flex items-center gap-1 opacity-70"
               title={`${postData.views} views`}
@@ -54,7 +55,7 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
         </div>
 
         <Link
-          href={postData.slug}
+          href={`/${postData.slug}`}
           className="relative h-full overflow-hidden rounded-[2rem]"
         />
       </div>
