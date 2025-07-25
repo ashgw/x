@@ -9,16 +9,30 @@ jobs:
     strategy:
       matrix:
         node-version: [18, 19, 20]
+
     services:
-      neon:
-        image: neondatabase/neon_local:latest
-        env:
-          DRIVER: postgres
-          NEON_PROJECT_ID: dummy-local-project
+      db:
+        image: postgres:15
         ports:
           - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: main
         options: >-
-          --health-cmd "pg_isready -U postgres -h localhost"
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 3s
+          --health-timeout 2s
+          --health-retries 10
+
+      neon:
+        image: ghcr.io/timowilhelm/local-neon-http-proxy:main
+        ports:
+          - 4444:4444
+        env:
+          PG_CONNECTION_STRING: postgres://postgres:postgres@db:5432/main
+        options: >-
+          --health-cmd "curl --fail http://localhost:4444/health || exit 1"
           --health-interval 3s
           --health-timeout 2s
           --health-retries 10
@@ -29,14 +43,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client curl
 
-      - name: Wait for Neon Local to be ready
+      - name: Wait for proxy to be ready
         run: |
           for i in $(seq 1 30); do
-            if pg_isready -h localhost -p 5432 -U postgres; then
-              echo "Postgres is ready"
+            if curl --fail http://localhost:4444/health; then
+              echo "Neon proxy is ready"
               break
             fi
-            echo "Waiting for Postgres ($i)..."
+            echo "Waiting for Neon proxy ($i)..."
             sleep 2
           done
 
@@ -49,7 +63,7 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           NODE_ENV: "development"
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/main?sslmode=disable
+          DATABASE_URL: postgres://postgres:postgres@localhost:4444/main?sslmode=disable
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
           NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
@@ -69,7 +83,7 @@ jobs:
 
       - name: Setup Database Schema
         run: |
-          export DATABASE_URL="postgres://postgres:postgres@localhost:5432/main?sslmode=disable"
+          export DATABASE_URL="postgres://postgres:postgres@localhost:4444/main?sslmode=disable"
           pnpm --filter @ashgw/db exec prisma migrate deploy
 
       - name: Run Unit + Integration Tests
@@ -78,16 +92,30 @@ jobs:
   e2e:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
     services:
-      neon:
-        image: neondatabase/neon_local:latest
-        env:
-          DRIVER: postgres
-          NEON_PROJECT_ID: dummy-local-project
+      db:
+        image: postgres:15
         ports:
           - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: main
         options: >-
-          --health-cmd "pg_isready -U postgres -h localhost"
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 3s
+          --health-timeout 2s
+          --health-retries 10
+
+      neon:
+        image: ghcr.io/timowilhelm/local-neon-http-proxy:main
+        ports:
+          - 4444:4444
+        env:
+          PG_CONNECTION_STRING: postgres://postgres:postgres@db:5432/main
+        options: >-
+          --health-cmd "curl --fail http://localhost:4444/health || exit 1"
           --health-interval 3s
           --health-timeout 2s
           --health-retries 10
@@ -98,6 +126,32 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client curl
 
-      - name: Wait for Neon Local to be ready
+      - name: Wait for proxy to be ready
         run: |
-          for i
+          for i in $(seq 1 30); do
+            if curl --fail http://localhost:4444/health; then
+              echo "Neon proxy is ready"
+              break
+            fi
+            echo "Waiting for Neon proxy ($i)..."
+            sleep 2
+          done
+
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/pnpm-install
+        with:
+          node-version: 20 # or matrix like above
+
+      - uses: ./.github/actions/setup-env
+        with:
+          NODE_ENV: "development"
+          DATABASE_URL: postgres://postgres:postgres@localhost:4444/main?sslmode=disable
+
+      - name: Setup Database Schema
+        run: |
+          export DATABASE_URL="postgres://postgres:postgres@localhost:4444/main?sslmode=disable"
+          pnpm --filter @ashgw/db exec prisma migrate deploy
+
+      - name: Run E2E Tests
+        run: pnpm test:e2e
