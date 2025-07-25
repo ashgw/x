@@ -34,7 +34,10 @@ const serverSideVars = {
     .min(1, "DATABASE_URL is required")
     .url("Must be a valid URL")
     .refine(
-      (url) => url.startsWith("postgres://") || url.startsWith("postgresql://"),
+      (url) =>
+        process.env.NODE_ENV === "development" ||
+        url.startsWith("postgres://") ||
+        url.startsWith("postgresql://"),
       {
         message: "Must be a valid Neon Postgres URL",
       },
