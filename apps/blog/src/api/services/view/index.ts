@@ -12,7 +12,6 @@ interface ViewTrackingData {
 export class ViewService {
   private readonly db: DatabaseClient;
   private static readonly DEDUPLICATION_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
-  private static readonly MAX_IP_HASH_LENGTH = 45;
 
   constructor({ db }: { db: DatabaseClient }) {
     this.db = db;
@@ -24,7 +23,7 @@ export class ViewService {
     userAgent,
   }: ViewTrackingData): Promise<void> {
     try {
-      // Generate fingerprint for deduplication
+      // Generate fingerprint that uniquely identifies this view
       const fingerprint = this._generateFingerprint({
         postSlug,
         ipAddress,
@@ -43,22 +42,18 @@ export class ViewService {
       });
 
       if (existingView) {
-        logger.info("View already tracked within 24h", {
-          postSlug,
-          fingerprint,
-        });
+        return;
       }
 
+      // Create the view record
       await this.db.postView.create({
         data: {
           postSlug,
           fingerprint,
-          ipAddress: this._hashIP(ipAddress),
-          userAgent: userAgent.substring(0, 500), // Truncate to fit DB constraint
         },
       });
 
-      logger.info("View tracked successfully", { postSlug, fingerprint });
+      logger.info("View tracked", { postSlug });
     } catch (error) {
       logger.error("Failed to track view", { error, postSlug });
       throw new InternalError({
@@ -74,14 +69,8 @@ export class ViewService {
     ipAddress,
     userAgent,
   }: ViewTrackingData): string {
+    // This fingerprint uniquely identifies a view while preserving privacy
     const data = `${postSlug}:${ipAddress}:${userAgent}`;
     return createHash("sha256").update(data).digest("hex");
-  }
-
-  private _hashIP(ipAddress: string): string {
-    return createHash("sha256")
-      .update(ipAddress)
-      .digest("hex")
-      .substring(0, ViewService.MAX_IP_HASH_LENGTH);
   }
 }

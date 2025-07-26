@@ -21,10 +21,26 @@ export function useViewTracker({
   const hasTracked = useRef(false);
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
 
-  const trackViewMutation = trpcClientSide.view.trackView.useMutation();
+  const trackViewMutation = trpcClientSide.view.trackView.useMutation({
+    onError: (error) => {
+      logger.error("Failed to track view in mutation", {
+        postSlug,
+        error: error.message,
+        shape: error.shape,
+      });
+    },
+    onSuccess: () => {
+      logger.info("Successfully tracked view in mutation", { postSlug });
+    },
+  });
 
   useEffect(() => {
     if (!enabled || !postSlug || hasTracked.current) {
+      logger.info("View tracking skipped", {
+        enabled,
+        postSlug,
+        hasTracked: hasTracked.current,
+      });
       return;
     }
 
@@ -37,6 +53,12 @@ export function useViewTracker({
       return;
     }
 
+    logger.info("Setting up view tracking", {
+      postSlug,
+      delay,
+      hasTracked: hasTracked.current,
+    });
+
     // Set up delayed tracking
     timeoutRef.current = setTimeout(() => {
       if (!hasTracked.current) {
@@ -45,16 +67,17 @@ export function useViewTracker({
         // Mark as tracked in session
         sessionStorage.setItem(sessionKey, "true");
 
+        logger.info("Initiating view tracking", { postSlug });
+
         // Track the view
         trackViewMutation.mutate({ postSlug });
-
-        logger.info("Tracking view after delay", { postSlug, delay });
       }
     }, delay);
 
     // Cleanup function
     return () => {
       if (timeoutRef.current) {
+        logger.info("Cleaning up view tracking timeout", { postSlug });
         clearTimeout(timeoutRef.current);
       }
     };
