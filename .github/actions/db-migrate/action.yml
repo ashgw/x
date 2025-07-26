@@ -34,14 +34,14 @@ runs:
         .github/scripts/check-migration-safety.sh migration.sql
 
     - name: Run migrations
-      if: ${{ inputs.with_deploy }} == true
+      if: ${{ inputs.with_deploy == 'true' }}
       shell: bash
       run: |
         # Filter out sensitive information from Prisma output
         pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
     - name: Validate migrations
-      if: ${{ inputs.with_deploy }} == true
+      if: ${{ inputs.with_deploy == 'true' }}
       shell: bash
       run: |
         # Filter out sensitive information from Prisma output
