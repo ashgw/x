@@ -1,8 +1,14 @@
+import { memo } from "react";
+
 import type { PostDetailRo } from "~/api/models";
 import { Newsletter } from "~/app/components/pages/[post]/components/newsletter";
 import { BlogPostData } from "./components/BlogPostData";
 
-export function BlogPostPage({ postData }: { postData: PostDetailRo }) {
+export const BlogPostPage = memo(function BlogPostPage({
+  postData,
+}: {
+  postData: PostDetailRo;
+}) {
   return (
     <>
       <main className="pt-5">
@@ -12,4 +18,4 @@ export function BlogPostPage({ postData }: { postData: PostDetailRo }) {
       <Newsletter />
     </>
   );
-}
+});

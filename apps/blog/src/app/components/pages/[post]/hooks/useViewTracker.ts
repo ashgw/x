@@ -22,12 +22,18 @@ export function useViewTracker({
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
 
   const trackViewMutation = trpcClientSide.view.trackView.useMutation({
+    onMutate: () => {
+      logger.info("Starting view tracking mutation", { postSlug });
+    },
     onError: (error) => {
       logger.error("Failed to track view in mutation", {
         postSlug,
         error: error.message,
         shape: error.shape,
       });
+      // Reset tracking state on error so it can be retried
+      hasTracked.current = false;
+      sessionStorage.removeItem(`view_tracked_${postSlug}`);
     },
     onSuccess: () => {
       logger.info("Successfully tracked view in mutation", { postSlug });
@@ -35,12 +41,16 @@ export function useViewTracker({
   });
 
   useEffect(() => {
-    if (!enabled || !postSlug || hasTracked.current) {
-      logger.info("View tracking skipped", {
+    if (!enabled || !postSlug) {
+      logger.info("View tracking disabled or no slug", {
         enabled,
         postSlug,
-        hasTracked: hasTracked.current,
       });
+      return;
+    }
+
+    if (hasTracked.current) {
+      logger.info("Already tracked in this render", { postSlug });
       return;
     }
 
@@ -49,28 +59,30 @@ export function useViewTracker({
     const alreadyTrackedInSession = sessionStorage.getItem(sessionKey);
 
     if (alreadyTrackedInSession) {
-      logger.info("View already tracked in session", { postSlug });
+      logger.info("View already tracked in session storage", { postSlug });
+      hasTracked.current = true;
       return;
     }
 
-    logger.info("Setting up view tracking", {
+    logger.info("Setting up view tracking timeout", {
       postSlug,
       delay,
-      hasTracked: hasTracked.current,
     });
 
     // Set up delayed tracking
     timeoutRef.current = setTimeout(() => {
       if (!hasTracked.current) {
+        logger.info("Timeout elapsed, tracking view", { postSlug });
         hasTracked.current = true;
 
-        // Mark as tracked in session
-        sessionStorage.setItem(sessionKey, "true");
-
-        logger.info("Initiating view tracking", { postSlug });
-
-        // Track the view
+        // Track the view first
         trackViewMutation.mutate({ postSlug });
+
+        // Only mark as tracked if mutation started successfully
+        if (!trackViewMutation.isError) {
+          sessionStorage.setItem(sessionKey, "true");
+          logger.info("Marked as tracked in session storage", { postSlug });
+        }
       }
     }, delay);
 

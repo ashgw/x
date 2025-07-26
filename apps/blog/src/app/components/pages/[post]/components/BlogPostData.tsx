@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
@@ -10,24 +11,21 @@ import type { PostDetailRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
 import { formatViews } from "~/utils/formatViews";
-import { useViewTracker } from "../hooks/useViewTracker";
 import { H1 } from "./headers";
 import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
+import { ViewTracker } from "./ViewTracker";
 
-interface BlogPostPorps {
+interface BlogPostProps {
   postData: PostDetailRo;
 }
 
-export function BlogPostData({ postData }: BlogPostPorps) {
-  useViewTracker({
-    postSlug: postData.slug,
-    enabled: true,
-    delay: 2000,
-  });
-
+export const BlogPostData = memo(function BlogPostData({
+  postData,
+}: BlogPostProps) {
   return (
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
+      <ViewTracker postSlug={postData.slug} />
       <div className="flex items-center justify-between">
         <H1 id={postData.title}>{postData.title}</H1>
         <Link href={`/editor?blog=${postData.slug}`} className="ml-4">
@@ -80,4 +78,4 @@ export function BlogPostData({ postData }: BlogPostPorps) {
       <ScrollUp />
     </section>
   );
-}
+});
