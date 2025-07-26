@@ -40,6 +40,7 @@
     "push": "prisma db push",
     "seed": "prisma db seed",
     "start": "docker compose -f compose.yml up -d",
+    "stop": "docker compose -f compose.yml down -v",
     "studio": "prisma studio",
     "validate": "prisma validate"
   },
