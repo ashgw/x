@@ -11,7 +11,7 @@ permissions:
   issues: write
 
 jobs:
-  blog-deploy-preview:
+  migrate-deploy-development:
     if: github.event.label.name == 'migrate-deploy'
     uses: ./.github/workflows/on-workflow-call-db-migrate.yml
     with:
