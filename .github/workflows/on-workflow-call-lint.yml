@@ -29,5 +29,7 @@ jobs:
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+          IP_HASH_SALT: ${{ secrets.IP_HASH_SALT }}
+
       - name: lint
         run: pnpm lint
