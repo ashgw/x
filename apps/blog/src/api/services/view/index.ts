@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 
 import type { DatabaseClient } from "@ashgw/db";
+import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
 
 interface ViewTrackingData {
@@ -69,8 +70,13 @@ export class ViewService {
     ipAddress,
     userAgent,
   }: ViewTrackingData): string {
+    // Hash the IP address with salt first for extra security
+    const hashedIp = createHash("sha256")
+      .update(ipAddress + env.IP_HASH_SALT)
+      .digest("hex");
+
     // This fingerprint uniquely identifies a view while preserving privacy
-    const data = `${postSlug}:${ipAddress}:${userAgent}`;
+    const data = `${postSlug}:${hashedIp}:${userAgent}`;
     return createHash("sha256").update(data).digest("hex");
   }
 }
