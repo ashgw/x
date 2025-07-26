@@ -6,7 +6,7 @@ on:
       environment:
         required: true
         type: string
-        description: "Environment to run migrations on (preview/production)"
+        description: "Environment to run migrations on (development/preview/production)"
       with_deploy:
         required: false
         type: boolean
