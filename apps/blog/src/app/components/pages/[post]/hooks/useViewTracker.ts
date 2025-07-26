@@ -5,12 +5,13 @@ import { useEffect, useRef } from "react";
 
 import { logger } from "@ashgw/observability";
 
+import { useStore } from "~/app/stores";
 import { trpcClientSide } from "~/trpc/client";
 
 interface UseViewTrackerProps {
   postSlug: string;
   enabled?: boolean;
-  delay?: number; // Delay in milliseconds before tracking
+  delay?: number;
 }
 
 export function useViewTracker({
@@ -20,10 +21,11 @@ export function useViewTracker({
 }: UseViewTrackerProps) {
   const hasTracked = useRef(false);
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
+  const { store } = useStore();
 
   const trackViewMutation = trpcClientSide.view.trackView.useMutation({
     onMutate: () => {
-      logger.info("Starting view tracking mutation", { postSlug });
+      logger.debug("Starting view tracking mutation", { postSlug });
     },
     onError: (error) => {
       logger.error("Failed to track view in mutation", {
@@ -36,7 +38,9 @@ export function useViewTracker({
       sessionStorage.removeItem(`view_tracked_${postSlug}`);
     },
     onSuccess: () => {
-      logger.info("Successfully tracked view in mutation", { postSlug });
+      logger.debug("Successfully tracked view in mutation", { postSlug });
+      const currentViews = store.views.getViews(postSlug);
+      store.views.setViews(postSlug, currentViews + 1);
     },
   });
 
@@ -93,7 +97,7 @@ export function useViewTracker({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [postSlug, enabled, delay, trackViewMutation]);
+  }, [postSlug, enabled, delay, trackViewMutation, store.views]);
 
   return {
     isTracking: trackViewMutation.isPending,

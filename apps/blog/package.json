@@ -54,6 +54,8 @@
     "gsap": "3.12.5",
     "loading-points": "1.1.0",
     "lucide-react": "0.309.0",
+    "mobx": "6.13.7",
+    "mobx-react-lite": "4.1.0",
     "next": "catalog:",
     "next-mdx-remote": "5.0.0",
     "next-themes": "0.3.0",

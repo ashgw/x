@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { Eye } from "lucide-react";
+import { observer } from "mobx-react-lite";
 
 import { DateService } from "@ashgw/cross-runtime";
 
 import type { PostCardRo } from "~/api/models";
+import { useStore } from "~/app/stores";
 import { formatViews } from "~/utils/formatViews";
 
-export function PostCard({ postData }: { postData: PostCardRo }) {
+export const PostCard = observer(({ postData }: { postData: PostCardRo }) => {
+  const { store } = useStore();
+  const viewCount = store.views.getViews(postData.slug) || postData.views;
+
   return (
     <div className="glowsup-dimmed slower-transition hover:slower-translate mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
       <div className="slower-transition group flex flex-col gap-4 rounded-[2rem] border border-white/10 p-5 shadow hover:scale-110 hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]">
@@ -20,10 +25,10 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
             <span className="mx-1 scale-150 select-none text-white/40">·</span>
             <span
               className="flex items-center gap-1 opacity-70"
-              title={`${postData.views} views`}
+              title={`${viewCount} views`}
             >
               <Eye className="h-3 w-3" />
-              <span>{formatViews(postData.views)}</span>
+              <span>{formatViews(viewCount)}</span>
             </span>
           </div>
 
@@ -61,4 +66,4 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
       </div>
     </div>
   );
-}
+});
