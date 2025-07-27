@@ -8,15 +8,11 @@ export class UserQueryHelper {
   public static withSessionsInclude() {
     return {
       sessions: {
-        select: this._sessionSelect(),
+        select: {
+          expiresAt: true,
+          id: true,
+        },
       },
     } satisfies Prisma.UserInclude;
-  }
-
-  private static _sessionSelect() {
-    return {
-      expiresAt: true,
-      id: true,
-    } satisfies Prisma.SessionSelect;
   }
 }

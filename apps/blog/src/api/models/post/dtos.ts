@@ -6,13 +6,14 @@ import { z } from "zod";
 
 import { PostCategoryEnum } from "./shared";
 
+const slugSchema = z.string().min(1).max(255);
 // ========== Schemas ==========
 export const postGetSchemaDto = z.object({
-  slug: z.string().min(1),
+  slug: slugSchema,
 });
 
 export const postDeleteSchemaDto = z.object({
-  slug: z.string().min(1),
+  slug: slugSchema,
 });
 
 export const postEditorSchemaDto = z.object({
@@ -25,7 +26,7 @@ export const postEditorSchemaDto = z.object({
 });
 
 export const postUpdateSchemaDto = z.object({
-  slug: z.string().min(1),
+  slug: slugSchema,
   data: postEditorSchemaDto,
 });
 

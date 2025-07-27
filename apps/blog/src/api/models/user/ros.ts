@@ -4,12 +4,12 @@ import { UserRoleEnum } from "./shared";
 
 // ========== Schemas ==========
 export const sessionSchemaRo = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   expiresAt: z.date(),
 });
 
 export const userSchemaRo = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   email: z.string().max(255).email(),
   name: z.string().min(1).max(30).nullable(),
   role: z.nativeEnum(UserRoleEnum),
