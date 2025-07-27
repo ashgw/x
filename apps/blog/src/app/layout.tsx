@@ -10,6 +10,7 @@ import { fonts } from "@ashgw/ui";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
+import { StoreProvider } from "./stores";
 
 export const metadata: Metadata = createMetadata({
   title: "Ashref Gwader",
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <GoBackHome />
         <GlobalProviders site="blog">
           <TRPCProvider siteBaseUrl={env.NEXT_PUBLIC_BLOG_URL}>
-            {children}
+            <StoreProvider>{children}</StoreProvider>
           </TRPCProvider>
         </GlobalProviders>
       </body>
