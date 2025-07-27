@@ -39,12 +39,14 @@ runs:
         # Spin up the containers
         pnpm --filter @ashgw/db start
 
-        # Wait for the database to be ready
+        # Wait until Postgres accepts connections
         echo "Waiting for database to be ready..."
-        sleep 10
+        for i in {1..30}; do
+          pg_isready -h localhost -p 5432 -U postgres && break
+          sleep 2
+        done
 
-        # Set local database URL for testing
-        export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/main"
+        export DATABASE_URL="postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@localhost:5432/main"
 
         # Run migrations reset (this will apply all migrations from scratch)
         echo "Running migration reset..."
