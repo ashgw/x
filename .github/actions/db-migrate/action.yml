@@ -10,7 +10,9 @@ inputs:
   DATABASE_URL:
     required: true
     description: "The database URL"
-
+  TEMPORARY_CONTAINER_DATABASE_URL:
+    required: true
+    description: "The temporary database URL"
 runs:
   using: "composite"
   steps:
@@ -46,7 +48,7 @@ runs:
           sleep 2
         done
 
-        export DATABASE_URL="postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@localhost:5432/main"
+        export DATABASE_URL="${{ inputs.TEMPORARY_CONTAINER_DATABASE_URL }}"
 
         # Run migrations reset (this will apply all migrations from scratch)
         echo "Running migration reset..."

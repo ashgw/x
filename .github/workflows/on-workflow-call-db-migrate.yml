@@ -47,3 +47,4 @@ jobs:
         with:
           with_deploy: ${{ inputs.with_deploy }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
