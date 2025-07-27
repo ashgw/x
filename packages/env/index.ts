@@ -29,6 +29,9 @@ const serverSideVars = {
   SENTRY_PROJECT: z.string(),
   NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
+  IP_HASH_SALT: z
+    .string()
+    .min(32, "IP hash salt must be at least 32 characters long"),
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required")
@@ -103,6 +106,7 @@ export const env = createEnv({
   disablePrefix: [...ServerSideVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
