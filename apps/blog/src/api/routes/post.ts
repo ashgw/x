@@ -17,7 +17,7 @@ import { BlogService } from "../services";
 export const postRouter = router({
   getPost: publicProcedure
     .input(postGetSchemaDto)
-    .output(postDetailSchemaRo.nullable()) // not found is not an error
+    .output(postDetailSchemaRo.nullable()) // not found
     .query(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
