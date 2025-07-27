@@ -4,11 +4,13 @@ import { router } from "../trpc/root";
 import { newsletterRouter } from "./routes/newsletter";
 import { postRouter } from "./routes/post";
 import { userRouter } from "./routes/user";
+import { viewRouter } from "./routes/view";
 
 export const appRouter = router({
   post: postRouter,
   newsletter: newsletterRouter,
   user: userRouter,
+  view: viewRouter,
 });
 
 export type AppRouter = typeof appRouter;

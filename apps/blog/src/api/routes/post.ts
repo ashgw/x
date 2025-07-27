@@ -77,12 +77,11 @@ export const postRouter = router({
 
   deletePost: adminProcedure
     .input(postDeleteSchemaDto)
-    .output(z.void())
-    .mutation(async ({ input, ctx: { db } }) => {
+    .mutation(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
         storage,
       });
-      await blogService.deletePost(input.slug);
+      return await blogService.deletePost(slug);
     }),
 });

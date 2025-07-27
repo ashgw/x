@@ -19,3 +19,9 @@ pnpm --filter @ashgw/db exec prisma migrate diff \
   --to-schema-datamodel=./prisma/schema.prisma \
   --script
 ```
+
+To spinup the local DB run
+
+```bash
+pnpm --filter @ashgw/db start
+```

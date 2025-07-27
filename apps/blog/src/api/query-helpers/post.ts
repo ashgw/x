@@ -1,11 +1,11 @@
 import type { Prisma } from "@ashgw/db/raw";
 
-export type PostDetailQuery = Prisma.PostGetPayload<{
-  include: ReturnType<typeof PostQueryHelper.detailInclude>;
-}>;
-
 export type PostCardQuery = Prisma.PostGetPayload<{
   include: ReturnType<typeof PostQueryHelper.cardInclude>;
+}>;
+
+export type PostDetailQuery = Prisma.PostGetPayload<{
+  include: ReturnType<typeof PostQueryHelper.detailInclude>;
 }>;
 
 export type PostAdminQuery = Prisma.PostGetPayload<{
@@ -21,8 +21,13 @@ export class PostQueryHelper {
   }
 
   public static cardInclude() {
-    // intentionally returns no relations for card list views
-    return {} satisfies Prisma.PostInclude;
+    return {
+      postViews: {
+        select: {
+          id: true,
+        },
+      },
+    } satisfies Prisma.PostInclude;
   }
 
   public static adminInclude() {

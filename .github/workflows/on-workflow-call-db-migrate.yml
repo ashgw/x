@@ -6,7 +6,7 @@ on:
       environment:
         required: true
         type: string
-        description: "Environment to run migrations on (preview/production)"
+        description: "Environment to run migrations on (development/preview/production)"
       with_deploy:
         required: false
         type: boolean
@@ -38,8 +38,13 @@ jobs:
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
-
+          IP_HASH_SALT: ${{ secrets.IP_HASH_SALT }}
+      - name: Set up Docker for the temporary database container
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: latest
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: ${{ inputs.with_deploy }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}

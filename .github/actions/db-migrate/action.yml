@@ -10,7 +10,9 @@ inputs:
   DATABASE_URL:
     required: true
     description: "The database URL"
-
+  TEMPORARY_CONTAINER_DATABASE_URL:
+    required: true
+    description: "The temporary database URL"
 runs:
   using: "composite"
   steps:
@@ -33,15 +35,49 @@ runs:
         chmod +x .github/scripts/check-migration-safety.sh
         .github/scripts/check-migration-safety.sh migration.sql
 
-    - name: Validate migrations
+    - name: Test migrations in Docker
       shell: bash
       run: |
-        # Filter out sensitive information from Prisma output
-        pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
+        # Spin up the containers
+        pnpm --filter @ashgw/db start
+
+        # Wait until Postgres accepts connections
+        echo "Waiting for database to be ready..."
+        for i in {1..30}; do
+          pg_isready -h localhost -p 5432 -U postgres && break
+          sleep 2
+        done
+
+        export DATABASE_URL="${{ inputs.TEMPORARY_CONTAINER_DATABASE_URL }}"
+
+        # Run migrations reset (this will apply all migrations from scratch)
+        echo "Running migration reset..."
+        pnpm --filter @ashgw/db migrate:reset --force
+
+        # Validate the migrations
+        echo "Validating migrations..."
+        pnpm --filter @ashgw/db migrate:status
+
+        # Store the exit code
+        MIGRATION_TEST_STATUS=$?
+
+        # Spin down the containers
+        echo "Cleaning up..."
+        pnpm --filter @ashgw/db stop
+
+        # Exit with the status from migration validation
+        exit $MIGRATION_TEST_STATUS
 
     - name: Run migrations
-      if: ${{ inputs.with_deploy }} == true
+      if: ${{ inputs.with_deploy == 'true' }}
       shell: bash
       run: |
         # Filter out sensitive information from Prisma output
         pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
+
+    - name: Validate migrations
+      if: ${{ inputs.with_deploy == 'true' }}
+      shell: bash
+      run: |
+        # Filter out sensitive information from Prisma output
+        pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"

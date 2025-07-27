@@ -24,6 +24,7 @@
     "test:unit-integration": "vitest run --config=vitest.config.ts"
   },
   "dependencies": {
+    "@ashgw/analytics": "workspace:*",
     "@ashgw/components": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/cross-runtime": "workspace:*",
@@ -54,6 +55,8 @@
     "gsap": "3.12.5",
     "loading-points": "1.1.0",
     "lucide-react": "0.309.0",
+    "mobx": "6.13.7",
+    "mobx-react-lite": "4.1.0",
     "next": "catalog:",
     "next-mdx-remote": "4.4.1",
     "next-themes": "0.3.0",

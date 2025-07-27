@@ -20,6 +20,7 @@ export const postCardSchemaRo = z.object({
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
   category: z.nativeEnum(PostCategoryEnum),
+  views: z.number().default(0),
 });
 
 // this comes from fm library API but body is now serialized MDX content

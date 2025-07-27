@@ -16,20 +16,33 @@ datasource db {
 }
 
 model Post {
-  slug          String       @id @db.VarChar(255)
-  title         String       @db.VarChar(30)
-  seoTitle      String       @db.VarChar(100)
-  summary       String       @db.VarChar(100)
-  firstModDate  DateTime     @default(now())
-  lastModDate   DateTime     @updatedAt
+  slug          String     @id @db.VarChar(255)
+  title         String     @db.VarChar(30)
+  seoTitle      String     @db.VarChar(100)
+  summary       String     @db.VarChar(100)
+  firstModDate  DateTime   @default(now())
+  lastModDate   DateTime   @updatedAt
   isReleased    Boolean
-  minutesToRead Int          @db.SmallInt
-  tags          String[]     @db.VarChar(20)
+  minutesToRead Int        @db.SmallInt
+  tags          String[]   @db.VarChar(255)
   category      PostCategory
-  mdxContentId  String       @unique @db.VarChar(255)
-  mdxContent    Upload       @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
+  mdxContentId  String     @unique @db.VarChar(255)
+  mdxContent    Upload     @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
+  postViews     PostView[] @relation("PostViews")
 
   @@index([mdxContentId])
+}
+
+model PostView {
+  id          String   @id @default(cuid())
+  postSlug    String   @db.VarChar(255)
+  fingerprint String   @db.VarChar(64)  // Contains hashed postSlug:ip:userAgent
+  createdAt   DateTime @default(now())
+  post        Post     @relation("PostViews", fields: [postSlug], references: [slug], onDelete: Cascade)
+
+  @@index([postSlug, fingerprint, createdAt])
+  @@index([createdAt])
+  @@index([fingerprint])
 }
 
 model Upload {
@@ -54,7 +67,7 @@ model User {
 
 model Session {
   id        String   @id @default(cuid())
-  userId    String
+  userId    String   @db.VarChar(255)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
