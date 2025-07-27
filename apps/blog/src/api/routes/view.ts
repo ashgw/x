@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { publicProcedure, router } from "~/trpc/trpc";
+import { publicProcedure } from "~/trpc/procedures";
+import { router } from "~/trpc/root";
 import { trackViewSchemaDto } from "../models/view";
 import { ViewService } from "../services/view";
 

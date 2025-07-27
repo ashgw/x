@@ -31,7 +31,7 @@ interface BlogPostPorps {
 
 export const BlogPostData = memo(function BlogPostData({
   postData,
-}: BlogPostProps) {
+}: BlogPostPorps) {
   return (
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       <ViewTracker postSlug={postData.slug} />
