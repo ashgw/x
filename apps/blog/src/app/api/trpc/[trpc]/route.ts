@@ -8,8 +8,8 @@ import { appRouter } from "~/api/router";
 import { createTRPCContext } from "~/trpc/context";
 import { trpcUri } from "~/trpc/endpoint";
 
-const handler = (req: NextRequest, res: NextResponse) =>
-  fetchRequestHandler({
+const handler = (req: NextRequest, res: NextResponse) => {
+  return fetchRequestHandler({
     endpoint: trpcUri,
     allowMethodOverride: false,
     allowBatching: true,
@@ -35,5 +35,6 @@ const handler = (req: NextRequest, res: NextResponse) =>
         db,
       }),
   });
+};
 
 export { handler as GET, handler as POST };

@@ -17,6 +17,7 @@ function hashPassword(password: string): string {
   const hash = pbkdf2Sync(password, salt, 1000, 32, "sha256").toString("hex");
   return `${salt}:${hash}`;
 }
+
 async function createAdminUser() {
   const email = "admin@ashgw.me";
   const password = "Admin123";
