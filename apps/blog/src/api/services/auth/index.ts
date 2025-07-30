@@ -3,6 +3,7 @@ import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
+import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
 
 import type { UserLoginDto, UserRegisterDto, UserRo } from "~/api/models";
@@ -126,6 +127,8 @@ export class AuthService {
       },
     });
     if (!user) {
+      // fake delay
+      pbkdf2Sync(password, "0".repeat(32), 1000, 32, "sha256"); // fake delay
       logger.warn("User not found for: ", { email });
       throw new InternalError({
         code: "NOT_FOUND",
@@ -212,18 +215,45 @@ export class AuthService {
   }
 
   // TODO: here needs more work gang
-  public validateCsrfToken(input: { requestCsrfHeaderValue: string }): boolean {
-    const csrfCookie = CookieService.csrf.get({
+  public validateCsrfToken({
+    requestCsrfHeaderValue,
+  }: {
+    requestCsrfHeaderValue: string;
+  }): boolean {
+    // origin checks, This kills cross-origin CSRF even if SameSite gets bypassed by a browser exploit somehow
+    // only doing this in prod, preview & dev can pass
+    if (env.NODE_ENV === "production") {
+      const origin =
+        this.req.headers.get("origin") ?? this.req.headers.get("referer");
+      if (!origin) {
+        throw new InternalError({
+          code: "FORBIDDEN",
+          message: "Missing Origin/Referer",
+        });
+      }
+
+      const expectedOrigin = env.NEXT_PUBLIC_BLOG_URL;
+      if (!origin.startsWith(expectedOrigin)) {
+        throw new InternalError({
+          code: "FORBIDDEN",
+          message: "CSRF origin mismatch",
+        });
+      }
+    }
+
+    // if the token presented in the cookie and the header don't match, we block
+    const csrfCookieToken = CookieService.csrf.get({
       req: this.req,
     });
-    const csrfHeader = input.requestCsrfHeaderValue;
-    if (!csrfCookie || !csrfHeader || csrfCookie !== csrfHeader) {
+
+    if (!csrfCookieToken || csrfCookieToken !== requestCsrfHeaderValue) {
       logger.warn("CSRF validation failed");
       throw new InternalError({
         code: "FORBIDDEN",
         message: "Invalid CSRF token",
       });
     }
+    CookieService.csrf.set({ res: this.res }); // rotate the token now for a fresh login
     return true;
   }
 
