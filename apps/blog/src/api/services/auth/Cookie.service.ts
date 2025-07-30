@@ -8,13 +8,14 @@ import { env } from "@ashgw/env";
 import { AUTH_COOKIES_MAX_AGE, COOKIE_NAMES } from "./consts";
 
 const securedCookieOptions = {
-  // @see https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-02#section-5.3.7
-  sameSite: "lax",
-  // @see https://owasp.org/www-community/HttpOnly
+  sameSite: "lax" as const,
   path: "/",
-  secure: env.NODE_ENV === "production" || env.NODE_ENV === "preview",
+  secure: env.NODE_ENV !== "development",
   maxAge: AUTH_COOKIES_MAX_AGE,
-  httpOnly: true, // prevents JS from altering the cookie
+  httpOnly: true,
+  ...(env.NODE_ENV === "production" && {
+    domain: env.NEXT_PUBLIC_BLOG_URL,
+  }),
 } satisfies SerializeOptions;
 
 class _SessionCookieService {
@@ -43,11 +44,7 @@ class _CSRFCookieService {
   public set({ res }: { res: NextResponse }) {
     res.cookies.set(COOKIE_NAMES.CSRF_TOKEN, randomBytes(32).toString("hex"), {
       ...securedCookieOptions,
-      httpOnly: false, // the frontend needs to access this cookie, so it's disabled here
-      //  only in prod, protect against subdomain takeover, nothing to lose in preview
-      ...(env.NODE_ENV === "production" && {
-        domain: env.NEXT_PUBLIC_BLOG_URL,
-      }),
+      httpOnly: false,
     });
   }
 

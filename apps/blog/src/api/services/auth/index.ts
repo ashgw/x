@@ -147,10 +147,10 @@ export class AuthService {
       logger.warn("Invalid password for: ", { email });
       throw new InternalError({
         code: "UNAUTHORIZED",
-        message: "Invalid password",
+        message: "Invalid credentials",
       });
     }
-    logger.info("Password is valid for: ", { email });
+
     logger.info("checking if user has session");
     if (user.sessions.length === 0) {
       logger.info("User has no session, creating new session");
@@ -266,9 +266,9 @@ export class AuthService {
       },
       select: {
         id: true,
-        userId: true,
       },
     });
+
     CookieService.csrf.set({
       res: this.res,
     });
@@ -279,11 +279,8 @@ export class AuthService {
   }
 
   private _hashPassword(password: string): string {
-    // Generate a random salt
     const salt = randomBytes(16).toString("hex");
-    // Hash the password with the salt using PBKDF2
     const hash = pbkdf2Sync(password, salt, 1000, 32, "sha256").toString("hex");
-    // Return the salt and hash concatenated
     return `${salt}:${hash}`;
   }
 
