@@ -1,3 +1,4 @@
+import { pbkdf2Sync, randomBytes } from "crypto";
 import pkg from "aws-sdk";
 
 import { db } from "@ashgw/db";
@@ -10,6 +11,41 @@ const s3 = new pkg.S3({
   accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
   secretAccessKey: env.S3_BUCKET_SECRET_KEY,
 });
+
+function hashPassword(password: string): string {
+  const salt = randomBytes(16).toString("hex");
+  const hash = pbkdf2Sync(password, salt, 1000, 32, "sha256").toString("hex");
+  return `${salt}:${hash}`;
+}
+async function createAdminUser() {
+  const email = "admin@ashgw.me";
+  const password = "Admin123";
+  const name = "Admin";
+
+  const existingUser = await db.user.findUnique({
+    where: { email },
+    select: { email: true },
+  });
+
+  if (existingUser) {
+    // eslint-disable-next-line no-restricted-syntax
+    console.error("Admin user already exists");
+    return;
+  }
+
+  const passwordHash = hashPassword(password);
+  await db.user.create({
+    data: {
+      email,
+      passwordHash,
+      name,
+      role: "ADMIN",
+    },
+  });
+
+  // eslint-disable-next-line no-restricted-syntax
+  console.log("Admin user created successfully");
+}
 
 async function uploadFileRaw({
   filename,
@@ -86,6 +122,7 @@ export const seed = async () => {
 };
 
 async function main() {
+  await createAdminUser();
   await seed();
 }
 
