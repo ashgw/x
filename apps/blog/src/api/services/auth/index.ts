@@ -45,79 +45,6 @@ export class AuthService {
     }
   }
 
-  // this is not used yet, but will be, or is it?
-  public async clearUserSessions({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<void> {
-    logger.info("Clearning active user sessions");
-    try {
-      const user = await this.db.user.findUnique({
-        where: {
-          id: userId,
-        },
-        include: {
-          sessions: {
-            select: {
-              id: true,
-            },
-          },
-        },
-      });
-      if (user?.sessions) {
-        const allSessionIds: string[] = user.sessions.map(({ id }) => id);
-        await this.db.session.deleteMany({
-          where: {
-            id: {
-              in: allSessionIds,
-            },
-          },
-        });
-      }
-    } catch (error) {
-      logger.error("Error occured when removing user sessions");
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to remove user sessions",
-        cause: error,
-      });
-    }
-  }
-  public async logout() {
-    logger.info("Logging out user");
-    const sessionId = CookieService.session.get({
-      req: this.req,
-    });
-    if (!sessionId) {
-      logger.info("No session cookie found, user is not logged in");
-      CookieService.csrf.clear({
-        res: this.res,
-      });
-      return;
-    }
-    logger.info("Session cookie found, logging out user", { sessionId });
-    try {
-      await this.db.session.delete({
-        where: { id: sessionId },
-      });
-      CookieService.csrf.clear({
-        res: this.res,
-      });
-      CookieService.session.clear({
-        res: this.res,
-      });
-      logger.info("User logged out", { sessionId });
-    } catch (error) {
-      logger.error("Failed to logout user", { error, sessionId });
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to logout",
-        cause: error,
-      });
-    }
-  }
-
   public async login({ email, password }: UserLoginDto): Promise<UserRo> {
     logger.info("Logging in user", { email });
     const user = await this.db.user.findUnique({
@@ -151,13 +78,43 @@ export class AuthService {
       });
     }
 
-    logger.info("checking if user has session");
-    if (user.sessions.length === 0) {
-      logger.info("User has no session, creating new session");
-      await this._createSession({ userId: user.id });
-    }
-    logger.info("User has session, returning user");
+    logger.info("creating a new session for the user", { userId: user.id });
+    await this._createSession({ userId: user.id });
     return UserMapper.toUserRo({ user });
+  }
+
+  public async logout() {
+    logger.info("Logging out user");
+    const sessionId = CookieService.session.get({
+      req: this.req,
+    });
+    if (!sessionId) {
+      logger.info("No session cookie found, user is not logged in");
+      CookieService.csrf.clear({
+        res: this.res,
+      });
+      return;
+    }
+    logger.info("Session cookie found, logging out user", { sessionId });
+    try {
+      await this.db.session.delete({
+        where: { id: sessionId },
+      });
+      CookieService.csrf.clear({
+        res: this.res,
+      });
+      CookieService.session.clear({
+        res: this.res,
+      });
+      logger.info("User logged out", { sessionId });
+    } catch (error) {
+      logger.error("Failed to logout user", { error, sessionId });
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to logout",
+        cause: error,
+      });
+    }
   }
 
   public async register({
@@ -215,7 +172,7 @@ export class AuthService {
   }
 
   // TODO: here needs more work gang
-  public validateCsrfToken({
+  private _validateCsrfToken({
     requestCsrfHeaderValue,
   }: {
     requestCsrfHeaderValue: string;
@@ -343,7 +300,7 @@ export class AuthService {
       });
     }
 
-    this.validateCsrfToken({
+    this._validateCsrfToken({
       requestCsrfHeaderValue: csrfHeaderToken,
     });
 
@@ -375,5 +332,45 @@ export class AuthService {
     }
 
     return UserMapper.toUserRo({ user: session.user });
+  }
+
+  // not used
+  private async _clearUserSessions({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<void> {
+    logger.info("Clearning active user sessions");
+    try {
+      const user = await this.db.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          sessions: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+      if (user?.sessions) {
+        const allSessionIds: string[] = user.sessions.map(({ id }) => id);
+        await this.db.session.deleteMany({
+          where: {
+            id: {
+              in: allSessionIds,
+            },
+          },
+        });
+      }
+    } catch (error) {
+      logger.error("Error occured when removing user sessions");
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to remove user sessions",
+        cause: error,
+      });
+    }
   }
 }
