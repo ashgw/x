@@ -5,6 +5,7 @@ import { expect, test } from "vitest";
 import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/api/router";
+import type { TrpcContext } from "~/trpc/context";
 import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
 import { createInnerTRPCContext } from "~/trpc/context";
@@ -18,7 +19,7 @@ function createTestContext() {
     ...innerContext,
     req: {} as NextRequest,
     res: {} as NextResponse,
-  };
+  } satisfies TrpcContext;
 }
 
 test("load and validate all blog posts", async () => {

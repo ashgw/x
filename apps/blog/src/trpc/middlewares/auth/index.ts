@@ -14,7 +14,7 @@ export const authMiddleware = (input: {
     if (input.withAuthorization) {
       isAuthorized({
         requiredRole: input.withAuthorization.requiredRole,
-        user,
+        userRole: user.role,
       });
     }
 

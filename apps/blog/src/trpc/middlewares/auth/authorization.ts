@@ -23,16 +23,16 @@ function hasSufficientRole({
 }
 
 export function isAuthorized({
-  user,
+  userRole,
   requiredRole,
 }: {
-  user: UserRo;
+  userRole: UserRo["role"];
   requiredRole: UserRoleEnum;
 }): void {
   if (
     !hasSufficientRole({
       requiredRole,
-      userRole: user.role,
+      userRole,
     })
   ) {
     throw new TRPCError({

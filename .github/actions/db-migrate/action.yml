@@ -6,13 +6,14 @@ inputs:
   with_deploy:
     required: false
     default: "false"
-    description: "Whether to run the deploy step"
+    description: "Whether to run the migration deployment step in the current database, whether the dev, prev or prod one"
   DATABASE_URL:
     required: true
     description: "The database URL"
   TEMPORARY_CONTAINER_DATABASE_URL:
     required: true
-    description: "The temporary database URL"
+    description: "The temporary database URL we use to test migrations in an ephemeral container"
+
 runs:
   using: "composite"
   steps:
