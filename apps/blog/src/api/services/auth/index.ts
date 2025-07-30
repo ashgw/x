@@ -346,18 +346,9 @@ export class AuthService {
       });
     }
 
-    if (csrfCookieToken !== csrfHeaderToken) {
-      const message = `CSRF token mismatch, possible tampering`;
-      logger.warn(message, {
-        csrfCookieToken,
-        csrfHeaderToken,
-      });
-
-      throw new InternalError({
-        code: "UNAUTHORIZED",
-        message,
-      });
-    }
+    this.validateCsrfToken({
+      requestCsrfHeaderValue: csrfHeaderToken,
+    });
 
     const session = await this.db.session.findUnique({
       where: { id: sessionId },
