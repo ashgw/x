@@ -1,4 +1,4 @@
-import { pbkdf2Sync, randomBytes } from "crypto";
+import { pbkdf2Sync, randomBytes, timingSafeEqual } from "crypto";
 import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
 
@@ -267,18 +267,24 @@ export class AuthService {
     try {
       const [salt, originalHash] = storedHash.split(":");
 
-      // Check if salt exists
-      if (!salt) {
-        logger.error("Invalid hash format, missing salt");
+      // Always produce a hash, even if inputs are invalid, to keep time constant
+      const dummySalt = "0".repeat(32); // fake salt
+      const _dummyHash = pbkdf2Sync("dummy", dummySalt, 1000, 32, "sha256");
+
+      if (!salt || !originalHash) {
+        pbkdf2Sync(plainPassword, dummySalt, 1000, 32, "sha256"); // fake work
         return false;
       }
 
-      // Hash the input password with the same salt
-      const hash = pbkdf2Sync(plainPassword, salt, 1000, 32, "sha256").toString(
-        "hex",
-      );
-      // Compare the calculated hash with the stored hash
-      return hash === originalHash;
+      const inputHash = pbkdf2Sync(plainPassword, salt, 1000, 32, "sha256");
+      const storedHashBuffer = Buffer.from(originalHash, "hex");
+
+      // Compare length before comparing contents to avoid exceptions
+      if (inputHash.length !== storedHashBuffer.length) {
+        return false;
+      }
+
+      return timingSafeEqual(inputHash, storedHashBuffer);
     } catch (error) {
       logger.error("Password verification error", { error });
       return false;
