@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  LoadingPoints as Loading,
 } from "@ashgw/ui";
 
 import type { UserLoginDto } from "~/api/models";
@@ -66,11 +67,10 @@ export function LoginPage() {
     loginMutation.mutate(data);
   };
 
-  // Show loading state or render the form
   if (isLoading) {
     return (
-      <div className="container mx-auto flex max-w-md items-center justify-center px-4 py-16">
-        <div className="text-center">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center">
+        <Loading />
       </div>
     );
   }
