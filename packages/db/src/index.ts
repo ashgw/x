@@ -1,6 +1,7 @@
 // uncomment this for more strictness, if you're doing crazy db shenanigans in the frontend
 // import "server-only";
 
+import type { PrismaClientOptions } from "@prisma/client/runtime/client";
 import type { MaybeUndefined } from "ts-roids";
 import { neonConfig, Pool as NeonPool } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
@@ -37,6 +38,19 @@ if (isNeonDatabase) {
   neonConfig.webSocketConstructor = ws;
 }
 
+const errorFormat: PrismaClientOptions["errorFormat"] = "pretty";
+
+const log: PrismaClientOptions["log"] =
+  env.NODE_ENV === "development"
+    ? ["query", "info", "warn", "error"]
+    : ["error"];
+
+const transactionOptions = {
+  maxWait: 10000,
+  timeout: 30000,
+  isolationLevel: "ReadCommitted",
+} as const;
+
 const db =
   globalForDb.prisma ??
   (isNeonDatabase
@@ -48,29 +62,15 @@ const db =
             connectionTimeoutMillis: 15000,
           }),
         ),
-        errorFormat: "pretty",
-        log:
-          env.NODE_ENV === "development"
-            ? ["query", "info", "warn", "error"]
-            : ["error"],
-        transactionOptions: {
-          maxWait: 10000,
-          timeout: 30000,
-          isolationLevel: "ReadCommitted",
-        },
+        errorFormat,
+        log,
+        transactionOptions,
       })
     : (new FullPrismaClient({
         datasourceUrl: env.DATABASE_URL,
-        errorFormat: "pretty",
-        log:
-          env.NODE_ENV === "development"
-            ? ["query", "info", "warn", "error"]
-            : ["error"],
-        transactionOptions: {
-          maxWait: 10000,
-          timeout: 30000,
-          isolationLevel: "ReadCommitted",
-        },
+        errorFormat,
+        log,
+        transactionOptions,
       }) satisfies DatabaseClient));
 
 // store the singleton in dev to avoid leaks when reloading

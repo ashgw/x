@@ -5,9 +5,9 @@ generator client {
 }
 
 generator erd {
-  provider = "prisma-erd-generator"
-  output   = "./ERD.svg"
-  
+  provider                  = "prisma-erd-generator"
+  output                    = "./ERD.svg"
+  mmdcOptions              = ["--puppeteerConfig", "{\"args\": [\"--no-sandbox\"]}"]
 }
 
 datasource db {
