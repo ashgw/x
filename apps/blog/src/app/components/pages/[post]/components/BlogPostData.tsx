@@ -25,13 +25,13 @@ const MDX = dynamic(
   },
 );
 
-interface BlogPostPorps {
+interface BlogPostProps {
   postData: PostDetailRo;
 }
 
 export const BlogPostData = memo(function BlogPostData({
   postData,
-}: BlogPostPorps) {
+}: BlogPostProps) {
   return (
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       <ViewTracker postSlug={postData.slug} />

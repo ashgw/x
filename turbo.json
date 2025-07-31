@@ -78,7 +78,6 @@
     "S3_BUCKET_SECRET_KEY",
     "S3_BUCKET_URL",
     "RESEND_API_KEY",
-    "COOKIE_SECRET",
     "IP_HASH_SALT"
   ],
   "globalPassThroughEnv": []

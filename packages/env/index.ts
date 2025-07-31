@@ -72,12 +72,8 @@ const serverSideVars = {
         message: "Must be a valid S3 or CloudFront URL",
       },
     ),
-
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
-
   RESEND_API_KEY: z.string().min(20).startsWith("re_"),
-
-  COOKIE_SECRET: z.string().min(32),
 };
 
 type ServerSideVars = typeof serverSideVars;
@@ -111,7 +107,6 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
-    COOKIE_SECRET: process.env.COOKIE_SECRET,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
