@@ -177,6 +177,156 @@ export class AuthService {
     }
   }
 
+  public async changePassword({
+    userId,
+    currentPassword,
+    newPassword,
+  }: {
+    userId: string;
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void> {
+    logger.info("Attempting to change password", { userId });
+    try {
+      const user = await this.db.user.findUnique({
+        where: { id: userId },
+        select: { passwordHash: true },
+      });
+
+      if (!user) {
+        logger.warn("User not found when changing password", { userId });
+        throw new InternalError({
+          code: "NOT_FOUND",
+          message: "User not found",
+        });
+      }
+
+      if (
+        !this._verifyPassword({
+          plainPassword: currentPassword,
+          storedHash: user.passwordHash,
+        })
+      ) {
+        logger.warn("Current password verification failed", { userId });
+        throw new InternalError({
+          code: "UNAUTHORIZED",
+          message: "Current password is incorrect",
+        });
+      }
+
+      const newPasswordHash = this._hashPassword(newPassword);
+
+      await this.db.user.update({
+        where: { id: userId },
+        data: { passwordHash: newPasswordHash },
+      });
+      logger.info("Password changed successfully", { userId });
+    } catch (error) {
+      logger.error("Failed to change password", { error, userId });
+      throw error instanceof InternalError
+        ? error
+        : new InternalError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to change password",
+            cause: error,
+          });
+    }
+  }
+
+  public async terminateAllSessions({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<void> {
+    logger.info("Attempting to terminate session", { sessionId, userId });
+    try {
+      const session = await this.db.session.findUnique({
+        where: { id: sessionId },
+        select: { userId: true },
+      });
+
+      if (!session || session.userId !== userId) {
+        logger.warn("Session not found or unauthorized", { sessionId, userId });
+        throw new InternalError({
+          code: "UNAUTHORIZED",
+          message: "Session not found or unauthorized",
+        });
+      }
+
+      await this.db.session.delete({
+        where: { id: sessionId },
+      });
+      logger.info("Session terminated successfully", { sessionId });
+    } catch (error) {
+      logger.error("Failed to terminate session", { error, sessionId });
+      throw error instanceof InternalError
+        ? error
+        : new InternalError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to terminate session",
+            cause: error,
+          });
+    }
+  }
+
+  public async terminateAllSessions({
+    userId,
+    exceptSessionId,
+  }: {
+    userId: string;
+    exceptSessionId?: string;
+  }): Promise<void> {
+    logger.info("Attempting to terminate all sessions", {
+      userId,
+      exceptSessionId,
+    });
+    try {
+      await this.db.session.deleteMany({
+        where: {
+          userId,
+          ...(exceptSessionId ? { NOT: { id: exceptSessionId } } : {}),
+        },
+      });
+      logger.info("All sessions terminated successfully", { userId });
+    } catch (error) {
+      logger.error("Failed to terminate all sessions", { error, userId });
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to terminate all sessions",
+        cause: error,
+      });
+    }
+  }
+
+  public async getSessions({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<{ id: string; createdAt: Date; expiresAt: Date }[]> {
+    logger.info("Fetching user sessions", { userId });
+    try {
+      return await this.db.session.findMany({
+        where: {
+          userId,
+          expiresAt: { gt: new Date() },
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          expiresAt: true,
+        },
+        orderBy: { createdAt: "desc" },
+      });
+    } catch (error) {
+      logger.error("Failed to fetch sessions", { error, userId });
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch sessions",
+        cause: error,
+      });
+    }
+  }
+
   // TODO: here needs more work gang
   private _validateCsrfToken({
     requestCsrfHeaderValue,
