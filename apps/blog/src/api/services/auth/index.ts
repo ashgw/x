@@ -220,6 +220,7 @@ export class AuthService {
         where: { id: userId },
         data: { passwordHash: newPasswordHash },
       });
+
       logger.info("Password changed successfully", { userId });
     } catch (error) {
       logger.error("Failed to change password", { error, userId });
@@ -233,72 +234,72 @@ export class AuthService {
     }
   }
 
+  // aside from the current one the user is on
   public async terminateAllActiveSessions({
     userId,
   }: {
     userId: string;
   }): Promise<void> {
-    logger.info("Attempting to terminate session", { sessionId, userId });
-    try {
-      const session = await this.db.session.findUnique({
-        where: { id: sessionId },
-        select: { userId: true },
-      });
+    // extract the current sessionID from the cookie
+    const currentSessionId = CookieService.session.get({
+      req: this.req,
+    });
 
-      if (!session || session.userId !== userId) {
-        logger.warn("Session not found or unauthorized", { sessionId, userId });
+    if (!currentSessionId) {
+      logger.warn("No session cookie found, user is not logged in");
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message: "No session cookie found",
+      });
+    }
+
+    logger.info("Attempting to terminate sessions except current", {
+      userId,
+      currentSessionId,
+    });
+    try {
+      // Ensure user exists
+      const user = await this.db.user.findUnique({
+        where: { id: userId },
+        select: { id: true },
+      });
+      if (!user) {
+        logger.warn("User not found when terminating sessions", { userId });
         throw new InternalError({
-          code: "UNAUTHORIZED",
-          message: "Session not found or unauthorized",
+          code: "NOT_FOUND",
+          message: "User not found",
         });
       }
 
-      await this.db.session.delete({
-        where: { id: sessionId },
+      // Delete all sessions for this user except the current one
+      const result = await this.db.session.deleteMany({
+        where: {
+          userId,
+          id: { not: currentSessionId },
+        },
       });
-      logger.info("Session terminated successfully", { sessionId });
+
+      logger.info("Sessions terminated successfully", {
+        userId,
+        currentSessionId,
+        deletedCount: result.count,
+      });
     } catch (error) {
-      logger.error("Failed to terminate session", { error, sessionId });
+      logger.error("Failed to terminate sessions", {
+        error,
+        userId,
+        currentSessionId,
+      });
       throw error instanceof InternalError
         ? error
         : new InternalError({
             code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to terminate session",
+            message: "Failed to terminate sessions",
             cause: error,
           });
     }
   }
 
-  public async terminateAllSessions({
-    userId,
-    exceptSessionId,
-  }: {
-    userId: string;
-    exceptSessionId?: string;
-  }): Promise<void> {
-    logger.info("Attempting to terminate all sessions", {
-      userId,
-      exceptSessionId,
-    });
-    try {
-      await this.db.session.deleteMany({
-        where: {
-          userId,
-          ...(exceptSessionId ? { NOT: { id: exceptSessionId } } : {}),
-        },
-      });
-      logger.info("All sessions terminated successfully", { userId });
-    } catch (error) {
-      logger.error("Failed to terminate all sessions", { error, userId });
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to terminate all sessions",
-        cause: error,
-      });
-    }
-  }
-
-  // TODO: here needs more work gang
   private _validateCsrfToken({
     requestCsrfHeaderValue,
   }: {
@@ -459,45 +460,5 @@ export class AuthService {
     }
 
     return UserMapper.toUserRo({ user: session.user });
-  }
-
-  // not used
-  private async _clearUserSessions({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<void> {
-    logger.info("Clearning active user sessions");
-    try {
-      const user = await this.db.user.findUnique({
-        where: {
-          id: userId,
-        },
-        include: {
-          sessions: {
-            select: {
-              id: true,
-            },
-          },
-        },
-      });
-      if (user?.sessions) {
-        const allSessionIds: string[] = user.sessions.map(({ id }) => id);
-        await this.db.session.deleteMany({
-          where: {
-            id: {
-              in: allSessionIds,
-            },
-          },
-        });
-      }
-    } catch (error) {
-      logger.error("Error occured when removing user sessions");
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to remove user sessions",
-        cause: error,
-      });
-    }
   }
 }
