@@ -233,7 +233,7 @@ export class AuthService {
     }
   }
 
-  public async terminateAllSessions({
+  public async terminateAllActiveSessions({
     userId,
   }: {
     userId: string;
@@ -293,35 +293,6 @@ export class AuthService {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to terminate all sessions",
-        cause: error,
-      });
-    }
-  }
-
-  public async getSessions({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<{ id: string; createdAt: Date; expiresAt: Date }[]> {
-    logger.info("Fetching user sessions", { userId });
-    try {
-      return await this.db.session.findMany({
-        where: {
-          userId,
-          expiresAt: { gt: new Date() },
-        },
-        select: {
-          id: true,
-          createdAt: true,
-          expiresAt: true,
-        },
-        orderBy: { createdAt: "desc" },
-      });
-    } catch (error) {
-      logger.error("Failed to fetch sessions", { error, userId });
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch sessions",
         cause: error,
       });
     }

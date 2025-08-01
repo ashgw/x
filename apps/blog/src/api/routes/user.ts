@@ -4,7 +4,6 @@ import type { TrpcContext } from "~/trpc/context";
 import { authedProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
-  sessionSchemaRo,
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
   userRegisterSchemaDto,
@@ -60,19 +59,11 @@ export const userRouter = router({
       });
     }),
 
-  sessions: authedProcedure
-    .output(z.array(sessionSchemaRo))
-    .query(async ({ ctx }) => {
-      return await userAuthService(ctx).getSessions({
-        userId: ctx.user.id,
-      });
-    }),
-
-  terminateSessions: authedProcedure
+  terminateAllActiveSessions: authedProcedure
     .input(userTerminateAllActiveSessionsSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { userId } }) => {
-      await userAuthService(ctx).terminateAllSessions({
+      await userAuthService(ctx).terminateAllActiveSessions({
         userId,
       });
     }),
