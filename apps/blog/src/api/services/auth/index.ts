@@ -294,11 +294,39 @@ export class AuthService {
 
   public async terminateSpecificSession({
     sessionId,
+    userId,
   }: {
     sessionId: string;
+    userId: string;
   }): Promise<void> {
     logger.info("Attempting to terminate specific session", { sessionId });
+
     try {
+      const session = await this.db.session.findUnique({
+        where: { id: sessionId },
+        select: { userId: true },
+      });
+
+      if (!session) {
+        throw new InternalError({
+          code: "NOT_FOUND",
+          message: "Session not found",
+        });
+      }
+
+      if (session.userId !== userId) {
+        logger.warn("Unauthorized session termination attempt", {
+          sessionId,
+          requestingUserId: userId,
+          sessionOwnerId: session.userId,
+        });
+
+        throw new InternalError({
+          code: "FORBIDDEN",
+          message: "You are not allowed to terminate this session",
+        });
+      }
+
       await this.db.session.delete({
         where: { id: sessionId },
       });
