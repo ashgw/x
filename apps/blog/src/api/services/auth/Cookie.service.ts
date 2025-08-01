@@ -13,9 +13,6 @@ const securedCookieOptions = {
   secure: env.NODE_ENV !== "development",
   maxAge: AUTH_COOKIES_MAX_AGE,
   httpOnly: true,
-  ...(env.NODE_ENV === "production" && {
-    domain: new URL(env.NEXT_PUBLIC_BLOG_URL).hostname,
-  }),
 } satisfies SerializeOptions;
 
 class _SessionCookieService {
