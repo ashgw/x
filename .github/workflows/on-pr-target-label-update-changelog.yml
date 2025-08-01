@@ -1,4 +1,4 @@
-name: PR / update-changelog
+name: Dispatch / update-changelog
 
 on:
   pull_request_target:
