@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: main
           fetch-depth: 0
 
       - uses: ./.github/actions/pnpm-install
@@ -51,5 +51,5 @@ jobs:
           gh pr create \
             --title "chore: changelog update for PR #${PR_NUMBER}" \
             --body "This PR contains changelog updates and version bumps for PR #${PR_NUMBER}" \
-            --base "${GITHUB_HEAD_REF}" \
+            --base main \
             --head "${BRANCH_NAME}"
