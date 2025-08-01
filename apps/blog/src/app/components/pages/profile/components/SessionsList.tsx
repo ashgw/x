@@ -1,6 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import type { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Shield, XCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -40,15 +42,55 @@ const rowVariants = {
       damping: 15,
     },
   },
+  exit: {
+    opacity: 0,
+    x: -20,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
 };
 
-export function SessionsList(props: { sessions: SessionRo[] }) {
+interface SessionsListProps {
+  sessions: SessionRo[];
+  setSessions: Dispatch<SetStateAction<SessionRo[]>>;
+}
+
+export function SessionsList({ sessions, setSessions }: SessionsListProps) {
+  const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [terminatingAllSessions, setTerminatingAllSessions] = useState(false);
+
+  const setSessionLoading = (sessionId: string, isLoading: boolean) => {
+    setLoadingSessionIds((prev) => {
+      const next = new Set(prev);
+      if (isLoading) {
+        next.add(sessionId);
+      } else {
+        next.delete(sessionId);
+      }
+      return next;
+    });
+  };
+
   const terminateAllSessionsMutation =
     trpcClientSide.user.terminateAllActiveSessions.useMutation({
+      onMutate: () => {
+        setTerminatingAllSessions(true);
+      },
       onSuccess: () => {
-        toast.success("All sessions terminated successfully");
+        // Keep loading for a moment for better UX
+        setTimeout(() => {
+          setTerminatingAllSessions(false);
+          setSessions([]);
+          toast.success("All sessions terminated successfully");
+        }, 500);
       },
       onError: (error) => {
+        setTerminatingAllSessions(false);
         logger.error("Failed to terminate all sessions", { error });
         monitor.next.captureException({ error });
         toast.error("Failed to terminate all sessions");
@@ -57,17 +99,26 @@ export function SessionsList(props: { sessions: SessionRo[] }) {
 
   const terminateSpecificSessionMutation =
     trpcClientSide.user.terminateSpecificSession.useMutation({
-      onSuccess: () => {
-        toast.success("Session terminated successfully");
+      onMutate: ({ sessionId }) => {
+        setSessionLoading(sessionId, true);
       },
-      onError: (error) => {
+      onSuccess: (_, { sessionId }) => {
+        // Keep loading for a moment for better UX
+        setTimeout(() => {
+          setSessionLoading(sessionId, false);
+          setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+          toast.success("Session terminated successfully");
+        }, 500);
+      },
+      onError: (error, { sessionId }) => {
+        setSessionLoading(sessionId, false);
         logger.error("Failed to terminate specific session", { error });
         monitor.next.captureException({ error });
         toast.error("Failed to terminate specific session");
       },
     });
 
-  if (!props.sessions.length) {
+  if (!sessions.length) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -108,66 +159,74 @@ export function SessionsList(props: { sessions: SessionRo[] }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {props.sessions.map((session) => {
-              const isExpired = new Date(session.expiresAt) < new Date();
-              return (
-                <motion.tr
-                  key={session.id}
-                  variants={rowVariants}
-                  className="group"
-                  whileHover={{ backgroundColor: "rgba(255,255,255,0.03)" }}
-                >
-                  <TableCell className="font-medium">
-                    {formatDate(session.createdAt)}
-                  </TableCell>
-                  <TableCell>{formatDate(session.expiresAt)}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={isExpired ? "destructive" : "success"}
-                      className="rounded-sm px-2 py-0.5 text-xs font-medium"
-                    >
-                      {isExpired ? "Expired" : "Active"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() =>
-                        terminateSpecificSessionMutation.mutate({
-                          sessionId: session.id,
-                        })
-                      }
-                      disabled={terminateSpecificSessionMutation.isPending}
-                      className="opacity-70 transition-opacity group-hover:opacity-100"
-                    >
-                      {terminateSpecificSessionMutation.isPending ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        <XCircle className="mr-2 h-4 w-4" />
-                      )}
-                      Terminate
-                    </Button>
-                  </TableCell>
-                </motion.tr>
-              );
-            })}
+            <AnimatePresence mode="popLayout">
+              {sessions.map((session) => {
+                const isExpired = new Date(session.expiresAt) < new Date();
+                const isLoading =
+                  loadingSessionIds.has(session.id) || terminatingAllSessions;
+
+                return (
+                  <motion.tr
+                    key={session.id}
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="group"
+                    whileHover={{ backgroundColor: "rgba(255,255,255,0.03)" }}
+                  >
+                    <TableCell className="font-medium">
+                      {formatDate(session.createdAt)}
+                    </TableCell>
+                    <TableCell>{formatDate(session.expiresAt)}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={isExpired ? "destructive" : "success"}
+                        className="rounded-sm px-2 py-0.5 text-xs font-medium"
+                      >
+                        {isExpired ? "Expired" : "Active"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() =>
+                          terminateSpecificSessionMutation.mutate({
+                            sessionId: session.id,
+                          })
+                        }
+                        disabled={isLoading}
+                        className="opacity-70 transition-opacity group-hover:opacity-100"
+                      >
+                        {isLoading ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <XCircle className="mr-2 h-4 w-4" />
+                        )}
+                        Terminate
+                      </Button>
+                    </TableCell>
+                  </motion.tr>
+                );
+              })}
+            </AnimatePresence>
           </TableBody>
         </Table>
       </div>
 
       <div className="flex items-center justify-between">
         <p className="text-muted-foreground text-sm">
-          {props.sessions.length} active{" "}
-          {props.sessions.length === 1 ? "session" : "sessions"}
+          {sessions.length} active{" "}
+          {sessions.length === 1 ? "session" : "sessions"}
         </p>
         <Button
           variant="destructive"
           onClick={() => terminateAllSessionsMutation.mutate()}
-          disabled={terminateAllSessionsMutation.isPending}
+          disabled={terminatingAllSessions}
           className="relative"
         >
-          {terminateAllSessionsMutation.isPending ? (
+          {terminatingAllSessions ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <XCircle className="mr-2 h-4 w-4" />

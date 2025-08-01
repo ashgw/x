@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ import {
   LoadingPoints as Loading,
 } from "@ashgw/ui";
 
+import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
 import { trpcClientSide } from "~/trpc/client";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
@@ -50,6 +51,7 @@ const cardVariants = {
 export function ProfilePage() {
   const router = useRouter();
   const { user, isLoading, logout } = useAuth();
+  const [sessions, setSessions] = useState<SessionRo[]>([]);
   const utils = trpcClientSide.useUtils();
 
   useEffect(() => {
@@ -57,6 +59,12 @@ export function ProfilePage() {
       router.push("/login");
     }
   }, [isLoading, user, router]);
+
+  useEffect(() => {
+    if (user?.sessions) {
+      setSessions(user.sessions);
+    }
+  }, [user?.sessions]);
 
   const handleLogout = async () => {
     try {
@@ -150,7 +158,7 @@ export function ProfilePage() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <SessionsList sessions={user.sessions} />
+                  <SessionsList sessions={sessions} setSessions={setSessions} />
                 </CardContent>
               </Card>
             </motion.div>
