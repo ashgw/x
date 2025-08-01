@@ -3,7 +3,7 @@ import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
 
-import { createEnv } from "@ashgw/ts-env";
+import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 
 // for compatibility with ESM and CommonJS
 let rootDir = process.cwd();
@@ -53,17 +53,7 @@ const serverSideVars = {
     .regex(/^[a-z0-9.-]+$/, "Invalid S3 bucket name"),
 
   S3_BUCKET_REGION: z.enum(
-    [
-      "us-east-1",
-      "us-west-1",
-      "us-west-2",
-      "eu-west-1",
-      "eu-central-1",
-      "ap-southeast-1",
-      "ap-northeast-1",
-      "ap-south-1",
-      "sa-east-1",
-    ],
+    ["us-east-1", "us-west-1", "us-west-2", "eu-west-1"], // I don't deploy anywhere else
     {
       errorMap: () => ({ message: "Invalid AWS region" }),
     },
@@ -82,7 +72,6 @@ const serverSideVars = {
         message: "Must be a valid S3 or CloudFront URL",
       },
     ),
-
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
 
@@ -97,8 +86,8 @@ export const env = createEnv({
     ...serverSideVars,
     SENTRY_DSN: z.string().url(),
     WWW_URL: z.string().url(),
-    BLOG_URL: z.string().url(),
     WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
+    BLOG_URL: z.string().url(),
     BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
     POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
     POSTHOG_HOST: z.string().url(),

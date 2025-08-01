@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-db-migrate.yml
     with:
       environment: "development"
-      with_deploy: true
+      with_deploy: "yes"
     secrets: inherit

@@ -2,7 +2,8 @@ import { z } from "zod";
 
 import { storage } from "@ashgw/storage";
 
-import { adminProcedure, publicProcedure, router } from "~/trpc/trpc";
+import { adminProcedure, publicProcedure } from "~/trpc/procedures";
+import { router } from "~/trpc/root";
 import {
   postCardSchemaRo,
   postDeleteSchemaDto,
@@ -16,7 +17,7 @@ import { BlogService } from "../services";
 export const postRouter = router({
   getPost: publicProcedure
     .input(postGetSchemaDto)
-    .output(postDetailSchemaRo.nullable()) // not found is not an error
+    .output(postDetailSchemaRo.nullable()) // not found
     .query(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
@@ -63,12 +64,15 @@ export const postRouter = router({
   updatePost: adminProcedure
     .input(postUpdateSchemaDto)
     .output(postDetailSchemaRo)
-    .mutation(async ({ input, ctx: { db } }) => {
+    .mutation(async ({ input: { data, slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
         storage,
       });
-      return await blogService.updatePost(input.slug, input.data);
+      return await blogService.updatePost({
+        slug,
+        data,
+      });
     }),
 
   deletePost: adminProcedure

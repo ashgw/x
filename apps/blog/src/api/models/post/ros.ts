@@ -2,6 +2,7 @@
 // <entity(s)>-<Intent/View>schemaRo for zod schemas
 // <Entity(s)>-<Intent/View>Ro for the types of the schemas
 
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { z } from "zod";
 
 import { PostCategoryEnum } from "./shared";
@@ -9,7 +10,7 @@ import { PostCategoryEnum } from "./shared";
 // ========== Schemas ==========
 
 export const postCardSchemaRo = z.object({
-  slug: z.string().min(1),
+  slug: z.string().min(1).max(255),
   title: z.string().min(3),
   seoTitle: z.string().min(1),
   summary: z.string().min(1).max(90),
@@ -22,9 +23,9 @@ export const postCardSchemaRo = z.object({
   views: z.number().default(0),
 });
 
-// this comes from fm library API directly
+// this comes from fm library API but body is now serialized MDX content
 export const fontMatterMdxContentSchemaRo = z.object({
-  body: z.string(),
+  body: z.custom<MDXRemoteSerializeResult>(),
   bodyBegin: z.number(), // needed for MDX parsing
 });
 

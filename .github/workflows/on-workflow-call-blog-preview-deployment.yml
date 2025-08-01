@@ -19,4 +19,5 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       NODE_ENV: "preview"
+      SERVICE_NAME: "blog"
     secrets: inherit

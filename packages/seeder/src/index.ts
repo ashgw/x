@@ -1,3 +1,4 @@
+import { pbkdf2Sync, randomBytes } from "crypto";
 import pkg from "aws-sdk";
 
 import { db } from "@ashgw/db";
@@ -11,6 +12,42 @@ const s3 = new pkg.S3({
   secretAccessKey: env.S3_BUCKET_SECRET_KEY,
 });
 
+function hashPassword(password: string): string {
+  const salt = randomBytes(16).toString("hex");
+  const hash = pbkdf2Sync(password, salt, 1000, 32, "sha256").toString("hex");
+  return `${salt}:${hash}`;
+}
+
+async function createAdminUser() {
+  const email = "admin@ashgw.me";
+  const password = "Admin123";
+  const name = "Admin";
+
+  const existingUser = await db.user.findUnique({
+    where: { email },
+    select: { email: true },
+  });
+
+  if (existingUser) {
+    // eslint-disable-next-line no-restricted-syntax
+    console.error("Admin user already exists");
+    return;
+  }
+
+  const passwordHash = hashPassword(password);
+  await db.user.create({
+    data: {
+      email,
+      passwordHash,
+      name,
+      role: "ADMIN",
+    },
+  });
+
+  // eslint-disable-next-line no-restricted-syntax
+  console.log("Admin user created successfully");
+}
+
 async function uploadFileRaw({
   filename,
   folder,
@@ -18,7 +55,7 @@ async function uploadFileRaw({
   contentType,
 }: {
   filename: string;
-  folder: string;
+  folder: "mdx";
   body: Buffer;
   contentType: string;
 }) {
@@ -32,25 +69,16 @@ async function uploadFileRaw({
     .promise();
 }
 
-export const uploadFile = async () => {
-  await uploadFileRaw({
-    filename: "branded-types.mdx",
-    folder: "mdx",
-    body: Buffer.from(""),
-    contentType: "text/markdown",
-  });
-};
-
 export const seed = async () => {
+  const mdxFolder = "mdx";
   for (const blog of blogs) {
-    const mdxKey = `mdx/${blog.slug}.mdx`;
-
     await uploadFileRaw({
       filename: `${blog.slug}.mdx`,
-      folder: "mdx",
+      folder: mdxFolder,
       body: Buffer.from(blog.mdxContentRaw, "utf-8"),
       contentType: "text/markdown",
     });
+    const mdxKey = `${mdxFolder}/${blog.slug}.mdx`; // AKA the Upload table primary key
 
     await db.upload.upsert({
       where: { key: mdxKey },
@@ -95,7 +123,7 @@ export const seed = async () => {
 };
 
 async function main() {
-  await uploadFile();
+  await createAdminUser();
   await seed();
 }
 

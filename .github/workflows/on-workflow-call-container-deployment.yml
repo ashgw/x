@@ -6,6 +6,10 @@ on:
       NODE_ENV:
         required: true
         type: string
+      SERVICE_NAME:
+        required: true
+        type: string
+        description: blog or www or whatever, basically the app
 
 jobs:
   deploy:
@@ -47,4 +51,5 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SERVICE_NAME: "blog" # only blog for now, can also be "www"
+          SERVICE_NAME: ${{ inputs.SERVICE_NAME}} # only blog for now
+

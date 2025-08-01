@@ -1,20 +1,29 @@
 "use client";
 
 import { memo } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge, Button } from "@ashgw/ui";
+import { Badge, Button, Skeleton } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
 import { formatViews } from "~/utils/formatViews";
 import { H1 } from "./headers";
-import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
 import { ViewTracker } from "./ViewTracker";
+
+// Dynamically import MDX component with SSR disabled
+const MDX = dynamic(
+  () => import("./mdx").then((mod) => ({ default: mod.MDX })),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-48 w-full" />,
+  },
+);
 
 interface BlogPostProps {
   postData: PostDetailRo;

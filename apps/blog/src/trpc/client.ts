@@ -9,6 +9,7 @@ import { makeQueryClient } from "./query-client";
 let clientQueryClientSingleton: Optional<QueryClient> = null;
 
 const isServer = typeof window === "undefined";
+const isBrowser = !isServer;
 
 export function getQueryClient() {
   if (isServer) {
@@ -18,8 +19,6 @@ export function getQueryClient() {
   // Browser: use singleton pattern to keep the same query client
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
-
-const isBrowser = !isServer;
 
 export function getTrpcUrl({ siteBaseUrl }: { siteBaseUrl: string }) {
   // For client-side requests, use relative path
