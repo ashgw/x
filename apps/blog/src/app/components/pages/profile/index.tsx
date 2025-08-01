@@ -43,7 +43,7 @@ export function ProfilePage() {
     } catch (error) {
       logger.error("Logout failed", { error });
       monitor.next.captureException({ error });
-      toast.error("Failed to logout");
+      toast.error("Failed to logout, please try again later");
     }
   };
 
@@ -100,7 +100,7 @@ export function ProfilePage() {
         </Card>
 
         <div className="flex justify-end">
-          <Button variant="squared:destructive" onClick={handleLogout}>
+          <Button variant="destructive" onClick={handleLogout}>
             Logout
           </Button>
         </div>
