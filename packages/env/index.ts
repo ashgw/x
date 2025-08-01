@@ -73,7 +73,6 @@ const serverSideVars = {
       },
     ),
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
-  RESEND_API_KEY: z.string().min(20).startsWith("re_"),
 };
 
 type ServerSideVars = typeof serverSideVars;
@@ -106,7 +105,6 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
