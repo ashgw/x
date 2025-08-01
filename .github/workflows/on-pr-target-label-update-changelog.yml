@@ -51,7 +51,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Commit changes
-          git add CHANGELOG.md .
+          git add .
           git commit -m "chore: changelog + version bump" || echo "Nothing to commit"
 
           # Push to new branch
