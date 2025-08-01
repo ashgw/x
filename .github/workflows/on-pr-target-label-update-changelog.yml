@@ -1,4 +1,4 @@
-name: PR / update-changelog
+name: Dispatch / update-changelog
 
 on:
   pull_request_target:
@@ -7,58 +7,47 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
+  issues: write
+  repository-projects: write
 
 jobs:
   update-changelog:
-    if: github.event.label.name == 'update-changelog'
+    if: github.event.label.name == 'update-changelog' && github.actor == 'ashgw'
     runs-on: ubuntu-latest
 
     steps:
+      - name: Authenticate GitHub CLI
+        run: |
+          echo "${{ secrets.GA_AUTOMATIONS_PR_RW }}" > ~/.gh_token
+          gh auth login --hostname github.com --with-token < ~/.gh_token
+          gh auth status
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      # - name: Generate short summary via LLM and append to global changelog
-      #   env:
-      #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      #   run: |
-      #     pip install llm
-      #     COMMIT_MSG=$(git log -1 --pretty=%B)
-      #     SHA=$(git rev-parse --short HEAD)
-      #     OWNER=$(echo "${{ github.repository }}" | cut -d'/' -f1)
-      #     REPO=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-      #     SAFE_MSG=$(printf '%s' "$COMMIT_MSG")
-      #     SUMMARY=$(echo "$SAFE_MSG" | llm "Summarize this commit in one sentence (no prefix like 'this commit'; just directly say what it does):" | tr -d '\n')
-      #     echo "[$SHA](https://github.com/$OWNER/$REPO/commit/$SHA) -> $SUMMARY" >> CHANGELOG.md
-
       - uses: ./.github/actions/pnpm-install
 
       - name: Run Changeset versioning
-        run: pnpm changeset version
+        run: pnpm changelog:version
 
       - name: Create changelog PR
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           RANDOM_SUFFIX: ${{ github.run_id }}
         run: |
-          # Create a new branch with a random name
           BRANCH_NAME="changelog-update-${PR_NUMBER}-${RANDOM_SUFFIX}"
           git checkout -b "${BRANCH_NAME}"
 
-          # Configure git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Commit changes
-          git add CHANGELOG.md .
+          git add .
           git commit -m "chore: changelog + version bump" || echo "Nothing to commit"
+          git push --force origin "${BRANCH_NAME}"
 
-          # Push to new branch
-          git push origin "${BRANCH_NAME}"
-
-          # Create PR
           gh pr create \
             --title "chore: changelog update for PR #${PR_NUMBER}" \
             --body "This PR contains changelog updates and version bumps for PR #${PR_NUMBER}" \

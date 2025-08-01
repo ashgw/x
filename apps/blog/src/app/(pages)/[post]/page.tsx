@@ -6,11 +6,6 @@ import { createMetadata } from "@ashgw/seo";
 import { BlogPostPage } from "~/app/components/pages/[post]";
 import { HydrateClient, trpcServerSide } from "~/trpc/server";
 
-export const generateStaticParams = async () => {
-  const posts = await trpcServerSide.post.getPostCards();
-  return posts.map((post) => ({ post: post.slug }));
-};
-
 interface DynamicRouteParams {
   params: { post: string };
 }
@@ -25,7 +20,7 @@ export async function generateMetadata({
   if (!postData) {
     return {
       title: "Post not found",
-      description: `The post with the given slug (${params.post}) was not found`,
+      description: `The post (${params.post}) was not found`,
     };
   }
 

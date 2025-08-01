@@ -74,6 +74,7 @@ export const userRouter = router({
     .mutation(async ({ ctx, input: { sessionId } }) => {
       await userAuthService(ctx).terminateSpecificSession({
         sessionId,
+        userId: ctx.user.id,
       });
     }),
 });
