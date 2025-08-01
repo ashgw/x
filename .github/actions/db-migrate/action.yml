@@ -5,7 +5,7 @@ description: Run database migrations
 inputs:
   with_deploy:
     required: true
-    description: "Whether to run the migration deployment step in the current database, whether the dev, prev or prod one"
+    description: "Whether to run the migration deployment step in the current database, whether the dev, prev or prod one ('yes' or 'no')"
   DATABASE_URL:
     required: true
     description: "The database URL"
@@ -69,14 +69,14 @@ runs:
         exit $MIGRATION_TEST_STATUS
 
     - name: Run migrations
-      if: inputs.with_deploy == true
+      if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
         # Filter out sensitive information from Prisma output
         pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
     - name: Validate migrations
-      if: inputs.with_deploy == true
+      if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
         # Filter out sensitive information from Prisma output
