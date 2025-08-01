@@ -41,12 +41,12 @@ jobs:
           BRANCH_NAME="changelog-update-${PR_NUMBER}-${RANDOM_SUFFIX}"
           git checkout -b "${BRANCH_NAME}"
 
-          git config user.name "ashgw-bot"
-          git config user.email "ashgw@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add .
           git commit -m "chore: changelog + version bump" || echo "Nothing to commit"
-          git push origin "${BRANCH_NAME}"
+          git push --force origin "${BRANCH_NAME}"
 
           gh pr create \
             --title "chore: changelog update for PR #${PR_NUMBER}" \
