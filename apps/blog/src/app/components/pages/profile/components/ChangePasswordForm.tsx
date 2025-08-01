@@ -4,7 +4,6 @@ import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { logger, monitor } from "@ashgw/observability";
 import {
@@ -18,28 +17,13 @@ import {
   Input,
 } from "@ashgw/ui";
 
-import {
-  UserChangePasswordDto,
-  userChangePasswordSchemaDto,
-} from "~/api/models";
+import type { UserChangePasswordDto } from "~/api/models";
+import { userChangePasswordSchemaDto } from "~/api/models";
 import { trpcClientSide } from "~/trpc/client";
 
-const changePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Current password is required"),
-    newPassword: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
-type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
-
 export function ChangePasswordForm() {
-  const form = useForm<ChangePasswordFormData>({
-    resolver: zodResolver(changePasswordSchema),
+  const form = useForm<UserChangePasswordDto>({
+    resolver: zodResolver(userChangePasswordSchemaDto),
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -53,7 +37,7 @@ export function ChangePasswordForm() {
         toast.success("Password changed successfully");
         form.reset();
       },
-      onError: (error: Error) => {
+      onError: (error) => {
         logger.error("Failed to change password", { error });
         monitor.next.captureException({ error });
         toast.error(error.message || "Failed to change password");
@@ -61,10 +45,11 @@ export function ChangePasswordForm() {
     },
   );
 
-  const onSubmit: SubmitHandler<ChangePasswordFormData> = (data) => {
+  const onSubmit: SubmitHandler<UserChangePasswordDto> = (data) => {
     changePasswordMutation.mutate({
       currentPassword: data.currentPassword,
       newPassword: data.newPassword,
+      confirmPassword: data.confirmPassword,
     });
   };
 
