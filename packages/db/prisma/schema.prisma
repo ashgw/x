@@ -4,12 +4,6 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
-generator erd {
-  provider                  = "prisma-erd-generator"
-  output                    = "./ERD.svg"
-  mmdcOptions              = ["--puppeteerConfig", "{\"args\": [\"--no-sandbox\"]}"]
-}
-
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
