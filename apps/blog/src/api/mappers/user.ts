@@ -4,7 +4,7 @@ import { UserRoleEnum } from "../models";
 
 export class UserMapper {
   public static toUserRo({
-    user: { email, sessions, role, id, name },
+    user: { email, sessions, role, id, name, createdAt },
   }: {
     user: UserWithSessionsQuery;
   }): UserRo {
@@ -12,6 +12,7 @@ export class UserMapper {
       id,
       email,
       name,
+      createdAt,
       role: this._mapRole({ role }),
       sessions: this._mapSessions({
         sessions,
@@ -39,6 +40,7 @@ export class UserMapper {
     return sessions.map((session) => ({
       id: session.id,
       expiresAt: session.expiresAt,
+      createdAt: session.createdAt,
     }));
   }
 

@@ -5,6 +5,8 @@ import { procedure } from "./root";
 
 export const publicProcedure = procedure.use(timingMiddleware);
 
+export const authedProcedure = publicProcedure.use(authMiddleware({}));
+
 export const adminProcedure = publicProcedure.use(
   authMiddleware({
     withAuthorization: {

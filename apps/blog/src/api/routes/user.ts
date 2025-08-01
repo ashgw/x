@@ -1,16 +1,18 @@
 import { z } from "zod";
 
 import type { TrpcContext } from "~/trpc/context";
-import { publicProcedure } from "~/trpc/procedures";
+import { authedProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
+  userChangePasswordSchemaDto,
   userLoginSchemaDto,
   userRegisterSchemaDto,
   userSchemaRo,
+  userTerminateSpecificSessionSchemaDto,
 } from "../models";
 import { AuthService } from "../services";
 
-const auth = (ctx: TrpcContext) =>
+const userAuthService = (ctx: TrpcContext) =>
   new AuthService({
     db: ctx.db,
     req: ctx.req,
@@ -20,29 +22,58 @@ const auth = (ctx: TrpcContext) =>
 export const userRouter = router({
   me: publicProcedure
     .input(z.void())
-    .output(userSchemaRo.nullable()) // null if user not found
+    .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
-      return await auth(ctx).me();
+      return await userAuthService(ctx).me();
     }),
 
   register: publicProcedure
     .input(userRegisterSchemaDto)
     .output(z.void())
     .mutation(async ({ input, ctx }) => {
-      return await auth(ctx).register(input);
+      return await userAuthService(ctx).register(input);
     }),
 
   login: publicProcedure
     .input(userLoginSchemaDto)
     .output(userSchemaRo)
     .mutation(async ({ input, ctx }) => {
-      return await auth(ctx).login(input);
+      return await userAuthService(ctx).login(input);
     }),
 
   logout: publicProcedure
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      return await auth(ctx).logout();
+      return await userAuthService(ctx).logout();
+    }),
+
+  changePassword: authedProcedure
+    .input(userChangePasswordSchemaDto)
+    .output(z.void())
+    .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
+      await userAuthService(ctx).changePassword({
+        userId: ctx.user.id,
+        currentPassword,
+        newPassword,
+      });
+    }),
+
+  terminateAllActiveSessions: authedProcedure
+    .input(z.void())
+    .output(z.void())
+    .mutation(async ({ ctx }) => {
+      await userAuthService(ctx).terminateAllActiveSessions({
+        userId: ctx.user.id,
+      });
+    }),
+
+  terminateSpecificSession: authedProcedure
+    .input(userTerminateSpecificSessionSchemaDto)
+    .output(z.void())
+    .mutation(async ({ ctx, input: { sessionId } }) => {
+      await userAuthService(ctx).terminateSpecificSession({
+        sessionId,
+      });
     }),
 });
