@@ -45,16 +45,16 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-lint.yml
     secrets: inherit
 
-  test:
-    uses: ./.github/workflows/on-workflow-call-test.yml
-    secrets: inherit
-
   secrets-leaks:
     uses: ./.github/workflows/on-workflow-call-secrets-leaks.yml
     secrets: inherit
 
   build:
     uses: ./.github/workflows/on-workflow-call-build.yml
+    secrets: inherit
+
+  test:
+    uses: ./.github/workflows/on-workflow-call-test.yml
     secrets: inherit
 
   db-migration:
