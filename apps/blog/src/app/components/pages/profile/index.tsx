@@ -95,7 +95,7 @@ export function ProfilePage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <SessionsList />
+            <SessionsList sessions={user.sessions} />
           </CardContent>
         </Card>
 

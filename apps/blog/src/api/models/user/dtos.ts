@@ -32,14 +32,14 @@ export const userChangePasswordSchemaDto = z
     path: ["confirmPassword"],
   });
 
-export const userTerminateAllActiveSessionsSchemaDto = z.object({
-  userId: z.string().min(1),
+export const userTerminateSpecificSessionSchemaDto = z.object({
+  sessionId: z.string().min(1),
 });
 
 // ========== Types ==========
 export type UserLoginDto = z.infer<typeof userLoginSchemaDto>;
 export type UserRegisterDto = z.infer<typeof userRegisterSchemaDto>;
 export type UserChangePasswordDto = z.infer<typeof userChangePasswordSchemaDto>;
-export type UserTerminateAllActiveSessionsDto = z.infer<
-  typeof userTerminateAllActiveSessionsSchemaDto
+export type UserTerminateSpecificSessionDto = z.infer<
+  typeof userTerminateSpecificSessionSchemaDto
 >;

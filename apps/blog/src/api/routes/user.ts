@@ -8,7 +8,7 @@ import {
   userLoginSchemaDto,
   userRegisterSchemaDto,
   userSchemaRo,
-  userTerminateAllActiveSessionsSchemaDto,
+  userTerminateSpecificSessionSchemaDto,
 } from "../models";
 import { AuthService } from "../services";
 
@@ -60,11 +60,20 @@ export const userRouter = router({
     }),
 
   terminateAllActiveSessions: authedProcedure
-    .input(userTerminateAllActiveSessionsSchemaDto)
+    .input(z.void())
     .output(z.void())
-    .mutation(async ({ ctx, input: { userId } }) => {
+    .mutation(async ({ ctx }) => {
       await userAuthService(ctx).terminateAllActiveSessions({
-        userId,
+        userId: ctx.user.id,
+      });
+    }),
+
+  terminateSpecificSession: authedProcedure
+    .input(userTerminateSpecificSessionSchemaDto)
+    .output(z.void())
+    .mutation(async ({ ctx, input: { sessionId } }) => {
+      await userAuthService(ctx).terminateSpecificSession({
+        sessionId,
       });
     }),
 });

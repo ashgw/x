@@ -13,43 +13,35 @@ import {
   TableRow,
 } from "@ashgw/ui";
 
+import type { SessionRo } from "~/api/models";
 import { trpcClientSide } from "~/trpc/client";
 
-export function SessionsList() {
-  const { data: sessions, isLoading } = trpcClientSide.user.sessions.useQuery();
-  const utils = trpcClientSide.useUtils();
-
-  const terminateSessionMutation =
-    trpcClientSide.user.terminateSession.useMutation({
-      onSuccess: () => {
-        toast.success("Session terminated successfully");
-        void utils.user.sessions.invalidate();
-      },
-      onError: (error: Error) => {
-        logger.error("Failed to terminate session", { error });
-        monitor.next.captureException({ error });
-        toast.error("Failed to terminate session");
-      },
-    });
-
+export function SessionsList(props: { sessions: SessionRo[] }) {
   const terminateAllSessionsMutation =
-    trpcClientSide.user.terminateAllSessions.useMutation({
+    trpcClientSide.user.terminateAllActiveSessions.useMutation({
       onSuccess: () => {
         toast.success("All sessions terminated successfully");
-        void utils.user.sessions.invalidate();
       },
-      onError: (error: Error) => {
+      onError: (error) => {
         logger.error("Failed to terminate all sessions", { error });
         monitor.next.captureException({ error });
         toast.error("Failed to terminate all sessions");
       },
     });
 
-  if (isLoading) {
-    return <div>Loading sessions...</div>;
-  }
+  const terminateSpecificSessionMutation =
+    trpcClientSide.user.terminateSpecificSession.useMutation({
+      onSuccess: () => {
+        toast.success("Session terminated successfully");
+      },
+      onError: (error) => {
+        logger.error("Failed to terminate specific session", { error });
+        monitor.next.captureException({ error });
+        toast.error("Failed to terminate specific session");
+      },
+    });
 
-  if (!sessions?.length) {
+  if (!props.sessions.length) {
     return <div>No active sessions found.</div>;
   }
 
@@ -64,22 +56,24 @@ export function SessionsList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sessions.map((session) => (
+          {props.sessions.map((session) => (
             <TableRow key={session.id}>
               <TableCell>
-                {new Date(session.createdAt as string).toLocaleDateString()}
+                {new Date(session.createdAt).toLocaleDateString()}
               </TableCell>
               <TableCell>
-                {new Date(session.expiresAt as string).toLocaleDateString()}
+                {new Date(session.expiresAt).toLocaleDateString()}
               </TableCell>
               <TableCell>
                 <Button
-                  variant="squared:destructive"
+                  variant="destructive"
                   size="sm"
                   onClick={() =>
-                    terminateSessionMutation.mutate({ sessionId: session.id })
+                    terminateSpecificSessionMutation.mutate({
+                      sessionId: session.id,
+                    })
                   }
-                  loading={terminateSessionMutation.isPending}
+                  loading={terminateSpecificSessionMutation.isPending}
                 >
                   Terminate
                 </Button>
@@ -91,7 +85,7 @@ export function SessionsList() {
 
       <div className="flex justify-end">
         <Button
-          variant="squared:destructive"
+          variant="destructive"
           onClick={() => terminateAllSessionsMutation.mutate()}
           loading={terminateAllSessionsMutation.isPending}
         >

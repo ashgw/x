@@ -300,6 +300,32 @@ export class AuthService {
     }
   }
 
+  public async terminateSpecificSession({
+    sessionId,
+  }: {
+    sessionId: string;
+  }): Promise<void> {
+    logger.info("Attempting to terminate specific session", { sessionId });
+    try {
+      await this.db.session.delete({
+        where: { id: sessionId },
+      });
+    } catch (error) {
+      logger.error("Failed to terminate specific session", {
+        error,
+        sessionId,
+      });
+
+      throw error instanceof InternalError
+        ? error
+        : new InternalError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to terminate specific session",
+            cause: error,
+          });
+    }
+  }
+
   private _validateCsrfToken({
     requestCsrfHeaderValue,
   }: {
