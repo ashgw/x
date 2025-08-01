@@ -25,6 +25,7 @@ export function createTRPCContext(opts: {
     ...innerContext,
     req: opts.req,
     res: opts.res,
+    trpcInfo: opts.trpcInfo,
   };
 }
 
