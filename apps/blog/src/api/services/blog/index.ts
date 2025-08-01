@@ -103,7 +103,7 @@ export class BlogService {
         slug,
         ...PostQueryHelper.whereReleasedToPublic(),
       },
-      include: PostQueryHelper.editorViewInclude(),
+      include: PostQueryHelper.detailInclude(),
     });
 
     if (!post) {
@@ -187,7 +187,7 @@ export class BlogService {
           category: data.category,
           mdxContentId: mdxContent.key,
         },
-        include: PostQueryHelper.editorViewInclude(),
+        include: PostQueryHelper.detailInclude(),
       });
 
       return PostMapper.toDetailRo({
@@ -258,7 +258,7 @@ export class BlogService {
           tags: data.tags,
           category: data.category,
         },
-        include: PostQueryHelper.editorViewInclude(),
+        include: PostQueryHelper.detailInclude(),
       });
 
       return PostMapper.toDetailRo({

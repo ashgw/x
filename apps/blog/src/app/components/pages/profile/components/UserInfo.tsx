@@ -73,11 +73,11 @@ export function UserInfo({ user }: UserInfoProps) {
             )}
             {user.role.toLowerCase()}
           </Badge>
-          {isAdmin && (
+          {isAdmin ? (
             <span className="text-muted-foreground text-xs">
               Full access to the admin panel
             </span>
-          )}
+          ) : null}
         </div>
       </motion.div>
 
