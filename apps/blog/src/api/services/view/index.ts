@@ -31,7 +31,7 @@ export class ViewService {
         userAgent,
       });
 
-      // Check if view already exists within 24 hours
+      // Check if view already exists within the deduplication window
       const existingView = await this.db.postView.findFirst({
         where: {
           fingerprint,

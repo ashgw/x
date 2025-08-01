@@ -22,7 +22,9 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "test:unit-integration": "turbo run test:unit-integration",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "changelog": "changeset",
+    "changelog:version": "changeset version"
   },
   "author": {
     "name": "@ashgw",

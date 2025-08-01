@@ -245,7 +245,6 @@ export class BlogService {
         data.mdxContent,
       );
 
-      // Update post in db
       const post = await this.db.post.update({
         where: { slug },
         data: {
@@ -310,7 +309,6 @@ export class BlogService {
         });
 
         // 2. Verify the upload is gone (double-check)
-        // TODO: remove after testing
         const uploadExists = await tx.upload.findUnique({
           where: { key: post.mdxContent.key },
         });
@@ -323,17 +321,17 @@ export class BlogService {
         }
       });
 
-      // After DB transaction succeeds, delete from S3
+      // After DB transaction succeeds, delete from storage
       try {
         await this.storage.deleteFile({
           filename: `${slug}.mdx`,
           folder: "mdx",
         });
-      } catch (s3Error) {
+      } catch (error) {
         // Log but don't fail the operation - file can be cleaned up later
         logger.error("Failed to delete MDX file from storage", {
           key: post.mdxContent.key,
-          error: s3Error,
+          error,
         });
       }
 

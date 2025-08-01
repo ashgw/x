@@ -20,18 +20,6 @@ export class UserMapper {
     };
   }
 
-  //  currently not used
-  // public static toUserSessionRo({
-  //   session,
-  // }: {
-  //   session: UserWithSessionsQuery["sessions"][number];
-  // }): SessionRo {
-  //   return {
-  //     id: session.id,
-  //     expiresAt: session.expiresAt,
-  //   };
-  // }
-
   private static _mapSessions({
     sessions,
   }: {
