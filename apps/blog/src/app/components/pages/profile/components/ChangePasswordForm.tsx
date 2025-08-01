@@ -18,6 +18,10 @@ import {
   Input,
 } from "@ashgw/ui";
 
+import {
+  UserChangePasswordDto,
+  userChangePasswordSchemaDto,
+} from "~/api/models";
 import { trpcClientSide } from "~/trpc/client";
 
 const changePasswordSchema = z
