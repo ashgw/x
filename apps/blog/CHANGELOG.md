@@ -1,5 +1,11 @@
 # @ashgw/blog
 
+## 1.0.3
+
+### Patch Changes
+
+- 0c6684d: perf optimizations
+
 ## 1.0.2
 
 ### Patch Changes
