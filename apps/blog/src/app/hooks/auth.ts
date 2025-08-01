@@ -1,12 +1,14 @@
+import type { Optional } from "ts-roids";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 import { logger } from "@ashgw/observability";
 
+import type { UserRo } from "~/api/models";
 import { trpcClientSide } from "~/trpc/client";
 
 interface UseAuthReturn {
-  user: ReturnType<typeof trpcClientSide.user.me.useQuery>["data"];
+  user: Optional<UserRo>;
   isLoading: boolean;
   requireAuth: (redirectTo?: string) => boolean;
   logout: () => Promise<void>;
@@ -43,7 +45,7 @@ export function useAuth(): UseAuthReturn {
   );
 
   return {
-    user,
+    user: user ?? null,
     isLoading,
     requireAuth,
     logout,

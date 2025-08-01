@@ -14,3 +14,4 @@ export * from "./input";
 export * from "./textarea";
 export * from "./entity-view-state";
 export * from "./scroll-area";
+export * from "./table";

@@ -9,8 +9,9 @@ export class UserQueryHelper {
     return {
       sessions: {
         select: {
-          expiresAt: true,
           id: true,
+          expiresAt: true,
+          createdAt: true,
         },
       },
     } satisfies Prisma.UserInclude;

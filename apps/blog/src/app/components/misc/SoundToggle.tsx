@@ -46,7 +46,7 @@ export function SoundToggle() {
           />
         </svg>
 
-        {!isPlaying && (
+        {!isPlaying ? (
           <motion.div
             className="absolute inset-0 flex items-center justify-center"
             initial={{ opacity: 0 }}
@@ -55,7 +55,7 @@ export function SoundToggle() {
           >
             <div className="h-[1.5px] w-full rotate-45 transform rounded-full bg-white/90" />
           </motion.div>
-        )}
+        ) : null}
       </motion.div>
 
       {/* Sound on/off text */}

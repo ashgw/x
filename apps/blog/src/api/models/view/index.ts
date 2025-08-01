@@ -3,7 +3,7 @@ import { z } from "zod";
 // ========== DTOs ==========
 
 export const trackViewSchemaDto = z.object({
-  postSlug: z.string().min(1),
+  postSlug: z.string().min(1).max(255),
 });
 
 // ========== ROs ==========

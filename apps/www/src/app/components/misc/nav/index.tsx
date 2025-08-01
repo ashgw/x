@@ -32,7 +32,7 @@ export function NavBar() {
   return (
     <nav id="nav-menu" className="relative pt-3">
       <AnimatePresence>
-        {isOverlayVisible && <BgOverlay onClick={handleToggleMenu} />}
+        {isOverlayVisible ? <BgOverlay onClick={handleToggleMenu} /> : null}
       </AnimatePresence>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
