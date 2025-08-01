@@ -33,9 +33,8 @@ jobs:
       #     echo "[$SHA](https://github.com/$OWNER/$REPO/commit/$SHA) -> $SUMMARY" >> CHANGELOG.md
 
       - uses: ./.github/actions/pnpm-install
-
       - name: Run Changeset versioning
-        run: pnpm changeset version
+        run: pnpm changelog:version
 
       - name: Create changelog PR
         env:
