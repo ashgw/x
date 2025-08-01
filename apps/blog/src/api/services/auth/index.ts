@@ -77,15 +77,7 @@ export class AuthService {
         message: "Invalid credentials",
       });
     }
-
-    logger.info("checking if user has active session");
-    const hasActiveSession = user.sessions.some(
-      (s) => s.expiresAt > new Date(),
-    );
-    if (!hasActiveSession) {
-      logger.info("User has no active session, creating new session");
-      await this._createSession({ userId: user.id });
-    }
+    await this._createSession({ userId: user.id });
     return UserMapper.toUserRo({ user });
   }
 
