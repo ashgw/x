@@ -8,13 +8,13 @@ import { env } from "@ashgw/env";
 import { AUTH_COOKIES_MAX_AGE, COOKIE_NAMES } from "./consts";
 
 const securedCookieOptions = {
-  sameSite: "lax" as const,
+  sameSite: "lax",
   path: "/",
   secure: env.NODE_ENV !== "development",
   maxAge: AUTH_COOKIES_MAX_AGE,
   httpOnly: true,
   ...(env.NODE_ENV === "production" && {
-    domain: env.NEXT_PUBLIC_BLOG_URL,
+    domain: new URL(env.NEXT_PUBLIC_BLOG_URL).hostname,
   }),
 } satisfies SerializeOptions;
 
