@@ -1,11 +1,12 @@
 import * as SentryLib from "@sentry/nextjs";
 
 import { captureException } from "./captureException";
-import { init } from "./init";
+import { initializeClient, initializeServer } from "./instrumentation";
 import { withConfig } from "./withConfig";
 
 export const next = {
-  init,
+  initializeServer,
+  initializeClient,
   captureException,
   withConfig,
   SentryLib,

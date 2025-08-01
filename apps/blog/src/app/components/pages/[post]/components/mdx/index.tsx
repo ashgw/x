@@ -1,7 +1,7 @@
 "use client";
 
-import type { MDXRemoteProps } from "next-mdx-remote/rsc";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { MDXRemote } from "next-mdx-remote";
 
 import { TextContent } from "@ashgw/components";
 
@@ -11,10 +11,15 @@ import { H1, H2, H3 } from "../headers";
 import { BlogLink } from "../link/Link";
 import { Spacer1, Spacer2, Spacer3 } from "../spacers";
 
-export function MDX({ source, components }: MDXRemoteProps) {
+interface MDXProps {
+  source: MDXRemoteSerializeResult;
+  components?: Record<string, React.ComponentType<Record<string, unknown>>>;
+}
+
+export function MDX({ source, components }: MDXProps) {
   return (
     <MDXRemote
-      source={source}
+      {...source}
       components={{
         Code: CodeBlock,
         H: H1,

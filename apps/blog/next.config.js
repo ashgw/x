@@ -16,7 +16,6 @@ const config = monitor.next.withConfig({
         "/": ["./public/**/*"],
       },
     },
-    transpilePackages: ["next-mdx-remote"], //  this is yet anoher Next 14 specifc bug
   },
 });
 

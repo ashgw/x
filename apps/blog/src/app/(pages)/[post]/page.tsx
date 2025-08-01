@@ -4,7 +4,7 @@ import { NotFound } from "@ashgw/components";
 import { createMetadata } from "@ashgw/seo";
 
 import { BlogPostPage } from "~/app/components/pages/[post]";
-import { trpcServerSide } from "~/trpc/server";
+import { HydrateClient, trpcServerSide } from "~/trpc/server";
 
 export const generateStaticParams = async () => {
   const posts = await trpcServerSide.post.getPostCards();
@@ -45,5 +45,9 @@ export default async function Page({ params }: DynamicRouteParams) {
     return <NotFound message={`No post found that matches  /${params.post}`} />;
   }
 
-  return <BlogPostPage postData={postData} />;
+  return (
+    <HydrateClient>
+      <BlogPostPage postData={postData} />
+    </HydrateClient>
+  );
 }
