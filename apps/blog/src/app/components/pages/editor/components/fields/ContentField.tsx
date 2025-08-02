@@ -1,15 +1,9 @@
 import type { Control } from "react-hook-form";
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Textarea,
-} from "@ashgw/ui";
+import { FormControl, FormField, FormItem, FormLabel } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
+import { BlockEditor } from "./content/BlockEditor";
 
 interface ContentFieldProps {
   control: Control<PostEditorDto>;
@@ -24,13 +18,8 @@ export function ContentField({ control }: ContentFieldProps) {
         <FormItem>
           <FormLabel>Content</FormLabel>
           <FormControl>
-            <Textarea
-              placeholder="Write your blog content in MDX..."
-              className="min-h-[300px]"
-              {...field}
-            />
+            <BlockEditor value={field.value} onChange={field.onChange} />
           </FormControl>
-          <FormMessage />
         </FormItem>
       )}
     />
