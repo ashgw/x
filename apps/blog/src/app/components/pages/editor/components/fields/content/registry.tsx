@@ -73,8 +73,12 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { code: "", language: "typescript" },
     Editor: CodeBlockEditor,
     Preview: CodeWrapper,
-    serialize: ({ code, language }: BlockProps) =>
-      `<Code code={\`${code !== undefined ? code.replace(/`/g, "\\`") : ""}\`} language="${language ?? "typescript"}" />`,
+    serialize: ({ code, language }: BlockProps) => {
+      // Use direct type guard to avoid linter error
+      const safeCode =
+        typeof code === "string" ? code.replace(/`/g, "\\`") : "";
+      return `<Code code={\`${safeCode}\`} language="${language ?? "typescript"}" />`;
+    },
   },
   D: {
     type: "D",

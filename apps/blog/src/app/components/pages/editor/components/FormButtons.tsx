@@ -1,4 +1,9 @@
+import Link from "next/link";
+
 import { Button } from "@ashgw/ui";
+
+import { UserRoleEnum } from "~/api/models";
+import { useAuth } from "~/app/hooks";
 
 interface FormButtonsProps {
   onReset: () => void;
@@ -6,6 +11,10 @@ interface FormButtonsProps {
 }
 
 export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
+  const { user } = useAuth();
+
+  const isAdmin = user?.role === UserRoleEnum.ADMIN;
+
   return (
     <div className="flex justify-end gap-2">
       <Button
@@ -16,14 +25,22 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
       >
         Cancel
       </Button>
-      <Button
-        variant="squared:default"
-        type="submit"
-        disabled={isSubmitting}
-        loading={isSubmitting}
-      >
-        {isSubmitting ? "Saving..." : "Save"}
-      </Button>
+      {!user ? (
+        <Link href="/login">
+          <Button variant="squared:default" type="submit">
+            Login to save
+          </Button>
+        </Link>
+      ) : (
+        <Button
+          variant="squared:default"
+          type="submit"
+          disabled={!isAdmin || isSubmitting}
+          loading={isAdmin && isSubmitting}
+        >
+          {isAdmin ? (isSubmitting ? "Saving..." : "Save") : "Admin Required"}
+        </Button>
+      )}
     </div>
   );
 }

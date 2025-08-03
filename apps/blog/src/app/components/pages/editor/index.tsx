@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -38,6 +38,7 @@ export function EditorPage() {
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+  const currentBlogRef = useRef<PostDetailRo | null>(null);
 
   // Prevent scrolling when modal is open
   useEffect(() => {
@@ -83,6 +84,7 @@ export function EditorPage() {
       if (isDeletingBlog) return;
 
       setEditModal({ visible: true, entity: blog });
+      currentBlogRef.current = blog;
       form.reset({
         title: blog.title,
         summary: blog.summary,
@@ -191,8 +193,41 @@ export function EditorPage() {
   }
 
   const togglePreview = useCallback(() => {
-    setShowPreview((prev) => !prev);
-  }, []);
+    setShowPreview((prev) => {
+      const newState = !prev;
+
+      // When exiting preview mode, restore the previously edited blog
+      if (newState === false && currentBlogRef.current) {
+        // We're going back to edit mode, restore the current blog
+        const blog = currentBlogRef.current;
+
+        // Only update the form if needed
+        if (editModal.visible && editModal.entity.slug === blog.slug) {
+          logger.debug("Keeping current blog after exiting preview", {
+            slug: blog.slug,
+          });
+        } else {
+          logger.debug("Restoring blog after exiting preview", {
+            slug: blog.slug,
+          });
+          setEditModal({ visible: true, entity: blog });
+          form.reset({
+            title: blog.title,
+            summary: blog.summary,
+            category: blog.category,
+            tags: blog.tags,
+            isReleased: blog.isReleased,
+            mdxContent: blog.fontMatterMdxContent.body,
+          });
+        }
+      } else if (newState === true && editModal.visible) {
+        // We're entering preview mode, store the current blog
+        currentBlogRef.current = editModal.entity;
+      }
+
+      return newState;
+    });
+  }, [editModal, form]);
 
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
     if (editModal.visible) {
