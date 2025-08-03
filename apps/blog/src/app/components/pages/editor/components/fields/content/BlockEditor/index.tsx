@@ -210,12 +210,51 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   const [key, setKey] = useState(Date.now());
   const [isExpanded, setIsExpanded] = useState(false);
   const isInitialRender = useRef(true);
+  const prevValueRef = useRef(value);
+  const initialValueRef = useRef(value);
 
   // Parse blocks only when value changes
-  const initialBlocks = useMemo(() => parseExistingMDX(value), [value, key]);
+  const initialBlocks = useMemo(() => {
+    // Only parse if value has changed from previous render
+    if (value !== prevValueRef.current) {
+      logger.debug("Value changed, reparsing blocks", {
+        valueLength: value?.length,
+        prevLength: prevValueRef.current?.length,
+      });
+      prevValueRef.current = value;
+      return parseExistingMDX(value);
+    }
+    return parseExistingMDX(value);
+  }, [value]);
+
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
   const [showAddCommand, setShowAddCommand] = useState(false);
   const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [manuallyEdited, setManuallyEdited] = useState(false);
+
+  // Force update blocks when value changes externally (e.g. when switching blogs)
+  useEffect(() => {
+    // Skip the first render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      initialValueRef.current = value;
+      return;
+    }
+
+    // Only update blocks if value has changed significantly (different blog loaded)
+    // and we haven't manually edited the content
+    if (value !== initialValueRef.current && !manuallyEdited) {
+      logger.debug("External value change detected, updating blocks", {
+        newLength: value?.length,
+        initialLength: initialValueRef.current?.length,
+      });
+
+      const newBlocks = parseExistingMDX(value);
+      setBlocks(newBlocks);
+      initialValueRef.current = value;
+      setKey(Date.now()); // Force re-render with new key
+    }
+  }, [value, manuallyEdited]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -239,16 +278,19 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
       },
     ]);
     setShowAddCommand(false);
+    setManuallyEdited(true);
   }, []);
 
   const updateBlock = useCallback((id: string, props: BlockProps) => {
     setBlocks((prev) =>
       prev.map((block) => (block.id === id ? { ...block, props } : block)),
     );
+    setManuallyEdited(true);
   }, []);
 
   const deleteBlock = useCallback((id: string) => {
     setBlocks((prev) => prev.filter((block) => block.id !== id));
+    setManuallyEdited(true);
   }, []);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
@@ -265,6 +307,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
         const newIndex = prev.findIndex((block) => block.id === over.id);
         return arrayMove(prev, oldIndex, newIndex);
       });
+      setManuallyEdited(true);
     }
   }, []);
 
@@ -276,19 +319,23 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
       return;
     }
 
+    // Only update if blocks have been manually edited
+    if (!manuallyEdited) return;
+
     const timeoutId = setTimeout(() => {
       const mdx = serializeToMDX(blocks);
       onChange(mdx);
     }, 1000); // Increased timeout to reduce frequency of updates
 
     return () => clearTimeout(timeoutId);
-  }, [blocks, onChange]);
+  }, [blocks, onChange, manuallyEdited]);
 
   // Reset component when value becomes empty (new blog creation)
   useEffect(() => {
     if (!value || value.trim() === "") {
       setKey(Date.now());
       setBlocks([]);
+      setManuallyEdited(false);
     }
   }, [value]);
 
@@ -382,40 +429,45 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto pr-2">
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={blocks.map((block) => block.id)}
-                strategy={verticalListSortingStrategy}
+          <div className="relative flex-1 overflow-hidden">
+            <div className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent absolute inset-0 overflow-y-auto pb-4 pr-2">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
               >
-                <div className="space-y-4">
-                  {blocks.map((block) => (
-                    <BlockItem
-                      key={block.id}
-                      block={block}
-                      onChange={(props) => updateBlock(block.id, props)}
-                      onDelete={() => deleteBlock(block.id)}
-                      isDragging={draggedId === block.id}
-                    />
-                  ))}
-                  {blocks.length === 0 && (
-                    <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed">
-                      <div className="text-muted-foreground text-center">
-                        <p>No content blocks yet</p>
-                        <p className="text-sm">
-                          Click "Add Block" to start writing
-                        </p>
+                <SortableContext
+                  items={blocks.map((block) => block.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="space-y-4 pb-16">
+                    {blocks.map((block) => (
+                      <BlockItem
+                        key={block.id}
+                        block={block}
+                        onChange={(props) => updateBlock(block.id, props)}
+                        onDelete={() => deleteBlock(block.id)}
+                        isDragging={draggedId === block.id}
+                      />
+                    ))}
+                    {blocks.length === 0 && (
+                      <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed">
+                        <div className="text-muted-foreground text-center">
+                          <p>No content blocks yet</p>
+                          <p className="text-sm">
+                            Click "Add Block" to start writing
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </SortableContext>
-            </DndContext>
+                    )}
+                  </div>
+                </SortableContext>
+              </DndContext>
+
+              {/* Fade effect at the bottom */}
+              <div className="from-background pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t to-transparent"></div>
+            </div>
           </div>
         </div>
       </DialogContent>

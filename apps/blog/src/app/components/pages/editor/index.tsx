@@ -223,6 +223,7 @@ export function EditorPage() {
         />
         <div
           className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
+          style={{ minHeight: "calc(100vh - 200px)" }}
         >
           <BlogList
             blogs={filteredAndSortedBlogs}
@@ -233,13 +234,13 @@ export function EditorPage() {
             }
           />
           {showEditorSkeleton ? (
-            <div className="lg:col-span-2">
-              <div className="bg-card rounded-lg border p-4">
+            <div className="h-full lg:col-span-2">
+              <div className="bg-card h-full rounded-lg border p-4">
                 <Skeleton className="w-full" />
               </div>
             </div>
           ) : (
-            <div className="lg:col-span-2">
+            <div className="h-full lg:col-span-2">
               <AnimatePresence mode="wait" initial={false}>
                 <PostEditorForm
                   key="editor"

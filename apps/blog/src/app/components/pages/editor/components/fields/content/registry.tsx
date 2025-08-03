@@ -74,7 +74,7 @@ export const blockRegistry: BlockRegistry = {
     Editor: CodeBlockEditor,
     Preview: CodeWrapper,
     serialize: ({ code, language }: BlockProps) =>
-      `<Code code={\`${code.replace(/`/g, "\\`")}\`} language="${language}" />`,
+      `<Code code={\`${(code ?? "").replace(/`/g, "\\`")}\`} language="${language ?? "typescript"}" />`,
   },
   D: {
     type: "D",
