@@ -23,6 +23,8 @@ export function useViewTracker({
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
   const { store } = useStore();
 
+  const sessionKey = `view_tracked_${postSlug}`;
+
   const trackViewMutation = trpcClientSide.view.trackView.useMutation({
     onMutate: () => {
       logger.debug("Starting view tracking mutation", { postSlug });
@@ -33,14 +35,15 @@ export function useViewTracker({
         error: error.message,
         shape: error.shape,
       });
-      // Reset tracking state on error so it can be retried
       hasTracked.current = false;
-      sessionStorage.removeItem(`view_tracked_${postSlug}`);
+      sessionStorage.removeItem(sessionKey);
     },
     onSuccess: () => {
       logger.debug("Successfully tracked view in mutation", { postSlug });
       const currentViews = store.views.getViews(postSlug);
       store.views.setViews(postSlug, currentViews + 1);
+      sessionStorage.setItem(sessionKey, "true");
+      logger.info("Marked as tracked in session storage", { postSlug });
     },
   });
 
@@ -58,8 +61,6 @@ export function useViewTracker({
       return;
     }
 
-    // Check if we already tracked this post in this session
-    const sessionKey = `view_tracked_${postSlug}`;
     const alreadyTrackedInSession = sessionStorage.getItem(sessionKey);
 
     if (alreadyTrackedInSession) {
@@ -73,31 +74,21 @@ export function useViewTracker({
       delay,
     });
 
-    // Set up delayed tracking
     timeoutRef.current = setTimeout(() => {
       if (!hasTracked.current) {
         logger.info("Timeout elapsed, tracking view", { postSlug });
         hasTracked.current = true;
-
-        // Track the view first
         trackViewMutation.mutate({ postSlug });
-
-        // Only mark as tracked if mutation started successfully
-        if (!trackViewMutation.isError) {
-          sessionStorage.setItem(sessionKey, "true");
-          logger.info("Marked as tracked in session storage", { postSlug });
-        }
       }
     }, delay);
 
-    // Cleanup function
     return () => {
       if (timeoutRef.current) {
         logger.info("Cleaning up view tracking timeout", { postSlug });
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [postSlug, enabled, delay, trackViewMutation, store.views]);
+  }, [postSlug, enabled, delay, store.views, sessionKey, trackViewMutation]);
 
   return {
     isTracking: trackViewMutation.isPending,
