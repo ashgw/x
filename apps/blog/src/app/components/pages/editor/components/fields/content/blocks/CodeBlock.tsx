@@ -1,61 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-// Use these components in the CodeBlockEditor
+import { Button, Textarea } from "@ashgw/ui";
 
 import type { BlockEditorProps } from "../types";
-
-// Add type annotations
-
-const Select = ({
-  _value,
-  _onValueChange,
-  children,
-}: {
-  _value: string;
-  _onValueChange: (value: string) => void;
-  children: React.ReactNode;
-}) => <div>{children}</div>;
-
-const SelectTrigger = ({ children }: { children: React.ReactNode }) => (
-  <button>{children}</button>
-);
-
-const SelectValue = ({ placeholder }: { placeholder: string }) => (
-  <span>{placeholder}</span>
-);
-
-const SelectContent = ({ children }: { children: React.ReactNode }) => (
-  <div>{children}</div>
-);
-
-const SelectItem = ({
-  _value,
-  children,
-}: {
-  _value: string;
-  children: React.ReactNode;
-}) => <div>{children}</div>;
-
-// Implement Textarea
-
-const Textarea = ({
-  value,
-  onChange,
-  placeholder,
-  className,
-}: {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder: string;
-  className: string;
-}) => (
-  <textarea
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder}
-    className={className}
-  />
-);
 
 const LANGUAGES = [
   "typescript",
@@ -72,7 +20,61 @@ const LANGUAGES = [
   "sql",
 ] as const;
 
-export const CodeBlockEditor = React.memo(function CodeBlockEditor({
+type Language = (typeof LANGUAGES)[number];
+
+// Simple custom dropdown component
+function LanguageSelect({
+  value,
+  onValueChange,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      <Button
+        variant="outline"
+        className="flex w-[180px] items-center justify-between"
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+      >
+        <span>{value}</span>
+        {isOpen ? (
+          <ChevronUp className="h-4 w-4" />
+        ) : (
+          <ChevronDown className="h-4 w-4" />
+        )}
+      </Button>
+
+      {isOpen && (
+        <div className="bg-card absolute z-10 mt-1 w-[180px] rounded-md border shadow-lg">
+          <div className="max-h-[200px] overflow-y-auto p-1">
+            {LANGUAGES.map((lang) => (
+              <div
+                key={lang}
+                className={`cursor-pointer rounded px-2 py-1.5 text-sm ${
+                  value === lang
+                    ? "bg-accent text-accent-foreground"
+                    : "hover:bg-accent/50"
+                }`}
+                onClick={() => {
+                  onValueChange(lang);
+                  setIsOpen(false);
+                }}
+              >
+                {lang}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function CodeBlockEditor({
   value,
   onChange,
   isPreview,
@@ -82,22 +84,15 @@ export const CodeBlockEditor = React.memo(function CodeBlockEditor({
   }
 
   return (
-    <div className="space-y-2">
-      <Select
-        _value={value.language ?? "typescript"}
-        _onValueChange={(language) => onChange({ ...value, language })}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Select language" />
-        </SelectTrigger>
-        <SelectContent>
-          {LANGUAGES.map((lang) => (
-            <SelectItem key={lang} _value={lang}>
-              {lang}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <label className="text-sm font-medium">Language:</label>
+        <LanguageSelect
+          value={value.language ?? "typescript"}
+          onValueChange={(language: string) => onChange({ ...value, language })}
+        />
+      </div>
+
       <Textarea
         value={value.code ?? ""}
         onChange={(e) => onChange({ ...value, code: e.target.value })}
@@ -106,4 +101,4 @@ export const CodeBlockEditor = React.memo(function CodeBlockEditor({
       />
     </div>
   );
-});
+}

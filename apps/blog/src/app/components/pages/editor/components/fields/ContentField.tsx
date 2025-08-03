@@ -18,7 +18,7 @@ export function ContentField({ control }: ContentFieldProps) {
         <FormItem>
           <FormLabel>Content</FormLabel>
           <FormControl>
-            <BlockEditor value={field.value} onChange={field.onChange} />
+            <BlockEditor value={field.value || ""} onChange={field.onChange} />
           </FormControl>
         </FormItem>
       )}

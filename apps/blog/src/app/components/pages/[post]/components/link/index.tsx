@@ -1,2 +1,2 @@
-export { BlogLink as Link } from "./Link";
-export { GlowingBlogLink as GlowingLink } from "./GlowingLink";
+export { BlogLink } from "./Link";
+export { GlowingBlogLink } from "./GlowingLink";
