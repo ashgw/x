@@ -1,7 +1,6 @@
 import type { FrontMatterResult } from "front-matter";
 import type { Optional } from "ts-roids";
 import fm from "front-matter";
-import { serialize } from "next-mdx-remote/serialize";
 
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
@@ -62,7 +61,7 @@ export class BlogService {
             key: post.mdxContent.key,
           });
 
-          const fontMatterMdxContent = await this._parseMDX({
+          const fontMatterMdxContent = this._parseMDX({
             content: mdxFileContentBuffer.toString("utf-8"),
             slug: post.slug,
           });
@@ -111,7 +110,7 @@ export class BlogService {
       key: post.mdxContent.key,
     });
 
-    const fontMatterMdxContent = await this._parseMDX({
+    const fontMatterMdxContent = this._parseMDX({
       content: mdxFileContentBuffer.toString("utf-8"),
       slug,
     });
