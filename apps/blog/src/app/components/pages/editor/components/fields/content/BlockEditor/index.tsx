@@ -1,7 +1,7 @@
 "use client";
 
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -58,14 +58,21 @@ function extractProps(propsString: string): Record<string, string> {
 function parseBlock(blockStr: string): Block | null {
   try {
     // Try to match component syntax first
+    // Updated regex to handle multiline content with dotall flag
     const componentRegex =
-      /<(\w+)(?:\s+([^>]+))?>([^<]*)<\/\1>|<(\w+)(?:\s+([^>]+))?\/>/;
+      /<(\w+)(?:\s+([^>]+))?>([^]*?)<\/\1>|<(\w+)(?:\s+([^>]+))?\/>/s;
     const componentMatch = componentRegex.exec(blockStr);
 
     if (componentMatch) {
       const [, tag1, props1, content, tag2, props2] = componentMatch;
       const tag = tag1 ?? tag2;
       const propsStr = props1 ?? props2;
+
+      logger.debug("Matched component", {
+        tag,
+        content: content?.slice(0, 50),
+        propsStr,
+      });
 
       if (tag && Object.prototype.hasOwnProperty.call(blockRegistry, tag)) {
         const type = tag as BlockType;
@@ -93,6 +100,9 @@ function parseBlock(blockStr: string): Block | null {
 
     // If no component match and there's content, create a text block
     if (blockStr.trim()) {
+      logger.debug("Creating default text block", {
+        text: blockStr.slice(0, 50),
+      });
       return {
         id: nanoid(),
         type: "C",
@@ -114,17 +124,60 @@ function parseExistingMDX(mdx: string): Block[] {
     // First, normalize line endings and remove any BOM
     const normalizedMdx = mdx.replace(/^\ufeff/, "").replace(/\r\n?/g, "\n");
 
-    // Split content into blocks by double newlines
-    const blockStrings = normalizedMdx
-      .split(/\n\s*\n/)
-      .map((str) => str.trim())
-      .filter(Boolean);
+    logger.debug("Parsing MDX content", {
+      length: normalizedMdx.length,
+      preview: normalizedMdx.slice(0, 100),
+    });
 
-    // Parse each block and filter out nulls
-    const blocks = blockStrings
-      .map(parseBlock)
-      .filter((block): block is Block => block !== null);
+    // Use a more robust approach to split blocks
+    // Look for component patterns like <Tag>...</Tag> or <Tag />
+    const blockRegex =
+      /<(\w+)(?:\s+[^>]+)?>[^]*?<\/\1>|<(\w+)(?:\s+[^>]+)?\/>/gs;
+    const matches = [...normalizedMdx.matchAll(blockRegex)];
 
+    logger.debug("Found component matches", { count: matches.length });
+
+    // If no matches found, treat the entire content as a text block
+    if (matches.length === 0 && normalizedMdx.trim()) {
+      const textBlock = parseBlock(normalizedMdx);
+      return textBlock ? [textBlock] : [];
+    }
+
+    // Process matches and extract blocks
+    const blocks: Block[] = [];
+    let lastIndex = 0;
+
+    for (const match of matches) {
+      const matchStart = match.index || 0;
+
+      // If there's text content before this match, create a text block
+      if (matchStart > lastIndex) {
+        const textContent = normalizedMdx
+          .substring(lastIndex, matchStart)
+          .trim();
+        if (textContent) {
+          const textBlock = parseBlock(textContent);
+          if (textBlock) blocks.push(textBlock);
+        }
+      }
+
+      // Parse the matched component block
+      const componentBlock = parseBlock(match[0]);
+      if (componentBlock) blocks.push(componentBlock);
+
+      lastIndex = matchStart + match[0].length;
+    }
+
+    // Handle any remaining text after the last component
+    if (lastIndex < normalizedMdx.length) {
+      const remainingText = normalizedMdx.substring(lastIndex).trim();
+      if (remainingText) {
+        const textBlock = parseBlock(remainingText);
+        if (textBlock) blocks.push(textBlock);
+      }
+    }
+
+    logger.debug("Parsed blocks", { count: blocks.length });
     return blocks;
   } catch (error) {
     logger.error("Failed to parse MDX content", { error, mdx });
@@ -137,6 +190,11 @@ function serializeToMDX(blocks: Block[]): string {
     return blocks
       .map((block) => {
         const blockDef = blockRegistry[block.type];
+        // For text blocks, use multiline format
+        if (block.type === "C") {
+          return `<C>\n${block.props.text}\n</C>`;
+        }
+        // For other blocks, use the standard serializer
         return blockDef.serialize(block.props);
       })
       .filter(Boolean)
@@ -151,6 +209,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   // Use a key to force reset the component when value changes dramatically
   const [key, setKey] = useState(Date.now());
   const [isExpanded, setIsExpanded] = useState(false);
+  const isInitialRender = useRef(true);
 
   // Parse blocks only when value changes
   const initialBlocks = useMemo(() => parseExistingMDX(value), [value, key]);
@@ -211,10 +270,16 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
 
   // Debounced update of MDX with a longer timeout to prevent excessive updates
   useEffect(() => {
+    // Skip initial render to prevent auto-saving on component mount
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
     const timeoutId = setTimeout(() => {
       const mdx = serializeToMDX(blocks);
       onChange(mdx);
-    }, 500);
+    }, 1000); // Increased timeout to reduce frequency of updates
 
     return () => clearTimeout(timeoutId);
   }, [blocks, onChange]);

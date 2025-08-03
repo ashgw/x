@@ -1,4 +1,15 @@
-import { Code2, Heading1, Heading2, Heading3, Minus, Text } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowDownToLine,
+  ArrowDownWideNarrow,
+  Code2,
+  Heading1,
+  Heading2,
+  Heading3,
+  LinkIcon,
+  Minus,
+  Text,
+} from "lucide-react";
 
 import type { BlockProps, BlockRegistry, BlockType } from "./types";
 import {
@@ -26,7 +37,7 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: HeadingBlockEditor,
     Preview: HeadingOneWrapper,
-    serialize: ({ text }: BlockProps) => `<H1>${text}</H1>`,
+    serialize: ({ text }: BlockProps) => `<H1>\n${text}\n</H1>`,
   },
   H2: {
     type: "H2",
@@ -35,7 +46,7 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: HeadingBlockEditor,
     Preview: HeadingTwoWrapper,
-    serialize: ({ text }: BlockProps) => `<H2>${text}</H2>`,
+    serialize: ({ text }: BlockProps) => `<H2>\n${text}\n</H2>`,
   },
   H3: {
     type: "H3",
@@ -44,7 +55,7 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: HeadingBlockEditor,
     Preview: HeadingThreeWrapper,
-    serialize: ({ text }: BlockProps) => `<H3>${text}</H3>`,
+    serialize: ({ text }: BlockProps) => `<H3>\n${text}\n</H3>`,
   },
   C: {
     type: "C",
@@ -53,7 +64,7 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: TextBlockEditor,
     Preview: TextWrapper,
-    serialize: ({ text }: BlockProps) => `<C>${text}</C>`,
+    serialize: ({ text }: BlockProps) => `<C>\n${text}\n</C>`,
   },
   Code: {
     type: "Code",
@@ -63,7 +74,7 @@ export const blockRegistry: BlockRegistry = {
     Editor: CodeBlockEditor,
     Preview: CodeWrapper,
     serialize: ({ code, language }: BlockProps) =>
-      `<Code code={\`${code}\`} language="${language}" />`,
+      `<Code code={\`${code.replace(/`/g, "\\`")}\`} language="${language}" />`,
   },
   D: {
     type: "D",
@@ -77,15 +88,17 @@ export const blockRegistry: BlockRegistry = {
   L: {
     type: "L",
     label: "Link",
-    icon: <Text className="h-4 w-4" />,
+    icon: <LinkIcon className="h-4 w-4" />,
     defaultProps: { text: "", href: "" },
     Editor: LinkBlockEditor,
     Preview: LinkWrapper,
-    serialize: ({ text, href }: BlockProps) => `<L href="${href}">${text}</L>`,
+    serialize: ({ text, href }: BlockProps) =>
+      `<L href="${href}">\n${text}\n</L>`,
   },
   S: {
     type: "S",
     label: "Small Spacer",
+    icon: <ArrowDown className="h-4 w-4" />,
     defaultProps: {},
     Editor: () => null,
     Preview: SmallSpacerWrapper,
@@ -94,6 +107,7 @@ export const blockRegistry: BlockRegistry = {
   S2: {
     type: "S2",
     label: "Medium Spacer",
+    icon: <ArrowDownWideNarrow className="h-4 w-4" />,
     defaultProps: {},
     Editor: () => null,
     Preview: MediumSpacerWrapper,
@@ -102,6 +116,7 @@ export const blockRegistry: BlockRegistry = {
   S3: {
     type: "S3",
     label: "Large Spacer",
+    icon: <ArrowDownToLine className="h-4 w-4" />,
     defaultProps: {},
     Editor: () => null,
     Preview: LargeSpacerWrapper,
