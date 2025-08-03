@@ -89,7 +89,7 @@ export function EditorPage() {
         category: blog.category,
         tags: blog.tags,
         isReleased: blog.isReleased,
-        mdxContent: blog.fontMatterMdxContent.body.compiledSource,
+        mdxContent: blog.fontMatterMdxContent.body,
       });
       logger.info("Editing blog", { slug: blog.slug });
     },

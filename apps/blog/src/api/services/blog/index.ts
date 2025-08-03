@@ -80,11 +80,7 @@ export class BlogService {
           return PostMapper.toDetailRo({
             post,
             fontMatterMdxContent: {
-              body: {
-                compiledSource: "Error loading content",
-                scope: {},
-                frontmatter: {},
-              },
+              body: "Error loading content",
               bodyBegin: 0,
             },
           });
@@ -193,11 +189,7 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: {
-          body: {
-            compiledSource: data.mdxContent,
-            scope: {},
-            frontmatter: {},
-          },
+          body: data.mdxContent,
           bodyBegin: 0,
         },
       });
@@ -263,11 +255,7 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: {
-          body: {
-            compiledSource: data.mdxContent,
-            scope: {},
-            frontmatter: {},
-          },
+          body: data.mdxContent,
           bodyBegin: 0,
         },
       });
