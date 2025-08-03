@@ -41,8 +41,6 @@ export function useViewTracker({
       logger.debug("Successfully tracked view in mutation", { postSlug });
       const currentViews = store.views.getViews(postSlug);
       store.views.setViews(postSlug, currentViews + 1);
-      sessionStorage.setItem(`view_tracked_${postSlug}`, "true");
-      logger.info("Marked as tracked in session storage", { postSlug });
     },
   });
 
@@ -80,7 +78,15 @@ export function useViewTracker({
       if (!hasTracked.current) {
         logger.info("Timeout elapsed, tracking view", { postSlug });
         hasTracked.current = true;
+
+        // Track the view first
         trackViewMutation.mutate({ postSlug });
+
+        // Only mark as tracked if mutation started successfully
+        if (!trackViewMutation.isError) {
+          sessionStorage.setItem(sessionKey, "true");
+          logger.info("Marked as tracked in session storage", { postSlug });
+        }
       }
     }, delay);
 
@@ -91,7 +97,7 @@ export function useViewTracker({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [postSlug, enabled, delay]);
+  }, [postSlug, enabled, delay, trackViewMutation, store.views]);
 
   return {
     isTracking: trackViewMutation.isPending,
