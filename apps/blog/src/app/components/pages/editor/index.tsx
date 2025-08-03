@@ -89,7 +89,7 @@ export function EditorPage() {
         category: blog.category,
         tags: blog.tags,
         isReleased: blog.isReleased,
-        mdxContent: blog.fontMatterMdxContent.body.compiledSource,
+        mdxContent: blog.fontMatterMdxContent.body,
       });
       logger.info("Editing blog", { slug: blog.slug });
     },
@@ -172,11 +172,13 @@ export function EditorPage() {
     });
   }
 
+  // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
+  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
       deleteMutation.mutate({ slug: deleteModal.entity.slug });

@@ -1,50 +1,20 @@
 "use client";
 
 import { memo } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge, Button, Skeleton } from "@ashgw/ui";
+import { Badge, Button } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
 import { formatViews } from "~/utils/formatViews";
 import { H1 } from "./headers";
+import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
 import { ViewTracker } from "./ViewTracker";
-
-// LIB BUG: Dynamically import MDX component with SSR disabled
-const MDX = dynamic(
-  () => import("./mdx").then((mod) => ({ default: mod.MDX })),
-  {
-    ssr: false,
-    loading: () => (
-      <section className="container mx-auto mt-8 space-y-6 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-4 w-[150px] rounded" />
-            <span className="text-white/40" />
-            <Skeleton className="h-4 w-8 rounded" />
-          </div>
-          <Skeleton className="h-5 w-16 rounded-full" />
-        </div>
-
-        <article className="space-y-4 pt-2">
-          {["95%", "92%", "97%", "86%", "80%", "90%"].map((w, i) => (
-            <Skeleton key={`line-${i}`} className={`h-5 w-[${w}]`} />
-          ))}
-          <Skeleton className="my-4 h-64 w-full rounded-lg" />
-          {["98%", "92%", "70%"].map((w, i) => (
-            <Skeleton key={`line-end-${i}`} className={`h-5 w-[${w}]`} />
-          ))}
-        </article>
-      </section>
-    ),
-  },
-);
 
 interface BlogPostProps {
   postData: PostDetailRo;

@@ -62,7 +62,7 @@
     "mobx-react-lite": "4.1.0",
     "nanoid": "5.1.5",
     "next": "catalog:",
-    "next-mdx-remote": "4.4.1",
+    "next-mdx-remote": "5.0.0",
     "next-themes": "0.3.0",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
