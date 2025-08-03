@@ -172,11 +172,13 @@ export function EditorPage() {
     });
   }
 
+  // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
+  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
       deleteMutation.mutate({ slug: deleteModal.entity.slug });

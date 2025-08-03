@@ -5,9 +5,7 @@ import { Button } from "@ashgw/ui";
 
 import type { SortOptions as SortOptionsType } from "./SortOptions";
 import type { PostDetailRo } from "~/api/models/post";
-import { useAuth } from "~/app/hooks/auth";
 import { PreviewToggle } from "./PreviewToggle";
-import { ProfileButton } from "./ProfileButton";
 import { SortOptions } from "./SortOptions";
 
 interface HeaderProps {
@@ -27,8 +25,6 @@ export function Header({
   isPreviewEnabled,
   onTogglePreview,
 }: HeaderProps): JSX.Element {
-  const { user } = useAuth();
-
   return (
     <motion.div
       className="mb-8"
@@ -50,7 +46,6 @@ export function Header({
           Blog Editor
         </motion.h1>
         <div className="flex items-center gap-3">
-          {user ? <ProfileButton /> : null}
           <PreviewToggle
             isPreviewEnabled={isPreviewEnabled}
             onToggle={onTogglePreview}
