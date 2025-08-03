@@ -196,33 +196,33 @@ export function EditorPage() {
     setShowPreview((prev) => {
       const newState = !prev;
 
-      // When exiting preview mode, restore the previously edited blog
-      if (newState === false && currentBlogRef.current) {
+      // When entering preview mode, always store the current blog
+      if (newState === true && editModal.visible) {
+        // We're entering preview mode, store the current blog
+        currentBlogRef.current = editModal.entity;
+        logger.debug("Storing current blog for preview", {
+          slug: editModal.entity.slug,
+        });
+      }
+      // When exiting preview mode, always restore the previously edited blog
+      else if (newState === false && currentBlogRef.current) {
         // We're going back to edit mode, restore the current blog
         const blog = currentBlogRef.current;
 
-        // Only update the form if needed
-        if (editModal.visible && editModal.entity.slug === blog.slug) {
-          logger.debug("Keeping current blog after exiting preview", {
-            slug: blog.slug,
-          });
-        } else {
-          logger.debug("Restoring blog after exiting preview", {
-            slug: blog.slug,
-          });
-          setEditModal({ visible: true, entity: blog });
-          form.reset({
-            title: blog.title,
-            summary: blog.summary,
-            category: blog.category,
-            tags: blog.tags,
-            isReleased: blog.isReleased,
-            mdxContent: blog.fontMatterMdxContent.body,
-          });
-        }
-      } else if (newState === true && editModal.visible) {
-        // We're entering preview mode, store the current blog
-        currentBlogRef.current = editModal.entity;
+        logger.debug("Restoring blog after exiting preview", {
+          slug: blog.slug,
+        });
+
+        // Always reset the form and update the edit modal to ensure state consistency
+        setEditModal({ visible: true, entity: blog });
+        form.reset({
+          title: blog.title,
+          summary: blog.summary,
+          category: blog.category,
+          tags: blog.tags,
+          isReleased: blog.isReleased,
+          mdxContent: blog.fontMatterMdxContent.body,
+        });
       }
 
       return newState;

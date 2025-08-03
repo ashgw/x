@@ -214,6 +214,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   const initialValueRef = useRef(value);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isUserInteractingRef = useRef(false);
 
   // Parse blocks only when value changes
   const initialBlocks = useMemo(() => {
@@ -316,17 +317,24 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   // Handle scroll events to prevent auto-saving during scrolling
   const handleScroll = useCallback(() => {
     isScrollingRef.current = true;
+    isUserInteractingRef.current = true;
 
     // Clear any existing timeout
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
 
-    // Set a timeout to mark scrolling as finished after 500ms of no scroll events
+    // Set a timeout to mark scrolling as finished after 2000ms of no scroll events
+    // This is longer than the debounce timeout to ensure we don't update during scrolling
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
       scrollTimeoutRef.current = null;
-    }, 500);
+
+      // After scrolling stops, wait a bit more before allowing updates
+      setTimeout(() => {
+        isUserInteractingRef.current = false;
+      }, 1000);
+    }, 2000);
   }, []);
 
   // Debounced update of MDX with a longer timeout to prevent excessive updates
@@ -340,8 +348,9 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     // Only update if blocks have been manually edited
     if (!manuallyEdited) return;
 
-    // Don't save while scrolling
-    if (isScrollingRef.current) return;
+    // Don't save while scrolling or when user is interacting with expanded editor
+    if (isScrollingRef.current || (isExpanded && isUserInteractingRef.current))
+      return;
 
     const timeoutId = setTimeout(() => {
       const mdx = serializeToMDX(blocks);
@@ -349,7 +358,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     }, 1000); // Increased timeout to reduce frequency of updates
 
     return () => clearTimeout(timeoutId);
-  }, [blocks, onChange, manuallyEdited]);
+  }, [blocks, onChange, manuallyEdited, isExpanded]);
 
   // Reset component when value becomes empty (new blog creation)
   useEffect(() => {
@@ -434,7 +443,18 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
 
   // Expanded editor view in a Dialog
   const expandedView = (
-    <Dialog open={isExpanded} onOpenChange={setIsExpanded}>
+    <Dialog
+      open={isExpanded}
+      onOpenChange={(open) => {
+        setIsExpanded(open);
+        // When closing the expanded editor, reset the user interaction flag after a delay
+        if (!open) {
+          setTimeout(() => {
+            isUserInteractingRef.current = false;
+          }, 1000);
+        }
+      }}
+    >
       <DialogContent className="h-[90vh] w-[90vw] max-w-[90vw] p-6">
         <div className="flex h-full flex-col">
           <div className="mb-4 flex items-center justify-between">
@@ -443,7 +463,13 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsExpanded(false)}
+                onClick={() => {
+                  setIsExpanded(false);
+                  // Reset user interaction flag when closing
+                  setTimeout(() => {
+                    isUserInteractingRef.current = false;
+                  }, 1000);
+                }}
               >
                 <Minimize2 className="mr-2 h-4 w-4" />
                 Minimize Editor
@@ -463,6 +489,15 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
             <div
               className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent absolute inset-0 overflow-y-auto pb-4 pr-2"
               onScroll={handleScroll}
+              onMouseDown={() => {
+                isUserInteractingRef.current = true;
+              }}
+              onMouseUp={() => {
+                // Reset user interaction flag after a delay
+                setTimeout(() => {
+                  isUserInteractingRef.current = false;
+                }, 1000);
+              }}
             >
               <DndContext
                 sensors={sensors}
