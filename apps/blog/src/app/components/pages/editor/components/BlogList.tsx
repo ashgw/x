@@ -91,10 +91,10 @@ export const BlogList = memo(
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: shouldReduceMotion ? 0.2 : 0.4 }}
-          className="bg-card flex h-full flex-col rounded-lg border p-4"
+          className="bg-card rounded-lg border p-4"
         >
           <h2 className="mb-4 text-lg font-semibold">Posts</h2>
-          <div className="flex-1 space-y-4 overflow-hidden">
+          <div className="space-y-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <motion.div
                 key={i}
@@ -121,7 +121,7 @@ export const BlogList = memo(
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: shouldReduceMotion ? 0.2 : 0.4 }}
-        className="bg-card flex h-full flex-col rounded-lg border p-4"
+        className="bg-card rounded-lg border p-4"
       >
         <motion.h2
           initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
@@ -142,12 +142,12 @@ export const BlogList = memo(
               duration: shouldReduceMotion ? 0.2 : 0.5,
               delay: shouldReduceMotion ? 0 : 0.2,
             }}
-            className="text-muted-foreground flex-1 py-8 text-center"
+            className="text-muted-foreground py-8 text-center"
           >
             No posts found. Create your first post by clicking "New Blog".
           </motion.div>
         ) : (
-          <ScrollArea className="flex-1 pr-4">
+          <ScrollArea className="h-[500px] pr-4">
             <div className="space-y-4 pb-4">
               {blogs.map((blog, index) => (
                 <BlogItem

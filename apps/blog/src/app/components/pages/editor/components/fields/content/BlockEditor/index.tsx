@@ -212,6 +212,8 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   const isInitialRender = useRef(true);
   const prevValueRef = useRef(value);
   const initialValueRef = useRef(value);
+  const isScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Parse blocks only when value changes
   const initialBlocks = useMemo(() => {
@@ -311,6 +313,22 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     }
   }, []);
 
+  // Handle scroll events to prevent auto-saving during scrolling
+  const handleScroll = useCallback(() => {
+    isScrollingRef.current = true;
+
+    // Clear any existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    // Set a timeout to mark scrolling as finished after 500ms of no scroll events
+    scrollTimeoutRef.current = setTimeout(() => {
+      isScrollingRef.current = false;
+      scrollTimeoutRef.current = null;
+    }, 500);
+  }, []);
+
   // Debounced update of MDX with a longer timeout to prevent excessive updates
   useEffect(() => {
     // Skip initial render to prevent auto-saving on component mount
@@ -321,6 +339,9 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
 
     // Only update if blocks have been manually edited
     if (!manuallyEdited) return;
+
+    // Don't save while scrolling
+    if (isScrollingRef.current) return;
 
     const timeoutId = setTimeout(() => {
       const mdx = serializeToMDX(blocks);
@@ -338,6 +359,15 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
       setManuallyEdited(false);
     }
   }, [value]);
+
+  // Clean up scroll timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Compact editor view
   const compactView = (
@@ -430,7 +460,10 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
           </div>
 
           <div className="relative flex-1 overflow-hidden">
-            <div className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent absolute inset-0 overflow-y-auto pb-4 pr-2">
+            <div
+              className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent absolute inset-0 overflow-y-auto pb-4 pr-2"
+              onScroll={handleScroll}
+            >
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}

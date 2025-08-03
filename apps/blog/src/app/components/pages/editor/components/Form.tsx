@@ -67,14 +67,14 @@ export function PostEditorForm({
 
   return (
     <motion.div
-      className="h-full w-full"
+      className="w-full"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.2 }}
     >
       <motion.div
-        className="bg-card flex h-full flex-col rounded-lg border p-4"
+        className="bg-card rounded-lg border p-4"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{
@@ -94,46 +94,44 @@ export function PostEditorForm({
         <Form {...form}>
           <motion.form
             onSubmit={handleSubmit(onSubmit)}
-            className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent flex flex-1 flex-col space-y-4 overflow-y-auto pr-1"
+            className="space-y-4"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <div className="flex-1 space-y-4">
-              <motion.div variants={itemVariants}>
-                <TitleField control={control} />
-              </motion.div>
+            <motion.div variants={itemVariants}>
+              <TitleField control={control} />
+            </motion.div>
 
-              <motion.div variants={itemVariants}>
-                <SummaryField control={control} />
-              </motion.div>
+            <motion.div variants={itemVariants}>
+              <SummaryField control={control} />
+            </motion.div>
 
-              <motion.div variants={itemVariants}>
-                <CategoryField control={control} />
-              </motion.div>
+            <motion.div variants={itemVariants}>
+              <CategoryField control={control} />
+            </motion.div>
 
-              <motion.div variants={itemVariants}>
-                <TagsField form={form} />
-              </motion.div>
+            <motion.div variants={itemVariants}>
+              <TagsField form={form} />
+            </motion.div>
 
-              <motion.div
-                variants={itemVariants}
-                className="flex items-center gap-6"
-              >
-                <label className="flex cursor-pointer items-center gap-2">
-                  <input type="checkbox" {...register("isReleased")} />
-                  <span>Released</span>
-                </label>
-                <WordCountDisplay
-                  wordCount={wordCount}
-                  minutesToRead={minutesToRead}
-                />
-              </motion.div>
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center gap-6"
+            >
+              <label className="flex cursor-pointer items-center gap-2">
+                <input type="checkbox" {...register("isReleased")} />
+                <span>Released</span>
+              </label>
+              <WordCountDisplay
+                wordCount={wordCount}
+                minutesToRead={minutesToRead}
+              />
+            </motion.div>
 
-              <motion.div variants={itemVariants}>
-                <ContentField control={control} />
-              </motion.div>
-            </div>
+            <motion.div variants={itemVariants}>
+              <ContentField control={control} />
+            </motion.div>
 
             <FormButtons onReset={() => reset()} isSubmitting={isSubmitting} />
           </motion.form>
