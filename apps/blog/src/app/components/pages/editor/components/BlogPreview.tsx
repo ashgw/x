@@ -76,14 +76,7 @@ export function BlogPreview({
           </div>
           <article className="text-wrap">
             {mdxContent ? (
-              <MDX
-                source={{
-                  compiledSource: mdxContent,
-                  scope: {},
-                  frontmatter: {},
-                }}
-                components={featuredComponents}
-              />
+              <MDX source={mdxContent} components={featuredComponents} />
             ) : (
               <Skeleton className="h-48 w-full" />
             )}

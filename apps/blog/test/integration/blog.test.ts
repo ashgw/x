@@ -1,4 +1,5 @@
 import type { inferProcedureInput } from "@trpc/server";
+import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { NextRequest, NextResponse } from "next/server";
 import { expect, test } from "vitest";
 
@@ -19,6 +20,7 @@ function createTestContext() {
     ...innerContext,
     req: {} as NextRequest,
     res: {} as NextResponse,
+    trpcInfo: {} as FetchCreateContextFnOptions["info"],
   } satisfies TrpcContext;
 }
 
