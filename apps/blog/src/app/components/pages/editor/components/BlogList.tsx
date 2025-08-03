@@ -147,7 +147,7 @@ export const BlogList = memo(
             No posts found. Create your first post by clicking "New Blog".
           </motion.div>
         ) : (
-          <ScrollArea className="h-[500px] pr-4">
+          <ScrollArea className="h-[980px] pr-4">
             <div className="space-y-4 pb-4">
               {blogs.map((blog, index) => (
                 <BlogItem
