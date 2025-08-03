@@ -76,12 +76,12 @@ export function CodeBlock({
           className,
         )}
       >
-        {copy ? (
+        {copy && (
           <CopyButton
             code={code}
             className="absolute right-2 top-2 inline-flex items-center"
           />
-        ) : null}
+        )}
         <SyntaxHighlighter
           className="!m-0 overflow-auto !p-0 text-sm dark:!bg-black dark:[&>*]:!bg-black"
           language={language}

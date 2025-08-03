@@ -1,7 +1,6 @@
 import type { FrontMatterResult } from "front-matter";
 import type { Optional } from "ts-roids";
 import fm from "front-matter";
-import { serialize } from "next-mdx-remote/serialize";
 
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
@@ -62,7 +61,7 @@ export class BlogService {
             key: post.mdxContent.key,
           });
 
-          const fontMatterMdxContent = await this._parseMDX({
+          const fontMatterMdxContent = this._parseMDX({
             content: mdxFileContentBuffer.toString("utf-8"),
             slug: post.slug,
           });
@@ -80,11 +79,7 @@ export class BlogService {
           return PostMapper.toDetailRo({
             post,
             fontMatterMdxContent: {
-              body: {
-                compiledSource: "Error loading content",
-                scope: {},
-                frontmatter: {},
-              },
+              body: "Error loading content",
               bodyBegin: 0,
             },
           });
@@ -115,7 +110,7 @@ export class BlogService {
       key: post.mdxContent.key,
     });
 
-    const fontMatterMdxContent = await this._parseMDX({
+    const fontMatterMdxContent = this._parseMDX({
       content: mdxFileContentBuffer.toString("utf-8"),
       slug,
     });
@@ -193,11 +188,7 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: {
-          body: {
-            compiledSource: data.mdxContent,
-            scope: {},
-            frontmatter: {},
-          },
+          body: data.mdxContent,
           bodyBegin: 0,
         },
       });
@@ -263,11 +254,7 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: {
-          body: {
-            compiledSource: data.mdxContent,
-            scope: {},
-            frontmatter: {},
-          },
+          body: data.mdxContent,
           bodyBegin: 0,
         },
       });
@@ -346,21 +333,16 @@ export class BlogService {
     }
   }
 
-  private async _parseMDX({
+  private _parseMDX({
     content,
     slug,
   }: {
     content: string;
     slug: string;
-  }): Promise<fontMatterMdxContentRo> {
+  }): fontMatterMdxContentRo {
     try {
       const parsed: FrontMatterResult<":"> = fm(content);
-      const serializedContent = await serialize(parsed.body);
-
-      return fontMatterMdxContentSchemaRo.parse({
-        body: serializedContent,
-        bodyBegin: parsed.bodyBegin,
-      });
+      return fontMatterMdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
