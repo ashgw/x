@@ -334,21 +334,16 @@ export class BlogService {
     }
   }
 
-  private async _parseMDX({
+  private _parseMDX({
     content,
     slug,
   }: {
     content: string;
     slug: string;
-  }): Promise<fontMatterMdxContentRo> {
+  }): fontMatterMdxContentRo {
     try {
       const parsed: FrontMatterResult<":"> = fm(content);
-      const serializedContent = await serialize(parsed.body);
-
-      return fontMatterMdxContentSchemaRo.parse({
-        body: serializedContent,
-        bodyBegin: parsed.bodyBegin,
-      });
+      return fontMatterMdxContentSchemaRo.parse(parsed);
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
