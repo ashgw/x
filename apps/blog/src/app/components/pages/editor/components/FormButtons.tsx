@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Lock, LogIn } from "lucide-react";
 
 import { Button } from "@ashgw/ui";
 
@@ -12,7 +13,6 @@ interface FormButtonsProps {
 
 export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
   const { user } = useAuth();
-
   const isAdmin = user?.role === UserRoleEnum.ADMIN;
 
   return (
@@ -25,9 +25,11 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
       >
         Cancel
       </Button>
+
       {!user ? (
         <Link href="/login">
           <Button variant="squared:default" type="submit">
+            <LogIn className="mr-2 h-4 w-4" />
             Login to save
           </Button>
         </Link>
@@ -38,7 +40,14 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
           disabled={!isAdmin || isSubmitting}
           loading={isAdmin && isSubmitting}
         >
-          {isAdmin ? (isSubmitting ? "Saving..." : "Save") : "Admin Required"}
+          {isAdmin ? (
+            <>{isSubmitting ? "Saving..." : "Save"}</>
+          ) : (
+            <>
+              <Lock className="mr-2 h-4 w-4" />
+              Not permitted
+            </>
+          )}
         </Button>
       )}
     </div>
