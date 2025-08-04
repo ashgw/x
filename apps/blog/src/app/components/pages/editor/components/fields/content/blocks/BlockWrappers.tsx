@@ -3,8 +3,12 @@ import { TextContent } from "@ashgw/components";
 import type { BlockProps } from "../types";
 import { CodeBlock } from "~/app/components/pages/[post]/components/code";
 import { Divider } from "~/app/components/pages/[post]/components/Divider";
-import { H1, H2, H3 } from "~/app/components/pages/[post]/components/headers";
-import { BlogLink } from "~/app/components/pages/[post]/components/link/Link";
+import {
+  H1,
+  H2,
+  H3,
+} from "~/app/components/pages/[post]/components/mdx-custom/headers";
+import { BlogLink } from "~/app/components/pages/[post]/components/mdx-custom/link/Link";
 import {
   Spacer1,
   Spacer2,

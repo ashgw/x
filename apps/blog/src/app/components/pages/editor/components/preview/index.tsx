@@ -8,8 +8,8 @@ import { Badge, Skeleton } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
-import { H1 } from "../../../[post]/components/headers";
-import { MDX } from "../../../[post]/components/mdx";
+import { H1 } from "../../../[post]/components/mdx-custom/headers";
+import { MDX } from "../../../[post]/components/mdx-custom/mdx";
 
 interface BlogPreviewProps {
   isVisible: boolean;
