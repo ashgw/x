@@ -1,6 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
+import type { Optional } from "ts-roids";
 import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
@@ -38,7 +39,8 @@ export function EditorPage() {
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState<PostDetailRo | null>(null);
+  const [selectedBlog, setSelectedBlog] =
+    useState<Optional<PostDetailRo>>(null);
 
   // Prevent scrolling when modal is open
   useEffect(() => {
