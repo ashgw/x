@@ -192,42 +192,17 @@ export function EditorPage() {
     setIsDeletingBlog(false);
   }
 
+  // Toggle the preview pane without mutating the currently edited blog state.
+  // We intentionally avoid touching `editModal` here to prevent accidental resets
+  // that previously caused the editor to jump back to the wrong blog.
   const togglePreview = useCallback(() => {
-    setShowPreview((prev) => {
-      const newState = !prev;
+    setShowPreview((prev) => !prev);
 
-      // When entering preview mode, always store the current blog
-      if (newState === true && editModal.visible) {
-        // We're entering preview mode, store the current blog
-        currentBlogRef.current = editModal.entity;
-        logger.debug("Storing current blog for preview", {
-          slug: editModal.entity.slug,
-        });
-      }
-      // When exiting preview mode, always restore the previously edited blog
-      else if (newState === false && currentBlogRef.current) {
-        // We're going back to edit mode, restore the current blog
-        const blog = currentBlogRef.current;
-
-        logger.debug("Restoring blog after exiting preview", {
-          slug: blog.slug,
-        });
-
-        // Always reset the form and update the edit modal to ensure state consistency
-        setEditModal({ visible: true, entity: blog });
-        form.reset({
-          title: blog.title,
-          summary: blog.summary,
-          category: blog.category,
-          tags: blog.tags,
-          isReleased: blog.isReleased,
-          mdxContent: blog.fontMatterMdxContent.body,
-        });
-      }
-
-      return newState;
-    });
-  }, [editModal, form]);
+    // Keep a reference to the current blog **only** when we first enter preview.
+    if (!showPreview && editModal.visible) {
+      currentBlogRef.current = editModal.entity;
+    }
+  }, [showPreview, editModal]);
 
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
     if (editModal.visible) {

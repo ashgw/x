@@ -355,6 +355,8 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     const timeoutId = setTimeout(() => {
       const mdx = serializeToMDX(blocks);
       onChange(mdx);
+      // Reset manuallyEdited flag to avoid redundant saves triggered by UI-only state changes
+      setManuallyEdited(false);
     }, 1000); // Increased timeout to reduce frequency of updates
 
     return () => clearTimeout(timeoutId);
