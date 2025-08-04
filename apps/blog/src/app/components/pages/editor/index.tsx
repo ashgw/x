@@ -19,7 +19,7 @@ import { trpcClientSide } from "~/trpc/client";
 import { SoundProvider } from "../../misc/SoundContext";
 import { SoundToggle } from "../../misc/SoundToggle";
 import { BlogList } from "./components/blog-list";
-import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
+import { ConfirmBlogDeleteModal } from "./components/blog-list/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/editor-form";
 import { Header } from "./components/header";
 import { BlogPreview } from "./components/preview";
