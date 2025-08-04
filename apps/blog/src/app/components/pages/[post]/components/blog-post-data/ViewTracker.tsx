@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 
-import { useViewTracker } from "../hooks/useViewTracker";
+import { useViewTracker } from "../../hooks/useViewTracker";
 
 interface ViewTrackerProps {
   postSlug: string;
