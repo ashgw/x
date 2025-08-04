@@ -221,8 +221,8 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     // Only parse if value has changed from previous render
     if (value !== prevValueRef.current) {
       logger.debug("Value changed, reparsing blocks", {
-        valueLength: value?.length,
-        prevLength: prevValueRef.current?.length,
+        valueLength: value.length,
+        prevLength: prevValueRef.current.length,
       });
       prevValueRef.current = value;
       return parseExistingMDX(value);
@@ -248,8 +248,8 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     // and we haven't manually edited the content
     if (value !== initialValueRef.current && !manuallyEdited) {
       logger.debug("External value change detected, updating blocks", {
-        newLength: value?.length,
-        initialLength: initialValueRef.current?.length,
+        newLength: value.length,
+        initialLength: initialValueRef.current.length,
       });
 
       const newBlocks = parseExistingMDX(value);
