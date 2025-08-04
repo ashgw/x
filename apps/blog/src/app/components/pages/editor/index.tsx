@@ -38,6 +38,7 @@ export function EditorPage() {
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState<PostDetailRo | null>(null);
 
   // Prevent scrolling when modal is open
   useEffect(() => {
@@ -82,6 +83,7 @@ export function EditorPage() {
       // Don't load blog content if we're in the process of deleting
       if (isDeletingBlog) return;
 
+      setSelectedBlog(blog);
       setEditModal({ visible: true, entity: blog });
       form.reset({
         title: blog.title,
@@ -97,8 +99,16 @@ export function EditorPage() {
   );
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
-    onBlogFound: handleEditBlog,
-    skipLoading: showPreview || isDeletingBlog, // Skip loading if in preview mode or deleting
+    onBlogFound: useCallback(
+      (blog: PostDetailRo) => {
+        // Only load from URL if no blog is currently selected
+        if (!selectedBlog) {
+          handleEditBlog(blog);
+        }
+      },
+      [handleEditBlog, selectedBlog],
+    ),
+    skipLoading: showPreview || isDeletingBlog || !!selectedBlog, // Skip loading if preview mode, deleting, or blog already selected
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
@@ -161,6 +171,7 @@ export function EditorPage() {
 
   // Add new blog: clear form
   function handleNewBlog() {
+    setSelectedBlog(null);
     setEditModal({ visible: false });
     form.reset({
       title: "",
@@ -180,6 +191,9 @@ export function EditorPage() {
   function confirmDelete() {
     if (deleteModal.visible) {
       deleteMutation.mutate({ slug: deleteModal.entity.slug });
+      if (selectedBlog?.slug === deleteModal.entity.slug) {
+        setSelectedBlog(null);
+      }
     }
   }
 
