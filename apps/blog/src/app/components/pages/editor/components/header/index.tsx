@@ -6,8 +6,8 @@ import { Button } from "@ashgw/ui";
 import type { SortOptions as SortOptionsType } from "./SortOptions";
 import type { PostDetailRo } from "~/api/models/post";
 import { useAuth } from "~/app/hooks/auth";
-import { PreviewToggle } from "../PreviewToggle";
-import { ProfileButton } from "../ProfileButton";
+import { PreviewToggle } from "../preview/PreviewToggle";
+import { ProfileButton } from "./ProfileButton";
 import { SortOptions } from "./SortOptions";
 
 interface HeaderProps {

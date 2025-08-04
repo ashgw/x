@@ -11,8 +11,8 @@ import { ContentField } from "../fields/ContentField";
 import { SummaryField } from "../fields/SummaryField";
 import { TagsField } from "../fields/TagsField";
 import { TitleField } from "../fields/TitleField";
-import { FormButtons } from "../FormButtons";
-import { WordCountDisplay } from "../WordCountDisplay";
+import { FormButtons } from "./FormButtons";
+import { WordCountDisplay } from "./WordCountDisplay";
 
 const containerVariants = {
   hidden: { opacity: 0 },

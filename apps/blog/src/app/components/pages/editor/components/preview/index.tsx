@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 
 import { DateService } from "@ashgw/cross-runtime";
@@ -10,15 +9,7 @@ import { Badge, Skeleton } from "@ashgw/ui";
 import type { PostEditorDto } from "~/api/models/post";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { H1 } from "../../../[post]/components/headers";
-
-// Dynamically import MDX component to avoid ES Module issues
-const MDX = dynamic(
-  () => import("../../../[post]/components/mdx").then((mod) => mod.MDX),
-  {
-    loading: () => <Skeleton className="h-48 w-full" />,
-    ssr: false,
-  },
-);
+import { MDX } from "../../../[post]/components/mdx";
 
 interface BlogPreviewProps {
   isVisible: boolean;
@@ -50,7 +41,7 @@ export function BlogPreview({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      transition={{ duration: 0.2 }} // Faster toggle transition
+      transition={{ duration: 0.2 }}
     >
       <motion.div
         className="bg-card max-h-[850px] overflow-y-auto rounded-lg border p-6"
