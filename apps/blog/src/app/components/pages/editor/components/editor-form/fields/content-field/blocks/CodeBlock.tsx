@@ -20,9 +20,6 @@ const LANGUAGES = [
   "sql",
 ] as const;
 
-type Language = (typeof LANGUAGES)[number];
-
-// Simple custom dropdown component
 function LanguageSelect({
   value,
   onValueChange,
