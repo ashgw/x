@@ -9,11 +9,11 @@ import { Badge, Skeleton } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
-import { H1 } from "../../[post]/components/headers";
+import { H1 } from "../../../[post]/components/headers";
 
 // Dynamically import MDX component to avoid ES Module issues
 const MDX = dynamic(
-  () => import("../../[post]/components/mdx").then((mod) => mod.MDX),
+  () => import("../../../[post]/components/mdx").then((mod) => mod.MDX),
   {
     loading: () => <Skeleton className="h-48 w-full" />,
     ssr: false,

@@ -18,11 +18,11 @@ import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 import { SoundProvider } from "../../misc/SoundContext";
 import { SoundToggle } from "../../misc/SoundToggle";
-import { BlogList } from "./components/BlogList";
-import { BlogPreview } from "./components/BlogPreview";
+import { BlogList } from "./components/blog-list";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
-import { Header } from "./components/Header";
+import { Header } from "./components/header/Header";
+import { BlogPreview } from "./components/preview";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
