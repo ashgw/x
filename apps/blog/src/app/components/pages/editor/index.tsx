@@ -1,7 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -38,7 +38,6 @@ export function EditorPage() {
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
-  const currentBlogRef = useRef<PostDetailRo | null>(null);
 
   // Prevent scrolling when modal is open
   useEffect(() => {
@@ -84,7 +83,6 @@ export function EditorPage() {
       if (isDeletingBlog) return;
 
       setEditModal({ visible: true, entity: blog });
-      currentBlogRef.current = blog;
       form.reset({
         title: blog.title,
         summary: blog.summary,
@@ -174,13 +172,11 @@ export function EditorPage() {
     });
   }
 
-  // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
-  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
       deleteMutation.mutate({ slug: deleteModal.entity.slug });
@@ -192,17 +188,9 @@ export function EditorPage() {
     setIsDeletingBlog(false);
   }
 
-  // Toggle the preview pane without mutating the currently edited blog state.
-  // We intentionally avoid touching `editModal` here to prevent accidental resets
-  // that previously caused the editor to jump back to the wrong blog.
   const togglePreview = useCallback(() => {
     setShowPreview((prev) => !prev);
-
-    // Keep a reference to the current blog **only** when we first enter preview.
-    if (!showPreview && editModal.visible) {
-      currentBlogRef.current = editModal.entity;
-    }
-  }, [showPreview, editModal]);
+  }, []);
 
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
     if (editModal.visible) {
