@@ -26,13 +26,18 @@ export const postEditorSchemaDto = z.object({
     .min(20, { message: "Summary is too short" })
     .max(90, { message: "Summary is too long" }), // SEO title will be the same for now, 90 chars so it looks good on cards layout
   category: z.nativeEnum(PostCategoryEnum),
-  tags: z.array(
-    z.string().min(1).max(10, { message: "Tag is too long, it won't fit" }),
-  ),
+  tags: z
+    .array(
+      z.string().min(1).max(10, { message: "Tag is too long, it won't fit" }),
+    )
+    .max(3, { message: "You can only have up to 3 tags" })
+    .min(1, {
+      message: "You must have at least 1 tag",
+    }),
   isReleased: z.boolean(),
   mdxContent: z
     .string()
-    .min(10, { message: "MDX content is required" })
+    .min(1, { message: "MDX content is required" })
     .max(30000, { message: "MDX content is too long" }),
 });
 
