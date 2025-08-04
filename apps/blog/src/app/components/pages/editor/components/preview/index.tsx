@@ -9,7 +9,7 @@ import { Badge, Skeleton } from "@ashgw/ui";
 import type { PostEditorDto } from "~/api/models/post";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { H1 } from "../../../[post]/components/mdx-custom/headers";
-import { MDX } from "../../../[post]/components/mdx-custom/mdx";
+import { ClientMDX } from "../../../[post]/components/mdx-custom/mdx/client";
 
 interface BlogPreviewProps {
   isVisible: boolean;
@@ -67,7 +67,7 @@ export function BlogPreview({
           </div>
           <article className="text-wrap">
             {mdxContent ? (
-              <MDX source={mdxContent} components={featuredComponents} />
+              <ClientMDX source={mdxContent} components={featuredComponents} />
             ) : (
               <Skeleton className="h-48 w-full" />
             )}
