@@ -161,6 +161,9 @@ export class BlogService {
           entityType: "POST",
           contentType: "text/markdown",
         },
+        select: {
+          key: true,
+        },
       });
 
       const now = new Date();
