@@ -8,7 +8,7 @@ import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models";
-import { featuredComponents } from "~/app/components/misc/featured/blog";
+import { featuredComponents } from "~/app/components/pages/[post]/components/mdx-custom/featured/blog";
 import { ScrollUp } from "~/app/components/pages/home/components/postCards/components/ScrollUp";
 import { formatViews } from "~/utils/formatViews";
 import { H1 } from "../mdx-custom/headers";
