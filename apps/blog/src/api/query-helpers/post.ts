@@ -47,7 +47,11 @@ export class PostQueryHelper {
 
   private static _includeWithMdx() {
     return {
-      mdxContent: true,
+      mdxContent: {
+        select: {
+          key: true,
+        },
+      },
     } satisfies Prisma.PostInclude;
   }
 }
