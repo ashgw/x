@@ -225,7 +225,6 @@ export function EditorPage() {
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   // Show editor loading state only when we're expecting to load a blog from URL
   const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isDeletingBlog;
-  const formValues = form.watch();
 
   return (
     <SoundProvider>
@@ -269,7 +268,7 @@ export function EditorPage() {
                   <BlogPreview
                     key="preview"
                     isVisible={showPreview}
-                    formData={formValues}
+                    form={form}
                     title={
                       editModal.visible
                         ? editModal.entity.title

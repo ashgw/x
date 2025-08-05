@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
 import { motion } from "framer-motion";
 
 import { DateService } from "@ashgw/cross-runtime";
@@ -13,23 +13,19 @@ import { ClientMDX } from "../../../[post]/components/mdx-custom/mdx/client";
 
 interface BlogPreviewProps {
   isVisible: boolean;
-  formData: PostEditorDto;
+  form: UseFormReturn<PostEditorDto>;
   title: string;
   creationDate: string;
 }
 
 export function BlogPreview({
   isVisible,
-  formData,
+  form,
   title,
   creationDate,
 }: BlogPreviewProps) {
-  const [mdxContent, setMdxContent] = useState<string>("");
-
-  // Update MDX content whenever form data changes
-  useEffect(() => {
-    setMdxContent(formData.mdxContent);
-  }, [formData.mdxContent]);
+  const mdxContent = form.watch("mdxContent");
+  const titleValue = form.watch("title");
 
   if (!isVisible) return null;
 
@@ -55,7 +51,7 @@ export function BlogPreview({
       >
         <section className="container mx-auto">
           <div className="flex items-center justify-between">
-            <H1 id={formData.title || title}>{formData.title || title}</H1>
+            <H1 id={titleValue || title}>{titleValue || title}</H1>
           </div>
           <div className="mb-8 flex items-center justify-between text-sm">
             <div>{formattedDate}</div>
