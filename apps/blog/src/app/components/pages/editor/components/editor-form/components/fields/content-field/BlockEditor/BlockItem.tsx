@@ -5,8 +5,8 @@ import { Eye, EyeOff, GripVertical, Trash2 } from "lucide-react";
 
 import { Button, cn } from "@ashgw/ui";
 
-import type { Block, BlockProps } from "../types";
-import { blockRegistry } from "../registry";
+import type { Block, BlockProps } from "./types";
+import { blockRegistry } from "./registry";
 
 interface BlockItemProps {
   block: Block;

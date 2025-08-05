@@ -31,9 +31,9 @@ import {
   DialogContent,
 } from "@ashgw/ui";
 
-import type { Block, BlockProps, BlockType } from "../types";
-import { blockRegistry } from "../registry";
+import type { Block, BlockProps, BlockType } from "./types";
 import { BlockItem } from "./BlockItem";
+import { blockRegistry } from "./registry";
 
 interface BlockEditorProps {
   value: string;
