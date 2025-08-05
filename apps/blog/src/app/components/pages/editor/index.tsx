@@ -182,6 +182,10 @@ export function EditorPage() {
       isReleased: false,
       mdxContent: "",
     });
+    // Clear URL query parameter
+    const url = new URL(window.location.href);
+    url.searchParams.delete("blog");
+    window.history.replaceState({}, "", url.toString());
   }
 
   function handleDeleteBlog(blog: PostDetailRo) {
