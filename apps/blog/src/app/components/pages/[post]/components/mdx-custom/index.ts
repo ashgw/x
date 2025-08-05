@@ -1,5 +1,5 @@
 export { Divider } from "./divider";
-export { CodeBlock, CopyButton } from "./code";
+export { CodeBlock } from "./code";
 export { featuredComponents } from "./featured/blog";
 export { H1, H2, H3 } from "./headers";
 export { BlogLink } from "./link";
