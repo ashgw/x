@@ -6,13 +6,13 @@ import { WordCounterService } from "@ashgw/cross-runtime";
 import { Form } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
-import { CategoryField } from "./fields/CategoryField";
-import { ContentField } from "./fields/content-field";
-import { SummaryField } from "./fields/SummaryField";
-import { TagsField } from "./fields/TagsField";
-import { TitleField } from "./fields/TitleField";
-import { FormButtons } from "./FormButtons";
-import { WordCountDisplay } from "./WordCountDisplay";
+import { CategoryField } from "./components/fields/CategoryField";
+import { ContentField } from "./components/fields/content-field";
+import { SummaryField } from "./components/fields/SummaryField";
+import { TagsField } from "./components/fields/TagsField";
+import { TitleField } from "./components/fields/TitleField";
+import { FormButtons } from "./components/FormButtons";
+import { WordCountDisplay } from "./components/WordCountDisplay";
 
 const containerVariants = {
   hidden: { opacity: 0 },

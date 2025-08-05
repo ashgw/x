@@ -12,7 +12,7 @@ import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 import { Skeleton } from "@ashgw/ui";
 
-import type { SortOptions as SortOptionsType } from "./components/header/SortOptions";
+import type { SortOptions as SortOptionsType } from "./components/header/components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
@@ -20,9 +20,9 @@ import { BlogList, ConfirmBlogDeleteModal } from "./components/blog-list";
 import { PostEditorForm } from "./components/editor-form";
 import { Header } from "./components/header";
 import { BlogPreview } from "./components/preview";
+import { SoundProvider, SoundToggle } from "./components/sound";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
-import { SoundProvider, SoundToggle } from "./sound";
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
