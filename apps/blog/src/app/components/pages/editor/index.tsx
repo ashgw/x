@@ -16,8 +16,6 @@ import type { SortOptions as SortOptionsType } from "./components/header/SortOpt
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
-import { SoundProvider } from "../../misc/SoundContext";
-import { SoundToggle } from "../../misc/SoundToggle";
 import { BlogList } from "./components/blog-list";
 import { ConfirmBlogDeleteModal } from "./components/blog-list/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/editor-form";
@@ -25,6 +23,7 @@ import { Header } from "./components/header";
 import { BlogPreview } from "./components/preview";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
+import { SoundProvider, SoundToggle } from "./sound";
 
 export function EditorPage() {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({

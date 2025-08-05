@@ -9,7 +9,7 @@ import { Badge, Button } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
-import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
+import { ScrollUp } from "~/app/components/pages/home/components/postCards/components/ScrollUp";
 import { formatViews } from "~/utils/formatViews";
 import { H1 } from "../mdx-custom/headers";
 import { MDX } from "../mdx-custom/mdx";

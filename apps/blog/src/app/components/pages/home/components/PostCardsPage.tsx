@@ -1,6 +1,6 @@
 import type { PostCardRo } from "~/api/models";
-import { PostCards } from "~/app/components/misc/postCards";
-import { PostsProvider } from "~/app/components/misc/postCards/components/Context";
+import { PostCards } from "~/app/components/pages/home/components/postCards";
+import { PostsProvider } from "~/app/components/pages/home/components/postCards/components/Context";
 
 export function PostCardsPage({ posts }: { posts: PostCardRo[] }) {
   return (
