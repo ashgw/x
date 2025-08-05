@@ -37,7 +37,7 @@ export const userChangePasswordSchemaDto = z
   });
 
 export const userTerminateSpecificSessionSchemaDto = z.object({
-  sessionId: z.string().min(1),
+  sessionId: z.string().cuid(),
 });
 
 // ========== Types ==========
