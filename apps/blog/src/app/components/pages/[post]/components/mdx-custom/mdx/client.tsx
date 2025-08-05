@@ -5,7 +5,6 @@ import type { ComponentType } from "react";
 import type { Optional } from "ts-roids";
 import { useEffect, useState } from "react";
 
-import { TextContent } from "@ashgw/components";
 import { logger } from "@ashgw/observability";
 
 import { CodeBlock } from "../code";
@@ -13,6 +12,7 @@ import { Divider } from "../divider";
 import { H1, H2, H3 } from "../headers";
 import { BlogLink } from "../link/Link";
 import { Spacer1, Spacer2, Spacer3 } from "../spacers";
+import { TextContent } from "../text";
 
 interface ClientMDXProps {
   source: string;

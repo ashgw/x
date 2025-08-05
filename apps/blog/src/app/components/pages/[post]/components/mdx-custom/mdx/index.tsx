@@ -3,13 +3,12 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
-import { TextContent } from "@ashgw/components";
-
 import { CodeBlock } from "../code";
 import { Divider } from "../divider";
 import { H1, H2, H3 } from "../headers";
 import { BlogLink } from "../link/Link";
 import { Spacer1, Spacer2, Spacer3 } from "../spacers";
+import { TextContent } from "../text";
 
 export function MDX({ source, components }: MDXRemoteProps) {
   return (

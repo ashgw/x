@@ -1,19 +1,16 @@
-import { TextContent } from "@ashgw/components";
-
 import type { BlockProps } from "../types";
-import { CodeBlock } from "~/app/components/pages/[post]/components/mdx-custom/code";
-import { Divider } from "~/app/components/pages/[post]/components/mdx-custom/divider";
 import {
+  BlogLink,
+  CodeBlock,
+  Divider,
   H1,
   H2,
   H3,
-} from "~/app/components/pages/[post]/components/mdx-custom/headers";
-import { BlogLink } from "~/app/components/pages/[post]/components/mdx-custom/link/Link";
-import {
   Spacer1,
   Spacer2,
   Spacer3,
-} from "~/app/components/pages/[post]/components/mdx-custom/spacers";
+  TextContent,
+} from "~/app/components/pages/[post]/components/mdx-custom";
 
 export const HeadingOneWrapper = ({ text }: BlockProps) => <H1>{text}</H1>;
 

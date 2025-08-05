@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
-import { Footer, TextContent } from "@ashgw/components";
+import { Footer } from "@ashgw/components";
 import { EMAIL, LINKS } from "@ashgw/constants";
 import { monitor } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
@@ -79,7 +79,19 @@ export function ContactPage() {
                   <span className="">Get in touch</span>
                 </motion.h1>
                 <div className="mx-auto max-w-[600px]">
-                  <TextContent>
+                  <motion.p
+                    initial={{
+                      opacity: 0,
+                    }}
+                    animate={{
+                      opacity: 1,
+                    }}
+                    transition={{
+                      duration: 0.3,
+                      ease: "easeInOut",
+                    }}
+                    className="dimmed-3 mx-2 my-1 p-2 font-normal"
+                  >
                     I use{" "}
                     <button
                       onClick={async () => {
@@ -94,7 +106,7 @@ export function ContactPage() {
                     messages and to verify my
                     <Link href={LINKS.keyBase} name="identity."></Link>
                     Other than that, you can either
-                  </TextContent>
+                  </motion.p>
                 </div>
               </div>
               <div className="mx-auto max-w-sm space-y-4">
