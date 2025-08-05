@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { MaybeUndefined } from "ts-roids";
+import type { MaybeUndefined, Optional } from "ts-roids";
 import {
   createContext,
   useCallback,
@@ -34,7 +34,7 @@ export function SoundProvider({
 }: SoundProviderProps) {
   const [isPlaying, setIsPlaying] = useState(initialPlayState);
   const [isLoading, setIsLoading] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<Optional<HTMLAudioElement>>(null);
   // Store event handlers in refs to keep them across re-renders
   const handleCanPlayThroughRef = useRef<() => void>(() => setIsLoading(false));
   const handleErrorRef = useRef<(e: Event) => void>((e) => {

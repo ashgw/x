@@ -24,6 +24,7 @@ import { trpcClientSide } from "~/trpc/client";
 export function ChangePasswordForm() {
   const form = useForm<UserChangePasswordDto>({
     resolver: zodResolver(userChangePasswordSchemaDto),
+    mode: "onChange",
     defaultValues: {
       currentPassword: "",
       newPassword: "",
