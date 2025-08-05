@@ -16,8 +16,7 @@ import type { SortOptions as SortOptionsType } from "./components/header/SortOpt
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
-import { BlogList } from "./components/blog-list";
-import { ConfirmBlogDeleteModal } from "./components/blog-list/ConfirmBlogDeleteModal";
+import { BlogList, ConfirmBlogDeleteModal } from "./components/blog-list";
 import { PostEditorForm } from "./components/editor-form";
 import { Header } from "./components/header";
 import { BlogPreview } from "./components/preview";

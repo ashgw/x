@@ -6,12 +6,14 @@ import { Button } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models/post";
 
-export function ConfirmBlogDeleteModal(props: {
+interface ConfirmBlogDeleteModalProps {
   blog: PostDetailRo;
   onConfirm: () => void;
   onCancel: () => void;
   isDeleting?: boolean;
-}) {
+}
+
+export function ConfirmBlogDeleteModal(props: ConfirmBlogDeleteModalProps) {
   const overlayVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
