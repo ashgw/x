@@ -7,9 +7,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
-  issues: write
-  repository-projects: write
 
 jobs:
   update-changelog:
@@ -18,14 +15,18 @@ jobs:
 
     steps:
       - name: Authenticate GitHub CLI
+        shell: bash
         run: |
-          echo "${{ secrets.GA_AUTOMATIONS_PR_RW }}" > ~/.gh_token
+          set -euo pipefail
+          umask 077
+          install -m 600 /dev/null ~/.gh_token
+          printf '%s' "${{ secrets.GA_AUTOMATIONS_PR_RW }}" > ~/.gh_token
           gh auth login --hostname github.com --with-token < ~/.gh_token
 
       - uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0 # full history so changeset works
+          fetch-depth: 0
 
       - uses: ./.github/actions/pnpm-install
 
@@ -36,12 +37,12 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           RANDOM_SUFFIX: ${{ github.run_id }}
+        shell: bash
         run: |
+          set -euo pipefail
           BRANCH_NAME="changelog-update-${PR_NUMBER}-${RANDOM_SUFFIX}"
 
-          # ensure it's based only on main
           git checkout -b "${BRANCH_NAME}" origin/main
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -54,3 +55,19 @@ jobs:
             --body "This PR contains changelog updates and version bumps for PR #${PR_NUMBER}" \
             --base main \
             --head "${BRANCH_NAME}"
+
+      - name: Shred token and clean auth
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Shred token file
+          if [ -f ~/.gh_token ]; then
+            shred -u ~/.gh_token || rm -f ~/.gh_token
+          fi
+          # Log out gh and nuke any persisted auth
+          gh auth logout --hostname github.com --yes || true
+          rm -rf ~/.config/gh || true
+          # Clear any stray git creds
+          git config --global --unset credential.helper || true
+          [ -f ~/.git-credentials ] && shred -u ~/.git-credentials || true
