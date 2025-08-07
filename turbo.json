@@ -58,6 +58,7 @@
   },
   "envMode": "strict",
   "globalEnv": [
+    "CI",
     "NODE_ENV",
     "SENTRY_ORG",
     "KIT_API_KEY",
@@ -77,7 +78,8 @@
     "S3_BUCKET_ACCESS_KEY_ID",
     "S3_BUCKET_SECRET_KEY",
     "S3_BUCKET_URL",
-    "IP_HASH_SALT"
+    "IP_HASH_SALT",
+    "USE_DOTENV_FILES"
   ],
   "globalPassThroughEnv": []
 }
