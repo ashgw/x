@@ -99,7 +99,7 @@ function parseBlock(blockStr: string): Block | null {
         if (content !== undefined) {
           if (type === "C") {
             blockProps.text = content; // keep as-is; spacing will be preserved
-          } else if (content?.trim()) {
+          } else if (content.trim()) {
             blockProps.text = content.trim();
           }
         }
@@ -170,7 +170,11 @@ function parseTopLevelBlocks(mdx: string): string[] {
     }
 
     const nameStart = j;
-    while (j < len && isAlphaNum(content[j])) j += 1;
+    while (j < len) {
+      const ch2 = content.charAt(j);
+      if (!isAlphaNum(ch2)) break;
+      j += 1;
+    }
     const tagName = content.slice(nameStart, j);
 
     if (!tagName || !knownTags.has(tagName)) {
@@ -213,7 +217,9 @@ function parseTopLevelBlocks(mdx: string): string[] {
 
     // Not self-closing: walk until we find the matching closing tag for tagName
     // Generic stack to handle nested tags without caring about which are known
-    type StackItem = { name: string };
+    interface StackItem {
+      name: string;
+    }
     const stack: StackItem[] = [{ name: tagName }];
 
     let p = startTagEnd + 1;
@@ -333,8 +339,9 @@ function serializeToMDX(blocks: Block[]): string {
 }
 
 export function BlockEditor({ value, onChange }: BlockEditorProps) {
-  // Use a key to force reset the component when value changes dramatically
-  const [key, setKey] = useState(Date.now());
+  // source-of-truth guards
+  const lastSerializedRef = useRef<string>(value);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const isInitialRender = useRef(true);
   const prevValueRef = useRef(value);
@@ -393,6 +400,12 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
     if (isInitialRender.current) {
       isInitialRender.current = false;
       initialValueRef.current = value;
+      lastSerializedRef.current = value;
+      return;
+    }
+
+    // Ignore echo from our own serialization
+    if (value === lastSerializedRef.current) {
       return;
     }
 
@@ -407,7 +420,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
       const newBlocks = parseExistingMDX(value);
       setBlocks(newBlocks);
       initialValueRef.current = value;
-      setKey(Date.now()); // Force re-render with new key
+      lastSerializedRef.current = value;
     }
   }, [value, manuallyEdited]);
 
@@ -506,10 +519,11 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
 
     const timeoutId = setTimeout(() => {
       const mdx = serializeToMDX(blocks);
+      lastSerializedRef.current = mdx;
       onChange(mdx);
       // Reset manuallyEdited flag to avoid redundant saves triggered by UI-only state changes
       setManuallyEdited(false);
-    }, 1000); // Increased timeout to reduce frequency of updates
+    }, 500); // Faster feedback but still debounced
 
     return () => clearTimeout(timeoutId);
   }, [blocks, onChange, manuallyEdited, isExpanded]);
@@ -517,9 +531,9 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   // Reset component when value becomes empty (new blog creation)
   useEffect(() => {
     if (!value || value.trim() === "") {
-      setKey(Date.now());
       setBlocks([]);
       setManuallyEdited(false);
+      lastSerializedRef.current = "";
     }
   }, [value]);
 
@@ -704,7 +718,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   );
 
   return (
-    <div key={key} className="relative" onKeyDownCapture={handleKeyDownCapture}>
+    <div className="relative" onKeyDownCapture={handleKeyDownCapture}>
       {compactView}
       {expandedView}
 
