@@ -1,6 +1,7 @@
 "use client";
 
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   closestCenter,
@@ -64,6 +65,21 @@ function parseBlock(blockStr: string): Block | null {
     const componentMatch = componentRegex.exec(blockStr);
 
     if (componentMatch) {
+      // Only treat as a block if the match covers the entire string (outermost element)
+      if (
+        componentMatch.index !== 0 ||
+        componentMatch[0].length !== blockStr.length
+      ) {
+        // Inline component within text; return as paragraph
+        if (blockStr.trim()) {
+          return {
+            id: nanoid(),
+            type: "C",
+            props: { text: blockStr },
+          };
+        }
+        return null;
+      }
       const [, tag1, props1, content, tag2, props2] = componentMatch;
       const tag = tag1 ?? tag2;
       const propsStr = props1 ?? props2;
@@ -79,9 +95,13 @@ function parseBlock(blockStr: string): Block | null {
         const blockDef = blockRegistry[type];
         const blockProps: BlockProps = { ...blockDef.defaultProps };
 
-        // Parse content if it exists
-        if (content?.trim()) {
-          blockProps.text = content.trim();
+        // Parse content if it exists. Preserve internal whitespace for paragraphs.
+        if (content !== undefined) {
+          if (type === "C") {
+            blockProps.text = content; // keep as-is; spacing will be preserved
+          } else if (content?.trim()) {
+            blockProps.text = content.trim();
+          }
         }
 
         // Parse props if they exist
@@ -106,7 +126,7 @@ function parseBlock(blockStr: string): Block | null {
       return {
         id: nanoid(),
         type: "C",
-        props: { text: blockStr.trim() },
+        props: { text: blockStr }, // keep raw as-is
       };
     }
 
@@ -117,67 +137,173 @@ function parseBlock(blockStr: string): Block | null {
   }
 }
 
+// New: robust top-level parser that extracts ONLY outermost blocks.
+function parseTopLevelBlocks(mdx: string): string[] {
+  if (!mdx) return [];
+
+  const content = mdx.replace(/^\ufeff/, "");
+
+  // All known block tags from the registry
+  const knownTags = new Set(Object.keys(blockRegistry));
+
+  const blocks: string[] = [];
+  let i = 0;
+  let lastEmittedIndex = 0;
+  const len = content.length;
+
+  const isAlphaNum = (ch: string) => /[A-Za-z0-9_]/.test(ch);
+
+  while (i < len) {
+    const ch = content[i];
+    if (ch !== "<") {
+      i += 1;
+      continue;
+    }
+
+    // Attempt to read a tag name
+    let j = i + 1;
+    // skip possible '/'
+    if (content[j] === "/") {
+      // a closing tag at top-level is unexpected here; treat as text
+      i += 1;
+      continue;
+    }
+
+    const nameStart = j;
+    while (j < len && isAlphaNum(content[j])) j += 1;
+    const tagName = content.slice(nameStart, j);
+
+    if (!tagName || !knownTags.has(tagName)) {
+      // Not a known top-level block open tag; skip '<'
+      i += 1;
+      continue;
+    }
+
+    // We found a top-level opening for a known tag at index i
+    // Emit any text before this tag as a paragraph block (C), preserving spacing
+    if (lastEmittedIndex < i) {
+      const preText = content.slice(lastEmittedIndex, i);
+      if (preText.trim()) {
+        blocks.push(preText);
+      }
+    }
+
+    // Find the end of this element (self-closing or matching close), respecting nested tags generically
+    // First, advance to end of start tag '>' and determine if self-closing
+    let k = j;
+    // advance until '>'
+    while (k < len && content[k] !== ">") k += 1;
+    if (k >= len) {
+      // malformed, bail out
+      blocks.push(content.slice(i));
+      return blocks;
+    }
+
+    const startTagEnd = k; // index of '>'
+    const startTagContent = content.slice(i, startTagEnd + 1);
+    const selfClosing = /\/>\s*$/.test(startTagContent);
+
+    if (selfClosing) {
+      // Simple self-closing block
+      blocks.push(content.slice(i, startTagEnd + 1));
+      i = startTagEnd + 1;
+      lastEmittedIndex = i;
+      continue;
+    }
+
+    // Not self-closing: walk until we find the matching closing tag for tagName
+    // Generic stack to handle nested tags without caring about which are known
+    type StackItem = { name: string };
+    const stack: StackItem[] = [{ name: tagName }];
+
+    let p = startTagEnd + 1;
+    const tagOpenRe =
+      /<([A-Za-z][\w-]*)(\s[^>]*?)?>|<\/([A-Za-z][\w-]*)\s*>|<([A-Za-z][\w-]*)(\s[^>]*?)?\/>/g;
+    tagOpenRe.lastIndex = p;
+
+    while (true) {
+      const m = tagOpenRe.exec(content);
+      if (!m) {
+        // no closing tag found, treat rest as part of this block
+        blocks.push(content.slice(i));
+        return blocks;
+      }
+
+      const [full, openName1, _openAttrs, closeName, selfName] = m;
+      const matchIndex = m.index;
+      const matchEnd = matchIndex + full.length;
+
+      if (selfName) {
+        // self-closing tag: does not affect stack
+        p = matchEnd;
+        tagOpenRe.lastIndex = p;
+        continue;
+      }
+
+      if (closeName) {
+        // closing tag
+        const top = stack[stack.length - 1];
+        if (top && top.name === closeName) {
+          stack.pop();
+          if (stack.length === 0) {
+            // Found the matching close for our top-level tag
+            const blockStr = content.slice(i, matchEnd);
+            blocks.push(blockStr);
+            i = matchEnd;
+            lastEmittedIndex = i;
+            break;
+          }
+        }
+        p = matchEnd;
+        tagOpenRe.lastIndex = p;
+        continue;
+      }
+
+      if (openName1) {
+        // opening tag (non-self-closing)
+        stack.push({ name: openName1 });
+        p = matchEnd;
+        tagOpenRe.lastIndex = p;
+        continue;
+      }
+    }
+  }
+
+  // Emit any remaining text after the last block
+  if (lastEmittedIndex < len) {
+    const tail = content.slice(lastEmittedIndex);
+    if (tail.trim()) blocks.push(tail);
+  }
+
+  return blocks;
+}
+
 function parseExistingMDX(mdx: string): Block[] {
   if (!mdx || mdx.trim() === "") return [];
 
   try {
-    // First, normalize line endings and remove any BOM
     const normalizedMdx = mdx.replace(/^\ufeff/, "").replace(/\r\n?/g, "\n");
 
-    logger.debug("Parsing MDX content", {
+    logger.debug("Parsing MDX content (top-level)", {
       length: normalizedMdx.length,
       preview: normalizedMdx.slice(0, 100),
     });
 
-    // Use a more robust approach to split blocks
-    // Look for component patterns like <Tag>...</Tag> or <Tag />
-    const blockRegex =
-      /<(\w+)(?:\s+[^>]+)?>[^]*?<\/\1>|<(\w+)(?:\s+[^>]+)?\/>/gs;
-    const matches = [...normalizedMdx.matchAll(blockRegex)];
+    const rawBlocks = parseTopLevelBlocks(normalizedMdx);
 
-    logger.debug("Found component matches", { count: matches.length });
-
-    // If no matches found, treat the entire content as a text block
-    if (matches.length === 0 && normalizedMdx.trim()) {
+    // If no blocks found but content exists, treat entire content as C
+    if (rawBlocks.length === 0 && normalizedMdx.trim()) {
       const textBlock = parseBlock(normalizedMdx);
       return textBlock ? [textBlock] : [];
     }
 
-    // Process matches and extract blocks
     const blocks: Block[] = [];
-    let lastIndex = 0;
-
-    for (const match of matches) {
-      const matchStart = match.index || 0;
-
-      // If there's text content before this match, create a text block
-      if (matchStart > lastIndex) {
-        const textContent = normalizedMdx
-          .substring(lastIndex, matchStart)
-          .trim();
-        if (textContent) {
-          const textBlock = parseBlock(textContent);
-          if (textBlock) blocks.push(textBlock);
-        }
-      }
-
-      // Parse the matched component block
-      const componentBlock = parseBlock(match[0]);
-      if (componentBlock) blocks.push(componentBlock);
-
-      lastIndex = matchStart + match[0].length;
+    for (const chunk of rawBlocks) {
+      const parsed = parseBlock(chunk);
+      if (parsed) blocks.push(parsed);
     }
 
-    // Handle any remaining text after the last component
-    if (lastIndex < normalizedMdx.length) {
-      const remainingText = normalizedMdx.substring(lastIndex).trim();
-      if (remainingText) {
-        const textBlock = parseBlock(remainingText);
-        if (textBlock) blocks.push(textBlock);
-      }
-    }
-
-    logger.debug("Parsed blocks", { count: blocks.length });
+    logger.debug("Parsed blocks (top-level)", { count: blocks.length });
     return blocks;
   } catch (error) {
     logger.error("Failed to parse MDX content", { error, mdx });
@@ -190,9 +316,10 @@ function serializeToMDX(blocks: Block[]): string {
     return blocks
       .map((block) => {
         const blockDef = blockRegistry[block.type];
-        // For text blocks, use multiline format
+        // For text blocks, use multiline format and preserve content as-is
         if (block.type === "C") {
-          return `<C>\n${block.props.text}\n</C>`;
+          const text = block.props.text ?? "";
+          return `<C>\n${text}\n</C>`;
         }
         // For other blocks, use the standard serializer
         return blockDef.serialize(block.props);
@@ -215,6 +342,31 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isUserInteractingRef = useRef(false);
+
+  // Prevent parent form submission from key interactions inside the editor
+  const handleKeyDownCapture = useCallback((e: ReactKeyboardEvent) => {
+    const target = e.target as HTMLElement | null;
+    const isInput = target?.tagName === "INPUT";
+    const isTextArea = target?.tagName === "TEXTAREA";
+    const isContentEditable =
+      target?.getAttribute("contenteditable") === "true";
+
+    // Prevent Enter from submitting the parent form when focused inside the editor
+    if (e.key === "Enter") {
+      // Allow Enter in textarea/contenteditable (for new lines), but block in inputs or generic containers
+      if (!isTextArea && !isContentEditable) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+    }
+
+    // When dialog/editor is focused, prevent Space from triggering clicks on any focused button outside
+    if (e.key === " " && !(isInput || isTextArea || isContentEditable)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, []);
 
   // Parse blocks only when value changes
   const initialBlocks = useMemo(() => {
@@ -459,7 +611,10 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
         }
       }}
     >
-      <DialogContent className="h-[90vh] w-[90vw] max-w-[90vw] p-6">
+      <DialogContent
+        className="h-[90vh] w-[90vw] max-w-[90vw] p-6"
+        onKeyDownCapture={handleKeyDownCapture}
+      >
         <div className="flex h-full flex-col">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Content Editor</h2>
@@ -549,12 +704,15 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   );
 
   return (
-    <div key={key} className="relative">
+    <div key={key} className="relative" onKeyDownCapture={handleKeyDownCapture}>
       {compactView}
       {expandedView}
 
       <Dialog open={showAddCommand} onOpenChange={setShowAddCommand}>
-        <DialogContent className="max-w-[500px] p-0">
+        <DialogContent
+          className="max-w-[500px] p-0"
+          onKeyDownCapture={handleKeyDownCapture}
+        >
           <Command>
             <CommandInput
               placeholder="Search blocks..."
