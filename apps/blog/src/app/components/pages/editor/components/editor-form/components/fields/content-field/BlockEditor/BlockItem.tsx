@@ -32,10 +32,6 @@ export function BlockItem({
     transition,
   };
 
-  if (!blockDef) {
-    return null;
-  }
-
   const { Preview: PreviewComponent, Editor: EditorComponent } = blockDef;
 
   // Determine block types for styling
@@ -70,6 +66,7 @@ export function BlockItem({
           className="h-8 w-8"
           onClick={() => setIsPreview(!isPreview)}
           title={isPreview ? "Edit" : "Preview"}
+          type="button"
         >
           {isPreview ? (
             <EyeOff className="h-4 w-4" />
@@ -83,6 +80,7 @@ export function BlockItem({
           className="text-destructive hover:text-destructive/90 h-8 w-8"
           onClick={onDelete}
           title="Delete block"
+          type="button"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
@@ -93,6 +91,7 @@ export function BlockItem({
           {...attributes}
           {...listeners}
           title="Drag to reorder"
+          type="button"
         >
           <GripVertical className="h-4 w-4" />
         </Button>

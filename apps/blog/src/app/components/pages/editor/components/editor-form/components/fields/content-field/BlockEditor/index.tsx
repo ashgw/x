@@ -391,6 +391,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
             size="sm"
             className="relative"
             onClick={() => setIsExpanded(true)}
+            type="button"
           >
             <Maximize2 className="mr-2 h-4 w-4" />
             Expand Editor
@@ -400,6 +401,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
             size="sm"
             className="relative"
             onClick={() => setShowAddCommand(true)}
+            type="button"
           >
             <Plus className="mr-2 h-4 w-4" />
             Add Block
@@ -472,6 +474,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
                     isUserInteractingRef.current = false;
                   }, 1000);
                 }}
+                type="button"
               >
                 <Minimize2 className="mr-2 h-4 w-4" />
                 Minimize Editor
@@ -480,6 +483,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowAddCommand(true)}
+                type="button"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Block
@@ -552,7 +556,12 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
       <Dialog open={showAddCommand} onOpenChange={setShowAddCommand}>
         <DialogContent className="max-w-[500px] p-0">
           <Command>
-            <CommandInput placeholder="Search blocks..." />
+            <CommandInput
+              placeholder="Search blocks..."
+              onKeyDown={(e) => {
+                if (e.key === "Enter") e.stopPropagation();
+              }}
+            />
             <CommandEmpty>No blocks found.</CommandEmpty>
             <CommandGroup>
               {Object.values(blockRegistry).map((block) => (
