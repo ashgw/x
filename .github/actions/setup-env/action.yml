@@ -1,38 +1,68 @@
-# ./.github/actions/setup-env/action.yml
 name: Setup Environment Variables
 description: Export secrets to the job environment without writing files
+
 inputs:
+  use_env_files:
+    required: false
+    default: "no"
+    description: "Whether to use the env files to setup the environment variables, otherwise CI will look for them in the job environment variables"
   NODE_ENV:
-    {
-      required: true,
-      description: "The environment to run the job in, e.g. 'development', 'production' or 'preview'",
-    }
-  NEXT_PUBLIC_WWW_URL: { required: true, description: "The URL of the website" }
-  NEXT_PUBLIC_BLOG_URL: { required: true, description: "The URL of the blog" }
+    required: true
+    description: "The environment to run the job in, e.g. 'development', 'production' or 'preview'"
+  NEXT_PUBLIC_WWW_URL:
+    required: true
+    description: "The URL of the website"
+  NEXT_PUBLIC_BLOG_URL:
+    required: true
+    description: "The URL of the blog"
   NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
-    { required: true, description: "The Google Analytics ID for the website" }
+    required: true
+    description: "The Google Analytics ID for the website"
   NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
-    { required: true, description: "The Google Analytics ID for the blog" }
+    required: true
+    description: "The Google Analytics ID for the blog"
   NEXT_PUBLIC_SENTRY_DSN:
-    { required: true, description: "The Sentry DSN for the website" }
+    required: true
+    description: "The Sentry DSN for the website"
   NEXT_PUBLIC_POSTHOG_KEY:
-    { required: true, description: "The PostHog key for the website" }
+    required: true
+    description: "The PostHog key for the website"
   NEXT_PUBLIC_POSTHOG_HOST:
-    { required: true, description: "The PostHog host for the website" }
-  DATABASE_URL: { required: true, description: "The URL of the database" }
-  S3_BUCKET_NAME: { required: true, description: "The name of the S3 bucket" }
+    required: true
+    description: "The PostHog host for the website"
+  DATABASE_URL:
+    required: true
+    description: "The URL of the database"
+  S3_BUCKET_NAME:
+    required: true
+    description: "The name of the S3 bucket"
   S3_BUCKET_REGION:
-    { required: true, description: "The region of the S3 bucket" }
+    required: true
+    description: "The region of the S3 bucket"
   S3_BUCKET_ACCESS_KEY_ID:
-    { required: true, description: "The access key ID for the S3 bucket" }
+    required: true
+    description: "The access key ID for the S3 bucket"
   S3_BUCKET_SECRET_KEY:
-    { required: true, description: "The secret key for the S3 bucket" }
-  S3_BUCKET_URL: { required: true, description: "The URL of the S3 bucket" }
-  SENTRY_ORG: { required: true, description: "The Sentry organization" }
-  SENTRY_PROJECT: { required: true, description: "The Sentry project" }
-  SENTRY_AUTH_TOKEN: { required: true, description: "The Sentry auth token" }
-  KIT_API_KEY: { required: true, description: "The Kit API key" }
-  IP_HASH_SALT: { required: true, description: "The salt for IP hashing" }
+    required: true
+    description: "The secret key for the S3 bucket"
+  S3_BUCKET_URL:
+    required: true
+    description: "The URL of the S3 bucket"
+  SENTRY_ORG:
+    required: true
+    description: "The Sentry organization"
+  SENTRY_PROJECT:
+    required: true
+    description: "The Sentry project"
+  SENTRY_AUTH_TOKEN:
+    required: true
+    description: "The Sentry auth token"
+  KIT_API_KEY:
+    required: true
+    description: "The Kit API key"
+  IP_HASH_SALT:
+    required: true
+    description: "The salt for IP hashing"
 
 runs:
   using: composite
@@ -41,7 +71,49 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        # mask everything
+
+        if [ "${{ inputs.use_env_files }}" = "yes" ]; then
+          echo "Using env files"
+
+          declare -A env_vars=(
+            ["NODE_ENV"]="${{ inputs.NODE_ENV }}"
+            ["NEXT_PUBLIC_WWW_URL"]="${{ inputs.NEXT_PUBLIC_WWW_URL }}"
+            ["NEXT_PUBLIC_BLOG_URL"]="${{ inputs.NEXT_PUBLIC_BLOG_URL }}"
+            ["NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}"
+            ["NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}"
+            ["NEXT_PUBLIC_SENTRY_DSN"]="${{ inputs.NEXT_PUBLIC_SENTRY_DSN }}"
+            ["SENTRY_ORG"]="${{ inputs.SENTRY_ORG }}"
+            ["SENTRY_PROJECT"]="${{ inputs.SENTRY_PROJECT }}"
+            ["SENTRY_AUTH_TOKEN"]="${{ inputs.SENTRY_AUTH_TOKEN }}"
+            ["NEXT_PUBLIC_POSTHOG_KEY"]="${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}"
+            ["NEXT_PUBLIC_POSTHOG_HOST"]="${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}"
+            ["DATABASE_URL"]="${{ inputs.DATABASE_URL }}"
+            ["S3_BUCKET_NAME"]="${{ inputs.S3_BUCKET_NAME }}"
+            ["S3_BUCKET_REGION"]="${{ inputs.S3_BUCKET_REGION }}"
+            ["S3_BUCKET_ACCESS_KEY_ID"]="${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}"
+            ["S3_BUCKET_SECRET_KEY"]="${{ inputs.S3_BUCKET_SECRET_KEY }}"
+            ["S3_BUCKET_URL"]="${{ inputs.S3_BUCKET_URL }}"
+            ["KIT_API_KEY"]="${{ inputs.KIT_API_KEY }}"
+            ["IP_HASH_SALT"]="${{ inputs.IP_HASH_SALT }}"
+          )
+
+          # Create all three env files with the same content
+          # Will be automatically setup by the environment we run it in
+          env_files=(".env.development" ".env.preview" ".env.production")
+
+          for env_file in "${env_files[@]}"; do
+            > "$env_file"
+            for key in "${!env_vars[@]}"; do
+              echo "${key}='${env_vars[$key]}'" >> "$env_file"
+            done
+          done
+
+          exit 0
+        else
+          echo "Using job environment variables"
+        fi
+
+        # Mask values
         while IFS='=' read -r k v; do
           echo "::add-mask::${v}"
         done <<'EOF'
@@ -66,7 +138,7 @@ runs:
         IP_HASH_SALT=${{ inputs.IP_HASH_SALT }}
         EOF
 
-        # export to job env
+        # Export to job environment
         {
           echo "NODE_ENV=${{ inputs.NODE_ENV }}"
           echo "NEXT_PUBLIC_WWW_URL=${{ inputs.NEXT_PUBLIC_WWW_URL }}"
@@ -88,3 +160,4 @@ runs:
           echo "KIT_API_KEY=${{ inputs.KIT_API_KEY }}"
           echo "IP_HASH_SALT=${{ inputs.IP_HASH_SALT }}"
         } >> "$GITHUB_ENV"
+        exit 0

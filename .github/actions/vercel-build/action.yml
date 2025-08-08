@@ -7,7 +7,7 @@ inputs:
     description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
     required: true
   NODE_ENV:
-    description: ""
+    description: "The environment you're trying to build. Example: 'production', 'preview'"
     required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"

@@ -3,6 +3,9 @@ name: CI / DB Migrate
 description: Run database migrations
 
 inputs:
+  NODE_ENV:
+    required: true
+    description: "The environment to run the migrations in, can be 'development' or 'production' or 'preview'"
   with_deploy:
     required: true
     description: "Whether to run the migration deployment step ('yes' or 'no')"
@@ -33,7 +36,7 @@ runs:
         chmod +x .github/scripts/check-migration-safety.sh
         .github/scripts/check-migration-safety.sh migration.sql
 
-    - name: Test migrations in Docker
+    - name: Test migrations in an ephemeral Docker container
       shell: bash
       run: |
         pnpm --filter @ashgw/db start
@@ -57,13 +60,13 @@ runs:
 
         exit $STATUS
 
-    - name: Run migrations
+    - name: Run migrations on the ${{ inputs.NODE_ENV }} database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
         pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
-    - name: Validate migrations
+    - name: Validate migrations on the ${{ inputs.NODE_ENV }} database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
@@ -78,7 +81,7 @@ runs:
         pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         repo="${{ github.repository }}"
 
-        comment_body="Database migrations were successfully deployed to the development branch of the database."
+        comment_body="Database migrations were successfully deployed to the ${{ inputs.NODE_ENV }} branch of the database."
 
         curl -s -X POST \
           -H "Authorization: token $GH_TOKEN" \
