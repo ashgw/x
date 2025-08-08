@@ -17,6 +17,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-www-preview
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/vercel-build

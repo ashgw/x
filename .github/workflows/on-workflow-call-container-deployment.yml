@@ -14,6 +14,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-${{ inputs.SERVICE_NAME }}-${{ inputs.NODE_ENV }}
+      cancel-in-progress: false
     # environment: ${{ inputs.NODE_ENV }} # this is needed since some secrets are valid (not fake) only in this env type & higher
     steps:
       - uses: actions/checkout@v4

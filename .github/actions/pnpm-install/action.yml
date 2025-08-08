@@ -36,14 +36,6 @@ runs:
         restore-keys: |
           ${{ runner.os }}-pnpm-store-node-${{ inputs.node_version }}-pnpm-${{ inputs.pnpm_version }}-
 
-    - name: Cache node_modules
-      uses: actions/cache@v4
-      with:
-        path: "**/node_modules"
-        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-node-modules-
-
     - name: Install dependencies
       shell: bash
       run: pnpm install --frozen-lockfile

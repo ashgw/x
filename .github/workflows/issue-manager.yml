@@ -15,13 +15,15 @@ on:
       - labeled
   workflow_dispatch:
 
-permissions:
-  issues: write
-  pull-requests: write
-
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    # Never run on forked PRs under pull_request_target context
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.fork == false
     steps:
       - uses: tiangolo/issue-manager@0.5.1
         with:

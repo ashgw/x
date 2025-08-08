@@ -4,14 +4,13 @@ on:
   pull_request_target:
     types: [labeled]
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   update-changelog:
-    if: github.event.label.name == 'update-changelog' && github.actor == 'ashgw'
+    if: github.event.label.name == 'update-changelog' && github.actor == 'ashgw' && github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Authenticate GitHub CLI
@@ -28,6 +27,7 @@ jobs:
           ref: main
           fetch-depth: 0
           persist-credentials: false
+          clean: true
 
       - uses: ./.github/actions/pnpm-install
 

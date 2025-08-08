@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   issues: write
   pull-requests: write
 
@@ -27,35 +27,53 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/on-workflow-call-pr-validate-title.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   summarize-pr:
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/on-workflow-call-pr-summarize.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   format:
     uses: ./.github/workflows/on-workflow-call-format.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   dependencies-check:
     uses: ./.github/workflows/on-workflow-call-dependencies-check.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   lint:
     uses: ./.github/workflows/on-workflow-call-lint.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   secrets-leaks:
     uses: ./.github/workflows/on-workflow-call-secrets-leaks.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   build:
     uses: ./.github/workflows/on-workflow-call-build.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   test:
     uses: ./.github/workflows/on-workflow-call-test.yml
     secrets: inherit
+    permissions:
+      contents: read
 
   db-migration:
     uses: ./.github/workflows/on-workflow-call-db-migrate.yml
@@ -66,6 +84,8 @@ jobs:
       # we can also migrate deploy from a label added to the PR
       # this makes sure we deploy the migration anyway on merge
       with_deploy: ${{ github.ref == 'refs/heads/main' && 'yes' || 'no' }}
+    permissions:
+      contents: read
 
   mergeable:
     if: always()
@@ -83,6 +103,8 @@ jobs:
         id: all-green
         with:
           jobs: ${{ toJSON(needs) }}
+    permissions:
+      contents: read
 
   # just a trigger to dispatch
   preview-deployment:
@@ -90,16 +112,25 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/on-workflow-call-preview-deployment.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   www-prevew-deployemnt:
     needs: [preview-deployment]
     uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   blog-preview-deployemnt:
     needs: [preview-deployment]
     uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   # same here
   production-deployment:
@@ -107,13 +138,22 @@ jobs:
     needs: [mergeable]
     uses: ./.github/workflows/on-workflow-call-production-deployment.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   www-production-deployment:
     needs: [production-deployment]
     uses: ./.github/workflows/on-workflow-call-www-production-deployment.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   blog-production-deployment:
     needs: [production-deployment]
     uses: ./.github/workflows/on-workflow-call-blog-production-deployment.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
