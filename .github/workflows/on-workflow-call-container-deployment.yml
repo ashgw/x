@@ -50,6 +50,6 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
           SERVICE_NAME: ${{ inputs.SERVICE_NAME}} # only blog for now
 
