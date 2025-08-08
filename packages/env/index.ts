@@ -1,8 +1,9 @@
+import fs from "fs";
 import path from "path";
 import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
 import { z } from "zod";
-import fs from "fs"
+
 import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 
 // for compatibility with ESM and CommonJS
@@ -11,16 +12,15 @@ rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
 
 // Only use dotenv when running locally. CI will inject process.env directly.
 const useDotenvFiles =
-  process.env.CI !== "true" &&
-  process.env.USE_DOTENV_FILES !== "false"; // allow manual override
+  process.env.CI !== "true" && process.env.USE_DOTENV_FILES !== "false"; // allow manual override
 
 if (useDotenvFiles) {
   const file =
     process.env.NODE_ENV === "production"
       ? "../../.env.production"
       : process.env.NODE_ENV === "preview"
-      ? "../../.env.preview"
-      : "../../.env.development";
+        ? "../../.env.preview"
+        : "../../.env.development";
 
   const envPath = path.resolve(rootDir, file);
   if (fs.existsSync(envPath)) {
