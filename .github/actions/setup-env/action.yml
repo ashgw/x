@@ -1,101 +1,90 @@
-name: "Setup Environment Variables"
-description: "Sets up env from GitHub Secrets"
+# ./.github/actions/setup-env/action.yml
+name: Setup Environment Variables
+description: Export secrets to the job environment without writing files
 inputs:
   NODE_ENV:
-    description: "either 'development', 'preview', or 'production' & defo not 'prod' or 'dev'"
-    required: true
-  NEXT_PUBLIC_WWW_URL:
-    description: "The public URL for the website"
-    required: true
-  NEXT_PUBLIC_BLOG_URL:
-    description: "The URL for the blog"
-    required: true
+    {
+      required: true,
+      description: "The environment to run the job in, e.g. 'development', 'production' or 'preview'",
+    }
+  NEXT_PUBLIC_WWW_URL: { required: true, description: "The URL of the website" }
+  NEXT_PUBLIC_BLOG_URL: { required: true, description: "The URL of the blog" }
   NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
-    description: "Google Analytics ID for the website"
-    required: true
+    { required: true, description: "The Google Analytics ID for the website" }
   NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
-    description: "Google Analytics ID for the blog"
-    required: true
+    { required: true, description: "The Google Analytics ID for the blog" }
   NEXT_PUBLIC_SENTRY_DSN:
-    description: "Sentry DSN for error tracking"
-    required: true
+    { required: true, description: "The Sentry DSN for the website" }
   NEXT_PUBLIC_POSTHOG_KEY:
-    description: "PostHog key for tracking"
-    required: true
+    { required: true, description: "The PostHog key for the website" }
   NEXT_PUBLIC_POSTHOG_HOST:
-    description: "PostHog host URL"
-    required: true
-  DATABASE_URL:
-    description: "Database URL"
-    required: true
-  S3_BUCKET_NAME:
-    description: "S3 bucket name"
-    required: true
+    { required: true, description: "The PostHog host for the website" }
+  DATABASE_URL: { required: true, description: "The URL of the database" }
+  S3_BUCKET_NAME: { required: true, description: "The name of the S3 bucket" }
   S3_BUCKET_REGION:
-    description: "S3 bucket region"
-    required: true
+    { required: true, description: "The region of the S3 bucket" }
   S3_BUCKET_ACCESS_KEY_ID:
-    description: "S3 bucket access key ID"
-    required: true
+    { required: true, description: "The access key ID for the S3 bucket" }
   S3_BUCKET_SECRET_KEY:
-    description: "S3 bucket secret key"
-    required: true
-  S3_BUCKET_URL:
-    description: "S3 bucket URL"
-    required: true
-  SENTRY_ORG:
-    description: "Sentry organization name"
-    required: true
-  SENTRY_PROJECT:
-    description: "Sentry project name"
-    required: true
-  SENTRY_AUTH_TOKEN:
-    description: "Sentry authentication token"
-    required: true
-  KIT_API_KEY:
-    description: "Kit API key"
-    required: true
-  IP_HASH_SALT:
-    description: "IP hash salt"
-    required: true
+    { required: true, description: "The secret key for the S3 bucket" }
+  S3_BUCKET_URL: { required: true, description: "The URL of the S3 bucket" }
+  SENTRY_ORG: { required: true, description: "The Sentry organization" }
+  SENTRY_PROJECT: { required: true, description: "The Sentry project" }
+  SENTRY_AUTH_TOKEN: { required: true, description: "The Sentry auth token" }
+  KIT_API_KEY: { required: true, description: "The Kit API key" }
+  IP_HASH_SALT: { required: true, description: "The salt for IP hashing" }
 
 runs:
   using: composite
   steps:
-    - name: Set up .env
+    - name: Export env to job
       shell: bash
       run: |
-        declare -A env_vars=(
-          ["NODE_ENV"]="${{ inputs.NODE_ENV }}"
-          ["NEXT_PUBLIC_WWW_URL"]="${{ inputs.NEXT_PUBLIC_WWW_URL }}"
-          ["NEXT_PUBLIC_BLOG_URL"]="${{ inputs.NEXT_PUBLIC_BLOG_URL }}"
-          ["NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}"
-          ["NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID"]="${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}"
-          ["NEXT_PUBLIC_SENTRY_DSN"]="${{ inputs.NEXT_PUBLIC_SENTRY_DSN }}"
-          ["SENTRY_ORG"]="${{ inputs.SENTRY_ORG }}"
-          ["SENTRY_PROJECT"]="${{ inputs.SENTRY_PROJECT }}"
-          ["SENTRY_AUTH_TOKEN"]="${{ inputs.SENTRY_AUTH_TOKEN }}"
-          ["NEXT_PUBLIC_POSTHOG_KEY"]="${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}"
-          ["NEXT_PUBLIC_POSTHOG_HOST"]="${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}"
-          ["DATABASE_URL"]="${{ inputs.DATABASE_URL }}"
-          ["S3_BUCKET_NAME"]="${{ inputs.S3_BUCKET_NAME }}"
-          ["S3_BUCKET_REGION"]="${{ inputs.S3_BUCKET_REGION }}"
-          ["S3_BUCKET_ACCESS_KEY_ID"]="${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}"
-          ["S3_BUCKET_SECRET_KEY"]="${{ inputs.S3_BUCKET_SECRET_KEY }}"
-          ["S3_BUCKET_URL"]="${{ inputs.S3_BUCKET_URL }}"
-          ["KIT_API_KEY"]="${{ inputs.KIT_API_KEY }}"
-          ["IP_HASH_SALT"]="${{ inputs.IP_HASH_SALT }}"
-        )
+        set -euo pipefail
+        # mask everything
+        while IFS='=' read -r k v; do
+          echo "::add-mask::${v}"
+        done <<'EOF'
+        NODE_ENV=${{ inputs.NODE_ENV }}
+        NEXT_PUBLIC_WWW_URL=${{ inputs.NEXT_PUBLIC_WWW_URL }}
+        NEXT_PUBLIC_BLOG_URL=${{ inputs.NEXT_PUBLIC_BLOG_URL }}
+        NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID=${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
+        NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID=${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
+        NEXT_PUBLIC_SENTRY_DSN=${{ inputs.NEXT_PUBLIC_SENTRY_DSN }}
+        NEXT_PUBLIC_POSTHOG_KEY=${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}
+        NEXT_PUBLIC_POSTHOG_HOST=${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}
+        DATABASE_URL=${{ inputs.DATABASE_URL }}
+        S3_BUCKET_NAME=${{ inputs.S3_BUCKET_NAME }}
+        S3_BUCKET_REGION=${{ inputs.S3_BUCKET_REGION }}
+        S3_BUCKET_ACCESS_KEY_ID=${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}
+        S3_BUCKET_SECRET_KEY=${{ inputs.S3_BUCKET_SECRET_KEY }}
+        S3_BUCKET_URL=${{ inputs.S3_BUCKET_URL }}
+        SENTRY_ORG=${{ inputs.SENTRY_ORG }}
+        SENTRY_PROJECT=${{ inputs.SENTRY_PROJECT }}
+        SENTRY_AUTH_TOKEN=${{ inputs.SENTRY_AUTH_TOKEN }}
+        KIT_API_KEY=${{ inputs.KIT_API_KEY }}
+        IP_HASH_SALT=${{ inputs.IP_HASH_SALT }}
+        EOF
 
-        # Create all three env files with the same content, runners will determine which one to use & which values were passed from which environment
-        env_files=(".env.development" ".env.preview" ".env.production")
-
-        for env_file in "${env_files[@]}"; do
-          # Create or clear the file
-          > "$env_file"
-          
-          # Add all environment variables to the file
-          for key in "${!env_vars[@]}"; do
-            echo "${key}='${env_vars[$key]}'" >> "$env_file"
-          done
-        done
+        # export to job env
+        {
+          echo "NODE_ENV=${{ inputs.NODE_ENV }}"
+          echo "NEXT_PUBLIC_WWW_URL=${{ inputs.NEXT_PUBLIC_WWW_URL }}"
+          echo "NEXT_PUBLIC_BLOG_URL=${{ inputs.NEXT_PUBLIC_BLOG_URL }}"
+          echo "NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID=${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}"
+          echo "NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID=${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}"
+          echo "NEXT_PUBLIC_SENTRY_DSN=${{ inputs.NEXT_PUBLIC_SENTRY_DSN }}"
+          echo "NEXT_PUBLIC_POSTHOG_KEY=${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}"
+          echo "NEXT_PUBLIC_POSTHOG_HOST=${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}"
+          echo "DATABASE_URL=${{ inputs.DATABASE_URL }}"
+          echo "S3_BUCKET_NAME=${{ inputs.S3_BUCKET_NAME }}"
+          echo "S3_BUCKET_REGION=${{ inputs.S3_BUCKET_REGION }}"
+          echo "S3_BUCKET_ACCESS_KEY_ID=${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}"
+          echo "S3_BUCKET_SECRET_KEY=${{ inputs.S3_BUCKET_SECRET_KEY }}"
+          echo "S3_BUCKET_URL=${{ inputs.S3_BUCKET_URL }}"
+          echo "SENTRY_ORG=${{ inputs.SENTRY_ORG }}"
+          echo "SENTRY_PROJECT=${{ inputs.SENTRY_PROJECT }}"
+          echo "SENTRY_AUTH_TOKEN=${{ inputs.SENTRY_AUTH_TOKEN }}"
+          echo "KIT_API_KEY=${{ inputs.KIT_API_KEY }}"
+          echo "IP_HASH_SALT=${{ inputs.IP_HASH_SALT }}"
+        } >> "$GITHUB_ENV"
