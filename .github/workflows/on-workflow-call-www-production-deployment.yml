@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/vercel-build
+      - uses: ./.github/actions
         with:
           project_name: www
           NODE_ENV: production
