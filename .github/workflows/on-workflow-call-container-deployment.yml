@@ -5,6 +5,7 @@ on:
     inputs:
       NODE_ENV:
         required: true
+        default: '"production" or "preview" or "development"'
         type: string
       SERVICE_NAME:
         required: true
@@ -13,8 +14,8 @@ on:
 
 jobs:
   deploy:
+    environment: ${{ inputs.NODE_ENV }}
     runs-on: ubuntu-latest
-    # environment: ${{ inputs.NODE_ENV }} # this is needed since some secrets are valid (not fake) only in this env type & higher
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-env

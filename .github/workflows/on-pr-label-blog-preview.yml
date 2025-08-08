@@ -14,6 +14,4 @@ jobs:
   blog-deploy-preview:
     if: github.event.label.name == 'deploy-preview'
     uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
-    with:
-      add_comment: true
     secrets: inherit
