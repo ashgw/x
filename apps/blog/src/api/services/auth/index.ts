@@ -212,7 +212,7 @@ export class AuthService {
         where: { id: userId },
         data: { passwordHash: newPasswordHash },
       });
-
+      await this.terminateAllActiveSessions({ userId });
       logger.info("Password changed successfully", { userId });
     } catch (error) {
       logger.error("Failed to change password", { error, userId });
@@ -351,9 +351,11 @@ export class AuthService {
   }: {
     requestCsrfHeaderValue: string;
   }): boolean {
-    // origin checks, This kills cross-origin CSRF even if SameSite gets bypassed by a browser exploit somehow
-    // only doing this in prod, preview & dev can pass
-    if (env.NODE_ENV === "production") {
+    // origin checks – only enforce extra check on main prod blog
+    if (
+      env.NODE_ENV === "production" &&
+      this.req.headers.get("host") === new URL(env.NEXT_PUBLIC_BLOG_URL).host
+    ) {
       const origin =
         this.req.headers.get("origin") ?? this.req.headers.get("referer");
       if (!origin) {
