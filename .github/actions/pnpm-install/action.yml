@@ -12,11 +12,32 @@ runs:
       uses: buildjet/setup-node@v4
       with:
         node-version: ${{ inputs.node_version }}
+
     - uses: pnpm/action-setup@v2
       with:
         version: 9.12.2
 
-    - name: Install dependencies
+    - name: Get pnpm store directory
       shell: bash
       run: |
-        pnpm install
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: Cache pnpm store
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Cache node_modules
+      uses: actions/cache@v4
+      with:
+        path: "**/node_modules"
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules-
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
