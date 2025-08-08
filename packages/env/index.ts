@@ -1,4 +1,3 @@
-import fs from "fs";
 import path from "path";
 import type { Keys, UnionToTuple } from "ts-roids";
 import { config } from "dotenv";
@@ -6,28 +5,29 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 
-// for compatibility with ESM and CommonJS
-let rootDir = process.cwd();
-rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
+const isRunningInCi = process.env.CI === "true";
 
-// Only use dotenv when running locally. CI will inject process.env directly.
-const useDotenvFiles =
-  process.env.CI !== "true" && process.env.USE_DOTENV_FILES !== "false"; // allow manual override
+function configureFileBasedEnv() {
+  // for compatibility with ESM and CommonJS
+  let rootDir = process.cwd();
+  rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
 
-if (useDotenvFiles) {
-  const file =
-    process.env.NODE_ENV === "production"
-      ? "../../.env.production"
-      : process.env.NODE_ENV === "preview"
-        ? "../../.env.preview"
-        : "../../.env.development";
-
-  const envPath = path.resolve(rootDir, file);
-  if (fs.existsSync(envPath)) {
-    // do NOT override already provided envs
-    config({ path: envPath, override: false });
-  }
+  config({
+    path: path.resolve(
+      rootDir,
+      process.env.NODE_ENV === "production"
+        ? "../../.env.production"
+        : process.env.NODE_ENV === "preview"
+          ? "../../.env.preview"
+          : "../../.env.development",
+    ),
+  });
 }
+
+if (!isRunningInCi) {
+  configureFileBasedEnv();
+}
+// else rely on the env vars injected by the CI job
 
 const isBrowser = typeof window !== "undefined";
 
