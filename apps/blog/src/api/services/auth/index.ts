@@ -212,7 +212,7 @@ export class AuthService {
         where: { id: userId },
         data: { passwordHash: newPasswordHash },
       });
-
+      await this.terminateAllActiveSessions({ userId });
       logger.info("Password changed successfully", { userId });
     } catch (error) {
       logger.error("Failed to change password", { error, userId });
