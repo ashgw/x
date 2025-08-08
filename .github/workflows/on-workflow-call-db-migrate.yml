@@ -46,5 +46,6 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: ${{ inputs.with_deploy }}
+          NODE_ENV: ${{ inputs.environment }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}

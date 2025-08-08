@@ -1,74 +1,70 @@
 name: Koyeb Preview Deployment
 
-description: Build and deploy Docker image to Koyeb
+description: Build and deploy container image to Koyeb via GHCR
 
 inputs:
   NODE_ENV:
-    description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed & redeployed & where)"
+    description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
     default: "preview"
-  DOCKERHUB_TOKEN:
-    description: "DockerHub token"
-    required: true
-  DOCKERHUB_USERNAME:
-    description: "DockerHub username"
-    required: true
   KOYEB_TOKEN:
     description: "Koyeb API token"
     required: true
   SERVICE_NAME:
-    description: "Koyeb service name, either 'blog' or 'www' or whatever app, you're running"
+    description: "Koyeb service name, either 'blog' or 'www' or whatever app you're running"
     required: true
   GITHUB_TOKEN:
-    description: "GitHub token for PR comments"
+    description: "GitHub token with packages:write for GHCR and PR comments"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Login to DockerHub
-      run: echo "${{ inputs.DOCKERHUB_TOKEN }}" | docker login -u "${{ inputs.DOCKERHUB_USERNAME }}" --password-stdin
+    - name: Login to GHCR
       shell: bash
-
-    - name: Build Docker Image
       run: |
-        # if [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
-        #   docker build --build-arg IS_PREVIEW=true -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-        # else
-        #   docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-        # fi
-        docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-      shell: bash
+        echo "${{ inputs.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-    - name: Tag and Push Production Image
+    - name: Build image
+      shell: bash
+      run: |
+        set -euo pipefail
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        docker build -t "$IMAGE" -f "deployment/${{ inputs.SERVICE_NAME }}/Dockerfile" .
+
+    - name: Push image (production + latest)
       if: ${{ inputs.NODE_ENV == 'production' }}
-      run: |
-        docker tag "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:latest"
-        docker push "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:latest"
       shell: bash
+      run: |
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        LATEST="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:latest"
+        docker push "$IMAGE"
+        docker tag "$IMAGE" "$LATEST"
+        docker push "$LATEST"
 
-    - name: Push Preview Image
+    - name: Push image (preview)
       if: ${{ inputs.NODE_ENV == 'preview' }}
-      run: |
-        docker push "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:preview"
       shell: bash
+      run: |
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:preview"
+        docker push "$IMAGE"
 
-    - name: Install Koyeb CLI and Redeploy
+    - name: Install Koyeb CLI and redeploy
       shell: bash
       run: |
-        # Create the Koyeb config file directly
-        cat > $HOME/.koyeb.yaml << EOF
+        # Write Koyeb CLI config
+        cat > "$HOME/.koyeb.yaml" << EOF
         debug: false
         organization: ""
         token: ${{ inputs.KOYEB_TOKEN }}
         url: https://app.koyeb.com
         EOF
 
-        # Install and configure CLI
+        # Install CLI
         curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
-        export PATH=$HOME/.koyeb/bin:$PATH
+        export PATH="$HOME/.koyeb/bin:$PATH"
 
-        # Determine target based on NODE_ENV
+        # Choose target
         if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
           echo "Deploying to production environment"
           DEPLOY_TARGET="${{ inputs.SERVICE_NAME }}/${{ inputs.SERVICE_NAME }}"
@@ -80,27 +76,31 @@ runs:
           exit 1
         fi
 
-        # Now directly use the CLI with the config file and targeted environment
-        koyeb service redeploy $DEPLOY_TARGET
+        # Redeploy
+        koyeb service redeploy "$DEPLOY_TARGET"
 
     - name: Notify about preview deployment
       if: ${{ inputs.NODE_ENV == 'preview' }}
-      uses: actions/github-script@v6
-      env:
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        SERVICE_NAME: ${{ inputs.SERVICE_NAME }}
+      uses: actions/github-script@v7
       with:
+        github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          github.rest.issues.createComment({
+          const service = process.env.SERVICE_NAME;
+          const body = [
+            `## ${service} Preview Deployment Ready!`,
+            ``,
+            `### Service: \`${service}\``,
+            ``,
+            `**Preview URL:** [Check it out here](https://${service}-preview.ashgw.me)`,
+            ``,
+            `---`,
+            `> This preview environment reflects the changes in this PR. It deploys this version of the app as soon as the "deploy-preview" label is added.`
+          ].join("\n");
+          await github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## ${process.env.SERVICE_NAME} Preview Deployment Ready! 
-
-            ### Service: \`${process.env.SERVICE_NAME}\`
-            
-            **Preview URL:** [Check it out here](https://${process.env.SERVICE_NAME}-preview.ashgw.me)
-            
-            ---
-            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
-          })
+            body
+          });
+      env:
+        SERVICE_NAME: ${{ inputs.SERVICE_NAME }}

@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   deploy:
+    environment: preview
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,14 +41,16 @@ jobs:
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+          IP_HASH_SALT: ${{ secrets.IP_HASH_SALT }}
           # deplyment specific, not needed for build
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
-
+      - uses: docker/setup-buildx-action@v3 # needed for db-migrate composite which spins a temp Postgres in Docker
       - uses: ./.github/actions/db-migrate
         with:
-          with_deploy: true
+          with_deploy: "yes"
+          NODE_ENV: "preview"
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
 
