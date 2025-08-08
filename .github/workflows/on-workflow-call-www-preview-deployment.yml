@@ -50,6 +50,7 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: "yes"
+          NODE_ENV: "preview"
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
 
