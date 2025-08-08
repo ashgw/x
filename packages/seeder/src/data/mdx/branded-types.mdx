@@ -28,13 +28,13 @@ tags:
 }
 
 type Foo = {
-id: string;
-foo: string;
+  id: string;
+  foo: string;
 };
 
 type Bar = {
-id: string;
-bar: string;
+  id: string;
+  bar: string;
 };
 
 const baz1 = requestBaz(foo.id, bar.id);
@@ -118,8 +118,8 @@ type BarID = NewType<'BarID', string>;`}
 };
 
 type Bar = {
-id: BarID;
-bar: string;
+  id: BarID;
+  bar: string;
 };`}
 language="tsx"
 showLineNumbers={false}
@@ -174,25 +174,25 @@ type FooID = NewType<'FooID', string>;
 type BarID = NewType<'BarID', string>;
 
 type Foo = {
-id: FooID;
-foo: string;
+  id: FooID;
+  foo: string;
 };
 
 type Bar = {
-id: BarID;
-bar: string;
+  id: BarID;
+  bar: string;
 };
 
 type Baz = NewType<'Baz', string>;
 
 function requestBaz(barID: BarID, fooID: FooID): Optional<Baz> {
 if (
-fooID.concat().toLowerCase() === 'fooid' &&
-barID.concat().toLowerCase() === 'barid'
+  fooID.concat().toLowerCase() === 'fooid' &&
+  barID.concat().toLowerCase() === 'barid'
 ) {
-return 'baz' as Baz;
+  return 'baz' as Baz;
 }
-return null; // Explicitly return null.
+  return null; // Explicitly return null.
 }
 
 const foo = {} as Foo;
