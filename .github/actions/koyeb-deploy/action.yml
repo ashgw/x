@@ -1,18 +1,12 @@
 name: Koyeb Preview Deployment
 
-description: Build and deploy Docker image to Koyeb
+description: Build and deploy container image to Koyeb via GHCR
 
 inputs:
   NODE_ENV:
     description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed & redeployed & where)"
     required: true
     default: "preview"
-  DOCKERHUB_TOKEN:
-    description: "DockerHub token"
-    required: true
-  DOCKERHUB_USERNAME:
-    description: "DockerHub username"
-    required: true
   KOYEB_TOKEN:
     description: "Koyeb API token"
     required: true
@@ -20,38 +14,39 @@ inputs:
     description: "Koyeb service name, either 'blog' or 'www' or whatever app, you're running"
     required: true
   GITHUB_TOKEN:
-    description: "GitHub token for PR comments"
+    description: "GitHub token with packages:write for GHCR and PR comments"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Login to DockerHub
-      run: echo "${{ inputs.DOCKERHUB_TOKEN }}" | docker login -u "${{ inputs.DOCKERHUB_USERNAME }}" --password-stdin
+    - name: Login to GHCR
       shell: bash
+      run: |
+        echo "${{ inputs.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
     - name: Build Docker Image
-      run: |
-        # if [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
-        #   docker build --build-arg IS_PREVIEW=true -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-        # else
-        #   docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
-        # fi
-        docker build -t "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
       shell: bash
+      run: |
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        docker build -t "$IMAGE" -f deployment/${{ inputs.SERVICE_NAME }}/Dockerfile .
 
-    - name: Tag and Push Production Image
+    - name: Push Production Image (also tag latest)
       if: ${{ inputs.NODE_ENV == 'production' }}
-      run: |
-        docker tag "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}" "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:latest"
-        docker push "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:latest"
       shell: bash
+      run: |
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        LATEST="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:latest"
+        docker push "$IMAGE"
+        docker tag "$IMAGE" "$LATEST"
+        docker push "$LATEST"
 
     - name: Push Preview Image
       if: ${{ inputs.NODE_ENV == 'preview' }}
-      run: |
-        docker push "${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.SERVICE_NAME }}:preview"
       shell: bash
+      run: |
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:preview"
+        docker push "$IMAGE"
 
     - name: Install Koyeb CLI and Redeploy
       shell: bash
@@ -68,6 +63,14 @@ runs:
         curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
         export PATH=$HOME/.koyeb/bin:$PATH
 
+        IMAGE_BASE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}"
+        if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
+          IMAGE_TAG="latest"
+        else
+          IMAGE_TAG="preview"
+        fi
+        IMAGE="${IMAGE_BASE}:${IMAGE_TAG}"
+
         # Determine target based on NODE_ENV
         if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
           echo "Deploying to production environment"
@@ -80,8 +83,7 @@ runs:
           exit 1
         fi
 
-        # Now directly use the CLI with the config file and targeted environment
-        koyeb service redeploy $DEPLOY_TARGET
+        koyeb service redeploy "$DEPLOY_TARGET"
 
     - name: Notify about preview deployment
       if: ${{ inputs.NODE_ENV == 'preview' }}
