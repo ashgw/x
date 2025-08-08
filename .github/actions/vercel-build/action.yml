@@ -79,7 +79,7 @@ runs:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/pnpm-install
     - uses: ./.github/actions/setup-env
-      with:
+      env:
         NODE_ENV: ${{ inputs.NODE_ENV }}
         NEXT_PUBLIC_WWW_URL: ${{ inputs.NEXT_PUBLIC_WWW_URL }}
         NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}

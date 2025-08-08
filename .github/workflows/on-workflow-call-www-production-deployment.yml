@@ -39,6 +39,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
 
+      - uses: docker/setup-buildx-action@v3 # needed for db-migrate composite which spins a temp Postgres in Docker
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: true
