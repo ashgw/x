@@ -78,7 +78,7 @@ runs:
         pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         repo="${{ github.repository }}"
 
-        comment_body="Database migrations were successfully deployed to the development branch of the database."
+        comment_body="Database migrations were successfully deployed to the current branch of the database."
 
         curl -s -X POST \
           -H "Authorization: token $GH_TOKEN" \
