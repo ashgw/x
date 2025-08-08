@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-env
         with:
+          use_env_files: "yes"
           NODE_ENV: ${{ inputs.NODE_ENV }}
           NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
           NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
