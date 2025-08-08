@@ -38,6 +38,7 @@ jobs:
           S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
           S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
           KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+          IP_HASH_SALT: ${{ secrets.IP_HASH_SALT }}
 
       - uses: ./.github/actions/pnpm-install
       - uses: docker/setup-buildx-action@v3 # needed for db-migrate composite which spins a temp Postgres in Docker
@@ -50,8 +51,6 @@ jobs:
       - uses: ./.github/actions/koyeb-deploy
         with:
           NODE_ENV: ${{ inputs.NODE_ENV }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
           SERVICE_NAME: ${{ inputs.SERVICE_NAME}} # only blog for now
