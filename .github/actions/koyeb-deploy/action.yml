@@ -28,30 +28,32 @@ runs:
     - name: Build image
       shell: bash
       run: |
+        set -euo pipefail
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
-         docker build \
-           --build-arg CI=true \ 
-           --build-arg NODE_ENV="${NODE_ENV}" \
-           --build-arg IS_PREVIEW="${{ inputs.NODE_ENV == 'preview' && 'true' || 'false' }}" \
-           --build-arg IP_HASH_SALT="${IP_HASH_SALT}" \
-           --build-arg SENTRY_ORG="${SENTRY_ORG}" \
-           --build-arg SENTRY_PROJECT="${SENTRY_PROJECT}" \
-           --build-arg SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}" \
-           --build-arg DATABASE_URL="${DATABASE_URL}" \
-           --build-arg S3_BUCKET_NAME="${S3_BUCKET_NAME}" \
-           --build-arg S3_BUCKET_REGION="${S3_BUCKET_REGION}" \
-           --build-arg S3_BUCKET_ACCESS_KEY_ID="${S3_BUCKET_ACCESS_KEY_ID}" \
-           --build-arg S3_BUCKET_SECRET_KEY="${S3_BUCKET_SECRET_KEY}" \
-           --build-arg S3_BUCKET_URL="${S3_BUCKET_URL}" \
-           --build-arg KIT_API_KEY="${KIT_API_KEY}" \
-           --build-arg NEXT_PUBLIC_WWW_URL="${NEXT_PUBLIC_WWW_URL}" \
-           --build-arg NEXT_PUBLIC_BLOG_URL="${NEXT_PUBLIC_BLOG_URL}" \
-           --build-arg NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID="${NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID}" \
-           --build-arg NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID="${NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID}" \
-           --build-arg NEXT_PUBLIC_SENTRY_DSN="${NEXT_PUBLIC_SENTRY_DSN}" \
-           --build-arg NEXT_PUBLIC_POSTHOG_KEY="${NEXT_PUBLIC_POSTHOG_KEY}" \
-           --build-arg NEXT_PUBLIC_POSTHOG_HOST="${NEXT_PUBLIC_POSTHOG_HOST}" \
-           -t "$IMAGE" -f "deployment/${{ inputs.SERVICE_NAME }}/Dockerfile" .
+        # CI=true tells the build scripts to export envs instead of writing .env
+        docker build \
+          --build-arg CI=true \
+          --build-arg NODE_ENV="${{ inputs.NODE_ENV }}" \
+          --build-arg IS_PREVIEW="${{ inputs.NODE_ENV == 'preview' && 'true' || 'false' }}" \
+          --build-arg IP_HASH_SALT="${IP_HASH_SALT}" \
+          --build-arg SENTRY_ORG="${SENTRY_ORG}" \
+          --build-arg SENTRY_PROJECT="${SENTRY_PROJECT}" \
+          --build-arg SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}" \
+          --build-arg DATABASE_URL="${DATABASE_URL}" \
+          --build-arg S3_BUCKET_NAME="${S3_BUCKET_NAME}" \
+          --build-arg S3_BUCKET_REGION="${S3_BUCKET_REGION}" \
+          --build-arg S3_BUCKET_ACCESS_KEY_ID="${S3_BUCKET_ACCESS_KEY_ID}" \
+          --build-arg S3_BUCKET_SECRET_KEY="${S3_BUCKET_SECRET_KEY}" \
+          --build-arg S3_BUCKET_URL="${S3_BUCKET_URL}" \
+          --build-arg KIT_API_KEY="${KIT_API_KEY}" \
+          --build-arg NEXT_PUBLIC_WWW_URL="${NEXT_PUBLIC_WWW_URL}" \
+          --build-arg NEXT_PUBLIC_BLOG_URL="${NEXT_PUBLIC_BLOG_URL}" \
+          --build-arg NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID="${NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID}" \
+          --build-arg NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID="${NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID}" \
+          --build-arg NEXT_PUBLIC_SENTRY_DSN="${NEXT_PUBLIC_SENTRY_DSN}" \
+          --build-arg NEXT_PUBLIC_POSTHOG_KEY="${NEXT_PUBLIC_POSTHOG_KEY}" \
+          --build-arg NEXT_PUBLIC_POSTHOG_HOST="${NEXT_PUBLIC_POSTHOG_HOST}" \
+          -t "$IMAGE" -f "deployment/${{ inputs.SERVICE_NAME }}/Dockerfile" .
 
     - name: Push image (production + latest)
       if: ${{ inputs.NODE_ENV == 'production' }}
