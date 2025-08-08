@@ -2,12 +2,6 @@ name: CD / Blog preview deployment
 
 on:
   workflow_call:
-    inputs:
-      add_comment:
-        description: "Add a comment notification to the PR"
-        required: false
-        type: string
-        default: "false"
 
 permissions:
   pull-requests: write # needed for adding comments
