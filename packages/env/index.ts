@@ -5,20 +5,29 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 
-// for compatibility with ESM and CommonJS
-let rootDir = process.cwd();
-rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
+const isRunningInCi = process.env.CI === "true";
 
-config({
-  path: path.resolve(
-    rootDir,
-    process.env.NODE_ENV === "production"
-      ? "../../.env.production"
-      : process.env.NODE_ENV === "preview"
-        ? "../../.env.preview"
-        : "../../.env.development",
-  ),
-});
+function configureFileBasedEnv() {
+  // for compatibility with ESM and CommonJS
+  let rootDir = process.cwd();
+  rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
+
+  config({
+    path: path.resolve(
+      rootDir,
+      process.env.NODE_ENV === "production"
+        ? "../../.env.production"
+        : process.env.NODE_ENV === "preview"
+          ? "../../.env.preview"
+          : "../../.env.development",
+    ),
+  });
+}
+
+if (!isRunningInCi) {
+  configureFileBasedEnv();
+}
+// else rely on the env vars injected by the CI job
 
 const isBrowser = typeof window !== "undefined";
 
