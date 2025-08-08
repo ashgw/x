@@ -45,6 +45,7 @@ jobs:
         with:
           with_deploy: true
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
 
       - uses: ./.github/actions/koyeb-deploy
         with:
