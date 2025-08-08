@@ -5,7 +5,6 @@ on:
     inputs:
       NODE_ENV:
         required: true
-        default: '"production" or "preview" or "development"'
         type: string
       SERVICE_NAME:
         required: true
