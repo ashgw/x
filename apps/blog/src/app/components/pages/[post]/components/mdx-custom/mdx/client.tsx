@@ -52,7 +52,7 @@ export function ClientMDX({ source, components }: ClientMDXProps) {
       {...mdxSource}
       components={{
         Code: CodeBlock,
-        H: H1,
+        H1: H1,
         H2: H2,
         H3: H3,
         S: Spacer1,

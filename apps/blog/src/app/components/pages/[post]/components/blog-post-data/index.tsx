@@ -1,6 +1,3 @@
-"use client";
-
-import { memo } from "react";
 import Link from "next/link";
 import { Edit, Eye } from "lucide-react";
 
@@ -20,11 +17,10 @@ interface BlogPostProps {
   postData: PostDetailRo;
 }
 
-export const BlogPostData = memo(function BlogPostData({
-  postData,
-}: BlogPostProps) {
+export function BlogPostData({ postData }: BlogPostProps) {
   return (
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
+      {/* client child */}
       <ViewTracker postSlug={postData.slug} />
       <div className="flex items-center justify-between">
         <H1 id={postData.title}>{postData.title}</H1>
@@ -77,4 +73,4 @@ export const BlogPostData = memo(function BlogPostData({
       <ScrollUp />
     </section>
   );
-});
+}

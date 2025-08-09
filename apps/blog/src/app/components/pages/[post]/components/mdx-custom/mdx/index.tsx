@@ -1,5 +1,3 @@
-"use client";
-
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
@@ -16,7 +14,7 @@ export function MDX({ source, components }: MDXRemoteProps) {
       source={source}
       components={{
         Code: CodeBlock,
-        H: H1,
+        H1: H1,
         H2: H2,
         H3: H3,
         S: Spacer1,
