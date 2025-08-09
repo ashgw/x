@@ -1,0 +1,59 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "jsonc",
+    "css",
+    "scss",
+    "less",
+    "html",
+    "yaml",
+    "graphql",
+    "markdown",
+    "markdown.mdx",
+    "prisma"
+  ],
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  "prettier.enable": true,
+  "prettier.useEditorConfig": true,
+  "prettier.requireConfig": false,
+
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.importModuleSpecifier": "relative",
+
+  "tsserver.formatOnType": true,
+  "tsserver.tsdk": "node_modules/typescript/lib",
+
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.run": "onSave",
+
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+
+  "spellright.language": ["en"],
+  "spellright.documentTypes": ["markdown", "typescript", "typescriptreact"],
+
+  "languageserver": {
+    "prisma": {
+      "command": "prisma-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["prisma"],
+      "rootPatterns": ["schema.prisma"]
+    }
+  },
+
+  "mdx.server.formatting.enabled": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
