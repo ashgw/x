@@ -22,7 +22,7 @@ interface Blog {
 }
 
 function getCorresponsingMdxContent(slug: string): string {
-  const filePath = path.join(__dirname, `${slug}.mdx`);
+  const filePath = path.join(__dirname, `/mdx/${slug}.mdx`);
   const fileContent = readFileSync(filePath, "utf-8");
   if (fileContent.startsWith("---")) {
     const parts = fileContent.split("---");
