@@ -1,8 +1,8 @@
-import { readFileSync } from "fs";
+import {readFileSync} from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
+import {fileURLToPath} from "url";
 
-import type { PostCategory } from "@ashgw/db/raw";
+import type {PostCategory} from "@ashgw/db/raw";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +22,7 @@ interface Blog {
 }
 
 function getCorresponsingMdxContent(slug: string): string {
-  const filePath = path.join(__dirname, `${slug}.mdx`);
+  const filePath = path.join(__dirname, `/mdx/${slug}.mdx`);
   const fileContent = readFileSync(filePath, "utf-8");
   if (fileContent.startsWith("---")) {
     const parts = fileContent.split("---");
@@ -525,3 +525,4 @@ export const blogs: Blog[] = [
     mdxContentRaw: getCorresponsingMdxContent("white-board-interviews"),
   },
 ];
+
