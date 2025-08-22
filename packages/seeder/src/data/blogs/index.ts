@@ -1,8 +1,8 @@
-import {readFileSync} from "fs";
+import { readFileSync } from "fs";
 import path from "path";
-import {fileURLToPath} from "url";
+import { fileURLToPath } from "url";
 
-import type {PostCategory} from "@ashgw/db/raw";
+import type { PostCategory } from "@ashgw/db/raw";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -525,4 +525,3 @@ export const blogs: Blog[] = [
     mdxContentRaw: getCorresponsingMdxContent("white-board-interviews"),
   },
 ];
-
