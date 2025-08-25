@@ -8,4 +8,22 @@ hooks
 .next
 .vscode 
 
+# CI and local caches
+coverage
+dist
+build
+.turbo
+.pnpm-store
+pnpm-lock.yaml
+
+# Env and secrets (envs are provided via CI/CD)
+.env
+.env.*
+!.env.example
+
+# Editor/OS
+.DS_Store
+Thumbs.db
+*.log
+
 
