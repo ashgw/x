@@ -1,40 +1,38 @@
-# Dependencies
-node_modules
-.pnpm-store
+# Root .dockerignore
 
-# Build outputs
-.next
-out
+# common junk
+.git
+**/.git
+**/.DS_Store
+**/.cache
+**/.turbo
+**/.next
+node_modules
+**/node_modules
 dist
 build
-.turbo
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Cache
-.cache
-.vercel
-
-# Testing
 coverage
-test-results
-playwright-report
+*.log
+npm-debug.log*
+yarn-error.log*
 
-# Environment
-.env*
-!.env.example
+# keep deployment folder out of context except Dockerfile itself
+deployment/**
+!deployment/blog/Dockerfile
 
-# Editor specific
-.vscode
-.idea
-*.swp
-*.swo
+# IMPORTANT keep manifests and sources required for the build
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!package.json
+!apps/**/package.json
+!packages/**/package.json
+!tooling/**/package.json
 
-# System files
-.DS_Store
-Thumbs.db
-# Vercel
+# we do need the source to build
+!apps/**
+!packages/**
+!assets/**
+!tooling/**
+!turbo.json
+!tsconfig.json
+!vitest.workspace.ts
