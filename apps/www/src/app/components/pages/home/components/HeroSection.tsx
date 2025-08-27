@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Button } from "@ashgw/ui";
 
 import { Text } from "./Text";
-import { TypingAnimation } from "./TypingAnimation";
 
 export function HeroSection() {
   const TRANSITION_DURATION = 0.3;
@@ -31,10 +30,9 @@ export function HeroSection() {
               transition={transition}
             >
               <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
-                <span className="dimmed-4">Digital Collection About</span>
-              </h1>
-              <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
-                <TypingAnimation />
+                <span className="dimmed-4">
+                  Welcome to the <span className="glows">Archive</span>
+                </span>
               </h1>
             </motion.div>
 
@@ -44,8 +42,9 @@ export function HeroSection() {
               transition={transition}
             >
               <Text>
-                This site is an extension of my memory, where scattered thoughts
-                become something more concrete than decentralized notes.
+                This site is merely an extension of my memory, where scattered
+                thoughts become something more concrete than decentralized
+                notes.
               </Text>
             </motion.div>
           </div>
