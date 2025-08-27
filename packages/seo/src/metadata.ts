@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import merge from "lodash.merge";
-
+import type { MaybeUndefined } from "ts-roids";
 import { CREATOR, LINKS, SITE_NAME } from "@ashgw/constants";
 import { env } from "@ashgw/env";
 
-type MetadataInput = Omit<Metadata, "description" | "title"> & {
+interface MetadataInput extends Omit<Metadata, "description" | "title"> {
   title: string;
   description: string;
   image?: string;
   canonical?: string;
-};
+}
 
 const siteUrl = env.NEXT_PUBLIC_WWW_URL;
 const applicationName = SITE_NAME;
@@ -17,8 +17,8 @@ const publisher = CREATOR;
 const twitterHandle = LINKS.twitter.handle;
 const defaultOg = { width: 1200, height: 630 } as const;
 
-function toAbsolute(urlOrPath?: string): string | undefined {
-  if (!urlOrPath) return undefined;
+function toAbsolute(urlOrPath?: string): MaybeUndefined<string> {
+  if (!urlOrPath) return;
   try {
     return new URL(urlOrPath).toString();
   } catch {

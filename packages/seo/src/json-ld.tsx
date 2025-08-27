@@ -50,7 +50,7 @@ export interface PostLike {
 }
 
 export const blogPostingJsonLd = (post: PostLike): WithContext<BlogPosting> => {
-  const url = `${siteUrl}/blog/${post.slug}`;
+  const url = `${siteUrl}/${post.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
