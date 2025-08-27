@@ -2,7 +2,7 @@ import "@ashgw/css/global";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { CREATOR } from "@ashgw/constants";
+import { SITE_NAME } from "@ashgw/constants";
 import { CookieBanner, Providers } from "@ashgw/components";
 import {
   createMetadata,
@@ -18,23 +18,25 @@ import { env } from "@ashgw/env";
 const description = "Building the future.";
 
 export const metadata: Metadata = createMetadata({
-  title: CREATOR,
+  title: SITE_NAME,
   description,
   metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
 });
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <>
       <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
       <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
-      <body className={fonts.atkinsonHyperlegible.className}>
-        <NavBar />
-        <Providers site="www">{children}</Providers>
-        <div className="fixed bottom-4 right-4 max-w-[550px]">
-          <CookieBanner />
-        </div>
-      </body>
-    </html>
+      <html lang="en">
+        <body className={fonts.atkinsonHyperlegible.className}>
+          <NavBar />
+          <Providers site="www">{children}</Providers>
+          <div className="fixed bottom-4 right-4 max-w-[550px]">
+            <CookieBanner />
+          </div>
+        </body>
+      </html>
+    </>
   );
 }
