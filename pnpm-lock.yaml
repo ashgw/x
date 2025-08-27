@@ -867,9 +867,6 @@ importers:
       '@types/react-dom':
         specifier: catalog:react18
         version: 18.3.5(@types/react@18.3.18)
-      ts-roids:
-        specifier: 'catalog:'
-        version: 1.47.0
       typescript:
         specifier: 'catalog:'
         version: 5.6.3

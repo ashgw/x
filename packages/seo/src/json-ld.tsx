@@ -6,7 +6,6 @@ import type {
   BlogPosting,
   BreadcrumbList,
 } from "schema-dts";
-import { env } from "@ashgw/env";
 import { SITE_NAME, CREATOR } from "@ashgw/constants";
 
 interface JsonLdProps {
@@ -20,9 +19,9 @@ export const JsonLd = ({ code }: JsonLdProps) => (
   />
 );
 
-const siteUrl = env.NEXT_PUBLIC_WWW_URL;
-
-export const organizationJsonLd = (): WithContext<Organization> => ({
+export const organizationJsonLd = (
+  siteUrl: string,
+): WithContext<Organization> => ({
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${siteUrl}/#organization`,
@@ -30,7 +29,7 @@ export const organizationJsonLd = (): WithContext<Organization> => ({
   url: siteUrl,
 });
 
-export const websiteJsonLd = (): WithContext<WebSite> => ({
+export const websiteJsonLd = (siteUrl: string): WithContext<WebSite> => ({
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": `${siteUrl}/#website`,
@@ -49,7 +48,13 @@ export interface PostLike {
   category?: string;
 }
 
-export const blogPostingJsonLd = (post: PostLike): WithContext<BlogPosting> => {
+export const blogPostingJsonLd = ({
+  post,
+  siteUrl,
+}: {
+  post: PostLike;
+  siteUrl: string;
+}): WithContext<BlogPosting> => {
   const url = `${siteUrl}/${post.slug}`;
   return {
     "@context": "https://schema.org",

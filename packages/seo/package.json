@@ -20,7 +20,6 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
-    "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
   "exports": {

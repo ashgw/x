@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import merge from "lodash.merge";
-import type { MaybeUndefined } from "ts-roids";
-import { CREATOR, LINKS, SITE_NAME } from "@ashgw/constants";
-import { env } from "@ashgw/env";
+import { CREATOR, LINKS } from "@ashgw/constants";
 
 interface MetadataInput extends Omit<Metadata, "description" | "title"> {
   title: string;
@@ -11,41 +9,22 @@ interface MetadataInput extends Omit<Metadata, "description" | "title"> {
   canonical?: string;
 }
 
-const siteUrl = env.NEXT_PUBLIC_WWW_URL;
-const applicationName = SITE_NAME;
+const applicationName = "ashgw";
 const publisher = CREATOR;
 const twitterHandle = LINKS.twitter.handle;
-const defaultOg = { width: 1200, height: 630 } as const;
-
-function toAbsolute(urlOrPath?: string): MaybeUndefined<string> {
-  if (!urlOrPath) return;
-  try {
-    return new URL(urlOrPath).toString();
-  } catch {
-    return new URL(urlOrPath.replace(/^\/+/, ""), siteUrl).toString();
-  }
-}
 
 export const createMetadata = ({
   title,
   description,
-  image,
-  canonical,
   ...properties
 }: MetadataInput): Metadata => {
   const parsedTitle = `${title} | ${applicationName}`;
-  const fallbackOg = `${siteUrl}/opengraph-image.png`; //  already got this in each app
-  const imageUrl = toAbsolute(image) ?? fallbackOg;
-  const canonicalUrl = toAbsolute(canonical);
-
   const base: Metadata = {
-    metadataBase: new URL(siteUrl),
     title: parsedTitle,
     description,
     applicationName,
-    authors: [{ name: publisher, url: siteUrl }],
+    authors: [{ name: publisher }],
     creator: publisher,
-    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
     formatDetection: { telephone: false },
     appleWebApp: {
       capable: true,
@@ -58,15 +37,6 @@ export const createMetadata = ({
       type: "website",
       siteName: applicationName,
       locale: "en_US",
-      url: canonicalUrl,
-      images: [
-        {
-          url: imageUrl,
-          width: defaultOg.width,
-          height: defaultOg.height,
-          alt: title,
-        },
-      ],
     },
     publisher,
     twitter: {
@@ -74,7 +44,6 @@ export const createMetadata = ({
       creator: twitterHandle,
       title: parsedTitle,
       description,
-      images: [imageUrl],
     },
     robots: {
       index: true,
@@ -90,19 +59,5 @@ export const createMetadata = ({
   };
 
   const metadata: Metadata = merge({}, base, properties);
-
-  // If caller did not specify OG images in properties, enforce the computed one
-  if (!properties.openGraph?.images) {
-    metadata.openGraph = metadata.openGraph ?? {};
-    metadata.openGraph.images = [
-      {
-        url: imageUrl,
-        width: defaultOg.width,
-        height: defaultOg.height,
-        alt: title,
-      },
-    ];
-  }
-
   return metadata;
 };
