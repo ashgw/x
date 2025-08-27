@@ -29,12 +29,11 @@ export async function GET(_: Request, { params }: RouteCtx) {
   const title = clamp(post?.title ?? "Post not found", 90);
   const subtitle = clamp(post?.summary ?? "No description available", 140);
 
-  // assets co-located under app/_og
   const [bgPng, fontBold] = await Promise.all([
-    load("../../_og/og-base.png"),
-    load<ArrayBuffer>("../../_og/AtkinsonHyperlegible-Bold.ttf").catch(
-      () => null,
-    ),
+    load("./../../opengraph-image.png"),
+    load<ArrayBuffer>(
+      "./../../../../../../assets/fonts/AtkinsonHyperlegible.ttf",
+    ).catch(() => null),
   ]);
 
   return new ImageResponse(
