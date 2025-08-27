@@ -26,19 +26,16 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <>
-      <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
-      <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
-      <html lang="en">
-        <body className={fonts.atkinsonHyperlegible.className}>
-          <GoBackHome />
-          <GlobalProviders site="blog">
-            <TRPCProvider siteBaseUrl={env.NEXT_PUBLIC_BLOG_URL}>
-              <StoreProvider>{children}</StoreProvider>
-            </TRPCProvider>
-          </GlobalProviders>
-        </body>
-      </html>
-    </>
+    <html lang="en">
+      <body className={fonts.atkinsonHyperlegible.className}>
+        <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
+        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_BLOG_URL)} /> <GoBackHome />
+        <GlobalProviders site="blog">
+          <TRPCProvider siteBaseUrl={env.NEXT_PUBLIC_BLOG_URL}>
+            <StoreProvider>{children}</StoreProvider>
+          </TRPCProvider>
+        </GlobalProviders>
+      </body>
+    </html>
   );
 }
