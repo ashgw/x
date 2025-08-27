@@ -25,8 +25,8 @@ export const metadata: Metadata = createMetadata({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <JsonLd code={organizationJsonLd()} />
-      <JsonLd code={websiteJsonLd()} />
+      <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
+      <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
       <body className={fonts.atkinsonHyperlegible.className}>
         <GoBackHome />
         <GlobalProviders site="blog">

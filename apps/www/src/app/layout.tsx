@@ -4,10 +4,16 @@ import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
 import { CookieBanner, Providers } from "@ashgw/components";
-import { createMetadata } from "@ashgw/seo";
+import {
+  createMetadata,
+  JsonLd,
+  organizationJsonLd,
+  websiteJsonLd,
+} from "@ashgw/seo";
 import { fonts } from "@ashgw/ui";
 
 import { NavBar } from "~/app/components/misc/nav";
+import { env } from "@ashgw/env";
 
 const title = "Ashref Gwader";
 const description = "Building the future.";
@@ -17,6 +23,8 @@ export const metadata: Metadata = createMetadata({ title, description });
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
+      <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
+      <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
       <body className={fonts.atkinsonHyperlegible.className}>
         <NavBar />
         <Providers site="www">{children}</Providers>
