@@ -2,7 +2,7 @@ import "@ashgw/css/global";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-
+import { CREATOR } from "@ashgw/constants";
 import { CookieBanner, Providers } from "@ashgw/components";
 import {
   createMetadata,
@@ -15,11 +15,10 @@ import { fonts } from "@ashgw/ui";
 import { NavBar } from "~/app/components/misc/nav";
 import { env } from "@ashgw/env";
 
-const title = "Ashref Gwader";
 const description = "Building the future.";
 
 export const metadata: Metadata = createMetadata({
-  title,
+  title: CREATOR,
   description,
   metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
 });
