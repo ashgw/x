@@ -29,7 +29,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
         <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
-        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_BLOG_URL)} /> <GoBackHome />
+        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
+        <GoBackHome />
         <GlobalProviders site="blog">
           <TRPCProvider siteBaseUrl={env.NEXT_PUBLIC_BLOG_URL}>
             <StoreProvider>{children}</StoreProvider>

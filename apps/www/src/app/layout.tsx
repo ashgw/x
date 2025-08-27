@@ -28,7 +28,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
         <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
-        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_WWW_URL)} /> <NavBar />
+        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
+        <NavBar />
         <Providers site="www">{children}</Providers>
         <div className="fixed bottom-4 right-4 max-w-[550px]">
           <CookieBanner />
