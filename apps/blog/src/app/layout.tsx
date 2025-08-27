@@ -18,6 +18,7 @@ import { GoBackHome } from "./components/pages/root";
 import { StoreProvider } from "./stores";
 
 export const metadata: Metadata = createMetadata({
+  metadataBase: new URL(env.NEXT_PUBLIC_BLOG_URL),
   title: "Ashref Gwader",
   description: "Blog",
 });

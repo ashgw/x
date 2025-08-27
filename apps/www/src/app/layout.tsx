@@ -18,7 +18,11 @@ import { env } from "@ashgw/env";
 const title = "Ashref Gwader";
 const description = "Building the future.";
 
-export const metadata: Metadata = createMetadata({ title, description });
+export const metadata: Metadata = createMetadata({
+  title,
+  description,
+  metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
+});
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
