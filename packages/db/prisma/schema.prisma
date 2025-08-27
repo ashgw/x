@@ -11,33 +11,50 @@ datasource db {
 }
 
 model Post {
-  slug          String     @id @db.VarChar(255)
-  title         String     @db.VarChar(30)
-  seoTitle      String     @db.VarChar(100)
-  summary       String     @db.VarChar(100)
-  firstModDate  DateTime   @default(now())
-  lastModDate   DateTime   @updatedAt
-  isReleased    Boolean
-  minutesToRead Int        @db.SmallInt
-  tags          String[]   @db.VarChar(255)
-  category      PostCategory
-  mdxContentId  String     @unique @db.VarChar(255)
-  mdxContent    Upload     @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
-  postViews     PostView[] @relation("PostViews")
+  slug           String           @id @db.VarChar(255)
+  title          String           @db.VarChar(30)
+  seoTitle       String           @db.VarChar(100)
+  summary        String           @db.VarChar(100)
+  firstModDate   DateTime         @default(now())
+  lastModDate    DateTime         @updatedAt
+  isReleased     Boolean
+  minutesToRead  Int              @db.SmallInt
+  tags           String[]         @db.VarChar(255)
+  category       PostCategory
+  mdxContentId   String           @unique @db.VarChar(255)
+  mdxContent     Upload           @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
+  postViews      PostView[]       @relation("PostViews")
+  viewsTotal     Int              @default(0)
+  postViewsDaily PostViewDaily[]  @relation("PostViewsDaily")
 
   @@index([mdxContentId])
 }
 
 model PostView {
-  id          String   @id @default(cuid())
-  postSlug    String   @db.VarChar(255)
-  fingerprint String   @db.VarChar(64)  // Contains hashed postSlug:ip:userAgent
-  createdAt   DateTime @default(now())
-  post        Post     @relation("PostViews", fields: [postSlug], references: [slug], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  postSlug     String   @db.VarChar(255)
+  fingerprint  String   @db.VarChar(64)  // Contains hashed postSlug:ip:userAgent
+  createdAt    DateTime @default(now())
+  post         Post     @relation("PostViews", fields: [postSlug], references: [slug], onDelete: Cascade)
+  // calendar day boundary at 00:00 UTC for dedupe
+  viewDayUTC   DateTime
 
   @@index([postSlug, fingerprint, createdAt])
   @@index([createdAt])
   @@index([fingerprint])
+  // one row per (post, fingerprint) per day
+  @@unique([postSlug, fingerprint, viewDayUTC], name: "unique_daily_view")
+}
+
+// daily rollup for charts
+model PostViewDaily {
+  postSlug String   @db.VarChar(255)
+  post     Post     @relation("PostViewsDaily", fields: [postSlug], references: [slug], onDelete: Cascade)
+  day      DateTime // 00:00:00 UTC
+  count    Int      @default(0)
+
+  @@id([postSlug, day])
+  @@index([day])
 }
 
 model Upload {
@@ -50,14 +67,14 @@ model Upload {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique @db.VarChar(255)
-  name          String    @db.VarChar(30)
-  passwordHash  String    @db.VarChar(1024)
-  role          UserRole  @default(VISITOR)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
+  id           String    @id @default(cuid())
+  email        String    @unique @db.VarChar(255)
+  name         String    @db.VarChar(30)
+  passwordHash String    @db.VarChar(1024)
+  role         UserRole  @default(VISITOR)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
 }
 
 model Session {
