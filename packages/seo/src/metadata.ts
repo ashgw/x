@@ -4,41 +4,49 @@ import merge from "lodash.merge";
 import { CREATOR, LINKS, SITE_NAME } from "@ashgw/constants";
 import { env } from "@ashgw/env";
 
-type MetadataGenerator = Omit<Metadata, "description" | "title"> & {
+type MetadataInput = Omit<Metadata, "description" | "title"> & {
   title: string;
   description: string;
   image?: string;
+  canonical?: string;
 };
 
+const siteUrl = env.NEXT_PUBLIC_WWW_URL;
 const applicationName = SITE_NAME;
-const author: Metadata["authors"] = {
-  name: CREATOR,
-  url: env.NEXT_PUBLIC_WWW_URL,
-};
-
 const publisher = CREATOR;
 const twitterHandle = LINKS.twitter.handle;
+const defaultOg = { width: 1200, height: 630 } as const;
 
-const postImageWidth = 1200; // in pixels
-const postImageHeight = 630;
+function toAbsolute(urlOrPath?: string): string | undefined {
+  if (!urlOrPath) return undefined;
+  try {
+    return new URL(urlOrPath).toString();
+  } catch {
+    return new URL(urlOrPath.replace(/^\/+/, ""), siteUrl).toString();
+  }
+}
 
 export const createMetadata = ({
   title,
   description,
   image,
+  canonical,
   ...properties
-}: MetadataGenerator): Metadata => {
+}: MetadataInput): Metadata => {
   const parsedTitle = `${title} | ${applicationName}`;
-  const displayImageUrl = `https://via.placeholder.com/${postImageWidth}x${postImageHeight}.png/000000/ffffff/?text=${title}`;
-  const defaultMetadata: Metadata = {
+  const fallbackOg = `${siteUrl}/opengraph-image.png`; //  already got this in each app
+  const imageUrl = toAbsolute(image) ?? fallbackOg;
+  const canonicalUrl = toAbsolute(canonical);
+
+  const base: Metadata = {
+    metadataBase: new URL(siteUrl),
     title: parsedTitle,
     description,
     applicationName,
-    authors: [author],
-    creator: author.name,
-    formatDetection: {
-      telephone: false,
-    },
+    authors: [{ name: publisher, url: siteUrl }],
+    creator: publisher,
+    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
+    formatDetection: { telephone: false },
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",
@@ -50,11 +58,12 @@ export const createMetadata = ({
       type: "website",
       siteName: applicationName,
       locale: "en_US",
+      url: canonicalUrl,
       images: [
         {
-          url: displayImageUrl,
-          width: displayImageUrl,
-          height: displayImageUrl,
+          url: imageUrl,
+          width: defaultOg.width,
+          height: defaultOg.height,
           alt: title,
         },
       ],
@@ -63,6 +72,9 @@ export const createMetadata = ({
     twitter: {
       card: "summary_large_image",
       creator: twitterHandle,
+      title: parsedTitle,
+      description,
+      images: [imageUrl],
     },
     robots: {
       index: true,
@@ -77,14 +89,16 @@ export const createMetadata = ({
     },
   };
 
-  const metadata: Metadata = merge(defaultMetadata, properties);
+  const metadata: Metadata = merge({}, base, properties);
 
-  if (image && metadata.openGraph) {
+  // If caller did not specify OG images in properties, enforce the computed one
+  if (!properties.openGraph?.images) {
+    metadata.openGraph = metadata.openGraph ?? {};
     metadata.openGraph.images = [
       {
-        url: image,
-        width: 1200,
-        height: 630,
+        url: imageUrl,
+        width: defaultOg.width,
+        height: defaultOg.height,
         alt: title,
       },
     ];

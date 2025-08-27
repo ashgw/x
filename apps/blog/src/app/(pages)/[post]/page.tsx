@@ -16,7 +16,6 @@ export async function generateMetadata({
   const postData = await trpcServerSide.post.getPost({
     slug: params.post,
   });
-
   if (!postData) {
     return {
       title: "Post not found",
