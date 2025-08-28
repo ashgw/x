@@ -17,18 +17,20 @@ import { env } from "@ashgw/env";
 
 const description = "Building the future.";
 
+const siteUrl = env.NEXT_PUBLIC_WWW_URL;
+
 export const metadata: Metadata = createMetadata({
   title: SITE_NAME,
   description,
-  metadataBase: new URL(env.NEXT_PUBLIC_WWW_URL),
+  metadataBase: new URL(siteUrl),
 });
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
-        <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
-        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_WWW_URL)} />
+        <JsonLd code={organizationJsonLd(siteUrl)} />
+        <JsonLd code={websiteJsonLd(siteUrl)} />
         <NavBar />
         <Providers site="www">{children}</Providers>
         <div className="fixed bottom-4 right-4 max-w-[550px]">

@@ -18,8 +18,10 @@ import { GoBackHome } from "./components/pages/root";
 import { StoreProvider } from "./stores";
 import { SITE_NAME } from "@ashgw/constants";
 
+const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
+
 export const metadata: Metadata = createMetadata({
-  metadataBase: new URL(env.NEXT_PUBLIC_BLOG_URL),
+  metadataBase: new URL(siteUrl),
   title: SITE_NAME,
   description: "Blog",
 });
@@ -28,11 +30,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
-        <JsonLd code={organizationJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
-        <JsonLd code={websiteJsonLd(env.NEXT_PUBLIC_BLOG_URL)} />
+        <JsonLd code={organizationJsonLd(siteUrl)} />
+        <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
         <GlobalProviders site="blog">
-          <TRPCProvider siteBaseUrl={env.NEXT_PUBLIC_BLOG_URL}>
+          <TRPCProvider siteBaseUrl={siteUrl}>
             <StoreProvider>{children}</StoreProvider>
           </TRPCProvider>
         </GlobalProviders>
