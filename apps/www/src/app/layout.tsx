@@ -15,7 +15,7 @@ import { fonts } from "@ashgw/ui";
 import { NavBar } from "~/app/components/misc/nav";
 import { env } from "@ashgw/env";
 
-const description = "Building.";
+const description = "Building the future.";
 
 const siteUrl = env.NEXT_PUBLIC_WWW_URL;
 
