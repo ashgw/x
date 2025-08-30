@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 import { trpcServerSide } from "~/trpc/server";
 
@@ -23,14 +23,14 @@ const toDataUri = (buf: ArrayBuffer, mime = "image/png") =>
 const clamp = (s: string, n: number) =>
   s.length <= n ? s : s.slice(0, n - 1).trimEnd() + "…";
 
-export async function GET(_: Request, { params }: RouteCtx) {
+export default async function Image({ params }: RouteCtx) {
   const post = await trpcServerSide.post.getPost({ slug: params.post });
 
   const title = clamp(post?.title ?? "Post not found", 90);
   const subtitle = clamp(post?.summary ?? "No description available", 140);
 
   const [bgPng, fontBold] = await Promise.all([
-    load("./../../opengraph-image.png"),
+    load("./../../opengraph-image.png").catch(() => null),
     load<ArrayBuffer>(
       "./../../../../../../assets/fonts/AtkinsonHyperlegible.ttf",
     ).catch(() => null),
@@ -46,13 +46,15 @@ export async function GET(_: Request, { params }: RouteCtx) {
           display: "flex",
         }}
       >
-        <Image
-          alt="blog post image"
-          src={toDataUri(bgPng)}
-          width={1200}
-          height={630}
-          style={{ position: "absolute", inset: 0, objectFit: "cover" }}
-        />
+        {bgPng ? (
+          <img
+            alt="blog post image"
+            src={toDataUri(bgPng)}
+            width={1200}
+            height={630}
+            style={{ position: "absolute", inset: 0, objectFit: "cover" }}
+          />
+        ) : null}
         <div
           style={{
             position: "absolute",
