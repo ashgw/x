@@ -27,18 +27,17 @@ export class BlogService {
   }
 
   public async getPostCards(): Promise<PostCardRo[]> {
-    const posts = await this.db.post.findMany({
-      where: PostQueryHelper.whereReleasedToPublic(),
-      include: PostQueryHelper.cardInclude(),
-    });
-
-    if (posts.length === 0) {
-      throw new InternalError({
-        code: "NOT_FOUND",
-        message: "No posts found at all",
+    try {
+      const posts = await this.db.post.findMany({
+        where: PostQueryHelper.whereReleasedToPublic(),
+        include: PostQueryHelper.cardInclude(),
       });
+
+      return posts.map((post) => PostMapper.toCardRo({ post }));
+    } catch (error) {
+      logger.error("getPostCards", { error });
+      return [];
     }
-    return posts.map((post) => PostMapper.toCardRo({ post }));
   }
 
   public async getAllPosts(): Promise<PostDetailRo[]> {
