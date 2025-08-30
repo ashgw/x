@@ -23,7 +23,7 @@ const toDataUri = (buf: ArrayBuffer, mime = "image/png") =>
 const clamp = (s: string, n: number) =>
   s.length <= n ? s : s.slice(0, n - 1).trimEnd() + "…";
 
-export async function GET(_: Request, { params }: RouteCtx) {
+export default async function Image(_: Request, { params }: RouteCtx) {
   try {
     const post = await trpcServerSide.post.getPost({ slug: params.post });
 
