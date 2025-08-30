@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import { H2 } from "~/app/components/pages/[post]/components/headers";
+import { H2 } from "~/app/components/pages/[post]/components/mdx-custom/headers";
 
 interface NoTagsFoundProps {
   validTags: Set<string>;

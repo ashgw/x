@@ -1,6 +1,7 @@
 "use client";
 
 import type { SubmitHandler } from "react-hook-form";
+import type { Optional } from "ts-roids";
 import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
@@ -11,17 +12,15 @@ import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 import { Skeleton } from "@ashgw/ui";
 
-import type { SortOptions as SortOptionsType } from "./components/SortOptions";
+import type { SortOptions as SortOptionsType } from "./components/header/components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
-import { SoundProvider } from "../../misc/SoundContext";
-import { SoundToggle } from "../../misc/SoundToggle";
-import { BlogList } from "./components/BlogList";
-import { BlogPreview } from "./components/BlogPreview";
-import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
-import { PostEditorForm } from "./components/Form";
-import { Header } from "./components/Header";
+import { BlogList, ConfirmBlogDeleteModal } from "./components/blog-list";
+import { PostEditorForm } from "./components/editor-form";
+import { Header } from "./components/header";
+import { BlogPreview } from "./components/preview";
+import { SoundProvider, SoundToggle } from "./components/sound";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
@@ -38,6 +37,8 @@ export function EditorPage() {
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+  const [selectedBlog, setSelectedBlog] =
+    useState<Optional<PostDetailRo>>(null);
 
   // Prevent scrolling when modal is open
   useEffect(() => {
@@ -82,6 +83,7 @@ export function EditorPage() {
       // Don't load blog content if we're in the process of deleting
       if (isDeletingBlog) return;
 
+      setSelectedBlog(blog);
       setEditModal({ visible: true, entity: blog });
       form.reset({
         title: blog.title,
@@ -97,8 +99,16 @@ export function EditorPage() {
   );
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
-    onBlogFound: handleEditBlog,
-    skipLoading: showPreview || isDeletingBlog, // Skip loading if in preview mode or deleting
+    onBlogFound: useCallback(
+      (blog: PostDetailRo) => {
+        // Only load from URL if no blog is currently selected
+        if (!selectedBlog) {
+          handleEditBlog(blog);
+        }
+      },
+      [handleEditBlog, selectedBlog],
+    ),
+    skipLoading: showPreview || isDeletingBlog || !!selectedBlog, // Skip loading if preview mode, deleting, or blog already selected
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
@@ -161,6 +171,7 @@ export function EditorPage() {
 
   // Add new blog: clear form
   function handleNewBlog() {
+    setSelectedBlog(null);
     setEditModal({ visible: false });
     form.reset({
       title: "",
@@ -170,18 +181,23 @@ export function EditorPage() {
       isReleased: false,
       mdxContent: "",
     });
+    // Clear URL query parameter
+    const url = new URL(window.location.href);
+    url.searchParams.delete("blog");
+    window.history.replaceState({}, "", url.toString());
   }
 
-  // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
-  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
       deleteMutation.mutate({ slug: deleteModal.entity.slug });
+      if (selectedBlog?.slug === deleteModal.entity.slug) {
+        setSelectedBlog(null);
+      }
     }
   }
 
@@ -208,7 +224,6 @@ export function EditorPage() {
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   // Show editor loading state only when we're expecting to load a blog from URL
   const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isDeletingBlog;
-  const formValues = form.watch();
 
   return (
     <SoundProvider>
@@ -252,7 +267,7 @@ export function EditorPage() {
                   <BlogPreview
                     key="preview"
                     isVisible={showPreview}
-                    formData={formValues}
+                    form={form}
                     title={
                       editModal.visible
                         ? editModal.entity.title

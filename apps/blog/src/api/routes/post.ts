@@ -77,6 +77,7 @@ export const postRouter = router({
 
   deletePost: adminProcedure
     .input(postDeleteSchemaDto)
+    .output(z.void())
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
