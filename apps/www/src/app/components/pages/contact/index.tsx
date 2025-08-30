@@ -91,8 +91,8 @@ export function ContactPage() {
                       </strong>
                     </button>{" "}
                     for secure communication. Feel free to use it for encrypted
-                    messages and to verify my
-                    <Link href={LINKS.keyBase} name="identity."></Link>
+                    messages and to verify my online
+                    <Link href={LINKS.keyBase} name="ID."></Link>
                     Other than that, you can either
                   </TextContent>
                 </div>

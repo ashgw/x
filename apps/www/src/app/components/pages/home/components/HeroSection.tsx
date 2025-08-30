@@ -31,7 +31,7 @@ export function HeroSection() {
             >
               <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
                 <span className="dimmed-4">
-                  Welcome to the <span className="glows">Archive</span>
+                  Welcome to the <span className="glows">archive</span>
                 </span>
               </h1>
             </motion.div>
@@ -42,9 +42,9 @@ export function HeroSection() {
               transition={transition}
             >
               <Text>
-                This site is merely an extension of my memory, where scattered
-                thoughts become something more concrete than decentralized
-                notes.
+                This site is merely an extension of my memory. I write about
+                tech, health, psychology, and whatever I’m dissecting at the
+                time.
               </Text>
             </motion.div>
           </div>
@@ -62,7 +62,7 @@ export function HeroSection() {
                   window.location.href = "/blog";
                 }}
               >
-                Read more
+                Read the latest
               </Button>
             </motion.div>
           </div>
