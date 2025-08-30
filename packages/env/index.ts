@@ -54,6 +54,10 @@ const serverSideVars = {
         message: "Must be a valid Neon Postgres URL",
       },
     ),
+  DIRECT_URL: z
+    .string()
+    .min(1, "DIRECT_URL is required")
+    .url("Must be a valid URL"),
 
   S3_BUCKET_NAME: z
     .string()
@@ -113,6 +117,7 @@ export const env = createEnv({
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
+    DIRECT_URL: process.env.DIRECT_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
