@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 import { trpcServerSide } from "~/trpc/server";
 
@@ -47,6 +46,8 @@ export default async function Image({ params }: RouteCtx) {
         }}
       >
         {bgPng ? (
+          // OG routes render via Satori, next/image isn’t supported and will fail.
+          /* eslint-disable @next/next/no-img-element */
           <img
             alt="blog post image"
             src={toDataUri(bgPng)}
