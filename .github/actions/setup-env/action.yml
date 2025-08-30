@@ -33,6 +33,9 @@ inputs:
   DATABASE_URL:
     required: true
     description: "The URL of the database"
+  DIRECT_URL:
+    required: true
+    description: "The direct URL of the database"
   S3_BUCKET_NAME:
     required: true
     description: "The name of the S3 bucket"
@@ -88,6 +91,7 @@ runs:
             ["NEXT_PUBLIC_POSTHOG_KEY"]="${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}"
             ["NEXT_PUBLIC_POSTHOG_HOST"]="${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}"
             ["DATABASE_URL"]="${{ inputs.DATABASE_URL }}"
+            ["DIRECT_URL"]="${{ inputs.DIRECT_URL }}"
             ["S3_BUCKET_NAME"]="${{ inputs.S3_BUCKET_NAME }}"
             ["S3_BUCKET_REGION"]="${{ inputs.S3_BUCKET_REGION }}"
             ["S3_BUCKET_ACCESS_KEY_ID"]="${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}"
@@ -126,6 +130,7 @@ runs:
         NEXT_PUBLIC_POSTHOG_KEY=${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}
         NEXT_PUBLIC_POSTHOG_HOST=${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}
         DATABASE_URL=${{ inputs.DATABASE_URL }}
+        DIRECT_URL=${{ inputs.DIRECT_URL }}
         S3_BUCKET_NAME=${{ inputs.S3_BUCKET_NAME }}
         S3_BUCKET_REGION=${{ inputs.S3_BUCKET_REGION }}
         S3_BUCKET_ACCESS_KEY_ID=${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}
@@ -149,6 +154,7 @@ runs:
           echo "NEXT_PUBLIC_POSTHOG_KEY=${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}"
           echo "NEXT_PUBLIC_POSTHOG_HOST=${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}"
           echo "DATABASE_URL=${{ inputs.DATABASE_URL }}"
+          echo "DIRECT_URL=${{ inputs.DIRECT_URL }}"
           echo "S3_BUCKET_NAME=${{ inputs.S3_BUCKET_NAME }}"
           echo "S3_BUCKET_REGION=${{ inputs.S3_BUCKET_REGION }}"
           echo "S3_BUCKET_ACCESS_KEY_ID=${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}"

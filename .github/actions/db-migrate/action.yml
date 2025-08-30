@@ -12,6 +12,9 @@ inputs:
   DATABASE_URL:
     required: true
     description: "The database URL"
+  DIRECT_URL:
+    required: true
+    description: "The direct database URL"
   TEMPORARY_CONTAINER_DATABASE_URL:
     required: true
     description: "The temporary DB URL to test migrations"
@@ -24,6 +27,8 @@ runs:
       run: |
         echo "DATABASE_URL=${{ inputs.DATABASE_URL }}" >> $GITHUB_ENV
         echo "::add-mask::${{ inputs.DATABASE_URL }}"
+        echo "DIRECT_URL=${{ inputs.DIRECT_URL }}" >> $GITHUB_ENV
+        echo "::add-mask::${{ inputs.DIRECT_URL }}"
 
     - name: Check for schema drift
       shell: bash

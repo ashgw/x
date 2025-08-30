@@ -51,6 +51,9 @@ inputs:
   DATABASE_URL:
     description: "Database URL"
     required: true
+  DIRECT_URL:
+    description: "Direct database URL"
+    required: true
   S3_BUCKET_NAME:
     description: "S3 bucket name"
     required: true
@@ -92,6 +95,7 @@ runs:
         NEXT_PUBLIC_POSTHOG_KEY: ${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}
         NEXT_PUBLIC_POSTHOG_HOST: ${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}
         DATABASE_URL: ${{ inputs.DATABASE_URL }}
+        DIRECT_URL: ${{ inputs.DIRECT_URL }}
         S3_BUCKET_NAME: ${{ inputs.S3_BUCKET_NAME }}
         S3_BUCKET_REGION: ${{ inputs.S3_BUCKET_REGION }}
         S3_BUCKET_ACCESS_KEY_ID: ${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}
