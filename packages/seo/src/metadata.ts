@@ -16,6 +16,7 @@ const twitterHandle = LINKS.twitter.handle;
 export const createMetadata = ({
   title,
   description,
+  canonical,
   ...properties
 }: MetadataInput): Metadata => {
   const parsedTitle = `${title} | ${applicationName}`;
@@ -26,6 +27,9 @@ export const createMetadata = ({
     authors: [{ name: publisher }],
     creator: publisher,
     formatDetection: { telephone: false },
+    alternates: {
+      canonical,
+    },
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",
