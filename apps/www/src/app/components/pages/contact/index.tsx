@@ -80,20 +80,21 @@ export function ContactPage() {
                 </motion.h1>
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
-                    I use{" "}
+                    I prefer to use{" "}
+                    <Link href={LINKS.twitter.link} name="X"></Link> for most
+                    communication. I use{" "}
+                    <Link href={LINKS.keyBase} name="GPG"></Link> for secure
+                    communication, check my{" "}
                     <button
                       onClick={async () => {
                         await copyGPG();
                       }}
                     >
                       <strong className="glows text-white underline">
-                        GPG
+                        ID.
                       </strong>
                     </button>{" "}
-                    for secure communication. Feel free to use it for encrypted
-                    messages and to verify my
-                    <Link href={LINKS.keyBase} name="identity."></Link>
-                    Other than that, you can either
+                    Otherwise, you can either
                   </TextContent>
                 </div>
               </div>
