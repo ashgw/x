@@ -35,16 +35,15 @@ export function HeroSection() {
                 </span>
               </h1>
             </motion.div>
-
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={transition}
             >
               <Text>
-                This site is merely an extension of my memory. I write about
-                tech, health, psychology, and whatever I’m dissecting at the
-                time.
+                If you build or run a software product, this is for you. I talk
+                about software mostly, aside from that, I also share personal
+                insights about health and philosophy.
               </Text>
             </motion.div>
           </div>
@@ -62,7 +61,7 @@ export function HeroSection() {
                   window.location.href = "/blog";
                 }}
               >
-                Read the latest
+                Start here
               </Button>
             </motion.div>
           </div>
