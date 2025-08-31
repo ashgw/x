@@ -31,7 +31,7 @@ export function HeroSection() {
             >
               <h1 className="text-5xl font-bold tracking-tighter md:text-5xl lg:text-6xl/none xl:text-[5rem]">
                 <span className="dimmed-4">
-                  Welcome to the <span className="glows">Archive</span>
+                  Welcome to the <span className="glows">archive</span>
                 </span>
               </h1>
             </motion.div>
