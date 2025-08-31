@@ -99,7 +99,8 @@ export function Newsletter() {
           </form>
         </Form>
         <p className="dimmed-3 mt-4 text-center text-sm">
-          Subscribe to my newsletter. The extension of these thoughts and more.
+          Subscribe to my newsletter. No gimmicks, just food for thought &
+          sauce.
         </p>
       </div>
       <Toaster position="bottom-right" />
