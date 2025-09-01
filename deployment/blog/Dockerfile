@@ -8,8 +8,8 @@ FROM node:${NODE_VERSION}-alpine AS base
 # redeclare so it can be used in the next stage
 ARG IS_PREVIEW
 
-ENV PNPM_HOME="/pnpm" PATH="$PNPM_HOME:$PATH"
-
+ENV PNPM_HOME="/pnpm"
+ENV PATH="${PNPM_HOME}:${PATH}"
 # make sure corepack never prompts
 ENV COREPACK_ENABLE_DOWNLOAD=1 \
     PNPM_HOME="/pnpm" \
