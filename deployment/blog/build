@@ -2,11 +2,10 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 [preview|production|development]"
+  echo "Usage: $0 [preview|production]"
   exit 1
 }
 
-# require exactly one arg
 if [[ $# -ne 1 ]]; then
   usage
 fi
@@ -22,17 +21,12 @@ case "$ENV" in
     ENV_FILE=".env.production"
     IS_PREVIEW="false"
     ;;
-  development)
-    ENV_FILE=".env.development"
-    IS_PREVIEW="false"
-    ;;
   *)
     echo "Error: unknown environment '$ENV'"
     usage
     ;;
 esac
 
-# run everything in a subshell so exports die when it exits
 (
   set -a
   . "$ENV_FILE"
