@@ -49,10 +49,10 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
 
-      - uses: ./.github/actions/koyeb-deploy
+      - uses: ./.github/actions/container-deploy
         with:
           NODE_ENV: ${{ inputs.NODE_ENV }}
-          KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
+          CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ${{ secrets.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
           SERVICE_NAME: ${{ inputs.SERVICE_NAME}} # only blog for now
 

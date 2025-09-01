@@ -1,14 +1,14 @@
-name: Koyeb Preview Deployment
+name: Container Deployment
 
-description: Build and deploy container image to Koyeb via GHCR
+description: Build and deploy container image
 
 inputs:
   NODE_ENV:
     description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
     default: "preview"
-  KOYEB_TOKEN:
-    description: "Koyeb API token"
+  CONTAINER_DEPLOYMENT_SERVICE_TOKEN:
+    description: "API token"
     required: true
   SERVICE_NAME:
     description: "Koyeb service name, either 'blog' or 'www' or whatever app you're running"
@@ -17,6 +17,7 @@ inputs:
     description: "GitHub token with packages:write for GHCR and PR comments"
     required: true
 
+# we'll use koyeb & ghcr
 runs:
   using: "composite"
   steps:
@@ -56,7 +57,7 @@ runs:
         cat > "$HOME/.koyeb.yaml" << EOF
         debug: false
         organization: ""
-        token: ${{ inputs.KOYEB_TOKEN }}
+        token: ${{ inputs.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
         url: https://app.koyeb.com
         EOF
 
