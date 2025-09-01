@@ -17,7 +17,6 @@ inputs:
     description: "GitHub token with packages:write for GHCR and PR comments"
     required: true
 
-# we'll use koyeb & ghcr
 runs:
   using: "composite"
   steps:
@@ -26,18 +25,21 @@ runs:
       run: |
         echo "${{ inputs.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-    - name: Build image
+    - name: Build image with script
       shell: bash
       run: |
         set -euo pipefail
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
-        docker build -t "$IMAGE" -f "deployment/${{ inputs.SERVICE_NAME }}/Dockerfile" .
+        ./deployment/${{ inputs.SERVICE_NAME }}/build \
+          --env "${{ inputs.NODE_ENV }}" \
+          --service "${{ inputs.SERVICE_NAME }}" \
+          --image "$IMAGE"
 
     - name: Push image (production + latest)
       if: ${{ inputs.NODE_ENV == 'production' }}
       shell: bash
       run: |
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:production"
         LATEST="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:latest"
         docker push "$IMAGE"
         docker tag "$IMAGE" "$LATEST"
