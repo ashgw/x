@@ -1,14 +1,14 @@
-name: Koyeb Preview Deployment
+name: Container Deployment
 
-description: Build and deploy container image to Koyeb via GHCR
+description: Build and deploy container image
 
 inputs:
   NODE_ENV:
     description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
     default: "preview"
-  KOYEB_TOKEN:
-    description: "Koyeb API token"
+  CONTAINER_DEPLOYMENT_SERVICE_TOKEN:
+    description: "API token"
     required: true
   SERVICE_NAME:
     description: "Koyeb service name, either 'blog' or 'www' or whatever app you're running"
@@ -25,18 +25,21 @@ runs:
       run: |
         echo "${{ inputs.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-    - name: Build image
+    - name: Build image with script
       shell: bash
       run: |
         set -euo pipefail
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
-        docker build -t "$IMAGE" -f "deployment/${{ inputs.SERVICE_NAME }}/Dockerfile" .
+        ./deployment/${{ inputs.SERVICE_NAME }}/build \
+          --env "${{ inputs.NODE_ENV }}" \
+          --service "${{ inputs.SERVICE_NAME }}" \
+          --image "$IMAGE"
 
     - name: Push image (production + latest)
       if: ${{ inputs.NODE_ENV == 'production' }}
       shell: bash
       run: |
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:production"
         LATEST="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:latest"
         docker push "$IMAGE"
         docker tag "$IMAGE" "$LATEST"
@@ -56,7 +59,7 @@ runs:
         cat > "$HOME/.koyeb.yaml" << EOF
         debug: false
         organization: ""
-        token: ${{ inputs.KOYEB_TOKEN }}
+        token: ${{ inputs.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
         url: https://app.koyeb.com
         EOF
 
