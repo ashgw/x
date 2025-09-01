@@ -1,0 +1,59 @@
+#!/bin/bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: $0 [preview|production|development]"
+  exit 1
+}
+
+# require exactly one arg
+if [[ $# -ne 1 ]]; then
+  usage
+fi
+
+ENV="$1"
+
+case "$ENV" in
+  preview)
+    ENV_FILE=".env.preview"
+    IS_PREVIEW="true"
+    ;;
+  production)
+    ENV_FILE=".env.production"
+    IS_PREVIEW="false"
+    ;;
+  development)
+    ENV_FILE=".env.development"
+    IS_PREVIEW="false"
+    ;;
+  *)
+    echo "Error: unknown environment '$ENV'"
+    usage
+    ;;
+esac
+
+# run everything in a subshell so exports die when it exits
+(
+  set -a
+  . "$ENV_FILE"
+  set +a
+
+  DOCKER_BUILDKIT=1 docker build \
+    --build-arg IS_PREVIEW="$IS_PREVIEW" \
+    --secret id=DATABASE_URL,env=DATABASE_URL \
+    --secret id=S3_BUCKET_NAME,env=S3_BUCKET_NAME \
+    --secret id=S3_BUCKET_REGION,env=S3_BUCKET_REGION \
+    --secret id=S3_BUCKET_ACCESS_KEY_ID,env=S3_BUCKET_ACCESS_KEY_ID \
+    --secret id=S3_BUCKET_SECRET_KEY,env=S3_BUCKET_SECRET_KEY \
+    --secret id=S3_BUCKET_URL,env=S3_BUCKET_URL \
+    --secret id=KIT_API_KEY,env=KIT_API_KEY \
+    --secret id=IP_HASH_SALT,env=IP_HASH_SALT \
+    --secret id=NEXT_PUBLIC_WWW_URL,env=NEXT_PUBLIC_WWW_URL \
+    --secret id=NEXT_PUBLIC_BLOG_URL,env=NEXT_PUBLIC_BLOG_URL \
+    --secret id=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,env=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID \
+    --secret id=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID,env=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID \
+    --secret id=NEXT_PUBLIC_SENTRY_DSN,env=NEXT_PUBLIC_SENTRY_DSN \
+    --secret id=NEXT_PUBLIC_POSTHOG_KEY,env=NEXT_PUBLIC_POSTHOG_KEY \
+    --secret id=NEXT_PUBLIC_POSTHOG_HOST,env=NEXT_PUBLIC_POSTHOG_HOST \
+    -t ashgw-blog -f deployment/blog/Dockerfile .
+)
