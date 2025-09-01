@@ -2,3 +2,4 @@
 cb4730699328edefb435c5dd6ad1075351a36652:infra/terraform.tfstate.backup:generic-api-key:73
 cb4730699328edefb435c5dd6ad1075351a36652:infra/terraform.tfstate.backup:generic-api-key:73
 echo 589dd435e6d219e95e9c6e84c8b7583ab9f18bb2:deployment/blog/build:generic-api-key:69 >> .gitleaksignore
+deployment/blog/build
