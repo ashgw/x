@@ -2,52 +2,79 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 [preview|production]"
+  echo "Usage: $0 --env [preview|production] --service <service> --image <image>"
+  echo "Example: $0 --env production --service blog --image ghcr.io/ashgw/blog:production"
   exit 1
 }
 
-if [[ $# -ne 1 ]]; then
+ENV=""
+SERVICE=""
+IMAGE=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --env)
+      [[ $# -lt 2 ]] && usage
+      ENV="$2"
+      shift 2
+      ;;
+    --service)
+      [[ $# -lt 2 ]] && usage
+      SERVICE="$2"
+      shift 2
+      ;;
+    --image)
+      [[ $# -lt 2 ]] && usage
+      IMAGE="$2"
+      shift 2
+      ;;
+    *)
+      echo "Error: unknown argument '$1'"
+      usage
+      ;;
+  esac
+done
+
+if [[ -z "$ENV" || -z "$SERVICE" || -z "$IMAGE" ]]; then
+  echo "Error: --env, --service and --image are required"
   usage
 fi
 
-ENV="$1"
-
 case "$ENV" in
   preview)
-    ENV_FILE=".env.preview"
     IS_PREVIEW="true"
     ;;
   production)
-    ENV_FILE=".env.production"
     IS_PREVIEW="false"
     ;;
   *)
-    echo "Error: unknown environment '$ENV'"
+    echo "Error: invalid --env '$ENV'"
     usage
     ;;
 esac
 
-(
-  set -a
-  . "$ENV_FILE"
-  set +a
+DOCKERFILE="deployment/$SERVICE/Dockerfile"
+if [[ ! -f "$DOCKERFILE" ]]; then
+  echo "Error: Dockerfile not found for service '$SERVICE' ($DOCKERFILE)"
+  exit 1
+fi
 
-  DOCKER_BUILDKIT=1 docker build \
-    --build-arg IS_PREVIEW="$IS_PREVIEW" \
-    --secret id=DATABASE_URL,env=DATABASE_URL \
-    --secret id=S3_BUCKET_NAME,env=S3_BUCKET_NAME \
-    --secret id=S3_BUCKET_REGION,env=S3_BUCKET_REGION \
-    --secret id=S3_BUCKET_ACCESS_KEY_ID,env=S3_BUCKET_ACCESS_KEY_ID \
-    --secret id=S3_BUCKET_SECRET_KEY,env=S3_BUCKET_SECRET_KEY \
-    --secret id=S3_BUCKET_URL,env=S3_BUCKET_URL \
-    --secret id=KIT_API_KEY,env=KIT_API_KEY \
-    --secret id=IP_HASH_SALT,env=IP_HASH_SALT \
-    --secret id=NEXT_PUBLIC_WWW_URL,env=NEXT_PUBLIC_WWW_URL \
-    --secret id=NEXT_PUBLIC_BLOG_URL,env=NEXT_PUBLIC_BLOG_URL \
-    --secret id=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,env=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID \
-    --secret id=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID,env=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID \
-    --secret id=NEXT_PUBLIC_SENTRY_DSN,env=NEXT_PUBLIC_SENTRY_DSN \
-    --secret id=NEXT_PUBLIC_POSTHOG_KEY,env=NEXT_PUBLIC_POSTHOG_KEY \
-    --secret id=NEXT_PUBLIC_POSTHOG_HOST,env=NEXT_PUBLIC_POSTHOG_HOST \
-    -t ashgw-blog -f deployment/blog/Dockerfile .
-)
+echo "Building image: $IMAGE"
+DOCKER_BUILDKIT=1 docker build \
+  --build-arg IS_PREVIEW="$IS_PREVIEW" \
+  --secret id=DATABASE_URL,env=DATABASE_URL \
+  --secret id=S3_BUCKET_NAME,env=S3_BUCKET_NAME \
+  --secret id=S3_BUCKET_REGION,env=S3_BUCKET_REGION \
+  --secret id=S3_BUCKET_ACCESS_KEY_ID,env=S3_BUCKET_ACCESS_KEY_ID \
+  --secret id=S3_BUCKET_SECRET_KEY,env=S3_BUCKET_SECRET_KEY \
+  --secret id=S3_BUCKET_URL,env=S3_BUCKET_URL \
+  --secret id=KIT_API_KEY,env=KIT_API_KEY \
+  --secret id=IP_HASH_SALT,env=IP_HASH_SALT \
+  --secret id=NEXT_PUBLIC_WWW_URL,env=NEXT_PUBLIC_WWW_URL \
+  --secret id=NEXT_PUBLIC_BLOG_URL,env=NEXT_PUBLIC_BLOG_URL \
+  --secret id=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,env=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID \
+  --secret id=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID,env=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID \
+  --secret id=NEXT_PUBLIC_SENTRY_DSN,env=NEXT_PUBLIC_SENTRY_DSN \
+  --secret id=NEXT_PUBLIC_POSTHOG_KEY,env=NEXT_PUBLIC_POSTHOG_KEY \
+  --secret id=NEXT_PUBLIC_POSTHOG_HOST,env=NEXT_PUBLIC_POSTHOG_HOST \
+  -t "$IMAGE" -f "$DOCKERFILE" .
