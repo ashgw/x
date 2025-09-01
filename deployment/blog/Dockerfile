@@ -9,8 +9,14 @@ FROM node:${NODE_VERSION}-alpine AS base
 ARG IS_PREVIEW
 
 ENV PNPM_HOME="/pnpm" PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
 
+# make sure corepack never prompts
+ENV COREPACK_ENABLE_DOWNLOAD=1 \
+    PNPM_HOME="/pnpm" \
+    PATH="$PNPM_HOME:$PATH" \
+    PORT=${PORT}
+
+RUN corepack enable
 WORKDIR /app
 COPY . .
 
