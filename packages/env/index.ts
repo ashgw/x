@@ -4,13 +4,7 @@ import { config } from "dotenv";
 import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
-
-const colors = {
-  green: (s: string) => `\x1b[32m${s}\x1b[0m`,
-  yellow: (s: string) => `\x1b[33m${s}\x1b[0m`,
-  cyan: (s: string) => `\x1b[36m${s}\x1b[0m`,
-  magenta: (s: string) => `\x1b[35m${s}\x1b[0m`,
-};
+import { colors } from "./colors";
 
 const isRunningInCi = process.env.CI === "true";
 
