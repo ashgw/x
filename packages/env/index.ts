@@ -5,29 +5,45 @@ import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 
+const colors = {
+  green: (s: string) => `\x1b[32m${s}\x1b[0m`,
+  yellow: (s: string) => `\x1b[33m${s}\x1b[0m`,
+  cyan: (s: string) => `\x1b[36m${s}\x1b[0m`,
+  magenta: (s: string) => `\x1b[35m${s}\x1b[0m`,
+};
+
 const isRunningInCi = process.env.CI === "true";
 
 function configureFileBasedEnv() {
-  // for compatibility with ESM and CommonJS
   let rootDir = process.cwd();
   rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
 
-  config({
-    path: path.resolve(
-      rootDir,
-      process.env.NODE_ENV === "production"
-        ? "../../.env.production"
-        : process.env.NODE_ENV === "preview"
-          ? "../../.env.preview"
-          : "../../.env.development",
-    ),
-  });
+  const envPath = path.resolve(
+    rootDir,
+    process.env.NODE_ENV === "production"
+      ? "../../.env.production"
+      : process.env.NODE_ENV === "preview"
+        ? "../../.env.preview"
+        : "../../.env.development",
+  );
+
+  const res = config({ path: envPath });
+  const count = res.parsed ? Object.keys(res.parsed).length : 0;
+  // eslint-disable-next-line no-restricted-syntax
+  console.log(
+    `${colors.magenta("ENV")} → loaded ${colors.green(String(count))} vars from ${colors.cyan(envPath)}`,
+  );
 }
 
 if (!isRunningInCi) {
   configureFileBasedEnv();
+} else {
+  const count = Object.keys(process.env).length;
+  // eslint-disable-next-line no-restricted-syntax
+  console.log(
+    `${colors.magenta("ENV")} → using ${colors.green(String(count))} vars from ${colors.yellow("CI")}`,
+  );
 }
-// else rely on the env vars injected by the CI job
 
 const isBrowser = typeof window !== "undefined";
 
@@ -50,36 +66,25 @@ const serverSideVars = {
         process.env.NODE_ENV === "development" ||
         url.startsWith("postgres://") ||
         url.startsWith("postgresql://"),
-      {
-        message: "Must be a valid Neon Postgres URL",
-      },
+      { message: "Must be a valid Neon Postgres URL" },
     ),
-
   S3_BUCKET_NAME: z
     .string()
     .min(3, "Bucket name too short")
     .max(63, "Bucket name too long")
     .regex(/^[a-z0-9.-]+$/, "Invalid S3 bucket name"),
-
   S3_BUCKET_REGION: z.enum(
-    ["us-east-1", "us-west-1", "us-west-2", "eu-west-1"], // I don't deploy anywhere else
-    {
-      errorMap: () => ({ message: "Invalid AWS region" }),
-    },
+    ["us-east-1", "us-west-1", "us-west-2", "eu-west-1"],
+    { errorMap: () => ({ message: "Invalid AWS region" }) },
   ),
-
   S3_BUCKET_ACCESS_KEY_ID: z.string().min(20, "Secret access key too short"),
-
   S3_BUCKET_SECRET_KEY: z.string().min(20, "Secret access key too short"),
-
   S3_BUCKET_URL: z
     .string()
     .url("Must be a valid S3 bucket URL")
     .refine(
       (url) => url.includes("amazonaws.com") || url.includes("cloudfront.net"),
-      {
-        message: "Must be a valid S3 or CloudFront URL",
-      },
+      { message: "Must be a valid S3 or CloudFront URL" },
     ),
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
@@ -127,5 +132,5 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
-  skipValidation: isBrowser, // Since env vars are already injected at build time, we don't need to validate them at runtime.
+  skipValidation: isBrowser,
 });
