@@ -3,6 +3,9 @@ name: Vercel Preview Deployment
 description: Deploy to Vercel and set the preview URL
 
 inputs:
+  environment:
+    description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
+    required: true
   project_name:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
@@ -10,9 +13,6 @@ inputs:
     description: "Add a comment notification to the PR"
     required: false
     default: "false"
-  environment:
-    description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
-    required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
     required: true

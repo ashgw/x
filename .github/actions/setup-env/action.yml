@@ -10,6 +10,8 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install Doppler CLI
+      uses: dopplerhq/cli-action@v3
     - name: Fetch env from Doppler
       shell: bash
       run: |
