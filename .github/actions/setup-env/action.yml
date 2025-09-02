@@ -4,7 +4,7 @@ description: Export secrets from Doppler to the job environment
 inputs:
   ENV_SERVICE_TOKEN:
     required: true
-    description: "Doppler service token (scoped to the desired project/config)"
+    description: "Doppler service token (scoped to the desired project/config) with the current GH environment"
 
 runs:
   using: "composite"
