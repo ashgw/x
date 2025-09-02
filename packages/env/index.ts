@@ -38,10 +38,9 @@ function configureFileBasedEnv() {
 if (!isRunningInCi) {
   configureFileBasedEnv();
 } else {
-  const count = Object.keys(process.env).length;
   // eslint-disable-next-line no-restricted-syntax
   console.log(
-    `${colors.magenta("ENV")} → using ${colors.green(String(count))} vars from ${colors.yellow("CI")}`,
+    `${colors.magenta("ENV")} → using vars from ${colors.yellow("CI")}`,
   );
 }
 
