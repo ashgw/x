@@ -42,7 +42,7 @@ const isBrowser = typeof window !== "undefined";
 
 // AKA non predfixed vars
 const serverSideVars = {
-  NODE_ENV: z.enum(["production", "development", "preview", "test"]),
+  NODE_ENV: z.enum(["production", "development", "preview", "test"]).optional(),
   SENTRY_ORG: z.string(),
   SENTRY_PROJECT: z.string(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
