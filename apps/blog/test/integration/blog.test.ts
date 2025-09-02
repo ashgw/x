@@ -38,8 +38,11 @@ test("load and validate a single blog post", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
 
+  const cards = await caller.post.getPostCards();
+  expect(cards.length).toBeGreaterThan(0);
+
   const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
-    slug: "branded-types", // already have this one seeded
+    slug: cards[0]?.slug ?? "",
   };
 
   const post = await caller.post.getPost(input);
