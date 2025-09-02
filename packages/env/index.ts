@@ -52,7 +52,6 @@ const serverSideVars = {
   NODE_ENV: z.enum(["production", "development", "preview", "test"]),
   SENTRY_ORG: z.string(),
   SENTRY_PROJECT: z.string(),
-  NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
   SENTRY_AUTH_TOKEN: z.string().min(20),
   IP_HASH_SALT: z
     .string()
@@ -119,7 +118,6 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
-    NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
