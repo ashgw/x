@@ -3,15 +3,12 @@ name: CI / DB Migrate
 description: Run database migrations
 
 inputs:
-  NODE_ENV:
+  environment:
     required: true
     description: "The environment to run the migrations in, can be 'development' or 'production' or 'preview'"
   with_deploy:
     required: true
     description: "Whether to run the migration deployment step ('yes' or 'no')"
-  DATABASE_URL:
-    required: true
-    description: "The database URL"
   TEMPORARY_CONTAINER_DATABASE_URL:
     required: true
     description: "The temporary DB URL to test migrations"
@@ -19,11 +16,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set environment variables
+    - name: Mask database url
       shell: bash
       run: |
-        echo "DATABASE_URL=${{ inputs.DATABASE_URL }}" >> $GITHUB_ENV
-        echo "::add-mask::${{ inputs.DATABASE_URL }}"
+        set -euo pipefail
+        if [[ -z "${DATABASE_URL:-}" ]]; then
+          echo "DATABASE_URL is not set"; exit 1
+        fi
+        echo "::add-mask::$DATABASE_URL"
 
     - name: Check for schema drift
       shell: bash
@@ -60,13 +60,13 @@ runs:
 
         exit $STATUS
 
-    - name: Run migrations on the ${{ inputs.NODE_ENV }} database
+    - name: Run migrations on the ${{ inputs.environment }} database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
         pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
-    - name: Validate migrations on the ${{ inputs.NODE_ENV }} database
+    - name: Validate migrations on the ${{ inputs.environment }} database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
@@ -81,7 +81,7 @@ runs:
         pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         repo="${{ github.repository }}"
 
-        comment_body="Database migrations were successfully deployed to the ${{ inputs.NODE_ENV }} branch of the database."
+        comment_body="Database migrations were successfully deployed to the ${{ inputs.environment }} branch of the database."
 
         curl -s -X POST \
           -H "Authorization: token $GH_TOKEN" \

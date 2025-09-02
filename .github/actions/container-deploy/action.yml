@@ -3,8 +3,8 @@ name: Container Deployment
 description: Build and deploy container image
 
 inputs:
-  NODE_ENV:
-    description: "Node environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
+  environment:
+    description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
     default: "preview"
   CONTAINER_DEPLOYMENT_SERVICE_TOKEN:
@@ -29,14 +29,14 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.NODE_ENV }}"
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:${{ inputs.environment }}"
         ./deployment/${{ inputs.SERVICE_NAME }}/build \
-          --env "${{ inputs.NODE_ENV }}" \
+          --env "${{ inputs.environment }}" \
           --service "${{ inputs.SERVICE_NAME }}" \
           --image "$IMAGE"
 
     - name: Push image (production + latest)
-      if: ${{ inputs.NODE_ENV == 'production' }}
+      if: ${{ inputs.environment == 'production' }}
       shell: bash
       run: |
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:production"
@@ -46,7 +46,7 @@ runs:
         docker push "$LATEST"
 
     - name: Push image (preview)
-      if: ${{ inputs.NODE_ENV == 'preview' }}
+      if: ${{ inputs.environment == 'preview' }}
       shell: bash
       run: |
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.SERVICE_NAME }}:preview"
@@ -68,14 +68,14 @@ runs:
         export PATH="$HOME/.koyeb/bin:$PATH"
 
         # Choose target
-        if [[ "${{ inputs.NODE_ENV }}" == "production" ]]; then
+        if [[ "${{ inputs.environment }}" == "production" ]]; then
           echo "Deploying to production environment"
           DEPLOY_TARGET="${{ inputs.SERVICE_NAME }}/${{ inputs.SERVICE_NAME }}"
-        elif [[ "${{ inputs.NODE_ENV }}" == "preview" ]]; then
+        elif [[ "${{ inputs.environment }}" == "preview" ]]; then
           echo "Deploying to preview environment"
           DEPLOY_TARGET="${{ inputs.SERVICE_NAME }}-preview/${{ inputs.SERVICE_NAME }}-preview"
         else
-          echo "Unknown NODE_ENV: ${{ inputs.NODE_ENV }}"
+          echo "Unknown environment: ${{ inputs.environment }}"
           exit 1
         fi
 
@@ -83,7 +83,7 @@ runs:
         koyeb service redeploy "$DEPLOY_TARGET"
 
     - name: Notify about preview deployment
-      if: ${{ inputs.NODE_ENV == 'preview' }}
+      if: ${{ inputs.environment == 'preview' }}
       uses: actions/github-script@v7
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
