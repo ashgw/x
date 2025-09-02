@@ -24,4 +24,3 @@ To spinup the local DB run
 ```bash
 pnpm --filter @ashgw/db start
 ```
-

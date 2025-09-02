@@ -23,25 +23,7 @@ jobs:
       - uses: ./.github/actions/vercel-build
         with:
           project_name: www
-          NODE_ENV: preview
-          NEXT_PUBLIC_WWW_URL: ${{ secrets.NEXT_PUBLIC_WWW_URL }}
-          NEXT_PUBLIC_BLOG_URL: ${{ secrets.NEXT_PUBLIC_BLOG_URL }}
-          NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
-          NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
-          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
-          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-          S3_BUCKET_REGION: ${{ secrets.S3_BUCKET_REGION }}
-          S3_BUCKET_ACCESS_KEY_ID: ${{ secrets.S3_BUCKET_ACCESS_KEY_ID }}
-          S3_BUCKET_SECRET_KEY: ${{ secrets.S3_BUCKET_SECRET_KEY }}
-          S3_BUCKET_URL: ${{ secrets.S3_BUCKET_URL }}
-          KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
-          IP_HASH_SALT: ${{ secrets.IP_HASH_SALT }}
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
           # deplyment specific, not needed for build
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -50,13 +32,13 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: "yes"
-          NODE_ENV: "preview"
+          environment: "preview"
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
 
       - uses: ./.github/actions/vercel-deploy
         with:
-          NODE_ENV: preview
+          environment: preview
           add_comment: ${{ inputs.add_comment }}
           project_name: www
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

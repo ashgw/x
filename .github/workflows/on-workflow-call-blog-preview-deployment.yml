@@ -12,6 +12,6 @@ jobs:
   deploy:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
-      NODE_ENV: "preview"
+      environment: "preview"
       SERVICE_NAME: "blog"
     secrets: inherit

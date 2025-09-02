@@ -6,8 +6,8 @@ inputs:
   project_name:
     description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
     required: true
-  NODE_ENV:
-    description: "The environment you're trying to build. Example: 'production', 'preview'"
+  ENV_SERVICE_TOKEN:
+    description: "Service token scoped to the correct environment (production/preview/development)"
     required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
@@ -18,60 +18,6 @@ inputs:
   VERCEL_PROJECT_ID:
     description: "Vercel project ID"
     required: true
-  NEXT_PUBLIC_WWW_URL:
-    description: ""
-    required: true
-  NEXT_PUBLIC_BLOG_URL:
-    description: ""
-    required: true
-  NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
-    description: ""
-    required: true
-  NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
-    description: ""
-    required: true
-  NEXT_PUBLIC_SENTRY_DSN:
-    description: "Sentry DSN for error tracking"
-    required: true
-  SENTRY_ORG:
-    description: "Sentry organization name"
-    required: true
-  SENTRY_PROJECT:
-    description: "Sentry project name"
-    required: true
-  SENTRY_AUTH_TOKEN:
-    description: "Sentry authentication token"
-    required: true
-  NEXT_PUBLIC_POSTHOG_KEY:
-    description: "PostHog key for tracking"
-    required: true
-  NEXT_PUBLIC_POSTHOG_HOST:
-    description: "PostHog host URL"
-    required: true
-  DATABASE_URL:
-    description: "Database URL"
-    required: true
-  S3_BUCKET_NAME:
-    description: "S3 bucket name"
-    required: true
-  S3_BUCKET_REGION:
-    description: "S3 bucket region"
-    required: true
-  S3_BUCKET_ACCESS_KEY_ID:
-    description: "S3 bucket access key ID"
-    required: true
-  S3_BUCKET_SECRET_KEY:
-    description: "S3 bucket secret key"
-    required: true
-  S3_BUCKET_URL:
-    description: "S3 bucket URL"
-    required: true
-  KIT_API_KEY:
-    description: "Kit API key"
-    required: true
-  IP_HASH_SALT:
-    description: "IP hash salt"
-    required: true
 
 runs:
   using: "composite"
@@ -80,25 +26,7 @@ runs:
     - uses: ./.github/actions/pnpm-install
     - uses: ./.github/actions/setup-env
       with:
-        NODE_ENV: ${{ inputs.NODE_ENV }}
-        NEXT_PUBLIC_WWW_URL: ${{ inputs.NEXT_PUBLIC_WWW_URL }}
-        NEXT_PUBLIC_BLOG_URL: ${{ inputs.NEXT_PUBLIC_BLOG_URL }}
-        NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID }}
-        NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID: ${{ inputs.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID }}
-        NEXT_PUBLIC_SENTRY_DSN: ${{ inputs.NEXT_PUBLIC_SENTRY_DSN }}
-        SENTRY_ORG: ${{ inputs.SENTRY_ORG }}
-        SENTRY_PROJECT: ${{ inputs.SENTRY_PROJECT }}
-        SENTRY_AUTH_TOKEN: ${{ inputs.SENTRY_AUTH_TOKEN }}
-        NEXT_PUBLIC_POSTHOG_KEY: ${{ inputs.NEXT_PUBLIC_POSTHOG_KEY }}
-        NEXT_PUBLIC_POSTHOG_HOST: ${{ inputs.NEXT_PUBLIC_POSTHOG_HOST }}
-        DATABASE_URL: ${{ inputs.DATABASE_URL }}
-        S3_BUCKET_NAME: ${{ inputs.S3_BUCKET_NAME }}
-        S3_BUCKET_REGION: ${{ inputs.S3_BUCKET_REGION }}
-        S3_BUCKET_ACCESS_KEY_ID: ${{ inputs.S3_BUCKET_ACCESS_KEY_ID }}
-        S3_BUCKET_SECRET_KEY: ${{ inputs.S3_BUCKET_SECRET_KEY }}
-        S3_BUCKET_URL: ${{ inputs.S3_BUCKET_URL }}
-        KIT_API_KEY: ${{ inputs.KIT_API_KEY }}
-        IP_HASH_SALT: ${{ inputs.IP_HASH_SALT }}
+        ENV_SERVICE_TOKEN: ${{ inputs.ENV_SERVICE_TOKEN }}
 
     - name: Build for Vercel
       shell: bash
