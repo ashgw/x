@@ -30,5 +30,4 @@ jobs:
         with:
           with_deploy: ${{ inputs.with_deploy }}
           environment: ${{ inputs.environment }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
