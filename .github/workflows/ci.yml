@@ -91,7 +91,9 @@ jobs:
 
   www-prevew-deployemnt:
     needs: [preview-deployment]
-    uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-www-deployment.yml
+    with:
+      deployment_environment: preview
     secrets: inherit
 
   blog-preview-deployemnt:
@@ -110,7 +112,9 @@ jobs:
 
   www-production-deployment:
     needs: [production-deployment]
-    uses: ./.github/workflows/on-workflow-call-www-production-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-www-deployment.yml
+    with:
+      deployment_environment: production
     secrets: inherit
 
   blog-production-deployment:
