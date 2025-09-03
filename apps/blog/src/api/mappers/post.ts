@@ -11,6 +11,7 @@ import { PostCategoryEnum } from "../models";
 export class PostMapper {
   public static toCardRo({ post }: { post: PostCardQuery }): PostCardRo {
     return {
+      slug: post.slug,
       title: post.title,
       seoTitle: post.seoTitle,
       summary: post.summary,

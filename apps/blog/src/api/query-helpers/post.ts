@@ -21,6 +21,7 @@ export class PostQueryHelper {
 
   public static cardSelect() {
     return {
+      slug: true,
       category: true,
       tags: true,
       title: true,
