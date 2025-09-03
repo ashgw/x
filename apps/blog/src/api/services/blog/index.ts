@@ -193,13 +193,19 @@ export class BlogService {
   /**
    * Move a live post to TrashPost. (no support for images or other assets yet)
    */
-  public async trashPost(slug: string): Promise<void> {
+  public async trashPost({
+    originalSlug,
+  }: {
+    originalSlug: string;
+  }): Promise<void> {
     try {
-      const post = await this.db.post.findUnique({ where: { slug } });
+      const post = await this.db.post.findUnique({
+        where: { slug: originalSlug },
+      });
       if (!post) {
         throw new InternalError({
           code: "NOT_FOUND",
-          message: `Post with slug "${slug}" not found`,
+          message: `Post with slug "${originalSlug}" not found`,
         });
       }
 
@@ -223,9 +229,9 @@ export class BlogService {
         await tx.post.delete({ where: { slug: post.slug } });
       });
 
-      logger.info("Post moved to trash", { slug });
+      logger.info("Post moved to trash", { originalSlug });
     } catch (error) {
-      logger.error("Failed to move post to trash", { error, slug });
+      logger.error("Failed to move post to trash", { error, originalSlug });
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to move post to trash",
@@ -234,7 +240,7 @@ export class BlogService {
     }
   }
 
-  public async purgeTrash(trashId: string): Promise<void> {
+  public async purgeTrash({ trashId }: { trashId: string }): Promise<void> {
     try {
       await this.db.trashPost.delete({ where: { id: trashId } });
     } catch (error) {
@@ -247,7 +253,11 @@ export class BlogService {
     }
   }
 
-  public async restoreFromTrash(trashId: string): Promise<void> {
+  public async restoreFromTrash({
+    trashId,
+  }: {
+    trashId: string;
+  }): Promise<void> {
     try {
       const trash = await this.db.trashPost.findUnique({
         where: { id: trashId },
