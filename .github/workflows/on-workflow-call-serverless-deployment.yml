@@ -1,17 +1,21 @@
-name: CD / WWW Deployment
+name: CD / Serverless Deployment
 
 on:
   workflow_call:
     inputs:
-      deployment_environment:
-        required: true
-        type: string
-        description: "Environment to deploy to (preview or production)"
       add_comment:
         description: "Add a comment notification to the PR"
         required: false
         type: string
         default: "false"
+      deployment_environment:
+        required: true
+        type: string
+        description: "Environment to deploy to (preview or production)"
+      APP_NAME:
+        required: true
+        type: string
+        description: "App name, either 'www' or 'blog' or whatever"
 
 permissions:
   pull-requests: write
@@ -30,7 +34,7 @@ jobs:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
       - uses: ./.github/actions/vercel-build
         with:
-          project_name: www
+          project_name: ${{ inputs.APP_NAME }}
           # tbh, im too lazy to go figure out VERCEL envs again, pain fr
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -43,6 +47,6 @@ jobs:
       - uses: ./.github/actions/vercel-deploy
         with:
           deployment_environment: ${{ inputs.deployment_environment }}
-          project_name: www
+          project_name: ${{ inputs.APP_NAME }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

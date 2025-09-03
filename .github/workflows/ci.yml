@@ -89,18 +89,20 @@ jobs:
       deployment_environment: preview
     secrets: inherit
 
-  www-prevew-deployemnt:
+  www-preview-deployment:
     needs: [preview-deployment]
-    uses: ./.github/workflows/on-workflow-call-www-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: preview
+      APP_NAME: www
     secrets: inherit
 
-  blog-preview-deployemnt:
+  blog-preview-deployment:
     needs: [preview-deployment]
-    uses: ./.github/workflows/on-workflow-call-blog-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: preview
+      APP_NAME: blog
     secrets: inherit
 
   # same here
@@ -114,14 +116,16 @@ jobs:
 
   www-production-deployment:
     needs: [production-deployment]
-    uses: ./.github/workflows/on-workflow-call-www-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: production
+      APP_NAME: www
     secrets: inherit
 
   blog-production-deployment:
     needs: [production-deployment]
-    uses: ./.github/workflows/on-workflow-call-blog-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: production
+      APP_NAME: blog
     secrets: inherit
