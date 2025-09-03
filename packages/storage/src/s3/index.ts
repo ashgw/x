@@ -1,4 +1,11 @@
-import { setTimeout } from "timers/promises";
+import http from "http";
+import https from "https";
+import { setDefaultResultOrder } from "node:dns";
+import { setTimeout as sleep } from "timers/promises";
+import {
+  setTimeout as setAbortTimeout,
+  clearTimeout as clearAbortTimeout,
+} from "timers";
 import type { Readable } from "stream";
 import type { MaybeUndefined } from "ts-roids";
 import {
@@ -8,15 +15,35 @@ import {
   PutObjectCommand,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
+import { NodeHttpHandler } from "@smithy/node-http-handler";
 
 import { env } from "@ashgw/env";
-import { InternalError } from "@ashgw/observability";
+import { InternalError, logger } from "@ashgw/observability";
 
 import type { Folder } from "../base";
 import { BaseStorageService } from "../base";
 
+// Prefer IPv4 first to avoid slow IPv6 paths (common in Docker/NAT/VPN)
+try {
+  setDefaultResultOrder("ipv4first");
+} catch {
+  // Node < 18 – ignore
+}
+
 // Add retry constant
 const MAX_RETRIES = 3;
+
+// Reuse TCP/TLS across requests (AWS SDK v3 honors these via NodeHttpHandler)
+const httpsAgent = new https.Agent({
+  keepAlive: true,
+  maxSockets: 128,
+  keepAliveMsecs: 10_000,
+});
+const httpAgent = new http.Agent({
+  keepAlive: true,
+  maxSockets: 128,
+  keepAliveMsecs: 10_000,
+});
 
 export class S3Service extends BaseStorageService {
   /**
@@ -46,13 +73,30 @@ export class S3Service extends BaseStorageService {
   constructor() {
     super();
     this.client = new AwsS3Client({
-      region: env.S3_BUCKET_REGION,
+      region: env.S3_BUCKET_REGION, // MUST match bucket region (e.g., "eu-central-1")
       credentials: {
         accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
         secretAccessKey: env.S3_BUCKET_SECRET_KEY,
       },
+      requestHandler: new NodeHttpHandler({
+        httpAgent,
+        httpsAgent,
+        connectionTimeout: 800, // fail fast on bad paths
+        socketTimeout: 5_000, // don't hang forever
+      }),
+      maxAttempts: 2, // SDK internal retries; we also do our own small loop below
+      // If you enable S3 acceleration on the bucket, you can flip this on:
+      // useAccelerateEndpoint: env.S3_ACCELERATE === "true",
+      // forcePathStyle: false, // default; keep unless you really need path-style
     });
     this.bucket = env.S3_BUCKET_NAME;
+
+    logger.info("S3 client initialized", {
+      region: env.S3_BUCKET_REGION,
+      bucket: this.bucket,
+      keepAlive: true,
+      maxAttempts: 2,
+    });
   }
 
   public override async fetchFile<F extends Folder>({
@@ -107,14 +151,15 @@ export class S3Service extends BaseStorageService {
     let lastError: unknown;
 
     while (attempts < MAX_RETRIES) {
+      const t0 = Date.now();
       try {
         await this.client.send(
           new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
         );
-
+        const ms = Date.now() - t0;
+        logger.info("S3 DeleteObject", { key, ms });
         // Remove from cache if exists
         this.cache.delete(key);
-
         return key;
       } catch (err) {
         lastError = err;
@@ -124,7 +169,7 @@ export class S3Service extends BaseStorageService {
           err instanceof S3ServiceException &&
           (err.name === "SlowDown" || err.name === "RequestTimeout")
         ) {
-          await setTimeout(Math.pow(2, attempts) * 100);
+          await sleep(Math.pow(2, attempts) * 100);
           continue;
         }
 
@@ -150,24 +195,45 @@ export class S3Service extends BaseStorageService {
     let lastError: unknown;
 
     while (attempts < MAX_RETRIES) {
+      const t0 = Date.now();
+      const ac = new AbortController();
+      const abortTimer = setAbortTimeout(() => ac.abort(), 6000);
+
       try {
-        const { Body } = await this.client.send(
+        const res = await this.client.send(
           new GetObjectCommand({ Bucket: this.bucket, Key: key }),
+          { abortSignal: ac.signal },
         );
 
-        if (!Body) {
+        if (!res.Body) {
           throw new InternalError({
             code: "NOT_FOUND",
             message: `File ${key} not found`,
           });
         }
 
-        const buffer = await this._streamToBuffer(Body as Readable);
+        const buffer = await this._streamToBuffer(res.Body as Readable);
+        const ms = Date.now() - t0;
+
+        const meta = res.$metadata;
+        const bytes = res.ContentLength ?? buffer.byteLength;
+
+        logger.info("S3 GetObject", {
+          key,
+          bytes,
+          ms,
+          attempts: meta.attempts,
+          requestId: meta.requestId,
+          extendedRequestId: meta.extendedRequestId,
+        });
+
         this.cache.set(key, { data: buffer, timestamp: Date.now() });
         this._pruneCache();
 
+        clearAbortTimeout(abortTimer);
         return buffer;
       } catch (err) {
+        clearAbortTimeout(abortTimer);
         lastError = err;
         attempts++;
 
@@ -175,7 +241,7 @@ export class S3Service extends BaseStorageService {
           err instanceof S3ServiceException &&
           (err.name === "SlowDown" || err.name === "RequestTimeout")
         ) {
-          await setTimeout(Math.pow(2, attempts) * 100);
+          await sleep(Math.pow(2, attempts) * 100);
           continue;
         }
 
@@ -199,6 +265,7 @@ export class S3Service extends BaseStorageService {
     let lastError: unknown;
 
     while (attempts < MAX_RETRIES) {
+      const t0 = Date.now();
       try {
         await this.client.send(
           new PutObjectCommand({
@@ -208,6 +275,8 @@ export class S3Service extends BaseStorageService {
             ContentType: contentType,
           }),
         );
+        const ms = Date.now() - t0;
+        logger.info("S3 PutObject", { key, bytes: body.byteLength, ms });
 
         // Update cache
         this.cache.set(key, { data: body, timestamp: Date.now() });
@@ -222,7 +291,7 @@ export class S3Service extends BaseStorageService {
           err instanceof S3ServiceException &&
           (err.name === "SlowDown" || err.name === "RequestTimeout")
         ) {
-          await setTimeout(Math.pow(2, attempts) * 100);
+          await sleep(Math.pow(2, attempts) * 100);
           continue;
         }
 
