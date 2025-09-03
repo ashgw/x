@@ -3,6 +3,10 @@ name: CD / Blog production deployment
 on:
   workflow_call:
     inputs:
+      deployment_environment:
+        required: true
+        type: string
+        description: "Environment to deploy to (preview or production)"
       add_comment:
         description: "Add a comment notification to the PR"
         required: false
@@ -18,6 +22,6 @@ jobs:
   deploy:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
-      environment: "production"
+      environment: ${{ inputs.deployment_environment }}
       SERVICE_NAME: "blog"
     secrets: inherit

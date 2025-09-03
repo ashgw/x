@@ -98,7 +98,9 @@ jobs:
 
   blog-preview-deployemnt:
     needs: [preview-deployment]
-    uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-blog-deployment.yml
+    with:
+      deployment_environment: preview
     secrets: inherit
 
   # same here
@@ -119,5 +121,7 @@ jobs:
 
   blog-production-deployment:
     needs: [production-deployment]
-    uses: ./.github/workflows/on-workflow-call-blog-production-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-blog-deployment.yml
+    with:
+      deployment_environment: production
     secrets: inherit
