@@ -15,6 +15,7 @@ export const postCardSchemaRo = z.object({
   summary: z.string().min(1).max(90),
   firstModDate: z.date(),
   lastModDate: z.date(),
+  isDeletedAt: z.date().nullable(),
   isReleased: z.boolean(),
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),

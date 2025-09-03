@@ -273,6 +273,44 @@ export class BlogService {
     }
   }
 
+  public async softDeletePost(slug: string): Promise<void> {
+    try {
+      const post = await this.db.post.findUnique({
+        where: { slug },
+      });
+
+      if (!post) {
+        throw new InternalError({
+          code: "NOT_FOUND",
+          message: `Post with slug "${slug}" not found`,
+        });
+      }
+
+      // avoid re-deleting if already done
+      if (post.isDeletedAt) {
+        logger.warn("Post already marked as deleted", { slug });
+        return;
+      }
+
+      //  soft delete
+      await this.db.post.update({
+        where: { slug },
+        data: {
+          isDeletedAt: new Date(),
+        },
+      });
+
+      logger.info("Post soft deleted successfully", { slug });
+    } catch (error) {
+      logger.error("Failed to soft delete post", { error, slug });
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to delete post",
+        cause: error,
+      });
+    }
+  }
+
   public async deletePost(slug: string): Promise<void> {
     try {
       // Find the post first
