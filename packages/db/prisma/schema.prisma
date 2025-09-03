@@ -17,6 +17,7 @@ model Post {
   summary       String     @db.VarChar(100)
   firstModDate  DateTime   @default(now())
   lastModDate   DateTime   @updatedAt
+  isDeletedAt   DateTime?  
   isReleased    Boolean
   minutesToRead Int        @db.SmallInt
   tags          String[]   @db.VarChar(255)
