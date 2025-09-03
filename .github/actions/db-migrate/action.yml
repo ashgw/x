@@ -10,10 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up Docker for the temporary database container
-      uses: docker/setup-buildx-action@v3
-      with:
-        version: latest
     - name: Mask database url
       shell: bash
       run: |
@@ -23,19 +19,9 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
-    - name: Check for schema drift
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate diff \
-        --from-url="$DATABASE_URL" \
-        --to-schema-datamodel=./prisma/schema.prisma \
-        --script > migration.sql 2>&1
-
-        chmod +x .github/scripts/check-migration-safety.sh
-        .github/scripts/check-migration-safety.sh migration.sql
-
     - name: Test migrations in an ephemeral Docker container
-      shell: bash
+      uses: ./.github/actions/ephermal-database
+      id: ephemeral-database
       run: |
         pnpm --filter @ashgw/db start
 
@@ -45,7 +31,7 @@ runs:
           sleep 2
         done
 
-        export DATABASE_URL=$TEMPORARY_CONTAINER_DATABASE_URL
+        export DATABASE_URL=$({{ steps.ephemeral-database.outputs.DATABASE_URL }})
         echo "Running migration reset..."
         pnpm --filter @ashgw/db migrate:reset --force
 
@@ -58,7 +44,18 @@ runs:
 
         exit $STATUS
 
-    - name: Run migrations on the $CURRENT_ENV database
+    - name: Check for schema drift on the $CURRENT_ENV database
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate diff \
+        --from-url="$DATABASE_URL" \
+        --to-schema-datamodel=./prisma/schema.prisma \
+        --script > migration.sql 2>&1
+
+        chmod +x .github/scripts/check-migration-safety.sh
+        .github/scripts/check-migration-safety.sh migration.sql
+
+    - name: Deploy migrations on the $CURRENT_ENV database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
