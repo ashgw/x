@@ -25,12 +25,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
+      - uses: ./.github/actions/setup-env
+        with:
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
       - uses: ./.github/actions/vercel-build
         with:
           project_name: www
-          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
-          # deployment specific, not needed for build
+          # tbh, im too lazy to go figure out VERCEL envs again, pain fr
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}

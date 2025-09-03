@@ -31,6 +31,7 @@ jobs:
               client_payload: {
                 message: `🚀 ${env} deployment started by @${creator}`,
                 triggered_at: new Date().toISOString()
+                 environment: env
               }
             })
 
