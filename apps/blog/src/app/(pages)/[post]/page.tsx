@@ -13,7 +13,7 @@ import { HydrateClient, trpcServerSide } from "~/trpc/server";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
-// Per-request memoization for this slug
+// per-request memoization for this slug so we don't have to double hit
 const getPostCached = cache((slug: string) =>
   trpcServerSide.post.getPost({ slug }),
 );
