@@ -23,22 +23,20 @@ import { InternalError, logger } from "@ashgw/observability";
 import type { Folder } from "../base";
 import { BaseStorageService } from "../base";
 
-// Prefer IPv4 first to avoid slow IPv6 paths (common in Docker/NAT/VPN)
 try {
   setDefaultResultOrder("ipv4first");
 } catch {
   // Node < 18 – ignore
 }
 
-// Add retry constant
 const MAX_RETRIES = 3;
 
-// Reuse TCP/TLS across requests (AWS SDK v3 honors these via NodeHttpHandler)
 const httpsAgent = new https.Agent({
   keepAlive: true,
   maxSockets: 128,
   keepAliveMsecs: 10_000,
 });
+
 const httpAgent = new http.Agent({
   keepAlive: true,
   maxSockets: 128,
@@ -73,7 +71,7 @@ export class S3Service extends BaseStorageService {
   constructor() {
     super();
     this.client = new AwsS3Client({
-      region: env.S3_BUCKET_REGION, // MUST match bucket region (e.g., "eu-central-1")
+      region: env.S3_BUCKET_REGION,
       credentials: {
         accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
         secretAccessKey: env.S3_BUCKET_SECRET_KEY,
@@ -84,10 +82,7 @@ export class S3Service extends BaseStorageService {
         connectionTimeout: 800, // fail fast on bad paths
         socketTimeout: 5_000, // don't hang forever
       }),
-      maxAttempts: 2, // SDK internal retries; we also do our own small loop below
-      // If you enable S3 acceleration on the bucket, you can flip this on:
-      // useAccelerateEndpoint: env.S3_ACCELERATE === "true",
-      // forcePathStyle: false, // default; keep unless you really need path-style
+      maxAttempts: 2,
     });
     this.bucket = env.S3_BUCKET_NAME;
 
