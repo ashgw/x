@@ -7,7 +7,7 @@ inputs:
     description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
   GITHUB_TOKEN:
-    description: "GitHub toaken"
+    description: "GitHub token"
     required: true
   APP_NAME:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
