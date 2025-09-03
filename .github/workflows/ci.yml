@@ -61,10 +61,6 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-db-migrate.yml
     secrets: inherit
     with:
-      environment: development
-      # if we just merged, run the migration deployment step on the current dev branch
-      # we can also migrate deploy from a label added to the PR
-      # this makes sure we deploy the migration anyway on merge
       with_deploy: ${{ github.ref == 'refs/heads/main' && 'yes' || 'no' }}
 
   mergeable:
@@ -88,32 +84,44 @@ jobs:
   preview-deployment:
     needs: [mergeable]
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/on-workflow-call-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-trigger-deployment.yml
+    with:
+      deployment_environment: preview
     secrets: inherit
 
   www-prevew-deployemnt:
     needs: [preview-deployment]
-    uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-www-deployment.yml
+    with:
+      deployment_environment: preview
     secrets: inherit
 
   blog-preview-deployemnt:
     needs: [preview-deployment]
-    uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-blog-deployment.yml
+    with:
+      deployment_environment: preview
     secrets: inherit
 
   # same here
   production-deployment:
     if: github.ref == 'refs/heads/main'
     needs: [mergeable]
-    uses: ./.github/workflows/on-workflow-call-production-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-trigger-deployment.yml
+    with:
+      deployment_environment: production
     secrets: inherit
 
   www-production-deployment:
     needs: [production-deployment]
-    uses: ./.github/workflows/on-workflow-call-www-production-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-www-deployment.yml
+    with:
+      deployment_environment: production
     secrets: inherit
 
   blog-production-deployment:
     needs: [production-deployment]
-    uses: ./.github/workflows/on-workflow-call-blog-production-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-blog-deployment.yml
+    with:
+      deployment_environment: production
     secrets: inherit
