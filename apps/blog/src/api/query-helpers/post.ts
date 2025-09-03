@@ -39,7 +39,6 @@ export class PostQueryHelper {
   public static whereReleasedToPublic() {
     return {
       isReleased: true,
-      isDeletedAt: null,
       firstModDate: {
         lte: new Date(),
       },
