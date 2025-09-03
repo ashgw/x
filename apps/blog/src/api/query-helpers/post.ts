@@ -16,17 +16,12 @@ export class PostQueryHelper {
   public static detailInclude() {
     return {
       ...this.cardInclude(),
-      ...this._includeWithMdx(),
     } satisfies Prisma.PostInclude;
   }
 
   public static cardInclude() {
     return {
-      postViews: {
-        select: {
-          id: true,
-        },
-      },
+      postViews: { select: { id: true } },
     } satisfies Prisma.PostInclude;
   }
 
@@ -39,15 +34,7 @@ export class PostQueryHelper {
   public static whereReleasedToPublic() {
     return {
       isReleased: true,
-      firstModDate: {
-        lte: new Date(),
-      },
+      firstModDate: { lte: new Date() },
     } satisfies Prisma.PostWhereInput;
-  }
-
-  private static _includeWithMdx() {
-    return {
-      mdxContent: true,
-    } satisfies Prisma.PostInclude;
   }
 }
