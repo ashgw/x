@@ -10,7 +10,7 @@ on:
       APP_NAME:
         required: true
         type: string
-        description: "App name, either 'www' or 'blog' or whatever"
+        description: "App name, either 'www' or 'blog'"
 
 permissions:
   pull-requests: write
@@ -24,27 +24,37 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+
+      - name: Select Vercel Project Secrets
+        id: vercel-secrets
+        run: |
+          if [ "${{ inputs.APP_NAME }}" = "blog" ]; then
+            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_BLOG_PROJECT_ID }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_WWW_PROJECT_ID }}" >> $GITHUB_OUTPUT
+          fi
+
+          # Common ones
+          echo "VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }}" >> $GITHUB_OUTPUT
+          echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}" >> $GITHUB_OUTPUT
+
       - uses: ./.github/actions/vercel-build
         with:
           APP_NAME: ${{ inputs.APP_NAME }}
-          # tbh, im too lazy to go figure out VERCEL envs again, pain fr
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
 
-      # no need for now
-      # - uses: ./.github/actions/db-migrate
-      #   with:
-      #     with_deploy: "yes"
-
+      # no need for migration here now
       - uses: ./.github/actions/vercel-deploy
         with:
           deployment_environment: ${{ inputs.deployment_environment }}
           APP_NAME: ${{ inputs.APP_NAME }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WWW_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
