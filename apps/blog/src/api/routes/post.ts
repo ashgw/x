@@ -57,20 +57,20 @@ export const postRouter = router({
     .input(postDeleteSchemaDto)
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
-      await blogService.trashPost(slug);
+      await blogService.trashPost({ originalSlug: slug });
     }),
 
   purgeTrash: adminProcedure
     .input(z.object({ trashId: z.string().min(1) }))
     .mutation(async ({ input: { trashId }, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
-      await blogService.purgeTrash(trashId);
+      await blogService.purgeTrash({ trashId });
     }),
 
   restoreFromTrash: adminProcedure
     .input(z.object({ trashId: z.string().min(1) }))
     .mutation(async ({ input: { trashId }, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
-      await blogService.restoreFromTrash(trashId);
+      await blogService.restoreFromTrash({ trashId });
     }),
 });
