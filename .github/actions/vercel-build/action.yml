@@ -6,9 +6,6 @@ inputs:
   project_name:
     description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
     required: true
-  ENV_SERVICE_TOKEN:
-    description: "Service token scoped to the correct environment (production/preview/development)"
-    required: true
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
     required: true
