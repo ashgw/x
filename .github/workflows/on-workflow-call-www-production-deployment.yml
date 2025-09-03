@@ -10,10 +10,14 @@ permissions:
 
 jobs:
   deploy:
-    environment: production
     runs-on: ubuntu-latest
+    environment: production
+    env:
+      DEPLOY_ENV: production
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: ./.github/actions/vercel-build
         with:
           project_name: www
@@ -26,13 +30,11 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: "yes"
-          environment: production
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
+          environment: ${{ env.DEPLOY_ENV }}
 
       - uses: ./.github/actions/vercel-deploy
         with:
-          environment: production
+          environment: ${{ env.DEPLOY_ENV }}
           project_name: www
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -84,7 +84,9 @@ jobs:
   preview-deployment:
     needs: [mergeable]
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/on-workflow-call-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-trigger-deployment.yml
+    with:
+      deployment_environment: preview
     secrets: inherit
 
   www-prevew-deployemnt:
@@ -101,7 +103,9 @@ jobs:
   production-deployment:
     if: github.ref == 'refs/heads/main'
     needs: [mergeable]
-    uses: ./.github/workflows/on-workflow-call-production-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-trigger-deployment.yml
+    with:
+      deployment_environment: production
     secrets: inherit
 
   www-production-deployment:

@@ -15,6 +15,5 @@ jobs:
     if: github.event.label.name == 'migrate-deploy'
     uses: ./.github/workflows/on-workflow-call-db-migrate.yml
     with:
-      environment: "development"
       with_deploy: "yes"
     secrets: inherit

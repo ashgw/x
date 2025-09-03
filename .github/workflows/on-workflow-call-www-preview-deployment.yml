@@ -17,6 +17,9 @@ permissions:
 jobs:
   deploy:
     environment: preview
+    env:
+      DEPLOY_ENV: preview
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,14 +34,12 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: "yes"
-          environment: "preview"
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
+          environment: ${{ env.DEPLOY_ENV }}
 
       - uses: ./.github/actions/vercel-deploy
         with:
-          environment: preview
-          add_comment: ${{ inputs.add_comment }}
           project_name: www
+          environment: ${{ env.DEPLOY_ENV }}
+          add_comment: ${{ inputs.add_comment }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
