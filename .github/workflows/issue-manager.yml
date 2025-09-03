@@ -22,8 +22,7 @@ permissions:
 
 jobs:
   issue-manager:
-    # never run on forked PRs under pull_request_target context
-    if: github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.fork == false
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
     steps:
       - uses: tiangolo/issue-manager@0.5.1
