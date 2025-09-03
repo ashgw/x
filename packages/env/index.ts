@@ -60,7 +60,7 @@ const serverSideVars = {
         url.startsWith("postgresql://"),
       { message: "Must be a valid Neon Postgres URL" },
     ),
-  DIRECT_URL: z.string().url().startsWith("postgres://"),
+  DIRECT_URL: z.string().url().startsWith("postgres"),
   S3_BUCKET_NAME: z
     .string()
     .min(3, "Bucket name too short")
