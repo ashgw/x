@@ -1,7 +1,7 @@
 import type { Prisma } from "@ashgw/db/raw";
 
 export type PostCardQuery = Prisma.PostGetPayload<{
-  include: ReturnType<typeof PostQueryHelper.cardInclude>;
+  select: ReturnType<typeof PostQueryHelper.cardSelect>;
 }>;
 
 export type PostDetailQuery = Prisma.PostGetPayload<{
@@ -15,14 +15,24 @@ export type PostAdminQuery = Prisma.PostGetPayload<{
 export class PostQueryHelper {
   public static detailInclude() {
     return {
-      ...this.cardInclude(),
+      ...this._withViews(),
     } satisfies Prisma.PostInclude;
   }
 
-  public static cardInclude() {
+  public static cardSelect() {
     return {
+      category: true,
+      tags: true,
+      title: true,
+      slug: true,
+      seoTitle: true,
+      summary: true,
+      firstModDate: true,
+      lastModDate: true,
+      isReleased: true,
+      minutesToRead: true,
       postViews: { select: { id: true } },
-    } satisfies Prisma.PostInclude;
+    } satisfies Prisma.PostSelect;
   }
 
   public static adminInclude() {
@@ -36,5 +46,11 @@ export class PostQueryHelper {
       isReleased: true,
       firstModDate: { lte: new Date() },
     } satisfies Prisma.PostWhereInput;
+  }
+
+  private static _withViews() {
+    return {
+      postViews: { select: { id: true } },
+    } satisfies Prisma.PostInclude & Prisma.PostSelect;
   }
 }
