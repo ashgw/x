@@ -10,7 +10,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Mask database url
+    - name: Mask database url and set the actual database url
       shell: bash
       run: |
         set -euo pipefail
@@ -18,13 +18,13 @@ runs:
           echo "DATABASE_URL is not set"; exit 1
         fi
         echo "::add-mask::$DATABASE_URL"
+        echo ACTUAL_DATABASE_URL=$DATABASE_URL >> $GITHUB_ENV
 
     - name: Start an ephemeral database
       uses: ./.github/actions/setup-ephermal-database
     - name: Test migrations in an ephemeral Docker container
       shell: bash
       run: |
-        export DATABASE_URL=${{ TEMPORARY_CONTAINER_DATABASE_URL }}
         echo "Running migration reset..."
         pnpm --filter @ashgw/db migrate:reset --force
 
@@ -36,6 +36,11 @@ runs:
         pnpm --filter @ashgw/db stop
 
         exit $STATUS
+
+    - name: Set the database url back to the original
+      shell: bash
+      run: |
+        echo "DATABASE_URL=$ACTUAL_DATABASE_URL" >> $GITHUB_ENV
 
     - name: Check for schema drift on the $CURRENT_ENV database
       shell: bash

@@ -22,4 +22,7 @@ runs:
       shell: bash
       run: |
         pnpm --filter @ashgw/seeder seed
-        # I already set the TEMPORARY_CONTAINER_DATABASE_URL env var in the env step.
+    - name: Set the database url
+      shell: bash
+      run: |
+        echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/main" >> "$GITHUB_ENV"
