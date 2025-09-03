@@ -1,23 +1,25 @@
-name: Vercel Preview Deployment
+name: Vercel Deployment
 
-description: Deploy to Vercel and set the preview URL
+description: Deploy to Vercel and set the URL
 
 inputs:
   deployment_environment:
     description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
-  project_name:
+  GITHUB_TOKEN:
+    description: "GitHub token"
+    required: true
+  APP_NAME:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
-  add_comment:
-    description: "Add a comment notification to the PR"
-    required: false
-    default: "false"
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
     required: true
-  GITHUB_TOKEN:
-    description: "GitHub toaken"
+  VERCEL_ORG_ID:
+    description: "Vercel organization ID"
+    required: true
+  VERCEL_PROJECT_ID:
+    description: "Vercel project ID"
     required: true
 
 runs:
@@ -25,38 +27,38 @@ runs:
   steps:
     - name: Deploy to Vercel
       shell: bash
+      env:
+        VERCEL_TOKEN: ${{ inputs.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
+
       run: |
-        if [ "${{ inputs.deployment_environment }}" == "preview" ]; then
-          cd apps/${{ inputs.project_name }} && \
-          PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
-          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
-          echo "::notice title=Preview URL::$PREVIEW_URL"
-          echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-        else
-          cd apps/${{ inputs.project_name }} && \
-          PROD_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
-          echo "::notice title=Production URL::$PROD_URL"
-          echo "production-url=$PROD_URL" >> $GITHUB_OUTPUT
-        fi
+        cd apps/${{ inputs.APP_NAME }} && \
+        DEPLOY_URL=$(pnpm --filter @ashgw/${{ inputs.APP_NAME }} deploy:vercel-${{ inputs.deployment_environment }} --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+        echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+        echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"
+        echo "${{ inputs.deployment_environment }}-url=$DEPLOY_URL" >> $GITHUB_OUTPUT
 
     - name: Notify mfs about the deployment URL
-      if: ${{ inputs.deployment_environment == 'preview' && inputs.add_comment == 'true' }}
+      if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        PROJECT_NAME: ${{ inputs.project_name }}
+        DEPLOYMENT_ENVIRONMENT: ${{ inputs.deployment_environment }}
+        APP_NAME: ${{ inputs.APP_NAME }}
+
       with:
         script: |
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## Preview Deployment Ready! 
+            body: `## ${process.env.DEPLOYMENT_ENVIRONMENT} Deployment Ready! 
 
-            ### Project: \`${process.env.PROJECT_NAME}\`
+            ### Project: \`${process.env.APP_NAME}\`
             
-            **Preview URL:** [Check it out here](${process.env.PREVIEW_URL})
+            **${process.env.DEPLOYMENT_ENVIRONMENT} URL:** [Check it out here](${process.env.DEPLOY_URL})
             
             ---
-            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
+            > This ${process.env.DEPLOYMENT_ENVIRONMENT} environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
           })

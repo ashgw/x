@@ -3,7 +3,10 @@ name: Vercel Build
 description: Build to deploy to vercel
 
 inputs:
-  project_name:
+  deployment_environment:
+    description: "The environment to build for. Example: 'preview', 'production'"
+    required: true
+  APP_NAME:
     description: "The working directory/project name you're trying to build. Example: 'www', 'blog'"
     required: true
   VERCEL_TOKEN:
@@ -19,8 +22,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
-    - uses: ./.github/actions/pnpm-install
     - name: Build for Vercel
       shell: bash
       env:
@@ -28,4 +29,4 @@ runs:
         VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
-        cd apps/${{ inputs.project_name }} && pnpm --filter @ashgw/${{ inputs.project_name }} build:vercel-${{ inputs.NODE_ENV }} --token=$VERCEL_TOKEN
+        pnpm --filter @ashgw/${{ inputs.APP_NAME }} build:vercel-${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
