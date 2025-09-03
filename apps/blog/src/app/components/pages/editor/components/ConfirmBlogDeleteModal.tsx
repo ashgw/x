@@ -1,8 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-
-import { Button } from "@ashgw/ui";
+import { Button, Input } from "@ashgw/ui";
 
 import type { PostDetailRo } from "~/api/models/post";
 
@@ -12,6 +12,8 @@ export function ConfirmBlogDeleteModal(props: {
   onCancel: () => void;
   isDeleting?: boolean;
 }) {
+  const [confirmation, setConfirmation] = useState("");
+
   const overlayVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -22,6 +24,8 @@ export function ConfirmBlogDeleteModal(props: {
     visible: { opacity: 1, y: 0, scale: 1 },
   };
 
+  const isMatch = confirmation.trim() === props.blog.title;
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
@@ -29,7 +33,7 @@ export function ConfirmBlogDeleteModal(props: {
       animate="visible"
       variants={overlayVariants}
     >
-      {/* Dark backdrop with blur */}
+      {/* Backdrop */}
       <motion.div
         className="fixed inset-0 bg-black/80 backdrop-blur-[2px]"
         onClick={props.onCancel}
@@ -37,7 +41,7 @@ export function ConfirmBlogDeleteModal(props: {
         animate={{ opacity: 1 }}
       />
 
-      {/* Modal content */}
+      {/* Modal */}
       <motion.div
         className="bg-card relative z-50 w-full max-w-md rounded-lg border p-6 shadow-xl"
         variants={modalVariants}
@@ -58,11 +62,20 @@ export function ConfirmBlogDeleteModal(props: {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Are you sure you want to delete{" "}
-          <span className="font-semibold">{props.blog.title}</span>?
+          To confirm deletion of{" "}
+          <span className="font-semibold">{props.blog.title}</span>, please type
+          the blog title exactly below.
           <br />
           <span className="text-red-500">This action is irreversible.</span>
         </motion.p>
+
+        <Input
+          value={confirmation}
+          onChange={(e) => setConfirmation(e.target.value)}
+          placeholder="Type blog title here"
+          className="mb-4 w-full"
+          disabled={props.isDeleting}
+        />
 
         <motion.div
           className="flex justify-end gap-2"
@@ -80,7 +93,7 @@ export function ConfirmBlogDeleteModal(props: {
           <Button
             variant="destructive"
             onClick={props.onConfirm}
-            disabled={props.isDeleting}
+            disabled={!isMatch || props.isDeleting}
             loading={props.isDeleting}
           >
             {props.isDeleting ? "Deleting..." : "Delete"}
