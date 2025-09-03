@@ -1,7 +1,7 @@
 name: Dispatch / update-changelog
 
 on:
-  pull_request_target:
+  pull_request:
     types: [labeled]
 
 permissions:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   update-changelog:
-    if: github.event.label.name == 'update-changelog' && github.actor == 'ashgw' && (github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.fork == false)
+    if: github.event.label.name == 'update-changelog' && github.actor == 'ashgw' && github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
 
     steps:
