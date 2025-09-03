@@ -19,19 +19,12 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
+    - name: Start an ephemeral database
+      uses: ./.github/actions/setup-ephermal-database
     - name: Test migrations in an ephemeral Docker container
-      uses: ./.github/actions/ephermal-database
-      id: ephemeral-database
+      shell: bash
       run: |
-        pnpm --filter @ashgw/db start
-
-        echo "Waiting for DB to be ready..."
-        for i in {1..30}; do
-          pg_isready -h localhost -p 5432 -U postgres && break
-          sleep 2
-        done
-
-        export DATABASE_URL=$({{ steps.ephemeral-database.outputs.DATABASE_URL }})
+        export DATABASE_URL=${{ TEMPORARY_CONTAINER_DATABASE_URL }}
         echo "Running migration reset..."
         pnpm --filter @ashgw/db migrate:reset --force
 
