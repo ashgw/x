@@ -61,10 +61,6 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-db-migrate.yml
     secrets: inherit
     with:
-      environment: development
-      # if we just merged, run the migration deployment step on the current dev branch
-      # we can also migrate deploy from a label added to the PR
-      # this makes sure we deploy the migration anyway on merge
       with_deploy: ${{ github.ref == 'refs/heads/main' && 'yes' || 'no' }}
 
   mergeable:

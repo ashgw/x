@@ -3,10 +3,6 @@ name: CI / Database Migration
 on:
   workflow_call:
     inputs:
-      environment:
-        required: true
-        type: string
-        description: "Environment to run migrations on (development/preview/production)"
       with_deploy:
         required: true
         type: string
@@ -29,5 +25,3 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: ${{ inputs.with_deploy }}
-          environment: ${{ inputs.environment }}
-          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}

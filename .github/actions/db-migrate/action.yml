@@ -3,15 +3,9 @@ name: CI / DB Migrate
 description: Run database migrations
 
 inputs:
-  environment:
-    required: true
-    description: "The environment to run the migrations in, can be 'development' or 'production' or 'preview'"
   with_deploy:
     required: true
     description: "Whether to run the migration deployment step ('yes' or 'no')"
-  TEMPORARY_CONTAINER_DATABASE_URL:
-    required: true
-    description: "The temporary DB URL to test migrations"
 
 runs:
   using: "composite"
@@ -47,7 +41,7 @@ runs:
           sleep 2
         done
 
-        export DATABASE_URL="${{ inputs.TEMPORARY_CONTAINER_DATABASE_URL }}"
+        export DATABASE_URL=$TEMPORARY_CONTAINER_DATABASE_URL
         echo "Running migration reset..."
         pnpm --filter @ashgw/db migrate:reset --force
 
