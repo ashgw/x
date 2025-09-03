@@ -11,7 +11,7 @@ inputs:
     description: "API token"
     required: true
   SERVICE_NAME:
-    description: "Koyeb service name, either 'blog' or 'www' or whatever app you're running"
+    description: "App name, either 'blog' or 'www' or whatever app you're running"
     required: true
   GITHUB_TOKEN:
     description: "GitHub token with packages:write for GHCR and PR comments"

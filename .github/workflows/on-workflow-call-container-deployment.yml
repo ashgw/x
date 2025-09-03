@@ -26,7 +26,6 @@ jobs:
         with:
           with_deploy: "yes"
           environment: ${{ inputs.environment }}
-          TEMPORARY_CONTAINER_DATABASE_URL: ${{ secrets.TEMPORARY_CONTAINER_DATABASE_URL }}
 
       - uses: ./.github/actions/container-deploy
         with:
