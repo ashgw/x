@@ -22,7 +22,6 @@ jobs:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
 
       - uses: ./.github/actions/pnpm-install
-      - uses: docker/setup-buildx-action@v3 # needed for db-migrate composite which spins a temp Postgres in Docker
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: "yes"
