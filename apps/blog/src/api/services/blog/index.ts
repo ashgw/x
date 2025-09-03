@@ -1,7 +1,7 @@
 import type { FrontMatterResult } from "front-matter";
 import type { Optional } from "ts-roids";
 import fm from "front-matter";
-
+import { performance } from "perf_hooks";
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
 import { WordCounterService } from "@ashgw/cross-runtime";
@@ -92,6 +92,7 @@ export class BlogService {
   }: {
     slug: string;
   }): Promise<Optional<PostDetailRo>> {
+    const t0 = performance.now();
     const post = await this.db.post.findUnique({
       where: {
         slug,
@@ -99,8 +100,13 @@ export class BlogService {
       },
       include: PostQueryHelper.detailInclude(),
     });
+    const t1 = performance.now();
 
     if (!post) {
+      logger.info("getDetailPost not found", {
+        slug,
+        dbMs: Math.round(t1 - t0),
+      });
       // no need to throw here, since user might just be fucking around with the URL
       return null;
     }
@@ -109,15 +115,29 @@ export class BlogService {
       key: post.mdxContent.key,
     });
 
+    const t2 = performance.now();
+
     const fontMatterMdxContent = this._parseMDX({
       content: mdxFileContentBuffer.toString("utf-8"),
       slug,
     });
+    const t3 = performance.now();
 
     const postDetailRo = PostMapper.toDetailRo({
       post,
       fontMatterMdxContent,
     });
+    const t4 = performance.now();
+
+    logger.info("getDetailPost timings", {
+      slug,
+      dbMs: Math.round(t1 - t0),
+      s3Ms: Math.round(t2 - t1),
+      parseMs: Math.round(t3 - t2),
+      mapMs: Math.round(t4 - t3),
+      totalMs: Math.round(t4 - t0),
+    });
+
     return postDetailRo;
   }
 

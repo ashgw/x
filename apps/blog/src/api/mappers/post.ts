@@ -23,7 +23,7 @@ export class PostMapper {
       category: this._mapCategory({
         category: post.category,
       }),
-      views: post.postViews.length,
+      views: post._count.postViews,
     };
   }
 
