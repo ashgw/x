@@ -96,9 +96,7 @@ export class BlogService {
       }
 
       const now = new Date();
-      const minutesToRead = WordCounterService.countMinutesToRead(
-        data.mdxContent,
-      );
+      const minutesToRead = WordCounterService.countMinutesToRead(data.mdxText);
 
       const post = await this.db.post.create({
         data: {
@@ -112,7 +110,7 @@ export class BlogService {
           minutesToRead,
           tags: data.tags,
           category: data.category,
-          mdxText: data.mdxContent,
+          mdxText: data.mdxText,
         },
         include: PostQueryHelper.detailInclude(),
       });
@@ -120,7 +118,7 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: this._parseMDX({
-          content: data.mdxContent,
+          content: data.mdxText,
           slug,
         }),
       });
@@ -153,9 +151,7 @@ export class BlogService {
         });
       }
 
-      const minutesToRead = WordCounterService.countMinutesToRead(
-        data.mdxContent,
-      );
+      const minutesToRead = WordCounterService.countMinutesToRead(data.mdxText);
 
       const post = await this.db.post.update({
         where: { slug },
@@ -168,7 +164,7 @@ export class BlogService {
           minutesToRead,
           tags: data.tags,
           category: data.category,
-          mdxText: data.mdxContent,
+          mdxText: data.mdxText,
         },
         include: PostQueryHelper.detailInclude(),
       });
@@ -176,7 +172,7 @@ export class BlogService {
       return PostMapper.toDetailRo({
         post,
         fontMatterMdxContent: this._parseMDX({
-          content: data.mdxContent,
+          content: data.mdxText,
           slug,
         }),
       });
