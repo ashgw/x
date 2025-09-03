@@ -75,13 +75,13 @@ export const postRouter = router({
       });
     }),
 
-  deletePost: adminProcedure
+  softDeletePost: adminProcedure
     .input(postDeleteSchemaDto)
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({
         db,
         storage,
       });
-      return await blogService.deletePost(slug);
+      return await blogService.softDeletePost(slug);
     }),
 });

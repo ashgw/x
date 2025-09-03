@@ -134,7 +134,7 @@ export function EditorPage() {
     },
   });
 
-  const deleteMutation = trpcClientSide.post.deletePost.useMutation({
+  const softDeleteMutation = trpcClientSide.post.softDeletePost.useMutation({
     onSuccess: () => {
       toast.success("Blog post deleted successfully");
       void utils.post.getAllPosts.invalidate();
@@ -181,7 +181,7 @@ export function EditorPage() {
   // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
-      deleteMutation.mutate({ slug: deleteModal.entity.slug });
+      softDeleteMutation.mutate({ slug: deleteModal.entity.slug });
     }
   }
 
@@ -274,7 +274,7 @@ export function EditorPage() {
             blog={deleteModal.entity}
             onConfirm={confirmDelete}
             onCancel={cancelDelete}
-            isDeleting={deleteMutation.isPending}
+            isDeleting={softDeleteMutation.isPending}
           />
         ) : null}
         <SoundToggle />

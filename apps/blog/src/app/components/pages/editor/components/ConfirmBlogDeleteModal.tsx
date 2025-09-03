@@ -66,9 +66,7 @@ export function ConfirmBlogDeleteModal(props: {
           <span className="font-semibold">{props.blog.title}</span>, please type
           the blog title exactly below.
           <br />
-          <span className="text-red-500">This action is irreversible.</span>
         </motion.p>
-
         <Input
           value={confirmation}
           onChange={(e) => setConfirmation(e.target.value)}
