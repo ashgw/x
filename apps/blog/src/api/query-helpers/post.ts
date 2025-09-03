@@ -24,12 +24,9 @@ export class PostQueryHelper {
       category: true,
       tags: true,
       title: true,
-      slug: true,
       seoTitle: true,
       summary: true,
       firstModDate: true,
-      lastModDate: true,
-      isReleased: true,
       minutesToRead: true,
       postViews: { select: { id: true } },
     } satisfies Prisma.PostSelect;

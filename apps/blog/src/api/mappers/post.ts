@@ -11,13 +11,10 @@ import { PostCategoryEnum } from "../models";
 export class PostMapper {
   public static toCardRo({ post }: { post: PostCardQuery }): PostCardRo {
     return {
-      slug: post.slug,
       title: post.title,
       seoTitle: post.seoTitle,
       summary: post.summary,
       firstModDate: post.firstModDate,
-      lastModDate: post.lastModDate,
-      isReleased: post.isReleased,
       minutesToRead: post.minutesToRead,
       tags: post.tags,
       category: this._mapCategory({
@@ -29,14 +26,19 @@ export class PostMapper {
 
   public static toDetailRo({
     post,
-    fontMatterMdxContent,
   }: {
     post: PostDetailQuery;
     fontMatterMdxContent: fontMatterMdxContentRo;
   }): PostDetailRo {
     return {
       ...this.toCardRo({ post }),
-      fontMatterMdxContent,
+      lastModDate: post.lastModDate,
+      isReleased: post.isReleased,
+      slug: post.slug,
+      fontMatterMdxContent: {
+        body: post.mdxText,
+        bodyBegin: 0,
+      },
     };
   }
 

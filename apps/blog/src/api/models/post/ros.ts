@@ -9,13 +9,10 @@ import { PostCategoryEnum } from "./shared";
 // ========== Schemas ==========
 
 export const postCardSchemaRo = z.object({
-  slug: z.string().min(1).max(255),
   title: z.string().min(3),
   seoTitle: z.string().min(1),
   summary: z.string().min(1).max(90),
   firstModDate: z.date(),
-  lastModDate: z.date(),
-  isReleased: z.boolean(),
   minutesToRead: z.union([z.string(), z.number()]),
   tags: z.array(z.string()),
   category: z.nativeEnum(PostCategoryEnum),
@@ -29,6 +26,9 @@ export const fontMatterMdxContentSchemaRo = z.object({
 });
 
 export const postDetailSchemaRo = postCardSchemaRo.extend({
+  slug: z.string().min(1).max(255),
+  isReleased: z.boolean(),
+  lastModDate: z.date(),
   fontMatterMdxContent: fontMatterMdxContentSchemaRo,
 });
 
