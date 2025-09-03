@@ -3,7 +3,7 @@ name: CD / Docker App Deployment
 on:
   workflow_call:
     inputs:
-      environment:
+      deployment_environment:
         required: true
         type: string
       APP_NAME:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   deploy:
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.deployment_environment }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,11 +25,10 @@ jobs:
       - uses: ./.github/actions/db-migrate
         with:
           with_deploy: "yes"
-          environment: ${{ inputs.environment }}
 
       - uses: ./.github/actions/container-deploy
         with:
-          environment: ${{ inputs.environment }}
+          environment: ${{ inputs.deployment_environment }}
           CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ${{ secrets.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
           APP_NAME: ${{ inputs.APP_NAME}} # only blog for now
