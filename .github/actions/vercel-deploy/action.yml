@@ -6,7 +6,7 @@ inputs:
   deployment_environment:
     description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
-  project_name:
+  APP_NAME:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
   add_comment:
@@ -27,14 +27,14 @@ runs:
       shell: bash
       run: |
         if [ "${{ inputs.deployment_environment }}" == "preview" ]; then
-          cd apps/${{ inputs.project_name }} && \
-          PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+          cd apps/${{ inputs.APP_NAME }} && \
+          PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.APP_NAME }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
           echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
           echo "::notice title=Preview URL::$PREVIEW_URL"
           echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         else
-          cd apps/${{ inputs.project_name }} && \
-          PROD_URL=$(pnpm --filter @ashgw/${{ inputs.project_name }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+          cd apps/${{ inputs.APP_NAME }} && \
+          PROD_URL=$(pnpm --filter @ashgw/${{ inputs.APP_NAME }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
           echo "::notice title=Production URL::$PROD_URL"
           echo "production-url=$PROD_URL" >> $GITHUB_OUTPUT
         fi
@@ -44,7 +44,7 @@ runs:
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        PROJECT_NAME: ${{ inputs.project_name }}
+
       with:
         script: |
           github.rest.issues.createComment({
@@ -53,7 +53,7 @@ runs:
             repo: context.repo.repo,
             body: `## Preview Deployment Ready! 
 
-            ### Project: \`${process.env.PROJECT_NAME}\`
+            ### Project: \`${process.env.APP_NAME}\`
             
             **Preview URL:** [Check it out here](${process.env.PREVIEW_URL})
             
