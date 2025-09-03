@@ -191,7 +191,7 @@ export class BlogService {
   }
 
   /**
-   * Move a live post to TrashPost. No S3. Just DB copy and delete.
+   * Move a live post to TrashPost. (no support for images or other assets yet)
    */
   public async trashPost(slug: string): Promise<void> {
     try {
