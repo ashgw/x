@@ -71,7 +71,7 @@ runs:
         pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
     - name: Comment on PR
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request' && inputs.with_deploy == 'yes'
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
