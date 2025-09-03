@@ -1,16 +1,7 @@
 import { pbkdf2Sync, randomBytes } from "crypto";
-import pkg from "aws-sdk";
 
 import { db } from "@ashgw/db";
-import { env } from "@ashgw/env";
-
 import { blogs } from "./data/blogs";
-
-const s3 = new pkg.S3({
-  region: env.S3_BUCKET_REGION,
-  accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
-  secretAccessKey: env.S3_BUCKET_SECRET_KEY,
-});
 
 function hashPassword(password: string): string {
   const salt = randomBytes(16).toString("hex");
@@ -30,67 +21,20 @@ async function createAdminUser() {
 
   if (existingUser) {
     // eslint-disable-next-line no-restricted-syntax
-    console.error("Admin user already exists");
+    console.log("[seed] Admin user already exists");
     return;
   }
 
   const passwordHash = hashPassword(password);
   await db.user.create({
-    data: {
-      email,
-      passwordHash,
-      name,
-      role: "ADMIN",
-    },
+    data: { email, passwordHash, name, role: "ADMIN" },
   });
-
   // eslint-disable-next-line no-restricted-syntax
-  console.log("Admin user created successfully");
+  console.log("[seed] Admin user created");
 }
 
-async function uploadFileRaw({
-  filename,
-  folder,
-  body,
-  contentType,
-}: {
-  filename: string;
-  folder: "mdx";
-  body: Buffer;
-  contentType: string;
-}) {
-  await s3
-    .putObject({
-      Bucket: env.S3_BUCKET_NAME,
-      Key: `${folder}/${filename}`,
-      Body: body,
-      ContentType: contentType,
-    })
-    .promise();
-}
-
-export const seed = async () => {
-  const mdxFolder = "mdx";
+async function seedPosts() {
   for (const blog of blogs) {
-    await uploadFileRaw({
-      filename: `${blog.slug}.mdx`,
-      folder: mdxFolder,
-      body: Buffer.from(blog.mdxContentRaw, "utf-8"),
-      contentType: "text/markdown",
-    });
-    const mdxKey = `${mdxFolder}/${blog.slug}.mdx`; // AKA the Upload table primary key
-
-    await db.upload.upsert({
-      where: { key: mdxKey },
-      update: {},
-      create: {
-        key: mdxKey,
-        type: "MDX",
-        entityType: "POST",
-        contentType: "text/markdown",
-      },
-    });
-
     await db.post.upsert({
       where: { slug: blog.slug },
       update: {
@@ -98,12 +42,12 @@ export const seed = async () => {
         seoTitle: blog.seoTitle,
         summary: blog.summary,
         isReleased: blog.isReleased,
-        firstModDate: blog.firstModDate,
+        firstModDate: blog.firstModDate, // keep exact dates from dataset
         lastModDate: blog.lastModDate,
         minutesToRead: blog.minutesToRead,
         tags: blog.tags,
         category: blog.category,
-        mdxContentId: mdxKey,
+        mdxText: blog.mdxContentRaw, // <- MDX stored in DB now
       },
       create: {
         slug: blog.slug,
@@ -116,10 +60,16 @@ export const seed = async () => {
         minutesToRead: blog.minutesToRead,
         tags: blog.tags,
         category: blog.category,
-        mdxContentId: mdxKey,
+        mdxText: blog.mdxContentRaw,
       },
     });
+    // eslint-disable-next-line no-restricted-syntax
+    console.log(`[seed] upserted post: ${blog.slug}`);
   }
+}
+
+export const seed = async () => {
+  await seedPosts();
 };
 
 async function main() {
@@ -129,6 +79,6 @@ async function main() {
 
 main().catch((error) => {
   // eslint-disable-next-line no-restricted-syntax
-  console.error("Error in main execution:", error);
+  console.error("Error in seeder:", error);
   process.exit(1);
 });
