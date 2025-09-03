@@ -33,24 +33,18 @@ runs:
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
 
       run: |
-        if [ "${{ inputs.deployment_environment }}" == "preview" ]; then
-          cd apps/${{ inputs.APP_NAME }} && \
-          PREVIEW_URL=$(pnpm --filter @ashgw/${{ inputs.APP_NAME }} deploy:vercel-preview --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
-          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
-          echo "::notice title=Preview URL::$PREVIEW_URL"
-          echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-        else
-          cd apps/${{ inputs.APP_NAME }} && \
-          PROD_URL=$(pnpm --filter @ashgw/${{ inputs.APP_NAME }} deploy:vercel-production --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
-          echo "::notice title=Production URL::$PROD_URL"
-          echo "production-url=$PROD_URL" >> $GITHUB_OUTPUT
-        fi
+        cd apps/${{ inputs.APP_NAME }} && \
+        DEPLOY_URL=$(pnpm --filter @ashgw/${{ inputs.APP_NAME }} deploy:vercel-${{ inputs.deployment_environment }} --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+        echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+        echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"
+        echo "${{ inputs.deployment_environment }}-url=$DEPLOY_URL" >> $GITHUB_OUTPUT
 
     - name: Notify mfs about the deployment URL
       if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        DEPLOYMENT_ENVIRONMENT: ${{ inputs.deployment_environment }}
 
       with:
         script: |
@@ -58,12 +52,12 @@ runs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## Preview Deployment Ready! 
+            body: `## ${process.env.DEPLOYMENT_ENVIRONMENT} Deployment Ready! 
 
             ### Project: \`${process.env.APP_NAME}\`
             
-            **Preview URL:** [Check it out here](${process.env.PREVIEW_URL})
+            **${process.env.DEPLOYMENT_ENVIRONMENT} URL:** [Check it out here](${process.env.DEPLOY_URL})
             
             ---
-            > This preview environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
+            > This ${process.env.DEPLOYMENT_ENVIRONMENT} environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
           })

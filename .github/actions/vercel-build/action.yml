@@ -23,7 +23,6 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-    - uses: ./.github/actions/pnpm-install
     - name: Build for Vercel
       shell: bash
       env:
@@ -31,4 +30,4 @@ runs:
         VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
-        cd apps/${{ inputs.APP_NAME }} && pnpm --filter @ashgw/${{ inputs.APP_NAME }} build:vercel-${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
+        pnpm --filter @ashgw/${{ inputs.APP_NAME }} build:vercel-${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
