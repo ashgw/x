@@ -53,3 +53,4 @@ runs:
           # write to GITHUB_ENV (handles equals and spaces fine)
           printf '%s=%s\n' "$key" "$val" >> "$GITHUB_ENV"
         done
+        echo "CURRENT_ENV=$DOPPLER_ENVIRONMENT" >> "$GITHUB_ENV"
