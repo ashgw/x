@@ -1,7 +1,5 @@
 import { z } from "zod";
-
 import { storage } from "@ashgw/storage";
-
 import { adminProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
@@ -17,13 +15,9 @@ import { BlogService } from "../services";
 export const postRouter = router({
   getPost: publicProcedure
     .input(postGetSchemaDto)
-    .output(postDetailSchemaRo.nullable()) // not found
+    .output(postDetailSchemaRo.nullable())
     .query(async ({ input: { slug }, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-
+      const blogService = new BlogService({ db, storage });
       return await blogService.getDetailPost({ slug });
     }),
 
@@ -31,22 +25,15 @@ export const postRouter = router({
     .input(z.void())
     .output(z.array(postCardSchemaRo))
     .query(async ({ ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
+      const blogService = new BlogService({ db, storage });
       return await blogService.getPostCards();
     }),
 
-  // Admin endpoints
   getAllPosts: adminProcedure
     .input(z.void())
     .output(z.array(postDetailSchemaRo))
     .query(async ({ ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
+      const blogService = new BlogService({ db, storage });
       return await blogService.getAllPosts();
     }),
 
@@ -54,10 +41,7 @@ export const postRouter = router({
     .input(postEditorSchemaDto)
     .output(postDetailSchemaRo)
     .mutation(async ({ input, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
+      const blogService = new BlogService({ db, storage });
       return await blogService.createPost(input);
     }),
 
@@ -65,23 +49,28 @@ export const postRouter = router({
     .input(postUpdateSchemaDto)
     .output(postDetailSchemaRo)
     .mutation(async ({ input: { data, slug }, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-      return await blogService.updatePost({
-        slug,
-        data,
-      });
+      const blogService = new BlogService({ db, storage });
+      return await blogService.updatePost({ slug, data });
     }),
 
-  softDeletePost: adminProcedure
+  trashPost: adminProcedure
     .input(postDeleteSchemaDto)
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-      return await blogService.softDeletePost(slug);
+      const blogService = new BlogService({ db, storage });
+      await blogService.trashPost(slug);
+    }),
+
+  purgeTrash: adminProcedure
+    .input(z.object({ trashId: z.string().min(1) }))
+    .mutation(async ({ input: { trashId }, ctx: { db } }) => {
+      const blogService = new BlogService({ db, storage });
+      await blogService.purgeTrash(trashId);
+    }),
+
+  restoreFromTrash: adminProcedure
+    .input(z.object({ trashId: z.string().min(1) }))
+    .mutation(async ({ input: { trashId }, ctx: { db } }) => {
+      const blogService = new BlogService({ db, storage });
+      await blogService.restoreFromTrash(trashId);
     }),
 });
