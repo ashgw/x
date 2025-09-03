@@ -1,6 +1,6 @@
-name: Vercel Preview Deployment
+name: Vercel Deployment
 
-description: Deploy to Vercel and set the preview URL
+description: Deploy to Vercel and set the URL
 
 inputs:
   deployment_environment:
@@ -9,10 +9,6 @@ inputs:
   APP_NAME:
     description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
     required: true
-  add_comment:
-    description: "Add a comment notification to the PR"
-    required: false
-    default: "false"
   VERCEL_TOKEN:
     description: "Vercel token for authentication"
     required: true
@@ -40,7 +36,7 @@ runs:
         fi
 
     - name: Notify mfs about the deployment URL
-      if: ${{ inputs.deployment_environment == 'preview' && inputs.add_comment == 'true' }}
+      if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
       uses: actions/github-script@v6
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

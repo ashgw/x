@@ -3,11 +3,6 @@ name: CD / Serverless Deployment
 on:
   workflow_call:
     inputs:
-      add_comment:
-        description: "Add a comment notification to the PR"
-        required: false
-        type: string
-        default: "false"
       deployment_environment:
         required: true
         type: string
