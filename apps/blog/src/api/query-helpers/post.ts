@@ -22,9 +22,9 @@ export class PostQueryHelper {
 
   public static cardInclude() {
     return {
-      postViews: {
+      _count: {
         select: {
-          id: true,
+          postViews: true,
         },
       },
     } satisfies Prisma.PostInclude;
