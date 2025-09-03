@@ -17,9 +17,11 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
-
+      - uses: ./.github/actions/setup-ephermal-database
       - name: Running code tests
-        run: pnpm test:unit-integration
+        run: |
+          export DATABASE_URL=$TEMPORARY_CONTAINER_DATABASE_URL
+          pnpm test:unit-integration
 
   e2e:
     timeout-minutes: 60

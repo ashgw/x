@@ -18,4 +18,8 @@ runs:
           pg_isready -h localhost -p 5432 -U postgres && break
           sleep 2
         done
+    - name: Seed the database
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/seeder seed
         # I already set the TEMPORARY_CONTAINER_DATABASE_URL env var in the env step.
