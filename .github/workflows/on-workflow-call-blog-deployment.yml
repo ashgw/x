@@ -23,5 +23,5 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       environment: ${{ inputs.deployment_environment }}
-      SERVICE_NAME: "blog"
+      APP_NAME: "blog"
     secrets: inherit

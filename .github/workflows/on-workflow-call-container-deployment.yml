@@ -6,7 +6,7 @@ on:
       environment:
         required: true
         type: string
-      SERVICE_NAME:
+      APP_NAME:
         required: true
         type: string
         description: blog or www or whatever, basically the app
@@ -32,5 +32,5 @@ jobs:
           environment: ${{ inputs.environment }}
           CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ${{ secrets.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
-          SERVICE_NAME: ${{ inputs.SERVICE_NAME}} # only blog for now
+          APP_NAME: ${{ inputs.APP_NAME}} # only blog for now
 
