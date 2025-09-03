@@ -42,12 +42,12 @@ async function seedPosts() {
         seoTitle: blog.seoTitle,
         summary: blog.summary,
         isReleased: blog.isReleased,
-        firstModDate: blog.firstModDate, // keep exact dates from dataset
+        firstModDate: blog.firstModDate,
         lastModDate: blog.lastModDate,
         minutesToRead: blog.minutesToRead,
         tags: blog.tags,
         category: blog.category,
-        mdxText: blog.mdxContentRaw, // <- MDX stored in DB now
+        mdxText: blog.mdxContentRaw,
       },
       create: {
         slug: blog.slug,
