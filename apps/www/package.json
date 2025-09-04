@@ -42,6 +42,10 @@
     "@radix-ui/react-label": "2.1.0",
     "@radix-ui/react-separator": "1.0.3",
     "@radix-ui/react-slot": "1.1.0",
+    "@ts-rest/core": "3.52.1",
+    "@ts-rest/open-api": "3.52.1",
+    "@ts-rest/react-query": "3.52.1",
+    "@ts-rest/serverless": "3.52.1",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "framer-motion": "catalog:",
@@ -60,7 +64,8 @@
     "sonner": "1.5.0",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7",
-    "typed.js": "2.1.0"
+    "typed.js": "2.1.0",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

@@ -13,9 +13,8 @@ import { HydrateClient, trpcServerSide } from "~/trpc/server";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
-// per-request memoization for this slug so we don't have to double hit
 const getPostCached = cache((slug: string) =>
-  trpcServerSide.post.getPost({ slug }),
+  trpcServerSide.post.getDetailedPublicPost({ slug }),
 );
 
 export async function generateMetadata({

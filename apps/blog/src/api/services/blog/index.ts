@@ -1,7 +1,6 @@
 import type { FrontMatterResult } from "front-matter";
 import type { Optional } from "ts-roids";
 import fm from "front-matter";
-import { performance } from "perf_hooks";
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
 import { WordCounterService } from "@ashgw/cross-runtime";
@@ -10,8 +9,9 @@ import { InternalError, logger } from "@ashgw/observability";
 import type {
   fontMatterMdxContentRo,
   PostCardRo,
-  PostDetailRo,
+  PostArticleRo,
   PostEditorDto,
+  TrashPostArticleRo,
 } from "~/api/models";
 import { PostMapper } from "~/api/mappers";
 import { fontMatterMdxContentSchemaRo } from "~/api/models";
@@ -19,6 +19,7 @@ import { PostQueryHelper } from "~/api/query-helpers";
 
 export class BlogService {
   private readonly db: DatabaseClient;
+  // storage still injected for images or future assets...
   private readonly storage: StorageClient;
 
   constructor({ db, storage }: { db: DatabaseClient; storage: StorageClient }) {
@@ -26,138 +27,86 @@ export class BlogService {
     this.storage = storage;
   }
 
-  public async getPostCards(): Promise<PostCardRo[]> {
+  public async getPublicPostCards(): Promise<PostCardRo[]> {
     try {
       const posts = await this.db.post.findMany({
         where: PostQueryHelper.whereReleasedToPublic(),
-        include: PostQueryHelper.cardInclude(),
+        select: {
+          ...PostQueryHelper.cardSelect(),
+        },
+        orderBy: { firstModDate: "desc" },
       });
 
-      return posts.map((post) => PostMapper.toCardRo({ post }));
+      return posts.map((post) =>
+        PostMapper.toCardRo({
+          post,
+        }),
+      );
     } catch (error) {
       logger.error("getPostCards", { error });
       return [];
     }
   }
 
-  public async getAllPosts(): Promise<PostDetailRo[]> {
+  public async getAllAdminPosts(): Promise<PostArticleRo[]> {
     const posts = await this.db.post.findMany({
       include: PostQueryHelper.adminInclude(),
-      orderBy: {
-        firstModDate: "desc",
-      },
+      orderBy: { firstModDate: "desc" },
     });
+    if (posts.length === 0) return [];
 
-    if (posts.length === 0) {
-      logger.info("No posts found in admin view");
-      return [];
-    }
-
-    return await Promise.all(
-      posts.map(async (post) => {
-        try {
-          const mdxFileContentBuffer = await this.storage.fetchAnyFile({
-            key: post.mdxContent.key,
-          });
-
-          const fontMatterMdxContent = this._parseMDX({
-            content: mdxFileContentBuffer.toString("utf-8"),
-            slug: post.slug,
-          });
-
-          return PostMapper.toDetailRo({
-            post,
-            fontMatterMdxContent,
-          });
-        } catch (error) {
-          logger.error("Error processing post in admin view", {
-            slug: post.slug,
-            error,
-          });
-          // Return a minimal version with error indication
-          return PostMapper.toDetailRo({
-            post,
-            fontMatterMdxContent: {
-              body: "Error loading content",
-              bodyBegin: 0,
-            },
-          });
-        }
+    return posts.map((post) =>
+      PostMapper.toArticleRo({
+        post,
+        fontMatterMdxContent: this._parseMDX({
+          content: post.mdxText,
+          slug: post.slug,
+        }),
       }),
     );
   }
 
-  public async getDetailPost({
+  public async getTrashedPosts(): Promise<TrashPostArticleRo[]> {
+    try {
+      const trashed = await this.db.trashPost.findMany({
+        orderBy: { deletedAt: "desc" },
+      });
+
+      if (trashed.length === 0) return [];
+
+      return trashed.map((t) =>
+        PostMapper.toTrashRo({
+          post: t,
+        }),
+      );
+    } catch (error) {
+      logger.error("Failed to get trashed posts", { error });
+      return [];
+    }
+  }
+
+  public async getDetailedPublicPost({
     slug,
   }: {
     slug: string;
-  }): Promise<Optional<PostDetailRo>> {
-    const t0 = performance.now();
+  }): Promise<Optional<PostArticleRo>> {
     const post = await this.db.post.findUnique({
-      where: {
-        slug,
-        ...PostQueryHelper.whereReleasedToPublic(),
-      },
-      include: PostQueryHelper.detailInclude(),
+      where: { slug, ...PostQueryHelper.whereReleasedToPublic() },
+      include: PostQueryHelper.articleInclude(),
     });
-    const t1 = performance.now();
+    if (!post) return null;
 
-    if (!post) {
-      logger.info("getDetailPost not found", {
-        slug,
-        dbMs: Math.round(t1 - t0),
-      });
-      // no need to throw here, since user might just be fucking around with the URL
-      return null;
-    }
-
-    const mdxFileContentBuffer = await this.storage.fetchAnyFile({
-      key: post.mdxContent.key,
-    });
-
-    const t2 = performance.now();
-
-    const fontMatterMdxContent = this._parseMDX({
-      content: mdxFileContentBuffer.toString("utf-8"),
-      slug,
-    });
-    const t3 = performance.now();
-
-    const postDetailRo = PostMapper.toDetailRo({
+    return PostMapper.toArticleRo({
       post,
-      fontMatterMdxContent,
+      fontMatterMdxContent: this._parseMDX({ content: post.mdxText, slug }),
     });
-    const t4 = performance.now();
-
-    logger.info("getDetailPost timings", {
-      slug,
-      dbMs: Math.round(t1 - t0),
-      s3Ms: Math.round(t2 - t1),
-      parseMs: Math.round(t3 - t2),
-      mapMs: Math.round(t4 - t3),
-      totalMs: Math.round(t4 - t0),
-    });
-
-    return postDetailRo;
   }
 
-  public async createPost(data: PostEditorDto): Promise<PostDetailRo> {
+  public async createPost(data: PostEditorDto): Promise<PostArticleRo> {
     try {
-      // Generate slug from title
-      const slug = data.title
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // Remove accents
-        .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
-        .trim()
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .replace(/-+/g, "-"); // Replace multiple hyphens with single hyphen
+      const slug = this._slugify(data.title);
 
-      // Check if slug already exists
-      const existingPost = await this.db.post.findUnique({
-        where: { slug },
-      });
-
+      const existingPost = await this.db.post.findUnique({ where: { slug } });
       if (existingPost) {
         throw new InternalError({
           code: "CONFLICT",
@@ -165,27 +114,8 @@ export class BlogService {
         });
       }
 
-      const key = await this.storage.uploadFile({
-        folder: "mdx",
-        filename: `${slug}.mdx`,
-        body: Buffer.from(data.mdxContent),
-        contentType: "text/markdown",
-      });
-
-      // Create MDX content entry in database
-      const mdxContent = await this.db.upload.create({
-        data: {
-          key,
-          type: "MDX",
-          entityType: "POST",
-          contentType: "text/markdown",
-        },
-      });
-
       const now = new Date();
-      const minutesToRead = WordCounterService.countMinutesToRead(
-        data.mdxContent,
-      );
+      const minutesToRead = WordCounterService.countMinutesToRead(data.mdxText);
 
       const post = await this.db.post.create({
         data: {
@@ -199,17 +129,17 @@ export class BlogService {
           minutesToRead,
           tags: data.tags,
           category: data.category,
-          mdxContentId: mdxContent.key,
+          mdxText: data.mdxText,
         },
-        include: PostQueryHelper.detailInclude(),
+        include: PostQueryHelper.articleInclude(),
       });
 
-      return PostMapper.toDetailRo({
+      return PostMapper.toArticleRo({
         post,
-        fontMatterMdxContent: {
-          body: data.mdxContent,
-          bodyBegin: 0,
-        },
+        fontMatterMdxContent: this._parseMDX({
+          content: data.mdxText,
+          slug,
+        }),
       });
     } catch (error) {
       logger.error("Failed to create post", { error });
@@ -227,15 +157,12 @@ export class BlogService {
   }: {
     slug: string;
     data: PostEditorDto;
-  }): Promise<PostDetailRo> {
+  }): Promise<PostArticleRo> {
     try {
       const existingPost = await this.db.post.findUnique({
         where: { slug },
-        select: {
-          slug: true,
-        },
+        select: { slug: true },
       });
-
       if (!existingPost) {
         throw new InternalError({
           code: "NOT_FOUND",
@@ -243,17 +170,7 @@ export class BlogService {
         });
       }
 
-      // Update MDX content
-      await this.storage.uploadFile({
-        folder: "mdx",
-        filename: `${slug}.mdx`,
-        body: Buffer.from(data.mdxContent),
-        contentType: "text/markdown",
-      });
-
-      const minutesToRead = WordCounterService.countMinutesToRead(
-        data.mdxContent,
-      );
+      const minutesToRead = WordCounterService.countMinutesToRead(data.mdxText);
 
       const post = await this.db.post.update({
         where: { slug },
@@ -266,87 +183,140 @@ export class BlogService {
           minutesToRead,
           tags: data.tags,
           category: data.category,
+          mdxText: data.mdxText,
         },
-        include: PostQueryHelper.detailInclude(),
+        include: PostQueryHelper.articleInclude(),
       });
 
-      return PostMapper.toDetailRo({
+      return PostMapper.toArticleRo({
         post,
-        fontMatterMdxContent: {
-          body: data.mdxContent,
-          bodyBegin: 0,
-        },
+        fontMatterMdxContent: this._parseMDX({
+          content: data.mdxText,
+          slug,
+        }),
       });
     } catch (error) {
       logger.error("Failed to update post", { error, slug, data });
-      if (error instanceof Error) {
-        throw new InternalError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to update post",
-          cause: error,
-        });
-      }
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to update post: Unknown error",
+        message: "Failed to update post",
+        cause: error instanceof Error ? error : undefined,
       });
     }
   }
 
-  public async deletePost(slug: string): Promise<void> {
+  /**
+   * Move a live post to TrashPost. (no support for images or other assets yet)
+   */
+  public async trashPost({
+    originalSlug,
+  }: {
+    originalSlug: string;
+  }): Promise<void> {
     try {
-      // Find the post first
       const post = await this.db.post.findUnique({
-        where: { slug },
-        include: { mdxContent: true },
+        where: { slug: originalSlug },
       });
-
       if (!post) {
         throw new InternalError({
           code: "NOT_FOUND",
-          message: `Post with slug "${slug}" not found`,
+          message: `Post with slug "${originalSlug}" not found`,
         });
       }
 
       await this.db.$transaction(async (tx) => {
-        // 1. Delete the post (which should cascade to the Upload)
-        await tx.post.delete({
-          where: { slug },
+        await tx.trashPost.create({
+          data: {
+            originalSlug: post.slug,
+            title: post.title,
+            seoTitle: post.seoTitle,
+            summary: post.summary,
+            firstModDate: post.firstModDate,
+            lastModDate: post.lastModDate,
+            wasReleased: post.isReleased,
+            minutesToRead: post.minutesToRead,
+            tags: post.tags,
+            category: post.category,
+            mdxText: post.mdxText,
+          },
         });
 
-        // 2. Verify the upload is gone (double-check)
-        const uploadExists = await tx.upload.findUnique({
-          where: { key: post.mdxContent.key },
-        });
-
-        if (uploadExists) {
-          // If cascade didn't work, explicitly delete
-          await tx.upload.delete({
-            where: { key: post.mdxContent.key },
-          });
-        }
+        await tx.post.delete({ where: { slug: post.slug } });
       });
 
-      // After DB transaction succeeds, delete from storage
-      try {
-        await this.storage.deleteFile({
-          filename: `${slug}.mdx`,
-          folder: "mdx",
-        });
-      } catch (error) {
-        // Log but don't fail the operation - file can be cleaned up later
-        logger.error("Failed to delete MDX file from storage", {
-          key: post.mdxContent.key,
-          error,
+      logger.info("Post moved to trash", { originalSlug });
+    } catch (error) {
+      logger.error("Failed to move post to trash", { error, originalSlug });
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to move post to trash",
+        cause: error,
+      });
+    }
+  }
+
+  public async purgeTrash({ trashId }: { trashId: string }): Promise<void> {
+    try {
+      await this.db.trashPost.delete({ where: { id: trashId } });
+    } catch (error) {
+      logger.error("Failed to purge trash", { error, trashId });
+      throw new InternalError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to purge trash",
+        cause: error,
+      });
+    }
+  }
+
+  public async restoreFromTrash({
+    trashId,
+  }: {
+    trashId: string;
+  }): Promise<void> {
+    try {
+      const trash = await this.db.trashPost.findUnique({
+        where: { id: trashId },
+      });
+      if (!trash) {
+        throw new InternalError({
+          code: "NOT_FOUND",
+          message: "Trash item not found",
         });
       }
 
-      logger.info("Post and associated content deleted successfully", { slug });
+      const exists = await this.db.post.findUnique({
+        where: { slug: trash.originalSlug },
+      });
+      if (exists) {
+        throw new InternalError({
+          code: "CONFLICT",
+          message: "A live post already uses this slug",
+        });
+      }
+
+      await this.db.$transaction(async (tx) => {
+        await tx.post.create({
+          data: {
+            slug: trash.originalSlug,
+            title: trash.title,
+            seoTitle: trash.seoTitle,
+            summary: trash.summary,
+            firstModDate: trash.firstModDate,
+            lastModDate: trash.lastModDate,
+            isReleased: trash.wasReleased,
+            minutesToRead: trash.minutesToRead,
+            tags: trash.tags,
+            category: trash.category,
+            mdxText: trash.mdxText,
+          },
+        });
+        await tx.trashPost.delete({ where: { id: trashId } });
+      });
     } catch (error) {
-      logger.error("Failed to delete post", { error, slug });
+      logger.error("Failed to restore from trash", { error, trashId });
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to delete post",
+        message: "Failed to restore from trash",
         cause: error,
       });
     }
@@ -365,9 +335,20 @@ export class BlogService {
     } catch (error) {
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
-        message: `MDX parsing failed for conent: ${slug} with content: ${content.slice(0, 100)}`,
+        message: `MDX parsing failed for content: ${slug} with content: ${content.slice(0, 100)}`,
         cause: error,
       });
     }
+  }
+
+  private _slugify(title: string): string {
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
   }
 }
