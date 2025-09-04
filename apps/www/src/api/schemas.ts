@@ -31,6 +31,6 @@ export const cacheControlsQueryDtoSchema = z
 export type CacheControlsQueryDto = z.infer<typeof cacheControlsQueryDtoSchema>;
 
 export const contentTypes = {
-  text: "text/plain; charset=utf-8",
-  pgp: "application/pgp-keys; charset=utf-8",
+  text: "text/plain",
+  pgp: "application/pgp-keys",
 } as const;

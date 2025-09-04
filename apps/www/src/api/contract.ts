@@ -1,6 +1,10 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { cacheControlsQueryDtoSchema, errorSchemaRo } from "./schemas";
+import {
+  cacheControlsQueryDtoSchema,
+  contentTypes,
+  errorSchemaRo,
+} from "./schemas";
 
 const c = initContract();
 
@@ -12,7 +16,7 @@ export const v1Contract = c.router({
     query: cacheControlsQueryDtoSchema.optional(),
     responses: {
       200: c.otherResponse({
-        contentType: "text/plain",
+        contentType: contentTypes.text,
         body: z.string().min(1),
       }),
       424: errorSchemaRo,
@@ -26,7 +30,7 @@ export const v1Contract = c.router({
     query: cacheControlsQueryDtoSchema.optional(),
     responses: {
       200: c.otherResponse({
-        contentType: "application/pgp-keys",
+        contentType: contentTypes.pgp,
         body: z.string().min(1),
       }),
       424: errorSchemaRo,
@@ -40,7 +44,7 @@ export const v1Contract = c.router({
     query: cacheControlsQueryDtoSchema.optional(),
     responses: {
       200: c.otherResponse({
-        contentType: "text/plain",
+        contentType: contentTypes.text,
         body: z.string().min(1),
       }),
       424: errorSchemaRo,
