@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { generateOpenApi } from "@ts-rest/open-api";
-import { v1Contract } from "~/app/api/rest/contract";
+import { v1Contract } from "~/api/contract";
 import { env } from "@ashgw/env";
 
 export function GET() {
   const doc = generateOpenApi(v1Contract, {
     info: {
-      title: "@ashgw www API v1",
+      title: "www API v1",
       version: "1.0.0",
       description: "Contract-first REST",
     },

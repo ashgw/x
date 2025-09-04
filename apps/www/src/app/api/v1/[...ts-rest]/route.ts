@@ -1,7 +1,7 @@
 import { createNextHandler } from "@ts-rest/serverless/next";
 import { env } from "@ashgw/env";
-import { v1Contract } from "~/app/api/rest/contract";
-import { Controllers } from "~/app/api/rest/controllers";
+import { v1Contract } from "~/api/contract";
+import { Controllers } from "~/api/controllers";
 
 export const runtime = "nodejs";
 
@@ -16,7 +16,7 @@ const handler = createNextHandler(
     handlerType: "app-router",
     basePath: "/api/v1",
     responseValidation: env.NODE_ENV !== "production",
-    // cors: true, // enable later if you expose public cross-origin
+    // cors: true, // not needed for now
   },
 );
 
