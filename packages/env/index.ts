@@ -60,6 +60,7 @@ const serverSideVars = {
         url.startsWith("postgresql://"),
       { message: "Must be a valid Neon Postgres URL" },
     ),
+  DIRECT_URL: z.string().url().startsWith("postgres"),
   S3_BUCKET_NAME: z
     .string()
     .min(3, "Bucket name too short")
@@ -110,6 +111,7 @@ export const env = createEnv({
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
+    DIRECT_URL: process.env.DIRECT_URL,
     SENTRY_ORG: process.env.SENTRY_ORG,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,

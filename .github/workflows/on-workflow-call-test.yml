@@ -17,9 +17,9 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
-
       - name: Running code tests
-        run: pnpm test:unit-integration
+        run: |
+          pnpm test:unit-integration
 
   e2e:
     timeout-minutes: 60
@@ -30,7 +30,6 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
-
       - name: Install Playwright Browsers
         run: npx playwright install # issue not resolved with pnpm as of date 04.24
       - name: Run Playwright tests

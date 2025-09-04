@@ -10,10 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up Docker for the temporary database container
-      uses: docker/setup-buildx-action@v3
-      with:
-        version: latest
     - name: Mask database url
       shell: bash
       run: |
@@ -23,30 +19,23 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
-    - name: Check for schema drift
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate diff \
-        --from-url="$DATABASE_URL" \
-        --to-schema-datamodel=./prisma/schema.prisma \
-        --script > migration.sql 2>&1
+    - name: Setup an ephemeral database
+      uses: docker/setup-buildx-action@v3
 
-        chmod +x .github/scripts/check-migration-safety.sh
-        .github/scripts/check-migration-safety.sh migration.sql
-
-    - name: Test migrations in an ephemeral Docker container
+    - name: Start the ephemeral database
       shell: bash
       run: |
         pnpm --filter @ashgw/db start
-
         echo "Waiting for DB to be ready..."
         for i in {1..30}; do
           pg_isready -h localhost -p 5432 -U postgres && break
           sleep 2
         done
-
-        export DATABASE_URL=$TEMPORARY_CONTAINER_DATABASE_URL
+    - name: Test migrations in an ephemeral Docker container
+      shell: bash
+      run: |
         echo "Running migration reset..."
+        export DATABASE_URL="postgres://postgres:postgres@localhost:5432/main"
         pnpm --filter @ashgw/db migrate:reset --force
 
         echo "Validating migrations..."
@@ -58,7 +47,23 @@ runs:
 
         exit $STATUS
 
-    - name: Run migrations on the $CURRENT_ENV database
+    - name: Stop the ephemeral database
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db stop
+
+    - name: Check for schema drift on the $CURRENT_ENV database
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate diff \
+        --from-url="$DATABASE_URL" \
+        --to-schema-datamodel=./prisma/schema.prisma \
+        --script > migration.sql 2>&1
+
+        chmod +x .github/scripts/check-migration-safety.sh
+        .github/scripts/check-migration-safety.sh migration.sql
+
+    - name: Deploy migrations on the $CURRENT_ENV database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
