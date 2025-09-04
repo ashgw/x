@@ -10,7 +10,7 @@ import { EMAIL, LINKS } from "@ashgw/constants";
 import { monitor } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
-import Link from "../about/components/Link";
+import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 
 export function ContactPage() {
