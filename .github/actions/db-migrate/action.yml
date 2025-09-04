@@ -44,10 +44,10 @@ runs:
 
         exit $STATUS
 
-    - name: Set the database url back to the original
+    - name: Stop the ephemeral database
       shell: bash
       run: |
-        echo "DATABASE_URL=$ACTUAL_DATABASE_URL" >> $GITHUB_ENV
+        pnpm --filter @ashgw/db stop
 
     - name: Check for schema drift on the $CURRENT_ENV database
       shell: bash
