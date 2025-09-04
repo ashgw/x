@@ -1,8 +1,6 @@
-import { logger } from "@ashgw/observability";
 import type { CacheControlsQueryDto, ErrorRo } from "./schemas";
 import { contentTypes } from "./schemas";
 
-/** Uniform HTTP result for ts-rest handlers */
 interface Ok {
   status: 200;
   body: string;
@@ -27,7 +25,8 @@ async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
     return await fn();
   } finally {
     const dt = Date.now() - t0;
-    logger.debug(`[REST] ${label} took ${dt}ms`);
+    // eslint-disable-next-line no-restricted-syntax
+    console.debug(`[REST] ${label} took ${dt}ms`);
   }
 }
 
@@ -70,7 +69,8 @@ async function fetchTextFromUpstream(input: {
       },
     };
   } catch (error) {
-    logger.error("fetchTextFromUpstream failed", { url, error });
+    // eslint-disable-next-line no-restricted-syntax
+    console.error("fetchTextFromUpstream failed", { url, error });
     return {
       status: 500,
       body: {

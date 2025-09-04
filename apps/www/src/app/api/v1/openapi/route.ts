@@ -1,35 +1,24 @@
 import { NextResponse } from "next/server";
 import { generateOpenApi } from "@ts-rest/open-api";
 import { v1Contract } from "~/api/contract";
-import { env } from "@ashgw/env";
-import { logger, monitor } from "@ashgw/observability";
 import { basePath } from "~/api/basePath";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
+
 export const revalidate = 3600;
 
 export function GET() {
-  try {
-    const doc = generateOpenApi(v1Contract, {
-      info: {
-        title: "www API v1",
-        version: "1.0.0",
-        description: "Contract-first REST",
-      },
-      openapi: "3.0.3",
-      servers: [{ url: new URL(basePath, env.NEXT_PUBLIC_WWW_URL).toString() }],
-    });
-    return NextResponse.json(doc, { status: 200 });
-  } catch (error) {
-    logger.error("Error generating OpenAPI document", error);
-    monitor.next.captureException({ error });
-    return NextResponse.json(
-      {
-        code: "INTERNAL_ERROR",
-        details: { route: `${basePath}/openapi` },
-        message: "Failed to generate OpenAPI document",
-      },
-      { status: 500 },
-    );
-  }
+  const doc = generateOpenApi(v1Contract, {
+    info: {
+      title: "www API v1",
+      version: "1.0.0",
+      description: "Contract-first REST",
+    },
+    openapi: "3.0.3",
+    servers: [
+      // eslint-disable-next-line no-restricted-properties
+      { url: new URL(basePath, process.env.NEXT_PUBLIC_WWW_URL).toString() },
+    ],
+  });
+  return NextResponse.json(doc, { status: 200 });
 }
