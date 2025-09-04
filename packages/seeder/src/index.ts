@@ -48,6 +48,7 @@ async function seedPosts() {
         tags: blog.tags,
         category: blog.category,
         mdxText: blog.mdxContentRaw,
+        viewsCount: 700,
       },
       create: {
         slug: blog.slug,
@@ -61,6 +62,7 @@ async function seedPosts() {
         tags: blog.tags,
         category: blog.category,
         mdxText: blog.mdxContentRaw,
+        viewsCount: 700,
       },
     });
     // eslint-disable-next-line no-restricted-syntax
