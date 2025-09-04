@@ -20,12 +20,12 @@ import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 import { SoundProvider } from "../../misc/SoundContext";
 import { SoundToggle } from "../../misc/SoundToggle";
-import { BlogList } from "./components/BlogList";
+import { BlogList } from "./components/lists/BlogList";
 import { BlogPreview } from "./components/BlogPreview";
-import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
+import { ConfirmBlogDeleteModal } from "./components/modals/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
-import { TrashList } from "./components/TrashList";
+import { TrashList } from "./components/lists/TrashList";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
