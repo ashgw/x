@@ -1,7 +1,7 @@
 import { createNextHandler } from "@ts-rest/serverless/next";
-import { env } from "@ashgw/env";
 import { v1Contract } from "~/api/contract";
 import { Controllers } from "~/api/controllers";
+import { logger, monitor } from "@ashgw/observability";
 
 export const runtime = "nodejs";
 
@@ -15,7 +15,11 @@ const handler = createNextHandler(
   {
     handlerType: "app-router",
     basePath: "/api/v1",
-    responseValidation: env.NODE_ENV !== "production",
+    responseValidation: true,
+    errorHandler(error, req) {
+      logger.error(`>>> ts-rest Error on '${req.url}'`, error);
+      monitor.next.captureException({ error });
+    },
     // cors: true, // not needed for now
   },
 );
