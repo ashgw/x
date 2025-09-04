@@ -1,7 +1,7 @@
 import { createNextHandler } from "@ts-rest/serverless/next";
 import { env } from "@ashgw/env";
 import { v1Contract } from "~/app/api/rest/contract";
-import { getBootstrap, getGpg, getZshFuncs } from "~/app/api/rest/controllers";
+import { getBootstrap, getGpg, getDebion } from "~/app/api/rest/controllers";
 
 export const runtime = "nodejs";
 
@@ -10,7 +10,7 @@ const handler = createNextHandler(
   {
     bootstrap: async () => getBootstrap(),
     gpg: async () => getGpg(),
-    zshfuncs: async () => getZshFuncs(),
+    debion: async () => getDebion(),
   },
   {
     handlerType: "app-router",

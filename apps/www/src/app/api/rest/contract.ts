@@ -29,10 +29,10 @@ export const v1Contract = c.router({
     },
   },
 
-  zshfuncs: {
+  debion: {
     method: "GET",
-    path: "/zshfuncs",
-    summary: "Fetch zsh funcs file (raw text)",
+    path: "/debion",
+    summary: "Fetch debion file (raw text)",
     responses: {
       200: z.string(), // text/plain
       424: errorBody,
