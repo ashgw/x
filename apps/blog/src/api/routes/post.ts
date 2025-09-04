@@ -14,23 +14,23 @@ import {
 import { BlogService } from "../services";
 
 export const postRouter = router({
-  getPost: publicProcedure
+  getDetailedPublicPost: publicProcedure
     .input(postGetSchemaDto)
     .output(postDetailSchemaRo.nullable())
     .query(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
-      return await blogService.getDetailPost({ slug });
+      return await blogService.getDetailedPublicPost({ slug });
     }),
 
-  getPostCards: publicProcedure
+  getPublicPostCards: publicProcedure
     .input(z.void())
     .output(z.array(postCardSchemaRo))
     .query(async ({ ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
-      return await blogService.getPostCards();
+      return await blogService.getPublicPostCards();
     }),
 
-  getAllPosts: adminProcedure
+  getAllAdminPosts: adminProcedure
     .input(z.void())
     .output(z.array(postDetailSchemaRo))
     .query(async ({ ctx: { db } }) => {

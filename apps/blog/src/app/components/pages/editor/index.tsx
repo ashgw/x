@@ -80,7 +80,7 @@ export const EditorPage = observer(() => {
   });
 
   const utils = trpcClientSide.useUtils();
-  const postsQuery = trpcClientSide.post.getAllPosts.useQuery(undefined, {
+  const postsQuery = trpcClientSide.post.getAllAdminPosts.useQuery(undefined, {
     enabled: store.editor.viewMode === "active",
   });
   const trashedQuery = trpcClientSide.post.getTrashedPosts.useQuery(undefined, {
@@ -134,7 +134,7 @@ export const EditorPage = observer(() => {
   const createMutation = trpcClientSide.post.createPost.useMutation({
     onSuccess: () => {
       toast.success("Blog post created successfully");
-      void utils.post.getAllPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
       handleNewBlog();
     },
     onError: (error) => {
@@ -148,7 +148,7 @@ export const EditorPage = observer(() => {
   const updateMutation = trpcClientSide.post.updatePost.useMutation({
     onSuccess: () => {
       toast.success("Blog post updated successfully");
-      void utils.post.getAllPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
       handleNewBlog();
     },
     onError: (error) => {
@@ -167,7 +167,7 @@ export const EditorPage = observer(() => {
       if (deleteModal.visible) {
         store.editor.movePostToTrash(deleteModal.entity.slug);
       }
-      void utils.post.getAllPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
       void utils.post.getTrashedPosts.invalidate();
       setDeleteModal({ visible: false });
       setIsDeletingBlog(false);
@@ -196,7 +196,7 @@ export const EditorPage = observer(() => {
       // Update store immediately - remove from trash
       store.editor.restorePostFromTrash(variables.trashId);
       void utils.post.getTrashedPosts.invalidate();
-      void utils.post.getAllPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
     },
     onError: (error) => {
       logger.error("Failed to restore post", { error });

@@ -28,7 +28,7 @@ export class BlogService {
     this.storage = storage;
   }
 
-  public async getPostCards(): Promise<PostCardRo[]> {
+  public async getPublicPostCards(): Promise<PostCardRo[]> {
     try {
       const posts = await this.db.post.findMany({
         where: PostQueryHelper.whereReleasedToPublic(),
@@ -86,7 +86,7 @@ export class BlogService {
     }
   }
 
-  public async getDetailPost({
+  public async getDetailedPublicPost({
     slug,
   }: {
     slug: string;
