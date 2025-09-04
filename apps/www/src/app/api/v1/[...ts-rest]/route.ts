@@ -8,7 +8,7 @@ const handler = createNextHandler(v1Contract, router, {
   basePath: "/api/v1",
   responseValidation: true,
   errorHandler(error, req) {
-    logger.error(`>>> ts-rest Error on '${req.url}'`, error);
+    logger.error(`>>> REST Error on '${req.url}'`, error);
     monitor.next.captureException({ error });
   },
 });
