@@ -28,7 +28,6 @@ export function ContactPage() {
       if (status !== 200) {
         throw new Error(`API error: ${status}`);
       }
-
       copyToClipboard(body);
       toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
         description: "PGP public key block is copied to your clipboard",
