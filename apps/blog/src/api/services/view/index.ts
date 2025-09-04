@@ -4,9 +4,15 @@ import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
 import { Prisma } from "@ashgw/db/raw";
+
 export class ViewService {
   private readonly db: DatabaseClient;
   private readonly req: NextRequest;
+
+  private static readonly RETAIN_DAYS = 2; // keep 2 days for safety
+  private static readonly CLEANUP_PROB = 0.01; // 1% of requests try cleanup
+  private static readonly MIN_CLEANUP_INTERVAL_MS = 30 * 60 * 1000; // 30 min
+  private static lastCleanupAt = 0;
 
   constructor({ db, req }: { db: DatabaseClient; req: NextRequest }) {
     this.db = db;
@@ -28,11 +34,7 @@ export class ViewService {
       await this.db.$transaction(async (tx) => {
         try {
           await tx.postViewWindow.create({
-            data: {
-              postSlug: slug,
-              fingerprint,
-              bucketStart,
-            },
+            data: { postSlug: slug, fingerprint, bucketStart },
           });
 
           // only reached if create did NOT violate unique constraint
@@ -41,16 +43,17 @@ export class ViewService {
             data: { viewsCount: { increment: 1 } },
           });
         } catch (e: unknown) {
-          // unique violation means we've already counted this fp today – ignore.
           if (
             e instanceof Prisma.PrismaClientKnownRequestError &&
             e.code === "P2002"
           ) {
-            return;
+            return; // already counted this fp today
           }
-          throw e; // real error -> bubble up
+          throw e;
         }
       });
+
+      await this._maybeCleanup();
     } catch (error) {
       logger.error("Failed to track view", { error, slug });
       throw new InternalError({
@@ -58,6 +61,35 @@ export class ViewService {
         message: "Failed to track view",
         cause: error,
       });
+    }
+  }
+
+  private async _maybeCleanup(): Promise<void> {
+    const now = Date.now();
+    if (Math.random() >= ViewService.CLEANUP_PROB) return;
+    if (now - ViewService.lastCleanupAt < ViewService.MIN_CLEANUP_INTERVAL_MS)
+      return;
+
+    // best-effort – if two instances race, who cares
+    ViewService.lastCleanupAt = now;
+
+    const cutoff = new Date(
+      Date.now() - ViewService.RETAIN_DAYS * 24 * 60 * 60 * 1000,
+    );
+
+    try {
+      const deleted = await this.db.postViewWindow.deleteMany({
+        where: { bucketStart: { lt: cutoff } }, // uses @@index([bucketStart])
+      });
+      if (deleted.count) {
+        logger.info("PostViewWindow cleanup", {
+          deleted: deleted.count,
+          cutoff: cutoff.toISOString(),
+        });
+      }
+    } catch (e) {
+      // never break the request path for cleanup failures
+      logger.warn("PostViewWindow cleanup failed (ignored)", { error: e });
     }
   }
 
