@@ -69,7 +69,7 @@ export function EditorPage() {
       category: PostCategoryEnum.SOFTWARE,
       tags: [],
       isReleased: false,
-      mdxContent: "",
+      mdxText: "",
     },
   });
 
@@ -89,7 +89,7 @@ export function EditorPage() {
         category: blog.category,
         tags: blog.tags,
         isReleased: blog.isReleased,
-        mdxContent: blog.fontMatterMdxContent.body,
+        mdxText: blog.fontMatterMdxContent.body,
       });
       logger.info("Editing blog", { slug: blog.slug });
     },
@@ -134,7 +134,8 @@ export function EditorPage() {
     },
   });
 
-  const softDeleteMutation = trpcClientSide.post.softDeletePost.useMutation({
+  //  soft delete
+  const trashPost = trpcClientSide.post.trashPost.useMutation({
     onSuccess: () => {
       toast.success("Blog post deleted successfully");
       void utils.post.getAllPosts.invalidate();
@@ -168,7 +169,7 @@ export function EditorPage() {
       category: PostCategoryEnum.SOFTWARE,
       tags: [],
       isReleased: false,
-      mdxContent: "",
+      mdxText: "",
     });
   }
 
@@ -181,7 +182,7 @@ export function EditorPage() {
   // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
-      softDeleteMutation.mutate({ slug: deleteModal.entity.slug });
+      trashPost.mutate({ slug: deleteModal.entity.slug });
     }
   }
 
@@ -274,7 +275,7 @@ export function EditorPage() {
             blog={deleteModal.entity}
             onConfirm={confirmDelete}
             onCancel={cancelDelete}
-            isDeleting={softDeleteMutation.isPending}
+            isDeleting={trashPost.isPending}
           />
         ) : null}
         <SoundToggle />

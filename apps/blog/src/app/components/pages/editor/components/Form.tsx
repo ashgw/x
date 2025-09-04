@@ -53,7 +53,7 @@ export function PostEditorForm({
 }: PostEditorFormProps) {
   const { reset, control, register, watch, handleSubmit } = form;
 
-  const content = watch("mdxContent");
+  const content = watch("mdxText");
 
   const { wordCount, minutesToRead } = useMemo(
     () => ({
