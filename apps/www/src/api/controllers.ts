@@ -117,6 +117,19 @@ export const Controllers = {
         opts: {
           contentType: contentTypes.text,
           defaultRevalidate: 3600,
+
+          cacheControl: "s-maxage=3600, stale-while-revalidate=300",
+        },
+      }),
+    ),
+  whisper: (args: { q?: CacheControlsQueryDto }) =>
+    timed("whisper", () =>
+      fetchTextFromUpstream({
+        q: args.q,
+        url: "https://raw.githubusercontent.com/ashgw/whisper/main/setup",
+        opts: {
+          contentType: contentTypes.text,
+          defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
       }),
