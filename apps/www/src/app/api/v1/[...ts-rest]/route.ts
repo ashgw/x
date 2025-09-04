@@ -3,6 +3,8 @@ import { createNextHandler } from "@ts-rest/serverless/next";
 import { v1Contract } from "~/api/contract";
 import { router } from "~/api/router";
 
+export const runtime = "nodejs";
+
 const handler = createNextHandler(v1Contract, router, {
   handlerType: "app-router",
   basePath: "/api/v1",

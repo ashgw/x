@@ -45,6 +45,7 @@ async function fetchTextFromUpstream(input: {
     const res = await fetch(url, {
       next: { revalidate: revalidateSeconds },
       cache: "force-cache",
+      signal: AbortSignal.timeout(10_000),
     });
 
     if (!res.ok) {
