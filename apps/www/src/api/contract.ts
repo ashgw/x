@@ -51,4 +51,18 @@ export const v1Contract = c.router({
       500: errorSchemaRo,
     },
   },
+  whisper: {
+    method: "GET",
+    path: "/whisper",
+    summary: "Fetch Whisper setup script (raw text)",
+    query: cacheControlsQueryDtoSchema.optional(),
+    responses: {
+      200: c.otherResponse({
+        contentType: contentTypes.text,
+        body: z.string().min(1),
+      }),
+      424: errorSchemaRo,
+      500: errorSchemaRo,
+    },
+  },
 });

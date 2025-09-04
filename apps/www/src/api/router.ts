@@ -6,4 +6,5 @@ export const router = tsr.router(v1Contract, {
   bootstrap: async ({ query }) => Controllers.bootstrap({ q: query }),
   gpg: async ({ query }) => Controllers.gpg({ q: query }),
   debion: async ({ query }) => Controllers.debion({ q: query }),
+  whisper: async ({ query }) => Controllers.whisper({ q: query }),
 });
