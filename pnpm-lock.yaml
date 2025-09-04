@@ -740,7 +740,7 @@ importers:
         specifier: 8.18.1
         version: 8.18.1(bufferutil@4.0.9)
       zod:
-        specifier: 3.23.8
+        specifier: 'catalog:'
         version: 3.23.8
     devDependencies:
       '@ashgw/eslint-config':
@@ -774,7 +774,7 @@ importers:
         specifier: 16.4.5
         version: 16.4.5
       zod:
-        specifier: 3.23.8
+        specifier: 'catalog:'
         version: 3.23.8
     devDependencies:
       '@ashgw/eslint-config':
