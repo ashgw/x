@@ -7,15 +7,6 @@ const c = initContract();
 const errorBody = z.string().min(1);
 
 export const v1Contract = c.router({
-  healthz: {
-    method: "GET",
-    path: "/healthz",
-    summary: "Liveness probe",
-    responses: {
-      200: z.literal("ok"),
-    },
-  },
-
   bootstrap: {
     method: "GET",
     path: "/bootstrap",

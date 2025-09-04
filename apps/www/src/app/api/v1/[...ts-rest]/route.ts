@@ -1,28 +1,30 @@
-import { createNextRouteHandler } from "@ts-rest/serverless/next";
+import { createNextHandler } from "@ts-rest/serverless/next";
 import { env } from "@ashgw/env";
 import { v1Contract } from "~/app/api/rest/contract";
 import { getBootstrap, getGpg, getZshFuncs } from "~/app/api/rest/controllers";
 
-export const { GET, POST, PUT, PATCH, DELETE, OPTIONS } =
-  createNextRouteHandler(
-    v1Contract,
-    {
-      bootstrap: async () => {
-        const r = await getBootstrap();
-        return r;
-      },
+export const runtime = "nodejs";
 
-      gpg: async () => {
-        const r = await getGpg();
-        return r;
-      },
+const handler = createNextHandler(
+  v1Contract,
+  {
+    bootstrap: async () => getBootstrap(),
+    gpg: async () => getGpg(),
+    zshfuncs: async () => getZshFuncs(),
+  },
+  {
+    handlerType: "app-router",
+    basePath: "/api/v1",
+    responseValidation: env.NODE_ENV !== "production",
+    // cors: true, // not needed for now
+  },
+);
 
-      zshfuncs: async () => {
-        const r = await getZshFuncs();
-        return r;
-      },
-    },
-    {
-      validateResponses: env.NODE_ENV !== "production",
-    },
-  );
+export {
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as PATCH,
+  handler as DELETE,
+  handler as OPTIONS,
+};
