@@ -4,7 +4,8 @@
 
 import { z } from "zod";
 
-import { category, mdxText, slug, summary, tags, title } from "./shared";
+import { id, slug } from "../_shared";
+import { category, mdxText, summary, tags, title } from "./shared";
 
 // ========== Schemas ==========
 
@@ -33,13 +34,13 @@ export const postDetailSchemaRo = postCardSchemaRo.extend({
 });
 
 export const trashPostSchemaRo = z.object({
+  id,
   title,
   summary,
   tags,
   category,
   mdxText,
   originalSlug: slug,
-  id: z.string().min(1).max(255),
   firstModDate: z.date(),
   lastModDate: z.date(),
   wasReleased: z.boolean(),
