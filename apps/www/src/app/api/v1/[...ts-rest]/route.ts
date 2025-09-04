@@ -1,13 +1,7 @@
 import { logger, monitor } from "@ashgw/observability";
-import { createNextHandler, tsr } from "@ts-rest/serverless/next";
+import { createNextHandler } from "@ts-rest/serverless/next";
 import { v1Contract } from "~/api/contract";
-import { Controllers } from "~/api/controllers";
-
-const router = tsr.router(v1Contract, {
-  bootstrap: async ({ query }) => Controllers.bootstrap({ q: query }),
-  gpg: async ({ query }) => Controllers.gpg({ q: query }),
-  debion: async ({ query }) => Controllers.debion({ q: query }),
-});
+import { router } from "~/api/router";
 
 const handler = createNextHandler(v1Contract, router, {
   handlerType: "app-router",
