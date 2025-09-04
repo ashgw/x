@@ -4,29 +4,28 @@
 
 import { z } from "zod";
 
-import { PostCategoryEnum } from "./shared";
-
-const slugSchema = z.string().min(1).max(255);
+import { category, mdxText, summary, tags, title } from "./shared";
+import { slug } from "../_shared";
 // ========== Schemas ==========
 export const postGetSchemaDto = z.object({
-  slug: slugSchema,
+  slug,
 });
 
 export const postDeleteSchemaDto = z.object({
-  slug: slugSchema,
+  slug,
 });
 
 export const postEditorSchemaDto = z.object({
-  title: z.string().min(2).max(30), // the slug will be the same basically
-  summary: z.string().min(20).max(90), // SEO title will be the same for now, 90 chars so it looks good on cards layout
-  category: z.nativeEnum(PostCategoryEnum),
-  tags: z.array(z.string().min(1).max(10)), // if too big => looks ugly
+  title,
+  summary,
+  category,
+  tags,
+  mdxText,
   isReleased: z.boolean(),
-  mdxContent: z.string().min(10).max(30000),
 });
 
 export const postUpdateSchemaDto = z.object({
-  slug: slugSchema,
+  slug,
   data: postEditorSchemaDto,
 });
 

@@ -19,7 +19,7 @@ const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 export async function generateMetadata({
   params,
 }: DynamicRouteParams): Promise<Metadata> {
-  const postData = await trpcServerSide.post.getPost({
+  const postData = await trpcServerSide.post.getDetailedPublicPost({
     slug: params.post,
   });
   if (!postData) {
@@ -51,7 +51,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: DynamicRouteParams) {
-  const postData = await trpcServerSide.post.getPost({
+  const postData = await trpcServerSide.post.getDetailedPublicPost({
     slug: params.post,
   });
 

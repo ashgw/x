@@ -6,38 +6,43 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
+import { observer } from "mobx-react-lite";
 
 import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 import { Skeleton } from "@ashgw/ui";
 
+import { useStore } from "~/app/stores";
+
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
-import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
+import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 import { SoundProvider } from "../../misc/SoundContext";
 import { SoundToggle } from "../../misc/SoundToggle";
-import { BlogList } from "./components/BlogList";
+import { BlogList, TrashList } from "./components/lists/ItemList";
 import { BlogPreview } from "./components/BlogPreview";
-import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
+import { ConfirmBlogDeleteModal } from "./components/modals/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
-export function EditorPage() {
-  const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
+export const EditorPage = observer(() => {
+  const [editModal, setEditModal] = useState<EntityViewState<PostArticleRo>>({
     visible: false,
   });
 
-  const [deleteModal, setDeleteModal] = useState<EntityViewState<PostDetailRo>>(
-    {
-      visible: false,
-    },
-  );
+  const [deleteModal, setDeleteModal] = useState<
+    EntityViewState<PostArticleRo>
+  >({
+    visible: false,
+  });
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+
+  const { store } = useStore();
 
   // Prevent scrolling when modal is open
   useEffect(() => {
@@ -69,16 +74,34 @@ export function EditorPage() {
       category: PostCategoryEnum.SOFTWARE,
       tags: [],
       isReleased: false,
-      mdxContent: "",
+      mdxText: "",
     },
   });
 
   const utils = trpcClientSide.useUtils();
-  const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+  const postsQuery = trpcClientSide.post.getAllAdminPosts.useQuery(undefined, {
+    enabled: store.editor.viewMode === "active",
+  });
+  const trashedQuery = trpcClientSide.post.getTrashedPosts.useQuery(undefined, {
+    enabled: store.editor.viewMode === "trash",
+  });
+
+  // Update store when data changes
+  useEffect(() => {
+    if (postsQuery.data) {
+      store.editor.setActivePosts(postsQuery.data);
+    }
+  }, [postsQuery.data, store.editor]);
+
+  useEffect(() => {
+    if (trashedQuery.data) {
+      store.editor.setTrashedPosts(trashedQuery.data);
+    }
+  }, [trashedQuery.data, store.editor]);
 
   // Edit blog: load values into form
   const handleEditBlog = useCallback(
-    (blog: PostDetailRo) => {
+    (blog: PostArticleRo) => {
       // Don't load blog content if we're in the process of deleting
       if (isDeletingBlog) return;
 
@@ -89,7 +112,7 @@ export function EditorPage() {
         category: blog.category,
         tags: blog.tags,
         isReleased: blog.isReleased,
-        mdxContent: blog.fontMatterMdxContent.body,
+        mdxText: blog.fontMatterMdxContent.body,
       });
       logger.info("Editing blog", { slug: blog.slug });
     },
@@ -98,18 +121,19 @@ export function EditorPage() {
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
     onBlogFound: handleEditBlog,
-    skipLoading: showPreview || isDeletingBlog, // Skip loading if in preview mode or deleting
+    skipLoading:
+      showPreview || isDeletingBlog || store.editor.viewMode === "trash", // Skip when in trash view too
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
-    postsQuery.data,
+    store.editor.activePosts,
     sortOptions,
   );
 
   const createMutation = trpcClientSide.post.createPost.useMutation({
     onSuccess: () => {
       toast.success("Blog post created successfully");
-      void utils.post.getAllPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
       handleNewBlog();
     },
     onError: (error) => {
@@ -123,7 +147,7 @@ export function EditorPage() {
   const updateMutation = trpcClientSide.post.updatePost.useMutation({
     onSuccess: () => {
       toast.success("Blog post updated successfully");
-      void utils.post.getAllPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
       handleNewBlog();
     },
     onError: (error) => {
@@ -134,10 +158,16 @@ export function EditorPage() {
     },
   });
 
-  const deleteMutation = trpcClientSide.post.deletePost.useMutation({
+  //  soft delete
+  const trashPost = trpcClientSide.post.trashPost.useMutation({
     onSuccess: () => {
       toast.success("Blog post deleted successfully");
-      void utils.post.getAllPosts.invalidate();
+      // Update store immediately - remove from active posts
+      if (deleteModal.visible) {
+        store.editor.movePostToTrash(deleteModal.entity.slug);
+      }
+      void utils.post.getAllAdminPosts.invalidate();
+      void utils.post.getTrashedPosts.invalidate();
       setDeleteModal({ visible: false });
       setIsDeletingBlog(false);
 
@@ -159,7 +189,33 @@ export function EditorPage() {
     },
   });
 
-  // Add new blog: clear form
+  const restoreMutation = trpcClientSide.post.restoreFromTrash.useMutation({
+    onSuccess: (_, variables) => {
+      toast.success("Post restored successfully");
+      // Update store immediately - remove from trash
+      store.editor.restorePostFromTrash(variables.trashId);
+      void utils.post.getTrashedPosts.invalidate();
+      void utils.post.getAllAdminPosts.invalidate();
+    },
+    onError: (error) => {
+      logger.error("Failed to restore post", { error });
+      toast.error("Failed to restore post", { description: error.message });
+    },
+  });
+
+  const purgeMutation = trpcClientSide.post.purgeTrash.useMutation({
+    onSuccess: (_, variables) => {
+      toast.success("Post permanently deleted");
+      // Update store immediately - remove from trash
+      store.editor.purgePostFromTrash(variables.trashId);
+      void utils.post.getTrashedPosts.invalidate();
+    },
+    onError: (error) => {
+      logger.error("Failed to purge post", { error });
+      toast.error("Failed to purge post", { description: error.message });
+    },
+  });
+
   function handleNewBlog() {
     setEditModal({ visible: false });
     form.reset({
@@ -168,20 +224,18 @@ export function EditorPage() {
       category: PostCategoryEnum.SOFTWARE,
       tags: [],
       isReleased: false,
-      mdxContent: "",
+      mdxText: "",
     });
   }
 
-  // Delete blog: open modal
-  function handleDeleteBlog(blog: PostDetailRo) {
+  function handleDeleteBlog(blog: PostArticleRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
-  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
-      deleteMutation.mutate({ slug: deleteModal.entity.slug });
+      trashPost.mutate({ slug: deleteModal.entity.slug });
     }
   }
 
@@ -217,64 +271,80 @@ export function EditorPage() {
           onClick={handleNewBlog}
           sortOptions={sortOptions}
           onSortOptionsChange={setSortOptions}
-          blogs={postsQuery.data ?? []}
+          blogs={store.editor.activePosts}
           isPreviewEnabled={showPreview}
           onTogglePreview={togglePreview}
         />
-        <div
-          className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
-        >
-          <BlogList
-            blogs={filteredAndSortedBlogs}
-            onEdit={handleEditBlog}
-            onDelete={handleDeleteBlog}
-            isLoading={
-              postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
-            }
-          />
-          {showEditorSkeleton ? (
+        {store.editor.viewMode === "active" ? (
+          <div
+            className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
+          >
+            <BlogList
+              blogs={filteredAndSortedBlogs}
+              onEdit={handleEditBlog}
+              onDelete={handleDeleteBlog}
+              isLoading={
+                postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
+              }
+            />
+            {showEditorSkeleton ? (
+              <div className="lg:col-span-2">
+                <div className="bg-card rounded-lg border p-4">
+                  <Skeleton className="w-full" />
+                </div>
+              </div>
+            ) : (
+              <div className="lg:col-span-2">
+                <AnimatePresence mode="wait" initial={false}>
+                  <PostEditorForm
+                    key="editor"
+                    form={form}
+                    onSubmit={onSubmit}
+                    isSubmitting={isSubmitting}
+                    isHidden={showPreview}
+                  />
+                  {showPreview ? (
+                    <BlogPreview
+                      key="preview"
+                      isVisible={showPreview}
+                      formData={formValues}
+                      title={
+                        editModal.visible
+                          ? editModal.entity.title
+                          : "Preview Title"
+                      }
+                      creationDate={
+                        editModal.visible
+                          ? editModal.entity.firstModDate.toISOString()
+                          : new Date().toISOString()
+                      }
+                    />
+                  ) : null}
+                </AnimatePresence>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <TrashList
+              items={store.editor.trashedPosts}
+              onRestore={(item) => restoreMutation.mutate({ trashId: item.id })}
+              onPurge={(item) => purgeMutation.mutate({ trashId: item.id })}
+              isLoading={trashedQuery.isLoading}
+            />
             <div className="lg:col-span-2">
-              <div className="bg-card rounded-lg border p-4">
-                <Skeleton className="w-full" />
+              <div className="text-muted-foreground flex h-full items-center justify-center rounded-lg border p-4">
+                Select an item to restore or purge.
               </div>
             </div>
-          ) : (
-            <div className="lg:col-span-2">
-              <AnimatePresence mode="wait" initial={false}>
-                <PostEditorForm
-                  key="editor"
-                  form={form}
-                  onSubmit={onSubmit}
-                  isSubmitting={isSubmitting}
-                  isHidden={showPreview}
-                />
-                {showPreview ? (
-                  <BlogPreview
-                    key="preview"
-                    isVisible={showPreview}
-                    formData={formValues}
-                    title={
-                      editModal.visible
-                        ? editModal.entity.title
-                        : "Preview Title"
-                    }
-                    creationDate={
-                      editModal.visible
-                        ? editModal.entity.firstModDate.toISOString()
-                        : new Date().toISOString()
-                    }
-                  />
-                ) : null}
-              </AnimatePresence>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
         {deleteModal.visible ? (
           <ConfirmBlogDeleteModal
             blog={deleteModal.entity}
             onConfirm={confirmDelete}
             onCancel={cancelDelete}
-            isDeleting={deleteMutation.isPending}
+            isDeleting={trashPost.isPending}
           />
         ) : null}
         <SoundToggle />
@@ -282,6 +352,6 @@ export function EditorPage() {
       </div>
     </SoundProvider>
   );
-}
+});
 
 export default EditorPage;

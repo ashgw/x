@@ -15,7 +15,7 @@ export class ViewService {
     this.req = req;
   }
 
-  public async trackView({ postSlug }: { postSlug: string }): Promise<void> {
+  public async trackView({ slug }: { slug: string }): Promise<void> {
     const headersList = this.req.headers;
     const ipAddress =
       headersList.get("x-forwarded-for") ??
@@ -26,7 +26,7 @@ export class ViewService {
     try {
       // Generate fingerprint that uniquely identifies this view
       const fingerprint = this._generateFingerprint({
-        postSlug,
+        slug,
         ipAddress,
         userAgent,
       });
@@ -35,7 +35,7 @@ export class ViewService {
       const existingView = await this.db.postView.findFirst({
         where: {
           fingerprint,
-          postSlug,
+          postSlug: slug,
           createdAt: {
             gte: new Date(Date.now() - ViewService.DEDUPLICATION_WINDOW_MS),
           },
@@ -49,14 +49,14 @@ export class ViewService {
       // Create the view record
       await this.db.postView.create({
         data: {
-          postSlug,
+          postSlug: slug,
           fingerprint,
         },
       });
 
-      logger.info("View tracked", { postSlug });
+      logger.info("View tracked", { slug });
     } catch (error) {
-      logger.error("Failed to track view", { error, postSlug });
+      logger.error("Failed to track view", { error, slug });
       throw new InternalError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to track view",
@@ -66,11 +66,11 @@ export class ViewService {
   }
 
   private _generateFingerprint({
-    postSlug,
+    slug,
     ipAddress,
     userAgent,
   }: {
-    postSlug: string;
+    slug: string;
     ipAddress: string;
     userAgent: string;
   }): string {
@@ -80,7 +80,7 @@ export class ViewService {
       .digest("hex");
 
     // This fingerprint uniquely identifies a view while preserving privacy
-    const data = `${postSlug}:${hashedIp}:${userAgent}`;
+    const data = `${slug}:${hashedIp}:${userAgent}`;
     return createHash("sha256").update(data).digest("hex");
   }
 }
