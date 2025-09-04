@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCheck, ChevronDown } from "lucide-react";
+import { viewStore } from "~/app/stores/viewstore";
 
 import { Footer } from "@ashgw/components";
 
@@ -28,6 +29,13 @@ export function PostCards({ posts }: PostsProps) {
   const [shouldScroll, setShouldScroll] = useState(false);
 
   const perLoadVisibleNum = 5;
+
+  // prime store once with current list
+  useEffect(() => {
+    viewStore.primeFromCards(
+      posts.map((p) => ({ slug: p.slug, views: p.views })),
+    );
+  }, [posts]);
 
   const filteredPosts = posts
     .filter((post) => {

@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
-import { Prisma } from "@ashgw/db/raw";
+import type { TrackViewRo } from "~/api/models/view";
 
 export class ViewService {
   private readonly db: DatabaseClient;
@@ -19,7 +19,7 @@ export class ViewService {
     this.req = req;
   }
 
-  public async trackView({ slug }: { slug: string }): Promise<void> {
+  public async trackView({ slug }: { slug: string }): Promise<TrackViewRo> {
     const headersList = this.req.headers;
     const ipAddress =
       headersList.get("x-forwarded-for") ??
@@ -28,32 +28,34 @@ export class ViewService {
     const userAgent = headersList.get("user-agent") ?? "unknown";
 
     const fingerprint = this._fingerprint({ slug, ipAddress, userAgent });
-    const bucketStart = this._utcMidnight(new Date()); // 24h bucket
+    const bucketStart = this._utcMidnight(new Date());
 
     try {
+      let total = 0;
       await this.db.$transaction(async (tx) => {
-        try {
-          await tx.postViewWindow.create({
-            data: { postSlug: slug, fingerprint, bucketStart },
-          });
+        const inserted = await tx.postViewWindow.createMany({
+          data: { postSlug: slug, fingerprint, bucketStart },
+          skipDuplicates: true,
+        });
 
-          // only reached if create did NOT violate unique constraint
-          await tx.post.update({
+        if (inserted.count > 0) {
+          const updated = await tx.post.update({
             where: { slug },
             data: { viewsCount: { increment: 1 } },
+            select: { viewsCount: true },
           });
-        } catch (e: unknown) {
-          if (
-            e instanceof Prisma.PrismaClientKnownRequestError &&
-            e.code === "P2002"
-          ) {
-            return; // already counted this fp today
-          }
-          throw e;
+          total = updated.viewsCount;
+          logger.info("New view tracked", { slug });
+        } else {
+          const existing = await tx.post.findUnique({
+            where: { slug },
+            select: { viewsCount: true },
+          });
+          total = existing?.viewsCount ?? 0;
         }
       });
-
       await this._maybeCleanup();
+      return { total };
     } catch (error) {
       logger.error("Failed to track view", { error, slug });
       throw new InternalError({
