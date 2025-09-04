@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { UserRoleEnum } from "./shared";
-import { id } from "../_shared";
+import { email, id } from "../_shared";
 
 // ========== Schemas ==========
 export const sessionSchemaRo = z.object({
@@ -12,8 +12,8 @@ export const sessionSchemaRo = z.object({
 
 export const userSchemaRo = z.object({
   id,
+  email,
   createdAt: z.date(),
-  email: z.string().max(255).email(),
   name: z.string().min(1).max(30).nullable(),
   role: z.nativeEnum(UserRoleEnum),
   sessions: z.array(sessionSchemaRo),

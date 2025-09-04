@@ -14,7 +14,6 @@ import type {
   PostEditorDto,
   TrashPostRo,
 } from "~/api/models";
-import type { PostCategoryEnum } from "~/api/models";
 import { PostMapper } from "~/api/mappers";
 import { fontMatterMdxContentSchemaRo } from "~/api/models";
 import { PostQueryHelper } from "~/api/query-helpers";
@@ -50,7 +49,7 @@ export class BlogService {
     }
   }
 
-  public async getAllPosts(): Promise<PostDetailRo[]> {
+  public async getAllAdminPosts(): Promise<PostDetailRo[]> {
     const posts = await this.db.post.findMany({
       include: PostQueryHelper.adminInclude(),
       orderBy: { firstModDate: "desc" },
@@ -73,22 +72,14 @@ export class BlogService {
       const trashed = await this.db.trashPost.findMany({
         orderBy: { deletedAt: "desc" },
       });
+
       if (trashed.length === 0) return [];
 
-      // Prisma returns plain objects that match TrashPost schema already
-      return trashed.map((t) => ({
-        id: t.id,
-        title: t.title,
-        summary: t.summary,
-        tags: t.tags,
-        category: t.category as unknown as PostCategoryEnum,
-        mdxText: t.mdxText,
-        originalSlug: t.originalSlug,
-        firstModDate: t.firstModDate,
-        lastModDate: t.lastModDate,
-        wasReleased: t.wasReleased,
-        deletedAt: t.deletedAt,
-      }));
+      return trashed.map((t) =>
+        PostMapper.toTrashRo({
+          post: t,
+        }),
+      );
     } catch (error) {
       logger.error("Failed to get trashed posts", { error });
       return [];

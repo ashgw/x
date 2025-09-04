@@ -4,8 +4,13 @@ import type {
   fontMatterMdxContentRo,
   PostCardRo,
   PostDetailRo,
+  TrashPostRo,
 } from "../models";
-import type { PostCardQuery, PostDetailQuery } from "../query-helpers";
+import type {
+  PostCardQuery,
+  PostDetailQuery,
+  TrashPostQuery,
+} from "../query-helpers";
 import { PostCategoryEnum } from "../models";
 
 export class PostMapper {
@@ -40,6 +45,23 @@ export class PostMapper {
         body: post.mdxText,
         bodyBegin: 0,
       },
+    };
+  }
+  public static toTrashRo({ post }: { post: TrashPostQuery }): TrashPostRo {
+    return {
+      category: this._mapCategory({
+        category: post.category,
+      }),
+      title: post.title,
+      summary: post.summary,
+      tags: post.tags,
+      mdxText: post.mdxText,
+      deletedAt: post.deletedAt,
+      originalSlug: post.originalSlug,
+      firstModDate: post.firstModDate,
+      lastModDate: post.lastModDate,
+      wasReleased: post.wasReleased,
+      id: post.id,
     };
   }
 

@@ -12,6 +12,10 @@ export type PostAdminQuery = Prisma.PostGetPayload<{
   include: ReturnType<typeof PostQueryHelper.adminInclude>;
 }>;
 
+export type TrashPostQuery = Prisma.TrashPostGetPayload<{
+  select: ReturnType<typeof PostQueryHelper.trashSelect>;
+}>;
+
 export class PostQueryHelper {
   public static detailInclude() {
     return {
@@ -29,7 +33,7 @@ export class PostQueryHelper {
       summary: true,
       firstModDate: true,
       minutesToRead: true,
-      postViews: { select: { id: true } },
+      ...this._withViews(),
     } satisfies Prisma.PostSelect;
   }
 
@@ -44,6 +48,24 @@ export class PostQueryHelper {
       isReleased: true,
       firstModDate: { lte: new Date() },
     } satisfies Prisma.PostWhereInput;
+  }
+
+  public static trashSelect() {
+    return {
+      id: true,
+      originalSlug: true,
+      title: true,
+      seoTitle: true,
+      summary: true,
+      firstModDate: true,
+      lastModDate: true,
+      minutesToRead: true,
+      wasReleased: true,
+      tags: true,
+      category: true,
+      mdxText: true,
+      deletedAt: true,
+    } satisfies Prisma.TrashPostSelect;
   }
 
   private static _withViews() {
