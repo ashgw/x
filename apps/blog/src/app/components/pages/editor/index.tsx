@@ -6,10 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
+import { observer } from "mobx-react-lite";
 
 import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/observability";
 import { Skeleton } from "@ashgw/ui";
+
+import { useStore } from "~/app/stores";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
@@ -26,7 +29,7 @@ import { TrashList } from "./components/TrashList";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
-export function EditorPage() {
+export const EditorPage = observer(() => {
   const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
     visible: false,
   });
@@ -38,8 +41,9 @@ export function EditorPage() {
   );
 
   const [showPreview, setShowPreview] = useState(false);
-  const [viewMode, setViewMode] = useState<"active" | "trash">("active");
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+
+  const { store } = useStore();
 
   // Prevent scrolling when modal is open
   useEffect(() => {
@@ -77,11 +81,24 @@ export function EditorPage() {
 
   const utils = trpcClientSide.useUtils();
   const postsQuery = trpcClientSide.post.getAllPosts.useQuery(undefined, {
-    enabled: viewMode === "active",
+    enabled: store.editor.viewMode === "active",
   });
   const trashedQuery = trpcClientSide.post.getTrashedPosts.useQuery(undefined, {
-    enabled: viewMode === "trash",
+    enabled: store.editor.viewMode === "trash",
   });
+
+  // Update store when data changes
+  useEffect(() => {
+    if (postsQuery.data) {
+      store.editor.setActivePosts(postsQuery.data);
+    }
+  }, [postsQuery.data, store.editor]);
+
+  useEffect(() => {
+    if (trashedQuery.data) {
+      store.editor.setTrashedPosts(trashedQuery.data);
+    }
+  }, [trashedQuery.data, store.editor]);
 
   // Edit blog: load values into form
   const handleEditBlog = useCallback(
@@ -105,11 +122,12 @@ export function EditorPage() {
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
     onBlogFound: handleEditBlog,
-    skipLoading: showPreview || isDeletingBlog || viewMode === "trash", // Skip when in trash view too
+    skipLoading:
+      showPreview || isDeletingBlog || store.editor.viewMode === "trash", // Skip when in trash view too
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
-    postsQuery.data,
+    store.editor.activePosts,
     sortOptions,
   );
 
@@ -145,7 +163,12 @@ export function EditorPage() {
   const trashPost = trpcClientSide.post.trashPost.useMutation({
     onSuccess: () => {
       toast.success("Blog post deleted successfully");
+      // Update store immediately - remove from active posts
+      if (deleteModal.visible) {
+        store.editor.movePostToTrash(deleteModal.entity.slug);
+      }
       void utils.post.getAllPosts.invalidate();
+      void utils.post.getTrashedPosts.invalidate();
       setDeleteModal({ visible: false });
       setIsDeletingBlog(false);
 
@@ -168,8 +191,10 @@ export function EditorPage() {
   });
 
   const restoreMutation = trpcClientSide.post.restoreFromTrash.useMutation({
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("Post restored successfully");
+      // Update store immediately - remove from trash
+      store.editor.restorePostFromTrash(variables.trashId);
       void utils.post.getTrashedPosts.invalidate();
       void utils.post.getAllPosts.invalidate();
     },
@@ -180,8 +205,10 @@ export function EditorPage() {
   });
 
   const purgeMutation = trpcClientSide.post.purgeTrash.useMutation({
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("Post permanently deleted");
+      // Update store immediately - remove from trash
+      store.editor.purgePostFromTrash(variables.trashId);
       void utils.post.getTrashedPosts.invalidate();
     },
     onError: (error) => {
@@ -190,7 +217,6 @@ export function EditorPage() {
     },
   });
 
-  // Add new blog: clear form
   function handleNewBlog() {
     setEditModal({ visible: false });
     form.reset({
@@ -203,13 +229,11 @@ export function EditorPage() {
     });
   }
 
-  // Delete blog: open modal
   function handleDeleteBlog(blog: PostDetailRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
-  // Confirm delete: call delete mutation
   function confirmDelete() {
     if (deleteModal.visible) {
       trashPost.mutate({ slug: deleteModal.entity.slug });
@@ -248,13 +272,11 @@ export function EditorPage() {
           onClick={handleNewBlog}
           sortOptions={sortOptions}
           onSortOptionsChange={setSortOptions}
-          blogs={postsQuery.data ?? []}
+          blogs={store.editor.activePosts}
           isPreviewEnabled={showPreview}
           onTogglePreview={togglePreview}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
         />
-        {viewMode === "active" ? (
+        {store.editor.viewMode === "active" ? (
           <div
             className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
           >
@@ -306,7 +328,7 @@ export function EditorPage() {
         ) : (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <TrashList
-              items={trashedQuery.data ?? []}
+              items={store.editor.trashedPosts}
               onRestore={(item) => restoreMutation.mutate({ trashId: item.id })}
               onPurge={(item) => purgeMutation.mutate({ trashId: item.id })}
               isLoading={trashedQuery.isLoading}
@@ -331,6 +353,6 @@ export function EditorPage() {
       </div>
     </SoundProvider>
   );
-}
+});
 
 export default EditorPage;

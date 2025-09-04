@@ -1,36 +1,42 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { observer } from "mobx-react-lite";
 
 import { Button } from "@ashgw/ui";
 
-export function ViewToggle({
-  value,
-  onChange,
-}: {
-  value: "active" | "trash";
-  onChange: (view: "active" | "trash") => void;
-}) {
+import { useStore } from "~/app/stores";
+
+export const ViewToggle = observer(() => {
+  const { store } = useStore();
+  const { viewMode } = store.editor;
+
+  const toggleView = () => {
+    store.editor.toggleViewMode();
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex items-center gap-2"
     >
       <Button
-        variant={value === "active" ? "squared:default" : "squared:outline"}
-        size="sm"
-        onClick={() => onChange("active")}
+        variant={viewMode === "active" ? "squared:default" : "squared:outline"}
+        onClick={toggleView}
+        className="relative min-w-[120px]"
       >
-        Active
-      </Button>
-      <Button
-        variant={value === "trash" ? "squared:default" : "squared:outline"}
-        size="sm"
-        onClick={() => onChange("trash")}
-      >
-        Trash
+        <motion.span
+          key={viewMode}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+        >
+          {viewMode === "active" ? "Active Posts" : "Trash"}
+        </motion.span>
       </Button>
     </motion.div>
   );
-}
+});

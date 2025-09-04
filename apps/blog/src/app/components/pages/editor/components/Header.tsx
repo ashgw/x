@@ -18,8 +18,6 @@ interface HeaderProps {
   blogs: PostDetailRo[];
   isPreviewEnabled: boolean;
   onTogglePreview: () => void;
-  viewMode: "active" | "trash";
-  onViewModeChange: (view: "active" | "trash") => void;
 }
 
 export function Header({
@@ -29,8 +27,6 @@ export function Header({
   blogs,
   isPreviewEnabled,
   onTogglePreview,
-  viewMode,
-  onViewModeChange,
 }: HeaderProps): JSX.Element {
   const { user } = useAuth();
 
@@ -56,7 +52,7 @@ export function Header({
         </motion.h1>
         <div className="flex items-center gap-3">
           {user ? <ProfileButton /> : null}
-          <ViewToggle value={viewMode} onChange={onViewModeChange} />
+          <ViewToggle />
           <PreviewToggle
             isPreviewEnabled={isPreviewEnabled}
             onToggle={onTogglePreview}

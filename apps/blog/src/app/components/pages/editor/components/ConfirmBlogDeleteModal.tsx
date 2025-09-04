@@ -53,7 +53,7 @@ export function ConfirmBlogDeleteModal(props: {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          Move to Trash
+          Delete Blog
         </motion.h3>
 
         <motion.p
@@ -62,8 +62,7 @@ export function ConfirmBlogDeleteModal(props: {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          This will move the blog to Trash. You can restore it later or purge it
-          permanently. To confirm moving to Trash of{" "}
+          To confirm deletion of{" "}
           <span className="font-semibold">{props.blog.title}</span>, please type
           the blog title exactly below.
           <br />
@@ -95,7 +94,7 @@ export function ConfirmBlogDeleteModal(props: {
             disabled={!isMatch || props.isDeleting}
             loading={props.isDeleting}
           >
-            {props.isDeleting ? "Moving..." : "Move to Trash"}
+            {props.isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </motion.div>
       </motion.div>
