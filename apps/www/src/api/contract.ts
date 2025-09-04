@@ -11,9 +11,12 @@ export const v1Contract = c.router({
     summary: "Fetch dotfiles bootstrap script (raw text)",
     query: cacheControlsQueryDtoSchema.optional(),
     responses: {
-      200: z.string().min(1), // text/plain
-      424: errorSchemaRo, // upstream failure
-      500: errorSchemaRo, // internal error
+      200: c.otherResponse({
+        contentType: "text/plain",
+        body: z.string().min(1),
+      }),
+      424: errorSchemaRo,
+      500: errorSchemaRo,
     },
   },
   gpg: {
@@ -22,7 +25,10 @@ export const v1Contract = c.router({
     summary: "Fetch public PGP key (armored text)",
     query: cacheControlsQueryDtoSchema.optional(),
     responses: {
-      200: z.string().min(1), // application/pgp-keys
+      200: c.otherResponse({
+        contentType: "application/pgp-keys",
+        body: z.string().min(1),
+      }),
       424: errorSchemaRo,
       500: errorSchemaRo,
     },
@@ -33,7 +39,10 @@ export const v1Contract = c.router({
     summary: "Fetch debion setup script (raw text)",
     query: cacheControlsQueryDtoSchema.optional(),
     responses: {
-      200: z.string().min(1), // text/plain
+      200: c.otherResponse({
+        contentType: "text/plain",
+        body: z.string().min(1),
+      }),
       424: errorSchemaRo,
       500: errorSchemaRo,
     },
