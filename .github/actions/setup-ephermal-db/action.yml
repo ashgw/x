@@ -26,7 +26,7 @@ runs:
         for i in {1..30}; do
           pg_isready -h localhost -p 5432 -U postgres && break
           sleep 2
-          done
+        done
 
     - name: Seed the database
       shell: bash
