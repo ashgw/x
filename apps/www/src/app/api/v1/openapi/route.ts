@@ -3,6 +3,7 @@ import { generateOpenApi } from "@ts-rest/open-api";
 import { v1Contract } from "~/api/contract";
 import { env } from "@ashgw/env";
 import { logger, monitor } from "@ashgw/observability";
+import { basePath } from "~/api/basePath";
 
 export const runtime = "nodejs";
 export const revalidate = 3600;
@@ -16,7 +17,7 @@ export function GET() {
         description: "Contract-first REST",
       },
       openapi: "3.0.3",
-      servers: [{ url: `${env.NEXT_PUBLIC_WWW_URL}` }],
+      servers: [{ url: new URL(basePath, env.NEXT_PUBLIC_WWW_URL).toString() }],
     });
     return NextResponse.json(doc, { status: 200 });
   } catch (error) {
@@ -25,7 +26,7 @@ export function GET() {
     return NextResponse.json(
       {
         code: "INTERNAL_ERROR",
-        details: { route: "/api/v1/openapi" },
+        details: { route: `${basePath}/openapi` },
         message: "Failed to generate OpenAPI document",
       },
       { status: 500 },
