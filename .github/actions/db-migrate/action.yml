@@ -19,8 +19,11 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
-    - name: Start an ephemeral database
+    - name: Setup an ephemeral database
       uses: docker/setup-buildx-action@v3
+
+    - name: Start the ephemeral database
+      shell: bash
       run: |
         pnpm --filter @ashgw/db start
         echo "Waiting for DB to be ready..."
