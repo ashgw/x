@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 
 import { logger } from "@ashgw/observability";
 
-import { useStore } from "~/app/stores";
 import { trpcClientSide } from "~/trpc/client";
 
 interface UseViewTrackerProps {
@@ -21,7 +20,6 @@ export function useViewTracker({
 }: UseViewTrackerProps) {
   const hasTracked = useRef(false);
   const timeoutRef = useRef<Optional<NodeJS.Timeout>>(null);
-  const { store } = useStore();
 
   const sessionKey = `view_tracked_${postSlug}`;
 
@@ -40,10 +38,6 @@ export function useViewTracker({
     },
     onSuccess: () => {
       logger.debug("Successfully tracked view in mutation", { postSlug });
-      const currentViews = store.views.getViews(postSlug);
-      store.views.setViews(postSlug, currentViews + 1);
-      sessionStorage.setItem(sessionKey, "true");
-      logger.info("Marked as tracked in session storage", { postSlug });
     },
   });
 
@@ -88,7 +82,7 @@ export function useViewTracker({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [postSlug, enabled, delay, store.views, sessionKey, trackViewMutation]);
+  }, [postSlug, enabled, delay, sessionKey, trackViewMutation]);
 
   return {
     isTracking: trackViewMutation.isPending,
