@@ -7,7 +7,7 @@ import { Edit, Eye } from "lucide-react";
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models";
+import type { PostArticleRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
 import { formatViews } from "~/utils/formatViews";
@@ -17,7 +17,7 @@ import { ReleaseDate } from "./ReleaseDate";
 import { ViewTracker } from "./ViewTracker";
 
 interface BlogPostProps {
-  postData: PostDetailRo;
+  postData: PostArticleRo;
 }
 
 export const BlogPostData = memo(function BlogPostData({

@@ -7,7 +7,7 @@ import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/api/router";
 import type { TrpcContext } from "~/trpc/context";
-import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
+import { postCardSchemaRo, postArticleSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
 import { createInnerTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/root";
@@ -48,5 +48,5 @@ test("load and validate a single blog post", async () => {
 
   const post = await caller.post.getDetailedPublicPost(input);
 
-  expect(post).toMatchObject(postDetailSchemaRo.parse(post));
+  expect(post).toMatchObject(postArticleSchemaRo.parse(post));
 });

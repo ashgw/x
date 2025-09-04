@@ -4,10 +4,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button, Input } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 
 export function ConfirmBlogDeleteModal(props: {
-  blog: PostDetailRo;
+  blog: PostArticleRo;
   onConfirm: () => void;
   onCancel: () => void;
   isDeleting?: boolean;

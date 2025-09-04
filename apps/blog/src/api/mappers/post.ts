@@ -3,13 +3,13 @@ import type { PostCategory as DbPostCategory } from "@ashgw/db/raw";
 import type {
   fontMatterMdxContentRo,
   PostCardRo,
-  PostDetailRo,
-  TrashPostRo,
+  PostArticleRo,
+  TrashPostArticleRo,
 } from "../models";
 import type {
   PostCardQuery,
-  PostDetailQuery,
-  TrashPostQuery,
+  PostArticleQuery,
+  TrashPostArticleQuery,
 } from "../query-helpers";
 import { PostCategoryEnum } from "../models";
 
@@ -30,12 +30,12 @@ export class PostMapper {
     };
   }
 
-  public static toDetailRo({
+  public static toArticleRo({
     post,
   }: {
-    post: PostDetailQuery;
+    post: PostArticleQuery;
     fontMatterMdxContent: fontMatterMdxContentRo;
-  }): PostDetailRo {
+  }): PostArticleRo {
     return {
       ...this.toCardRo({ post }),
       lastModDate: post.lastModDate,
@@ -47,7 +47,11 @@ export class PostMapper {
       },
     };
   }
-  public static toTrashRo({ post }: { post: TrashPostQuery }): TrashPostRo {
+  public static toTrashRo({
+    post,
+  }: {
+    post: TrashPostArticleQuery;
+  }): TrashPostArticleRo {
     return {
       category: this._mapCategory({
         category: post.category,

@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 import { PostCategoryEnum } from "~/api/models/post";
 
 export type SortField = "title" | "lastModDate" | "firstModDate";
@@ -45,7 +45,7 @@ export interface SortOptions {
 interface SortOptionsProps {
   options: SortOptions;
   onOptionsChange: (options: SortOptions) => void;
-  blogs: PostDetailRo[];
+  blogs: PostArticleRo[];
 }
 
 const formatCategoryName = (category: string): string => {

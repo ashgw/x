@@ -27,13 +27,13 @@ export const fontMatterMdxContentSchemaRo = z.object({
   bodyBegin: z.number().default(0), // needed for MDX parsing
 });
 
-export const postDetailSchemaRo = postCardSchemaRo.extend({
+export const postArticleSchemaRo = postCardSchemaRo.extend({
   isReleased: z.boolean(),
   lastModDate: z.date(),
   fontMatterMdxContent: fontMatterMdxContentSchemaRo,
 });
 
-export const trashPostSchemaRo = z.object({
+export const trashPostArticleSchemaRo = z.object({
   id,
   title,
   summary,
@@ -53,5 +53,5 @@ export type fontMatterMdxContentRo = z.infer<
   typeof fontMatterMdxContentSchemaRo
 >;
 export type PostCardRo = z.infer<typeof postCardSchemaRo>;
-export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
-export type TrashPostRo = z.infer<typeof trashPostSchemaRo>;
+export type PostArticleRo = z.infer<typeof postArticleSchemaRo>;
+export type TrashPostArticleRo = z.infer<typeof trashPostArticleSchemaRo>;

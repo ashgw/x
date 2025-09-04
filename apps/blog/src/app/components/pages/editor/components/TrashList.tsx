@@ -5,12 +5,12 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, ScrollArea, Skeleton, Badge } from "@ashgw/ui";
 
-import type { TrashPostRo } from "~/api/models/post";
+import type { TrashPostArticleRo } from "~/api/models/post";
 
 interface TrashListProps {
-  items: TrashPostRo[];
-  onRestore: (item: TrashPostRo) => void;
-  onPurge: (item: TrashPostRo) => void;
+  items: TrashPostArticleRo[];
+  onRestore: (item: TrashPostArticleRo) => void;
+  onPurge: (item: TrashPostArticleRo) => void;
   isLoading?: boolean;
 }
 
@@ -22,10 +22,10 @@ const TrashItem = memo(
     onPurge,
     shouldReduceMotion,
   }: {
-    item: TrashPostRo;
+    item: TrashPostArticleRo;
     index: number;
-    onRestore: (item: TrashPostRo) => void;
-    onPurge: (item: TrashPostRo) => void;
+    onRestore: (item: TrashPostArticleRo) => void;
+    onPurge: (item: TrashPostArticleRo) => void;
     shouldReduceMotion: boolean;
   }) => {
     const initialAnimation = shouldReduceMotion

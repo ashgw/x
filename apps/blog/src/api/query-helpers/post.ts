@@ -4,20 +4,20 @@ export type PostCardQuery = Prisma.PostGetPayload<{
   select: ReturnType<typeof PostQueryHelper.cardSelect>;
 }>;
 
-export type PostDetailQuery = Prisma.PostGetPayload<{
-  include: ReturnType<typeof PostQueryHelper.detailInclude>;
+export type PostArticleQuery = Prisma.PostGetPayload<{
+  include: ReturnType<typeof PostQueryHelper.articleInclude>;
 }>;
 
 export type PostAdminQuery = Prisma.PostGetPayload<{
   include: ReturnType<typeof PostQueryHelper.adminInclude>;
 }>;
 
-export type TrashPostQuery = Prisma.TrashPostGetPayload<{
-  select: ReturnType<typeof PostQueryHelper.trashSelect>;
+export type TrashPostArticleQuery = Prisma.TrashPostGetPayload<{
+  select: ReturnType<typeof PostQueryHelper.trashArticleSelect>;
 }>;
 
 export class PostQueryHelper {
-  public static detailInclude() {
+  public static articleInclude() {
     return {
       ...this._withViews(),
     } satisfies Prisma.PostInclude;
@@ -39,7 +39,7 @@ export class PostQueryHelper {
 
   public static adminInclude() {
     return {
-      ...this.detailInclude(),
+      ...this.articleInclude(),
     } satisfies Prisma.PostInclude;
   }
 
@@ -50,7 +50,7 @@ export class PostQueryHelper {
     } satisfies Prisma.PostWhereInput;
   }
 
-  public static trashSelect() {
+  public static trashArticleSelect() {
     return {
       id: true,
       originalSlug: true,

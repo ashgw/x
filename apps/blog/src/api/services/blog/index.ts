@@ -10,9 +10,9 @@ import { InternalError, logger } from "@ashgw/observability";
 import type {
   fontMatterMdxContentRo,
   PostCardRo,
-  PostDetailRo,
+  PostArticleRo,
   PostEditorDto,
-  TrashPostRo,
+  TrashPostArticleRo,
 } from "~/api/models";
 import { PostMapper } from "~/api/mappers";
 import { fontMatterMdxContentSchemaRo } from "~/api/models";
@@ -49,7 +49,7 @@ export class BlogService {
     }
   }
 
-  public async getAllAdminPosts(): Promise<PostDetailRo[]> {
+  public async getAllAdminPosts(): Promise<PostArticleRo[]> {
     const posts = await this.db.post.findMany({
       include: PostQueryHelper.adminInclude(),
       orderBy: { firstModDate: "desc" },
@@ -57,7 +57,7 @@ export class BlogService {
     if (posts.length === 0) return [];
 
     return posts.map((post) =>
-      PostMapper.toDetailRo({
+      PostMapper.toArticleRo({
         post,
         fontMatterMdxContent: this._parseMDX({
           content: post.mdxText,
@@ -67,7 +67,7 @@ export class BlogService {
     );
   }
 
-  public async getTrashedPosts(): Promise<TrashPostRo[]> {
+  public async getTrashedPosts(): Promise<TrashPostArticleRo[]> {
     try {
       const trashed = await this.db.trashPost.findMany({
         orderBy: { deletedAt: "desc" },
@@ -90,20 +90,20 @@ export class BlogService {
     slug,
   }: {
     slug: string;
-  }): Promise<Optional<PostDetailRo>> {
+  }): Promise<Optional<PostArticleRo>> {
     const post = await this.db.post.findUnique({
       where: { slug, ...PostQueryHelper.whereReleasedToPublic() },
-      include: PostQueryHelper.detailInclude(),
+      include: PostQueryHelper.articleInclude(),
     });
     if (!post) return null;
 
-    return PostMapper.toDetailRo({
+    return PostMapper.toArticleRo({
       post,
       fontMatterMdxContent: this._parseMDX({ content: post.mdxText, slug }),
     });
   }
 
-  public async createPost(data: PostEditorDto): Promise<PostDetailRo> {
+  public async createPost(data: PostEditorDto): Promise<PostArticleRo> {
     try {
       const slug = this._slugify(data.title);
 
@@ -132,10 +132,10 @@ export class BlogService {
           category: data.category,
           mdxText: data.mdxText,
         },
-        include: PostQueryHelper.detailInclude(),
+        include: PostQueryHelper.articleInclude(),
       });
 
-      return PostMapper.toDetailRo({
+      return PostMapper.toArticleRo({
         post,
         fontMatterMdxContent: this._parseMDX({
           content: data.mdxText,
@@ -158,7 +158,7 @@ export class BlogService {
   }: {
     slug: string;
     data: PostEditorDto;
-  }): Promise<PostDetailRo> {
+  }): Promise<PostArticleRo> {
     try {
       const existingPost = await this.db.post.findUnique({
         where: { slug },
@@ -186,10 +186,10 @@ export class BlogService {
           category: data.category,
           mdxText: data.mdxText,
         },
-        include: PostQueryHelper.detailInclude(),
+        include: PostQueryHelper.articleInclude(),
       });
 
-      return PostMapper.toDetailRo({
+      return PostMapper.toArticleRo({
         post,
         fontMatterMdxContent: this._parseMDX({
           content: data.mdxText,

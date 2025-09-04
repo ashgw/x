@@ -1,11 +1,11 @@
 import { makeAutoObservable } from "mobx";
 
-import type { PostDetailRo, TrashPostRo } from "~/api/models/post";
+import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 
 export class EditorStore {
   public viewMode: "active" | "trash" = "active";
-  public activePosts: PostDetailRo[] = [];
-  public trashedPosts: TrashPostRo[] = [];
+  public activePosts: PostArticleRo[] = [];
+  public trashedPosts: TrashPostArticleRo[] = [];
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -19,11 +19,11 @@ export class EditorStore {
     this.viewMode = this.viewMode === "active" ? "trash" : "active";
   }
 
-  public setActivePosts(posts: PostDetailRo[]): void {
+  public setActivePosts(posts: PostArticleRo[]): void {
     this.activePosts = posts;
   }
 
-  public setTrashedPosts(posts: TrashPostRo[]): void {
+  public setTrashedPosts(posts: TrashPostArticleRo[]): void {
     this.trashedPosts = posts;
   }
 
@@ -42,12 +42,12 @@ export class EditorStore {
     this.trashedPosts = this.trashedPosts.filter((post) => post.id !== trashId);
   }
 
-  public addTrashPost(post: TrashPostRo): void {
+  public addTrashPost(post: TrashPostArticleRo): void {
     // Add to trash (for real-time updates)
     this.trashedPosts = [post, ...this.trashedPosts];
   }
 
-  public addActivePost(post: PostDetailRo): void {
+  public addActivePost(post: PostArticleRo): void {
     // Add to active posts (for real-time updates)
     this.activePosts = [post, ...this.activePosts];
   }

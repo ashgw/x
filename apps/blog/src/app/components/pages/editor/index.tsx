@@ -15,7 +15,7 @@ import { Skeleton } from "@ashgw/ui";
 import { useStore } from "~/app/stores";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
-import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
+import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 import { SoundProvider } from "../../misc/SoundContext";
@@ -30,15 +30,15 @@ import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
 export const EditorPage = observer(() => {
-  const [editModal, setEditModal] = useState<EntityViewState<PostDetailRo>>({
+  const [editModal, setEditModal] = useState<EntityViewState<PostArticleRo>>({
     visible: false,
   });
 
-  const [deleteModal, setDeleteModal] = useState<EntityViewState<PostDetailRo>>(
-    {
-      visible: false,
-    },
-  );
+  const [deleteModal, setDeleteModal] = useState<
+    EntityViewState<PostArticleRo>
+  >({
+    visible: false,
+  });
 
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
@@ -102,7 +102,7 @@ export const EditorPage = observer(() => {
 
   // Edit blog: load values into form
   const handleEditBlog = useCallback(
-    (blog: PostDetailRo) => {
+    (blog: PostArticleRo) => {
       // Don't load blog content if we're in the process of deleting
       if (isDeletingBlog) return;
 
@@ -229,7 +229,7 @@ export const EditorPage = observer(() => {
     });
   }
 
-  function handleDeleteBlog(blog: PostDetailRo) {
+  function handleDeleteBlog(blog: PostArticleRo) {
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }

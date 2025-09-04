@@ -3,12 +3,12 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, ScrollArea, Skeleton } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 
 interface BlogListProps {
-  blogs: PostDetailRo[];
-  onEdit: (blog: PostDetailRo) => void;
-  onDelete: (blog: PostDetailRo) => void;
+  blogs: PostArticleRo[];
+  onEdit: (blog: PostArticleRo) => void;
+  onDelete: (blog: PostArticleRo) => void;
   isLoading?: boolean;
 }
 
@@ -20,10 +20,10 @@ const BlogItem = memo(
     onDelete,
     shouldReduceMotion,
   }: {
-    blog: PostDetailRo;
+    blog: PostArticleRo;
     index: number;
-    onEdit: (blog: PostDetailRo) => void;
-    onDelete: (blog: PostDetailRo) => void;
+    onEdit: (blog: PostArticleRo) => void;
+    onDelete: (blog: PostArticleRo) => void;
     shouldReduceMotion: boolean;
   }) => {
     const initialAnimation = shouldReduceMotion

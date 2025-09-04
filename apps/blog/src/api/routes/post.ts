@@ -5,18 +5,18 @@ import { router } from "~/trpc/root";
 import {
   postCardSchemaRo,
   postDeleteSchemaDto,
-  postDetailSchemaRo,
+  postArticleSchemaRo,
   postEditorSchemaDto,
   postGetSchemaDto,
   postUpdateSchemaDto,
-  trashPostSchemaRo,
+  trashPostArticleSchemaRo,
 } from "../models";
 import { BlogService } from "../services";
 
 export const postRouter = router({
   getDetailedPublicPost: publicProcedure
     .input(postGetSchemaDto)
-    .output(postDetailSchemaRo.nullable())
+    .output(postArticleSchemaRo.nullable())
     .query(async ({ input: { slug }, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
       return await blogService.getDetailedPublicPost({ slug });
@@ -32,7 +32,7 @@ export const postRouter = router({
 
   getAllAdminPosts: adminProcedure
     .input(z.void())
-    .output(z.array(postDetailSchemaRo))
+    .output(z.array(postArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
       return await blogService.getAllAdminPosts();
@@ -40,7 +40,7 @@ export const postRouter = router({
 
   createPost: adminProcedure
     .input(postEditorSchemaDto)
-    .output(postDetailSchemaRo)
+    .output(postArticleSchemaRo)
     .mutation(async ({ input, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
       return await blogService.createPost(input);
@@ -48,7 +48,7 @@ export const postRouter = router({
 
   updatePost: adminProcedure
     .input(postUpdateSchemaDto)
-    .output(postDetailSchemaRo)
+    .output(postArticleSchemaRo)
     .mutation(async ({ input: { data, slug }, ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
       return await blogService.updatePost({ slug, data });
@@ -64,7 +64,7 @@ export const postRouter = router({
 
   getTrashedPosts: adminProcedure
     .input(z.void())
-    .output(z.array(trashPostSchemaRo))
+    .output(z.array(trashPostArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
       return await blogService.getTrashedPosts();

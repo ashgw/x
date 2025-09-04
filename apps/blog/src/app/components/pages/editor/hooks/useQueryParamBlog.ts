@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 import { logger } from "@ashgw/observability";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 
 interface UseQueryParamBlogProps {
-  onBlogFound?: (blog: PostDetailRo) => void;
+  onBlogFound?: (blog: PostArticleRo) => void;
   skipLoading?: boolean; // Add flag to skip loading blogs
 }
 
