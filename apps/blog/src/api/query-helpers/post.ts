@@ -19,7 +19,11 @@ export type TrashPostArticleQuery = Prisma.TrashPostGetPayload<{
 export class PostQueryHelper {
   public static articleInclude() {
     return {
-      ...this._withViews(),
+      _count: {
+        select: {
+          postViews: true,
+        },
+      },
     } satisfies Prisma.PostInclude;
   }
 
@@ -33,7 +37,11 @@ export class PostQueryHelper {
       summary: true,
       firstModDate: true,
       minutesToRead: true,
-      ...this._withViews(),
+      _count: {
+        select: {
+          postViews: true,
+        },
+      },
     } satisfies Prisma.PostSelect;
   }
 
@@ -66,11 +74,5 @@ export class PostQueryHelper {
       mdxText: true,
       deletedAt: true,
     } satisfies Prisma.TrashPostSelect;
-  }
-
-  private static _withViews() {
-    return {
-      postViews: { select: { id: true } },
-    } satisfies Prisma.PostInclude & Prisma.PostSelect;
   }
 }
