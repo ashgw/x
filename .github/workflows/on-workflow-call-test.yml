@@ -30,7 +30,6 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
-      - uses: ./.github/actions/setup-ephermal-database
       - name: Install Playwright Browsers
         run: npx playwright install # issue not resolved with pnpm as of date 04.24
       - name: Run Playwright tests
