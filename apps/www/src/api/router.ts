@@ -1,4 +1,4 @@
-import { tsr } from "@ts-rest/serverless/next";
+import { tsr } from "@ts-rest/serverless/fetch";
 import { v1Contract } from "~/api/contract";
 import { Controllers } from "~/api/controllers";
 

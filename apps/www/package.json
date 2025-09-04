@@ -52,7 +52,7 @@
     "gsap": "3.12.5",
     "loading-points": "1.1.0",
     "lucide-react": "0.309.0",
-    "next": "link:@ts-rest/serverless/next",
+    "next": "catalog:",
     "next-themes": "0.3.0",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
