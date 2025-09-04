@@ -4,32 +4,47 @@
 
 import { z } from "zod";
 
-import { PostCategoryEnum } from "./shared";
+import { id, slug } from "../_shared";
+import { category, mdxText, summary, tags, title } from "./shared";
 
 // ========== Schemas ==========
 
 export const postCardSchemaRo = z.object({
-  slug: z.string().min(1).max(255),
-  title: z.string().min(3),
-  seoTitle: z.string().min(1),
-  summary: z.string().min(1).max(90),
+  slug,
+  title,
+  tags,
+  category,
+  summary,
+  seoTitle: summary,
   firstModDate: z.date(),
-  lastModDate: z.date(),
-  isReleased: z.boolean(),
   minutesToRead: z.union([z.string(), z.number()]),
-  tags: z.array(z.string()),
-  category: z.nativeEnum(PostCategoryEnum),
   views: z.number().default(0),
 });
 
 // this comes from fm library API directly
 export const fontMatterMdxContentSchemaRo = z.object({
-  body: z.string(),
-  bodyBegin: z.number(), // needed for MDX parsing
+  body: mdxText,
+  bodyBegin: z.number().default(0), // needed for MDX parsing
 });
 
-export const postDetailSchemaRo = postCardSchemaRo.extend({
+export const postArticleSchemaRo = postCardSchemaRo.extend({
+  isReleased: z.boolean(),
+  lastModDate: z.date(),
   fontMatterMdxContent: fontMatterMdxContentSchemaRo,
+});
+
+export const trashPostArticleSchemaRo = z.object({
+  id,
+  title,
+  summary,
+  tags,
+  category,
+  mdxText,
+  originalSlug: slug,
+  firstModDate: z.date(),
+  lastModDate: z.date(),
+  wasReleased: z.boolean(),
+  deletedAt: z.date(),
 });
 
 // ========== Types (inferred from schemas) ==========
@@ -38,4 +53,5 @@ export type fontMatterMdxContentRo = z.infer<
   typeof fontMatterMdxContentSchemaRo
 >;
 export type PostCardRo = z.infer<typeof postCardSchemaRo>;
-export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
+export type PostArticleRo = z.infer<typeof postArticleSchemaRo>;
+export type TrashPostArticleRo = z.infer<typeof trashPostArticleSchemaRo>;

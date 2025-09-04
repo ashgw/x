@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { email } from "../_shared";
 
 export const newsletterSubscribeDtoSchema = z.object({
-  email: z.string().email().max(255),
+  email,
 });
 
 export type NewsletterSubscribeDto = z.infer<

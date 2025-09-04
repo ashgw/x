@@ -7,7 +7,7 @@ import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/api/router";
 import type { TrpcContext } from "~/trpc/context";
-import { postCardSchemaRo, postDetailSchemaRo } from "~/api/models";
+import { postCardSchemaRo, postArticleSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
 import { createInnerTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/root";
@@ -27,7 +27,7 @@ function createTestContext() {
 test("load and validate all blog posts", async () => {
   const testContext = createTestContext();
   const caller = createCallerFactory(appRouter)(testContext);
-  const posts = await caller.post.getPostCards();
+  const posts = await caller.post.getPublicPostCards();
 
   for (const post of posts) {
     expect(() => postCardSchemaRo.parse(post)).not.toThrow();
@@ -38,14 +38,15 @@ test("load and validate a single blog post", async () => {
   const ctx = createTestContext();
   const caller = createCallerFactory(appRouter)(ctx);
 
-  const cards = await caller.post.getPostCards();
+  const cards = await caller.post.getPublicPostCards();
   expect(cards.length).toBeGreaterThan(0);
 
-  const input: inferProcedureInput<AppRouter["post"]["getPost"]> = {
-    slug: cards[0]?.slug ?? "",
-  };
+  const input: inferProcedureInput<AppRouter["post"]["getDetailedPublicPost"]> =
+    {
+      slug: cards[0]?.slug ?? "",
+    };
 
-  const post = await caller.post.getPost(input);
+  const post = await caller.post.getDetailedPublicPost(input);
 
-  expect(post).toMatchObject(postDetailSchemaRo.parse(post));
+  expect(post).toMatchObject(postArticleSchemaRo.parse(post));
 });

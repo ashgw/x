@@ -37,8 +37,8 @@ export function BlogPreview({
 
   // Update MDX content whenever form data changes
   useEffect(() => {
-    setMdxContent(formData.mdxContent);
-  }, [formData.mdxContent]);
+    setMdxContent(formData.mdxText);
+  }, [formData.mdxText]);
 
   if (!isVisible) return null;
 
