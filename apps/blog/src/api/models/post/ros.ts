@@ -54,3 +54,4 @@ export type fontMatterMdxContentRo = z.infer<
 >;
 export type PostCardRo = z.infer<typeof postCardSchemaRo>;
 export type PostDetailRo = z.infer<typeof postDetailSchemaRo>;
+export type TrashPostRo = z.infer<typeof trashPostSchemaRo>;

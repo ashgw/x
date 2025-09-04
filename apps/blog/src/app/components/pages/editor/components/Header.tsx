@@ -9,6 +9,7 @@ import { useAuth } from "~/app/hooks/auth";
 import { PreviewToggle } from "./PreviewToggle";
 import { ProfileButton } from "./ProfileButton";
 import { SortOptions } from "./SortOptions";
+import { ViewToggle } from "./ViewToggle";
 
 interface HeaderProps {
   onClick: () => void;
@@ -17,6 +18,8 @@ interface HeaderProps {
   blogs: PostDetailRo[];
   isPreviewEnabled: boolean;
   onTogglePreview: () => void;
+  viewMode: "active" | "trash";
+  onViewModeChange: (view: "active" | "trash") => void;
 }
 
 export function Header({
@@ -26,6 +29,8 @@ export function Header({
   blogs,
   isPreviewEnabled,
   onTogglePreview,
+  viewMode,
+  onViewModeChange,
 }: HeaderProps): JSX.Element {
   const { user } = useAuth();
 
@@ -51,6 +56,7 @@ export function Header({
         </motion.h1>
         <div className="flex items-center gap-3">
           {user ? <ProfileButton /> : null}
+          <ViewToggle value={viewMode} onChange={onViewModeChange} />
           <PreviewToggle
             isPreviewEnabled={isPreviewEnabled}
             onToggle={onTogglePreview}

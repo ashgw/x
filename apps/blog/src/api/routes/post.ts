@@ -9,6 +9,7 @@ import {
   postEditorSchemaDto,
   postGetSchemaDto,
   postUpdateSchemaDto,
+  trashPostSchemaRo,
 } from "../models";
 import { BlogService } from "../services";
 
@@ -35,6 +36,14 @@ export const postRouter = router({
     .query(async ({ ctx: { db } }) => {
       const blogService = new BlogService({ db, storage });
       return await blogService.getAllPosts();
+    }),
+
+  getTrashedPosts: adminProcedure
+    .input(z.void())
+    .output(z.array(trashPostSchemaRo))
+    .query(async ({ ctx: { db } }) => {
+      const blogService = new BlogService({ db, storage });
+      return await blogService.getTrashedPosts();
     }),
 
   createPost: adminProcedure

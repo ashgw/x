@@ -78,7 +78,7 @@ export function useViewTracker({
       if (!hasTracked.current) {
         logger.info("Timeout elapsed, tracking view", { postSlug });
         hasTracked.current = true;
-        trackViewMutation.mutate({ postSlug });
+        trackViewMutation.mutate({ slug: postSlug });
       }
     }, delay);
 

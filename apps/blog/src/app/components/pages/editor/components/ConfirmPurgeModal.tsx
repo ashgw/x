@@ -1,19 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Button, Input } from "@ashgw/ui";
+import { Button } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models/post";
-
-export function ConfirmBlogDeleteModal(props: {
-  blog: PostDetailRo;
+export function ConfirmPurgeModal(props: {
+  title: string;
   onConfirm: () => void;
   onCancel: () => void;
-  isDeleting?: boolean;
+  isPurging?: boolean;
 }) {
-  const [confirmation, setConfirmation] = useState("");
-
   const overlayVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -23,8 +18,6 @@ export function ConfirmBlogDeleteModal(props: {
     hidden: { opacity: 0, y: 50, scale: 0.95 },
     visible: { opacity: 1, y: 0, scale: 1 },
   };
-
-  const isMatch = confirmation.trim() === props.blog.title;
 
   return (
     <motion.div
@@ -53,7 +46,7 @@ export function ConfirmBlogDeleteModal(props: {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          Move to Trash
+          Permanently Delete
         </motion.h3>
 
         <motion.p
@@ -62,19 +55,9 @@ export function ConfirmBlogDeleteModal(props: {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          This will move the blog to Trash. You can restore it later or purge it
-          permanently. To confirm moving to Trash of{" "}
-          <span className="font-semibold">{props.blog.title}</span>, please type
-          the blog title exactly below.
-          <br />
+          This action cannot be undone. This will permanently delete "
+          <span className="font-semibold">{props.title}</span>".
         </motion.p>
-        <Input
-          value={confirmation}
-          onChange={(e) => setConfirmation(e.target.value)}
-          placeholder="Type blog title here"
-          className="mb-4 w-full"
-          disabled={props.isDeleting}
-        />
 
         <motion.div
           className="flex justify-end gap-2"
@@ -85,17 +68,17 @@ export function ConfirmBlogDeleteModal(props: {
           <Button
             variant="squared:outline"
             onClick={props.onCancel}
-            disabled={props.isDeleting}
+            disabled={props.isPurging}
           >
             Cancel
           </Button>
           <Button
             variant="destructive"
             onClick={props.onConfirm}
-            disabled={!isMatch || props.isDeleting}
-            loading={props.isDeleting}
+            disabled={props.isPurging}
+            loading={props.isPurging}
           >
-            {props.isDeleting ? "Moving..." : "Move to Trash"}
+            {props.isPurging ? "Deleting..." : "Delete Permanently"}
           </Button>
         </motion.div>
       </motion.div>

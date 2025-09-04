@@ -22,6 +22,7 @@ import { BlogPreview } from "./components/BlogPreview";
 import { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
 import { PostEditorForm } from "./components/Form";
 import { Header } from "./components/Header";
+import { TrashList } from "./components/TrashList";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
@@ -37,6 +38,7 @@ export function EditorPage() {
   );
 
   const [showPreview, setShowPreview] = useState(false);
+  const [viewMode, setViewMode] = useState<"active" | "trash">("active");
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
 
   // Prevent scrolling when modal is open
@@ -74,7 +76,12 @@ export function EditorPage() {
   });
 
   const utils = trpcClientSide.useUtils();
-  const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+  const postsQuery = trpcClientSide.post.getAllPosts.useQuery(undefined, {
+    enabled: viewMode === "active",
+  });
+  const trashedQuery = trpcClientSide.post.getTrashedPosts.useQuery(undefined, {
+    enabled: viewMode === "trash",
+  });
 
   // Edit blog: load values into form
   const handleEditBlog = useCallback(
@@ -98,7 +105,7 @@ export function EditorPage() {
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
     onBlogFound: handleEditBlog,
-    skipLoading: showPreview || isDeletingBlog, // Skip loading if in preview mode or deleting
+    skipLoading: showPreview || isDeletingBlog || viewMode === "trash", // Skip when in trash view too
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
@@ -157,6 +164,29 @@ export function EditorPage() {
         description: error.message,
       });
       setIsDeletingBlog(false);
+    },
+  });
+
+  const restoreMutation = trpcClientSide.post.restoreFromTrash.useMutation({
+    onSuccess: () => {
+      toast.success("Post restored successfully");
+      void utils.post.getTrashedPosts.invalidate();
+      void utils.post.getAllPosts.invalidate();
+    },
+    onError: (error) => {
+      logger.error("Failed to restore post", { error });
+      toast.error("Failed to restore post", { description: error.message });
+    },
+  });
+
+  const purgeMutation = trpcClientSide.post.purgeTrash.useMutation({
+    onSuccess: () => {
+      toast.success("Post permanently deleted");
+      void utils.post.getTrashedPosts.invalidate();
+    },
+    onError: (error) => {
+      logger.error("Failed to purge post", { error });
+      toast.error("Failed to purge post", { description: error.message });
     },
   });
 
@@ -221,55 +251,73 @@ export function EditorPage() {
           blogs={postsQuery.data ?? []}
           isPreviewEnabled={showPreview}
           onTogglePreview={togglePreview}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
         />
-        <div
-          className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
-        >
-          <BlogList
-            blogs={filteredAndSortedBlogs}
-            onEdit={handleEditBlog}
-            onDelete={handleDeleteBlog}
-            isLoading={
-              postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
-            }
-          />
-          {showEditorSkeleton ? (
+        {viewMode === "active" ? (
+          <div
+            className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
+          >
+            <BlogList
+              blogs={filteredAndSortedBlogs}
+              onEdit={handleEditBlog}
+              onDelete={handleDeleteBlog}
+              isLoading={
+                postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
+              }
+            />
+            {showEditorSkeleton ? (
+              <div className="lg:col-span-2">
+                <div className="bg-card rounded-lg border p-4">
+                  <Skeleton className="w-full" />
+                </div>
+              </div>
+            ) : (
+              <div className="lg:col-span-2">
+                <AnimatePresence mode="wait" initial={false}>
+                  <PostEditorForm
+                    key="editor"
+                    form={form}
+                    onSubmit={onSubmit}
+                    isSubmitting={isSubmitting}
+                    isHidden={showPreview}
+                  />
+                  {showPreview ? (
+                    <BlogPreview
+                      key="preview"
+                      isVisible={showPreview}
+                      formData={formValues}
+                      title={
+                        editModal.visible
+                          ? editModal.entity.title
+                          : "Preview Title"
+                      }
+                      creationDate={
+                        editModal.visible
+                          ? editModal.entity.firstModDate.toISOString()
+                          : new Date().toISOString()
+                      }
+                    />
+                  ) : null}
+                </AnimatePresence>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <TrashList
+              items={trashedQuery.data ?? []}
+              onRestore={(item) => restoreMutation.mutate({ trashId: item.id })}
+              onPurge={(item) => purgeMutation.mutate({ trashId: item.id })}
+              isLoading={trashedQuery.isLoading}
+            />
             <div className="lg:col-span-2">
-              <div className="bg-card rounded-lg border p-4">
-                <Skeleton className="w-full" />
+              <div className="text-muted-foreground flex h-full items-center justify-center rounded-lg border p-4">
+                Select an item to restore or purge.
               </div>
             </div>
-          ) : (
-            <div className="lg:col-span-2">
-              <AnimatePresence mode="wait" initial={false}>
-                <PostEditorForm
-                  key="editor"
-                  form={form}
-                  onSubmit={onSubmit}
-                  isSubmitting={isSubmitting}
-                  isHidden={showPreview}
-                />
-                {showPreview ? (
-                  <BlogPreview
-                    key="preview"
-                    isVisible={showPreview}
-                    formData={formValues}
-                    title={
-                      editModal.visible
-                        ? editModal.entity.title
-                        : "Preview Title"
-                    }
-                    creationDate={
-                      editModal.visible
-                        ? editModal.entity.firstModDate.toISOString()
-                        : new Date().toISOString()
-                    }
-                  />
-                ) : null}
-              </AnimatePresence>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
         {deleteModal.visible ? (
           <ConfirmBlogDeleteModal
             blog={deleteModal.entity}

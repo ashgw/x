@@ -21,7 +21,9 @@ export function useQueryParamBlog({
   const searchParams = useSearchParams();
   const blogSlug = searchParams.get("blog");
 
-  const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+  const postsQuery = trpcClientSide.post.getAllPosts.useQuery(undefined, {
+    enabled: !skipLoading,
+  });
 
   // Only fetch the specific post if we have a slug and not skipping loading
   const getPostQuery = trpcClientSide.post.getPost.useQuery(
