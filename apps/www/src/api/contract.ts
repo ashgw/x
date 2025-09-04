@@ -1,6 +1,6 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { cacheControlsQueryDtoSchema, errorSchemaRo } from "./rest/schemas";
+import { cacheControlsQueryDtoSchema, errorSchemaRo } from "./schemas";
 
 const c = initContract();
 
