@@ -10,6 +10,7 @@ import { EMAIL, LINKS } from "@ashgw/constants";
 import { monitor } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
+import { client } from "~/api/client";
 import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 
@@ -20,15 +21,15 @@ export function ContactPage() {
 
   async function copyGPG() {
     try {
-      const res = await fetch("/api/v1/gpg", {
-        method: "GET",
+      const { status, body } = await client.gpg({
+        query: undefined,
       });
-      if (!res.ok) {
-        const failureMessage = await res.text();
-        throw new Error(failureMessage);
+
+      if (status !== 200) {
+        throw new Error(`API error: ${status}`);
       }
-      const key = await res.text();
-      copyToClipboard(key);
+
+      copyToClipboard(body);
       toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
         description: "PGP public key block is copied to your clipboard",
       });
