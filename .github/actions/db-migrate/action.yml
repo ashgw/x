@@ -3,18 +3,14 @@ name: CI / DB Migrate
 description: Run database migrations
 
 inputs:
-  with_deploy:
+  comment_on_pr:
     required: true
-    description: "Whether to run the migration deployment step ('yes' or 'no')"
+    description: "Whether to comment on the PR ('yes' or 'no') after running the migration"
 
 runs:
   using: "composite"
   steps:
-    - name: Set up Docker for the temporary database container
-      uses: docker/setup-buildx-action@v3
-      with:
-        version: latest
-    - name: Mask database url
+    - name: Mask database url if not done already
       shell: bash
       run: |
         set -euo pipefail
@@ -22,6 +18,34 @@ runs:
           echo "DATABASE_URL is not set"; exit 1
         fi
         echo "::add-mask::$DATABASE_URL"
+
+    - name: Run migrations on the $CURRENT_ENV database
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
+
+    - name: Validate migrations on the $CURRENT_ENV database
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
+
+    - name: Comment on PR
+      if: github.event_name == 'pull_request' && inputs.comment_on_pr == 'yes'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+      run: |
+        pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        repo="${{ github.repository }}"
+
+        comment_body="Database migrations were successfully deployed to the $CURRENT_ENV branch of the database."
+
+        curl -s -X POST \
+          -H "Authorization: token $GH_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d "{\"body\": \"${comment_body}\"}" \
+          "https://api.github.com/repos/${repo}/issues/${pr_number}/comments"
 
     - name: Check for schema drift
       shell: bash
@@ -57,33 +81,3 @@ runs:
         pnpm --filter @ashgw/db stop
 
         exit $STATUS
-
-    - name: Run migrations on the $CURRENT_ENV database
-      if: inputs.with_deploy == 'yes'
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
-
-    - name: Validate migrations on the $CURRENT_ENV database
-      if: inputs.with_deploy == 'yes'
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
-
-    - name: Comment on PR
-      if: github.event_name == 'pull_request' && inputs.with_deploy == 'yes'
-      shell: bash
-      env:
-        GH_TOKEN: ${{ github.token }}
-
-      run: |
-        pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-        repo="${{ github.repository }}"
-
-        comment_body="Database migrations were successfully deployed to the $CURRENT_ENV branch of the database."
-
-        curl -s -X POST \
-          -H "Authorization: token $GH_TOKEN" \
-          -H "Content-Type: application/json" \
-          -d "{\"body\": \"${comment_body}\"}" \
-          "https://api.github.com/repos/${repo}/issues/${pr_number}/comments"
