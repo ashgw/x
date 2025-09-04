@@ -1,14 +1,12 @@
 import { createHash } from "crypto";
 import type { NextRequest } from "next/server";
-
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
-
+import { Prisma } from "@ashgw/db/raw";
 export class ViewService {
   private readonly db: DatabaseClient;
   private readonly req: NextRequest;
-  private static readonly DEDUPLICATION_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
   constructor({ db, req }: { db: DatabaseClient; req: NextRequest }) {
     this.db = db;
@@ -23,38 +21,36 @@ export class ViewService {
       "127.0.0.1";
     const userAgent = headersList.get("user-agent") ?? "unknown";
 
+    const fingerprint = this._fingerprint({ slug, ipAddress, userAgent });
+    const bucketStart = this._utcMidnight(new Date()); // 24h bucket
+
     try {
-      // Generate fingerprint that uniquely identifies this view
-      const fingerprint = this._generateFingerprint({
-        slug,
-        ipAddress,
-        userAgent,
+      await this.db.$transaction(async (tx) => {
+        try {
+          await tx.postViewWindow.create({
+            data: {
+              postSlug: slug,
+              fingerprint,
+              bucketStart,
+            },
+          });
+
+          // only reached if create did NOT violate unique constraint
+          await tx.post.update({
+            where: { slug },
+            data: { viewsCount: { increment: 1 } },
+          });
+        } catch (e: unknown) {
+          // unique violation means we've already counted this fp today – ignore.
+          if (
+            e instanceof Prisma.PrismaClientKnownRequestError &&
+            e.code === "P2002"
+          ) {
+            return;
+          }
+          throw e; // real error -> bubble up
+        }
       });
-
-      // Check if view already exists within the deduplication window
-      const existingView = await this.db.postView.findFirst({
-        where: {
-          fingerprint,
-          postSlug: slug,
-          createdAt: {
-            gte: new Date(Date.now() - ViewService.DEDUPLICATION_WINDOW_MS),
-          },
-        },
-      });
-
-      if (existingView) {
-        return;
-      }
-
-      // Create the view record
-      await this.db.postView.create({
-        data: {
-          postSlug: slug,
-          fingerprint,
-        },
-      });
-
-      logger.info("View tracked", { slug });
     } catch (error) {
       logger.error("Failed to track view", { error, slug });
       throw new InternalError({
@@ -65,7 +61,7 @@ export class ViewService {
     }
   }
 
-  private _generateFingerprint({
+  private _fingerprint({
     slug,
     ipAddress,
     userAgent,
@@ -74,13 +70,17 @@ export class ViewService {
     ipAddress: string;
     userAgent: string;
   }): string {
-    // Hash the IP address with salt first for extra security
     const hashedIp = createHash("sha256")
       .update(ipAddress + env.IP_HASH_SALT)
       .digest("hex");
+    return createHash("sha256")
+      .update(`${slug}:${hashedIp}:${userAgent}`)
+      .digest("hex");
+  }
 
-    // This fingerprint uniquely identifies a view while preserving privacy
-    const data = `${slug}:${hashedIp}:${userAgent}`;
-    return createHash("sha256").update(data).digest("hex");
+  private _utcMidnight(d: Date): Date {
+    return new Date(
+      Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 0, 0, 0, 0),
+    );
   }
 }
