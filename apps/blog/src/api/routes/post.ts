@@ -1,87 +1,88 @@
 import { z } from "zod";
-
 import { storage } from "@ashgw/storage";
-
 import { adminProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
   postCardSchemaRo,
   postDeleteSchemaDto,
-  postDetailSchemaRo,
+  postArticleSchemaRo,
   postEditorSchemaDto,
   postGetSchemaDto,
   postUpdateSchemaDto,
+  trashPostArticleSchemaRo,
 } from "../models";
 import { BlogService } from "../services";
 
 export const postRouter = router({
-  getPost: publicProcedure
+  getDetailedPublicPost: publicProcedure
     .input(postGetSchemaDto)
-    .output(postDetailSchemaRo.nullable()) // not found
+    .output(postArticleSchemaRo.nullable())
     .query(async ({ input: { slug }, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-
-      return await blogService.getDetailPost({ slug });
+      const blogService = new BlogService({ db, storage });
+      return await blogService.getDetailedPublicPost({ slug });
     }),
 
-  getPostCards: publicProcedure
+  getPublicPostCards: publicProcedure
     .input(z.void())
     .output(z.array(postCardSchemaRo))
     .query(async ({ ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-      return await blogService.getPostCards();
+      const blogService = new BlogService({ db, storage });
+      return await blogService.getPublicPostCards();
     }),
 
-  // Admin endpoints
-  getAllPosts: adminProcedure
+  getAllAdminPosts: adminProcedure
     .input(z.void())
-    .output(z.array(postDetailSchemaRo))
+    .output(z.array(postArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-      return await blogService.getAllPosts();
+      const blogService = new BlogService({ db, storage });
+      return await blogService.getAllAdminPosts();
     }),
 
   createPost: adminProcedure
     .input(postEditorSchemaDto)
-    .output(postDetailSchemaRo)
+    .output(postArticleSchemaRo)
     .mutation(async ({ input, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
+      const blogService = new BlogService({ db, storage });
       return await blogService.createPost(input);
     }),
 
   updatePost: adminProcedure
     .input(postUpdateSchemaDto)
-    .output(postDetailSchemaRo)
+    .output(postArticleSchemaRo)
     .mutation(async ({ input: { data, slug }, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-      return await blogService.updatePost({
-        slug,
-        data,
-      });
+      const blogService = new BlogService({ db, storage });
+      return await blogService.updatePost({ slug, data });
     }),
 
-  deletePost: adminProcedure
+  trashPost: adminProcedure
     .input(postDeleteSchemaDto)
+    .output(z.void())
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
-      const blogService = new BlogService({
-        db,
-        storage,
-      });
-      return await blogService.deletePost(slug);
+      const blogService = new BlogService({ db, storage });
+      await blogService.trashPost({ originalSlug: slug });
+    }),
+
+  getTrashedPosts: adminProcedure
+    .input(z.void())
+    .output(z.array(trashPostArticleSchemaRo))
+    .query(async ({ ctx: { db } }) => {
+      const blogService = new BlogService({ db, storage });
+      return await blogService.getTrashedPosts();
+    }),
+
+  purgeTrash: adminProcedure
+    .input(z.object({ trashId: z.string().min(1) }))
+    .output(z.void())
+    .mutation(async ({ input: { trashId }, ctx: { db } }) => {
+      const blogService = new BlogService({ db, storage });
+      await blogService.purgeTrash({ trashId });
+    }),
+
+  restoreFromTrash: adminProcedure
+    .input(z.object({ trashId: z.string().min(1) }))
+    .output(z.void())
+    .mutation(async ({ input: { trashId }, ctx: { db } }) => {
+      const blogService = new BlogService({ db, storage });
+      await blogService.restoreFromTrash({ trashId });
     }),
 });

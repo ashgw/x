@@ -21,17 +21,17 @@ model Post {
   minutesToRead Int        @db.SmallInt
   tags          String[]   @db.VarChar(255)
   category      PostCategory
-  mdxContentId  String     @unique @db.VarChar(255)
-  mdxContent    Upload     @relation("PostMdxContent", fields: [mdxContentId], references: [key], onDelete: Cascade)
+  mdxText       String     @db.Text           
   postViews     PostView[] @relation("PostViews")
 
-  @@index([mdxContentId])
+  @@index([lastModDate])
+  @@index([isReleased, lastModDate])
 }
 
 model PostView {
   id          String   @id @default(cuid())
   postSlug    String   @db.VarChar(255)
-  fingerprint String   @db.VarChar(64)  // Contains hashed postSlug:ip:userAgent
+  fingerprint String   @db.VarChar(64)  // hashed postSlug:ip:userAgent
   createdAt   DateTime @default(now())
   post        Post     @relation("PostViews", fields: [postSlug], references: [slug], onDelete: Cascade)
 
@@ -44,9 +44,8 @@ model Upload {
   key         String       @id @db.VarChar(512)
   type        UploadType
   entityType  ResourceType @default(POST)
-  contentType String       @db.VarChar(100) // like image/png or whatever
+  contentType String       @db.VarChar(100) // text/markdown etc...
   uploadedAt  DateTime     @default(now())
-  post        Post?        @relation("PostMdxContent")
 }
 
 model User {
@@ -70,6 +69,25 @@ model Session {
   @@index([userId])
 }
 
+model TrashPost {
+  id                 String       @id @default(cuid())
+  originalSlug       String       @db.VarChar(255)
+  title              String       @db.VarChar(30)
+  seoTitle           String       @db.VarChar(100)
+  summary            String       @db.VarChar(100)
+  firstModDate       DateTime
+  lastModDate        DateTime
+  wasReleased        Boolean
+  minutesToRead      Int          @db.SmallInt
+  tags               String[]     @db.VarChar(255)
+  category           PostCategory
+  mdxText            String       @db.Text       
+  deletedAt          DateTime     @default(now())
+
+  @@index([originalSlug])
+  @@index([deletedAt])
+}
+
 enum PostCategory {
   SOFTWARE
   HEALTH
@@ -83,7 +101,6 @@ enum ResourceType {
 enum UploadType {
   IMAGE
   AUDIO
-  MDX
   OTHER
 }
 

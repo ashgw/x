@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { slug } from "../_shared";
 
 // ========== DTOs ==========
 
 export const trackViewSchemaDto = z.object({
-  postSlug: z.string().min(1).max(255),
+  slug,
 });
 
 // ========== ROs ==========
