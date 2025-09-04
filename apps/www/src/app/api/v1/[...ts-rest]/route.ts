@@ -5,10 +5,6 @@ import { Controllers } from "~/app/api/rest/controllers";
 
 export const runtime = "nodejs";
 
-/**
- * Full request and response validation is on in dev.
- * In prod we keep request validation and turn off response re-validation to avoid hot-path overhead.
- */
 const handler = createNextHandler(
   v1Contract,
   {
