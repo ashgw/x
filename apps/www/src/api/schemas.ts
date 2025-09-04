@@ -26,7 +26,7 @@ export const cacheControlsQueryDtoSchema = z
       .optional()
       .describe("Override ISR revalidate in seconds, 60..86400"),
   })
-  .strict();
+  .passthrough();
 
 export type CacheControlsQueryDto = z.infer<typeof cacheControlsQueryDtoSchema>;
 
