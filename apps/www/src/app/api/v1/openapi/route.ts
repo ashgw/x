@@ -8,7 +8,7 @@ export function GET() {
     info: {
       title: "@ashgw www API v1",
       version: "1.0.0",
-      description: "Contract-first REST powered by ts-rest",
+      description: "Contract-first REST",
     },
     openapi: "3.0.3",
     servers: [{ url: `${env.NEXT_PUBLIC_WWW_URL}` }],

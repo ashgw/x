@@ -72,9 +72,9 @@ export async function getGpg(): Promise<Resp> {
   });
 }
 
-export async function getZshFuncs(): Promise<Resp> {
+export async function getDebion(): Promise<Resp> {
   return fetchText(
-    "https://raw.githubusercontent.com/AshGw/zshfuncs/main/funcs.zsh",
+    "https://raw.githubusercontent.com/ashgw/debion/main/setup",
     {
       contentType: "text/plain",
       cacheControl: "s-maxage=3600, stale-while-revalidate=300",
