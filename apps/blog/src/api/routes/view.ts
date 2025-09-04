@@ -9,10 +9,10 @@ export const viewRouter = router({
   trackView: publicProcedure
     .input(trackViewSchemaDto)
     .output(z.void())
-    .mutation(async ({ input: { postSlug }, ctx: { db, req } }) => {
+    .mutation(async ({ input: { slug }, ctx: { db, req } }) => {
       return await new ViewService({
         db,
         req,
-      }).trackView({ postSlug });
+      }).trackView({ slug });
     }),
 });

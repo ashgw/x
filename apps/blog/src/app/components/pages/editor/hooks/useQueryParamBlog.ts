@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 import { logger } from "@ashgw/observability";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/client";
 
 interface UseQueryParamBlogProps {
-  onBlogFound?: (blog: PostDetailRo) => void;
+  onBlogFound?: (blog: PostArticleRo) => void;
   skipLoading?: boolean; // Add flag to skip loading blogs
 }
 
@@ -21,10 +21,12 @@ export function useQueryParamBlog({
   const searchParams = useSearchParams();
   const blogSlug = searchParams.get("blog");
 
-  const postsQuery = trpcClientSide.post.getAllPosts.useQuery();
+  const postsQuery = trpcClientSide.post.getAllAdminPosts.useQuery(undefined, {
+    enabled: !skipLoading,
+  });
 
   // Only fetch the specific post if we have a slug and not skipping loading
-  const getPostQuery = trpcClientSide.post.getPost.useQuery(
+  const getPostQuery = trpcClientSide.post.getDetailedPublicPost.useQuery(
     { slug: blogSlug ?? "" },
     {
       enabled:

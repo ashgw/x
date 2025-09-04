@@ -25,7 +25,9 @@ const clamp = (s: string, n: number) =>
 
 export default async function Image(_: Request, { params }: RouteCtx) {
   try {
-    const post = await trpcServerSide.post.getPost({ slug: params.post });
+    const post = await trpcServerSide.post.getDetailedPublicPost({
+      slug: params.post,
+    });
 
     const title = clamp(post?.title ?? "Post not found", 90);
     const subtitle = clamp(post?.summary ?? "No description available", 140);

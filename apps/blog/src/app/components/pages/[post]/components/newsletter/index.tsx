@@ -23,7 +23,7 @@ import { trpcClientSide } from "~/trpc/client";
 export function Newsletter() {
   const form = useForm<NewsletterSubscribeDto>({
     resolver: zodResolver(newsletterSubscribeDtoSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const subscribeMutation = trpcClientSide.newsletter.subscribe.useMutation({

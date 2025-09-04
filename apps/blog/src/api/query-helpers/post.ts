@@ -1,53 +1,76 @@
 import type { Prisma } from "@ashgw/db/raw";
 
 export type PostCardQuery = Prisma.PostGetPayload<{
-  include: ReturnType<typeof PostQueryHelper.cardInclude>;
+  select: ReturnType<typeof PostQueryHelper.cardSelect>;
 }>;
 
-export type PostDetailQuery = Prisma.PostGetPayload<{
-  include: ReturnType<typeof PostQueryHelper.detailInclude>;
+export type PostArticleQuery = Prisma.PostGetPayload<{
+  include: ReturnType<typeof PostQueryHelper.articleInclude>;
 }>;
 
 export type PostAdminQuery = Prisma.PostGetPayload<{
   include: ReturnType<typeof PostQueryHelper.adminInclude>;
 }>;
 
+export type TrashPostArticleQuery = Prisma.TrashPostGetPayload<{
+  select: ReturnType<typeof PostQueryHelper.trashArticleSelect>;
+}>;
+
 export class PostQueryHelper {
-  public static detailInclude() {
+  public static articleInclude() {
     return {
-      ...this.cardInclude(),
-      ...this._includeWithMdx(),
+      ...this._withViews(),
     } satisfies Prisma.PostInclude;
   }
 
-  public static cardInclude() {
+  public static cardSelect() {
     return {
-      postViews: {
-        select: {
-          id: true,
-        },
-      },
-    } satisfies Prisma.PostInclude;
+      slug: true,
+      category: true,
+      tags: true,
+      title: true,
+      seoTitle: true,
+      summary: true,
+      firstModDate: true,
+      minutesToRead: true,
+      ...this._withViews(),
+    } satisfies Prisma.PostSelect;
   }
 
   public static adminInclude() {
     return {
-      ...this.detailInclude(),
+      ...this.articleInclude(),
     } satisfies Prisma.PostInclude;
   }
 
   public static whereReleasedToPublic() {
     return {
       isReleased: true,
-      firstModDate: {
-        lte: new Date(),
-      },
+      firstModDate: { lte: new Date() },
     } satisfies Prisma.PostWhereInput;
   }
 
-  private static _includeWithMdx() {
+  public static trashArticleSelect() {
     return {
-      mdxContent: true,
-    } satisfies Prisma.PostInclude;
+      id: true,
+      originalSlug: true,
+      title: true,
+      seoTitle: true,
+      summary: true,
+      firstModDate: true,
+      lastModDate: true,
+      minutesToRead: true,
+      wasReleased: true,
+      tags: true,
+      category: true,
+      mdxText: true,
+      deletedAt: true,
+    } satisfies Prisma.TrashPostSelect;
+  }
+
+  private static _withViews() {
+    return {
+      postViews: { select: { id: true } },
+    } satisfies Prisma.PostInclude & Prisma.PostSelect;
   }
 }

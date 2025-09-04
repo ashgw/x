@@ -19,7 +19,7 @@ export function ContentField({ control }: ContentFieldProps) {
   return (
     <FormField
       control={control}
-      name="mdxContent"
+      name="mdxText"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Content</FormLabel>
