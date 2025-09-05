@@ -1,4 +1,3 @@
-import { contentTypes } from "./content-types";
 import { timed } from "./functions/timed";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
@@ -16,7 +15,7 @@ export const Controllers = makeControllers(v1Contract)({
           scriptPath: "install/bootstrap",
         }),
         opts: {
-          contentType: contentTypes.text,
+          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
@@ -29,7 +28,7 @@ export const Controllers = makeControllers(v1Contract)({
         q: query,
         url: "https://github.com/ashgw.gpg",
         opts: {
-          contentType: contentTypes.pgp,
+          contentType: "application/pgp-keys",
           defaultRevalidate: 86400,
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
@@ -42,7 +41,7 @@ export const Controllers = makeControllers(v1Contract)({
         q: query,
         url: repoMainBranchBaseUrl({ repo: "debion", scriptPath: "setup" }),
         opts: {
-          contentType: contentTypes.text,
+          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
@@ -55,7 +54,7 @@ export const Controllers = makeControllers(v1Contract)({
         q: query,
         url: repoMainBranchBaseUrl({ repo: "whisper", scriptPath: "setup" }),
         opts: {
-          contentType: contentTypes.text,
+          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },

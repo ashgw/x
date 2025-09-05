@@ -7,7 +7,7 @@ import type {
 import type { EmptyObject } from "ts-roids";
 export type Awaitable<T> = T | Promise<T>;
 
-export type ReqFor<R extends AppRoute> = (ServerInferRequest<R> extends {
+type ReqFor<R extends AppRoute> = (ServerInferRequest<R> extends {
   params: infer P;
 }
   ? { params: P }
@@ -17,7 +17,7 @@ export type ReqFor<R extends AppRoute> = (ServerInferRequest<R> extends {
     : EmptyObject) &
   (ServerInferRequest<R> extends { body: infer B } ? { body: B } : EmptyObject);
 
-export type ControllerShape<C extends AppRouter> = {
+type ControllerShape<C extends AppRouter> = {
   [K in keyof C]: C[K] extends AppRoute
     ? (args: ReqFor<C[K]>) => Awaitable<ServerInferResponses<C[K]>>
     : never;
