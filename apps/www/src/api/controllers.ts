@@ -3,7 +3,6 @@ import { timed } from "./functions/timed";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
 import { makeControllers } from "./controller-types";
-import type { ArgsFor } from "./controller-types";
 
 function repoMainBranchBaseUrl({
   repo,
@@ -16,7 +15,7 @@ function repoMainBranchBaseUrl({
 }
 
 export const Controllers = makeControllers(v1Contract)({
-  bootstrap: async (args: ArgsFor<typeof v1Contract.bootstrap>) =>
+  bootstrap: async (args) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream<string>({
         q: args.query,
@@ -32,7 +31,7 @@ export const Controllers = makeControllers(v1Contract)({
       }),
     ),
 
-  gpg: async (args: ArgsFor<typeof v1Contract.gpg>) =>
+  gpg: async (args) =>
     timed("gpg", () =>
       fetchTextFromUpstream<string>({
         q: args.query,
@@ -45,7 +44,7 @@ export const Controllers = makeControllers(v1Contract)({
       }),
     ),
 
-  debion: async (args: ArgsFor<typeof v1Contract.debion>) =>
+  debion: async (args) =>
     timed("debion", () =>
       fetchTextFromUpstream<string>({
         q: args.query,
@@ -58,7 +57,7 @@ export const Controllers = makeControllers(v1Contract)({
       }),
     ),
 
-  whisper: async (args: ArgsFor<typeof v1Contract.whisper>) =>
+  whisper: async (args) =>
     timed("whisper", () =>
       fetchTextFromUpstream<string>({
         q: args.query,
