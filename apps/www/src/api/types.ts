@@ -5,15 +5,12 @@ import type {
   ContractPlainType,
   ContractNullType,
   ContractNoBodyType,
-} from "@ts-rest/core";
-import type { EmptyObject, Optional, Keys, IfExtends } from "ts-roids";
-
-import type {
   AppRoute,
   AppRouter,
   ServerInferRequest,
   ServerInferResponses,
 } from "@ts-rest/core";
+import type { EmptyObject, Optional, Keys, IfExtends } from "ts-roids";
 
 export type Awaitable<T> = T | Promise<T>;
 
@@ -28,12 +25,11 @@ type ReqFor<R extends AppRoute> = (ServerInferRequest<R> extends {
   (ServerInferRequest<R> extends { body: infer B } ? { body: B } : EmptyObject);
 
 export type ControllerShape<C extends AppRouter> = {
-  [K in keyof C]: C[K] extends AppRoute
+  [K in Keys<C>]: C[K] extends AppRoute
     ? (args: ReqFor<C[K]>) => Awaitable<ServerInferResponses<C[K]>>
     : never;
 };
 
-/** Map of status -> any ts-rest-supported response shape */
 export type ResponsesMap = Record<number, AppRouteResponse>;
 
 /** Unwrap the various body container types that ts-rest allows */

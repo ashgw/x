@@ -1,7 +1,6 @@
-import { timed } from "./functions/timed";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
-import { repoMainBranchBaseUrl } from "./utils";
+import { repoMainBranchBaseUrl, timed } from "./utils";
 import { checkHealth } from "./functions/checkHealth";
 import { makeControllers } from "./makeControllers";
 
