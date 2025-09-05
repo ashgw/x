@@ -34,17 +34,13 @@ export async function fetchTextFromUpstream(input: {
       };
     }
 
-    const text = (await res.text()) as unknown as Body;
+    const text = (await res.text()) as unknown as string;
 
     return {
       status: 200,
       body: {
-        body: ,
-        contentType: opts.contentType,
-      },
-      headers: {
-        "Content-Type": opts.contentType,
-        "Cache-Control": opts.cacheControl,
+        contentType: "text/plain",
+        body: text,
       },
     };
   } catch (error) {
