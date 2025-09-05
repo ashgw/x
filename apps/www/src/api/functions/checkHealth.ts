@@ -1,6 +1,6 @@
-import type { CheckHealthResponses } from "../models/ros";
+import type { CheckHealthRos } from "../models/ros";
 
-export async function checkHealth(): Promise<CheckHealthResponses> {
+export async function checkHealth(): Promise<CheckHealthRos> {
   await new Promise((r) => setTimeout(r, 1));
   return {
     status: 200,

@@ -1,7 +1,7 @@
 import type { CacheControlsQueryDto } from "../models/dtos";
 import type {
-  FetchGpgFromUpstreamResponses,
-  FetchTextFromUpstreamResponses,
+  FetchGpgFromUpstreamRos,
+  FetchTextFromUpstreamRos,
 } from "../models/ros";
 
 interface FetchOpts {
@@ -9,15 +9,13 @@ interface FetchOpts {
   cacheControl: string;
 }
 
-type FetchUpstreamResponses =
-  | FetchTextFromUpstreamResponses
-  | FetchGpgFromUpstreamResponses;
+type FetchUpstreamRos = FetchTextFromUpstreamRos | FetchGpgFromUpstreamRos;
 
 export async function fetchTextFromUpstream(input: {
   url: string;
   q?: CacheControlsQueryDto;
   opts: FetchOpts;
-}): Promise<FetchUpstreamResponses> {
+}): Promise<FetchUpstreamRos> {
   const { url, opts } = input;
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;
