@@ -1,14 +1,12 @@
-import { z } from "zod";
-
 import { publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
-import { trackViewSchemaDto } from "../models/view";
+import { trackViewRoSchema, trackViewSchemaDto } from "../models/view";
 import { ViewService } from "../services/view";
 
 export const viewRouter = router({
   trackView: publicProcedure
     .input(trackViewSchemaDto)
-    .output(z.void())
+    .output(trackViewRoSchema)
     .mutation(async ({ input: { slug }, ctx: { db, req } }) => {
       return await new ViewService({
         db,

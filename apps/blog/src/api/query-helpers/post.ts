@@ -18,13 +18,7 @@ export type TrashPostArticleQuery = Prisma.TrashPostGetPayload<{
 
 export class PostQueryHelper {
   public static articleInclude() {
-    return {
-      _count: {
-        select: {
-          postViews: true,
-        },
-      },
-    } satisfies Prisma.PostInclude;
+    return {} satisfies Prisma.PostInclude;
   }
 
   public static cardSelect() {
@@ -37,11 +31,7 @@ export class PostQueryHelper {
       summary: true,
       firstModDate: true,
       minutesToRead: true,
-      _count: {
-        select: {
-          postViews: true,
-        },
-      },
+      viewsCount: true,
     } satisfies Prisma.PostSelect;
   }
 
