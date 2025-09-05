@@ -9,7 +9,7 @@ import { checkHealth } from "./functions/checkHealth";
 export const Controllers = makeControllers(v1Contract)({
   bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
-      fetchTextFromUpstream<string>({
+      fetchTextFromUpstream({
         q: query,
         url: repoMainBranchBaseUrl({
           repo: "dotfiles",
@@ -25,7 +25,7 @@ export const Controllers = makeControllers(v1Contract)({
 
   gpg: async ({ query }) =>
     timed("gpg", () =>
-      fetchTextFromUpstream<string>({
+      fetchTextFromUpstream({
         q: query,
         url: "https://github.com/ashgw.gpg",
         opts: {
@@ -38,7 +38,7 @@ export const Controllers = makeControllers(v1Contract)({
 
   debion: async ({ query }) =>
     timed("debion", () =>
-      fetchTextFromUpstream<string>({
+      fetchTextFromUpstream({
         q: query,
         url: repoMainBranchBaseUrl({ repo: "debion", scriptPath: "setup" }),
         opts: {
@@ -51,7 +51,7 @@ export const Controllers = makeControllers(v1Contract)({
 
   whisper: async ({ query }) =>
     timed("whisper", () =>
-      fetchTextFromUpstream<string>({
+      fetchTextFromUpstream({
         q: query,
         url: repoMainBranchBaseUrl({ repo: "whisper", scriptPath: "setup" }),
         opts: {

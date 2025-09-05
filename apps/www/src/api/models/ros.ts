@@ -32,6 +32,7 @@ export const fetchTextFromUpstreamSchemaResponses = {
     body: z.string().min(1),
   }),
   500: httpErrorSchema,
+  424: httpErrorSchema,
 };
 
 // ========== Types ==========

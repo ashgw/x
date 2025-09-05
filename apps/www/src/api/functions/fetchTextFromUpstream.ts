@@ -1,5 +1,5 @@
-import type { UpstreamResp } from "../error";
-import type { CacheControlsQueryDto } from "./dtos";
+import type { CacheControlsQueryDto } from "../models/dtos";
+import type { FetchTextFromUpstreamResponses } from "../models/ros";
 
 interface FetchOpts {
   contentType: string;
@@ -7,11 +7,11 @@ interface FetchOpts {
   cacheControl: string; // Cache-Control header we set on 200
 }
 
-export async function fetchTextFromUpstream<Body = string>(input: {
+export async function fetchTextFromUpstream(input: {
   url: string;
   q?: CacheControlsQueryDto;
   opts: FetchOpts;
-}): Promise<UpstreamResp<Body>> {
+}): Promise<FetchTextFromUpstreamResponses> {
   const { url, opts } = input;
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;
@@ -38,7 +38,10 @@ export async function fetchTextFromUpstream<Body = string>(input: {
 
     return {
       status: 200,
-      body: text,
+      body: {
+        body: ,
+        contentType: opts.contentType,
+      },
       headers: {
         "Content-Type": opts.contentType,
         "Cache-Control": opts.cacheControl,
