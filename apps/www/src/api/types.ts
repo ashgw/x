@@ -6,7 +6,7 @@ import type {
   ContractNullType,
   ContractNoBodyType,
 } from "@ts-rest/core";
-import type { EmptyObject, Optional, Keys } from "ts-roids";
+import type { EmptyObject, Optional, Keys, IfExtends } from "ts-roids";
 
 /** Map of status -> any ts-rest-supported response shape */
 export type ResponsesMap = Record<number, AppRouteResponse>;
@@ -20,10 +20,7 @@ type UnwrapContractAny<T> =
       T extends ContractPlainType<infer P>
       ? P
       : // explicit null body
-        T extends Optional<ContractNullType>
-        ? null
-        : // otherwise no valid body to infer
-          never;
+        IfExtends<T, Optional<ContractNullType>, null, never>; // otherwise no valid body to infer
 
 type BodyFromResponse<R extends AppRouteResponse> =
   // no-body response -> no body key
@@ -37,10 +34,7 @@ type BodyFromResponse<R extends AppRouteResponse> =
         ? { body: z.infer<R> }
         : R extends ContractPlainType<infer P>
           ? { body: P }
-          : R extends Optional<ContractNullType>
-            ? { body: null }
-            : // anything else is not a valid response spec
-              never;
+          : IfExtends<R, Optional<ContractNullType>, { body: null }, never>; // anything else is not a valid response spec
 
 /** Optional headers on any response variant */
 type WithHeaders<T> = T & { headers?: Record<string, string> };
