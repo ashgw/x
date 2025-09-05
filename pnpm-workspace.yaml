@@ -15,7 +15,7 @@ catalog:
   tailwindcss: 3.4.14
   "@tailwindcss/typography": 0.5.10
   typescript: 5.6.3
-  ts-roids: 1.47.0 # always update this btw
+  ts-roids: 2.0.0 # always update this btw
   "@vitest/ui": 2.1.8
   vitest: "2.1.8"
   # There's a bug with the latest version as of 01.25

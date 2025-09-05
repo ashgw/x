@@ -1,137 +1,72 @@
-import type { CacheControlsQueryDto, ErrorRo } from "./schemas";
-import { contentTypes } from "./schemas";
+import { timed } from "./functions/timed";
+import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
+import { v1Contract } from "./contract";
+import { makeControllers } from "./controller-types";
+import { repoMainBranchBaseUrl } from "./utils";
+import { checkHealth } from "./functions/checkHealth";
 
-interface Ok {
-  status: 200;
-  body: string;
-  headers?: Record<string, string>;
-}
-interface Fail {
-  status: 424 | 500;
-  body: ErrorRo;
-  headers?: Record<string, string>;
-}
-export type Resp = Ok | Fail;
-
-interface FetchOpts {
-  contentType: string;
-  defaultRevalidate: number; // seconds
-  cacheControl: string; // Cache-Control header we set on 200
-}
-
-async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
-  const t0 = Date.now();
-  try {
-    return await fn();
-  } finally {
-    const dt = Date.now() - t0;
-    // eslint-disable-next-line no-restricted-syntax
-    console.debug(`[REST] ${label} took ${dt}ms`);
-  }
-}
-
-async function fetchTextFromUpstream(input: {
-  url: string;
-  q?: CacheControlsQueryDto;
-  opts: FetchOpts;
-}): Promise<Resp> {
-  const { url, opts } = input;
-
-  const revalidateSeconds =
-    input.q?.revalidateSeconds ?? opts.defaultRevalidate;
-
-  try {
-    const res = await fetch(url, {
-      next: { revalidate: revalidateSeconds },
-      cache: "force-cache",
-      signal: AbortSignal.timeout(10_000),
-    });
-
-    if (!res.ok) {
-      return {
-        status: 424,
-        body: {
-          code: "UPSTREAM_ERROR",
-          message: `Upstream error`,
-          details: { status: res.status, url },
-        },
-      };
-    }
-
-    const text = await res.text();
-
-    return {
-      status: 200,
-      body: text,
-      headers: {
-        "Content-Type": opts.contentType,
-        "Cache-Control": opts.cacheControl,
-      },
-    };
-  } catch (error) {
-    // eslint-disable-next-line no-restricted-syntax
-    console.error("fetchTextFromUpstream failed", { url, error });
-    return {
-      status: 500,
-      body: {
-        code: "INTERNAL_ERROR",
-        message: "Internal error",
-        details: { url },
-      },
-    };
-  }
-}
-
-export const Controllers = {
-  bootstrap: (args: { q?: CacheControlsQueryDto }) =>
+export const Controllers = makeControllers(v1Contract)({
+  bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream({
-        q: args.q,
-        url: "https://raw.githubusercontent.com/AshGw/dotfiles/main/install/bootstrap",
+        q: query,
+        url: repoMainBranchBaseUrl({
+          repo: "dotfiles",
+          scriptPath: "install/bootstrap",
+        }),
         opts: {
-          contentType: contentTypes.text,
+          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
       }),
     ),
 
-  gpg: (args: { q?: CacheControlsQueryDto }) =>
+  gpg: async ({ query }) =>
     timed("gpg", () =>
       fetchTextFromUpstream({
-        q: args.q,
+        q: query,
         url: "https://github.com/ashgw.gpg",
         opts: {
-          contentType: contentTypes.pgp,
+          contentType: "application/pgp-keys",
           defaultRevalidate: 86400,
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
     ),
 
-  debion: (args: { q?: CacheControlsQueryDto }) =>
+  debion: async ({ query }) =>
     timed("debion", () =>
       fetchTextFromUpstream({
-        q: args.q,
-        url: "https://raw.githubusercontent.com/ashgw/debion/main/setup",
+        q: query,
+        url: repoMainBranchBaseUrl({
+          repo: "debion",
+          scriptPath: "setup",
+        }),
         opts: {
-          contentType: contentTypes.text,
+          contentType: "text/plain",
           defaultRevalidate: 3600,
-
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
       }),
     ),
-  whisper: (args: { q?: CacheControlsQueryDto }) =>
+
+  whisper: async ({ query }) =>
     timed("whisper", () =>
       fetchTextFromUpstream({
-        q: args.q,
-        url: "https://raw.githubusercontent.com/ashgw/whisper/main/setup",
+        q: query,
+        url: repoMainBranchBaseUrl({
+          repo: "whisper",
+          scriptPath: "setup",
+        }),
         opts: {
-          contentType: contentTypes.text,
+          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
       }),
     ),
-};
+  healthCheck: async () => {
+    return await checkHealth();
+  },
+});
