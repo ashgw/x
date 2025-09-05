@@ -34,7 +34,6 @@ export class ViewStore {
         changed = true;
       }
     }
-    // nothing else to do. MobX observers will react if anything changed.
     return changed;
   }
 }

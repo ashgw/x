@@ -30,7 +30,6 @@ export function PostCards({ posts }: PostsProps) {
 
   const perLoadVisibleNum = 5;
 
-  // prime store once with current list
   useEffect(() => {
     store.view.primeFromCards(
       posts.map((p) => ({ slug: p.slug, views: p.views })),
