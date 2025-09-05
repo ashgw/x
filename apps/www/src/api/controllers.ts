@@ -1,33 +1,20 @@
-import { contentTypes } from "./schemas";
+import { contentTypes } from "./content-types";
 import { timed } from "./functions/timed";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
 import { makeControllers } from "./controller-types";
-
-function repoMainBranchBaseUrl({
-  repo,
-  scriptPath,
-}: {
-  repo: string;
-  scriptPath: string;
-}) {
-  return `https://raw.githubusercontent.com/ashgw/${repo}/main/${scriptPath}`;
-}
+import { repoMainBranchBaseUrl } from "./utils";
 
 export const Controllers = makeControllers(v1Contract)({
   healthCheck: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1));
-    return {
-      status: 200,
-      body: {
-        ping: "pong",
-      },
-    };
+    await new Promise((r) => setTimeout(r, 1));
+    return { status: 200, body: { ping: "pong" } };
   },
-  bootstrap: async (args) =>
+
+  bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream<string>({
-        q: args.query,
+        q: query,
         url: repoMainBranchBaseUrl({
           repo: "dotfiles",
           scriptPath: "install/bootstrap",
@@ -39,10 +26,11 @@ export const Controllers = makeControllers(v1Contract)({
         },
       }),
     ),
-  gpg: async (args) =>
+
+  gpg: async ({ query }) =>
     timed("gpg", () =>
       fetchTextFromUpstream<string>({
-        q: args.query,
+        q: query,
         url: "https://github.com/ashgw.gpg",
         opts: {
           contentType: contentTypes.pgp,
@@ -52,10 +40,10 @@ export const Controllers = makeControllers(v1Contract)({
       }),
     ),
 
-  debion: async (args) =>
+  debion: async ({ query }) =>
     timed("debion", () =>
       fetchTextFromUpstream<string>({
-        q: args.query,
+        q: query,
         url: repoMainBranchBaseUrl({ repo: "debion", scriptPath: "setup" }),
         opts: {
           contentType: contentTypes.text,
@@ -65,10 +53,10 @@ export const Controllers = makeControllers(v1Contract)({
       }),
     ),
 
-  whisper: async (args) =>
+  whisper: async ({ query }) =>
     timed("whisper", () =>
       fetchTextFromUpstream<string>({
-        q: args.query,
+        q: query,
         url: repoMainBranchBaseUrl({ repo: "whisper", scriptPath: "setup" }),
         opts: {
           contentType: contentTypes.text,

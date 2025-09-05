@@ -1,10 +1,8 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import {
-  cacheControlsQueryDtoSchema,
-  contentTypes,
-  errorSchemaRo,
-} from "./schemas";
+import { errorSchemaRo } from "./schemas";
+import { cacheControlsQueryDtoSchema } from "./functions/dtos";
+import { contentTypes } from "./content-types";
 
 const c = initContract();
 
@@ -14,9 +12,7 @@ export const v1Contract = c.router({
     path: "/health-check",
     summary: "Health check",
     responses: {
-      200: z.object({
-        ping: z.literal("pong"),
-      }),
+      200: z.object({ ping: z.literal("pong") }),
       424: errorSchemaRo,
       500: errorSchemaRo,
     },
