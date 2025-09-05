@@ -24,10 +24,22 @@ export const checkHealthSchemaResponses = {
   500: httpErrorSchema,
 };
 
-export const fetchTextFromUpstreamSchemaResponses = {
-  200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
+const fetchContentFromUpstreamSchemaResponses = {
   500: httpErrorSchema,
   424: httpErrorSchema,
+};
+
+export const fetchTextFromUpstreamSchemaResponses = {
+  200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
+  ...fetchContentFromUpstreamSchemaResponses,
+};
+
+export const fetchGpgFromUpstreamSchemaResponses = {
+  200: c.otherResponse({
+    contentType: "application/pgp-keys",
+    body: z.string().min(1),
+  }),
+  ...fetchContentFromUpstreamSchemaResponses,
 };
 
 // ========== Types ==========
@@ -38,4 +50,8 @@ export type CheckHealthResponses = InferResponses<
 
 export type FetchTextFromUpstreamResponses = InferResponses<
   typeof fetchTextFromUpstreamSchemaResponses
+>;
+
+export type FetchGpgFromUpstreamResponses = InferResponses<
+  typeof fetchGpgFromUpstreamSchemaResponses
 >;

@@ -1,5 +1,6 @@
 import {
   checkHealthSchemaResponses,
+  fetchGpgFromUpstreamSchemaResponses,
   fetchTextFromUpstreamSchemaResponses,
 } from "./models/ros";
 import { cacheControlsQueryDtoSchema } from "./models/dtos";
@@ -24,7 +25,7 @@ export const v1Contract = c.router({
     path: "/gpg",
     summary: "Fetch public PGP key (armored text)",
     query: cacheControlsQueryDtoSchema.optional(),
-    responses: fetchTextFromUpstreamSchemaResponses,
+    responses: fetchGpgFromUpstreamSchemaResponses,
   },
   debion: {
     method: "GET",

@@ -1,5 +1,8 @@
 import type { CacheControlsQueryDto } from "../models/dtos";
-import type { FetchTextFromUpstreamResponses } from "../models/ros";
+import type {
+  FetchGpgFromUpstreamResponses,
+  FetchTextFromUpstreamResponses,
+} from "../models/ros";
 
 interface FetchOpts {
   contentType: string;
@@ -11,7 +14,7 @@ export async function fetchTextFromUpstream(input: {
   url: string;
   q?: CacheControlsQueryDto;
   opts: FetchOpts;
-}): Promise<FetchTextFromUpstreamResponses> {
+}): Promise<FetchTextFromUpstreamResponses | FetchGpgFromUpstreamResponses> {
   const { url, opts } = input;
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;
