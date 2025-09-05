@@ -8,8 +8,7 @@ export const runtime = "edge";
 const handler = createNextHandler(v1Contract, router, {
   basePath,
   handlerType: "app-router",
-  // eslint-disable-next-line no-restricted-properties
-  responseValidation: process.env.NODE_ENV !== "production",
+  responseValidation: true,
 });
 
 export { handler as GET, handler as OPTIONS };
