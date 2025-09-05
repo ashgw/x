@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const errorSchemaRo = z.object({
+export const httpErrorSchema = z.object({
   code: z
     .enum([
       "UPSTREAM_ERROR",
@@ -15,7 +15,7 @@ export const errorSchemaRo = z.object({
   details: z.record(z.any()).optional().describe("Optional extra context"),
 });
 
-export type ErrorRo = z.infer<typeof errorSchemaRo>;
+export type HTTPError = z.infer<typeof httpErrorSchema>;
 
 export interface Ok<Body> {
   status: 200;
@@ -28,7 +28,7 @@ interface Headers {
 }
 
 export type Fail =
-  | ({ status: 424; body: ErrorRo } & Headers)
-  | ({ status: 500; body: ErrorRo } & Headers);
+  | ({ status: 424; body: HTTPError } & Headers)
+  | ({ status: 500; body: HTTPError } & Headers);
 
 export type UpstreamResp<Body> = Ok<Body> | Fail;

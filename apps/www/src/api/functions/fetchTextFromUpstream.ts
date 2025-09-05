@@ -7,11 +7,11 @@ interface FetchOpts {
   cacheControl: string; // Cache-Control header we set on 200
 }
 
-export async function fetchTextFromUpstream<TBody = string>(input: {
+export async function fetchTextFromUpstream<Body = string>(input: {
   url: string;
   q?: CacheControlsQueryDto;
   opts: FetchOpts;
-}): Promise<UpstreamResp<TBody>> {
+}): Promise<UpstreamResp<Body>> {
   const { url, opts } = input;
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;
@@ -34,7 +34,7 @@ export async function fetchTextFromUpstream<TBody = string>(input: {
       };
     }
 
-    const text = (await res.text()) as unknown as TBody;
+    const text = (await res.text()) as unknown as Body;
 
     return {
       status: 200,

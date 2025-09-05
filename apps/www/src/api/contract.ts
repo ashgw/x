@@ -1,6 +1,6 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
-import { errorSchemaRo } from "./schemas";
+import { httpErrorSchema } from "./schemas";
 import { cacheControlsQueryDtoSchema } from "./functions/dtos";
 import { contentTypes } from "./content-types";
 
@@ -13,8 +13,8 @@ export const v1Contract = c.router({
     summary: "Health check",
     responses: {
       200: z.object({ ping: z.literal("pong") }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
+      424: httpErrorSchema,
+      500: httpErrorSchema,
     },
   },
   bootstrap: {
@@ -27,8 +27,8 @@ export const v1Contract = c.router({
         contentType: contentTypes.text,
         body: z.string().min(1),
       }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
+      424: httpErrorSchema,
+      500: httpErrorSchema,
     },
   },
   gpg: {
@@ -41,8 +41,8 @@ export const v1Contract = c.router({
         contentType: contentTypes.pgp,
         body: z.string().min(1),
       }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
+      424: httpErrorSchema,
+      500: httpErrorSchema,
     },
   },
   debion: {
@@ -55,8 +55,8 @@ export const v1Contract = c.router({
         contentType: contentTypes.text,
         body: z.string().min(1),
       }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
+      424: httpErrorSchema,
+      500: httpErrorSchema,
     },
   },
   whisper: {
@@ -69,8 +69,8 @@ export const v1Contract = c.router({
         contentType: contentTypes.text,
         body: z.string().min(1),
       }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
+      424: httpErrorSchema,
+      500: httpErrorSchema,
     },
   },
 });

@@ -6,11 +6,6 @@ import { makeControllers } from "./controller-types";
 import { repoMainBranchBaseUrl } from "./utils";
 
 export const Controllers = makeControllers(v1Contract)({
-  healthCheck: async () => {
-    await new Promise((r) => setTimeout(r, 1));
-    return { status: 200, body: { ping: "pong" } };
-  },
-
   bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream<string>({
@@ -65,4 +60,13 @@ export const Controllers = makeControllers(v1Contract)({
         },
       }),
     ),
+  healthCheck: async () => {
+    await new Promise((r) => setTimeout(r, 1));
+    return {
+      status: 200,
+      body: {
+        ping: "pong",
+      },
+    };
+  },
 });
