@@ -15,10 +15,13 @@ function repoMainBranchBaseUrl({
 }
 
 export const Controllers = makeControllers(v1Contract)({
-  myPost: ({ body }) => {
+  healthCheck: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1));
     return {
       status: 200,
-      body: "OK" + body.title,
+      body: {
+        ping: "pong",
+      },
     };
   },
   bootstrap: async (args) =>

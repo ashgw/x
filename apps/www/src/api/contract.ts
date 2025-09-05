@@ -9,18 +9,13 @@ import {
 const c = initContract();
 
 export const v1Contract = c.router({
-  myPost: {
-    method: "POST",
-    path: "/my-post",
-    summary: "My post",
-    body: z.object({
-      title: z.string().min(1),
-      content: z.number(),
-    }),
+  healthCheck: {
+    method: "GET",
+    path: "/health-check",
+    summary: "Health check",
     responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
+      200: z.object({
+        ping: z.literal("pong"),
       }),
       424: errorSchemaRo,
       500: errorSchemaRo,
