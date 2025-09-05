@@ -5,7 +5,6 @@ import type {
 } from "../models/ros";
 
 interface FetchOpts {
-  contentType: string;
   defaultRevalidate: number; // seconds
   cacheControl: string;
 }
@@ -46,6 +45,9 @@ export async function fetchTextFromUpstream(input: {
     return {
       status: 200,
       body: text,
+      headers: {
+        "Cache-Control": opts.cacheControl,
+      },
     };
   } catch (error) {
     // eslint-disable-next-line no-restricted-syntax

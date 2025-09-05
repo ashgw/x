@@ -15,7 +15,6 @@ export const controllers = makeControllers(v1Contract)({
           scriptPath: "install/bootstrap",
         }),
         opts: {
-          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
@@ -28,7 +27,6 @@ export const controllers = makeControllers(v1Contract)({
         q: query,
         url: "https://github.com/ashgw.gpg",
         opts: {
-          contentType: "application/pgp-keys",
           defaultRevalidate: 86400,
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
@@ -44,7 +42,6 @@ export const controllers = makeControllers(v1Contract)({
           scriptPath: "setup",
         }),
         opts: {
-          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },
@@ -60,7 +57,6 @@ export const controllers = makeControllers(v1Contract)({
           scriptPath: "setup",
         }),
         opts: {
-          contentType: "text/plain",
           defaultRevalidate: 3600,
           cacheControl: "s-maxage=3600, stale-while-revalidate=300",
         },

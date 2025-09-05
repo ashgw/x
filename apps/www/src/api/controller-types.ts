@@ -5,6 +5,7 @@ import type {
   ServerInferResponses,
 } from "@ts-rest/core";
 import type { EmptyObject } from "ts-roids";
+
 export type Awaitable<T> = T | Promise<T>;
 
 type ReqFor<R extends AppRoute> = (ServerInferRequest<R> extends {
