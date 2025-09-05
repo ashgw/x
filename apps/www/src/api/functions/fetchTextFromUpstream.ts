@@ -7,14 +7,18 @@ import type {
 interface FetchOpts {
   contentType: string;
   defaultRevalidate: number; // seconds
-  cacheControl: string; // Cache-Control header we set on 200
+  cacheControl: string;
 }
+
+type FetchUpstreamResponses =
+  | FetchTextFromUpstreamResponses
+  | FetchGpgFromUpstreamResponses;
 
 export async function fetchTextFromUpstream(input: {
   url: string;
   q?: CacheControlsQueryDto;
   opts: FetchOpts;
-}): Promise<FetchTextFromUpstreamResponses | FetchGpgFromUpstreamResponses> {
+}): Promise<FetchUpstreamResponses> {
   const { url, opts } = input;
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;
@@ -42,10 +46,6 @@ export async function fetchTextFromUpstream(input: {
     return {
       status: 200,
       body: text,
-      headers: {
-        "Cache-Control": opts.cacheControl,
-        "Content-Type": opts.contentType,
-      },
     };
   } catch (error) {
     // eslint-disable-next-line no-restricted-syntax
