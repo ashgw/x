@@ -1,6 +1,8 @@
 import { z } from "zod";
 import type { InferRequest } from "../types";
 
+// ========== Schemas ==========
+
 export const cacheControlsQueryDtoSchema = z
   .object({
     revalidateSeconds: z
@@ -13,7 +15,7 @@ export const cacheControlsQueryDtoSchema = z
   })
   .passthrough();
 
-// types
+// ========== Types ==========
 
 export type CacheControlsQueryDto = InferRequest<
   typeof cacheControlsQueryDtoSchema
