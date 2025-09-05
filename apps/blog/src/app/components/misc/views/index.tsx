@@ -1,4 +1,3 @@
-// ~/app/components/misc/views/Views.tsx
 "use client";
 
 import { observer } from "mobx-react-lite";
@@ -21,7 +20,7 @@ export const Views = observer(function Views({
 }) {
   const count = viewStore.getCount(slug, initial);
 
-  // this state drives the DOM text; we animate it toward `count`
+  // this state drives the DOM text, we animate it toward `count`
   const [display, setDisplay] = useState<number>(count);
   const animRef = useRef<ReturnType<typeof animate> | null>(null);
 
@@ -36,13 +35,12 @@ export const Views = observer(function Views({
     });
     return () => animRef.current?.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]); // important: depend on `count`, not `display`
+  }, [count]); // !!important: depend on `count`, not `display`
 
   return (
     <span
       className={className}
       title={`${titlePrefix ?? ""}${count} views`.trim()}
-      // little jackpot micro-bounce each time value changes
       style={{ display: "inline-flex", alignItems: "center", gap: 4 }}
     >
       <Eye className="h-3 w-3 opacity-70" />

@@ -9,7 +9,7 @@ export const trackViewSchemaDto = z.object({
 
 // ========== ROs ==========
 export const trackViewRoSchema = z.object({
-  total: z.number(),
+  total: z.number().int().nonnegative(),
 });
 
 // ========== Types ==========
