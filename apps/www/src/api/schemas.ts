@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export const httpErrorSchema = z.object({
   code: z
     .enum([
@@ -17,14 +16,13 @@ export const httpErrorSchema = z.object({
 
 export type HTTPError = z.infer<typeof httpErrorSchema>;
 
-export interface Ok<Body> {
-  status: 200;
-  body: Body;
+interface Headers {
   headers?: Record<string, string>;
 }
 
-interface Headers {
-  headers?: Record<string, string>;
+export interface Ok<Body> extends Headers {
+  status: 200;
+  body: Body;
 }
 
 export type Fail =
