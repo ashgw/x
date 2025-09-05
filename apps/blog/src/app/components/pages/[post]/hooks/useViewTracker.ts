@@ -4,7 +4,7 @@ import type { Optional } from "ts-roids";
 import { useEffect, useRef } from "react";
 import { logger } from "@ashgw/observability";
 import { trpcClientSide } from "~/trpc/client";
-import { viewStore } from "~/app/stores/viewstore";
+import { useStore } from "~/app/stores";
 
 interface UseViewTrackerProps {
   postSlug: string;
@@ -19,13 +19,13 @@ export function useViewTracker({
 }: UseViewTrackerProps) {
   const firedRef = useRef(false);
   const timeoutRef = useRef<Optional<ReturnType<typeof setTimeout>>>(null);
-
+  const { store } = useStore();
   const trackView = trpcClientSide.view.trackView.useMutation({
     onMutate: () => logger.debug("trackView start", { postSlug }),
     onError: (error) =>
       logger.error("trackView error", { postSlug, error: error.message }),
     onSuccess: (data) => {
-      viewStore.setConfirmed(postSlug, data.total);
+      store.view.setConfirmed(postSlug, data.total);
     },
   });
 

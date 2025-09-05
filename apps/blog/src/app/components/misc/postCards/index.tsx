@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCheck, ChevronDown } from "lucide-react";
-import { viewStore } from "~/app/stores/viewstore";
 
 import { Footer } from "@ashgw/components";
 
@@ -11,6 +10,7 @@ import type { PostCardRo } from "~/api/models";
 import { PostCategoryEnum } from "~/api/models";
 import { usePostsContext } from "./components/Context";
 import { PostCard } from "./components/Postcard";
+import { useStore } from "~/app/stores";
 
 type Category = `${PostCategoryEnum}`;
 
@@ -25,17 +25,17 @@ export function PostCards({ posts }: PostsProps) {
   const { visibleNum, setVisibleNum } = usePostsContext();
   const [selectedCategory, setSelectedCategory] =
     useState<Category>("SOFTWARE");
-
+  const { store } = useStore();
   const [shouldScroll, setShouldScroll] = useState(false);
 
   const perLoadVisibleNum = 5;
 
   // prime store once with current list
   useEffect(() => {
-    viewStore.primeFromCards(
+    store.view.primeFromCards(
       posts.map((p) => ({ slug: p.slug, views: p.views })),
     );
-  }, [posts]);
+  }, [posts, store.view]);
 
   const filteredPosts = posts
     .filter((post) => {

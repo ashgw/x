@@ -4,8 +4,7 @@ import { makeAutoObservable } from "mobx";
 
 type Slug = string;
 
-class ViewStore {
-  // in-memory counts for the current browser context
+export class ViewStore {
   counts = new Map<Slug, number>();
 
   constructor() {
@@ -14,8 +13,7 @@ class ViewStore {
 
   // read: prefer store, fall back to initial value from server
   getCount(slug: Slug, initial: number) {
-    const v = this.counts.get(slug);
-    return v ?? initial;
+    return this.counts.get(slug) ?? initial;
   }
 
   // write: set confirmed value coming back from the backend
@@ -39,13 +37,4 @@ class ViewStore {
     // nothing else to do. MobX observers will react if anything changed.
     return changed;
   }
-
-  // optional: optimistic bump for instant UI feedback
-  // call this right before you fire the increment RPC
-  incOptimistic(slug: Slug) {
-    const cur = this.counts.get(slug) ?? 0;
-    this.counts.set(slug, cur + 1);
-  }
 }
-
-export const viewStore = new ViewStore();

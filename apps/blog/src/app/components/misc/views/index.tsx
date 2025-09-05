@@ -4,25 +4,29 @@ import { observer } from "mobx-react-lite";
 import { animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Eye } from "lucide-react";
-import { viewStore } from "~/app/stores/viewstore";
+import { useStore } from "~/app/stores";
 import { formatViews } from "~/utils/formatViews";
+import type { Optional } from "ts-roids";
+
+interface ViewsProps {
+  slug: string;
+  initial: number;
+  className?: string;
+  titlePrefix?: string;
+}
 
 export const Views = observer(function Views({
   slug,
   initial,
   className,
   titlePrefix,
-}: {
-  slug: string;
-  initial: number;
-  className?: string;
-  titlePrefix?: string;
-}) {
-  const count = viewStore.getCount(slug, initial);
+}: ViewsProps) {
+  const { store } = useStore();
+  const count = store.view.getCount(slug, initial);
 
   // this state drives the DOM text, we animate it toward `count`
   const [display, setDisplay] = useState<number>(count);
-  const animRef = useRef<ReturnType<typeof animate> | null>(null);
+  const animRef = useRef<Optional<ReturnType<typeof animate>>>(null);
 
   useEffect(() => {
     // kill prior anim if any
@@ -35,7 +39,7 @@ export const Views = observer(function Views({
     });
     return () => animRef.current?.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]); // !!important: depend on `count`, not `display`
+  }, [count]); // !!important: depend on `count` mf not `display`
 
   return (
     <span
