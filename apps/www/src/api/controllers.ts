@@ -17,14 +17,8 @@ function repoMainBranchBaseUrl({
 export const Controllers = makeControllers(v1Contract)({
   myPost: ({ body }) => {
     return {
-      status: 424,
-      body: {
-        code: "FORBIDDEN",
-        message: "Forbidden",
-        details: {
-          body,
-        },
-      },
+      status: 200,
+      body: "OK" + body.title,
     };
   },
   bootstrap: async (args) =>
