@@ -15,6 +15,12 @@ function repoMainBranchBaseUrl({
 }
 
 export const Controllers = makeControllers(v1Contract)({
+  myPost: ({ body }) => {
+    return {
+      status: 200,
+      body: body.content,
+    };
+  },
   bootstrap: async (args) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream<string>({
@@ -30,7 +36,6 @@ export const Controllers = makeControllers(v1Contract)({
         },
       }),
     ),
-
   gpg: async (args) =>
     timed("gpg", () =>
       fetchTextFromUpstream<string>({

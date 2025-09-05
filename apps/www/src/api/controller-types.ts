@@ -4,25 +4,21 @@ import type {
   ServerInferRequest,
   ServerInferResponses,
 } from "@ts-rest/core";
-import type { EmptyObject } from "ts-roids";
 
-type RouteResp<R extends AppRoute> = ServerInferResponses<R>;
+export type RouteResp<R extends AppRoute> = ServerInferResponses<R>;
+export type ArgsFor<R extends AppRoute> = ServerInferRequest<R>;
 
-type ReqOf<R extends AppRoute> = ServerInferRequest<R>;
+export type Awaitable<T> = T | Promise<T>;
 
-type ArgsFor<R extends AppRoute> = (ReqOf<R> extends { params: infer P }
-  ? { params: P }
-  : EmptyObject) &
-  (ReqOf<R> extends { query: infer Q } ? { query: Q } : EmptyObject) &
-  (ReqOf<R> extends { body: infer B } ? { body: B } : EmptyObject);
+export type ControllerHandler<R extends AppRoute> = (
+  args: ArgsFor<R>,
+) => Awaitable<RouteResp<R>>;
 
-type ControllerShape<C extends AppRouter> = {
-  [K in keyof C]: C[K] extends AppRoute
-    ? (
-        args: ArgsFor<Extract<C[K], AppRoute>>,
-      ) => Promise<RouteResp<Extract<C[K], AppRoute>>>
-    : never;
+export type ControllerShape<C extends AppRouter> = {
+  [K in keyof C]: C[K] extends AppRoute ? ControllerHandler<C[K]> : never;
 };
+
+export type ControllersOf<C extends AppRouter> = ControllerShape<C>;
 
 export const makeControllers =
   <C extends AppRouter>(_contract: C) =>

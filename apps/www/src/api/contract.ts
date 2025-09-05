@@ -9,6 +9,23 @@ import {
 const c = initContract();
 
 export const v1Contract = c.router({
+  myPost: {
+    method: "POST",
+    path: "/my-post",
+    summary: "My post",
+    body: z.object({
+      title: z.string().min(1),
+      content: z.number(),
+    }),
+    responses: {
+      200: c.otherResponse({
+        contentType: contentTypes.text,
+        body: z.string().min(1),
+      }),
+      424: errorSchemaRo,
+      500: errorSchemaRo,
+    },
+  },
   bootstrap: {
     method: "GET",
     path: "/bootstrap",
