@@ -1,4 +1,4 @@
-import type { UpstreamResp } from "../schemas";
+import type { UpstreamResp } from "../error";
 import type { CacheControlsQueryDto } from "./dtos";
 
 interface FetchOpts {

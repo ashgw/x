@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { InferRequest } from "../types";
 
 export const cacheControlsQueryDtoSchema = z
   .object({
@@ -12,4 +13,8 @@ export const cacheControlsQueryDtoSchema = z
   })
   .passthrough();
 
-export type CacheControlsQueryDto = z.infer<typeof cacheControlsQueryDtoSchema>;
+// types
+
+export type CacheControlsQueryDto = InferRequest<
+  typeof cacheControlsQueryDtoSchema
+>;

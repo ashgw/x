@@ -1,9 +1,9 @@
 import { initContract } from "@ts-rest/core";
-import { z } from "zod";
-import { httpErrorSchema } from "./schemas";
-import { cacheControlsQueryDtoSchema } from "./functions/dtos";
-import { contentTypes } from "./content-types";
-import { checkHealthSchemaResponses } from "./functions/checkHealth";
+import {
+  checkHealthSchemaResponses,
+  fetchTextFromUpstreamSchemaResponses,
+} from "./models/ros";
+import { cacheControlsQueryDtoSchema } from "./models/dtos";
 
 const c = initContract();
 
@@ -19,55 +19,27 @@ export const v1Contract = c.router({
     path: "/bootstrap",
     summary: "Fetch dotfiles bootstrap script (raw text)",
     query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
-      }),
-      424: httpErrorSchema,
-      500: httpErrorSchema,
-    },
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
   gpg: {
     method: "GET",
     path: "/gpg",
     summary: "Fetch public PGP key (armored text)",
     query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.pgp,
-        body: z.string().min(1),
-      }),
-      424: httpErrorSchema,
-      500: httpErrorSchema,
-    },
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
   debion: {
     method: "GET",
     path: "/debion",
     summary: "Fetch debion setup script (raw text)",
     query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
-      }),
-      424: httpErrorSchema,
-      500: httpErrorSchema,
-    },
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
   whisper: {
     method: "GET",
     path: "/whisper",
     summary: "Fetch Whisper setup script (raw text)",
     query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
-      }),
-      424: httpErrorSchema,
-      500: httpErrorSchema,
-    },
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
 });
