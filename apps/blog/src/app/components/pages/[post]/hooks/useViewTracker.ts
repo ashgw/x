@@ -9,13 +9,13 @@ import { viewStore } from "~/app/stores/viewstore";
 interface UseViewTrackerProps {
   postSlug: string;
   enabled?: boolean;
-  delay?: number;
+  delay: number;
 }
 
 export function useViewTracker({
   postSlug,
   enabled = true,
-  delay = 3000,
+  delay,
 }: UseViewTrackerProps) {
   const firedRef = useRef(false);
   const timeoutRef = useRef<Optional<ReturnType<typeof setTimeout>>>(null);
