@@ -1,5 +1,5 @@
-import type { CacheControlsQueryDto } from "./dtos";
 import type { UpstreamResp } from "../types";
+import type { CacheControlsQueryDto } from "./dtos";
 
 interface FetchOpts {
   contentType: string;
@@ -13,7 +13,6 @@ export async function fetchTextFromUpstream<TBody = string>(input: {
   opts: FetchOpts;
 }): Promise<UpstreamResp<TBody>> {
   const { url, opts } = input;
-
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;
 
