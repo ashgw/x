@@ -3,6 +3,7 @@ import { z } from "zod";
 import { httpErrorSchema } from "./schemas";
 import { cacheControlsQueryDtoSchema } from "./functions/dtos";
 import { contentTypes } from "./content-types";
+import { checkHealthSchemaResponses } from "./functions/checkHealth";
 
 const c = initContract();
 
@@ -11,11 +12,7 @@ export const v1Contract = c.router({
     method: "GET",
     path: "/health-check",
     summary: "Health check",
-    responses: {
-      200: z.object({ ping: z.literal("pong") }),
-      424: httpErrorSchema,
-      500: httpErrorSchema,
-    },
+    responses: checkHealthSchemaResponses,
   },
   bootstrap: {
     method: "GET",

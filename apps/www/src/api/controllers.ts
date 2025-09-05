@@ -4,6 +4,7 @@ import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
 import { makeControllers } from "./controller-types";
 import { repoMainBranchBaseUrl } from "./utils";
+import { checkHealth } from "./functions/checkHealth";
 
 export const Controllers = makeControllers(v1Contract)({
   bootstrap: async ({ query }) =>
@@ -61,12 +62,6 @@ export const Controllers = makeControllers(v1Contract)({
       }),
     ),
   healthCheck: async () => {
-    await new Promise((r) => setTimeout(r, 1));
-    return {
-      status: 200,
-      body: {
-        ping: "pong",
-      },
-    };
+    return await checkHealth();
   },
 });

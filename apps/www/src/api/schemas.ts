@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export const httpErrorSchema = z.object({
   code: z
     .enum([
