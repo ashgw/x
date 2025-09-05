@@ -39,7 +39,10 @@ export const Controllers = makeControllers(v1Contract)({
     timed("debion", () =>
       fetchTextFromUpstream({
         q: query,
-        url: repoMainBranchBaseUrl({ repo: "debion", scriptPath: "setup" }),
+        url: repoMainBranchBaseUrl({
+          repo: "debion",
+          scriptPath: "setup",
+        }),
         opts: {
           contentType: "text/plain",
           defaultRevalidate: 3600,
@@ -52,7 +55,10 @@ export const Controllers = makeControllers(v1Contract)({
     timed("whisper", () =>
       fetchTextFromUpstream({
         q: query,
-        url: repoMainBranchBaseUrl({ repo: "whisper", scriptPath: "setup" }),
+        url: repoMainBranchBaseUrl({
+          repo: "whisper",
+          scriptPath: "setup",
+        }),
         opts: {
           contentType: "text/plain",
           defaultRevalidate: 3600,

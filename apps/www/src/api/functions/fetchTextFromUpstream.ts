@@ -38,10 +38,7 @@ export async function fetchTextFromUpstream(input: {
 
     return {
       status: 200,
-      body: {
-        contentType: "text/plain",
-        body: text,
-      },
+      body: text,
     };
   } catch (error) {
     // eslint-disable-next-line no-restricted-syntax

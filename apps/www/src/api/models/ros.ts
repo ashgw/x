@@ -24,13 +24,7 @@ export const checkHealthSchemaResponses = {
 };
 
 export const fetchTextFromUpstreamSchemaResponses = {
-  200: z.object({
-    contentType: z.union([
-      z.literal("text/plain"),
-      z.literal("application/pgp-keys"),
-    ]),
-    body: z.string().min(1),
-  }),
+  200: z.string().min(1),
   500: httpErrorSchema,
   424: httpErrorSchema,
 };
