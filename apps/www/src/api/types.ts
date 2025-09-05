@@ -6,7 +6,7 @@ import type {
   ContractNullType,
   ContractNoBodyType,
 } from "@ts-rest/core";
-import type { EmptyObject } from "ts-roids";
+import type { EmptyObject, Optional, Keys } from "ts-roids";
 
 /** Map of status -> any ts-rest-supported response shape */
 export type ResponsesMap = Record<number, AppRouteResponse>;
@@ -20,7 +20,7 @@ type UnwrapContractAny<T> =
       T extends ContractPlainType<infer P>
       ? P
       : // explicit null body
-        T extends ContractNullType | null
+        T extends Optional<ContractNullType>
         ? null
         : // otherwise no valid body to infer
           never;
@@ -37,7 +37,7 @@ type BodyFromResponse<R extends AppRouteResponse> =
         ? { body: z.infer<R> }
         : R extends ContractPlainType<infer P>
           ? { body: P }
-          : R extends ContractNullType | null
+          : R extends Optional<ContractNullType>
             ? { body: null }
             : // anything else is not a valid response spec
               never;
@@ -52,9 +52,9 @@ type WithHeaders<T> = T & { headers?: Record<string, string> };
  * Works for zod, plain types, null/no-body, and c.otherResponse(...)
  */
 export type InferResponses<T extends ResponsesMap> = {
-  [S in Extract<keyof T, number>]: WithHeaders<
+  [S in Extract<Keys<T>, number>]: WithHeaders<
     { status: S } & BodyFromResponse<T[S]>
   >;
-}[Extract<keyof T, number>];
+}[Extract<Keys<T>, number>];
 
 export type InferRequest<T extends z.ZodTypeAny> = z.infer<T>;
