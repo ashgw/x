@@ -5,7 +5,7 @@ import { makeControllers } from "./controller-types";
 import { repoMainBranchBaseUrl } from "./utils";
 import { checkHealth } from "./functions/checkHealth";
 
-export const Controllers = makeControllers(v1Contract)({
+export const controllers = makeControllers(v1Contract)({
   bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream({

@@ -1,11 +1,11 @@
 import { tsr } from "@ts-rest/serverless/fetch";
 import { v1Contract } from "~/api/contract";
-import { Controllers } from "~/api/controllers";
+import { controllers } from "~/api/controllers";
 
 export const router = tsr.router(v1Contract, {
-  bootstrap: async ({ query }) => Controllers.bootstrap({ query }),
-  gpg: async ({ query }) => Controllers.gpg({ query }),
-  debion: async ({ query }) => Controllers.debion({ query }),
-  whisper: async ({ query }) => Controllers.whisper({ query }),
-  healthCheck: async () => Controllers.healthCheck(),
+  bootstrap: async ({ query }) => controllers.bootstrap({ query }),
+  gpg: async ({ query }) => controllers.gpg({ query }),
+  debion: async ({ query }) => controllers.debion({ query }),
+  whisper: async ({ query }) => controllers.whisper({ query }),
+  healthCheck: async () => controllers.healthCheck(),
 });
