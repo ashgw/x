@@ -1,17 +1,5 @@
-import type { CacheControlsQueryDto, ErrorRo } from "../schemas";
-
-interface Ok {
-  status: 200;
-  body: string;
-  headers?: Record<string, string>;
-}
-
-interface Fail {
-  status: 424 | 500;
-  body: ErrorRo;
-  headers?: Record<string, string>;
-}
-export type Resp = Ok | Fail;
+import type { CacheControlsQueryDto } from "../schemas";
+import type { UpstreamResp } from "../types";
 
 interface FetchOpts {
   contentType: string;
@@ -19,11 +7,11 @@ interface FetchOpts {
   cacheControl: string; // Cache-Control header we set on 200
 }
 
-export async function fetchTextFromUpstream(input: {
+export async function fetchTextFromUpstream<TBody = string>(input: {
   url: string;
   q?: CacheControlsQueryDto;
   opts: FetchOpts;
-}): Promise<Resp> {
+}): Promise<UpstreamResp<TBody>> {
   const { url, opts } = input;
 
   const revalidateSeconds =
@@ -41,13 +29,13 @@ export async function fetchTextFromUpstream(input: {
         status: 424,
         body: {
           code: "UPSTREAM_ERROR",
-          message: `Upstream error`,
+          message: "Upstream error",
           details: { status: res.status, url },
         },
       };
     }
 
-    const text = await res.text();
+    const text = (await res.text()) as unknown as TBody;
 
     return {
       status: 200,

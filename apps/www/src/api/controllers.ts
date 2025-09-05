@@ -1,7 +1,9 @@
-import type { CacheControlsQueryDto } from "./schemas";
 import { contentTypes } from "./schemas";
 import { timed } from "./functions/timed";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
+import { v1Contract } from "./contract";
+import { makeControllers } from "./controller-types";
+import type { ArgsFor } from "./controller-types";
 
 function repoMainBranchBaseUrl({
   repo,
@@ -13,11 +15,11 @@ function repoMainBranchBaseUrl({
   return `https://raw.githubusercontent.com/ashgw/${repo}/main/${scriptPath}`;
 }
 
-export const Controllers = {
-  bootstrap: (args: { q?: CacheControlsQueryDto }) =>
+export const Controllers = makeControllers(v1Contract)({
+  bootstrap: async (args: ArgsFor<typeof v1Contract.bootstrap>) =>
     timed("bootstrap", () =>
-      fetchTextFromUpstream({
-        q: args.q,
+      fetchTextFromUpstream<string>({
+        q: args.query,
         url: repoMainBranchBaseUrl({
           repo: "dotfiles",
           scriptPath: "install/bootstrap",
@@ -30,10 +32,10 @@ export const Controllers = {
       }),
     ),
 
-  gpg: (args: { q?: CacheControlsQueryDto }) =>
+  gpg: async (args: ArgsFor<typeof v1Contract.gpg>) =>
     timed("gpg", () =>
-      fetchTextFromUpstream({
-        q: args.q,
+      fetchTextFromUpstream<string>({
+        q: args.query,
         url: "https://github.com/ashgw.gpg",
         opts: {
           contentType: contentTypes.pgp,
@@ -43,30 +45,24 @@ export const Controllers = {
       }),
     ),
 
-  debion: (args: { q?: CacheControlsQueryDto }) =>
+  debion: async (args: ArgsFor<typeof v1Contract.debion>) =>
     timed("debion", () =>
-      fetchTextFromUpstream({
-        q: args.q,
-        url: repoMainBranchBaseUrl({
-          repo: "debion",
-          scriptPath: "setup",
-        }),
+      fetchTextFromUpstream<string>({
+        q: args.query,
+        url: repoMainBranchBaseUrl({ repo: "debion", scriptPath: "setup" }),
         opts: {
           contentType: contentTypes.text,
           defaultRevalidate: 3600,
+          cacheControl: "s-maxage=3600, stale-while-revalidate=300",
+        },
+      }),
+    ),
 
-          cacheControl: "s-maxage=3600, stale-while-revalidate=300",
-        },
-      }),
-    ),
-  whisper: (args: { q?: CacheControlsQueryDto }) =>
+  whisper: async (args: ArgsFor<typeof v1Contract.whisper>) =>
     timed("whisper", () =>
-      fetchTextFromUpstream({
-        q: args.q,
-        url: repoMainBranchBaseUrl({
-          repo: "whisper",
-          scriptPath: "setup",
-        }),
+      fetchTextFromUpstream<string>({
+        q: args.query,
+        url: repoMainBranchBaseUrl({ repo: "whisper", scriptPath: "setup" }),
         opts: {
           contentType: contentTypes.text,
           defaultRevalidate: 3600,
@@ -74,4 +70,4 @@ export const Controllers = {
         },
       }),
     ),
-};
+});
