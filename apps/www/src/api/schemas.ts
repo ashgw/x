@@ -14,6 +14,7 @@ export const errorSchemaRo = z.object({
   message: z.string().min(1).max(1000).describe("Human readable"),
   details: z.record(z.any()).optional().describe("Optional extra context"),
 });
+
 export type ErrorRo = z.infer<typeof errorSchemaRo>;
 
 export const cacheControlsQueryDtoSchema = z
