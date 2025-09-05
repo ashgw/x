@@ -23,10 +23,10 @@ export class PostMapper {
       firstModDate: post.firstModDate,
       minutesToRead: post.minutesToRead,
       tags: post.tags,
+      views: post.viewsCount,
       category: this._mapCategory({
         category: post.category,
       }),
-      views: post._count.postViews,
     };
   }
 

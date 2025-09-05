@@ -14,7 +14,7 @@ export const ViewTracker = memo(function ViewTracker({
   useViewTracker({
     postSlug,
     enabled: true,
-    delay: 2000,
+    delay: 2500,
   });
 
   return null;

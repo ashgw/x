@@ -9,11 +9,7 @@ interface DynamicRouteParams {
   params: { tag: string };
 }
 
-export const generateStaticParams = async () => {
-  const posts = await trpcServerSide.post.getPublicPostCards();
-  const tags = Array.from(new Set(posts.flatMap((post) => post.tags)));
-  return tags.map((tag) => ({ tag }));
-};
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createMetadata({
   title: "Blog",
