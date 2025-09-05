@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { InferResponses } from "../types";
+import { c } from "../root";
 
 // ========== Schemas ==========
 
@@ -24,7 +25,7 @@ export const checkHealthSchemaResponses = {
 };
 
 export const fetchTextFromUpstreamSchemaResponses = {
-  200: z.string().min(1),
+  200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
   500: httpErrorSchema,
   424: httpErrorSchema,
 };

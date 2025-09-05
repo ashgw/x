@@ -39,6 +39,10 @@ export async function fetchTextFromUpstream(input: {
     return {
       status: 200,
       body: text,
+      headers: {
+        "Cache-Control": opts.cacheControl,
+        "Content-Type": opts.contentType,
+      },
     };
   } catch (error) {
     // eslint-disable-next-line no-restricted-syntax

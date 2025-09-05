@@ -66,7 +66,5 @@ export const controllers = makeControllers(v1Contract)({
         },
       }),
     ),
-  healthCheck: async () => {
-    return await checkHealth();
-  },
+  healthCheck: async () => timed("healthCheck", () => checkHealth()),
 });

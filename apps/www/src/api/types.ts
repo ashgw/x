@@ -1,11 +1,60 @@
 import type { z } from "zod";
+import type {
+  AppRouteResponse,
+  ContractOtherResponse,
+  ContractPlainType,
+  ContractNullType,
+  ContractNoBodyType,
+} from "@ts-rest/core";
+import type { EmptyObject } from "ts-roids";
 
-export type SchemaMap = Record<number, z.ZodTypeAny>;
+/** Map of status -> any ts-rest-supported response shape */
+export type ResponsesMap = Record<number, AppRouteResponse>;
 
-export type InferResponses<T extends SchemaMap> = {
-  [S in Extract<keyof T, number>]: T[S] extends z.ZodTypeAny
-    ? { status: S; body: z.infer<T[S]> }
-    : never;
+/** Unwrap the various body container types that ts-rest allows */
+type UnwrapContractAny<T> =
+  // zod schema -> infer the TS type
+  T extends z.ZodTypeAny
+    ? z.infer<T>
+    : // c.type<T>() / ContractPlainType<T>
+      T extends ContractPlainType<infer P>
+      ? P
+      : // explicit null body
+        T extends ContractNullType | null
+        ? null
+        : // otherwise no valid body to infer
+          never;
+
+type BodyFromResponse<R extends AppRouteResponse> =
+  // no-body response -> no body key
+  R extends ContractNoBodyType
+    ? EmptyObject
+    : // otherResponse({ contentType, body: ... })
+      R extends ContractOtherResponse<infer Inner>
+      ? { body: UnwrapContractAny<Inner> }
+      : // plain zod / plain type / null
+        R extends z.ZodTypeAny
+        ? { body: z.infer<R> }
+        : R extends ContractPlainType<infer P>
+          ? { body: P }
+          : R extends ContractNullType | null
+            ? { body: null }
+            : // anything else is not a valid response spec
+              never;
+
+/** Optional headers on any response variant */
+type WithHeaders<T> = T & { headers?: Record<string, string> };
+
+/**
+ * Final inference:
+ * For a map like { 200: z.string(), 424: httpError, 500: httpError }
+ * produce a union: { status: 200; body: string } | { status: 424; body: ... } | ...
+ * Works for zod, plain types, null/no-body, and c.otherResponse(...)
+ */
+export type InferResponses<T extends ResponsesMap> = {
+  [S in Extract<keyof T, number>]: WithHeaders<
+    { status: S } & BodyFromResponse<T[S]>
+  >;
 }[Extract<keyof T, number>];
 
 export type InferRequest<T extends z.ZodTypeAny> = z.infer<T>;

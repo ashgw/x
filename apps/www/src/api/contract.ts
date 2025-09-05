@@ -1,11 +1,9 @@
-import { initContract } from "@ts-rest/core";
 import {
   checkHealthSchemaResponses,
   fetchTextFromUpstreamSchemaResponses,
 } from "./models/ros";
 import { cacheControlsQueryDtoSchema } from "./models/dtos";
-
-const c = initContract();
+import { c } from "./root";
 
 export const v1Contract = c.router({
   healthCheck: {
