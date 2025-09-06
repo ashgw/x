@@ -2,8 +2,8 @@ import {
   checkHealthSchemaResponses,
   fetchGpgFromUpstreamSchemaResponses,
   fetchTextFromUpstreamSchemaResponses,
-} from "./models/responses";
-import { cacheControlsQueryRequestSchema } from "./models/requests";
+} from "./schemas/responses";
+import { cacheControlsQueryRequestSchema } from "./schemas/requests";
 import { c } from "./root";
 
 export const v1Contract = c.router({

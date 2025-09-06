@@ -1,9 +1,9 @@
 import { logger } from "@ashgw/observability";
-import type { CacheControlsQueryRequest } from "../models/requests";
+import type { CacheControlsQueryRequest } from "../schemas/requests";
 import type {
   FetchGpgFromUpstreamResponses,
   FetchTextFromUpstreamResponses,
-} from "../models/responses";
+} from "../schemas/responses";
 
 interface FetchOpts {
   defaultRevalidate: number; // seconds

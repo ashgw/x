@@ -4,7 +4,7 @@ import { c } from "../root";
 
 // ========== Schemas ==========
 
-const httpErrorSchemaResponses = z.object({
+const httpErrorSchema = z.object({
   code: z
     .enum([
       "UPSTREAM_ERROR",
@@ -24,8 +24,8 @@ export const checkHealthSchemaResponses = {
 };
 
 const fetchContentFromUpstreamSchemaResponses = {
-  500: httpErrorSchemaResponses,
-  424: httpErrorSchemaResponses,
+  500: httpErrorSchema,
+  424: httpErrorSchema,
 };
 
 export const fetchTextFromUpstreamSchemaResponses = {
