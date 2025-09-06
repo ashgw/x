@@ -2,10 +2,10 @@ import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
 import { repoMainBranchBaseUrl, timed } from "./utils";
 import { checkHealth } from "./functions/checkHealth";
-import { makeControllers } from "./makeControllers";
+import { makeController } from "./makeController";
 import { gpg } from "@ashgw/constants";
 
-export const controllers = makeControllers(v1Contract)({
+export const controller = makeController(v1Contract)({
   bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream({
