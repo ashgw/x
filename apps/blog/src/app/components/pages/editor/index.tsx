@@ -279,14 +279,24 @@ export const EditorPage = observer(() => {
           <div
             className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${deleteModal.visible ? "pointer-events-none" : ""}`}
           >
-            <BlogList
-              blogs={filteredAndSortedBlogs}
-              onEdit={handleEditBlog}
-              onDelete={handleDeleteBlog}
-              isLoading={
-                postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
-              }
-            />
+            {postsQuery.error?.message ? (
+              <BlogList
+                errorMessage={postsQuery.error.message}
+                blogs={filteredAndSortedBlogs}
+                onEdit={handleEditBlog}
+                onDelete={handleDeleteBlog}
+                isLoading={isLoadingBlog && !isDeletingBlog}
+              />
+            ) : (
+              <BlogList
+                blogs={filteredAndSortedBlogs}
+                onEdit={handleEditBlog}
+                onDelete={handleDeleteBlog}
+                isLoading={
+                  postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
+                }
+              />
+            )}
             {showEditorSkeleton ? (
               <div className="lg:col-span-2">
                 <div className="bg-card rounded-lg border p-4">
