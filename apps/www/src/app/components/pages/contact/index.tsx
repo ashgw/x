@@ -6,7 +6,7 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
-import { EMAIL, gpg, LINKS } from "@ashgw/constants";
+import { email, gpg, links } from "@ashgw/constants";
 import { monitor } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
@@ -50,7 +50,7 @@ export function ContactPage() {
       setShowCalendar(true);
     } else {
       setShowCalendar(false);
-      window.location.href = `mailto:${EMAIL}`;
+      window.location.href = `mailto:${email}`;
     }
   };
 
@@ -81,9 +81,9 @@ export function ContactPage() {
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
                     I prefer to use{" "}
-                    <Link href={LINKS.twitter.link} name="X"></Link> for most
+                    <Link href={links.twitter.link} name="X"></Link> for most
                     communication. I use{" "}
-                    <Link href={LINKS.keyBase} name="GPG"></Link> for secure
+                    <Link href={links.keyBase} name="GPG"></Link> for secure
                     communication, check my{" "}
                     <button
                       onClick={async () => {

@@ -1,22 +1,24 @@
 import { logger } from "@ashgw/observability";
-import type { CacheControlsQueryDto } from "../models/dtos";
+import type { CacheControlsQueryRequest } from "../models/requests";
 import type {
-  FetchGpgFromUpstreamRos,
-  FetchTextFromUpstreamRos,
-} from "../models/ros";
+  FetchGpgFromUpstreamResponses,
+  FetchTextFromUpstreamResponses,
+} from "../models/responses";
 
 interface FetchOpts {
   defaultRevalidate: number; // seconds
   cacheControl: string;
 }
 
-type FetchUpstreamRos = FetchTextFromUpstreamRos | FetchGpgFromUpstreamRos;
+type FetchUpstreamResponses =
+  | FetchTextFromUpstreamResponses
+  | FetchGpgFromUpstreamResponses;
 
 export async function fetchTextFromUpstream(input: {
   url: string;
-  q?: CacheControlsQueryDto;
+  q?: CacheControlsQueryRequest;
   opts: FetchOpts;
-}): Promise<FetchUpstreamRos> {
+}): Promise<FetchUpstreamResponses> {
   const { url, opts } = input;
   const revalidateSeconds =
     input.q?.revalidateSeconds ?? opts.defaultRevalidate;

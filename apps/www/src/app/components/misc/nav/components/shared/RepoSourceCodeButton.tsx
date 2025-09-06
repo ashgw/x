@@ -1,13 +1,13 @@
 import NextLink from "next/link";
 import { GitBranch } from "lucide-react";
 
-import { REPO_SOURCE } from "@ashgw/constants";
+import { repo_source } from "@ashgw/constants";
 import { Button } from "@ashgw/ui";
 
 export function RepoSourceCodeButton() {
   return (
     <Button variant={"outline"}>
-      <NextLink href={REPO_SOURCE} target="_blank" rel="noopener noreferrer">
+      <NextLink href={repo_source} target="_blank" rel="noopener noreferrer">
         <GitBranch
           strokeWidth={"1.5px"}
           size={"20px"}

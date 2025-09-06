@@ -3,7 +3,7 @@ import type { Keys, UnionToTuple } from "ts-roids";
 // import { config } from "dotenv";
 import { z } from "zod";
 
-import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
+import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 
 // im using a custom zsh function locally to load whatever .env file i want, checkout ashgw/zshfuncs/env.zsh
@@ -48,7 +48,7 @@ const isBrowser = typeof window !== "undefined";
 
 // AKA non predfixed vars
 const serverSideVars = {
-  NODE_ENV: z.enum(["production", "development", "preview", "test"]).optional(),
+  NODE_ENV: z.enum(["production", "development", "test"]).optional(),
   SENTRY_ORG: z.string(),
   SENTRY_PROJECT: z.string(),
   SENTRY_AUTH_TOKEN: z.string().min(20),

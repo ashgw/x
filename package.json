@@ -56,5 +56,5 @@
   "homepage": "https://ashgw.me",
   "packageManager": "pnpm@9.12.2",
   "prettier": "@ashgw/prettier-config",
-  "repository": "ashgw/ashgw.me"
+  "repository": "ashgw/x"
 }

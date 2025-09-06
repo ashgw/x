@@ -4,7 +4,7 @@ import { c } from "../root";
 
 // ========== Schemas ==========
 
-const httpErrorSchemaRo = z.object({
+const httpErrorSchemaResponses = z.object({
   code: z
     .enum([
       "UPSTREAM_ERROR",
@@ -19,36 +19,38 @@ const httpErrorSchemaRo = z.object({
   details: z.record(z.any()).optional().describe("Optional extra context"),
 });
 
-export const checkHealthSchemaRos = {
+export const checkHealthSchemaResponses = {
   200: z.object({ ping: z.literal("pong") }),
 };
 
-const fetchContentFromUpstreamSchemaRos = {
-  500: httpErrorSchemaRo,
-  424: httpErrorSchemaRo,
+const fetchContentFromUpstreamSchemaResponses = {
+  500: httpErrorSchemaResponses,
+  424: httpErrorSchemaResponses,
 };
 
-export const fetchTextFromUpstreamSchemaRos = {
+export const fetchTextFromUpstreamSchemaResponses = {
   200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
-  ...fetchContentFromUpstreamSchemaRos,
+  ...fetchContentFromUpstreamSchemaResponses,
 };
 
-export const fetchGpgFromUpstreamSchemaRos = {
+export const fetchGpgFromUpstreamSchemaResponses = {
   200: c.otherResponse({
     contentType: "application/pgp-keys",
     body: z.string().min(1),
   }),
-  ...fetchContentFromUpstreamSchemaRos,
+  ...fetchContentFromUpstreamSchemaResponses,
 };
 
 // ========== Types ==========
 
-export type CheckHealthRos = InferResponses<typeof checkHealthSchemaRos>;
-
-export type FetchTextFromUpstreamRos = InferResponses<
-  typeof fetchTextFromUpstreamSchemaRos
+export type CheckHealthResponses = InferResponses<
+  typeof checkHealthSchemaResponses
 >;
 
-export type FetchGpgFromUpstreamRos = InferResponses<
-  typeof fetchGpgFromUpstreamSchemaRos
+export type FetchTextFromUpstreamResponses = InferResponses<
+  typeof fetchTextFromUpstreamSchemaResponses
+>;
+
+export type FetchGpgFromUpstreamResponses = InferResponses<
+  typeof fetchGpgFromUpstreamSchemaResponses
 >;

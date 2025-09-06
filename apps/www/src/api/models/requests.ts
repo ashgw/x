@@ -3,7 +3,7 @@ import type { InferRequest } from "../types";
 
 // ========== Schemas ==========
 
-export const cacheControlsQueryDtoSchema = z
+export const cacheControlsQueryRequestSchema = z
   .object({
     revalidateSeconds: z
       .string()
@@ -17,6 +17,6 @@ export const cacheControlsQueryDtoSchema = z
 
 // ========== Types ==========
 
-export type CacheControlsQueryDto = InferRequest<
-  typeof cacheControlsQueryDtoSchema
+export type CacheControlsQueryRequest = InferRequest<
+  typeof cacheControlsQueryRequestSchema
 >;
