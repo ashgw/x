@@ -62,6 +62,7 @@
     "@ashgw/tsconfig": "workspace:*",
     "@types/ws": "^8.18.1",
     "bufferutil": "^4.0.9",
+    "prisma": "catalog:prisma6",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
   }
