@@ -16,7 +16,7 @@ jobs:
     environment: ${{ inputs.deployment_environment }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
