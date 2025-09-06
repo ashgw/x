@@ -1,42 +1,48 @@
-import path from "path";
+// import path from "path";
 import type { Keys, UnionToTuple } from "ts-roids";
-import { config } from "dotenv";
+// import { config } from "dotenv";
 import { z } from "zod";
 
 import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-env
 import { colors } from "./colors";
 
-const isRunningInCi = process.env.CI === "true";
+// im using a custom zsh function locally to load whatever .env file i want, checkout ashgw/zshfuncs/env.zsh
+// if u need to use a file based setup, uncomment this, just know when using path etc.. it won't work on the edge
 
-function configureFileBasedEnv() {
-  let rootDir = process.cwd();
-  rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
+// const isRunningInCi = process.env.CI === "true";
 
-  const envPath = path.resolve(
-    rootDir,
-    process.env.NODE_ENV === "production"
-      ? "../../.env.production"
-      : process.env.NODE_ENV === "preview"
-        ? "../../.env.preview"
-        : "../../.env.development",
-  );
+// function configureFileBasedEnv() {
+//   let rootDir = process.cwd();
+//   rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
 
-  const res = config({ path: envPath });
-  const count = res.parsed ? Object.keys(res.parsed).length : 0;
-  // eslint-disable-next-line no-restricted-syntax
-  console.log(
-    `${colors.magenta("ENV")} → loaded ${colors.green(String(count))} vars from ${colors.cyan(envPath)}`,
-  );
-}
+//   const envPath = path.resolve(
+//     rootDir,
+//     process.env.NODE_ENV === "production"
+//       ? "../../.env.production"
+//       : process.env.NODE_ENV === "preview"
+//         ? "../../.env.preview"
+//         : "../../.env.development",
+//   );
 
-if (!isRunningInCi) {
-  configureFileBasedEnv();
-} else {
-  // eslint-disable-next-line no-restricted-syntax
-  console.log(
-    `${colors.magenta("ENV")} → using vars from ${colors.yellow("CI")}`,
-  );
-}
+//   const res = config({ path: envPath });
+//   const count = res.parsed ? Object.keys(res.parsed).length : 0;
+//   // eslint-disable-next-line no-restricted-syntax
+//   console.log(
+//     `${colors.magenta("ENV")} → loaded ${colors.green(String(count))} vars from ${colors.cyan(envPath)}`,
+//   );
+// }
+
+// if (!isRunningInCi) {
+//   configureFileBasedEnv();
+// } else {
+//   // eslint-disable-next-line no-restricted-syntax
+//   console.log(
+//     `${colors.magenta("ENV")} → using vars from ${colors.yellow("CI")}`,
+//   );
+// }
+
+// eslint-disable-next-line no-restricted-syntax
+console.log(`${colors.magenta("ENV")} → loaded.`);
 
 const isBrowser = typeof window !== "undefined";
 
