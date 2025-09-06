@@ -7,7 +7,7 @@ import { createEnv } from "@ashgw/ts-env"; // @see https://github.com/ashgw/ts-e
 import { colors } from "./colors";
 
 // im using a custom zsh function locally to load whatever .env file i want, checkout ashgw/zshfuncs/env.zsh
-// if u need to use a file based setup, uncomment this, just know when using path etc.. it won't work on the edge
+// if u need to use a file based setup, uncomment this, just know when using path etc.. it won't work on edge funcs
 
 // const isRunningInCi = process.env.CI === "true";
 

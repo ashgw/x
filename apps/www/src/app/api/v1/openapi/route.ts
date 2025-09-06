@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { generateOpenApi } from "@ts-rest/open-api";
 import { v1Contract } from "~/api/contract";
 import { basePath } from "~/api/basePath";
+import { env } from "@ashgw/env";
 
 export const runtime = "edge";
 
@@ -15,10 +16,7 @@ export function GET() {
       description: "Contract-first REST",
     },
     openapi: "3.0.3",
-    servers: [
-      // eslint-disable-next-line no-restricted-properties
-      { url: new URL(basePath, process.env.NEXT_PUBLIC_WWW_URL).toString() },
-    ],
+    servers: [{ url: new URL(basePath, env.NEXT_PUBLIC_WWW_URL).toString() }],
   });
   return NextResponse.json(doc, { status: 200 });
 }

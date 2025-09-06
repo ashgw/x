@@ -1,3 +1,4 @@
+import { logger } from "@ashgw/observability";
 import type { CacheControlsQueryDto } from "../models/dtos";
 import type {
   FetchGpgFromUpstreamRos,
@@ -48,8 +49,7 @@ export async function fetchTextFromUpstream(input: {
       },
     };
   } catch (error) {
-    // eslint-disable-next-line no-restricted-syntax
-    console.error("fetchTextFromUpstream failed", { url, error });
+    logger.error("fetchTextFromUpstream failed", { url, error });
     return {
       status: 500,
       body: {
