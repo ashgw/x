@@ -3,6 +3,7 @@ import { v1Contract } from "./contract";
 import { repoMainBranchBaseUrl, timed } from "./utils";
 import { checkHealth } from "./functions/checkHealth";
 import { makeControllers } from "./makeControllers";
+import { gpg } from "@ashgw/constants";
 
 export const controllers = makeControllers(v1Contract)({
   bootstrap: async ({ query }) =>
@@ -24,7 +25,7 @@ export const controllers = makeControllers(v1Contract)({
     timed("gpg", () =>
       fetchTextFromUpstream({
         q: query,
-        url: "https://github.com/ashgw.gpg",
+        url: gpg.publicUrl,
         opts: {
           defaultRevalidate: 86400,
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",

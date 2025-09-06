@@ -16,3 +16,8 @@ export const LINKS = {
     handle: "@ashrefgwader",
   },
 } as const;
+
+export const gpg = {
+  publicUrl: "https://github.com/ashgw.gpg",
+  id: "79821E0224D34EC4969FF6A8E5168EE090AE80D0",
+} as const;

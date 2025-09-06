@@ -6,7 +6,7 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
-import { EMAIL, LINKS } from "@ashgw/constants";
+import { EMAIL, gpg, LINKS } from "@ashgw/constants";
 import { monitor } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
@@ -29,7 +29,7 @@ export function ContactPage() {
         throw new Error(`API error: ${status}`);
       }
       copyToClipboard(body);
-      toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
+      toast.message(gpg.id, {
         description: "PGP public key block is copied to your clipboard",
       });
     } catch (error) {
