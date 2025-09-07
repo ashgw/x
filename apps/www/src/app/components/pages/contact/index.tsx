@@ -7,7 +7,7 @@ import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
 import { email, gpg, links } from "@ashgw/constants";
-import { monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
 import { client } from "~/api/client";
@@ -33,14 +33,8 @@ export function ContactPage() {
         description: "PGP public key block is copied to your clipboard",
       });
     } catch (error) {
-      const errorMessage = "Oops! Looks like something went wrong!";
-      toast.message(errorMessage);
-      monitor.next.captureException({
-        error,
-        logErrorWith: {
-          message: errorMessage,
-        },
-      });
+      logger.log(error);
+      toast.message("Oops! Looks like something went wrong!");
     }
   }
 
