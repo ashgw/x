@@ -20,7 +20,7 @@ const httpErrorSchema = z.object({
 });
 
 export const checkHealthSchemaResponses = {
-  200: c.type<{ ping: "pong" }>(),
+  200: c.noBody(),
 };
 
 const fetchContentFromUpstreamSchemaResponses = {
