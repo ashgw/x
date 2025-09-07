@@ -10,7 +10,7 @@ import { AUTH_COOKIES_MAX_AGE, COOKIE_NAMES } from "./consts";
 const securedCookieOptions = {
   sameSite: "lax",
   path: "/",
-  secure: env.CURRENT_ENV !== "development",
+  secure: env.NEXT_PUBLIC_CURRENT_ENV !== "development",
   maxAge: AUTH_COOKIES_MAX_AGE,
   httpOnly: true,
 } satisfies SerializeOptions;

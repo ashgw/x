@@ -9,7 +9,7 @@ const thirdParty = console; // would use logtail, but no need for now
 // eslint-disable-next-line no-restricted-syntax
 const localLogger = console;
 export const logger =
-  env.CURRENT_ENV === "production" ? thirdParty : localLogger;
+  env.NEXT_PUBLIC_CURRENT_ENV === "production" ? thirdParty : localLogger;
 
 // not used rn, use this with `next.js` config
 export const withLogging = (config: NextConfig): NextConfig => {

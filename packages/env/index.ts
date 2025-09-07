@@ -53,6 +53,11 @@ console.log(`${colors.magenta("ENV")} → loaded.`);
 const isBrowser = typeof window !== "undefined";
 
 const clientSideVars = {
+  CURRENT_ENV: z
+    .enum(["development", "preview", "production"])
+    .describe(
+      "The actual environment we're running/deploying the app in/to, since NODE_ENV can be misleading since it only checks if NextJS is built or dev really, this is manually set",
+    ),
   SENTRY_DSN: z.string().url(),
   WWW_URL: z.string().url(),
   WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
@@ -63,11 +68,6 @@ const clientSideVars = {
 };
 
 const serverSideVars = {
-  CURRENT_ENV: z
-    .enum(["development", "preview", "production"])
-    .describe(
-      "The actual environment we're running/deploying the app in/to, since NODE_ENV can be misleading since it only checks if NextJS is built or dev really, this is manually set",
-    ),
   NODE_ENV: z
     .enum(["production", "development", "test"])
     .optional()
@@ -85,10 +85,34 @@ const serverSideVars = {
     .string()
     .min(1, "DATABASE_URL is required")
     .url("Must be a valid URL")
-    .refine(
-      (url) => url.startsWith("postgres://") || url.startsWith("postgresql://"),
-      { message: "Must be a valid Neon Postgres URL" },
-    ),
+    .superRefine((url, ctx) => {
+      const env = process.env.NEXT_PUBLIC_CURRENT_ENV;
+
+      if (env === "production" && !url.includes("supabase")) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "In production, DATABASE_URL must include 'supabase'",
+        });
+      }
+
+      if (env === "development" && !url.includes("localhost")) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "In development, DATABASE_URL must point to localhost",
+        });
+      }
+
+      if (
+        env === "preview" &&
+        (url.includes("supabase") || url.includes("localhost"))
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "In preview, DATABASE_URL must not be supabase or localhost",
+        });
+      }
+    }),
+
   DIRECT_URL: z.string().url().startsWith("postgres"),
   S3_BUCKET_NAME: z
     .string()
@@ -122,6 +146,7 @@ export const env = createEnv({
   disablePrefix: [...serverSideVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
@@ -129,7 +154,6 @@ export const env = createEnv({
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
     S3_BUCKET_SECRET_KEY: process.env.S3_BUCKET_SECRET_KEY,
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
-    CURRENT_ENV: process.env.CURRENT_ENV,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,

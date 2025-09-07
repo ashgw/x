@@ -52,7 +52,7 @@ runs:
       run: |
         pnpm --filter @ashgw/db stop
 
-    - name: Check for schema drift on the $CURRENT_ENV database
+    - name: Check for schema drift on the $NEXT_PUBLIC_CURRENT_ENV database
       shell: bash
       run: |
         pnpm --filter @ashgw/db exec prisma migrate diff \
@@ -63,13 +63,13 @@ runs:
         chmod +x .github/scripts/check-migration-safety.sh
         .github/scripts/check-migration-safety.sh migration.sql
 
-    - name: Deploy migrations on the $CURRENT_ENV database
+    - name: Deploy migrations on the $NEXT_PUBLIC_CURRENT_ENV database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
         pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
-    - name: Validate migrations on the $CURRENT_ENV database
+    - name: Validate migrations on the $NEXT_PUBLIC_CURRENT_ENV database
       if: inputs.with_deploy == 'yes'
       shell: bash
       run: |
@@ -85,7 +85,7 @@ runs:
         pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         repo="${{ github.repository }}"
 
-        comment_body="Database migrations were successfully deployed to the $CURRENT_ENV branch of the database."
+        comment_body="Database migrations were successfully deployed to the $NEXT_PUBLIC_CURRENT_ENV branch of the database."
 
         curl -s -X POST \
           -H "Authorization: token $GH_TOKEN" \

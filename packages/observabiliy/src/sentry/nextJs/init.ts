@@ -22,15 +22,15 @@ export const init = (ops: {
 
     // The environment variable helps to distinguish between different environments (e.g., production, development).
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#environment
-    environment: env.CURRENT_ENV,
+    environment: env.NEXT_PUBLIC_CURRENT_ENV,
 
     // Enables debug mode for development, providing additional logging.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#debug
-    debug: env.CURRENT_ENV === "development",
+    debug: env.NEXT_PUBLIC_CURRENT_ENV === "development",
 
     // Enables or disables Sentry based on the environment.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#enabled
-    enabled: env.CURRENT_ENV === "production",
+    enabled: env.NEXT_PUBLIC_CURRENT_ENV === "production",
 
     // Sample rate for replays on error, controlling how often replays are recorded.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#replays-on-error-sample-rate

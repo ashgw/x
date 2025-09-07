@@ -295,7 +295,7 @@ export class AuthService {
   }): boolean {
     // origin checks – only enforce extra check in prod
     if (
-      env.CURRENT_ENV === "production" &&
+      env.NEXT_PUBLIC_CURRENT_ENV === "production" &&
       this.req.headers.get("host") === new URL(env.NEXT_PUBLIC_BLOG_URL).host
     ) {
       const origin =
