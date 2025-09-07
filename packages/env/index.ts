@@ -48,22 +48,30 @@ const isBrowser = typeof window !== "undefined";
 
 // AKA non predfixed vars
 const serverSideVars = {
-  NODE_ENV: z.enum(["production", "development", "test"]).optional(),
-  SENTRY_ORG: z.string(),
-  SENTRY_PROJECT: z.string(),
+  DEPLOYMENT_ENV: z
+    .enum(["development", "preview", "production"])
+    .describe(
+      "The actual environment we're deploying the app to, since NODE_ENV can be misleading since it only checks if NextJS is built or dev really",
+    ),
+  NODE_ENV: z
+    .enum(["production", "development", "test"])
+    .optional()
+    .describe("NextJS is taking care of this basically"),
+  SENTRY_ORG: z.string().min(2),
+  SENTRY_PROJECT: z.string().min(2),
   SENTRY_AUTH_TOKEN: z.string().min(20),
   IP_HASH_SALT: z
     .string()
-    .min(32, "IP hash salt must be at least 32 characters long"),
+    .min(32, "IP hash salt must be at least 32 characters long")
+    .describe(
+      "This is used to has the IP with other fingerprinting info to see if the user is spamming my blog or nah",
+    ),
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required")
     .url("Must be a valid URL")
     .refine(
-      (url) =>
-        process.env.NODE_ENV === "development" ||
-        url.startsWith("postgres://") ||
-        url.startsWith("postgresql://"),
+      (url) => url.startsWith("postgres://") || url.startsWith("postgresql://"),
       { message: "Must be a valid Neon Postgres URL" },
     ),
   DIRECT_URL: z.string().url().startsWith("postgres"),
@@ -72,10 +80,11 @@ const serverSideVars = {
     .min(3, "Bucket name too short")
     .max(63, "Bucket name too long")
     .regex(/^[a-z0-9.-]+$/, "Invalid S3 bucket name"),
-  S3_BUCKET_REGION: z.enum(
-    ["us-east-1", "us-west-1", "us-west-2", "eu-west-1"],
-    { errorMap: () => ({ message: "Invalid AWS region" }) },
-  ),
+  S3_BUCKET_REGION: z
+    .enum(["us-east-1", "us-west-1", "us-west-2", "eu-west-1"], {
+      errorMap: () => ({ message: "Invalid AWS region" }),
+    })
+    .describe("I dont deploy anywhere else really"),
   S3_BUCKET_ACCESS_KEY_ID: z.string().min(20, "Secret access key too short"),
   S3_BUCKET_SECRET_KEY: z.string().min(20, "Secret access key too short"),
   S3_BUCKET_URL: z
@@ -115,6 +124,7 @@ export const env = createEnv({
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
     S3_BUCKET_SECRET_KEY: process.env.S3_BUCKET_SECRET_KEY,
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
+    DEPLOYMENT_ENV: process.env.DEPLOYMENT_ENV,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
