@@ -13,7 +13,7 @@ export function GET() {
     info: {
       title: "www API v1",
       version: "1.0.0",
-      description: "Contract-first REST",
+      description: "REST",
     },
     openapi: "3.0.3",
     servers: [{ url: new URL(endPoint, env.NEXT_PUBLIC_WWW_URL).toString() }],

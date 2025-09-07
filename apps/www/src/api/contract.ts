@@ -13,7 +13,7 @@ import { c } from "./root";
 export const v1Contract = c.router({
   purgeViewWindow: {
     method: "DELETE",
-    path: "/pruge-view-window",
+    path: "/purge-view-window",
     strictStatusCodes: true,
     headers: purgeViewWindowHeadersSchemaDto,
     responses: purgeViewWindowSchemaResponses,
