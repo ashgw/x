@@ -12,6 +12,6 @@ const args = {
   throwOnUnknownStatus: true,
 } satisfies InitClientArgs;
 
-export const tsrClient = initClient(contract, args);
+export const tsrClientSdk = initClient(contract, args);
 
-export const tsrQueryClient = initTsrReactQuery(contract, args);
+export const tsrQueryClientSide = initTsrReactQuery(contract, args);

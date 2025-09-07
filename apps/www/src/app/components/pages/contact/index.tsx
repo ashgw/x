@@ -9,7 +9,7 @@ import { Footer, TextContent } from "@ashgw/components";
 import { email, gpg, links } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
-import { tsrQueryClient } from "~/api/client";
+import { tsrQueryClientSide } from "~/api/client";
 import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 
@@ -18,7 +18,7 @@ export function ContactPage() {
   const [isToggled, setIsToggled] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
 
-  const gpgQuery = tsrQueryClient.gpg.useQuery({
+  const gpgQuery = tsrQueryClientSide.gpg.useQuery({
     queryKey: ["gpgQuery"],
     queryData: {
       query: {

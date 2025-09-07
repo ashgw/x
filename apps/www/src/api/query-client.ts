@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query"; // TODO: add these to the package
 import superjson from "superjson"; //  TODO: add superjson in catalog
 
-function makeQueryClient(): QueryClient {
+export function makeQueryClient(): QueryClient {
   return new QueryClient({
     defaultOptions: {
       queries: {
