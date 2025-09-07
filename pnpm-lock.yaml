@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     '@ashgw/ts-env':
-      specifier: 1.6.1
-      version: 1.6.1
+      specifier: 1.5.3
+      version: 1.5.3
     '@nextui-org/react':
       specifier: 2.2.9
       version: 2.2.9
@@ -772,7 +772,7 @@ importers:
     dependencies:
       '@ashgw/ts-env':
         specifier: 'catalog:'
-        version: 1.6.1(zod@3.23.8)
+        version: 1.5.3(zod@3.23.8)
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -825,7 +825,7 @@ importers:
         version: link:../env
       '@ashgw/ts-env':
         specifier: 'catalog:'
-        version: 1.6.1(zod@3.23.8)
+        version: 1.5.3(zod@3.23.8)
       aws-sdk:
         specifier: 2.1692.0
         version: 2.1692.0
@@ -1141,8 +1141,8 @@ packages:
       openapi3-ts: ^2.0.0 || ^3.0.0
       zod: ^3.20.0
 
-  '@ashgw/ts-env@1.6.1':
-    resolution: {integrity: sha512-2iyGerV4C0GyAnAG1XWoVL5uG/vH/bkIVJ6IH/HGa/wWexgzDQ6ZUQUbx5gyCprJabpZwC27Uni5nGWwN/R/Sw==}
+  '@ashgw/ts-env@1.5.3':
+    resolution: {integrity: sha512-hRv+CYbfipl6rnJGy394Lq8L7CEQXsXpBJNQ18a6KhT8s6P5gXPtRwdKOcntFBFlVXl/7I3aQVARFWTtoyPmiQ==}
     peerDependencies:
       zod: '>=3.0.0'
 
@@ -9878,7 +9878,7 @@ snapshots:
       ts-deepmerge: 6.2.1
       zod: 3.23.8
 
-  '@ashgw/ts-env@1.6.1(zod@3.23.8)':
+  '@ashgw/ts-env@1.5.3(zod@3.23.8)':
     dependencies:
       zod: 3.23.8
 
