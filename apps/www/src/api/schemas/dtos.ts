@@ -1,9 +1,8 @@
 import { z } from "zod";
-import type { InferRequest } from "../extended";
 
 // ========== Schemas ==========
 
-export const cacheControlsQueryRequestSchema = z
+export const cacheControlsQueryRequestSchemaDto = z
   .object({
     revalidateSeconds: z
       .string()
@@ -17,6 +16,6 @@ export const cacheControlsQueryRequestSchema = z
 
 // ========== Types ==========
 
-export type CacheControlsQueryRequest = InferRequest<
-  typeof cacheControlsQueryRequestSchema
+export type CacheControlsQueryDto = z.infer<
+  typeof cacheControlsQueryRequestSchemaDto
 >;

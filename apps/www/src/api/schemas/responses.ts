@@ -2,23 +2,9 @@ import { z } from "zod";
 import type { InferResponses } from "../extended";
 import { schemaResponse } from "../extended";
 import { c } from "../root";
+import { httpErrorSchemaRo } from "./ros";
 
 // ========== Schemas ==========
-
-const httpErrorSchemaRo = z.object({
-  code: z
-    .enum([
-      "UPSTREAM_ERROR",
-      "INTERNAL_ERROR",
-      "BAD_REQUEST",
-      "NOT_FOUND",
-      "UNAUTHORIZED",
-      "FORBIDDEN",
-    ])
-    .describe("Stable, machine-parseable error code"),
-  message: z.string().min(1).max(1000).describe("Human readable"),
-  details: z.record(z.any()).optional().describe("Optional extra context"),
-});
 
 export const checkHealthSchemaResponses = schemaResponse({
   200: c.noBody(),

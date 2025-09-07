@@ -92,22 +92,9 @@ export type InferResponses<T extends Record<number, unknown>> = {
 
 export type InferRequest<T extends z.ZodTypeAny> = z.infer<T>;
 
-/* ---------- Optional convenience ---------- */
-
-export type ResponseFor<
-  T extends Record<number, unknown>,
-  S extends StatusCodes<T>,
-> = WithHeaders<{ status: S } & BodyFromResponseLoose<T[S]>>;
-
-export type InferResponseBodies<T extends Record<number, unknown>> = {
-  [S in StatusCodes<T>]: BodyFromResponseLoose<T[S]> extends { body: infer B }
-    ? B
-    : never;
-};
-
-type ResponseMap<V = unknown> = Record<number, V>;
-
-export function schemaResponse<const R extends ResponseMap>(r: R): R {
+export function schemaResponse<
+  const R extends Record<number, AppRouteResponse>,
+>(r: R): R {
   return r;
 }
 
