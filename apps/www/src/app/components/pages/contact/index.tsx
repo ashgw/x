@@ -7,7 +7,6 @@ import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
 import { email, gpg, links } from "@ashgw/constants";
-import { logger } from "@ashgw/observability";
 import { ToggleSwitch } from "@ashgw/ui";
 
 import { client } from "~/api/client";
@@ -20,21 +19,22 @@ export function ContactPage() {
   const [showCalendar, setShowCalendar] = useState(false);
 
   async function copyGPG() {
-    try {
-      const { status, body } = await client.gpg({
-        query: undefined,
-      });
+    const res = await client.gpg({
+      query: undefined,
+    });
 
-      if (status !== 200) {
-        throw new Error(`API error: ${status}`);
-      }
-      copyToClipboard(body);
+    if (res.status == 500 || res.status == 424) {
+      toast.error(gpg.id, {
+        description: res.body.message,
+      });
+      return;
+    }
+    if (res.status == 200) {
+      copyToClipboard(res.body);
       toast.message(gpg.id, {
         description: "PGP public key block is copied to your clipboard",
       });
-    } catch (error) {
-      logger.log(error);
-      toast.message("Oops! Looks like something went wrong!");
+      return;
     }
   }
 
