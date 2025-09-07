@@ -67,6 +67,38 @@ const clientSideVars = {
   POSTHOG_HOST: z.string().url(),
 };
 
+const databaseUrlSchema = z
+  .string()
+  .min(1, "DATABASE_URL is required")
+  .url("Must be a valid URL")
+  .superRefine((url, ctx) => {
+    const env = process.env.NEXT_PUBLIC_CURRENT_ENV;
+
+    if (env === "production" && !url.includes("supabase")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "In production, DATABASE_URL must include 'supabase'",
+      });
+    }
+
+    if (env === "development" && !url.includes("localhost")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "In development, DATABASE_URL must point to localhost",
+      });
+    }
+
+    if (
+      env === "preview" &&
+      (url.includes("supabase") || url.includes("localhost"))
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "In preview, DATABASE_URL must not be supabase or localhost",
+      });
+    }
+  });
+
 const serverSideVars = {
   NODE_ENV: z
     .enum(["production", "development", "test"])
@@ -81,39 +113,8 @@ const serverSideVars = {
     .describe(
       "This is used to has the IP with other fingerprinting info to see if the user is spamming my blog or nah",
     ),
-  DATABASE_URL: z
-    .string()
-    .min(1, "DATABASE_URL is required")
-    .url("Must be a valid URL")
-    .superRefine((url, ctx) => {
-      const env = process.env.NEXT_PUBLIC_CURRENT_ENV;
-
-      if (env === "production" && !url.includes("supabase")) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "In production, DATABASE_URL must include 'supabase'",
-        });
-      }
-
-      if (env === "development" && !url.includes("localhost")) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "In development, DATABASE_URL must point to localhost",
-        });
-      }
-
-      if (
-        env === "preview" &&
-        (url.includes("supabase") || url.includes("localhost"))
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "In preview, DATABASE_URL must not be supabase or localhost",
-        });
-      }
-    }),
-
-  DIRECT_URL: z.string().url().startsWith("postgres"),
+  DATABASE_URL: databaseUrlSchema,
+  DIRECT_URL: databaseUrlSchema,
   S3_BUCKET_NAME: z
     .string()
     .min(3, "Bucket name too short")
