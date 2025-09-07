@@ -28,6 +28,12 @@ export const fetchGpgFromUpstreamSchemaResponses = schemaResponse({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
+export const purgeViewWindowCronSchemaResponses = schemaResponse({
+  200: c.noBody(),
+  401: httpErrorSchemaRo,
+  500: httpErrorSchemaRo,
+});
+
 // ========== Types ==========
 
 export type CheckHealthResponses = InferResponses<
@@ -40,4 +46,8 @@ export type FetchTextFromUpstreamResponses = InferResponses<
 
 export type FetchGpgFromUpstreamResponses = InferResponses<
   typeof fetchGpgFromUpstreamSchemaResponses
+>;
+
+export type PurgeViewWindowCronResponses = InferResponses<
+  typeof purgeViewWindowCronSchemaResponses
 >;

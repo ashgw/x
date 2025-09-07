@@ -9,7 +9,7 @@ export async function timed<T>(
     return await fn();
   } finally {
     const dt = Date.now() - t0;
-    logger.debug(`[REST] ${label} took ${dt}ms`);
+    logger.info(`[REST] ${label} took ${dt}ms`);
   }
 }
 

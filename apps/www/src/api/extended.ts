@@ -1,37 +1,14 @@
 // types.ts
 import type { z } from "zod";
 import type {
-  AppRoute,
-  AppRouter,
   AppRouteResponse,
   ContractOtherResponse,
   ContractPlainType,
   ContractNullType,
-  ServerInferRequest,
-  ServerInferResponses,
   ContractNoBody,
 } from "@ts-rest/core";
-import type { EmptyObject, Keys } from "ts-roids";
 
 export type Awaitable<T> = T | Promise<T>;
-
-/* ---------- Controller arg inference ---------- */
-
-type ReqFor<R extends AppRoute> = (ServerInferRequest<R> extends {
-  params: infer P;
-}
-  ? { params: P }
-  : EmptyObject) &
-  (ServerInferRequest<R> extends { query: infer Q }
-    ? { query: Q }
-    : EmptyObject) &
-  (ServerInferRequest<R> extends { body: infer B } ? { body: B } : EmptyObject);
-
-export type ControllerShape<C extends AppRouter> = {
-  [K in Keys<C>]: C[K] extends AppRoute
-    ? (args: ReqFor<C[K]>) => Awaitable<ServerInferResponses<C[K]>>
-    : never;
-};
 
 /* ---------- Response inference ---------- */
 
@@ -97,8 +74,3 @@ export function schemaResponse<
 >(r: R): R {
   return r;
 }
-
-export const makeController =
-  <C extends AppRouter>(_contract: C) =>
-  <S extends ControllerShape<C>>(s: S): S =>
-    s;
