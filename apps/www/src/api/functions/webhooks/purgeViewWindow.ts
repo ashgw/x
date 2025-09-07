@@ -1,6 +1,6 @@
-import { logger, monitor } from "@ashgw/observability";
-import type { PurgeViewWindowHeadersDto } from "~/api/schemas/dtos";
-import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
+import {logger, monitor} from "@ashgw/observability";
+import type {PurgeViewWindowHeadersDto} from "~/api/schemas/dtos";
+import type {PurgeViewWindowResponses} from "~/api/schemas/responses";
 
 // TODO: import this later when the bitch ass fuckin wifi driver is fixed
 // TODO: also remove the blog service view implementation
@@ -9,8 +9,8 @@ import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
 // TODO: put logger in a seperate package
 // TODO: fix fucking package install errors
 
-import { db } from "../../../../../../packages/db/src/index";
-import { env } from "@ashgw/env";
+import {db} from "@ashgw/db";
+import {env} from "@ashgw/env";
 
 const RETAIN_DAYS = 2; // keep 2 days for safety
 const CUTOFF = new Date(Date.now() - 1000 * 60 * 60 * 24 * RETAIN_DAYS);
@@ -30,7 +30,7 @@ export async function purgeViewWindow(
   logger.info("Cleaning up the post view window...");
   try {
     const deleted = await db.postViewWindow.deleteMany({
-      where: { bucketStart: { lt: CUTOFF } }, // uses @@index([bucketStart])
+      where: {bucketStart: {lt: CUTOFF}}, // uses @@index([bucketStart])
     });
     if (deleted.count) {
       logger.info("View window records purged successfully!", {
@@ -43,8 +43,8 @@ export async function purgeViewWindow(
       body: undefined,
     };
   } catch (error) {
-    logger.error("purgeViewWindow cleanup failed", { error });
-    monitor.next.captureException({ error });
+    logger.error("purgeViewWindow cleanup failed", {error});
+    monitor.next.captureException({error});
     return {
       status: 500,
       body: {
@@ -54,3 +54,4 @@ export async function purgeViewWindow(
     };
   }
 }
+
