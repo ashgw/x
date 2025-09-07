@@ -4,24 +4,51 @@ import type {
   FetchGpgFromUpstreamResponses,
   FetchTextFromUpstreamResponses,
 } from "../schemas/responses";
+import type { ExclusiveUnion } from "ts-roids";
+
+function repoMainBranchBaseUrl(opts: { repo: string; scriptPath: string }) {
+  const { repo, scriptPath } = opts;
+  return `https://raw.githubusercontent.com/ashgw/${repo}/main/${scriptPath}`;
+}
 
 interface FetchOpts {
   defaultRevalidate: number; // seconds
   cacheControl: string;
 }
 
+type FetchUrl = ExclusiveUnion<
+  | {
+      github: {
+        repo: string;
+        scriptPath: string;
+      };
+    }
+  | {
+      direct: {
+        url: string;
+      };
+    }
+>;
+
 type FetchUpstreamResponses =
   | FetchTextFromUpstreamResponses
   | FetchGpgFromUpstreamResponses;
 
 export async function fetchTextFromUpstream(input: {
-  url: string;
-  q?: FetchTextFromUpstreamQueryDto;
+  fetchUrl: FetchUrl;
+  query?: FetchTextFromUpstreamQueryDto;
   opts: FetchOpts;
 }): Promise<FetchUpstreamResponses> {
-  const { url, opts } = input;
+  const { fetchUrl, opts } = input;
   const revalidateSeconds =
-    input.q?.revalidateSeconds ?? opts.defaultRevalidate;
+    input.query?.revalidateSeconds ?? opts.defaultRevalidate;
+
+  const url = fetchUrl.github
+    ? repoMainBranchBaseUrl({
+        repo: fetchUrl.github.repo,
+        scriptPath: fetchUrl.github.scriptPath,
+      })
+    : fetchUrl.direct.url;
 
   try {
     const res = await fetch(url, {
