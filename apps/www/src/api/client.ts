@@ -1,8 +1,8 @@
 import { initClient } from "@ts-rest/core";
 import { v1Contract } from "./contract";
-import { basePath } from "./basePath";
+import { endPoint } from "./endpoint";
 
 export const client = initClient(v1Contract, {
-  baseUrl: basePath,
+  baseUrl: endPoint,
   baseHeaders: {},
 });
