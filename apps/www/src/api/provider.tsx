@@ -1,6 +1,6 @@
 "use client";
 
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@ts-rest/react-query/tanstack";
 import { getOptimizedQueryClient } from "./query-client";
 import { tsrQueryClientSide } from "./client";
 
