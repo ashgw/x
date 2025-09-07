@@ -10,8 +10,6 @@ import { email, gpg, links } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
 import { tsrQueryClient } from "~/api/client";
-import { isFetchError, isUnknownErrorResponse } from "@ts-rest/react-query/v5";
-
 import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 
@@ -27,43 +25,8 @@ export function ContactPage() {
         revalidateSeconds: "20000",
       },
     },
-    staleTime: 1000, // <- react-query options (optional)
+    staleTime: 1000,
   });
-
-  async function copyGPG() {
-    const query = await gpgQuery.refetch();
-
-    if (query.error) {
-      if (isFetchError(error)) {
-        toast.error(gpg.id, { description: "Network error. Try again." });
-        return;
-      }
-      // If the server replied with a status not in your contract
-      if (isUnknownErrorResponse(error, contractEndpoint)) {
-        toast.error(gpg.id, {
-          description: `Unexpected status ${error.status}`,
-        });
-        return;
-      }
-      // Known error responses - your contract defines 424 and 500
-      toast.error(gpg.id, {
-        description:
-          typeof error.body === "object" &&
-          error.body &&
-          "message" in error.body
-            ? String((error.body as { message?: string }).message ?? "Failed")
-            : "Failed",
-      });
-      return;
-    }
-
-    if (data?.status === 200) {
-      copyToClipboard(data.body);
-      toast.message(gpg.id, {
-        description: "PGP public key block copied to clipboard",
-      });
-    }
-  }
 
   const handleToggle = (state: boolean) => {
     setIsToggled(state);
@@ -83,20 +46,44 @@ export function ContactPage() {
             <div className="space-y-6 text-center">
               <div className="space-y-2">
                 <motion.h1
-                  animate={{ opacity: 1, y: 0 }}
-                  initial={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  initial={{
+                    opacity: 0,
+                    y: -30,
+                  }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                  }}
                   className="my-2 text-5xl font-bold leading-10"
                 >
-                  <span>Get in touch</span>
+                  <span className="">Get in touch</span>
                 </motion.h1>
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
-                    I prefer to use <Link href={links.twitter.link} name="X" />{" "}
-                    for most communication. I use{" "}
-                    <Link href={links.keyBase} name="GPG" /> for secure
+                    I prefer to use{" "}
+                    <Link href={links.twitter.link} name="X"></Link> for most
+                    communication. I use{" "}
+                    <Link href={links.keyBase} name="GPG"></Link> for secure
                     communication, check my{" "}
-                    <button onClick={copyGPG}>
+                    <button
+                      onClick={() => {
+                        if (gpgQuery.data) {
+                          copyToClipboard(gpgQuery.data.body);
+                          toast.message(gpg.id, {
+                            description:
+                              "PGP public key block is copied to your clipboard",
+                          });
+                        }
+                        if (gpgQuery.error) {
+                          toast.error("!Oops my bad, please try again later");
+                          return;
+                        }
+                      }}
+                    >
                       <strong className="glows text-white underline">
                         ID.
                       </strong>
@@ -105,7 +92,6 @@ export function ContactPage() {
                   </TextContent>
                 </div>
               </div>
-
               <div className="mx-auto max-w-sm space-y-4">
                 <motion.div
                   className="space-y-4"
