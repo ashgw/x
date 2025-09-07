@@ -8,7 +8,7 @@ import { env } from "@ashgw/env";
 const thirdParty = console; // would use logtail, but no need for now
 const defaultLogger = console;
 export const logger =
-  env.NODE_ENV === "production" ? thirdParty : defaultLogger;
+  env.CURRENT_ENV === "production" ? thirdParty : defaultLogger;
 
 // not used rn, use this with `next.js` config
 export const withLogging = (config: NextConfig): NextConfig => {

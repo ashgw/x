@@ -72,7 +72,7 @@ const db =
         transactionOptions,
       }) satisfies DatabaseClient));
 
-// store the singleton in dev to avoid leaks when reloading
+// store the singleton in next dev to avoid leaks when reloading
 if (env.NODE_ENV === "development") {
   globalForDb.prisma = db;
 }

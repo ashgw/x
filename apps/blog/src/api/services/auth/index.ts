@@ -293,9 +293,9 @@ export class AuthService {
   }: {
     requestCsrfHeaderValue: string;
   }): boolean {
-    // origin checks – only enforce extra check on main prod blog
+    // origin checks – only enforce extra check in prod
     if (
-      env.NODE_ENV === "production" &&
+      env.DEPLOYMENT_ENV === "production" &&
       this.req.headers.get("host") === new URL(env.NEXT_PUBLIC_BLOG_URL).host
     ) {
       const origin =

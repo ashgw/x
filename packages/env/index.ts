@@ -48,10 +48,10 @@ const isBrowser = typeof window !== "undefined";
 
 // AKA non predfixed vars
 const serverSideVars = {
-  DEPLOYMENT_ENV: z
+  CURRENT_ENV: z
     .enum(["development", "preview", "production"])
     .describe(
-      "The actual environment we're deploying the app to, since NODE_ENV can be misleading since it only checks if NextJS is built or dev really",
+      "The actual environment we're running/deploying the app in/to, since NODE_ENV can be misleading since it only checks if NextJS is built or dev really, this is manually set",
     ),
   NODE_ENV: z
     .enum(["production", "development", "test"])
@@ -124,7 +124,7 @@ export const env = createEnv({
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
     S3_BUCKET_SECRET_KEY: process.env.S3_BUCKET_SECRET_KEY,
     S3_BUCKET_URL: process.env.S3_BUCKET_URL,
-    DEPLOYMENT_ENV: process.env.DEPLOYMENT_ENV,
+    CURRENT_ENV: process.env.CURRENT_ENV,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,

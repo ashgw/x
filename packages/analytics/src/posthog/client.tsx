@@ -22,7 +22,7 @@ export const PostHogProvider = (
       capture_pageview: false, // Disable automatic pageview capture, as we capture manually
       capture_pageleave: true, // Overrides the `capture_pageview` setting
       loaded: (ph) => {
-        if (env.NODE_ENV === "development") {
+        if (env.CURRENT_ENV === "development") {
           ph.debug();
         }
       },
