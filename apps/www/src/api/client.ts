@@ -1,3 +1,4 @@
+// TODO: ask cursor to document all this shit
 import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 import { initClient } from "@ts-rest/core";
 import { contract } from "./contract";
@@ -10,6 +11,7 @@ const args = {
   baseHeaders: {},
   validateResponse: true,
   throwOnUnknownStatus: true,
+  jsonQuery: false,
 } satisfies InitClientArgs;
 
 export const tsrClientSdk = initClient(contract, args);
