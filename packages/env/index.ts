@@ -46,6 +46,16 @@ console.log(`${colors.magenta("ENV")} → loaded.`);
 
 const isBrowser = typeof window !== "undefined";
 
+const clientSideVars = {
+  SENTRY_DSN: z.string().url(),
+  WWW_URL: z.string().url(),
+  WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
+  BLOG_URL: z.string().url(),
+  BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
+  POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
+  POSTHOG_HOST: z.string().url(),
+};
+
 // AKA non predfixed vars
 const serverSideVars = {
   CURRENT_ENV: z
@@ -99,22 +109,16 @@ const serverSideVars = {
 
 type ServerSideVars = typeof serverSideVars;
 
-const ServerSideVarsTuple = Object.keys(serverSideVars) as UnionToTuple<
+const serverSideVarsTuple = Object.keys(serverSideVars) as UnionToTuple<
   Keys<ServerSideVars>
 >;
 
 export const env = createEnv({
   vars: {
+    ...clientSideVars,
     ...serverSideVars,
-    SENTRY_DSN: z.string().url(),
-    WWW_URL: z.string().url(),
-    WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
-    BLOG_URL: z.string().url(),
-    BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
-    POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
-    POSTHOG_HOST: z.string().url(),
   },
-  disablePrefix: [...ServerSideVarsTuple],
+  disablePrefix: [...serverSideVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
     IP_HASH_SALT: process.env.IP_HASH_SALT,
