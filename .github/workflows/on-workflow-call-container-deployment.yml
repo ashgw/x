@@ -6,7 +6,7 @@ on:
       deployment_environment:
         required: true
         type: string
-      APP_NAME:
+      app_name:
         required: true
         type: string
         description: blog or www or whatever, basically the app
@@ -29,7 +29,6 @@ jobs:
       - uses: ./.github/actions/container-deploy
         with:
           environment: ${{ inputs.deployment_environment }}
+          app_name: ${{ inputs.app_name}} # only blog for now
           CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ${{ secrets.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
-          APP_NAME: ${{ inputs.APP_NAME}} # only blog for now
-

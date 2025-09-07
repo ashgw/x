@@ -94,7 +94,7 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: preview
-      APP_NAME: www
+      app_name: www
     secrets: inherit
 
   blog-preview-deployment:
@@ -102,7 +102,7 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: preview
-      APP_NAME: blog
+      app_name: blog
     secrets: inherit
 
   # same here
@@ -119,7 +119,7 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: production
-      APP_NAME: www
+      app_name: www
     secrets: inherit
 
   blog-production-deployment:
@@ -127,5 +127,5 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: production
-      APP_NAME: blog
+      app_name: blog
     secrets: inherit

@@ -7,11 +7,11 @@ inputs:
     description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
     default: "preview"
+  app_name:
+    description: "App name, either 'blog' or 'www' or whatever app you're running"
+    required: true
   CONTAINER_DEPLOYMENT_SERVICE_TOKEN:
     description: "API token"
-    required: true
-  APP_NAME:
-    description: "App name, either 'blog' or 'www' or whatever app you're running"
     required: true
   GITHUB_TOKEN:
     description: "GitHub token with packages:write for GHCR and PR comments"
@@ -29,18 +29,18 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.APP_NAME }}:${{ inputs.environment }}"
-        ./deployment/${{ inputs.APP_NAME }}/build \
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:${{ inputs.environment }}"
+        ./deployment/${{ inputs.app_name }}/build \
           --env "${{ inputs.environment }}" \
-          --service "${{ inputs.APP_NAME }}" \
+          --service "${{ inputs.app_name }}" \
           --image "$IMAGE"
 
     - name: Push image (production + latest)
       if: ${{ inputs.environment == 'production' }}
       shell: bash
       run: |
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.APP_NAME }}:production"
-        LATEST="ghcr.io/${{ github.repository_owner }}/${{ inputs.APP_NAME }}:latest"
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:production"
+        LATEST="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:latest"
         docker push "$IMAGE"
         docker tag "$IMAGE" "$LATEST"
         docker push "$LATEST"
@@ -49,7 +49,7 @@ runs:
       if: ${{ inputs.environment == 'preview' }}
       shell: bash
       run: |
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.APP_NAME }}:preview"
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:preview"
         docker push "$IMAGE"
 
     - name: Install Koyeb CLI and redeploy
@@ -70,10 +70,10 @@ runs:
         # Choose target
         if [[ "${{ inputs.environment }}" == "production" ]]; then
           echo "Deploying to production environment"
-          DEPLOY_TARGET="${{ inputs.APP_NAME }}/${{ inputs.APP_NAME }}"
+          DEPLOY_TARGET="${{ inputs.app_name }}/${{ inputs.app_name }}"
         elif [[ "${{ inputs.environment }}" == "preview" ]]; then
           echo "Deploying to preview environment"
-          DEPLOY_TARGET="${{ inputs.APP_NAME }}-preview/${{ inputs.APP_NAME }}-preview"
+          DEPLOY_TARGET="${{ inputs.app_name }}-preview/${{ inputs.app_name }}-preview"
         else
           echo "Unknown environment: ${{ inputs.environment }}"
           exit 1
@@ -84,17 +84,19 @@ runs:
 
     - name: Notify about preview deployment
       if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+      env:
+        DEPLOYED_APP: ${{ inputs.app_name }}
       uses: actions/github-script@v7
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
-          const service = process.env.APP_NAME;
+          const app = process.env.DEPLOYED_APP;
           const body = [
-            `## ${service} Preview Deployment Ready!`,
+            `## ${app} Preview Deployment Ready!`,
             ``,
-            `### Service: \`${service}\``,
+            `### App: \`${app}\``,
             ``,
-            `**Preview URL:** [Check it out here](https://${service}-preview.ashgw.me)`,
+            `**Preview URL:** [Check it out here](https://${app}-preview.ashgw.me)`,
             ``,
             `---`,
             `> This preview environment reflects the changes in this PR. It deploys this version of the app as soon as the "deploy-preview" label is added.`
@@ -105,5 +107,3 @@ runs:
             repo: context.repo.repo,
             body
           });
-      env:
-        APP_NAME: ${{ inputs.APP_NAME }}
