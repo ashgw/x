@@ -14,6 +14,7 @@ import { fonts } from "@ashgw/ui";
 
 import { NavBar } from "~/app/components/misc/nav";
 import { env } from "@ashgw/env";
+import { TsrProvider } from "~/api/provider";
 
 const description = "Building the future.";
 
@@ -32,7 +33,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <NavBar />
-        <Providers site="www">{children}</Providers>
+        <Providers site="www">
+          <TsrProvider>{children}</TsrProvider>
+        </Providers>
         <div className="fixed bottom-4 right-4 max-w-[550px]">
           <CookieBanner />
         </div>

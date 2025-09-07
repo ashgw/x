@@ -9,7 +9,9 @@ import { Footer, TextContent } from "@ashgw/components";
 import { email, gpg, links } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
-import { client } from "~/api/client";
+import { tsrQueryClient } from "~/api/client";
+import { isFetchError, isUnknownErrorResponse } from "@ts-rest/react-query/v5";
+
 import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 
@@ -18,23 +20,48 @@ export function ContactPage() {
   const [isToggled, setIsToggled] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
 
-  async function copyGPG() {
-    const res = await client.gpg({
-      query: undefined,
-    });
+  const gpgQuery = tsrQueryClient.gpg.useQuery({
+    queryKey: ["gpgQuery"],
+    queryData: {
+      query: {
+        revalidateSeconds: "20000",
+      },
+    },
+    staleTime: 1000, // <- react-query options (optional)
+  });
 
-    if (res.status == 500 || res.status == 424) {
+  async function copyGPG() {
+    const query = await gpgQuery.refetch();
+
+    if (query.error) {
+      if (isFetchError(error)) {
+        toast.error(gpg.id, { description: "Network error. Try again." });
+        return;
+      }
+      // If the server replied with a status not in your contract
+      if (isUnknownErrorResponse(error, contractEndpoint)) {
+        toast.error(gpg.id, {
+          description: `Unexpected status ${error.status}`,
+        });
+        return;
+      }
+      // Known error responses - your contract defines 424 and 500
       toast.error(gpg.id, {
-        description: res.body.message,
+        description:
+          typeof error.body === "object" &&
+          error.body &&
+          "message" in error.body
+            ? String((error.body as { message?: string }).message ?? "Failed")
+            : "Failed",
       });
       return;
     }
-    if (res.status == 200) {
-      copyToClipboard(res.body);
+
+    if (data?.status === 200) {
+      copyToClipboard(data.body);
       toast.message(gpg.id, {
-        description: "PGP public key block is copied to your clipboard",
+        description: "PGP public key block copied to clipboard",
       });
-      return;
     }
   }
 
@@ -56,34 +83,20 @@ export function ContactPage() {
             <div className="space-y-6 text-center">
               <div className="space-y-2">
                 <motion.h1
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  initial={{
-                    opacity: 0,
-                    y: -30,
-                  }}
-                  transition={{
-                    duration: 0.3,
-                    ease: "easeInOut",
-                  }}
+                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -30 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="my-2 text-5xl font-bold leading-10"
                 >
-                  <span className="">Get in touch</span>
+                  <span>Get in touch</span>
                 </motion.h1>
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
-                    I prefer to use{" "}
-                    <Link href={links.twitter.link} name="X"></Link> for most
-                    communication. I use{" "}
-                    <Link href={links.keyBase} name="GPG"></Link> for secure
+                    I prefer to use <Link href={links.twitter.link} name="X" />{" "}
+                    for most communication. I use{" "}
+                    <Link href={links.keyBase} name="GPG" /> for secure
                     communication, check my{" "}
-                    <button
-                      onClick={async () => {
-                        await copyGPG();
-                      }}
-                    >
+                    <button onClick={copyGPG}>
                       <strong className="glows text-white underline">
                         ID.
                       </strong>
@@ -92,6 +105,7 @@ export function ContactPage() {
                   </TextContent>
                 </div>
               </div>
+
               <div className="mx-auto max-w-sm space-y-4">
                 <motion.div
                   className="space-y-4"
