@@ -5,4 +5,6 @@ import { endPoint } from "./endpoint";
 export const client = initClient(v1Contract, {
   baseUrl: endPoint,
   baseHeaders: {},
+  validateResponse: true,
+  throwOnUnknownStatus: true,
 });
