@@ -28,7 +28,7 @@ export const fetchGpgFromUpstreamSchemaResponses = schemaResponse({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const purgeViewWindowCronSchemaResponses = schemaResponse({
+export const purgeViewWindowWebhookSchemaResponses = schemaResponse({
   200: c.noBody(),
   401: httpErrorSchemaRo,
   500: httpErrorSchemaRo,
@@ -48,6 +48,6 @@ export type FetchGpgFromUpstreamResponses = InferResponses<
   typeof fetchGpgFromUpstreamSchemaResponses
 >;
 
-export type PurgeViewWindowCronResponses = InferResponses<
-  typeof purgeViewWindowCronSchemaResponses
+export type PurgeViewWindowWebhookResponses = InferResponses<
+  typeof purgeViewWindowWebhookSchemaResponses
 >;

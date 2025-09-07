@@ -4,7 +4,7 @@ import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { repoMainBranchBaseUrl, timed } from "./utils";
 import { checkHealth } from "./functions/checkHealth";
 import { gpg } from "@ashgw/constants";
-import { purgeViewWindow } from "./functions/crons";
+import { webhooks } from "./functions/webhooks";
 
 export const router = tsr.router(v1Contract, {
   bootstrap: async ({ query }) =>
@@ -63,6 +63,8 @@ export const router = tsr.router(v1Contract, {
         },
       }),
     ),
-  purgeViewWindow: async ({ headers: { token } }) =>
-    timed("purgeViewWindow", () => purgeViewWindow({ token })),
+  purgeViewWindow: async ({ headers }) =>
+    timed("purgeViewWindow", () =>
+      webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
+    ),
 });

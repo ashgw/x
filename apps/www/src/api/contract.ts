@@ -2,11 +2,11 @@ import {
   checkHealthSchemaResponses,
   fetchGpgFromUpstreamSchemaResponses,
   fetchTextFromUpstreamSchemaResponses,
-  purgeViewWindowCronSchemaResponses,
+  purgeViewWindowWebhookSchemaResponses,
 } from "./schemas/responses";
 import {
   cacheControlsQueryRequestSchemaDto,
-  purgeViewWindowCronSchemaDto,
+  purgeViewWindowWebhookSchemaDto,
 } from "./schemas/dtos";
 import { c } from "./root";
 
@@ -15,8 +15,8 @@ export const v1Contract = c.router({
     method: "DELETE",
     path: "/pruge-view-window",
     strictStatusCodes: true,
-    headers: purgeViewWindowCronSchemaDto,
-    responses: purgeViewWindowCronSchemaResponses,
+    headers: purgeViewWindowWebhookSchemaDto,
+    responses: purgeViewWindowWebhookSchemaResponses,
   },
   healthCheck: {
     method: "GET",

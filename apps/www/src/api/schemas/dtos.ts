@@ -14,8 +14,8 @@ export const cacheControlsQueryRequestSchemaDto = z
   })
   .passthrough();
 
-export const purgeViewWindowCronSchemaDto = z.object({
-  token: z.string().min(1).max(64),
+export const purgeViewWindowWebhookSchemaDto = z.object({
+  "x-cron-token": z.string().min(1).max(64),
 });
 
 // ========== Types ==========
@@ -24,6 +24,6 @@ export type CacheControlsQueryDto = z.infer<
   typeof cacheControlsQueryRequestSchemaDto
 >;
 
-export type PurgeViewWindowCronDto = z.infer<
-  typeof purgeViewWindowCronSchemaDto
+export type PurgeViewWindowWebhookDto = z.infer<
+  typeof purgeViewWindowWebhookSchemaDto
 >;
