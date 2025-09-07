@@ -6,6 +6,12 @@ import { z } from "zod";
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 
+export function envTuple<
+  Schema extends Record<Uppercase<string>, z.ZodTypeAny>,
+>(keys: Schema) {
+  return Object.keys(keys) as UnionToTuple<Keys<typeof keys>>;
+}
+
 // im using a custom zsh function locally to load whatever .env file i want, checkout ashgw/zshfuncs/env.zsh
 // if u need to use a file based setup, uncomment this, just know when using path etc.. it won't work on edge funcs
 
@@ -56,7 +62,6 @@ const clientSideVars = {
   POSTHOG_HOST: z.string().url(),
 };
 
-// AKA non predfixed vars
 const serverSideVars = {
   CURRENT_ENV: z
     .enum(["development", "preview", "production"])
@@ -107,11 +112,7 @@ const serverSideVars = {
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
 
-type ServerSideVars = typeof serverSideVars;
-
-const serverSideVarsTuple = Object.keys(serverSideVars) as UnionToTuple<
-  Keys<ServerSideVars>
->;
+const serverSideVarsTuple = envTuple(serverSideVars);
 
 export const env = createEnv({
   vars: {
