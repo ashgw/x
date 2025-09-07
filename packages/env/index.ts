@@ -37,7 +37,7 @@ const databaseUrlSchema = z
     if (env === "production" && !url.includes("supabase")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "In production, DATABASE_URL must include 'supabase'",
+        message: "In production, DATABASE_URL must be 'supabase'",
       });
     }
 
