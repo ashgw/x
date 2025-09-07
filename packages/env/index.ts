@@ -1,12 +1,13 @@
-import type { Keys, UnionToTuple } from "ts-roids";
 import { z } from "zod";
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 
-export function envTuple<
-  Schema extends Record<Uppercase<string>, z.ZodTypeAny>,
->(keys: Schema) {
-  return Object.keys(keys) as UnionToTuple<Keys<typeof keys>>;
+import type { UnionToTuple, Keys } from "ts-roids";
+
+type OrderedTuple<T> = UnionToTuple<Keys<T>>;
+
+export function envTuple<Schema extends Record<string, unknown>>(s: Schema) {
+  return Object.keys(s) as OrderedTuple<typeof s>;
 }
 
 const isBrowser = typeof window !== "undefined";
@@ -47,13 +48,10 @@ const databaseUrlSchema = z
       });
     }
 
-    if (
-      env === "preview" &&
-      (url.includes("supabase") || url.includes("localhost"))
-    ) {
+    if (env === "preview" && !url.includes("neon")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "In preview, DATABASE_URL must not be supabase or localhost",
+        message: "In preview, DATABASE_URL must be neon",
       });
     }
   });
@@ -133,10 +131,9 @@ export const env = createEnv({
   skipValidation: isBrowser,
 });
 
-const totalVars = Object.keys(env).length;
 // eslint-disable-next-line no-restricted-syntax
 console.log(
   `${colors.magenta("ENV")} → loaded ${colors.green(
-    String(totalVars),
+    String(Object.keys(env).length),
   )} vars successfully.`,
 );
