@@ -10,7 +10,7 @@ import {
 } from "./schemas/dtos";
 import { c } from "./root";
 
-export const v1Contract = c.router({
+export const contract = c.router({
   purgeViewWindow: {
     method: "DELETE",
     path: "/purge-view-window",
@@ -58,3 +58,5 @@ export const v1Contract = c.router({
     responses: fetchTextFromUpstreamSchemaResponses,
   },
 });
+
+export type Contract = typeof contract;

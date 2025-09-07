@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateOpenApi } from "@ts-rest/open-api";
-import { v1Contract } from "~/api/contract";
+import { contract } from "~/api/contract";
 import { endPoint } from "~/api/endpoint";
 import { env } from "@ashgw/env";
 
@@ -9,7 +9,7 @@ export const runtime = "edge";
 export const revalidate = 3600;
 
 export function GET() {
-  const doc = generateOpenApi(v1Contract, {
+  const doc = generateOpenApi(contract, {
     info: {
       title: "www API v1",
       version: "1.0.0",

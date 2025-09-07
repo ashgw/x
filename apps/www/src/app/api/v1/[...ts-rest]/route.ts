@@ -1,11 +1,11 @@
 import { createNextHandler } from "@ts-rest/serverless/next";
-import { v1Contract } from "~/api/contract";
+import { contract } from "~/api/contract";
 import { endPoint } from "~/api/endpoint";
 import { router } from "~/api/router";
 import { logger, monitor } from "@ashgw/observability";
 export const runtime = "edge";
 
-const handler = createNextHandler(v1Contract, router, {
+const handler = createNextHandler(contract, router, {
   basePath: endPoint,
   handlerType: "app-router",
   responseValidation: true,

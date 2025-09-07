@@ -1,12 +1,12 @@
 import { tsr } from "@ts-rest/serverless/fetch";
-import { v1Contract } from "~/api/contract";
+import { contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { timed } from "./timed";
 import { healthCheck } from "./functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "./functions/webhooks";
 
-export const router = tsr.router(v1Contract, {
+export const router = tsr.router(contract, {
   bootstrap: async ({ query }) =>
     timed("bootstrap", () =>
       fetchTextFromUpstream({
