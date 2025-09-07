@@ -15,7 +15,7 @@ export const cacheControlsQueryRequestSchemaDto = z
   .passthrough();
 
 export const purgeViewWindowWebhookSchemaDto = z.object({
-  "x-cron-token": z.string().min(1).max(64),
+  "x-cron-token": z.string().length(32),
 });
 
 // ========== Types ==========

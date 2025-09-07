@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 import { envTuple } from "./env-tuple";
+import { databaseUrlSchema } from "./schemas";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -20,41 +21,13 @@ const clientVars = {
   POSTHOG_HOST: z.string().url(),
 };
 
-const databaseUrlSchema = z
-  .string()
-  .min(1, "DATABASE_URL is required")
-  .url("Must be a valid URL")
-  .superRefine((url, ctx) => {
-    const env = process.env.NEXT_PUBLIC_CURRENT_ENV;
-
-    if (env === "production" && !url.includes("supabase")) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "In production, DATABASE_URL must be 'supabase'",
-      });
-    }
-
-    if (env === "development" && !url.includes("localhost")) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "In development, DATABASE_URL must point to localhost",
-      });
-    }
-
-    if (env === "preview" && !url.includes("neon")) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "In preview, DATABASE_URL must be neon",
-      });
-    }
-  });
-
 const serverVars = {
   NODE_ENV: z
     .enum(["production", "development", "test"])
     .optional()
     .describe("NextJS is taking care of this basically"),
   SENTRY_ORG: z.string().min(2),
+  CRON_TOKEN: z.string().length(32),
   SENTRY_PROJECT: z.string().min(2),
   SENTRY_AUTH_TOKEN: z.string().min(20),
   IP_HASH_SALT: z
@@ -99,6 +72,7 @@ export const env = createEnv({
   disablePrefix: [...serverVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    CRON_TOKEN: process.env.CRON_TOKEN,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
