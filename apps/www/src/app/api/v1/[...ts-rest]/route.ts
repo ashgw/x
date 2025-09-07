@@ -3,7 +3,6 @@ import { v1Contract } from "~/api/contract";
 import { endPoint } from "~/api/endpoint";
 import { router } from "~/api/router";
 import { logger, monitor } from "@ashgw/observability";
-
 export const runtime = "edge";
 
 const handler = createNextHandler(v1Contract, router, {
@@ -11,6 +10,7 @@ const handler = createNextHandler(v1Contract, router, {
   handlerType: "app-router",
   responseValidation: true,
   errorHandler: (error, { route }) => {
+    logger.error(`>>> REST Error on ${route}`, error);
     monitor.next.captureException({
       error,
       hint: {
@@ -19,7 +19,6 @@ const handler = createNextHandler(v1Contract, router, {
         },
       },
     });
-    logger.error(`>>> REST Error on ${route}`, error);
   },
 });
 
