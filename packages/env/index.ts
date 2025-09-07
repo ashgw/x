@@ -1,8 +1,5 @@
-// import path from "path";
 import type { Keys, UnionToTuple } from "ts-roids";
-// import { config } from "dotenv";
 import { z } from "zod";
-
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 
@@ -11,44 +8,6 @@ export function envTuple<
 >(keys: Schema) {
   return Object.keys(keys) as UnionToTuple<Keys<typeof keys>>;
 }
-
-// im using a custom zsh function locally to load whatever .env file i want, checkout ashgw/zshfuncs/env.zsh
-// if u need to use a file based setup, uncomment this, just know when using path etc.. it won't work on edge funcs
-
-// const isRunningInCi = process.env.CI === "true";
-
-// function configureFileBasedEnv() {
-//   let rootDir = process.cwd();
-//   rootDir = typeof __dirname !== "undefined" ? __dirname : rootDir;
-
-//   const envPath = path.resolve(
-//     rootDir,
-//     process.env.NODE_ENV === "production"
-//       ? "../../.env.production"
-//       : process.env.NODE_ENV === "preview"
-//         ? "../../.env.preview"
-//         : "../../.env.development",
-//   );
-
-//   const res = config({ path: envPath });
-//   const count = res.parsed ? Object.keys(res.parsed).length : 0;
-//   // eslint-disable-next-line no-restricted-syntax
-//   console.log(
-//     `${colors.magenta("ENV")} → loaded ${colors.green(String(count))} vars from ${colors.cyan(envPath)}`,
-//   );
-// }
-
-// if (!isRunningInCi) {
-//   configureFileBasedEnv();
-// } else {
-//   // eslint-disable-next-line no-restricted-syntax
-//   console.log(
-//     `${colors.magenta("ENV")} → using vars from ${colors.yellow("CI")}`,
-//   );
-// }
-
-// eslint-disable-next-line no-restricted-syntax
-console.log(`${colors.magenta("ENV")} → loaded.`);
 
 const isBrowser = typeof window !== "undefined";
 
@@ -173,3 +132,11 @@ export const env = createEnv({
   },
   skipValidation: isBrowser,
 });
+
+const totalVars = Object.keys(env).length;
+// eslint-disable-next-line no-restricted-syntax
+console.log(
+  `${colors.magenta("ENV")} → loaded ${colors.green(
+    String(totalVars),
+  )} vars successfully.`,
+);
