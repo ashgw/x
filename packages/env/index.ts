@@ -1,18 +1,11 @@
 import { z } from "zod";
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
-
-import type { UnionToTuple, Keys } from "ts-roids";
-
-type OrderedTuple<T> = UnionToTuple<Keys<T>>;
-
-export function envTuple<Schema extends Record<string, unknown>>(s: Schema) {
-  return Object.keys(s) as OrderedTuple<typeof s>;
-}
+import { envTuple } from "./env-tuple";
 
 const isBrowser = typeof window !== "undefined";
 
-const clientSideVars = {
+const clientVars = {
   CURRENT_ENV: z
     .enum(["development", "preview", "production"])
     .describe(
@@ -56,7 +49,7 @@ const databaseUrlSchema = z
     }
   });
 
-const serverSideVars = {
+const serverVars = {
   NODE_ENV: z
     .enum(["production", "development", "test"])
     .optional()
@@ -82,7 +75,9 @@ const serverSideVars = {
       errorMap: () => ({ message: "Invalid AWS region" }),
     })
     .describe("I dont deploy anywhere else really"),
-  S3_BUCKET_ACCESS_KEY_ID: z.string().min(20, "Secret access key too short"),
+  S3_BUCKET_ACCESS_KEY_ID: z
+    .string()
+    .length(20, { message: "Access Key ID must be 20 chars" }),
   S3_BUCKET_SECRET_KEY: z.string().min(20, "Secret access key too short"),
   S3_BUCKET_URL: z
     .string()
@@ -94,17 +89,16 @@ const serverSideVars = {
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
 };
 
-const serverSideVarsTuple = envTuple(serverSideVars);
+const serverVarsTuple = envTuple(serverVars);
 
 export const env = createEnv({
   vars: {
-    ...clientSideVars,
-    ...serverSideVars,
+    ...clientVars,
+    ...serverVars,
   },
-  disablePrefix: [...serverSideVarsTuple],
+  disablePrefix: [...serverVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
-    NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
@@ -118,6 +112,7 @@ export const env = createEnv({
     SENTRY_ORG: process.env.SENTRY_ORG,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
+    NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
       process.env.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,
     NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:

@@ -7,9 +7,9 @@ import type {
   ContractOtherResponse,
   ContractPlainType,
   ContractNullType,
-  ContractNoBodyType,
   ServerInferRequest,
   ServerInferResponses,
+  ContractNoBody,
 } from "@ts-rest/core";
 import type { EmptyObject, Keys } from "ts-roids";
 
@@ -57,10 +57,10 @@ type UnwrapContractAny<T> = T extends z.ZodTypeAny
  * - c.type<T>() -> { body: T }
  * - null/ContractNullType -> { body: null }
  */
-type BodyFromResponseLoose<R> = R extends ContractNoBodyType
-  ? EmptyObject
+type BodyFromResponseLoose<R> = R extends typeof ContractNoBody
+  ? { body: undefined }
   : R extends symbol
-    ? EmptyObject // <- key: handles `{ 200: c.noBody() }` widening
+    ? { body: undefined } // <- key: handles `{ 200: c.noBody() }` widening
     : R extends ContractOtherResponse<infer Inner>
       ? UnwrapContractAny<Inner> extends never
         ? never

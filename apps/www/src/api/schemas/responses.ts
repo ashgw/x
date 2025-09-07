@@ -4,7 +4,7 @@ import { c } from "../root";
 
 // ========== Schemas ==========
 
-const httpErrorSchema = z.object({
+const httpErrorSchemaRo = z.object({
   code: z
     .enum([
       "UPSTREAM_ERROR",
@@ -21,17 +21,17 @@ const httpErrorSchema = z.object({
 
 export const checkHealthSchemaResponses = {
   200: c.noBody(),
-};
+} as const;
 
 const fetchContentFromUpstreamSchemaResponses = {
-  500: httpErrorSchema,
-  424: httpErrorSchema,
-};
+  500: httpErrorSchemaRo,
+  424: httpErrorSchemaRo,
+} as const;
 
 export const fetchTextFromUpstreamSchemaResponses = {
   200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
   ...fetchContentFromUpstreamSchemaResponses,
-};
+} as const;
 
 export const fetchGpgFromUpstreamSchemaResponses = {
   200: c.otherResponse({
@@ -39,7 +39,7 @@ export const fetchGpgFromUpstreamSchemaResponses = {
     body: z.string().min(1),
   }),
   ...fetchContentFromUpstreamSchemaResponses,
-};
+} as const;
 
 // ========== Types ==========
 
