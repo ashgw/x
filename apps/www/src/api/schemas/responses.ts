@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { InferResponses } from "../types";
+import type { InferResponses } from "../extended";
+import { schemaResponse } from "../extended";
 import { c } from "../root";
 
 // ========== Schemas ==========
@@ -19,27 +20,27 @@ const httpErrorSchemaRo = z.object({
   details: z.record(z.any()).optional().describe("Optional extra context"),
 });
 
-export const checkHealthSchemaResponses = {
+export const checkHealthSchemaResponses = schemaResponse({
   200: c.noBody(),
-} as const;
+});
 
-const fetchContentFromUpstreamSchemaResponses = {
+const fetchContentFromUpstreamSchemaResponses = schemaResponse({
   500: httpErrorSchemaRo,
   424: httpErrorSchemaRo,
-} as const;
+});
 
-export const fetchTextFromUpstreamSchemaResponses = {
+export const fetchTextFromUpstreamSchemaResponses = schemaResponse({
   200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
   ...fetchContentFromUpstreamSchemaResponses,
-} as const;
+});
 
-export const fetchGpgFromUpstreamSchemaResponses = {
+export const fetchGpgFromUpstreamSchemaResponses = schemaResponse({
   200: c.otherResponse({
     contentType: "application/pgp-keys",
     body: z.string().min(1),
   }),
   ...fetchContentFromUpstreamSchemaResponses,
-} as const;
+});
 
 // ========== Types ==========
 

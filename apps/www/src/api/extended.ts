@@ -60,7 +60,7 @@ type UnwrapContractAny<T> = T extends z.ZodTypeAny
 type BodyFromResponseLoose<R> = R extends typeof ContractNoBody
   ? { body: undefined }
   : R extends symbol
-    ? { body: undefined } // <- key: handles `{ 200: c.noBody() }` widening
+    ? { body: undefined } // <- handles `{ 200: c.noBody() }` widening
     : R extends ContractOtherResponse<infer Inner>
       ? UnwrapContractAny<Inner> extends never
         ? never
@@ -104,3 +104,14 @@ export type InferResponseBodies<T extends Record<number, unknown>> = {
     ? B
     : never;
 };
+
+type ResponseMap<V = unknown> = Record<number, V>;
+
+export function schemaResponse<const R extends ResponseMap>(r: R): R {
+  return r;
+}
+
+export const makeController =
+  <C extends AppRouter>(_contract: C) =>
+  <S extends ControllerShape<C>>(s: S): S =>
+    s;

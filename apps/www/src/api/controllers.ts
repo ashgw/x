@@ -2,7 +2,7 @@ import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { v1Contract } from "./contract";
 import { repoMainBranchBaseUrl, timed } from "./utils";
 import { checkHealth } from "./functions/checkHealth";
-import { makeController } from "./makeController";
+import { makeController } from "./extended";
 import { gpg } from "@ashgw/constants";
 
 export const controller = makeController(v1Contract)({

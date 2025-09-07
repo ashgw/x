@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { InferRequest } from "../types";
+import type { InferRequest } from "../extended";
 
 // ========== Schemas ==========
 
