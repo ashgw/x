@@ -10,16 +10,16 @@ const handler = createNextHandler(v1Contract, router, {
   basePath,
   handlerType: "app-router",
   responseValidation: true,
-  errorHandler: (error, req) => {
+  errorHandler: (error, { route }) => {
     monitor.next.captureException({
       error,
       hint: {
         extra: {
-          route: req.route,
+          route,
         },
       },
     });
-    logger.error(`>>> REST Error`, error);
+    logger.error(`>>> REST Error on ${route}`, error);
   },
 });
 

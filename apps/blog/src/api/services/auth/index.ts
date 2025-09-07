@@ -295,7 +295,7 @@ export class AuthService {
   }): boolean {
     // origin checks – only enforce extra check in prod
     if (
-      env.DEPLOYMENT_ENV === "production" &&
+      env.CURRENT_ENV === "production" &&
       this.req.headers.get("host") === new URL(env.NEXT_PUBLIC_BLOG_URL).host
     ) {
       const origin =
@@ -371,7 +371,7 @@ export class AuthService {
 
       // Always produce a hash, even if inputs are invalid, to keep time constant
       const dummySalt = "0".repeat(32); // fake salt
-      const _dummyHash = pbkdf2Sync("dummy", dummySalt, 1000, 32, "sha256");
+      pbkdf2Sync("dummy", dummySalt, 1000, 32, "sha256");
 
       if (!salt || !originalHash) {
         pbkdf2Sync(plainPassword, dummySalt, 1000, 32, "sha256"); // fake work
