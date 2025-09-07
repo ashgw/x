@@ -23,4 +23,4 @@ const handler = createNextHandler(v1Contract, router, {
   },
 });
 
-export { handler as GET };
+export { handler as GET, handler as DELETE };

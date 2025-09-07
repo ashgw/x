@@ -2,7 +2,7 @@ import { tsr } from "@ts-rest/serverless/fetch";
 import { v1Contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "./functions/fetchTextFromUpstream";
 import { repoMainBranchBaseUrl, timed } from "./utils";
-import { checkHealth } from "./functions/checkHealth";
+import { healthCheck } from "./functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "./functions/webhooks";
 
@@ -48,7 +48,7 @@ export const router = tsr.router(v1Contract, {
         },
       }),
     ),
-  healthCheck: async () => timed("healthCheck", () => checkHealth()),
+  healthCheck: async () => timed("healthCheck", () => healthCheck()),
   whisper: async ({ query }) =>
     timed("whisper", () =>
       fetchTextFromUpstream({

@@ -1,12 +1,12 @@
 import { z } from "zod";
 import type { InferResponses } from "../extended";
-import { schemaResponse as restSchemaResponse } from "../extended";
+import { restSchemaResponse } from "../extended";
 import { c } from "../root";
 import { httpErrorSchemaRo } from "./ros";
 
 // ========== Schemas ==========
 
-export const checkHealthSchemaResponses = restSchemaResponse({
+export const healthCheckSchemaResponses = restSchemaResponse({
   200: c.noBody(),
 });
 
@@ -28,7 +28,7 @@ export const fetchGpgFromUpstreamSchemaResponses = restSchemaResponse({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const purgeViewWindowWebhookSchemaResponses = restSchemaResponse({
+export const purgeViewWindowSchemaResponses = restSchemaResponse({
   200: c.noBody(),
   401: httpErrorSchemaRo,
   500: httpErrorSchemaRo,
@@ -36,8 +36,8 @@ export const purgeViewWindowWebhookSchemaResponses = restSchemaResponse({
 
 // ========== Types ==========
 
-export type CheckHealthResponses = InferResponses<
-  typeof checkHealthSchemaResponses
+export type HealthCheckResponses = InferResponses<
+  typeof healthCheckSchemaResponses
 >;
 
 export type FetchTextFromUpstreamResponses = InferResponses<
@@ -48,6 +48,6 @@ export type FetchGpgFromUpstreamResponses = InferResponses<
   typeof fetchGpgFromUpstreamSchemaResponses
 >;
 
-export type PurgeViewWindowWebhookResponses = InferResponses<
-  typeof purgeViewWindowWebhookSchemaResponses
+export type PurgeViewWindowResponses = InferResponses<
+  typeof purgeViewWindowSchemaResponses
 >;

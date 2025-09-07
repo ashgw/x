@@ -1,6 +1,6 @@
-import { logger } from "@ashgw/observability";
-import type { PurgeViewWindowWebhookDto } from "~/api/schemas/dtos";
-import type { PurgeViewWindowWebhookResponses } from "~/api/schemas/responses";
+import { logger, monitor } from "@ashgw/observability";
+import type { PurgeViewWindowHeadersDto } from "~/api/schemas/dtos";
+import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
 
 // TODO: import this later when the bitch ass fuckin wifi driver is fixed
 // TODO: also remove the blog service view implementation
@@ -16,9 +16,9 @@ const RETAIN_DAYS = 2; // keep 2 days for safety
 const CUTOFF = new Date(Date.now() - 1000 * 60 * 60 * 24 * RETAIN_DAYS);
 
 export async function purgeViewWindow(
-  input: PurgeViewWindowWebhookDto,
-): Promise<PurgeViewWindowWebhookResponses> {
-  if (input["x-cron-token"] !== env.CRON_TOKEN) {
+  input: PurgeViewWindowHeadersDto,
+): Promise<PurgeViewWindowResponses> {
+  if (input["x-cron-token"] !== env.X_CRON_TOKEN) {
     return {
       status: 401,
       body: {
@@ -27,13 +27,13 @@ export async function purgeViewWindow(
       },
     };
   }
-  logger.info("Cleaning up the post view window");
+  logger.info("Cleaning up the post view window...");
   try {
     const deleted = await db.postViewWindow.deleteMany({
       where: { bucketStart: { lt: CUTOFF } }, // uses @@index([bucketStart])
     });
     if (deleted.count) {
-      logger.info("View window records purged successfully", {
+      logger.info("View window records purged successfully!", {
         deleted: deleted.count,
         cutoff: CUTOFF.toISOString(),
       });
@@ -44,6 +44,7 @@ export async function purgeViewWindow(
     };
   } catch (error) {
     logger.error("purgeViewWindow cleanup failed", { error });
+    monitor.next.captureException({ error });
     return {
       status: 500,
       body: {

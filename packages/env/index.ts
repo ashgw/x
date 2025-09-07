@@ -27,7 +27,7 @@ const serverVars = {
     .optional()
     .describe("NextJS is taking care of this basically"),
   SENTRY_ORG: z.string().min(2),
-  CRON_TOKEN: z.string().length(32),
+  X_CRON_TOKEN: z.string().length(32),
   SENTRY_PROJECT: z.string().min(2),
   SENTRY_AUTH_TOKEN: z.string().min(20),
   IP_HASH_SALT: z
@@ -72,7 +72,7 @@ export const env = createEnv({
   disablePrefix: [...serverVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
-    CRON_TOKEN: process.env.CRON_TOKEN,
+    X_CRON_TOKEN: process.env.X_CRON_TOKEN,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,

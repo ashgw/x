@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // ========== Schemas ==========
 
-export const cacheControlsQueryRequestSchemaDto = z
+export const fetchTextFromUpstreamQuerySchemaDto = z
   .object({
     revalidateSeconds: z
       .string()
@@ -14,16 +14,16 @@ export const cacheControlsQueryRequestSchemaDto = z
   })
   .passthrough();
 
-export const purgeViewWindowWebhookSchemaDto = z.object({
+export const purgeViewWindowHeadersSchemaDto = z.object({
   "x-cron-token": z.string().length(32),
 });
 
 // ========== Types ==========
 
-export type CacheControlsQueryDto = z.infer<
-  typeof cacheControlsQueryRequestSchemaDto
+export type FetchTextFromUpstreamQueryDto = z.infer<
+  typeof fetchTextFromUpstreamQuerySchemaDto
 >;
 
-export type PurgeViewWindowWebhookDto = z.infer<
-  typeof purgeViewWindowWebhookSchemaDto
+export type PurgeViewWindowHeadersDto = z.infer<
+  typeof purgeViewWindowHeadersSchemaDto
 >;

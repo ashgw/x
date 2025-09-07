@@ -1,5 +1,5 @@
-import { logger } from "@ashgw/observability";
-import type { CacheControlsQueryDto } from "../schemas/dtos";
+import { logger, monitor } from "@ashgw/observability";
+import type { FetchTextFromUpstreamQueryDto } from "../schemas/dtos";
 import type {
   FetchGpgFromUpstreamResponses,
   FetchTextFromUpstreamResponses,
@@ -16,7 +16,7 @@ type FetchUpstreamResponses =
 
 export async function fetchTextFromUpstream(input: {
   url: string;
-  q?: CacheControlsQueryDto;
+  q?: FetchTextFromUpstreamQueryDto;
   opts: FetchOpts;
 }): Promise<FetchUpstreamResponses> {
   const { url, opts } = input;
@@ -52,6 +52,7 @@ export async function fetchTextFromUpstream(input: {
     };
   } catch (error) {
     logger.error("fetchTextFromUpstream failed", { url, error });
+    monitor.next.captureException({ error });
     return {
       status: 500,
       body: {
