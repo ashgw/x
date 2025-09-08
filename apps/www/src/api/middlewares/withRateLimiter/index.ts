@@ -1,4 +1,3 @@
-import { InternalError } from "@ashgw/observability";
 import { createMiddleware } from "~/api/middleware";
 import { middlewareFn } from "~/api/middleware";
 import type { ContractRoute } from "~/api/middleware";
@@ -13,23 +12,18 @@ interface RateLimiterCtx {
 
 export function withRateLimiter<R extends ContractRoute>({
   route,
-  block,
+  limit,
 }: {
   route: R;
-  block: { every: RlWindow };
+  limit: { every: RlWindow };
 }) {
-  const { rl } = createRateLimiter(block.every);
-
+  const { rl } = createRateLimiter(limit.every);
   return createMiddleware<R, RateLimiterCtx>({
     route,
     middlewareFn: middlewareFn<RateLimiterCtx>((req, _res) => {
       req.ctx.rl = rl;
-
-      if (!req.ctx.rl.check(getFingerprint({ req }))) {
-        throw new InternalError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Rate limit exceeded",
-        });
+      if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
+        throw new Error("Caught lacking");
       }
     }),
   });

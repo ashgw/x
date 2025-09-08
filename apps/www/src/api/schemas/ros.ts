@@ -14,3 +14,5 @@ export const httpErrorSchemaRo = z.object({
   message: z.string().min(1).max(1000).describe("Human readable"),
   details: z.record(z.any()).optional().describe("Optional extra context"),
 });
+
+export type HttpErrorRo = z.infer<typeof httpErrorSchemaRo>;

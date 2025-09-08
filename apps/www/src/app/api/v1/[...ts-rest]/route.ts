@@ -60,7 +60,7 @@ const handler = createNextHandler(
       }),
     purgeViewWindow: withRateLimiter({
       route: contract.purgeViewWindow,
-      block: {
+      limit: {
         every: "2s",
       },
     })(async ({ headers }) =>
