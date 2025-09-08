@@ -23,13 +23,24 @@ interface __MergeTsrContextWithLocal<Ctx> {
   ctx: TsrContext["ctx"] & Ctx;
 }
 
-export function middleware<
-  LocalCtx extends object,
-  MiddleWareRequest = TsRestRequest &
-    TsrContext &
-    __MergeTsrContextWithLocal<LocalCtx>,
->(fn: (req: MiddleWareRequest, res: { nextRequest: NextRequest }) => void) {
-  return (req: MiddleWareRequest) => {
+interface MiddlewareRespone {
+  nextRequest: NextRequest;
+}
+
+type MiddlewareRequest<LocalCtx> = TsRestRequest &
+  TsrContext & {
+    ctx: TsrContext["ctx"] & LocalCtx;
+  };
+
+type MiddlewareFn<LocalCtx> = (
+  req: MiddlewareRequest<LocalCtx>,
+  res: MiddlewareRespone,
+) => unknown;
+
+export function middleware<LocalCtx extends object>(
+  fn: MiddlewareFn<LocalCtx>,
+) {
+  return (req: MiddlewareRequest<LocalCtx>) => {
     fn(req, { nextRequest: req as unknown as NextRequest });
   };
 }
@@ -38,6 +49,7 @@ export function createMiddleware<LocalCtx extends object>({
   route,
 }: {
   route: Contract[Keys<Contract>];
+  middleware: MiddlewareFn<LocalCtx>;
 }) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
@@ -47,22 +59,32 @@ export function createMiddleware<LocalCtx extends object>({
   >;
 
   type BuildOpts = Parameters<typeof build>[0];
-  type Middleware = BuildOpts["middleware"];
 
-  return (handler: BuildOpts["handler"], middleware: Middleware) => {
+  return (handler: BuildOpts["handler"]) => {
     return build({
       handler,
-      middleware,
+      middleware: [
+        (req, res) => {
+          logger.log(req.ctx);
+          logger.log(res);
+        },
+      ],
     });
   };
 }
 
-export function withRateLimiter<
-  Route extends Contract[Keys<Contract>],
-  LocalCtx extends object,
->({ route }: { route: Route }) {
-  return createMiddleware<LocalCtx>({
+export function withRateLimiter<Route extends Contract[Keys<Contract>]>({
+  route,
+}: {
+  route: Route;
+}) {
+  return createMiddleware<RateLimiter>({
     route,
+    middleware: (req, res) => {
+      logger.log(req.ctx.pop);
+      logger.log(req.ctx.requestedAt);
+      logger.log(res.nextRequest);
+    },
   });
 }
 

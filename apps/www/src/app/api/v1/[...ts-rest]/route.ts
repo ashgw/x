@@ -8,7 +8,10 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { withRateLimiter2 } from "../../../../api/middlewares/withRateLimiter";
+import {
+  withRateLimiter,
+  withRateLimiter2,
+} from "../../../../api/middlewares/withRateLimiter";
 export const runtime = "edge";
 
 // TODO: seperate the route from the handler here rq
@@ -56,9 +59,10 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
-    purgeViewWindow: withRateLimiter2({ route: contract.purgeViewWindow })(
-      async ({ headers }) =>
-        webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
+    purgeViewWindow: withRateLimiter2({
+      route: contract.purgeViewWindow,
+    })(async ({ headers }) =>
+      webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
     ),
     healthCheck: async () => healthCheck(),
   },
