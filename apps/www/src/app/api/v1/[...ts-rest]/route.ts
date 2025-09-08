@@ -1,37 +1,16 @@
 import { createNextHandler, tsr } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
-import type { Contract } from "~/api/contract";
 import { endPoint } from "~/api/endpoint";
 import type { TsrContext } from "~/api/context";
 import { logger, monitor } from "@ashgw/observability";
 import { db } from "@ashgw/db";
-export const runtime = "edge";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import type { Keys } from "ts-roids";
+import { withRateLimiter } from "~/api/middlewares";
+export const runtime = "edge";
 
-interface UserRo {
-  id: string;
-  email: string;
-  name: string;
-  avatar: { url: string };
-  role: "admin" | "visitor";
-}
-export interface TsrContextWithUser {
-  ctx: TsrContext["ctx"] & { user: UserRo };
-}
-
-function withAuth<R extends Contract[Keys<Contract>]>(route: R) {
-  const build = tsr.routeWithMiddleware(route)<TsrContext, TsrContextWithUser>;
-  type BuildOpts = Parameters<typeof build>[0];
-  return (handler: BuildOpts["handler"]) =>
-    build({
-      middleware: [(req) => req.ctx.user.name === "Marcus"],
-      handler,
-    });
-}
 // TODO: seperate the route from the handler here rq
 const handler = createNextHandler(
   contract,
@@ -77,9 +56,10 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
-    healthCheck: withAuth(contract.healthCheck)(async () => healthCheck()),
-    purgeViewWindow: withAuth(contract.purgeViewWindow)(async ({ headers }) =>
-      webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
+    healthCheck: async () => healthCheck(),
+    purgeViewWindow: withRateLimiter(contract.purgeViewWindow)(
+      async ({ headers }) =>
+        webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
     ),
   },
   {
