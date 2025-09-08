@@ -14,7 +14,6 @@ import {
 
 export const runtime = "nodejs";
 
-// TODO: seperate the route from the handler here rq
 const handler = createNextHandler(
   contract,
   {
@@ -67,7 +66,6 @@ const handler = createNextHandler(
     healthCheck: async () => healthCheck(),
   },
   {
-    // TODO: add docs to all these options
     basePath: endPoint,
     handlerType: "app-router",
     responseValidation: true,

@@ -10,6 +10,7 @@ interface RateLimiterCtx {
   rl: RateLimiter;
 }
 
+// TODO: actually implement it
 export function withRateLimiter<R extends ContractRoute>({
   route,
 }: {

@@ -5,7 +5,6 @@ import { contract } from "./contract";
 import { endPoint } from "./endpoint";
 import type { InitClientArgs } from "@ts-rest/core";
 
-// TODO: add docs here
 const args = {
   baseUrl: endPoint,
   baseHeaders: {},
