@@ -24,6 +24,8 @@ type MiddlewareFn<LocalCtx> = (
   res: MiddlewareRespone,
 ) => unknown;
 
+export type ContractRoute = Contract[Keys<Contract>];
+
 export function middlewareFn<LocalCtx extends object>(
   fn: MiddlewareFn<LocalCtx>,
 ) {
@@ -31,8 +33,6 @@ export function middlewareFn<LocalCtx extends object>(
     fn(req, { nextRequest: req as unknown as NextRequest });
   };
 }
-
-export type ContractRoute = Contract[Keys<Contract>];
 
 export function createMiddleware<
   R extends ContractRoute,

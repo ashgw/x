@@ -14,6 +14,6 @@ const args = {
   jsonQuery: false,
 } satisfies InitClientArgs;
 
-export const tsrClientSdk = initClient(contract, args);
+export const sdk = initClient(contract, args);
 
 export const tsrQueryClientSide = initTsrReactQuery(contract, args);

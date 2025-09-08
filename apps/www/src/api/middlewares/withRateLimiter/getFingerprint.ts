@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 
-export function getUser({ req }: { req: Request }): string {
+export function getFingerprint({ req }: { req: Request }): string {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("cf-connecting-ip") ??
