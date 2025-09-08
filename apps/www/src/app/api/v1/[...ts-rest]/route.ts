@@ -9,6 +9,7 @@ import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
 import {
+  withRateLimiter,
   // withRateLimiter,
   withRateLimiter2,
 } from "../../../../api/middlewares/withRateLimiter";
@@ -59,7 +60,7 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
-    purgeViewWindow: withRateLimiter2({
+    purgeViewWindow: withRateLimiter({
       route: contract.purgeViewWindow,
     })(async ({ headers }) =>
       webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
