@@ -24,7 +24,7 @@ interface UserRo {
   role: "admin" | "visitor";
 }
 
-interface CtxUser {
+interface TsrContextWithUser {
   ctx: {
     user: UserRo;
   };
@@ -90,7 +90,7 @@ const handler = createNextHandler(
       }),
     healthCheck: tsr.routeWithMiddleware(contract.healthCheck)<
       TsrContext,
-      CtxUser
+      TsrContextWithUser
     >({
       middleware: [
         (request) => {
@@ -150,3 +150,25 @@ const handler = createNextHandler(
 );
 
 export { handler as GET, handler as DELETE };
+
+import type { RouterOutputs } from "~/api/inference";
+
+export function authMiddleware(input: {
+  route: unknown;
+  handler: RouterOutputs["healthCheck"]; // this should be the handler fucnton
+  // that healthcheck expects and shit*
+  // even if it has inputs and shit we should cater to all of that
+}) {
+  return tsr.routeWithMiddleware(contract.healthCheck)<
+    TsrContext,
+    TsrContextWithUser
+  >({
+    middleware: [
+      (request) => {
+        // do authentication
+        return request.ctx.user.email === "azdaz";
+      },
+    ],
+    handler: async () => handler(),
+  });
+}
