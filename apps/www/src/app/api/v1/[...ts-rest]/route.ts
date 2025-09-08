@@ -76,15 +76,15 @@ const handler = createNextHandler(
         request.ctx.db = db;
       }),
     ],
-    responseHandlers: [
-      (_response, request) => {
-        logger.log(
-          "[REST] took",
-          new Date().getTime() - request.ctx.requestedAt.getTime(),
-          "ms",
-        );
-      },
-    ],
+    // responseHandlers: [
+    //   (_response, request) => {
+    //     logger.log(
+    //       "[REST] took",
+    //       new Date().getTime() - request.ctx.requestedAt.getTime(),
+    //       "ms",
+    //     );
+    //   },
+    // ],
     errorHandler: (error, { route }) => {
       logger.error(`>>> REST Error on ${route}`, error);
       monitor.next.captureException({
