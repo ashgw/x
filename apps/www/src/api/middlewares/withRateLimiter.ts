@@ -38,18 +38,21 @@ export function middleware<
   };
 }
 
-export function createMiddleware<
-  LocalCtx extends object,
-  Route extends Contract[Keys<Contract>],
->({ route }: { route: Route }) {
+export function createMiddleware<LocalCtx extends object>({
+  route,
+}: {
+  route: Contract[Keys<Contract>];
+}) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
     {
       ctx: TsrContext["ctx"] & { ctxKey: LocalCtx };
     }
   >;
+
   type BuildOpts = Parameters<typeof build>[0];
-  type Middleware = Parameters<typeof build>[0]["middleware"];
+  type Middleware = BuildOpts["middleware"];
+
   return (handler: BuildOpts["handler"], middleware: Middleware) => {
     return build({
       handler,
@@ -58,8 +61,17 @@ export function createMiddleware<
   };
 }
 
+export function withRateLimiter<
+  Route extends Contract[Keys<Contract>],
+  LocalCtx extends object,
+>({ route }: { route: Route }) {
+  return createMiddleware<LocalCtx>({
+    route,
+  });
+}
+
 // TODO: also abstract this a sa middleware builder basicaly that's too cool and easy
-export function withRateLimiter<R extends Contract[Keys<Contract>]>(route: R) {
+export function withRateLimiter2<R extends Contract[Keys<Contract>]>(route: R) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
     TsrContextWithRateLimiter

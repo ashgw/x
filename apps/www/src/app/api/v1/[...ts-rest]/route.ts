@@ -56,11 +56,13 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
-    healthCheck: async () => healthCheck(),
-    purgeViewWindow: withRateLimiter(contract.purgeViewWindow)(
-      async ({ headers }) =>
-        webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
-    ),
+    purgeViewWindow: async ({ headers }) =>
+      webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
+    healthCheck: withRateLimiter({
+      route: contract.healthCheck,
+      hanlder: myHandler,
+      middleware: mymiddleware,
+    }),
   },
   {
     // TODO: add docs to all these options
