@@ -72,19 +72,18 @@ const handler = createNextHandler(
     jsonQuery: false,
     requestMiddleware: [
       tsr.middleware<TsrContext>((request) => {
-        request.ctx.requestedAt = new Date();
-        request.ctx.db = db;
+        request.ctx = { requestedAt: new Date(), db };
       }),
     ],
-    // responseHandlers: [
-    //   (_response, request) => {
-    //     logger.log(
-    //       "[REST] took",
-    //       new Date().getTime() - request.ctx.requestedAt.getTime(),
-    //       "ms",
-    //     );
-    //   },
-    // ],
+    responseHandlers: [
+      (_response, request) => {
+        logger.log(
+          "[REST] took",
+          new Date().getTime() - request.ctx.requestedAt.getTime(),
+          "ms",
+        );
+      },
+    ],
     errorHandler: (error, { route }) => {
       logger.error(`>>> REST Error on ${route}`, error);
       monitor.next.captureException({
