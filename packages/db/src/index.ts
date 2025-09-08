@@ -9,10 +9,10 @@ import ws from "ws";
 
 import { env } from "@ashgw/env";
 
-import { PrismaClient as FullPrismaClient } from "./generated/client";
+import { PrismaClient } from "./generated/client";
 
 export type DatabaseClient = Omit<
-  FullPrismaClient,
+  PrismaClient,
   // | "$transaction" //  need it for some
   | "$connect"
   | "$disconnect"
@@ -53,7 +53,7 @@ const transactionOptions = {
 const db =
   globalForDb.prisma ??
   (isNeonDatabase
-    ? new FullPrismaClient({
+    ? new PrismaClient({
         adapter: new PrismaNeon(
           new NeonPool({
             connectionString: env.DATABASE_URL,
@@ -65,7 +65,7 @@ const db =
         log,
         transactionOptions,
       })
-    : (new FullPrismaClient({
+    : (new PrismaClient({
         datasourceUrl: env.DATABASE_URL,
         errorFormat,
         log,
