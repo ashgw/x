@@ -47,3 +47,22 @@ export function withRateLimiter<R extends ContractRoute>({
     }),
   });
 }
+
+// Reuse this shape everywhere
+export interface MwUnion {
+  status: number;
+  body?: unknown;
+  headers?: Record<string, string>;
+}
+
+/** Normalize a union or Response into a NextResponse for ts-rest short-circuit */
+export function middlewareResponse(
+  x: MwUnion | Response | void,
+): Response | void {
+  if (!x) return undefined;
+  if (x instanceof Response) return x;
+  const { status, body, headers } = x;
+  return typeof body === "undefined"
+    ? new NextResponse(null, { status, headers })
+    : NextResponse.json(body as unknown, { status, headers });
+}
