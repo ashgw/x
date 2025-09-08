@@ -7,6 +7,7 @@ export const httpErrorSchemaRo = z.object({
       "INTERNAL_ERROR",
       "BAD_REQUEST",
       "NOT_FOUND",
+      "CONFLICT",
       "UNAUTHORIZED",
       "FORBIDDEN",
     ])
@@ -14,3 +15,5 @@ export const httpErrorSchemaRo = z.object({
   message: z.string().min(1).max(1000).describe("Human readable"),
   details: z.record(z.any()).optional().describe("Optional extra context"),
 });
+
+export type httpErrorRo = z.infer<typeof httpErrorSchemaRo>;

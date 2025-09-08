@@ -24,8 +24,6 @@ type MiddlewareFn<LocalCtx> = (
   res: MiddlewareRespone,
 ) => unknown;
 
-export type ContractRoute = Contract[Keys<Contract>];
-
 export function middlewareFn<LocalCtx extends object>(
   fn: MiddlewareFn<LocalCtx>,
 ) {
@@ -35,7 +33,7 @@ export function middlewareFn<LocalCtx extends object>(
 }
 
 export function createMiddleware<
-  R extends ContractRoute,
+  R extends ,
   LocalCtx extends object,
 >({ route, middlewareFn }: { route: R; middlewareFn: MiddlewareFn<LocalCtx> }) {
   const build = tsr.routeWithMiddleware(route)<

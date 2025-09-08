@@ -1,7 +1,7 @@
 import { InternalError } from "@ashgw/observability";
 import { createMiddleware } from "~/api/middleware";
 import { middlewareFn } from "~/api/middleware";
-import type { ContractRoute } from "~/api/middleware";
+import type { ContractRoute } from "~/api/contract";
 import { rl } from "./rl";
 import { getFingerprint } from "./getFingerprint";
 import type { RateLimiter } from "./rl";
