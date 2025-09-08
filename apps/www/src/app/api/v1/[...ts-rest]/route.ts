@@ -58,6 +58,7 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
+
     purgeViewWindow: rateLimiterMiddleware({
       route: contract.purgeViewWindow,
       limit: {
@@ -66,6 +67,7 @@ const handler = createNextHandler(
     })(async ({ headers }) =>
       webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
     ),
+
     healthCheck: async () => healthCheck(),
   },
   {
