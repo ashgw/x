@@ -7,37 +7,24 @@ import type { Keys } from "ts-roids";
 import type { NextRequest } from "next/server";
 import { logger } from "@ashgw/observability";
 
-interface RateLimiter {
-  put: () => unknown;
-  pop: () => unknown;
-}
-
-export interface UserCtx {
-  user: {
-    email: string;
-    name: string;
-  };
-}
-
-interface __MergeTsrContextWithLocal<Ctx> {
-  ctx: TsrContext["ctx"] & Ctx;
-}
+type MergeTsrContextWith<C> = TsrContext & {
+  ctx: TsrContext["ctx"] & C;
+};
 
 interface MiddlewareRespone {
   nextRequest: NextRequest;
 }
 
 type MiddlewareRequest<LocalCtx> = TsRestRequest &
-  TsrContext & {
-    ctx: TsrContext["ctx"] & LocalCtx;
-  };
+  TsrContext &
+  MergeTsrContextWith<LocalCtx>;
 
 type MiddlewareFn<LocalCtx> = (
   req: MiddlewareRequest<LocalCtx>,
   res: MiddlewareRespone,
 ) => unknown;
 
-export function middleware<LocalCtx extends object>(
+export function middlewareFn<LocalCtx extends object>(
   fn: MiddlewareFn<LocalCtx>,
 ) {
   return (req: MiddlewareRequest<LocalCtx>) => {
@@ -47,15 +34,14 @@ export function middleware<LocalCtx extends object>(
 
 export function createMiddleware<LocalCtx extends object>({
   route,
+  middlewareFn,
 }: {
   route: Contract[Keys<Contract>];
-  middleware: MiddlewareFn<LocalCtx>;
+  middlewareFn: MiddlewareFn<LocalCtx>;
 }) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
-    {
-      ctx: TsrContext["ctx"] & { ctxKey: LocalCtx };
-    }
+    MergeTsrContextWith<LocalCtx>
   >;
 
   type BuildOpts = Parameters<typeof build>[0];
@@ -63,14 +49,16 @@ export function createMiddleware<LocalCtx extends object>({
   return (handler: BuildOpts["handler"]) => {
     return build({
       handler,
-      middleware: [
-        (req, res) => {
-          logger.log(req.ctx);
-          logger.log(res);
-        },
-      ],
+      middleware: [middlewareFn],
     });
   };
+}
+
+/// example middlewares
+
+interface RateLimiter {
+  put: () => unknown;
+  pop: () => unknown;
 }
 
 export function withRateLimiter<Route extends Contract[Keys<Contract>]>({
@@ -80,16 +68,12 @@ export function withRateLimiter<Route extends Contract[Keys<Contract>]>({
 }) {
   return createMiddleware<RateLimiter>({
     route,
-    middleware: (req, res) => {
+    middlewareFn: middlewareFn<RateLimiter>((req, res) => {
       logger.log(req.ctx.pop);
       logger.log(req.ctx.requestedAt);
       logger.log(res.nextRequest);
-    },
+    }),
   });
-}
-
-export interface TsrContextWithRateLimiter {
-  ctx: TsrContext["ctx"] & { rl: RateLimiter };
 }
 
 // TODO: also abstract this a sa middleware builder basicaly that's too cool and easy
@@ -100,17 +84,18 @@ export function withRateLimiter2<R extends Contract[Keys<Contract>]>({
 }) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
-    TsrContextWithRateLimiter
+    MergeTsrContextWith<RateLimiter>
   >;
   type BuildOpts = Parameters<typeof build>[0];
+
   return (handler: BuildOpts["handler"]) =>
     build({
       // TODO: actually implement it
       middleware: [
-        middleware((req, res) => {
-          req.ctx.rl.put = [].push;
+        (req, res) => {
+          req.ctx.put = [].push;
           logger.log(res);
-        }),
+        },
       ],
       handler,
     });
