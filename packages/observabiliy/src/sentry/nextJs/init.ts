@@ -1,6 +1,5 @@
 // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import * as Sentry from "@sentry/nextjs";
-
 import { env } from "@ashgw/env";
 
 /**
@@ -8,8 +7,11 @@ import { env } from "@ashgw/env";
  * This function configures Sentry based on the runtime environment (server or browser).
  * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/initialization/ for more details on initialization.
  */
-export const init = (ops: {
-  runtime: "server" | "browser";
+export const init = ({
+  // TODO: remove this
+  _runtime,
+}: {
+  _runtime: "server" | "browser";
 }): ReturnType<typeof Sentry.init> => {
   return Sentry.init({
     // The Data Source Name (DSN) is required to connect to your Sentry project.
@@ -39,25 +41,5 @@ export const init = (ops: {
     // Sample rate for session replays, controlling how often sessions are recorded.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#replays-session-sample-rate
     replaysSessionSampleRate: 0.1,
-
-    integrations: [
-      // also add the posthog integration when the bug gets resolved
-
-      // no need for replay integration on anything else but the client
-      ...(ops.runtime === "browser"
-        ? [
-            // The replay integration captures user interactions and errors in the browser.
-            // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/
-            Sentry.replayIntegration({
-              // Masks all text in the replay to protect sensitive information.
-              // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#masking
-              maskAllText: true,
-              // Blocks all media in the replay to protect sensitive information.
-              // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#blocking-media
-              blockAllMedia: true,
-            }),
-          ]
-        : []),
-    ],
   });
 };
