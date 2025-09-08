@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 
-import { envTuple } from "./env-tuple"; // TODO: use the real lib
+import { envTuple } from "./env-tuple";
 import { databaseUrlSchema } from "./schemas";
 
 const isBrowser = typeof window !== "undefined";
