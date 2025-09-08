@@ -19,10 +19,6 @@ export interface UserCtx {
   };
 }
 
-export interface TsrContextWithRateLimiter {
-  ctx: TsrContext["ctx"] & { rl: RateLimiter };
-}
-
 interface __MergeTsrContextWithLocal<Ctx> {
   ctx: TsrContext["ctx"] & Ctx;
 }
@@ -70,8 +66,16 @@ export function withRateLimiter<
   });
 }
 
+export interface TsrContextWithRateLimiter {
+  ctx: TsrContext["ctx"] & { rl: RateLimiter };
+}
+
 // TODO: also abstract this a sa middleware builder basicaly that's too cool and easy
-export function withRateLimiter2<R extends Contract[Keys<Contract>]>(route: R) {
+export function withRateLimiter2<R extends Contract[Keys<Contract>]>({
+  route,
+}: {
+  route: R;
+}) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
     TsrContextWithRateLimiter
