@@ -5,7 +5,7 @@ import { getFingerprint } from "./getFingerprint";
 import type { RateLimiter } from "./rl";
 import { createRateLimiter } from "./rl";
 import type { RlWindow } from "./window";
-import { restSchemaResponse } from "~/api/extended";
+import { makeSchemaResponse } from "~/api/extended";
 import { httpErrorSchemaRo } from "~/api/schemas/ros";
 import type { InferResponses } from "~/api/extended";
 import { NextResponse } from "next/server";
@@ -14,7 +14,7 @@ interface RateLimiterCtx {
   rl: RateLimiter;
 }
 
-const _rlResponse = restSchemaResponse({
+const _rlResponse = makeSchemaResponse({
   401: httpErrorSchemaRo,
 });
 

@@ -1,26 +1,26 @@
 import { z } from "zod";
 import type { InferResponses } from "../extended";
-import { restSchemaResponse } from "../extended";
+import { makeSchemaResponse } from "../extended";
 import { c } from "../root";
 import { httpErrorSchemaRo } from "./ros";
 
 // ========== Schemas ==========
 
-export const healthCheckSchemaResponses = restSchemaResponse({
+export const healthCheckSchemaResponses = makeSchemaResponse({
   200: c.noBody(),
 });
 
-const fetchContentFromUpstreamSchemaResponses = restSchemaResponse({
+const fetchContentFromUpstreamSchemaResponses = makeSchemaResponse({
   500: httpErrorSchemaRo,
   424: httpErrorSchemaRo,
 });
 
-export const fetchTextFromUpstreamSchemaResponses = restSchemaResponse({
+export const fetchTextFromUpstreamSchemaResponses = makeSchemaResponse({
   200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const fetchGpgFromUpstreamSchemaResponses = restSchemaResponse({
+export const fetchGpgFromUpstreamSchemaResponses = makeSchemaResponse({
   200: c.otherResponse({
     contentType: "application/pgp-keys",
     body: z.string().min(1),
@@ -28,7 +28,7 @@ export const fetchGpgFromUpstreamSchemaResponses = restSchemaResponse({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const purgeViewWindowSchemaResponses = restSchemaResponse({
+export const purgeViewWindowSchemaResponses = makeSchemaResponse({
   200: c.noBody(),
   401: httpErrorSchemaRo,
   500: httpErrorSchemaRo,

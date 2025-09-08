@@ -69,7 +69,7 @@ export type InferResponses<T extends Record<number, unknown>> = {
 
 export type InferRequest<T extends z.ZodTypeAny> = z.infer<T>;
 
-export function restSchemaResponse<
+export function makeSchemaResponse<
   const R extends Record<number, AppRouteResponse>,
 >(r: R): R {
   return r;
