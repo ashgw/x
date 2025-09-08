@@ -1,6 +1,7 @@
 // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import * as Sentry from "@sentry/nextjs";
 import { env } from "@ashgw/env";
+import { logger } from "../../log";
 
 /**
  * Initializes Sentry for error tracking and performance monitoring.
@@ -8,11 +9,11 @@ import { env } from "@ashgw/env";
  * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/initialization/ for more details on initialization.
  */
 export const init = ({
-  // TODO: remove this
-  _runtime,
+  runtime, // use these when using the replay integration, but i use it with Posthog anyway
 }: {
-  _runtime: "server" | "browser";
+  runtime: "server" | "browser";
 }): ReturnType<typeof Sentry.init> => {
+  logger.log(runtime);
   return Sentry.init({
     // The Data Source Name (DSN) is required to connect to your Sentry project.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#dsn

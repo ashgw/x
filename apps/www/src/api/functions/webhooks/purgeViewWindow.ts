@@ -27,7 +27,11 @@ export async function purgeViewWindow(
       },
     };
   }
-  logger.info("Cleaning up the post view window...");
+
+  logger.info("Cleaning up the post view window...", {
+    cutoffDate: CUTOFF.toISOString(),
+  });
+
   try {
     const deleted = await db.postViewWindow.deleteMany({
       where: { bucketStart: { lt: CUTOFF } }, // uses @@index([bucketStart])
@@ -38,6 +42,9 @@ export async function purgeViewWindow(
         cutoff: CUTOFF.toISOString(),
       });
     }
+
+    logger.info("No record to purge, view window is clean");
+
     return {
       status: 200,
       body: undefined,
