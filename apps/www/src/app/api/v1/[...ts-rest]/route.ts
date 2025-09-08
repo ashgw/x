@@ -152,23 +152,40 @@ const handler = createNextHandler(
 export { handler as GET, handler as DELETE };
 
 import type { RouterOutputs } from "~/api/inference";
+import type { Contract } from "~/api/contract";
+import type { Keys } from "ts-roids";
 
-export function authMiddleware(input: {
-  route: unknown;
-  handler: RouterOutputs["healthCheck"]; // this should be the handler fucnton
+export type K = Keys<Contract>;
+
+export function authMiddleware({
+  route,
+  handler,
+}: {
+  route: Contract["healthCheck"];
+  handler: () => Promise<RouterOutputs["healthCheck"]>;
   // that healthcheck expects and shit*
   // even if it has inputs and shit we should cater to all of that
 }) {
-  return tsr.routeWithMiddleware(contract.healthCheck)<
-    TsrContext,
-    TsrContextWithUser
-  >({
+  return tsr.routeWithMiddleware(route)<TsrContext, TsrContextWithUser>({
     middleware: [
       (request) => {
         // do authentication
         return request.ctx.user.email === "azdaz";
       },
     ],
-    handler: async () => handler(),
+    handler,
   });
+}
+
+export async function timed<T>(
+  label: string,
+  fn: () => Promise<T>,
+): Promise<T> {
+  const t0 = Date.now();
+  try {
+    return await fn();
+  } finally {
+    const dt = Date.now() - t0;
+    logger.info(`[REST] ${label} took ${dt}ms`);
+  }
 }
