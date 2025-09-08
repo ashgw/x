@@ -10,7 +10,7 @@ import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
 import { withRateLimiter } from "~/api/middlewares/withRateLimiter";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // TODO: seperate the route from the handler here rq
 const handler = createNextHandler(
