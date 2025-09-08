@@ -1,26 +1,26 @@
 import { z } from "zod";
 import type { InferResponses } from "../extended";
-import { makeSchemaResponse } from "../extended";
+import { ctreateSchemaResponses } from "../extended";
 import { c } from "../root";
 import { httpErrorSchemaRo } from "./ros";
 
 // ========== Schemas ==========
 
-export const healthCheckSchemaResponses = makeSchemaResponse({
+export const healthCheckSchemaResponses = ctreateSchemaResponses({
   200: c.noBody(),
 });
 
-const fetchContentFromUpstreamSchemaResponses = makeSchemaResponse({
+const fetchContentFromUpstreamSchemaResponses = ctreateSchemaResponses({
   500: httpErrorSchemaRo,
   424: httpErrorSchemaRo,
 });
 
-export const fetchTextFromUpstreamSchemaResponses = makeSchemaResponse({
+export const fetchTextFromUpstreamSchemaResponses = ctreateSchemaResponses({
   200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const fetchGpgFromUpstreamSchemaResponses = makeSchemaResponse({
+export const fetchGpgFromUpstreamSchemaResponses = ctreateSchemaResponses({
   200: c.otherResponse({
     contentType: "application/pgp-keys",
     body: z.string().min(1),
@@ -28,7 +28,7 @@ export const fetchGpgFromUpstreamSchemaResponses = makeSchemaResponse({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const purgeViewWindowSchemaResponses = makeSchemaResponse({
+export const purgeViewWindowSchemaResponses = ctreateSchemaResponses({
   200: c.noBody(),
   401: httpErrorSchemaRo,
   500: httpErrorSchemaRo,
