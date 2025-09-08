@@ -8,7 +8,6 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { withRateLimiter } from "~/api/middlewares";
 import { withRateLimiter2 } from "../../../../api/middlewares/withRateLimiter";
 export const runtime = "edge";
 
@@ -57,13 +56,11 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
-    purgeViewWindow: async ({ headers }) =>
-      webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
-    healthCheck: withRateLimiter2({
-      route: contract.healthCheck,
-      hanlder: myHandler,
-      middleware: mymiddleware,
-    }),
+    purgeViewWindow: withRateLimiter2({ route: contract.purgeViewWindow })(
+      async ({ headers }) =>
+        webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
+    ),
+    healthCheck: async () => healthCheck(),
   },
   {
     // TODO: add docs to all these options
