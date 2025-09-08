@@ -1,3 +1,5 @@
+// TODO: add this to the next package or maybe make it for all fetcher serverless things
+// or just inject the resut and shit
 import type { TsRestRequest } from "@ts-rest/serverless/next";
 
 import { tsr } from "@ts-rest/serverless/next";
@@ -7,7 +9,7 @@ import type { Keys } from "ts-roids";
 import type { NextRequest } from "next/server";
 import { logger } from "@ashgw/observability";
 
-type Route = Contract[Keys<Contract>];
+type CRoute = Contract[Keys<Contract>];
 
 type MergeTsrContextWith<C> = TsrContext & {
   ctx: TsrContext["ctx"] & C;
@@ -34,7 +36,7 @@ export function middlewareFn<LocalCtx extends object>(
   };
 }
 
-export function createMiddleware<R extends Route, LocalCtx extends object>({
+export function createMiddleware<R extends CRoute, LocalCtx extends object>({
   route,
   middlewareFn,
 }: {
@@ -56,14 +58,12 @@ export function createMiddleware<R extends Route, LocalCtx extends object>({
   };
 }
 
-/// example middlewares
-
 interface RateLimiter {
   put: () => unknown;
   pop: () => unknown;
 }
 
-export function withRateLimiter<R extends Route>({ route }: { route: R }) {
+export function withRateLimiter<R extends CRoute>({ route }: { route: R }) {
   return createMiddleware<R, RateLimiter>({
     route,
     middlewareFn: middlewareFn<RateLimiter>((req, res) => {
@@ -72,25 +72,4 @@ export function withRateLimiter<R extends Route>({ route }: { route: R }) {
       logger.log(res.nextRequest);
     }),
   });
-}
-
-// TODO: also abstract this a sa middleware builder basicaly that's too cool and easy
-export function withRateLimiter2<R extends Route>({ route }: { route: R }) {
-  const build = tsr.routeWithMiddleware(route)<
-    TsrContext,
-    MergeTsrContextWith<RateLimiter>
-  >;
-  type BuildOpts = Parameters<typeof build>[0];
-
-  return (handler: BuildOpts["handler"]) =>
-    build({
-      // TODO: actually implement it
-      middleware: [
-        (req, res) => {
-          req.ctx.put = [].push;
-          logger.log(res);
-        },
-      ],
-      handler,
-    });
 }

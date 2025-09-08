@@ -8,11 +8,8 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import {
-  withRateLimiter,
-  // withRateLimiter,
-  withRateLimiter2,
-} from "../../../../api/middlewares/withRateLimiter";
+import { withRateLimiter } from "~/api/middlewares/withRateLimiter";
+
 export const runtime = "edge";
 
 // TODO: seperate the route from the handler here rq
