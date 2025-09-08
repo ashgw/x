@@ -1,14 +1,16 @@
-import { createNextHandler, tsr } from "@ts-rest/serverless/next";
+import { createNextHandler } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
 import { endPoint } from "~/api/endpoint";
-import type { TsrContext } from "~/api/context";
 import { logger, monitor } from "@ashgw/observability";
-import { db } from "@ashgw/db";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
 import { withRateLimiter } from "~/api/middlewares/withRateLimiter";
+import {
+  setupGlobalRequestMiddleware,
+  setupGlobalResponseMiddleware,
+} from "~/api/middlewares";
 
 export const runtime = "nodejs";
 
@@ -70,18 +72,10 @@ const handler = createNextHandler(
     handlerType: "app-router",
     responseValidation: true,
     jsonQuery: false,
-    requestMiddleware: [
-      tsr.middleware<TsrContext>((request) => {
-        request.ctx = { requestedAt: new Date(), db };
-      }),
-    ],
+    requestMiddleware: [setupGlobalRequestMiddleware()],
     responseHandlers: [
-      (_response, request) => {
-        logger.log(
-          "[REST] took",
-          new Date().getTime() - request.ctx.requestedAt.getTime(),
-          "ms",
-        );
+      (res, req) => {
+        setupGlobalResponseMiddleware(res, req);
       },
     ],
     errorHandler: (error, { route }) => {
