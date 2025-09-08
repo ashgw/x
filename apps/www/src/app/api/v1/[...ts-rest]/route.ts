@@ -60,6 +60,9 @@ const handler = createNextHandler(
       }),
     purgeViewWindow: withRateLimiter({
       route: contract.purgeViewWindow,
+      block: {
+        every: "2s",
+      },
     })(async ({ headers }) =>
       webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),
     ),

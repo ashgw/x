@@ -1,23 +1,29 @@
+// rl.ts
+import type { RlWindow } from "./window";
+import { parseWindow } from "./window";
+
 export interface RateLimiter {
   check: (key: string) => boolean;
+  every: RlWindow;
 }
 
-export function createRateLimiter(intervalMs = 2000): { rl: RateLimiter } {
+export function createRateLimiter(every: RlWindow): { rl: RateLimiter } {
   const lastCalled = new Map<string, number>();
-  const rl: RateLimiter = {
+
+  const limiter: RateLimiter = {
     check: (key: string) => {
       const now = Date.now();
       const last = lastCalled.get(key) ?? 0;
 
-      if (now - last < intervalMs) {
+      if (now - last < parseWindow(every)) {
         return false; // too soon
       }
+
       lastCalled.set(key, now);
       return true;
     },
+    every,
   };
 
-  return { rl };
+  return { rl: limiter };
 }
-
-export const { rl } = createRateLimiter(2000);
