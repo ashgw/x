@@ -5,10 +5,20 @@ import { getFingerprint } from "./getFingerprint";
 import type { RateLimiter } from "./rl";
 import { createRateLimiter } from "./rl";
 import type { RlWindow } from "./window";
+import { restSchemaResponse } from "~/api/extended";
+import { httpErrorSchemaRo } from "~/api/schemas/ros";
+import type { InferResponses } from "~/api/extended";
+import { NextResponse } from "next/server";
 
 interface RateLimiterCtx {
   rl: RateLimiter;
 }
+
+const _rlResponse = restSchemaResponse({
+  401: httpErrorSchemaRo,
+});
+
+type RlResponse = InferResponses<typeof _rlResponse>;
 
 export function withRateLimiter<R extends ContractRoute>({
   route,
@@ -23,7 +33,16 @@ export function withRateLimiter<R extends ContractRoute>({
     middlewareFn: middlewareFn<RateLimiterCtx>((req, _res) => {
       req.ctx.rl = rl;
       if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
-        throw new Error("Caught lacking");
+        const denyResponse = {
+          status: 401,
+          body: {
+            code: "FORBIDDEN",
+            message: `Youre limited for the next ${limit.every}`,
+          },
+        } satisfies RlResponse;
+        return NextResponse.json(denyResponse.body, {
+          status: denyResponse.status,
+        });
       }
     }),
   });

@@ -30,7 +30,7 @@ export function middlewareFn<LocalCtx extends object>(
   fn: MiddlewareFn<LocalCtx>,
 ) {
   return (req: MiddlewareRequest<LocalCtx>) => {
-    fn(req, { nextRequest: req as unknown as NextRequest });
+    return fn(req, { nextRequest: req as unknown as NextRequest });
   };
 }
 
