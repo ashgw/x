@@ -1,4 +1,4 @@
-// TODO: feed cursor ts-rest & tanstack query 5
+// TODO: feed cursor ts-rest & tanstack query 5 & add docs
 import { makeQueryClient } from "./query-client";
 import { tsrQueryClientSide } from "./client";
 

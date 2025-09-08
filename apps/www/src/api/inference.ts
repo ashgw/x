@@ -1,3 +1,4 @@
+// TODO: add docs here
 import type { ClientInferRequest, ClientInferResponses } from "@ts-rest/core";
 import type { Contract } from "./contract";
 

@@ -1,8 +1,9 @@
 import type { DatabaseClient } from "@ashgw/db";
 
+// TODO: add docs here
 export interface TsrContext {
   ctx: {
-    time: Date;
+    requestedAt: Date;
     db: DatabaseClient;
   };
 }

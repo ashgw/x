@@ -32,7 +32,7 @@ function withAuth<R extends Contract[Keys<Contract>]>(route: R) {
       handler,
     });
 }
-
+// TODO: seperate the route from the handler here rq
 const handler = createNextHandler(
   contract,
   {
@@ -83,13 +83,14 @@ const handler = createNextHandler(
     ),
   },
   {
+    // TODO: add docs to all these options
     basePath: endPoint,
     handlerType: "app-router",
     responseValidation: true,
     jsonQuery: false,
     requestMiddleware: [
       tsr.middleware<TsrContext>((request) => {
-        request.ctx.time = new Date();
+        request.ctx.requestedAt = new Date();
         request.ctx.db = db;
       }),
     ],
@@ -97,7 +98,7 @@ const handler = createNextHandler(
       (_response, request) => {
         logger.log(
           "[REST] took",
-          new Date().getTime() - request.ctx.time.getTime(),
+          new Date().getTime() - request.ctx.requestedAt.getTime(),
           "ms",
         );
       },

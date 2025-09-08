@@ -1,4 +1,4 @@
-// types.ts
+// TODO: create a seperate library for this one here
 import type { z } from "zod";
 import type {
   AppRouteResponse,
