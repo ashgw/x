@@ -6,7 +6,7 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { withRateLimiter } from "~/api/middlewares/withRateLimiter";
+import { rateLimiterMiddleware } from "~/api/middlewares";
 import {
   setupGlobalRequestMiddleware,
   setupGlobalResponseMiddleware,
@@ -58,10 +58,10 @@ const handler = createNextHandler(
           cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
         },
       }),
-    purgeViewWindow: withRateLimiter({
+    purgeViewWindow: rateLimiterMiddleware({
       route: contract.purgeViewWindow,
       limit: {
-        every: "2s",
+        every: "5s",
       },
     })(async ({ headers }) =>
       webhooks.purgeViewWindow({ "x-cron-token": headers["x-cron-token"] }),

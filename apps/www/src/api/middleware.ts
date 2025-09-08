@@ -1,10 +1,11 @@
 // TODO: add this to the next package or maybe make it for all fetcher serverless things
 import type { TsRestRequest } from "@ts-rest/serverless/next";
-
 import { tsr } from "@ts-rest/serverless/next";
 import type { Contract } from "~/api/contract";
 import type { TsrContext } from "~/api/context";
-import type { Keys } from "ts-roids";
+import type { Keys, MaybeUndefined } from "ts-roids";
+import { NextResponse } from "next/server";
+import type { HttpErrorRo } from "./schemas/ros";
 import type { NextRequest } from "next/server";
 
 type MergeTsrContextWith<C> = TsrContext & {
@@ -52,3 +53,33 @@ export function createMiddleware<
     });
   };
 }
+
+// TODO: make this accept a zod schema for body & headers
+export interface MwUnion {
+  status: number;
+  body: MaybeUndefined<unknown>;
+  headers?: Record<string, string>;
+}
+
+/** Normalize a union or Response into a NextResponse for ts-rest short-circuit */
+function generic(x: MwUnion): Response | void {
+  const { status, body, headers } = x;
+  return typeof body === "undefined"
+    ? new NextResponse(null, { status, headers })
+    : NextResponse.json(body as unknown, { status, headers });
+}
+
+function middlewareErrorResponse({
+  status,
+  body,
+}: { status: number } & { body: HttpErrorRo }) {
+  return generic({
+    status,
+    body,
+  });
+}
+
+export const middlewareResponse = {
+  generic,
+  error: middlewareErrorResponse,
+};

@@ -1,4 +1,4 @@
-export { withRateLimiter } from "./withRateLimiter";
+export { rateLimiterMiddleware } from "./rateLimiter";
 export {
   setupGlobalResponseMiddleware,
   setupGlobalRequestMiddleware,
