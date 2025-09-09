@@ -17,7 +17,7 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
-    - name: Setup ephemeral DB and export the database URL
+    - name: Setup ephemeral DB
       shell: bash
       run: |
         pnpm --filter @ashgw/db start
@@ -27,13 +27,10 @@ runs:
           pg_isready -h localhost -p 5432 -U postgres && break
           sleep 2
         done
+        # I already injected the $DATABASE_URL, it's localhost
 
     - name: Seed the database
       shell: bash
       run: |
         pnpm --filter @ashgw/seeder seed
 
-    - name: Export the database URL for later steps
-      shell: bash
-      run: |
-        echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/main" >> $GITHUB_ENV
