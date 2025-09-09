@@ -24,7 +24,7 @@ export function rateLimiterMiddleware<R extends ContractRoute>({
       req.ctx.rl = rl;
       if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
         return middlewareResponse.error({
-          status: 401,
+          status: 403,
           body: {
             code: "FORBIDDEN",
             message: `You're limited for the next ${limit.every}`,
