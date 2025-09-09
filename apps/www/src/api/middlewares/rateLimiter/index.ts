@@ -1,5 +1,5 @@
-import { createMiddleware } from "~/api/middleware";
-import { middlewareFn } from "~/api/middleware";
+import { createMiddleware } from "~/@ashgw/ts-rest/middleware";
+import { middlewareFn } from "~/@ashgw/ts-rest/middleware";
 import { getFingerprint } from "./getFingerprint";
 import type { RateLimiter } from "./rl";
 import { createRateLimiter } from "./rl";
