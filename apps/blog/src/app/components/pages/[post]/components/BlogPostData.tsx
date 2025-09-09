@@ -1,16 +1,15 @@
 "use client";
 
-import { memo } from "react";
 import Link from "next/link";
-import { Edit, Eye } from "lucide-react";
+import { Edit } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
+import { Views } from "~/app/components/misc/views";
 
 import type { PostArticleRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/misc/featured/blog";
 import { ScrollUp } from "~/app/components/misc/postCards/components/ScrollUp";
-import { formatViews } from "~/utils/formatViews";
 import { H1 } from "./headers";
 import { MDX } from "./mdx";
 import { ReleaseDate } from "./ReleaseDate";
@@ -20,9 +19,7 @@ interface BlogPostProps {
   postData: PostArticleRo;
 }
 
-export const BlogPostData = memo(function BlogPostData({
-  postData,
-}: BlogPostProps) {
+export function BlogPostData({ postData }: BlogPostProps) {
   return (
     <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       <ViewTracker postSlug={postData.slug} />
@@ -44,15 +41,12 @@ export const BlogPostData = memo(function BlogPostData({
         <div className="text-muted-foreground flex items-center gap-2">
           <ReleaseDate date={postData.firstModDate.toISOString()} />
           <span className="scale-150 select-none text-white/40">·</span>
-          <div
-            className="flex items-center gap-1"
-            title={`${postData.views} views`}
-          >
-            <Eye className="h-3 w-3 opacity-70" />
-            <span className="text-sm opacity-70">
-              {formatViews(postData.views)}
-            </span>
-          </div>
+          <Views
+            slug={postData.slug}
+            initial={postData.views}
+            className="text-sm opacity-70"
+            titlePrefix=""
+          />
         </div>
         <div>
           {DateService.isSameMonthAndYear({
@@ -78,4 +72,4 @@ export const BlogPostData = memo(function BlogPostData({
       <ScrollUp />
     </section>
   );
-});
+}

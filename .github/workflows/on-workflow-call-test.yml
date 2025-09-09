@@ -17,10 +17,10 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
-
       - uses: ./.github/actions/setup-ephermal-db
       - name: Running code tests
-        run: pnpm test:unit-integration
+        run: |
+          pnpm test:unit-integration
 
   e2e:
     timeout-minutes: 60
@@ -42,3 +42,4 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+

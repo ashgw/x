@@ -1,6 +1,6 @@
 name: CI / DB Migrate
 
-description: Run database migrations (Against the real Databases)
+description: Run database migrations (against the real DB)
 
 inputs:
   comment_on_pr:
@@ -19,15 +19,26 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
-    - name: Run migrations on the $NEXT_PUBLIC_CURRENT_ENV database
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
-
     - name: Validate migrations on the $NEXT_PUBLIC_CURRENT_ENV database
       shell: bash
       run: |
         pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
+
+
+    - name: Check for schema drift & dangerous undisclosed ops (can manually bypass this if it erros & uk better)
+      shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate diff \
+        --from-url="$DATABASE_URL" \
+        --to-schema-datamodel=./prisma/schema.prisma \
+        --script > migration.sql 2>&1
+
+        bash .github/scripts/check-migration-safety.sh migration.sql
+
+    - name: Deploy pending migrations on the $NEXT_PUBLIC_CURRENT_ENV database
+     shell: bash
+      run: |
+        pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
 
     - name: Comment on PR
       if: github.event_name == 'pull_request' && inputs.comment_on_pr == 'yes'
@@ -46,14 +57,4 @@ runs:
           -H "Content-Type: application/json" \
           -d "{\"body\": \"${comment_body}\"}" \
           "https://api.github.com/repos/${repo}/issues/${pr_number}/comments"
-
-    - name: Check for schema drift & dangerous undisclosed ops (can manually bypass this if it erros & uk better)
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate diff \
-        --from-url="$DATABASE_URL" \
-        --to-schema-datamodel=./prisma/schema.prisma \
-        --script > migration.sql 2>&1
-
-        bash .github/scripts/check-migration-safety.sh migration.sql
 

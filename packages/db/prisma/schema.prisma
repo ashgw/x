@@ -7,8 +7,10 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
   relationMode = "prisma"
 }
+
 
 model Post {
   slug          String     @id @db.VarChar(255)
@@ -21,42 +23,64 @@ model Post {
   minutesToRead Int        @db.SmallInt
   tags          String[]   @db.VarChar(255)
   category      PostCategory
-  mdxText       String     @db.Text           
-  postViews     PostView[] @relation("PostViews")
+  mdxText       String     @db.Text
+  viewsCount    Int        @default(0)
+
+  viewWindows   PostViewWindow[]
 
   @@index([lastModDate])
   @@index([isReleased, lastModDate])
 }
 
-model PostView {
-  id          String   @id @default(cuid())
-  postSlug    String   @db.VarChar(255)
-  fingerprint String   @db.VarChar(64)  // hashed postSlug:ip:userAgent
-  createdAt   DateTime @default(now())
-  post        Post     @relation("PostViews", fields: [postSlug], references: [slug], onDelete: Cascade)
+model TrashPost {
+  id            String       @id @default(cuid())
+  originalSlug  String       @db.VarChar(255)
+  title         String       @db.VarChar(30)
+  seoTitle      String       @db.VarChar(100)
+  summary       String       @db.VarChar(100)
+  firstModDate  DateTime
+  lastModDate   DateTime
+  wasReleased   Boolean
+  minutesToRead Int          @db.SmallInt
+  tags          String[]     @db.VarChar(255)
+  category      PostCategory
+  mdxText       String       @db.Text
+  deletedAt     DateTime     @default(now())
 
-  @@index([postSlug, fingerprint, createdAt])
-  @@index([createdAt])
-  @@index([fingerprint])
+  @@index([originalSlug])
+  @@index([deletedAt])
+}
+
+
+model PostViewWindow {
+  id           String   @id @default(cuid())
+  postSlug     String   @db.VarChar(255)
+  fingerprint  String   @db.VarChar(64)    // hash(slug:ip:ua)
+  bucketStart  DateTime @db.Timestamptz(6) // start of 24h bucket (UTC midnight)
+  post Post @relation(fields: [postSlug], references: [slug], onDelete: Cascade)
+
+  @@unique([postSlug, fingerprint, bucketStart])
+  @@index([bucketStart])
+  @@index([postSlug, bucketStart])
 }
 
 model Upload {
   key         String       @id @db.VarChar(512)
   type        UploadType
   entityType  ResourceType @default(POST)
-  contentType String       @db.VarChar(100) // text/markdown etc...
+  contentType String       @db.VarChar(100)
   uploadedAt  DateTime     @default(now())
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique @db.VarChar(255)
-  name          String    @db.VarChar(30)
-  passwordHash  String    @db.VarChar(1024)
-  role          UserRole  @default(VISITOR)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
+  id           String    @id @default(cuid())
+  email        String    @unique @db.VarChar(255)
+  name         String    @db.VarChar(30)
+  passwordHash String    @db.VarChar(1024)
+  role         UserRole  @default(VISITOR)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
 }
 
 model Session {
@@ -69,24 +93,6 @@ model Session {
   @@index([userId])
 }
 
-model TrashPost {
-  id                 String       @id @default(cuid())
-  originalSlug       String       @db.VarChar(255)
-  title              String       @db.VarChar(30)
-  seoTitle           String       @db.VarChar(100)
-  summary            String       @db.VarChar(100)
-  firstModDate       DateTime
-  lastModDate        DateTime
-  wasReleased        Boolean
-  minutesToRead      Int          @db.SmallInt
-  tags               String[]     @db.VarChar(255)
-  category           PostCategory
-  mdxText            String       @db.Text       
-  deletedAt          DateTime     @default(now())
-
-  @@index([originalSlug])
-  @@index([deletedAt])
-}
 
 enum PostCategory {
   SOFTWARE
