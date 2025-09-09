@@ -1,7 +1,7 @@
-import { pbkdf2Sync, randomBytes } from "crypto";
+import {pbkdf2Sync, randomBytes} from "crypto";
 
-import { db } from "@ashgw/db";
-import { blogs } from "./data/blogs";
+import {db} from "@ashgw/db";
+import {blogs} from "./data/mdx";
 
 function hashPassword(password: string): string {
   const salt = randomBytes(16).toString("hex");
@@ -15,8 +15,8 @@ async function createAdminUser() {
   const name = "Admin";
 
   const existingUser = await db.user.findUnique({
-    where: { email },
-    select: { email: true },
+    where: {email},
+    select: {email: true},
   });
 
   if (existingUser) {
@@ -27,7 +27,7 @@ async function createAdminUser() {
 
   const passwordHash = hashPassword(password);
   await db.user.create({
-    data: { email, passwordHash, name, role: "ADMIN" },
+    data: {email, passwordHash, name, role: "ADMIN"},
   });
   // eslint-disable-next-line no-restricted-syntax
   console.log("[seed] Admin user created");
@@ -36,7 +36,7 @@ async function createAdminUser() {
 async function seedPosts() {
   for (const blog of blogs) {
     await db.post.upsert({
-      where: { slug: blog.slug },
+      where: {slug: blog.slug},
       update: {
         title: blog.title,
         seoTitle: blog.seoTitle,
@@ -82,3 +82,4 @@ main().catch((error) => {
   console.error("Error in seeder:", error);
   process.exit(1);
 });
+
