@@ -1,10 +1,10 @@
 // TODO: add this to the next package or maybe make it for all fetcher serverless things
 import type { TsRestRequest } from "@ts-rest/serverless/next";
 import { tsr } from "@ts-rest/serverless/next";
-import type { Contract } from "~/api/contract";
 import type { TsrContext } from "~/api/context";
-import type { Keys } from "ts-roids";
 import type { NextRequest } from "next/server";
+
+import type { AppRoute } from "@ts-rest/core";
 
 type MergeTsrContextWith<C> = TsrContext & {
   ctx: TsrContext["ctx"] & C;
@@ -23,8 +23,6 @@ type MiddlewareFn<LocalCtx> = (
   res: MiddlewareRespone,
 ) => unknown;
 
-export type ContractRoute = Contract[Keys<Contract>];
-
 export function middlewareFn<LocalCtx extends object>(
   fn: MiddlewareFn<LocalCtx>,
 ) {
@@ -33,10 +31,13 @@ export function middlewareFn<LocalCtx extends object>(
   };
 }
 
-export function createMiddleware<
-  R extends ContractRoute,
-  LocalCtx extends object,
->({ route, middlewareFn }: { route: R; middlewareFn: MiddlewareFn<LocalCtx> }) {
+export function createMiddleware<R extends AppRoute, LocalCtx extends object>({
+  route,
+  middlewareFn,
+}: {
+  route: R;
+  middlewareFn: MiddlewareFn<LocalCtx>;
+}) {
   const build = tsr.routeWithMiddleware(route)<
     TsrContext,
     MergeTsrContextWith<LocalCtx>

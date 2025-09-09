@@ -9,6 +9,7 @@ import {
   purgeViewWindowHeadersSchemaDto,
 } from "./schemas/dtos";
 import { c } from "./root";
+import type { Keys } from "ts-roids";
 
 export const contract = c.router({
   purgeViewWindow: {
@@ -59,4 +60,6 @@ export const contract = c.router({
   },
 });
 
-export type Contract = typeof contract;
+type Contract = typeof contract;
+
+export type ContractRoute = Contract[Keys<Contract>];
