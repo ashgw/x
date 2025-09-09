@@ -16,11 +16,7 @@ const handler = createNextHandler(contract, router, {
   responseValidation: true,
   jsonQuery: false,
   requestMiddleware: [setupGlobalRequestMiddleware()],
-  responseHandlers: [
-    (res, req) => {
-      setupGlobalResponseMiddleware(res, req);
-    },
-  ],
+  responseHandlers: [setupGlobalResponseMiddleware],
   errorHandler: (error, { route }) => {
     logger.error(`>>> REST Error on ${route}`, error);
     monitor.next.captureException({
