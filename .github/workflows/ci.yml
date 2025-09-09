@@ -58,7 +58,7 @@ jobs:
     secrets: inherit
 
   db-fresh-migration:
-    uses: ./.github/workflows/on-workflow-call-db-fresh-migrate.yml
+    uses: ./.github/workflows/on-workflow-call-ephermal-db-migrate.yml
     secrets: inherit
 
   mergeable:
@@ -127,3 +127,4 @@ jobs:
       deployment_environment: production
       APP_NAME: blog
     secrets: inherit
+
