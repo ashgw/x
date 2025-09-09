@@ -1,13 +1,13 @@
-import { tsr } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
 import { rateLimiterMiddleware } from "~/api/middlewares";
-import type { TsrContext } from "./context";
+import type { GlobalContext } from "./context";
+import { createRouterWithMiddleware } from "~/@ashgw/ts-rest/middleware";
 
-export const router = tsr.routerWithMiddleware(contract)<TsrContext>({
+export const router = createRouterWithMiddleware(contract)<GlobalContext>({
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
       query,

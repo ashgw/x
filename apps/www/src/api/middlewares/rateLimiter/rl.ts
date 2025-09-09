@@ -1,4 +1,3 @@
-// rl.ts
 import type { RlWindow } from "./window";
 import { parseWindow } from "./window";
 

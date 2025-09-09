@@ -5,9 +5,10 @@ import type { RlWindow } from "./window";
 import {
   middlewareResponse,
   middlewareFn,
-  createMiddleware,
+  createRouteMiddleware,
 } from "~/@ashgw/ts-rest/middleware";
 import type { ContractRoute } from "~/api/contract";
+import type { GlobalContext } from "~/api/context";
 
 interface RateLimiterCtx {
   rl: RateLimiter;
@@ -21,9 +22,9 @@ export function rateLimiterMiddleware<Route extends ContractRoute>({
   limit: { every: RlWindow };
 }) {
   const { rl } = createRateLimiter(limit.every);
-  return createMiddleware<Route, RateLimiterCtx>({
+  return createRouteMiddleware<Route, GlobalContext, RateLimiterCtx>({
     route,
-    middlewareFn: middlewareFn<RateLimiterCtx>((req, _res) => {
+    middlewareFn: middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
       req.ctx.rl = rl;
       if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
         return middlewareResponse.error({

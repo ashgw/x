@@ -1,15 +1,16 @@
 import type { TsRestRequest, TsRestResponse } from "@ts-rest/serverless/next";
 import { tsr } from "@ts-rest/serverless/next";
 import { db } from "@ashgw/db";
-import type { TsrContext } from "../context";
+import type { GlobalContext } from "../context";
 import { logger } from "@ashgw/observability";
 
+// TODO: abstract these tho
 export const setupGlobalRequestMiddleware = () =>
-  tsr.middleware<TsrContext>((request) => {
+  tsr.middleware<GlobalContext>((request) => {
     request.ctx = { requestedAt: new Date(), db };
   });
 
-export type GobalRequest = TsRestRequest & TsrContext;
+export type GobalRequest = TsRestRequest & GlobalContext;
 export type GlobalResponse = TsRestResponse;
 
 export const setupGlobalResponseMiddleware = (
