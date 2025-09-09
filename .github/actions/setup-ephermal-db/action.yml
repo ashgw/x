@@ -27,6 +27,7 @@ runs:
           pg_isready -h localhost -p 5432 -U postgres && break
           sleep 2
         done
+        echo 'Database is now ready to accept connections!'
         # I already injected the $DATABASE_URL, it's localhost
 
     - name: Seed the database

@@ -1,4 +1,4 @@
-name: CI / Database Fresh Migration
+name: CI / Database Fresh Migration On Ephermal DB
 
 on:
   workflow_call:
@@ -17,6 +17,7 @@ jobs:
       - name: Run fresh migrations on the ephermal database
         shell: bash
         run: |
+          # I'm already using zod for validation against which DB is which, but extra paranoia won't hurt
           if [[ "$DATABASE_URL" != *"localhost"* ]] && [[ "$DATABASE_URL" != *"127.0.0.1"* ]]; then
             echo "❌ DATABASE_URL is not local! Aborting."
             exit 1
@@ -28,8 +29,9 @@ jobs:
           echo "Validating migrations..."
           pnpm --filter @ashgw/db migrate:status
 
-          STATUS=$?
+          # deploying migrations
+          pnpm --filter @ashgw/db migrate:deploy
+
           echo "Cleaning up..."
           pnpm --filter @ashgw/db stop
 
-          exit $STATUS
