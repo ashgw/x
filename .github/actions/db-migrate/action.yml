@@ -1,6 +1,6 @@
 name: CI / DB Migrate
 
-description: Run database migrations (runs against the real Databases)
+description: Run database migrations (Against the real Databases)
 
 inputs:
   comment_on_pr:
@@ -47,7 +47,7 @@ runs:
           -d "{\"body\": \"${comment_body}\"}" \
           "https://api.github.com/repos/${repo}/issues/${pr_number}/comments"
 
-    - name: Check for schema drift
+    - name: Check for schema drift & dangerous undisclosed ops (can manually bypass this if it erros & uk better)
       shell: bash
       run: |
         pnpm --filter @ashgw/db exec prisma migrate diff \
