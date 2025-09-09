@@ -11,15 +11,15 @@ interface RateLimiterCtx {
   rl: RateLimiter;
 }
 
-export function rateLimiterMiddleware<R extends ContractRoute>({
+export function rateLimiterMiddleware<Route extends ContractRoute>({
   route,
   limit,
 }: {
-  route: R;
+  route: Route;
   limit: { every: RlWindow };
 }) {
   const { rl } = createRateLimiter(limit.every);
-  return createMiddleware<R, RateLimiterCtx>({
+  return createMiddleware<Route, RateLimiterCtx>({
     route,
     middlewareFn: middlewareFn<RateLimiterCtx>((req, _res) => {
       req.ctx.rl = rl;
