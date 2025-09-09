@@ -1,26 +1,28 @@
 import { z } from "zod";
-import type { InferResponses } from "../extended";
-import { ctreateSchemaResponses } from "../extended";
 import { c } from "../root";
-import { httpErrorSchemaRo } from "./ros";
+import {
+  createSchemaResponses,
+  httpErrorSchema,
+} from "~/@ashgw/ts-rest/schemas";
+import type { InferResponses } from "~/@ashgw/ts-rest/inference";
 
 // ========== Schemas ==========
 
-export const healthCheckSchemaResponses = ctreateSchemaResponses({
+export const healthCheckSchemaResponses = createSchemaResponses({
   200: c.noBody(),
 });
 
-const fetchContentFromUpstreamSchemaResponses = ctreateSchemaResponses({
-  500: httpErrorSchemaRo,
-  424: httpErrorSchemaRo,
+const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
+  500: httpErrorSchema,
+  424: httpErrorSchema,
 });
 
-export const fetchTextFromUpstreamSchemaResponses = ctreateSchemaResponses({
+export const fetchTextFromUpstreamSchemaResponses = createSchemaResponses({
   200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const fetchGpgFromUpstreamSchemaResponses = ctreateSchemaResponses({
+export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
   200: c.otherResponse({
     contentType: "application/pgp-keys",
     body: z.string().min(1),
@@ -28,10 +30,10 @@ export const fetchGpgFromUpstreamSchemaResponses = ctreateSchemaResponses({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const purgeViewWindowSchemaResponses = ctreateSchemaResponses({
+export const purgeViewWindowSchemaResponses = createSchemaResponses({
   200: c.noBody(),
-  401: httpErrorSchemaRo,
-  500: httpErrorSchemaRo,
+  401: httpErrorSchema,
+  500: httpErrorSchema,
 });
 
 // ========== Types ==========

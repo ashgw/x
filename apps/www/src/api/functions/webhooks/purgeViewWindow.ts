@@ -2,12 +2,9 @@ import { logger, monitor } from "@ashgw/observability";
 import type { PurgeViewWindowHeadersDto } from "~/api/schemas/dtos";
 import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
 
-// TODO: import this later when the bitch ass fuckin wifi driver is fixed
 // TODO: also remove the blog service view implementation
-// TODO: also test ts
 // TODO: also add a child logger for crons, to see what's up
 // TODO: put logger in a seperate package
-// TODO: fix fucking package install errors
 
 import { db } from "@ashgw/db";
 import { env } from "@ashgw/env";
