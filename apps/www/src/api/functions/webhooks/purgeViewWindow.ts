@@ -25,10 +25,6 @@ export async function purgeViewWindow(
     };
   }
 
-  logger.info("Cleaning up the post view window...", {
-    cutoffDate: CUTOFF.toISOString(),
-  });
-
   try {
     const deleted = await db.postViewWindow.deleteMany({
       where: { bucketStart: { lt: CUTOFF } }, // uses @@index([bucketStart])
