@@ -5,7 +5,7 @@ import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
 import { rateLimiterMiddleware } from "~/api/middlewares/rateLimiter";
 import type { GlobalContext } from "./context";
-import { createRouterWithContext } from "~/@ashgw/ts-rest/middleware";
+import { createRouterWithContext } from "~/@ashgw/ts-rest";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   bootstrap: async ({ query }) =>

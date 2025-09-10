@@ -6,7 +6,7 @@ import {
   middlewareResponse,
   middlewareFn,
   createRouteMiddleware,
-} from "~/@ashgw/ts-rest/middleware";
+} from "~/@ashgw/ts-rest";
 import type { ContractRoute } from "~/api/contract";
 import type { GlobalContext } from "~/api/context";
 

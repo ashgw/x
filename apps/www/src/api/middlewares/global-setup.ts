@@ -5,7 +5,7 @@ import type {
   ResponseHandlerResponse,
   ResponseHandlerResquest,
 } from "~/@ashgw/ts-rest/handler";
-import { createGlobalRequestMiddleware } from "~/@ashgw/ts-rest/middleware";
+import { createGlobalRequestMiddleware } from "~/@ashgw/ts-rest";
 
 export const setupRequestMiddleware = () =>
   createGlobalRequestMiddleware<GlobalContext>((request) => {

@@ -10,7 +10,7 @@ import {
 } from "./schemas/dtos";
 import { c } from "./root";
 import type { Keys } from "ts-roids";
-import { createContract } from "~/@ashgw/ts-rest/create-contract";
+import { createContract } from "~/@ashgw/ts-rest";
 
 export const contract = createContract(c)({
   purgeViewWindow: {
