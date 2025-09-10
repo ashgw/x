@@ -1,21 +1,22 @@
-import type { TsRestRequest, TsRestResponse } from "@ts-rest/serverless/next";
-import { tsr } from "@ts-rest/serverless/next";
 import { db } from "@ashgw/db";
 import type { GlobalContext } from "../context";
 import { logger } from "@ashgw/observability";
+import type {
+  GlobalResponseHandlerMiddlewareResponse,
+  GlobalResponseHandlerMiddlewareResquest,
+} from "~/@ashgw/ts-rest/middleware/types";
+import { createGlobalRequestMiddleware } from "~/@ashgw/ts-rest/middleware";
 
-// TODO: abstract these tho
 export const setupGlobalRequestMiddleware = () =>
-  tsr.middleware<GlobalContext>((request) => {
+  createGlobalRequestMiddleware<GlobalContext>((request) => {
     request.ctx = { requestedAt: new Date(), db };
   });
 
-export type GobalRequest = TsRestRequest & GlobalContext;
-export type GlobalResponse = TsRestResponse;
-
+// TODO: fix this shit and make it createGlobalResponseMiddleware
+// reference the fn file for more info how
 export const setupGlobalResponseMiddleware = (
-  _res: GlobalResponse,
-  req: GobalRequest,
+  _res: GlobalResponseHandlerMiddlewareResponse,
+  req: GlobalResponseHandlerMiddlewareResquest<GlobalContext>,
 ) => {
   logger.log(
     "[REST] took",
