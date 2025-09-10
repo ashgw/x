@@ -9,7 +9,7 @@ export interface RateLimiter {
 export function createRateLimiter(every: RlWindow): { rl: RateLimiter } {
   const lastCalled = new Map<string, number>();
 
-  const limiter: RateLimiter = {
+  const limiter = {
     canPass: (key: string) => {
       const now = Date.now();
       const last = lastCalled.get(key) ?? 0;
@@ -22,7 +22,7 @@ export function createRateLimiter(every: RlWindow): { rl: RateLimiter } {
       return true;
     },
     every,
-  };
+  } satisfies RateLimiter;
 
   return { rl: limiter };
 }

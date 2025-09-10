@@ -2,11 +2,11 @@ import { createNextHandler } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
 import { endPoint } from "~/api/endpoint";
 import { logger, monitor } from "@ashgw/observability";
-import {
-  setupGlobalRequestMiddleware,
-  setupGlobalResponseMiddleware,
-} from "~/api/middlewares";
 import { router } from "~/api/router";
+import {
+  setupRequestMiddleware,
+  setupResponseHandlers,
+} from "~/api/middlewares/global-setup";
 
 export const runtime = "nodejs";
 
@@ -15,8 +15,8 @@ const handler = createNextHandler(contract, router, {
   handlerType: "app-router",
   responseValidation: true,
   jsonQuery: false,
-  requestMiddleware: [setupGlobalRequestMiddleware()],
-  responseHandlers: [setupGlobalResponseMiddleware],
+  requestMiddleware: [setupRequestMiddleware()],
+  responseHandlers: [setupResponseHandlers],
   errorHandler: (error, { route }) => {
     logger.error(`>>> REST Error on ${route}`, error);
     monitor.next.captureException({
