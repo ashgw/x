@@ -31,7 +31,7 @@ export function rateLimiterMiddleware<Route extends ContractRoute>({
           status: 403,
           body: {
             code: "FORBIDDEN",
-            message: `You're limited for the next ${limit.every}`,
+            message: `You're limited for the next ${req.ctx.rl.every}`,
           },
         });
       }
