@@ -20,7 +20,7 @@ export async function purgeViewWindow(
       status: 401,
       body: {
         code: "UNAUTHORIZED",
-        message: "You're not authorized to perform this action",
+        message: "Cron token is invalid, you cannot perform this action",
       },
     };
   }
