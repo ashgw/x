@@ -12,6 +12,7 @@ import { c } from "./root";
 import type { Keys } from "ts-roids";
 import { createContract } from "~/@ashgw/ts-rest";
 
+// TODO: add summary and shit here so AI can use it
 export const contract = createContract(c)({
   purgeViewWindow: {
     method: "DELETE",
