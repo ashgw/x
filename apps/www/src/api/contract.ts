@@ -10,8 +10,9 @@ import {
 } from "./schemas/dtos";
 import { c } from "./root";
 import type { Keys } from "ts-roids";
+import { createContract } from "~/@ashgw/ts-rest/create-contract";
 
-export const contract = c.router({
+export const contract = createContract(c)({
   purgeViewWindow: {
     method: "DELETE",
     path: "/purge-view-window",
