@@ -63,7 +63,6 @@ export async function fetchTextFromUpstream(input: {
         body: {
           code: "UPSTREAM_ERROR",
           message: "Upstream error",
-          details: { status: res.status, url },
         },
       };
     }
@@ -85,7 +84,6 @@ export async function fetchTextFromUpstream(input: {
       body: {
         code: "INTERNAL_ERROR",
         message: "Internal error",
-        details: { url },
       },
     };
   }
