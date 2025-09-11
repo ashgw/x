@@ -32,6 +32,10 @@ jobs:
           # deploying migrations
           pnpm --filter @ashgw/db migrate:deploy
 
+      - name: stop ephermal DB
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
           echo "Cleaning up..."
           pnpm --filter @ashgw/db stop
-
