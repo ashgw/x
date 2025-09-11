@@ -28,7 +28,14 @@ export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
+export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
+  401: httpErrorSchema, //
+});
+
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
+  // TODO: we should be able to do shit like createSchemaResponses({}).extending(cronAuthedMiddlewareSchemaResponse)
+  // so the createSchemaResponses can be versatile so we don't have to repeat ourselves and shit everytime we use a middleware
+  // that runs first for shit
   200: c.noBody(),
   401: httpErrorSchema, // TODO: here make to be createHttpErrorSchema.forbidden() or httpErrorSchema.unauthorized()
   // // so it doesnt pollute the generated openAPI schema, since
