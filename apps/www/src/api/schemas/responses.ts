@@ -31,6 +31,7 @@ export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
   200: c.noBody(),
   401: httpErrorSchema,
+  403: httpErrorSchema,
   500: httpErrorSchema,
 });
 

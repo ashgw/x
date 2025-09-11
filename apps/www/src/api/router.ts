@@ -50,7 +50,9 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
       },
     }),
-
+  // TODO: need to also add docs to tell the user to remember t oadd the schema defintion of any thing
+  // especially any error when it comes to middlewares, for exmaple, we need tpo add 403 forbidden erro
+  // to the defintoon sicne the rl middlware might retirn a formbdden sttaus
   purgeViewWindow: middlware()
     .use(rateLimiter({ limit: { every: "3s" } }))
     .use(authed())
