@@ -10,6 +10,7 @@ import {
 } from "~/ts-rest/middlewares/rateLimiter";
 import type { GlobalContext } from "../ts-rest/context";
 import { createRouterWithContext } from "~/@ashgw/ts-rest";
+import { logger } from "@ashgw/observability";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   bootstrap: async ({ query }) =>
@@ -57,10 +58,23 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: routeMiddlewares()
     .use(authed())
     .use(rateLimiter({ limit: { every: "3s" } }))
-    .route({ route: contract.purgeViewWindow })(async ({ headers }) => {
-    return webhooks.purgeViewWindow({
-      "x-cron-token": headers["x-cron-token"],
-    });
-  }),
+    .route({ route: contract.purgeViewWindow })(
+    async (
+      { headers },
+      {
+        request: {
+          ctx: { db, requestedAt, rl, user },
+        },
+      },
+    ) => {
+      logger.log(db);
+      logger.log(requestedAt);
+      logger.log(rl);
+      logger.log(user);
+      return webhooks.purgeViewWindow({
+        "x-cron-token": headers["x-cron-token"],
+      });
+    },
+  ),
   healthCheck: async () => healthCheck(),
 });

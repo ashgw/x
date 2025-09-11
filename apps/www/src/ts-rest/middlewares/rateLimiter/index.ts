@@ -12,8 +12,8 @@ import {
   middlewareFn,
   createRouteMiddleware,
 } from "~/@ashgw/ts-rest";
-import type { ContractRoute } from "~/api/contract";
 import type { GlobalContext } from "~/ts-rest/context";
+import type { AppRoute } from "@ts-rest/core";
 
 interface RateLimiterCtx {
   rl: RateLimiter;
@@ -111,7 +111,7 @@ export function routeMiddlewares<AccCtx extends object = EmptyObject>(
       ]);
     },
 
-    route<Route extends ContractRoute>({ route }: { route: Route }) {
+    route<Route extends AppRoute>({ route }: { route: Route }) {
       // compute final merged LocalCtx once, then assign into req.ctx per request
       const finalCtx = chain.reduce((acc, item) => {
         return mergeCtx(acc, item.ctx as object);
