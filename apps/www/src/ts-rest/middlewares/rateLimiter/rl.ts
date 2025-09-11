@@ -6,6 +6,7 @@ export interface RateLimiter {
   every: RlWindow;
 }
 
+// TODO: add this to another package
 export function createRateLimiter(every: RlWindow): { rl: RateLimiter } {
   const lastCalled = new Map<string, number>();
 

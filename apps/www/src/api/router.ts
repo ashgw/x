@@ -3,10 +3,10 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { authed, rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
+import { rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
 import type { GlobalContext } from "../ts-rest/context";
-import { createRouterWithContext, routeMiddlewares } from "~/@ashgw/ts-rest";
-import { logger } from "@ashgw/observability";
+import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
+import { authed } from "~/ts-rest/middlewares/authed";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   bootstrap: async ({ query }) =>
@@ -51,26 +51,13 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
       },
     }),
 
-  purgeViewWindow: routeMiddlewares()
-    .use(authed())
+  purgeViewWindow: middlware()
     .use(rateLimiter({ limit: { every: "3s" } }))
-    .route({ route: contract.purgeViewWindow })(
-    async (
-      { headers },
-      {
-        request: {
-          ctx: { db, requestedAt, rl, user },
-        },
-      },
-    ) => {
-      logger.log(db);
-      logger.log(requestedAt);
-      logger.log(rl);
-      logger.log(user);
-      return webhooks.purgeViewWindow({
-        "x-cron-token": headers["x-cron-token"],
-      });
-    },
-  ),
+    .use(authed())
+    .route({ route: contract.purgeViewWindow })(async ({ headers }) => {
+    return webhooks.purgeViewWindow({
+      "x-cron-token": headers["x-cron-token"],
+    });
+  }),
   healthCheck: async () => healthCheck(),
 });
