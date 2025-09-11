@@ -3,7 +3,10 @@ import { getFingerprint } from "./getFingerprint";
 import type { RateLimiter } from "./rl";
 import { createRateLimiter } from "./rl";
 import type { RlWindow } from "./window";
-import type { MiddlewareFn } from "~/@ashgw/ts-rest";
+import type {
+  SequentialMiddlewareRo,
+  SequentialMiddlewareRos,
+} from "~/@ashgw/ts-rest";
 import {
   middlewareResponse,
   middlewareFn,
@@ -14,36 +17,6 @@ import type { GlobalContext } from "~/ts-rest/context";
 
 interface RateLimiterCtx {
   rl: RateLimiter;
-}
-
-export function rateLimiterMiddleware<Route extends ContractRoute>({
-  route,
-  limit,
-}: {
-  route: Route;
-  limit: { every: RlWindow };
-}) {
-  const { rl } = createRateLimiter(limit.every);
-  return createRouteMiddleware<Route, GlobalContext, RateLimiterCtx>({
-    route,
-    middlewareFn: middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
-      req.ctx.rl = rl;
-      if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
-        return middlewareResponse.error({
-          status: 403,
-          body: {
-            code: "FORBIDDEN",
-            message: `You're limited for the next ${req.ctx.rl.every}`,
-          },
-        });
-      }
-    }),
-  });
-}
-
-export interface SequentialMiddlewareRo<LocalCtx> {
-  ctx: LocalCtx;
-  mw: MiddlewareFn<GlobalContext, LocalCtx>;
 }
 
 export function rateLimiter({
@@ -105,14 +78,12 @@ export function authed(): SequentialMiddlewareRo<AuthedContext> {
   };
 }
 
-type SequentialMiddlewareRos = SequentialMiddlewareRo<unknown>[];
-
 /**
  * TODO: document this function even more
  * Composable middleware stack:
  *
  * usage:
- *   const stack = middlewares()
+ *   const stack = routeMiddlewares()
  *     .use(authed())
  *     .use(rateLimiter({ limit: { every: "10s" } }));
  *
