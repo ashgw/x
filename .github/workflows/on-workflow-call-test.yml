@@ -22,6 +22,7 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+      - uses: ./.github/actions/setup-ephermal-db
       - name: Running code tests
         run: |
           pnpm test:unit-integration
@@ -40,6 +41,7 @@ jobs:
       - uses: ./.github/actions/setup-env
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+      - uses: ./.github/actions/setup-ephermal-db
       - name: Install Playwright Browsers
         run: npx playwright install # issue not resolved with pnpm as of date 04.24
       - name: Run Playwright tests
@@ -50,3 +52,4 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+

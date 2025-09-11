@@ -57,11 +57,9 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-test.yml
     secrets: inherit
 
-  db-migration:
-    uses: ./.github/workflows/on-workflow-call-db-migrate.yml
+  db-fresh-migration:
+    uses: ./.github/workflows/on-workflow-call-ephermal-db-migrate.yml
     secrets: inherit
-    with:
-      with_deploy: ${{ github.ref == 'refs/heads/main' && 'yes' || 'no' }}
 
   mergeable:
     if: always()
@@ -72,7 +70,7 @@ jobs:
       - secrets-leaks
       - build
       - dependencies-check
-      - db-migration
+      - db-fresh-migration
     runs-on: ubuntu-latest
     steps:
       - uses: re-actors/alls-green@release/v1
@@ -129,3 +127,4 @@ jobs:
       deployment_environment: production
       app_name: blog
     secrets: inherit
+

@@ -55,7 +55,10 @@ jobs:
           VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
 
-      # no need for migration here now
+      - uses: ./.github/actions/db-migrate
+        with:
+          comment_on_pr: ${{ github.event_name == 'pull_request' && 'yes' || 'no' }}
+
       - uses: ./.github/actions/vercel-deploy
         with:
           deployment_environment: ${{ inputs.deployment_environment }}

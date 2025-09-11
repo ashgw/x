@@ -29,7 +29,7 @@ jobs:
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/db-migrate
         with:
-          with_deploy: "yes"
+          comment_on_pr: ${{ github.event_name == 'pull_request' && 'yes' || 'no' }}
 
       - uses: ./.github/actions/container-deploy
         with:
