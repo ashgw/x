@@ -6,7 +6,7 @@ import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
 
-import type { UserLoginDto, UserRegisterDto, UserRo } from "~/api/models";
+import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
@@ -105,48 +105,6 @@ export class AuthService {
       res: this.res,
     });
     logger.info("User logged out", { sessionId });
-  }
-
-  public async register({
-    email,
-    password,
-    name,
-  }: UserRegisterDto): Promise<void> {
-    logger.info("Registering user", { email });
-    const existingUser = await this.db.user.findFirst({
-      where: { email },
-      select: {
-        email: true,
-      },
-    });
-
-    if (existingUser) {
-      logger.warn("User with the given email already exists", { email });
-      throw new InternalError({
-        code: "CONFLICT",
-        message: "User with this email already exists", // a smartass would use this to basically reverse engineer a couple of emails
-      });
-    }
-    logger.info("Creating new user...", { email });
-    const passwordHash = this._hashPassword(password);
-    const user = await this.db.user.create({
-      data: {
-        email,
-        passwordHash,
-        name,
-        // Default role is VISITOR, set in schema
-      },
-      select: {
-        email: true,
-      },
-    });
-    logger.info("Creating user session", {
-      userId: user.email,
-    });
-
-    await this._createSession({
-      userId: user.email,
-    });
   }
 
   public async changePassword({
