@@ -1,16 +1,10 @@
 import { logger, monitor } from "@ashgw/observability";
 import type { PurgeViewWindowHeadersDto } from "~/api/schemas/dtos";
 import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
-
-// TODO: also remove the blog service view implementation
-// TODO: also add a child logger for crons, to see what's up
-// TODO: put logger in a seperate package
-
 import { db } from "@ashgw/db";
 import { env } from "@ashgw/env";
 
 const RETAIN_DAYS = 2; // keep 2 days for safety
-const CUTOFF = new Date(Date.now() - 1000 * 60 * 60 * 24 * RETAIN_DAYS);
 
 export async function purgeViewWindow(
   input: PurgeViewWindowHeadersDto,
@@ -25,18 +19,27 @@ export async function purgeViewWindow(
     };
   }
 
+  // compute per function run
+  const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * RETAIN_DAYS);
+  logger.info("Cleaning up the post view window...", {
+    cutoffDate: cutoff.toISOString(),
+  });
+
   try {
     const deleted = await db.postViewWindow.deleteMany({
-      where: { bucketStart: { lt: CUTOFF } }, // uses @@index([bucketStart])
+      where: { bucketStart: { lt: cutoff } }, // uses @@index([bucketStart])
     });
-    if (deleted.count) {
+
+    if (deleted.count > 0) {
       logger.info("View window records purged successfully!", {
         deleted: deleted.count,
-        cutoff: CUTOFF.toISOString(),
+        cutoff: cutoff.toISOString(),
+      });
+    } else {
+      logger.info("No record to purge, view window is clean", {
+        cutoff: cutoff.toISOString(),
       });
     }
-
-    logger.info("No record to purge, view window is clean");
 
     return {
       status: 200,
