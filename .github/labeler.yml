@@ -10,7 +10,7 @@ docs:
 db:
   - changed-files:
       - any-glob-to-any-file:
-          - packges/db
+          - packges/db/**
 
 fix:
   - head-branch: ["^fix", "fixed"]
