@@ -4,6 +4,7 @@ import type { RateLimiter } from "./rl";
 import { createRateLimiter } from "./rl";
 import type { RlWindow } from "./window";
 import type {
+  GlobalTsrContext,
   SequentialMiddlewareRo,
   SequentialMiddlewareRos,
 } from "~/@ashgw/ts-rest";
@@ -62,7 +63,7 @@ export function authed(): SequentialMiddlewareRo<AuthedContext> {
   const user = getUserSafe();
   const mw = middlewareFn<GlobalContext, AuthedContext>((req, _res) => {
     if (user) {
-      req.ctx.user = user; // we need to set the context here too
+      req.ctx.user = user; // TODO: tell the user that we always need to set the context here too
     } else {
       return middlewareResponse.error({
         body: {
@@ -92,9 +93,10 @@ export function authed(): SequentialMiddlewareRo<AuthedContext> {
  * The returned value from `route({ route })` is exactly what `createRouteMiddleware(...)` returns,
  * so you use it the same way to wrap a handler.
  */
-export function routeMiddlewares<AccCtx extends object = EmptyObject>(
-  initial?: Readonly<SequentialMiddlewareRos>,
-) {
+export function routeMiddlewares<
+  Gtx extends GlobalTsrContext,
+  AccCtx extends object = EmptyObject,
+>(initial?: Readonly<SequentialMiddlewareRos>) {
   // kep an immutable chain so every .use returns a fresh builder
   const chain: Readonly<SequentialMiddlewareRos> = initial ? [...initial] : [];
 
@@ -105,7 +107,7 @@ export function routeMiddlewares<AccCtx extends object = EmptyObject>(
 
   return {
     use<C extends object>(m: SequentialMiddlewareRo<C>) {
-      return routeMiddlewares<AccCtx & C>([
+      return routeMiddlewares<Gtx, AccCtx & C>([
         ...chain,
         m as SequentialMiddlewareRo<unknown>,
       ]);
@@ -117,9 +119,9 @@ export function routeMiddlewares<AccCtx extends object = EmptyObject>(
         return mergeCtx(acc, item.ctx as object);
       }, {} as AccCtx);
 
-      return createRouteMiddleware<Route, GlobalContext, AccCtx>({
+      return createRouteMiddleware<Route, Gtx, AccCtx>({
         route,
-        middlewareFn: middlewareFn<GlobalContext, AccCtx>((req, res) => {
+        middlewareFn: middlewareFn<Gtx, AccCtx>((req, res) => {
           // augment existing ctx with our merged locals
           Object.assign(req.ctx as object, finalCtx as object);
 
