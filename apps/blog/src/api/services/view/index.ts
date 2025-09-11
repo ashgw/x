@@ -9,11 +9,6 @@ export class ViewService {
   private readonly db: DatabaseClient;
   private readonly req: NextRequest;
 
-  private static readonly RETAIN_DAYS = 2; // keep 2 days for safety
-  private static readonly CLEANUP_PROB = 0.01; // 1% of requests try cleanup
-  private static readonly MIN_CLEANUP_INTERVAL_MS = 30 * 60 * 1000; // 30 min
-  private static lastCleanupAt = 0;
-
   constructor({ db, req }: { db: DatabaseClient; req: NextRequest }) {
     this.db = db;
     this.req = req;
@@ -56,38 +51,7 @@ export class ViewService {
         total = existing?.viewsCount ?? 0;
       }
     });
-    await this._maybeCleanup();
     return { total };
-  }
-
-  private async _maybeCleanup(): Promise<void> {
-    const now = Date.now();
-    if (Math.random() >= ViewService.CLEANUP_PROB) return;
-    logger.info("Cleaning up the post view window");
-    if (now - ViewService.lastCleanupAt < ViewService.MIN_CLEANUP_INTERVAL_MS)
-      return;
-
-    // best-effort – if two instances race, who cares gang
-    ViewService.lastCleanupAt = now;
-
-    const cutoff = new Date(
-      Date.now() - ViewService.RETAIN_DAYS * 24 * 60 * 60 * 1000,
-    );
-
-    try {
-      const deleted = await this.db.postViewWindow.deleteMany({
-        where: { bucketStart: { lt: cutoff } }, // uses @@index([bucketStart])
-      });
-      if (deleted.count) {
-        logger.info("PostViewWindow cleanup", {
-          deleted: deleted.count,
-          cutoff: cutoff.toISOString(),
-        });
-      }
-    } catch (e) {
-      // never break the request path for cleanup failures
-      logger.warn("PostViewWindow cleanup failed (ignored)", { error: e });
-    }
   }
 
   private _fingerprint({
