@@ -1,10 +1,61 @@
-import { tsr } from "@ts-rest/serverless/fetch";
-import { v1Contract } from "~/api/contract";
-import { Controllers } from "~/api/controllers";
+import { contract } from "~/api/contract";
+import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
+import { healthCheck } from "~/api/functions/healthCheck";
+import { gpg } from "@ashgw/constants";
+import { webhooks } from "~/api/functions/webhooks";
+import { rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
+import type { GlobalContext } from "../ts-rest/context";
+import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
+import { cornAuthed } from "~/ts-rest/middlewares/authed";
 
-export const router = tsr.router(v1Contract, {
-  bootstrap: async ({ query }) => Controllers.bootstrap({ q: query }),
-  gpg: async ({ query }) => Controllers.gpg({ q: query }),
-  debion: async ({ query }) => Controllers.debion({ q: query }),
-  whisper: async ({ query }) => Controllers.whisper({ q: query }),
+export const router = createRouterWithContext(contract)<GlobalContext>({
+  purgeViewWindow: middlware()
+    .use(rateLimiter({ limit: { every: "3s" } }))
+    .use(cornAuthed())
+    .route({ route: contract.purgeViewWindow })(async () =>
+    webhooks.purgeViewWindow(),
+  ),
+
+  bootstrap: async ({ query }) =>
+    fetchTextFromUpstream({
+      query,
+      fetchUrl: {
+        github: { repo: "dotfiles", scriptPath: "install/bootstrap" },
+      },
+      opts: {
+        defaultRevalidate: 3600,
+        cacheControl: "s-maxage=3600, stale-while-revalidate=300",
+      },
+    }),
+
+  debion: async ({ query }) =>
+    fetchTextFromUpstream({
+      query,
+      fetchUrl: { github: { repo: "debion", scriptPath: "setup" } },
+      opts: {
+        defaultRevalidate: 3600,
+        cacheControl: "s-maxage=3600, stale-while-revalidate=300",
+      },
+    }),
+
+  whisper: async ({ query }) =>
+    fetchTextFromUpstream({
+      query,
+      fetchUrl: { github: { repo: "whisper", scriptPath: "setup" } },
+      opts: {
+        defaultRevalidate: 3600,
+        cacheControl: "s-maxage=3600, stale-while-revalidate=300",
+      },
+    }),
+
+  gpg: async ({ query }) =>
+    fetchTextFromUpstream({
+      query,
+      fetchUrl: { direct: { url: gpg.publicUrl } },
+      opts: {
+        defaultRevalidate: 86400,
+        cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
+      },
+    }),
+  healthCheck: async () => healthCheck(),
 });

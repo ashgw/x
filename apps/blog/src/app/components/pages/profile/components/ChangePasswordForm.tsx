@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { logger, monitor } from "@ashgw/observability";
 import {
   Button,
   Form,
@@ -38,9 +37,7 @@ export function ChangePasswordForm() {
         form.reset();
       },
       onError: (error) => {
-        logger.error("Failed to change password", { error });
-        monitor.next.captureException({ error });
-        toast.error(error.message || "Failed to change password");
+        toast.error(error.message);
       },
     },
   );

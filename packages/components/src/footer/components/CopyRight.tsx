@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { CREATOR } from "@ashgw/constants";
+import { creator } from "@ashgw/constants";
 
 export function CopyRight() {
   return (
@@ -13,7 +13,7 @@ export function CopyRight() {
       transition={{ duration: 1, ease: "easeInOut" }}
     >
       <p className="text-secondary-center dimmed-3 flex items-center justify-center text-sm">
-        &copy; {new Date().getFullYear()} {CREATOR}. All rights reserved
+        &copy; {new Date().getFullYear()} {creator}. All rights reserved
       </p>
     </motion.div>
   );

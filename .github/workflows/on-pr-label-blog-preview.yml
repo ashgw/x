@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: preview
-      APP_NAME: blog
+      app_name: blog
     secrets: inherit

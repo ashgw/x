@@ -2,17 +2,12 @@ import { createHash } from "crypto";
 import type { NextRequest } from "next/server";
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
-import { InternalError, logger } from "@ashgw/observability";
+import { logger } from "@ashgw/observability";
 import type { TrackViewRo } from "~/api/models/view";
 
 export class ViewService {
   private readonly db: DatabaseClient;
   private readonly req: NextRequest;
-
-  private static readonly RETAIN_DAYS = 2; // keep 2 days for safety
-  private static readonly CLEANUP_PROB = 0.01; // 1% of requests try cleanup
-  private static readonly MIN_CLEANUP_INTERVAL_MS = 30 * 60 * 1000; // 30 min
-  private static lastCleanupAt = 0;
 
   constructor({ db, req }: { db: DatabaseClient; req: NextRequest }) {
     this.db = db;
@@ -30,71 +25,35 @@ export class ViewService {
     const fingerprint = this._fingerprint({ slug, ipAddress, userAgent });
     const bucketStart = this._utcMidnight(new Date());
 
-    try {
-      let total = 0;
-      await this.db.$transaction(async (tx) => {
-        const inserted = await tx.postViewWindow.createMany({
-          data: { postSlug: slug, fingerprint, bucketStart },
-          skipDuplicates: true,
+    let total = 0;
+    await this.db.$transaction(async (tx) => {
+      const inserted = await tx.postViewWindow.createMany({
+        data: { postSlug: slug, fingerprint, bucketStart },
+        skipDuplicates: true,
+      });
+
+      if (inserted.count > 0) {
+        const updated = await tx.post.update({
+          where: { slug },
+          data: { viewsCount: { increment: 1 } },
+          select: { viewsCount: true },
         });
-
-        if (inserted.count > 0) {
-          const updated = await tx.post.update({
-            where: { slug },
-            data: { viewsCount: { increment: 1 } },
-            select: { viewsCount: true },
-          });
-          total = updated.viewsCount;
-          logger.info("New view tracked", { slug });
-        } else {
-          const existing = await tx.post.findUnique({
-            where: { slug },
-            select: { viewsCount: true },
-          });
-          total = existing?.viewsCount ?? 0;
-        }
-      });
-      await this._maybeCleanup();
-      return { total };
-    } catch (error) {
-      logger.error("Failed to track view", { error, slug });
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to track view",
-        cause: error,
-      });
-    }
-  }
-
-  private async _maybeCleanup(): Promise<void> {
-    const now = Date.now();
-    if (Math.random() >= ViewService.CLEANUP_PROB) return;
-    if (now - ViewService.lastCleanupAt < ViewService.MIN_CLEANUP_INTERVAL_MS)
-      return;
-
-    // best-effort – if two instances race, who cares
-    ViewService.lastCleanupAt = now;
-
-    const cutoff = new Date(
-      Date.now() - ViewService.RETAIN_DAYS * 24 * 60 * 60 * 1000,
-    );
-
-    try {
-      const deleted = await this.db.postViewWindow.deleteMany({
-        where: { bucketStart: { lt: cutoff } }, // uses @@index([bucketStart])
-      });
-      if (deleted.count) {
-        logger.info("PostViewWindow cleanup", {
-          deleted: deleted.count,
-          cutoff: cutoff.toISOString(),
+        total = updated.viewsCount;
+        logger.info("New view tracked", { slug });
+      } else {
+        const existing = await tx.post.findUnique({
+          where: { slug },
+          select: { viewsCount: true },
         });
+        logger.info("User already saw the post, no view to track", {
+          slug,
+        });
+        total = existing?.viewsCount ?? 0;
       }
-    } catch (e) {
-      // never break the request path for cleanup failures
-      logger.warn("PostViewWindow cleanup failed (ignored)", { error: e });
-    }
+    });
+    return { total };
   }
-
+  // TODO: export fingerprinting logic?
   private _fingerprint({
     slug,
     ipAddress,

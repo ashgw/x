@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: preview
-      APP_NAME: www
+      app_name: www
     secrets: inherit

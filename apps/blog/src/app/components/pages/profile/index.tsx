@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 
-import { logger, monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/observability";
 import {
   Badge,
   Button,
@@ -74,7 +74,6 @@ export function ProfilePage() {
       router.push("/login");
     } catch (error) {
       logger.error("Logout failed", { error });
-      monitor.next.captureException({ error });
       toast.error("Failed to logout, please try again later");
     }
   };
