@@ -15,8 +15,11 @@ export function authed(): SequentialMiddlewareRo<AuthedContext> {
   const getUserSafe = (): AuthedContext["user"] | null => {
     if (Math.random() > 0.4) {
       return { email: "john@doe.com", name: "john", role: "admin" };
-    } else return { email: "john@doe.com", name: "john", role: "admin" };
+    } else {
+      return null;
+    }
   };
+
   const user = getUserSafe();
   const mw = middlewareFn<GlobalContext, AuthedContext>((req, _res) => {
     if (user) {
