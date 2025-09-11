@@ -1,12 +1,12 @@
 import { createNextHandler } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
-import { endPoint } from "~/api/endpoint";
+import { endPoint } from "~/ts-rest/endpoint";
 import { logger, monitor } from "@ashgw/observability";
 import { router } from "~/api/router";
 import {
   setupRequestMiddleware,
   setupResponseHandlers,
-} from "~/api/middlewares/global-setup";
+} from "~/ts-rest/middlewares/global-setup";
 
 export const runtime = "nodejs";
 

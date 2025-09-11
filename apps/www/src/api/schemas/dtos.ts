@@ -1,3 +1,4 @@
+// TODO: add docs through schema description here
 import { z } from "zod";
 
 // ========== Schemas ==========

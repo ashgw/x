@@ -14,6 +14,7 @@ export function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/booking")) {
     const cleanPath = pathname.replace(/^\/booking/, "");
+    // TODO: use the new booking page
     const targetUrl = `https://cal.com/ashgw/default${cleanPath}${search}`;
     return NextResponse.redirect(targetUrl);
   }

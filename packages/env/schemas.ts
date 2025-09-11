@@ -10,21 +10,21 @@ export const databaseUrlSchema = z
     if (env === "production" && !url.includes("supabase")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "In production, DATABASE_URL must be 'supabase'",
-      });
-    }
-
-    if (env === "development" && !url.includes("localhost")) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "In development, DATABASE_URL must point to localhost",
+        message: "In production, databse must be Supabase'",
       });
     }
 
     if (env === "preview" && !url.includes("neon")) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "In preview, DATABASE_URL must be neon",
+        message: "In preview, database must be a Neon temp branch",
+      });
+    }
+
+    if (env === "development" && !url.includes("localhost")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "In development, database must point to a local container",
       });
     }
   });

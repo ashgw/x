@@ -9,7 +9,7 @@ import { Footer, TextContent } from "@ashgw/components";
 import { email, gpg, links } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
-import { tsrQueryClientSide } from "~/api/client";
+import { tsrQueryClientSide } from "~/ts-rest/client";
 import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 

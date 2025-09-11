@@ -8,7 +8,7 @@ import {
   fetchTextFromUpstreamQuerySchemaDto,
   purgeViewWindowHeadersSchemaDto,
 } from "./schemas/dtos";
-import { c } from "./root";
+import { c } from "../ts-rest/root";
 import type { Keys } from "ts-roids";
 import { createContract } from "~/@ashgw/ts-rest";
 

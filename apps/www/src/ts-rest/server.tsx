@@ -1,5 +1,6 @@
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { makeQueryClient } from "./query-client";
-import { tsrQueryClientSide } from "./client";
+import { tsrQueryClientSide } from "~/ts-rest/client";
 
 /**
 usage like:
@@ -21,3 +22,18 @@ usage like:
 */
 export const tsrQueryServerSide =
   tsrQueryClientSide.initQueryClient(makeQueryClient());
+
+// TODO: add docs on how to use this
+export function HydrateClient(
+  props: Readonly<{
+    children: React.ReactNode;
+  }>,
+) {
+  const dehydratedState = dehydrate(tsrQueryServerSide);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      {props.children}
+    </HydrationBoundary>
+  );
+}

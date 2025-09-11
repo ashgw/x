@@ -1,5 +1,6 @@
+// TODO: add docs through schema description here
 import { z } from "zod";
-import { c } from "../root";
+import { c } from "~/ts-rest/root";
 import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
 import type { InferResponses } from "~/@ashgw/ts-rest";
 

@@ -14,7 +14,7 @@ import { fonts } from "@ashgw/ui";
 
 import { NavBar } from "~/app/components/misc/nav";
 import { env } from "@ashgw/env";
-import { TsrProvider } from "~/api/provider";
+import { TsrProvider } from "~/ts-rest/provider";
 
 const description = "Building the future.";
 

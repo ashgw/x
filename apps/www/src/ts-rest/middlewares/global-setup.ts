@@ -12,7 +12,7 @@ export const setupRequestMiddleware = () =>
   });
 
 export const setupResponseHandlers = responseHandlersFn<void, GlobalContext>(
-  (res, req) => {
+  (_res, req) => {
     logger.log(
       "[REST] took",
       new Date().getTime() - req.ctx.requestedAt.getTime(),

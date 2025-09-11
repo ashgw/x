@@ -3,8 +3,8 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { rateLimiterMiddleware } from "~/api/middlewares/rateLimiter";
-import type { GlobalContext } from "./context";
+import { rateLimiterMiddleware } from "~/ts-rest/middlewares/rateLimiter";
+import type { GlobalContext } from "../ts-rest/context";
 import { createRouterWithContext } from "~/@ashgw/ts-rest";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({

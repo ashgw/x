@@ -9,7 +9,7 @@ import {
   createRouteMiddleware,
 } from "~/@ashgw/ts-rest";
 import type { ContractRoute } from "~/api/contract";
-import type { GlobalContext } from "~/api/context";
+import type { GlobalContext } from "~/ts-rest/context";
 
 interface RateLimiterCtx {
   rl: RateLimiter;
