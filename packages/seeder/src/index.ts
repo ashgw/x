@@ -1,7 +1,7 @@
 import { pbkdf2Sync, randomBytes } from "crypto";
 
 import { db } from "@ashgw/db";
-import { blogs } from "./data/blogs";
+import { blogs } from "./data/mdx";
 
 function hashPassword(password: string): string {
   const salt = randomBytes(16).toString("hex");
