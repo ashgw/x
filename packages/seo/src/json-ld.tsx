@@ -6,7 +6,7 @@ import type {
   BlogPosting,
   BreadcrumbList,
 } from "schema-dts";
-import { SITE_NAME, CREATOR } from "@ashgw/constants";
+import { site_name, creator } from "@ashgw/constants";
 
 interface JsonLdProps {
   code: WithContext<Thing>;
@@ -25,7 +25,7 @@ export const organizationJsonLd = (
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${siteUrl}/#organization`,
-  name: SITE_NAME,
+  name: site_name,
   url: siteUrl,
 });
 
@@ -34,7 +34,7 @@ export const websiteJsonLd = (siteUrl: string): WithContext<WebSite> => ({
   "@type": "WebSite",
   "@id": `${siteUrl}/#website`,
   url: siteUrl,
-  name: SITE_NAME,
+  name: site_name,
   publisher: { "@id": `${siteUrl}/#organization` },
 });
 
@@ -64,7 +64,7 @@ export const blogPostingJsonLd = ({
     isPartOf: { "@id": `${siteUrl}/#website` },
     headline: post.title,
     description: post.description,
-    author: { "@type": "Person", name: CREATOR, "@id": `${siteUrl}/#person` },
+    author: { "@type": "Person", name: creator, "@id": `${siteUrl}/#person` },
     publisher: { "@id": `${siteUrl}/#organization` },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,

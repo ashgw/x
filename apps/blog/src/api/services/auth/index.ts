@@ -6,7 +6,7 @@ import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { InternalError, logger } from "@ashgw/observability";
 
-import type { UserLoginDto, UserRegisterDto, UserRo } from "~/api/models";
+import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
@@ -31,7 +31,7 @@ export class AuthService {
     this.res = res;
   }
 
-  // safe me, doesn't error whe the user is found
+  // safe me, doesn't error whe the user is not authenticated
   public async me(): Promise<Optional<UserRo>> {
     try {
       return await this._getUserWithSession();
@@ -94,79 +94,17 @@ export class AuthService {
       return;
     }
     logger.info("Session cookie found, logging out user", { sessionId });
-    try {
-      await this.db.session.delete({
-        where: { id: sessionId },
-      });
-      CookieService.csrf.clear({
-        res: this.res,
-      });
-      CookieService.session.clear({
-        res: this.res,
-      });
-      logger.info("User logged out", { sessionId });
-    } catch (error) {
-      logger.error("Failed to logout user", { error, sessionId });
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to logout",
-        cause: error,
-      });
-    }
-  }
-
-  public async register({
-    email,
-    password,
-    name,
-  }: UserRegisterDto): Promise<void> {
-    logger.info("Registering user", { email });
-    try {
-      const existingUser = await this.db.user.findUnique({
-        where: { email },
-        select: {
-          email: true,
-        },
-      });
-
-      if (existingUser) {
-        logger.warn("User with the given email already exists", { email });
-        throw new InternalError({
-          code: "CONFLICT",
-          message: "User with this email already exists", // a smartass would use this to basically reverse engineer a couple of emails
-        });
-      }
-      logger.info("Creating user", { email, name });
-      const passwordHash = this._hashPassword(password);
-      const user = await this.db.user.create({
-        data: {
-          email,
-          passwordHash,
-          name,
-          // Default role is VISITOR, set in schema
-        },
-        include: {
-          ...UserQueryHelper.withSessionsInclude(),
-        },
-      });
-      logger.info("Creating database and browser sessions", {
-        userId: user.id,
-      });
-
-      await this._createSession({
-        userId: user.id,
-      });
-    } catch (error) {
-      logger.error("Registration failed", { error, email });
-      if (error instanceof InternalError) {
-        throw error;
-      }
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to register user",
-        cause: error,
-      });
-    }
+    logger.info("Clearing sessions..", { sessionId });
+    await this.db.session.delete({
+      where: { id: sessionId },
+    });
+    CookieService.csrf.clear({
+      res: this.res,
+    });
+    CookieService.session.clear({
+      res: this.res,
+    });
+    logger.info("User logged out", { sessionId });
   }
 
   public async changePassword({
@@ -178,52 +116,43 @@ export class AuthService {
     currentPassword: string;
     newPassword: string;
   }): Promise<void> {
-    logger.info("Attempting to change password", { userId });
-    try {
-      const user = await this.db.user.findUnique({
-        where: { id: userId },
-        select: { passwordHash: true },
+    logger.info("Changing user password", { userId });
+    const user = await this.db.user.findUnique({
+      where: { id: userId },
+      select: { passwordHash: true },
+    });
+
+    if (!user) {
+      logger.warn("User not found when changing password", { userId });
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: "User not found",
       });
-
-      if (!user) {
-        logger.warn("User not found when changing password", { userId });
-        throw new InternalError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        });
-      }
-
-      if (
-        !this._verifyPassword({
-          plainPassword: currentPassword,
-          storedHash: user.passwordHash,
-        })
-      ) {
-        logger.warn("Current password verification failed", { userId });
-        throw new InternalError({
-          code: "UNAUTHORIZED",
-          message: "Current password is incorrect",
-        });
-      }
-
-      const newPasswordHash = this._hashPassword(newPassword);
-
-      await this.db.user.update({
-        where: { id: userId },
-        data: { passwordHash: newPasswordHash },
-      });
-      await this.terminateAllActiveSessions({ userId });
-      logger.info("Password changed successfully", { userId });
-    } catch (error) {
-      logger.error("Failed to change password", { error, userId });
-      throw error instanceof InternalError
-        ? error
-        : new InternalError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to change password",
-            cause: error,
-          });
     }
+    logger.info("Validating user provided password", { userId });
+    if (
+      !this._verifyPassword({
+        plainPassword: currentPassword,
+        storedHash: user.passwordHash,
+      })
+    ) {
+      logger.warn("Provided password does not match the user password", {
+        userId,
+      });
+      throw new InternalError({
+        code: "UNAUTHORIZED",
+        message: "Incorrect password",
+      });
+    }
+
+    const newPasswordHash = this._hashPassword(newPassword);
+
+    await this.db.user.update({
+      where: { id: userId },
+      data: { passwordHash: newPasswordHash },
+    });
+    await this.terminateAllActiveSessions({ userId });
+    logger.info("Password changed successfully", { userId });
   }
 
   // aside from the current one the user is on
@@ -232,7 +161,6 @@ export class AuthService {
   }: {
     userId: string;
   }): Promise<void> {
-    // extract the current sessionID from the cookie
     const currentSessionId = CookieService.session.get({
       req: this.req,
     });
@@ -245,51 +173,32 @@ export class AuthService {
       });
     }
 
-    logger.info("Attempting to terminate sessions except current", {
+    logger.info("Attempting to terminate sessions except current one", {
       userId,
       currentSessionId,
     });
-    try {
-      // Ensure user exists
-      const user = await this.db.user.findUnique({
-        where: { id: userId },
-        select: { id: true },
+    const user = await this.db.user.findUnique({
+      where: { id: userId },
+      select: { id: true },
+    });
+    if (!user) {
+      logger.warn("User not found when terminating sessions", { userId });
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: "User not found",
       });
-      if (!user) {
-        logger.warn("User not found when terminating sessions", { userId });
-        throw new InternalError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        });
-      }
-
-      // Delete all sessions for this user except the current one
-      const result = await this.db.session.deleteMany({
-        where: {
-          userId,
-          id: { not: currentSessionId },
-        },
-      });
-
-      logger.info("Sessions terminated successfully", {
-        userId,
-        currentSessionId,
-        deletedCount: result.count,
-      });
-    } catch (error) {
-      logger.error("Failed to terminate sessions", {
-        error,
-        userId,
-        currentSessionId,
-      });
-      throw error instanceof InternalError
-        ? error
-        : new InternalError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to terminate sessions",
-            cause: error,
-          });
     }
+    logger.warn("Deleting all active user sessions", { userId });
+    const result = await this.db.session.deleteMany({
+      where: {
+        userId,
+        id: { not: currentSessionId },
+      },
+    });
+
+    logger.info(`Terminated ${result.count} session(s) successfully`, {
+      userId,
+    });
   }
 
   public async terminateSpecificSession({
@@ -299,51 +208,42 @@ export class AuthService {
     sessionId: string;
     userId: string;
   }): Promise<void> {
-    logger.info("Attempting to terminate specific session", { sessionId });
+    logger.info("Terminating specific user session", { userId, sessionId });
+    const session = await this.db.session.findUnique({
+      where: { id: sessionId },
+      select: { userId: true },
+    });
 
-    try {
-      const session = await this.db.session.findUnique({
-        where: { id: sessionId },
-        select: { userId: true },
+    if (!session) {
+      logger.warn(
+        "Could not find an associated session with the provided session for the user",
+        { userId, sessionId },
+      );
+      throw new InternalError({
+        code: "NOT_FOUND",
+        message: "Session not found",
       });
+    }
 
-      if (!session) {
-        throw new InternalError({
-          code: "NOT_FOUND",
-          message: "Session not found",
-        });
-      }
-
-      if (session.userId !== userId) {
-        logger.warn("Unauthorized session termination attempt", {
+    if (session.userId !== userId) {
+      logger.warn(
+        "TEMPERING: provided user ID does not match the actual session associated user ID",
+        {
           sessionId,
           requestingUserId: userId,
           sessionOwnerId: session.userId,
-        });
+        },
+      );
 
-        throw new InternalError({
-          code: "FORBIDDEN",
-          message: "You are not allowed to terminate this session",
-        });
-      }
-
-      await this.db.session.delete({
-        where: { id: sessionId },
+      throw new InternalError({
+        code: "FORBIDDEN",
+        message: "You are not allowed to terminate this session",
       });
-    } catch (error) {
-      logger.error("Failed to terminate specific session", {
-        error,
-        sessionId,
-      });
-
-      throw error instanceof InternalError
-        ? error
-        : new InternalError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to terminate specific session",
-            cause: error,
-          });
     }
+    logger.info("Terminating user session", { sessionId });
+    await this.db.session.delete({
+      where: { id: sessionId },
+    });
   }
 
   private _validateCsrfToken({
@@ -351,9 +251,9 @@ export class AuthService {
   }: {
     requestCsrfHeaderValue: string;
   }): boolean {
-    // origin checks – only enforce extra check on main prod blog
+    // origin checks – only enforce extra check in prod
     if (
-      env.NODE_ENV === "production" &&
+      env.NEXT_PUBLIC_CURRENT_ENV === "production" &&
       this.req.headers.get("host") === new URL(env.NEXT_PUBLIC_BLOG_URL).host
     ) {
       const origin =
@@ -429,7 +329,7 @@ export class AuthService {
 
       // Always produce a hash, even if inputs are invalid, to keep time constant
       const dummySalt = "0".repeat(32); // fake salt
-      const _dummyHash = pbkdf2Sync("dummy", dummySalt, 1000, 32, "sha256");
+      pbkdf2Sync("dummy", dummySalt, 1000, 32, "sha256");
 
       if (!salt || !originalHash) {
         pbkdf2Sync(plainPassword, dummySalt, 1000, 32, "sha256"); // fake work

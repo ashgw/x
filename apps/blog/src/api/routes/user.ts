@@ -6,7 +6,6 @@ import { router } from "~/trpc/root";
 import {
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
-  userRegisterSchemaDto,
   userSchemaRo,
   userTerminateSpecificSessionSchemaDto,
 } from "../models";
@@ -27,12 +26,13 @@ export const userRouter = router({
       return await userAuthService(ctx).me();
     }),
 
-  register: publicProcedure
-    .input(userRegisterSchemaDto)
-    .output(z.void())
-    .mutation(async ({ input, ctx }) => {
-      return await userAuthService(ctx).register(input);
-    }),
+  // not so fast
+  // register: publicProcedure
+  //   .input(userRegisterSchemaDto)
+  //   .output(z.void())
+  //   .mutation(async ({ input, ctx }) => {
+  //     return await userAuthService(ctx).register(input);
+  //   }),
 
   login: publicProcedure
     .input(userLoginSchemaDto)

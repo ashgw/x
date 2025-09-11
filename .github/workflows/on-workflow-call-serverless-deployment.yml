@@ -7,7 +7,7 @@ on:
         required: true
         type: string
         description: "Environment to deploy to (preview or production)"
-      APP_NAME:
+      app_name:
         required: true
         type: string
         description: "App name, either 'www' or 'blog'"
@@ -24,6 +24,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
@@ -32,7 +37,7 @@ jobs:
       - name: Select Vercel Project Secrets
         id: vercel-secrets
         run: |
-          if [ "${{ inputs.APP_NAME }}" = "blog" ]; then
+          if [ "${{ inputs.app_name }}" = "blog" ]; then
             echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_BLOG_PROJECT_ID }}" >> $GITHUB_OUTPUT
           else
             echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_WWW_PROJECT_ID }}" >> $GITHUB_OUTPUT
@@ -44,7 +49,7 @@ jobs:
 
       - uses: ./.github/actions/vercel-build
         with:
-          APP_NAME: ${{ inputs.APP_NAME }}
+          app_name: ${{ inputs.app_name }}
           deployment_environment: ${{ inputs.deployment_environment }}
           VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
@@ -57,8 +62,8 @@ jobs:
       - uses: ./.github/actions/vercel-deploy
         with:
           deployment_environment: ${{ inputs.deployment_environment }}
+          app_name: ${{ inputs.app_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APP_NAME: ${{ inputs.APP_NAME }}
           VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
