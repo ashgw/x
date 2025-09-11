@@ -3,13 +3,9 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import {
-  authed,
-  routeMiddlewares,
-  rateLimiter,
-} from "~/ts-rest/middlewares/rateLimiter";
+import { authed, rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
 import type { GlobalContext } from "../ts-rest/context";
-import { createRouterWithContext } from "~/@ashgw/ts-rest";
+import { createRouterWithContext, routeMiddlewares } from "~/@ashgw/ts-rest";
 import { logger } from "@ashgw/observability";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
