@@ -9,6 +9,13 @@ import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
 import { cornAuthed } from "~/ts-rest/middlewares/authed";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
+  purgeViewWindow: middlware()
+    .use(rateLimiter({ limit: { every: "3s" } }))
+    .use(cornAuthed())
+    .route({ route: contract.purgeViewWindow })(async () => {
+    return webhooks.purgeViewWindow();
+  }),
+
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
       query,
@@ -50,11 +57,5 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
       },
     }),
-  purgeViewWindow: middlware()
-    .use(rateLimiter({ limit: { every: "3s" } }))
-    .use(cornAuthed())
-    .route({ route: contract.purgeViewWindow })(async () => {
-    return webhooks.purgeViewWindow();
-  }),
   healthCheck: async () => healthCheck(),
 });

@@ -5,7 +5,7 @@ import { db } from "@ashgw/db";
 const RETAIN_DAYS = 2; // keep 2 days for safety
 
 export async function purgeViewWindow(): Promise<PurgeViewWindowResponses> {
-  // compute per function run
+  // compute cutoff per function run
   const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * RETAIN_DAYS);
   logger.info("Cleaning up the post view window...", {
     cutoffDate: cutoff.toISOString(),
