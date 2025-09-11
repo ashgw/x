@@ -6,7 +6,7 @@ import { webhooks } from "~/api/functions/webhooks";
 import { rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
 import type { GlobalContext } from "../ts-rest/context";
 import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
-import { authed } from "~/ts-rest/middlewares/authed";
+import { cornAuthed } from "~/ts-rest/middlewares/authed";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   bootstrap: async ({ query }) =>
@@ -55,11 +55,9 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   // to the defintoon sicne the rl middlware might retirn a formbdden sttaus
   purgeViewWindow: middlware()
     .use(rateLimiter({ limit: { every: "3s" } }))
-    .use(authed())
-    .route({ route: contract.purgeViewWindow })(async ({ headers }) => {
-    return webhooks.purgeViewWindow({
-      "x-cron-token": headers["x-cron-token"],
-    });
+    .use(cornAuthed())
+    .route({ route: contract.purgeViewWindow })(async () => {
+    return webhooks.purgeViewWindow();
   }),
   healthCheck: async () => healthCheck(),
 });

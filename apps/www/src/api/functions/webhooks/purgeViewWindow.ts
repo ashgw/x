@@ -1,24 +1,10 @@
 import { logger, monitor } from "@ashgw/observability";
-import type { PurgeViewWindowHeadersDto } from "~/api/schemas/dtos";
 import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
 import { db } from "@ashgw/db";
-import { env } from "@ashgw/env";
 
 const RETAIN_DAYS = 2; // keep 2 days for safety
 
-export async function purgeViewWindow(
-  input: PurgeViewWindowHeadersDto,
-): Promise<PurgeViewWindowResponses> {
-  if (input["x-cron-token"] !== env.X_CRON_TOKEN) {
-    return {
-      status: 401,
-      body: {
-        code: "UNAUTHORIZED",
-        message: "Cron token is invalid, you cannot perform this action",
-      },
-    };
-  }
-
+export async function purgeViewWindow(): Promise<PurgeViewWindowResponses> {
   // compute per function run
   const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * RETAIN_DAYS);
   logger.info("Cleaning up the post view window...", {

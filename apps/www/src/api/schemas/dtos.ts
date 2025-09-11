@@ -15,9 +15,12 @@ export const fetchTextFromUpstreamQuerySchemaDto = z
   })
   .passthrough();
 
-export const purgeViewWindowHeadersSchemaDto = z.object({
+export const cronAuthedMiddlewareHeaderSchemaDto = z.object({
   "x-cron-token": z.string().length(32),
 });
+
+export const purgeViewWindowHeadersSchemaDto =
+  cronAuthedMiddlewareHeaderSchemaDto.extend({});
 
 // ========== Types ==========
 
@@ -27,4 +30,8 @@ export type FetchTextFromUpstreamQueryDto = z.infer<
 
 export type PurgeViewWindowHeadersDto = z.infer<
   typeof purgeViewWindowHeadersSchemaDto
+>;
+
+export type CronAuthedMiddlewareHeaderDto = z.infer<
+  typeof cronAuthedMiddlewareHeaderSchemaDto
 >;

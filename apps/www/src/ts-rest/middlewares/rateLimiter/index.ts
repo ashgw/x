@@ -17,16 +17,16 @@ export function rateLimiter({
 }): SequentialMiddlewareRo<RateLimiterCtx> {
   const { rl } = createRateLimiter(limit.every);
   const mw = middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
-    req.ctx.rl = rl; // we need to set the context here so it sticks
     if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
       return middlewareResponse.error({
         status: 403,
         body: {
-          code: "FORBIDDEN",
+          code: "FORBIDDEN", // TODO: this should be rate limit type
           message: `You're limited for the next ${req.ctx.rl.every}`,
         },
       });
     }
+    req.ctx.rl = rl; // we need to explicitly set the context here so it sticks
   });
   return {
     mw,
