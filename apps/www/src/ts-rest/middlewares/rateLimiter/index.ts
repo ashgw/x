@@ -78,6 +78,7 @@ interface AuthedContext {
   } | null;
 }
 
+// TODO: document how to create a sequantial middleware
 export function authed(): SequentialMiddlewareRo<AuthedContext> {
   const getUserSafe = (): AuthedContext["user"] | null => {
     if (Math.random() > 0.4) {
@@ -105,7 +106,9 @@ export function authed(): SequentialMiddlewareRo<AuthedContext> {
 }
 
 type SequentialMiddlewareRos = SequentialMiddlewareRo<unknown>[];
+
 /**
+ * TODO: document this function even more
  * Composable middleware stack:
  *
  * usage:
@@ -118,10 +121,10 @@ type SequentialMiddlewareRos = SequentialMiddlewareRo<unknown>[];
  * The returned value from `route({ route })` is exactly what `createRouteMiddleware(...)` returns,
  * so you use it the same way to wrap a handler.
  */
-export function middlewares<AccCtx extends object = EmptyObject>(
+export function routeMiddlewares<AccCtx extends object = EmptyObject>(
   initial?: Readonly<SequentialMiddlewareRos>,
 ) {
-  // Keep an immutable chain so every .use returns a fresh builder
+  // kep an immutable chain so every .use returns a fresh builder
   const chain: Readonly<SequentialMiddlewareRos> = initial ? [...initial] : [];
 
   function mergeCtx<A extends object, B extends object>(a: A, b: B): A & B {
@@ -131,14 +134,14 @@ export function middlewares<AccCtx extends object = EmptyObject>(
 
   return {
     use<C extends object>(m: SequentialMiddlewareRo<C>) {
-      return middlewares<AccCtx & C>([
+      return routeMiddlewares<AccCtx & C>([
         ...chain,
         m as SequentialMiddlewareRo<unknown>,
       ]);
     },
 
     route<Route extends ContractRoute>({ route }: { route: Route }) {
-      // Compute final merged LocalCtx once, then assign into req.ctx per request
+      // compute final merged LocalCtx once, then assign into req.ctx per request
       const finalCtx = chain.reduce((acc, item) => {
         return mergeCtx(acc, item.ctx as object);
       }, {} as AccCtx);
@@ -149,7 +152,7 @@ export function middlewares<AccCtx extends object = EmptyObject>(
           // augment existing ctx with our merged locals
           Object.assign(req.ctx as object, finalCtx as object);
 
-          // Run in FIFO. If any returns a Response/union, bubble it up immediately.
+          // run in FIFO. If any returns a Response/union, bubble it up immediately.
           for (const item of chain) {
             const out = (item.mw as (rq: unknown, rs: unknown) => unknown)(
               req as unknown,
