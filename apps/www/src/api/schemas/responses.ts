@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { c } from "~/ts-rest/root";
-import { createSchemaResponses, httpError } from "~/@ashgw/ts-rest";
+import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
 import type { InferResponses } from "~/@ashgw/ts-rest";
 
 // ========== Schemas ==========
@@ -10,8 +10,8 @@ export const healthCheckSchemaResponses = createSchemaResponses({
 });
 
 const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
-  424: httpError.upstream().describe("Upstream failed to serve content"),
-  500: httpError.internal().describe("Unexpected internal failure"),
+  424: httpErrorSchema.upstream().describe("Upstream failed to serve content"),
+  500: httpErrorSchema.internal().describe("Unexpected internal failure"),
 });
 
 export const fetchTextFromUpstreamSchemaResponses = createSchemaResponses({
@@ -27,16 +27,21 @@ export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-// middleware errors you want documented for routes that use them
 export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
-  401: httpError.unauthorized().describe("Missing or invalid x-cron-token"),
+  401: httpErrorSchema
+    .unauthorized()
+    .describe("Missing or invalid x-cron-token"),
+});
+
+export const rateLimiterMiddlwareSchemaResponse = createSchemaResponses({
+  429: httpErrorSchema.tooManyRequests().describe("Rate limited"),
 });
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
   200: c.noBody(),
-  401: httpError.unauthorized().describe("Missing or invalid cron auth"),
-  429: httpError.tooManyRequests().describe("Rate limited"),
-  500: httpError.internal(),
+  ...cronAuthedMiddlewareSchemaResponse,
+  ...rateLimiterMiddlwareSchemaResponse,
+  500: httpErrorSchema.internal(),
 });
 
 // ========== Types ==========
