@@ -47,14 +47,6 @@ jobs:
           echo "VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }}" >> $GITHUB_OUTPUT
           echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}" >> $GITHUB_OUTPUT
 
-      - uses: ./.github/actions/vercel-build
-        with:
-          app_name: ${{ inputs.app_name }}
-          deployment_environment: ${{ inputs.deployment_environment }}
-          VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
-
       - uses: ./.github/actions/db-migrate
         with:
           comment_on_pr: ${{ github.event_name == 'pull_request' && 'yes' || 'no' }}
