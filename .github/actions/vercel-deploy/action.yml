@@ -34,9 +34,9 @@ runs:
       run: |
         echo "Building..."
         pnpm vercel pull --yes --environment=${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
-        pnpm vercel build --yes
+        pnpm vercel build --yes --token=$VERCEL_TOKEN
         echo "Deploying..."
-        DEPLOY_URL=$(pnpm vercel deploy --yes | grep -Eo 'https?://[^ ]+')
+        DEPLOY_URL=$(pnpm vercel deploy --yes --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
         echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
         echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"
         echo "${{ inputs.deployment_environment }}-url=$DEPLOY_URL" >> $GITHUB_OUTPUT
