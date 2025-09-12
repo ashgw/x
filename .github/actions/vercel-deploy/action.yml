@@ -33,7 +33,6 @@ runs:
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
 
       run: |
-        cd apps/${{ inputs.app_name }} && \
         DEPLOY_URL=$(pnpm vercel deploy --yes | grep -Eo 'https?://[^ ]+')
         echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
         echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"
