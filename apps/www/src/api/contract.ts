@@ -10,7 +10,7 @@ import {
   purgeViewWindowSchemaResponses,
 } from "~/api/models";
 
-// TODO: add summary and shit here so AI can use it
+// TODO: add summary and shit here so AI can use it & basically fill all the docs fields, like description & summary and all
 export const contract = createContract(c)({
   purgeViewWindow: {
     method: "DELETE",

@@ -4,18 +4,17 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
+import { rateLimiter, cornAuthed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
 import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
-import { cornAuthed } from "~/ts-rest/middlewares/authed";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: middlware()
     .use(rateLimiter({ limit: { every: "3s" } }))
     .use(cornAuthed())
-    .route({ route: contract.purgeViewWindow })(async () =>
-    webhooks.purgeViewWindow(),
-  ),
+    .route({ route: contract.purgeViewWindow })(async () => {
+    return await webhooks.purgeViewWindow();
+  }),
 
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
