@@ -1,0 +1,24 @@
+name: Cron / Purge View Window
+
+on:
+  schedule:
+    # run every 2 days at 03:07 UTC
+    - cron: "7 3 */2 * *"
+  workflow_dispatch:
+
+jobs:
+  purge_view_window:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: ./.github/actions/setup-env
+        with:
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+
+      - name: Purge View Window
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -i -X DELETE \
+            "$NEXT_PUBLIC_WWW_URL/api/v1/purge-view-window" \
+            -H "x-cron-token: $X_CRON_TOKEN"
