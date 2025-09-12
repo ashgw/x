@@ -351,4 +351,5 @@ declare global {
 export const s3Client = global._s3Client ?? new S3Service();
 export type S3Client = typeof s3Client;
 
+// hot reloads in next dev
 if (env.NODE_ENV !== "production") global._s3Client = s3Client;

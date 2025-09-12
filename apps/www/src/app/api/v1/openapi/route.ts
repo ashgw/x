@@ -1,24 +1,23 @@
 import { NextResponse } from "next/server";
 import { generateOpenApi } from "@ts-rest/open-api";
-import { v1Contract } from "~/api/contract";
-import { basePath } from "~/api/basePath";
+import { contract } from "~/api/contract";
+import { endPoint } from "~/ts-rest/endpoint";
+import { env } from "@ashgw/env";
 
 export const runtime = "edge";
 
 export const revalidate = 3600;
 
+// TODO: add more docs
 export function GET() {
-  const doc = generateOpenApi(v1Contract, {
+  const doc = generateOpenApi(contract, {
     info: {
       title: "www API v1",
       version: "1.0.0",
-      description: "Contract-first REST",
+      description: "REST",
     },
     openapi: "3.0.3",
-    servers: [
-      // eslint-disable-next-line no-restricted-properties
-      { url: new URL(basePath, process.env.NEXT_PUBLIC_WWW_URL).toString() },
-    ],
+    servers: [{ url: new URL(endPoint, env.NEXT_PUBLIC_WWW_URL).toString() }],
   });
   return NextResponse.json(doc, { status: 200 });
 }

@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Shield, XCircle } from "lucide-react";
 import { toast } from "sonner";
 
-import { logger, monitor } from "@ashgw/observability";
 import {
   Badge,
   Button,
@@ -91,9 +90,7 @@ export function SessionsList({ sessions, setSessions }: SessionsListProps) {
       },
       onError: (error) => {
         setTerminatingAllSessions(false);
-        logger.error("Failed to terminate all sessions", { error });
-        monitor.next.captureException({ error });
-        toast.error("Failed to terminate all sessions");
+        toast.error(error.message);
       },
     });
 
@@ -112,9 +109,7 @@ export function SessionsList({ sessions, setSessions }: SessionsListProps) {
       },
       onError: (error, { sessionId }) => {
         setSessionLoading(sessionId, false);
-        logger.error("Failed to terminate specific session", { error });
-        monitor.next.captureException({ error });
-        toast.error("Failed to terminate specific session");
+        toast.error(error.message);
       },
     });
 

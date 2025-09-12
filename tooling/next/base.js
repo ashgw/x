@@ -20,13 +20,13 @@ const baseConfig = {
     "@ashgw/typescript",
     "@ashgw/db",
     "@ashgw/analytics",
+    "@ashgw/storage",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
-  // I talked about deez
   // https://github.com/ashgw/security-header-middlewares
   headers() {
     return Promise.resolve([

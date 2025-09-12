@@ -26,6 +26,7 @@ interface ItemListProps<T> {
   items: T[];
   config: BaseItemListConfig<T>;
   isLoading?: boolean;
+  errorMessage?: string;
 }
 
 const ListItem = memo(function ListItemComponent<T>({
@@ -99,9 +100,10 @@ const ListItem = memo(function ListItemComponent<T>({
   shouldReduceMotion: boolean;
 }) => React.ReactElement;
 
-export const ItemList = memo(function ItemListComponent<T>({
+const ItemList = memo(function ItemListComponent<T>({
   items,
   config,
+  errorMessage,
   isLoading,
 }: ItemListProps<T>) {
   const shouldReduceMotion = useReducedMotion();
@@ -165,7 +167,7 @@ export const ItemList = memo(function ItemListComponent<T>({
           }}
           className="text-muted-foreground py-8 text-center"
         >
-          {config.emptyMessage}
+          {errorMessage ? errorMessage : config.emptyMessage}
         </motion.div>
       ) : (
         <ScrollArea className="h-[850px] pr-4">
@@ -251,14 +253,23 @@ export const BlogList = ({
   onEdit,
   onDelete,
   isLoading,
+  errorMessage,
 }: {
   blogs: PostArticleRo[];
   onEdit: (blog: PostArticleRo) => void;
   onDelete: (blog: PostArticleRo) => void;
   isLoading?: boolean;
+  errorMessage?: string;
 }) => {
   const config = createBlogListConfig(onEdit, onDelete);
-  return <ItemList items={blogs} config={config} isLoading={isLoading} />;
+  return (
+    <ItemList
+      items={blogs}
+      errorMessage={errorMessage}
+      config={config}
+      isLoading={isLoading}
+    />
+  );
 };
 
 export const TrashList = ({

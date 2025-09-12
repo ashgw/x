@@ -16,13 +16,13 @@ import { fonts } from "@ashgw/ui";
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
 import { StoreProvider } from "./stores";
-import { SITE_NAME } from "@ashgw/constants";
+import { site_name } from "@ashgw/constants";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
 export const metadata: Metadata = createMetadata({
   metadataBase: new URL(siteUrl),
-  title: SITE_NAME,
+  title: site_name,
   description: "Blog",
 });
 

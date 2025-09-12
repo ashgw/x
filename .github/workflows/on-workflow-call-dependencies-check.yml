@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+
       - uses: ./.github/actions/pnpm-install
       - name: check dependencies
         # if it errors out, u need to run `pnpm deps:format && pnpm deps:fix` locally before u push

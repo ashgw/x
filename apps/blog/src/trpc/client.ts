@@ -11,7 +11,7 @@ let clientQueryClientSingleton: Optional<QueryClient> = null;
 const isServer = typeof window === "undefined";
 const isBrowser = !isServer;
 
-export function getQueryClient() {
+export function getOptimizedQueryClient() {
   if (isServer) {
     // Server: always make a new query client
     return makeQueryClient();

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@ashgw/ts-env": "catalog:",
-    "dotenv": "16.4.5",
     "zod": "catalog:"
   },
   "devDependencies": {

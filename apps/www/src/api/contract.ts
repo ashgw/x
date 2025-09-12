@@ -1,68 +1,67 @@
-import { initContract } from "@ts-rest/core";
-import { z } from "zod";
 import {
-  cacheControlsQueryDtoSchema,
-  contentTypes,
-  errorSchemaRo,
-} from "./schemas";
+  healthCheckSchemaResponses,
+  fetchGpgFromUpstreamSchemaResponses,
+  fetchTextFromUpstreamSchemaResponses,
+  purgeViewWindowSchemaResponses,
+} from "./schemas/responses";
+import {
+  fetchTextFromUpstreamQuerySchemaDto,
+  purgeViewWindowHeadersSchemaDto,
+} from "./schemas/dtos";
+import { c } from "../ts-rest/root";
+import type { Keys } from "ts-roids";
+import { createContract } from "~/@ashgw/ts-rest";
 
-const c = initContract();
-
-export const v1Contract = c.router({
+// TODO: add summary and shit here so AI can use it
+export const contract = createContract(c)({
+  purgeViewWindow: {
+    method: "DELETE",
+    path: "/purge-view-window",
+    strictStatusCodes: true,
+    headers: purgeViewWindowHeadersSchemaDto,
+    responses: purgeViewWindowSchemaResponses,
+  },
+  healthCheck: {
+    method: "GET",
+    path: "/health-check",
+    strictStatusCodes: true,
+    summary: "80 burpess, 100 squats and 50 pullups",
+    responses: healthCheckSchemaResponses,
+  },
   bootstrap: {
     method: "GET",
     path: "/bootstrap",
+    strictStatusCodes: true,
     summary: "Fetch dotfiles bootstrap script (raw text)",
-    query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
-      }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
-    },
+    query: fetchTextFromUpstreamQuerySchemaDto.optional(),
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
   gpg: {
     method: "GET",
     path: "/gpg",
+    strictStatusCodes: true,
     summary: "Fetch public PGP key (armored text)",
-    query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.pgp,
-        body: z.string().min(1),
-      }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
-    },
+    query: fetchTextFromUpstreamQuerySchemaDto.optional(),
+    responses: fetchGpgFromUpstreamSchemaResponses,
   },
   debion: {
     method: "GET",
     path: "/debion",
+    strictStatusCodes: true,
     summary: "Fetch debion setup script (raw text)",
-    query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
-      }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
-    },
+    query: fetchTextFromUpstreamQuerySchemaDto.optional(),
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
   whisper: {
     method: "GET",
     path: "/whisper",
+    strictStatusCodes: true,
     summary: "Fetch Whisper setup script (raw text)",
-    query: cacheControlsQueryDtoSchema.optional(),
-    responses: {
-      200: c.otherResponse({
-        contentType: contentTypes.text,
-        body: z.string().min(1),
-      }),
-      424: errorSchemaRo,
-      500: errorSchemaRo,
-    },
+    query: fetchTextFromUpstreamQuerySchemaDto.optional(),
+    responses: fetchTextFromUpstreamSchemaResponses,
   },
 });
+
+type Contract = typeof contract;
+
+export type ContractRoute = Contract[Keys<Contract>];

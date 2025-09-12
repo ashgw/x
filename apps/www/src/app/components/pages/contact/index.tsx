@@ -6,11 +6,10 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { Footer, TextContent } from "@ashgw/components";
-import { EMAIL, LINKS } from "@ashgw/constants";
-import { monitor } from "@ashgw/observability";
+import { email, gpg, links } from "@ashgw/constants";
 import { ToggleSwitch } from "@ashgw/ui";
 
-import { client } from "~/api/client";
+import { tsrQueryClientSide } from "~/ts-rest/client";
 import Link from "./components/Link";
 import { CalBooking } from "./components/CalBooking";
 
@@ -19,30 +18,15 @@ export function ContactPage() {
   const [isToggled, setIsToggled] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
 
-  async function copyGPG() {
-    try {
-      const { status, body } = await client.gpg({
-        query: undefined,
-      });
-
-      if (status !== 200) {
-        throw new Error(`API error: ${status}`);
-      }
-      copyToClipboard(body);
-      toast.message("79821E0224D34EC4969FF6A8E5168EE090AE80D0", {
-        description: "PGP public key block is copied to your clipboard",
-      });
-    } catch (error) {
-      const errorMessage = "Oops! Looks like something went wrong!";
-      toast.message(errorMessage);
-      monitor.next.captureException({
-        error,
-        logErrorWith: {
-          message: errorMessage,
-        },
-      });
-    }
-  }
+  const gpgQuery = tsrQueryClientSide.gpg.useQuery({
+    queryKey: ["gpgQuery"],
+    queryData: {
+      query: {
+        revalidateSeconds: "20000",
+      },
+    },
+    staleTime: 1000,
+  });
 
   const handleToggle = (state: boolean) => {
     setIsToggled(state);
@@ -50,7 +34,7 @@ export function ContactPage() {
       setShowCalendar(true);
     } else {
       setShowCalendar(false);
-      window.location.href = `mailto:${EMAIL}`;
+      window.location.href = `mailto:${email}`;
     }
   };
 
@@ -81,13 +65,23 @@ export function ContactPage() {
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
                     I prefer to use{" "}
-                    <Link href={LINKS.twitter.link} name="X"></Link> for most
+                    <Link href={links.twitter.link} name="X"></Link> for most
                     communication. I use{" "}
-                    <Link href={LINKS.keyBase} name="GPG"></Link> for secure
+                    <Link href={links.keyBase} name="GPG"></Link> for secure
                     communication, check my{" "}
                     <button
-                      onClick={async () => {
-                        await copyGPG();
+                      onClick={() => {
+                        if (gpgQuery.data) {
+                          copyToClipboard(gpgQuery.data.body);
+                          toast.message(gpg.id, {
+                            description:
+                              "PGP public key block is copied to your clipboard",
+                          });
+                        }
+                        if (gpgQuery.error) {
+                          toast.error("!Oops my bad, please try again later");
+                          return;
+                        }
                       }}
                     >
                       <strong className="glows text-white underline">
