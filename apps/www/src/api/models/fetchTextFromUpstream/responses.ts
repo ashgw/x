@@ -1,5 +1,3 @@
-// TODO: to each schema we need to add as many docs as possible so the openAPI defintion
-// becomes rich so AI can use it
 import { z } from "zod";
 import { c } from "~/ts-rest/root";
 import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
@@ -9,19 +7,27 @@ import type { InferResponses } from "~/@ashgw/ts-rest";
 // ========== Schemas ==========
 
 const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
-  424: httpErrorSchema.upstream().describe("Upstream failed to serve content"),
+  424: httpErrorSchema
+    .upstream()
+    .describe("Upstream failed to serve content (e.g. GitHub raw URL error)"),
   ...internalErrorSchemaResponse,
 });
 
 export const fetchTextFromUpstreamSchemaResponses = createSchemaResponses({
-  200: c.otherResponse({ contentType: "text/plain", body: z.string().min(1) }),
+  200: c.otherResponse({
+    contentType: "text/plain",
+    body: z.string().min(1).describe("Raw text body returned by upstream"),
+  }),
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
 export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
   200: c.otherResponse({
     contentType: "application/pgp-keys",
-    body: z.string().min(1),
+    body: z
+      .string()
+      .min(1)
+      .describe("Armored PGP public key block in text format"),
   }),
   ...fetchContentFromUpstreamSchemaResponses,
 });

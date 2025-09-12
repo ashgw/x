@@ -1,4 +1,3 @@
-// TODO: lookup how can we refactor the router, e.g: webhooks; oss, personal or whatever
 import { contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
@@ -17,7 +16,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   }),
 
   purgeTrashPosts: middlware()
-    .use(rateLimiter({ limit: { every: "2h" } }))
+    .use(rateLimiter({ limit: { every: "5s" } }))
     .use(cornAuthed())
     .route({ route: contract.purgeTrashPosts })(async () => {
     return await webhooks.purgeTrashPosts();

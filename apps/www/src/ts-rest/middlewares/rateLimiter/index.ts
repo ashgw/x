@@ -1,6 +1,7 @@
 import { getFingerprint } from "./getFingerprint";
 import type { RateLimiter } from "./rl";
 import { createRateLimiter } from "./rl";
+import { windowToSeconds } from "./window";
 import type { RlWindow } from "./window";
 import type { SequentialMiddleware } from "~/@ashgw/ts-rest";
 import { middlewareResponse, middlewareFn } from "~/@ashgw/ts-rest";
@@ -22,7 +23,7 @@ export function rateLimiter({
         body: {
           message: `You're limited for the next ${limit.every}`,
         },
-        retryAfterSeconds: 10, // TODO: fix this & get another function that reverse limit.every to actual seconds
+        retryAfterSeconds: windowToSeconds(limit.every),
       });
     }
     req.ctx.rl = rl; // we need to explicitly set the context here so it sticks

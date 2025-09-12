@@ -17,9 +17,6 @@ export const contract = createContract(c)({
     method: "DELETE",
     path: "/purge-view-window",
     strictStatusCodes: true,
-    summary: "Purge expired post view window records",
-    description:
-      "Deletes old entries from the post view window store. Used internally by cron jobs to keep the dataset lean.",
     headers: purgeViewWindowHeadersSchemaDto,
     responses: purgeViewWindowSchemaResponses,
   },
@@ -28,9 +25,6 @@ export const contract = createContract(c)({
     method: "DELETE",
     path: "/purge-trash-posts",
     strictStatusCodes: true,
-    summary: "Purge trashed posts permanently",
-    description:
-      "Deletes posts that were previously moved to the trash and are past their retention window",
     headers: purgeTrashPostsHeadersSchemaDto,
     responses: purgeTrashPostsSchemaResponses,
   },
