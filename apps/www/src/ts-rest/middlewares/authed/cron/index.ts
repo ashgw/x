@@ -9,16 +9,11 @@ type CronAuthedContext = EmptyObject; //  nothing we need to pass down here real
 export function cornAuthed(): SequentialMiddlewareRo<CronAuthedContext> {
   const mw = middlewareFn<GlobalContext, CronAuthedContext>((req, _res) => {
     if (req.headers.get("x-cron-token") !== env.X_CRON_TOKEN) {
-      return middlewareResponse.error({
-        status: 401,
-        body: {
-          code: "UNAUTHORIZED",
-          message: "Invalid token. You cannot perform this action",
-        },
+      return middlewareResponse.errors.unauthorized({
+        message: "Invalid token. You cannot perform this action",
       });
     }
   });
-
   return {
     mw,
     ctx: {},

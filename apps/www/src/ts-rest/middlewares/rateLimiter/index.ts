@@ -22,7 +22,7 @@ export function rateLimiter({
         body: {
           message: `You're limited for the next ${limit.every}`,
         },
-        retryAfterSeconds: 10, // TODO: fix this
+        retryAfterSeconds: 10, // TODO: fix this & get another function that reverse limit.every to actual seconds
       });
     }
     req.ctx.rl = rl; // we need to explicitly set the context here so it sticks
