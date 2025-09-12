@@ -17,6 +17,9 @@ export const contract = createContract(c)({
     method: "DELETE",
     path: "/purge-view-window",
     strictStatusCodes: true,
+    summary: "Purge expired post view window records",
+    description:
+      "Deletes old entries from the post view window store. Used internally by cron jobs to keep the dataset lean.",
     headers: purgeViewWindowHeadersSchemaDto,
     responses: purgeViewWindowSchemaResponses,
   },
@@ -25,6 +28,9 @@ export const contract = createContract(c)({
     method: "DELETE",
     path: "/purge-trash-posts",
     strictStatusCodes: true,
+    summary: "Purge trashed posts permanently",
+    description:
+      "Deletes posts that were previously moved to the trash and are past their retention window",
     headers: purgeTrashPostsHeadersSchemaDto,
     responses: purgeTrashPostsSchemaResponses,
   },
@@ -33,39 +39,49 @@ export const contract = createContract(c)({
     method: "GET",
     path: "/health-check",
     strictStatusCodes: true,
-    summary: "80 burpess, 100 squats and 50 pullups",
-    responses: healthCheckSchemaResponses, // 200
+    summary: "Health check",
+    description: "Simple liveness probe to verify the API is running",
+    responses: healthCheckSchemaResponses,
   },
 
   bootstrap: {
     method: "GET",
     path: "/bootstrap",
     strictStatusCodes: true,
-    summary: "Fetch dotfiles bootstrap script (raw text)",
+    summary: "Fetch dotfiles bootstrap script",
+    description: "Returns a raw text bootstrap script for my dotfiles setup.",
     query: fetchTextFromUpstreamQuerySchemaDto.optional(),
     responses: fetchTextFromUpstreamSchemaResponses,
   },
+
   gpg: {
     method: "GET",
     path: "/gpg",
     strictStatusCodes: true,
-    summary: "Fetch public PGP key (armored text)",
+    summary: "Fetch public GPG key",
+    description: "Returns my armored public GPG key as plain text. ",
     query: fetchTextFromUpstreamQuerySchemaDto.optional(),
     responses: fetchGpgFromUpstreamSchemaResponses,
   },
+
   debion: {
     method: "GET",
     path: "/debion",
     strictStatusCodes: true,
-    summary: "Fetch debion setup script (raw text)",
+    summary: "Fetch Debion setup script",
+    description:
+      "Returns a raw text setup script for initializing my custom Debion login screen environment.",
     query: fetchTextFromUpstreamQuerySchemaDto.optional(),
     responses: fetchTextFromUpstreamSchemaResponses,
   },
+
   whisper: {
     method: "GET",
     path: "/whisper",
     strictStatusCodes: true,
-    summary: "Fetch Whisper setup script (raw text)",
+    summary: "Fetch Whisper setup script",
+    description:
+      "Returns a raw text setup script for configuring OpenAI's Whisper locally",
     query: fetchTextFromUpstreamQuerySchemaDto.optional(),
     responses: fetchTextFromUpstreamSchemaResponses,
   },
