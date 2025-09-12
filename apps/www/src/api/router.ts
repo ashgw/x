@@ -1,10 +1,11 @@
+// TODO: lookup how can we refactor the router, e.g: webhooks; oss, personal or whatever
 import { contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
 import { rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
-import type { GlobalContext } from "../ts-rest/context";
+import type { GlobalContext } from "~/ts-rest/context";
 import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
 import { cornAuthed } from "~/ts-rest/middlewares/authed";
 
