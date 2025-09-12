@@ -18,7 +18,7 @@ export function rateLimiter({
   const { rl } = createRateLimiter(limit.every);
   const mw = middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
     if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
-      middlewareResponse.errors.tooManyRequests({
+      return middlewareResponse.errors.tooManyRequests({
         body: {
           message: `You're limited for the next ${limit.every}`,
         },
