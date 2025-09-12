@@ -3,7 +3,7 @@ import "@ashgw/css/global";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { site_name } from "@ashgw/constants";
-import { CookieBanner, Providers } from "@ashgw/components";
+import { Providers } from "@ashgw/components";
 import {
   createMetadata,
   JsonLd,
@@ -36,9 +36,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <Providers site="www">
           <TsrProvider>{children}</TsrProvider>
         </Providers>
-        <div className="fixed bottom-4 right-4 max-w-[550px]">
-          <CookieBanner />
-        </div>
       </body>
     </html>
   );
