@@ -39,9 +39,9 @@ export const rateLimiterMiddlwareSchemaResponse = createSchemaResponses({
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
   200: c.noBody(),
+  500: httpErrorSchema.internal(),
   ...cronAuthedMiddlewareSchemaResponse,
   ...rateLimiterMiddlwareSchemaResponse,
-  500: httpErrorSchema.internal(),
 });
 
 // ========== Types ==========
