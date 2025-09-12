@@ -19,8 +19,8 @@ export const sdk = initClient(contract, args);
  *
  * Provides auto-generated hooks like:
  * ```ts
- * const { data, error } = tsrQueryClientSide.healthCheck.useQuery(["hc"]);
+ * const { data, error } = tsrQueryClientSideClient.healthCheck.useQuery(["hc"]);
  * ```
  *
  */
-export const tsrQueryClientSide = initTsrReactQuery(contract, args);
+export const tsrQueryClientSideClient = initTsrReactQuery(contract, args);
