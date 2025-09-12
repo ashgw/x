@@ -14,6 +14,10 @@ export function cornAuthed(): SequentialMiddlewareRo<CronAuthedContext> {
       });
     }
   });
+
+  middlewareResponse.errors.unauthorized({
+    message: "Invalid token. You cannot perform this action",
+  });
   return {
     mw,
     ctx: {},

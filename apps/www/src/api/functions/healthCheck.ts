@@ -6,6 +6,7 @@ import type { HealthCheckResponses } from "../schemas/responses";
 // but we won't, we will only return { status: 200 }
 export async function healthCheck(): Promise<HealthCheckResponses> {
   await new Promise((r) => setTimeout(r, 1));
+
   return {
     status: 200,
     body: undefined,
