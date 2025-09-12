@@ -5,13 +5,21 @@ import type { InferResponses } from "~/@ashgw/ts-rest";
 
 // ========== Schemas ==========
 
-export const healthCheckSchemaResponses = createSchemaResponses({
+const okSchemaResponse = createSchemaResponses({
   200: c.noBody(),
+});
+
+export const healthCheckSchemaResponses = createSchemaResponses({
+  ...okSchemaResponse,
+});
+
+const internalErrorSchemaResponse = createSchemaResponses({
+  500: httpErrorSchema.internal().describe("Internal failure"),
 });
 
 const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
   424: httpErrorSchema.upstream().describe("Upstream failed to serve content"),
-  500: httpErrorSchema.internal().describe("Unexpected internal failure"),
+  ...internalErrorSchemaResponse,
 });
 
 export const fetchTextFromUpstreamSchemaResponses = createSchemaResponses({
@@ -34,14 +42,16 @@ export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
 });
 
 export const rateLimiterMiddlwareSchemaResponse = createSchemaResponses({
-  429: httpErrorSchema.tooManyRequests().describe("Rate limited"),
+  429: httpErrorSchema
+    .tooManyRequests()
+    .describe("Exceeded the allowed window to make requests"),
 });
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
-  200: c.noBody(),
-  500: httpErrorSchema.internal(),
-  ...cronAuthedMiddlewareSchemaResponse,
+  ...okSchemaResponse,
+  ...internalErrorSchemaResponse,
   ...rateLimiterMiddlwareSchemaResponse,
+  ...cronAuthedMiddlewareSchemaResponse,
 });
 
 // ========== Types ==========
