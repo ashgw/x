@@ -16,6 +16,13 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     return await webhooks.purgeViewWindow();
   }),
 
+  purgeTrashPosts: middlware()
+    .use(rateLimiter({ limit: { every: "2h" } }))
+    .use(cornAuthed())
+    .route({ route: contract.purgeTrashPosts })(async ({ body }) => {
+    return await webhooks.purgeTrashPosts({ body });
+  }),
+
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
       query,
