@@ -22,24 +22,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Build for Vercel
+    - name: Build for Vercel (prebuilt)
       shell: bash
       env:
         VERCEL_TOKEN: ${{ inputs.VERCEL_TOKEN }}
         VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
-
-    - name: Pull Vercel project settings/env
-      shell: bash
-      env:
-        VERCEL_TOKEN: ${{ inputs.VERCEL_TOKEN }}
       run: |
-        vercel pull --yes --environment=${{ inputs.deployment_environment }} \
-          --cwd apps/${{ inputs.app_name }} --token "$VERCEL_TOKEN"
-
-    - name: Build for Vercel (prebuilt)
-      shell: bash
-      env:
-        VERCEL_TOKEN: ${{ inputs.VERCEL_TOKEN }}
-      run: |
-        pnpm vercel build --yes --cwd apps/${{ inputs.app_name }} --token "$VERCEL_TOKEN"
+        cd apps/${{ inputs.app_name }}
+        pnpm vercel pull --yes --environment=${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
+        pnpm vercel build --yes

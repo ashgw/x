@@ -34,7 +34,7 @@ runs:
 
       run: |
         cd apps/${{ inputs.app_name }} && \
-        DEPLOY_URL=$(pnpm --filter @ashgw/${{ inputs.app_name }} deploy:vercel-${{ inputs.deployment_environment }} --token=${{ inputs.VERCEL_TOKEN }} | grep -Eo 'https?://[^ ]+')
+        DEPLOY_URL=$(pnpm vercel deploy --yes | grep -Eo 'https?://[^ ]+')
         echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
         echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"
         echo "${{ inputs.deployment_environment }}-url=$DEPLOY_URL" >> $GITHUB_OUTPUT
