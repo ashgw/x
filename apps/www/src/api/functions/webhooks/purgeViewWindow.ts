@@ -28,7 +28,7 @@ export async function purgeViewWindow(): Promise<PurgeViewWindowResponses> {
     }
 
     return {
-      status: 200,
+      status: 204,
       body: undefined,
     };
   } catch (error) {

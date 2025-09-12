@@ -19,8 +19,8 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeTrashPosts: middlware()
     .use(rateLimiter({ limit: { every: "2h" } }))
     .use(cornAuthed())
-    .route({ route: contract.purgeTrashPosts })(async ({ body }) => {
-    return await webhooks.purgeTrashPosts({ body });
+    .route({ route: contract.purgeTrashPosts })(async () => {
+    return await webhooks.purgeTrashPosts();
   }),
 
   bootstrap: async ({ query }) =>

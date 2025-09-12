@@ -8,12 +8,10 @@ import {
   purgeViewWindowHeadersSchemaDto,
   fetchTextFromUpstreamSchemaResponses,
   purgeViewWindowSchemaResponses,
-  purgeTrashPostsHeaderSchemaDto,
+  purgeTrashPostsHeadersSchemaDto,
   purgeTrashPostsSchemaResponses,
-  purgeTrashPostsBodySchemaDto,
 } from "~/api/models";
 
-// TODO: add summary and shit here so AI can use it & basically fill all the docs fields, like description & summary and all
 export const contract = createContract(c)({
   purgeViewWindow: {
     method: "DELETE",
@@ -22,21 +20,23 @@ export const contract = createContract(c)({
     headers: purgeViewWindowHeadersSchemaDto,
     responses: purgeViewWindowSchemaResponses,
   },
+
   purgeTrashPosts: {
     method: "DELETE",
     path: "/purge-trash-posts",
     strictStatusCodes: true,
-    body: purgeTrashPostsBodySchemaDto,
-    headers: purgeTrashPostsHeaderSchemaDto,
+    headers: purgeTrashPostsHeadersSchemaDto,
     responses: purgeTrashPostsSchemaResponses,
   },
+
   healthCheck: {
     method: "GET",
     path: "/health-check",
     strictStatusCodes: true,
     summary: "80 burpess, 100 squats and 50 pullups",
-    responses: healthCheckSchemaResponses,
+    responses: healthCheckSchemaResponses, // 200
   },
+
   bootstrap: {
     method: "GET",
     path: "/bootstrap",
@@ -72,5 +72,4 @@ export const contract = createContract(c)({
 });
 
 type Contract = typeof contract;
-
 export type ContractRoute = Contract[Keys<Contract>];

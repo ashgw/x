@@ -1,10 +1,12 @@
 import { c } from "~/ts-rest/root";
 import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
 
-// ========== Schemas ==========
-
 export const okSchemaResponse = createSchemaResponses({
   200: c.noBody(),
+});
+
+export const noContentSchemaResponse = createSchemaResponses({
+  204: c.noBody(),
 });
 
 export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
@@ -24,4 +26,4 @@ export const internalErrorSchemaResponse = createSchemaResponses({
 });
 
 // ========== Types ==========
-// no needed for these
+// none for these
