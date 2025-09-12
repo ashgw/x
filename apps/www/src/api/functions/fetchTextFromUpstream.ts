@@ -1,9 +1,9 @@
 import { logger, monitor } from "@ashgw/observability";
-import type { FetchTextFromUpstreamQueryDto } from "../schemas/dtos";
+import type { FetchTextFromUpstreamQueryDto } from "~/api/models";
 import type {
   FetchGpgFromUpstreamResponses,
   FetchTextFromUpstreamResponses,
-} from "../schemas/responses";
+} from "~/api/models";
 import type { ExclusiveUnion } from "ts-roids";
 
 function repoMainBranchBaseUrl(opts: { repo: string; scriptPath: string }) {

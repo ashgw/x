@@ -1,4 +1,4 @@
-import type { HealthCheckResponses } from "../schemas/responses";
+import type { HealthCheckResponses } from "~/api/models";
 
 // TODO: make it so that when we create this response
 // we dont have to return body: undefined, just omit it completely

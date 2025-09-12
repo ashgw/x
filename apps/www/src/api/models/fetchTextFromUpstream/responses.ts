@@ -1,21 +1,12 @@
+// TODO: to each schema we need to add as many docs as possible so the openAPI defintion
+// becomes rich so AI can use it
 import { z } from "zod";
 import { c } from "~/ts-rest/root";
 import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
+import { internalErrorSchemaResponse } from "../_shared/responses";
 import type { InferResponses } from "~/@ashgw/ts-rest";
 
 // ========== Schemas ==========
-
-const okSchemaResponse = createSchemaResponses({
-  200: c.noBody(),
-});
-
-export const healthCheckSchemaResponses = createSchemaResponses({
-  ...okSchemaResponse,
-});
-
-const internalErrorSchemaResponse = createSchemaResponses({
-  500: httpErrorSchema.internal().describe("Internal failure"),
-});
 
 const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
   424: httpErrorSchema.upstream().describe("Upstream failed to serve content"),
@@ -35,30 +26,7 @@ export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
-export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
-  401: httpErrorSchema
-    .unauthorized()
-    .describe("Missing or invalid x-cron-token"),
-});
-
-export const rateLimiterMiddlwareSchemaResponse = createSchemaResponses({
-  429: httpErrorSchema
-    .tooManyRequests()
-    .describe("Exceeded the allowed window to make requests"),
-});
-
-export const purgeViewWindowSchemaResponses = createSchemaResponses({
-  ...okSchemaResponse,
-  ...internalErrorSchemaResponse,
-  ...rateLimiterMiddlwareSchemaResponse,
-  ...cronAuthedMiddlewareSchemaResponse,
-});
-
 // ========== Types ==========
-
-export type HealthCheckResponses = InferResponses<
-  typeof healthCheckSchemaResponses
->;
 
 export type FetchTextFromUpstreamResponses = InferResponses<
   typeof fetchTextFromUpstreamSchemaResponses
@@ -66,8 +34,4 @@ export type FetchTextFromUpstreamResponses = InferResponses<
 
 export type FetchGpgFromUpstreamResponses = InferResponses<
   typeof fetchGpgFromUpstreamSchemaResponses
->;
-
-export type PurgeViewWindowResponses = InferResponses<
-  typeof purgeViewWindowSchemaResponses
 >;
