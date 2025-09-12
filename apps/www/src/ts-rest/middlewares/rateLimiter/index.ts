@@ -18,12 +18,11 @@ export function rateLimiter({
   const { rl } = createRateLimiter(limit.every);
   const mw = middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
     if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
-      return middlewareResponse.error({
-        status: 403,
+      middlewareResponse.errors.tooManyRequests({
         body: {
-          code: "FORBIDDEN", // TODO: this should be rate limit type
-          message: `You're limited for the next ${req.ctx.rl.every}`,
+          message: `You're limited for the next ${limit.every}`,
         },
+        retryAfterSeconds: 10, // TODO: fix this
       });
     }
     req.ctx.rl = rl; // we need to explicitly set the context here so it sticks

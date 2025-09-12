@@ -1,7 +1,6 @@
-// TODO: add docs through schema description here
 import { z } from "zod";
 import { c } from "~/ts-rest/root";
-import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
+import { createSchemaResponses, httpError } from "~/@ashgw/ts-rest";
 import type { InferResponses } from "~/@ashgw/ts-rest";
 
 // ========== Schemas ==========
@@ -11,8 +10,8 @@ export const healthCheckSchemaResponses = createSchemaResponses({
 });
 
 const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
-  500: httpErrorSchema,
-  424: httpErrorSchema,
+  424: httpError.upstream().describe("Upstream failed to serve content"),
+  500: httpError.internal().describe("Unexpected internal failure"),
 });
 
 export const fetchTextFromUpstreamSchemaResponses = createSchemaResponses({
@@ -28,70 +27,16 @@ export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
   ...fetchContentFromUpstreamSchemaResponses,
 });
 
+// middleware errors you want documented for routes that use them
 export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
-  401: httpErrorSchema, //
+  401: httpError.unauthorized().describe("Missing or invalid x-cron-token"),
 });
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
-  // TODO: we should be able to do shit like createSchemaResponses({}).extending(cronAuthedMiddlewareSchemaResponse)
-  // so the createSchemaResponses can be versatile so we don't have to repeat ourselves and shit everytime we use a middleware
-  // that runs first for shit
   200: c.noBody(),
-  401: httpErrorSchema, // TODO: here make to be createHttpErrorSchema.forbidden() or httpErrorSchema.unauthorized()
-  // // so it doesnt pollute the generated openAPI schema, since
-
-  /** 
-   * rn it looks like this 
-   * "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string",
-                      "enum": [
-                        "UPSTREAM_ERROR",
-                        "INTERNAL_ERROR",
-                        "BAD_REQUEST",
-                        "NOT_FOUND",
-                        "UNAUTHORIZED",
-                        "FORBIDDEN"
-                      ],
-                      "description": "Stable, machine-parseable error code"
-                    },
-                    "message": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 1000,
-                      "description": "Human readable"
-                    },
-                    "details": {
-                      "type": "object",
-                      "additionalProperties": {
-                        "nullable": true
-                      },
-                      "description": "Optional extra context"
-                    }
-                  },
-                  "required": [
-                    "code",
-                    "message"
-                  ]
-                }
-              }
-            }
-          },
-
-
-   * whoch os fickng annoying and big af, and the description doesnt make any sense really, like bro i should describe wtf 
-          and why, like for exmaple, 'not authorized to perform this action' or forbidden or whatever, we defailt to those, but
-          we let the user describe the schema too of the descripton, like httpErrorSchema.unauthorized().describe('blah blah...')
-   * 
-   */
-  403: httpErrorSchema,
-  500: httpErrorSchema,
+  401: httpError.unauthorized().describe("Missing or invalid cron auth"),
+  429: httpError.tooManyRequests().describe("Rate limited"),
+  500: httpError.internal(),
 });
 
 // ========== Types ==========
