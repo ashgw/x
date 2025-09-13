@@ -21,6 +21,7 @@ WORKDIR /app
 COPY . .
 
 RUN --mount=type=secret,id=DATABASE_URL \
+    --mount=type=secret,id=DIRECT_URL \
     --mount=type=secret,id=S3_BUCKET_NAME \
     --mount=type=secret,id=S3_BUCKET_REGION \
     --mount=type=secret,id=S3_BUCKET_ACCESS_KEY_ID \
@@ -28,6 +29,11 @@ RUN --mount=type=secret,id=DATABASE_URL \
     --mount=type=secret,id=S3_BUCKET_URL \
     --mount=type=secret,id=KIT_API_KEY \
     --mount=type=secret,id=IP_HASH_SALT \
+    --mount=type=secret,id=X_CRON_TOKEN \
+    --mount=type=secret,id=SENTRY_ORG \
+    --mount=type=secret,id=SENTRY_PROJECT \
+    --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    --mount=type=secret,id=NEXT_PUBLIC_CURRENT_ENV \
     --mount=type=secret,id=NEXT_PUBLIC_WWW_URL \
     --mount=type=secret,id=NEXT_PUBLIC_BLOG_URL \
     --mount=type=secret,id=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID \
@@ -35,6 +41,7 @@ RUN --mount=type=secret,id=DATABASE_URL \
     --mount=type=secret,id=NEXT_PUBLIC_SENTRY_DSN \
     --mount=type=secret,id=NEXT_PUBLIC_POSTHOG_KEY \
     --mount=type=secret,id=NEXT_PUBLIC_POSTHOG_HOST <<EOSH
+
 set -eu
 exp() { [ -f "/run/secrets/$1" ] && export "$1=$(cat /run/secrets/$1)"; }
 
