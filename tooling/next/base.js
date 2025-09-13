@@ -87,22 +87,6 @@ const baseConfig = {
       },
     ]);
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "ashgw-blog-public-images.s3.us-east-2.amazonaws.com", // TODO: use env here
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
-        port: "",
-        pathname: "/**",
-      },
-    ],
-  },
 };
 
 module.exports = baseConfig;

@@ -1,1 +1,0 @@
-export { cornAuthed } from "./cron";
