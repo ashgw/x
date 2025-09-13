@@ -15,6 +15,10 @@ export function publicProcedure(opts?: { limit?: { every: RlWindow } }) {
   return proc;
 }
 
+export function authenticatedProcedure(opts?: { limit?: { every: RlWindow } }) {
+  return publicProcedure(opts).use(authMiddleware({}));
+}
+
 export function adminProcedure(opts?: { limit?: { every: RlWindow } }) {
   return publicProcedure(opts).use(
     authMiddleware({

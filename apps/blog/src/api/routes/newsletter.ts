@@ -6,7 +6,11 @@ import { newsletterSubscribeDtoSchema } from "../models";
 import { NewsletterService } from "../services";
 
 export const newsletterRouter = router({
-  subscribe: publicProcedure()
+  subscribe: publicProcedure({
+    limit: {
+      every: "2s",
+    },
+  })
     .input(newsletterSubscribeDtoSchema)
     .output(z.void())
     .mutation(async ({ input }) => {

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import type { TrpcContext } from "~/trpc/context";
-import { authedProcedure, publicProcedure } from "~/trpc/procedures";
+import { authenticatedProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
   userChangePasswordSchemaDto,
@@ -19,36 +19,40 @@ const userAuthService = (ctx: TrpcContext) =>
   });
 
 export const userRouter = router({
-  me: publicProcedure
+  me: publicProcedure()
     .input(z.void())
     .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
       return await userAuthService(ctx).me();
     }),
 
-  // not so fast
-  // register: publicProcedure
-  //   .input(userRegisterSchemaDto)
-  //   .output(z.void())
-  //   .mutation(async ({ input, ctx }) => {
-  //     return await userAuthService(ctx).register(input);
-  //   }),
-
-  login: publicProcedure
+  login: publicProcedure({
+    limit: {
+      every: "2s",
+    },
+  })
     .input(userLoginSchemaDto)
     .output(userSchemaRo)
     .mutation(async ({ input, ctx }) => {
       return await userAuthService(ctx).login(input);
     }),
 
-  logout: publicProcedure
+  logout: publicProcedure({
+    limit: {
+      every: "2s",
+    },
+  })
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
       return await userAuthService(ctx).logout();
     }),
 
-  changePassword: authedProcedure
+  changePassword: authenticatedProcedure({
+    limit: {
+      every: "10s",
+    },
+  })
     .input(userChangePasswordSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
@@ -59,7 +63,11 @@ export const userRouter = router({
       });
     }),
 
-  terminateAllActiveSessions: authedProcedure
+  terminateAllActiveSessions: authenticatedProcedure({
+    limit: {
+      every: "2s",
+    },
+  })
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
@@ -68,7 +76,11 @@ export const userRouter = router({
       });
     }),
 
-  terminateSpecificSession: authedProcedure
+  terminateSpecificSession: authenticatedProcedure({
+    limit: {
+      every: "2s",
+    },
+  })
     .input(userTerminateSpecificSessionSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { sessionId } }) => {
