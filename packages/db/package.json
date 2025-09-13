@@ -52,7 +52,7 @@
     "@neondatabase/serverless": "1.0.0",
     "@prisma/adapter-neon": "6.4.1",
     "@prisma/client": "catalog:prisma6",
-    "bufferutil": "^4.0.9",
+    "bufferutil": "4.0.9",
     "prisma": "catalog:prisma6",
     "prisma-markdown": "2.0.0",
     "server-only": "0.0.1",
