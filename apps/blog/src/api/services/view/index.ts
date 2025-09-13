@@ -52,7 +52,6 @@ export class ViewService {
     });
     return { total };
   }
-  // TODO: export fingerprinting logic?
   private _fingerprint({
     slug,
     ipAddress,
