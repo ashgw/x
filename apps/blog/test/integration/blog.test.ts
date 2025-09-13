@@ -1,6 +1,7 @@
 import type { inferProcedureInput } from "@trpc/server";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import type { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { expect, test } from "vitest";
 
 import { db } from "@ashgw/db";
@@ -23,7 +24,7 @@ function makeNextRequestStub(init?: {
   }
   const url = init?.url ?? "http://localhost/test";
   const method = init?.method ?? "GET";
-  return new Request(url, { method, headers: h }) as unknown as NextRequest;
+  return new NextRequest(url, { method, headers: h }) as unknown as NextRequest;
 }
 
 function createTestContext() {
@@ -39,7 +40,7 @@ function createTestContext() {
   return createTRPCContext({
     db,
     req,
-    res: {} as NextResponse,
+    res: new NextResponse(null, { headers: new Headers() }),
     trpcInfo: {} as FetchCreateContextFnOptions["info"],
   });
 }

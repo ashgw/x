@@ -15,7 +15,7 @@ export const rateLimiterMiddleware = (input: {
     if (!rl.canPass(rl.fp({ req: ctx.req }))) {
       throw new TRPCError({
         code: "TOO_MANY_REQUESTS",
-        message: `Rate limited. Try again in ${rl.every}.`,
+        message: `Too many requests. Try again in ${rl.every}.`,
       });
     }
     return next({

@@ -14,11 +14,7 @@ import {
 import { BlogService } from "../services";
 
 export const postRouter = router({
-  getDetailedPublicPost: publicProcedure({
-    limit: {
-      every: "1s",
-    },
-  })
+  getDetailedPublicPost: publicProcedure()
     .input(postGetSchemaDto)
     .output(postArticleSchemaRo.nullable())
     .query(async ({ input: { slug }, ctx: { db } }) => {
@@ -26,11 +22,7 @@ export const postRouter = router({
       return await blogService.getDetailedPublicPost({ slug });
     }),
 
-  getPublicPostCards: publicProcedure({
-    limit: {
-      every: "1s",
-    },
-  })
+  getPublicPostCards: publicProcedure()
     .input(z.void())
     .output(z.array(postCardSchemaRo))
     .query(async ({ ctx: { db } }) => {

@@ -8,6 +8,7 @@ interface RateLimiterCtx {
   rateLimitWindow: RlWindow;
 }
 
+//  TODO: use a presistent kv here since lambdas don't presist shit
 export function rateLimiter({
   limit,
 }: {
