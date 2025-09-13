@@ -6,7 +6,7 @@ import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import superjson from "superjson";
 import type { AppRouter } from "~/api/router";
 import { env } from "@ashgw/env";
-import { getTrpcUrl } from "../client";
+import { getTrpcUrl } from "./client";
 import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
 import type { NextRequest, NextResponse } from "next/server";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
@@ -41,7 +41,7 @@ export const { trpc: trpcRpcServerSideClient, HydrateClient } =
 const noStoreFetch: typeof fetch = (input, init) =>
   fetch(input, { ...(init ?? {}), cache: "no-store" });
 
-export const getHttpClient = cache(() =>
+const getHttpClient = cache(() =>
   createTRPCClient<AppRouter>({
     links: [
       loggerLink(),
@@ -67,6 +67,6 @@ export const getHttpClient = cache(() =>
   }),
 );
 
-// This will be used acorss the RSC so we have the context full
+// This will be used acorss the RSC so we have the context full, this bridge with HTTP through the exposed tRPC defined endpoint
 // REMEMBER: use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
 export const trpcHttpServerSideClient = getHttpClient();

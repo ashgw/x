@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import { createMetadata } from "@ashgw/seo";
 
 import { TagsPage } from "~/app/components/pages/[tag]";
-import { HydrateClient } from "~/trpc/server";
-import { trpcHttpServerSideClient } from "~/trpc/callers/server/http";
+import { trpcHttpServerSideClient, HydrateClient } from "~/trpc/callers/server";
 
 interface DynamicRouteParams {
   params: { tag: string };

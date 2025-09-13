@@ -9,8 +9,7 @@ import {
 } from "@ashgw/seo";
 import { env } from "@ashgw/env";
 import { BlogPostPage } from "~/app/components/pages/[post]";
-import { HydrateClient } from "~/trpc/server";
-import { trpcHttpServerSideClient } from "~/trpc/callers/server/http";
+import { trpcHttpServerSideClient, HydrateClient } from "~/trpc/callers/server";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 

@@ -2,7 +2,6 @@ import { middleware } from "~/trpc/root";
 import { RateLimiterService } from "@ashgw/rate-limiter";
 import type { RlWindow } from "@ashgw/rate-limiter";
 import { TRPCError } from "@trpc/server";
-import { logger } from "@ashgw/observability";
 
 export const rateLimiterMiddleware = (input: {
   limit: {
@@ -11,7 +10,6 @@ export const rateLimiterMiddleware = (input: {
 }) =>
   middleware(async ({ ctx, next }) => {
     const rl = new RateLimiterService(input.limit.every);
-    logger.log("Received request: ", { reqHeaders: ctx.req.headers });
     if (!rl.canPass(rl.fp({ req: ctx.req }))) {
       throw new TRPCError({
         code: "FORBIDDEN",
