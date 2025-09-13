@@ -3,18 +3,24 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { rateLimiter } from "~/ts-rest/middlewares/rateLimiter";
-import type { GlobalContext } from "../ts-rest/context";
-import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
-import { cornAuthed } from "~/ts-rest/middlewares/authed";
+import { rateLimiter, cronAuthed } from "~/ts-rest/middlewares";
+import type { GlobalContext } from "~/ts-rest/context";
+import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
-  purgeViewWindow: middlware()
-    .use(rateLimiter({ limit: { every: "3s" } }))
-    .use(cornAuthed())
-    .route({ route: contract.purgeViewWindow })(async () =>
-    webhooks.purgeViewWindow(),
-  ),
+  purgeViewWindow: middleware()
+    .use(rateLimiter({ limit: { every: "15s" } }))
+    .use(cronAuthed())
+    .route(contract.purgeViewWindow)(async () => {
+    return await webhooks.purgeViewWindow();
+  }),
+
+  purgeTrashPosts: middleware()
+    .use(rateLimiter({ limit: { every: "5s" } }))
+    .use(cronAuthed())
+    .route(contract.purgeTrashPosts)(async () => {
+    return await webhooks.purgeTrashPosts();
+  }),
 
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({

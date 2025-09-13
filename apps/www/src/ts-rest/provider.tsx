@@ -2,7 +2,7 @@
 
 import { QueryClientProvider } from "@ts-rest/react-query/tanstack";
 import { getOptimizedQueryClient } from "./query-client";
-import { tsrQueryClientSide } from "~/ts-rest/client";
+import { tsrQueryClientSideClient } from "~/ts-rest/client";
 
 export function TsrProvider(
   props: Readonly<{
@@ -11,9 +11,9 @@ export function TsrProvider(
 ) {
   return (
     <QueryClientProvider client={getOptimizedQueryClient()}>
-      <tsrQueryClientSide.ReactQueryProvider>
+      <tsrQueryClientSideClient.ReactQueryProvider>
         {props.children}
-      </tsrQueryClientSide.ReactQueryProvider>
+      </tsrQueryClientSideClient.ReactQueryProvider>
     </QueryClientProvider>
   );
 }

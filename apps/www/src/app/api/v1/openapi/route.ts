@@ -8,7 +8,6 @@ export const runtime = "edge";
 
 export const revalidate = 3600;
 
-// TODO: add more docs
 export function GET() {
   const doc = generateOpenApi(contract, {
     info: {

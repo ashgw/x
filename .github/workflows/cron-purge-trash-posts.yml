@@ -1,0 +1,25 @@
+name: Cron / Purge Trashed Posts
+
+on:
+  schedule:
+    # run on the 1st of every month at 02:20 UTC
+    - cron: "20 2 1 * *"
+  workflow_dispatch:
+
+jobs:
+  purge_trash_posts:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: ./.github/actions/setup-env
+        with:
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+
+      - name: Purge Trash Posts
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -i -X DELETE \
+            "$NEXT_PUBLIC_WWW_URL/api/v1/purge-trash-posts" \
+            -H "x-cron-token: $X_CRON_TOKEN"
+

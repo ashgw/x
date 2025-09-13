@@ -22,3 +22,10 @@ export function parseWindow(window: RlWindow): number {
       return num * 24 * 60 * 60 * 1000;
   }
 }
+
+/**
+ * Example: "10s" -> 10, "1h" -> 3600, "2d" -> 172800
+ */
+export function windowToSeconds(window: RlWindow): number {
+  return Math.floor(parseWindow(window) / 1000);
+}
