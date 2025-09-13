@@ -1,32 +1,53 @@
 import type { inferProcedureInput } from "@trpc/server";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import type { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { expect, test } from "vitest";
 
 import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/api/router";
-import type { TrpcContext } from "~/trpc/context";
 import { postCardSchemaRo, postArticleSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
-import { createInnerTRPCContext } from "~/trpc/context";
+import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/root";
 
+function makeNextRequestStub(init?: {
+  headers?: Record<string, string | string[]>;
+  method?: string;
+  url?: string;
+}): NextRequest {
+  const h = new Headers();
+  for (const [k, v] of Object.entries(init?.headers ?? {})) {
+    if (Array.isArray(v)) v.forEach((val) => h.append(k, val));
+    else h.set(k, v);
+  }
+  const url = init?.url ?? "http://localhost/test";
+  const method = init?.method ?? "GET";
+  return new NextRequest(url, { method, headers: h }) as unknown as NextRequest;
+}
+
 function createTestContext() {
-  const innerContext = createInnerTRPCContext({
-    db,
+  const req = makeNextRequestStub({
+    headers: {
+      forwarded: 'for="127.0.0.1";proto=https;by=vitest',
+      "x-forwarded-for": "127.0.0.1",
+      "user-agent": "vitest",
+      "accept-language": "en",
+    },
   });
-  return {
-    ...innerContext,
-    req: {} as NextRequest,
-    res: {} as NextResponse,
+
+  return createTRPCContext({
+    db,
+    req,
+    res: new NextResponse(null, { headers: new Headers() }),
     trpcInfo: {} as FetchCreateContextFnOptions["info"],
-  } satisfies TrpcContext;
+  });
 }
 
 test("load and validate all blog posts", async () => {
-  const testContext = createTestContext();
-  const caller = createCallerFactory(appRouter)(testContext);
+  const ctx = createTestContext();
+  const caller = createCallerFactory(appRouter)(ctx);
   const posts = await caller.post.getPublicPostCards();
 
   for (const post of posts) {

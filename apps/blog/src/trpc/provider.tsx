@@ -5,7 +5,11 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
 import { COOKIE_NAMES, HEADER_NAMES } from "~/api/services/auth/consts";
-import { getOptimizedQueryClient, getTrpcUrl, trpcClientSide } from "./client";
+import {
+  getOptimizedQueryClient,
+  getTrpcUrl,
+  trpcClientSide,
+} from "./callers/client";
 import { transformer } from "./transformer";
 
 const isBrowser = typeof window !== "undefined";

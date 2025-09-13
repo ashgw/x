@@ -1,7 +1,6 @@
-// TODO: export this in it's own package to be used both here on on tRPC
 import type { Optional } from "ts-roids";
-import { defaultShouldDehydrateQuery } from "@tanstack/react-query"; // TODO: add these to the package
-import superjson from "superjson"; //  TODO: add superjson in catalog
+import { defaultShouldDehydrateQuery } from "@tanstack/react-query";
+import superjson from "superjson";
 import { QueryClient } from "@ts-rest/react-query/tanstack"; // PREFER @ts-rest for compatabilty
 
 export function makeQueryClient(): QueryClient {

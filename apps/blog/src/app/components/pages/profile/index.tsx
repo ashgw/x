@@ -19,7 +19,7 @@ import {
 
 import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
 import { SessionsList } from "./components/SessionsList";
 import { UserInfo } from "./components/UserInfo";

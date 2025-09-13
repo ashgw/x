@@ -18,9 +18,6 @@ catalogs:
     '@tailwindcss/typography':
       specifier: 0.5.10
       version: 0.5.10
-    '@tanstack/react-query':
-      specifier: 5.71.10
-      version: 5.71.10
     '@types/node':
       specifier: ^20.11.17
       version: 20.16.15
@@ -45,6 +42,9 @@ catalogs:
     react-hook-form:
       specifier: 7.53.0
       version: 7.53.0
+    superjson:
+      specifier: 2.2.1
+      version: 2.2.1
     tailwindcss:
       specifier: 3.4.14
       version: 3.4.14
@@ -70,6 +70,10 @@ catalogs:
     prisma:
       specifier: 6.4.1
       version: 6.4.1
+  react-query5:
+    '@tanstack/react-query':
+      specifier: 5.71.10
+      version: 5.71.10
   react18:
     '@types/react':
       specifier: ^18.3.11
@@ -96,6 +100,19 @@ catalogs:
     '@trpc/server':
       specifier: 11.0.2
       version: 11.0.2
+  ts-rest3:
+    '@ts-rest/core':
+      specifier: 3.52.1
+      version: 3.52.1
+    '@ts-rest/open-api':
+      specifier: 3.52.1
+      version: 3.52.1
+    '@ts-rest/react-query':
+      specifier: 3.52.1
+      version: 3.52.1
+    '@ts-rest/serverless':
+      specifier: 3.52.1
+      version: 3.52.1
 
 importers:
 
@@ -176,6 +193,9 @@ importers:
       '@ashgw/observability':
         specifier: workspace:*
         version: link:../../packages/observabiliy
+      '@ashgw/rate-limiter':
+        specifier: workspace:*
+        version: link:../../packages/rate-limiter
       '@ashgw/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -207,7 +227,7 @@ importers:
         specifier: 1.1.0
         version: 1.1.0(@types/react@18.3.18)(react@18.3.1)
       '@tanstack/react-query':
-        specifier: 'catalog:'
+        specifier: catalog:react-query5
         version: 5.71.10(react@18.3.1)
       '@trpc/client':
         specifier: catalog:trpc11
@@ -285,7 +305,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       superjson:
-        specifier: 2.2.1
+        specifier: 'catalog:'
         version: 2.2.1
       tailwind-merge:
         specifier: 2.5.4
@@ -405,6 +425,9 @@ importers:
       '@ashgw/observability':
         specifier: workspace:*
         version: link:../../packages/observabiliy
+      '@ashgw/rate-limiter':
+        specifier: workspace:*
+        version: link:../../packages/rate-limiter
       '@ashgw/seo':
         specifier: workspace:*
         version: link:../../packages/seo
@@ -432,17 +455,20 @@ importers:
       '@radix-ui/react-slot':
         specifier: 1.1.0
         version: 1.1.0(@types/react@18.3.18)(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: catalog:react-query5
+        version: 5.71.10(react@18.3.1)
       '@ts-rest/core':
-        specifier: 3.52.1
+        specifier: catalog:ts-rest3
         version: 3.52.1(@types/node@20.16.15)(zod@3.23.8)
       '@ts-rest/open-api':
-        specifier: 3.52.1
+        specifier: catalog:ts-rest3
         version: 3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(zod@3.23.8)
       '@ts-rest/react-query':
-        specifier: 3.52.1
+        specifier: catalog:ts-rest3
         version: 3.52.1(@tanstack/react-query@5.71.10(react@18.3.1))(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(react@18.3.1)(zod@3.23.8)
       '@ts-rest/serverless':
-        specifier: 3.52.1
+        specifier: catalog:ts-rest3
         version: 3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7))(zod@3.23.8)
       class-variance-authority:
         specifier: 0.7.0
@@ -492,6 +518,9 @@ importers:
       sonner:
         specifier: 1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      superjson:
+        specifier: 'catalog:'
+        version: 2.2.1
       tailwind-merge:
         specifier: 2.5.4
         version: 2.5.4
@@ -807,6 +836,25 @@ importers:
       next:
         specifier: 'catalog:'
         version: 14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@19.1.0))(react@19.1.0)(sass@1.69.7)
+    devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
+      '@ashgw/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/typescript
+      typescript:
+        specifier: 'catalog:'
+        version: 5.6.3
+
+  packages/rate-limiter:
+    dependencies:
+      '@ashgw/env':
+        specifier: workspace:*
+        version: link:../env
+      '@ashgw/ts-env':
+        specifier: 'catalog:'
+        version: 1.5.3(zod@3.23.8)
     devDependencies:
       '@ashgw/eslint-config':
         specifier: workspace:*

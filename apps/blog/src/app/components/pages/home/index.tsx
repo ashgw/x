@@ -1,8 +1,8 @@
-import { HydrateClient, trpcServerSide } from "~/trpc/server";
 import { PostCardsPage } from "./components/PostCardsPage";
+import { HydrateClient, trpcHttpServerSideClient } from "~/trpc/callers/server";
 
 export async function HomePage() {
-  const posts = await trpcServerSide.post.getPublicPostCards();
+  const posts = await trpcHttpServerSideClient.post.getPublicPostCards.query();
   return (
     <HydrateClient>
       <PostCardsPage posts={posts} />

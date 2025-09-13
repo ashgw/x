@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { logger } from "@ashgw/observability";
 
 import type { PostArticleRo } from "~/api/models/post";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 interface UseQueryParamBlogProps {
   onBlogFound?: (blog: PostArticleRo) => void;

@@ -20,6 +20,7 @@ const baseConfig = {
     "@ashgw/typescript",
     "@ashgw/db",
     "@ashgw/analytics",
+    "@ashgw/rate-limiter",
     "@ashgw/storage",
   ],
 
