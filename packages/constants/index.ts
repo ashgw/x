@@ -1,4 +1,4 @@
-export const email = "contact@ashgw.me";
+export const email = "oss@ashgw.me";
 export const repo_source = "https://github.com/ashgw/x";
 export const creator = "Ashref Gwader";
 export const site_name = creator;
