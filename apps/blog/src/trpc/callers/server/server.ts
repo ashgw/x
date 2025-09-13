@@ -1,32 +1,72 @@
 import "server-only"; // DO NOT DELETE THIS DAWG
-
+import { cache } from "react";
+import { headers, cookies } from "next/headers";
+import { createTRPCClient, loggerLink } from "@trpc/client";
+import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
+import superjson from "superjson";
+import type { AppRouter } from "~/api/router";
+import { env } from "@ashgw/env";
+import { getTrpcUrl } from "../client";
 import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
 import type { NextRequest, NextResponse } from "next/server";
-import { cache } from "react";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
 import { db } from "@ashgw/db";
 
-import type { AppRouter } from "~/api/router";
 import { appRouter } from "~/api/router";
 import { createCallerFactory } from "~/trpc/root";
 import { createTRPCContext } from "~/trpc/context";
 import { makeQueryClient } from "~/trpc/callers/query-client";
 
-const context = createTRPCContext({
+const nakedCtx = createTRPCContext({
   db,
   req: {} as NextRequest,
   res: {} as NextResponse,
   trpcInfo: {} as TRPCRequestInfo,
 });
 
-const serverSideCaller = createCallerFactory(appRouter)(context);
+const serverSideCaller = createCallerFactory(appRouter)(nakedCtx);
 
 // IMPORTANT: Create a stable getter for the query client that
 //            will return the same client during the same request.
 const getQueryClient = cache(makeQueryClient);
 
-// THIS CALLER WOULD ONMY BE USED FOR TESTS & WHAT NOT SINCE THE CONTEXT IS STRIPPED
-// use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
-export const { trpc: trpcServerSide, HydrateClient } =
+// THIS CALLER WOULD ONLY BE USED FOR TESTS &  RANDOM PLAYGROUND TESTS, DOESNT NOT REQUIRE THE APP RUNNING
+// (THE CONTEXT IS STRIPPED)
+//
+// REMEMBER: use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
+export const { trpc: trpcRpcServerSideClient, HydrateClient } =
   createHydrationHelpers<AppRouter>(serverSideCaller, getQueryClient);
+
+const noStoreFetch: typeof fetch = (input, init) =>
+  fetch(input, { ...(init ?? {}), cache: "no-store" });
+
+export const getHttpClient = cache(() =>
+  createTRPCClient<AppRouter>({
+    links: [
+      loggerLink(),
+      httpBatchLink({
+        url: getTrpcUrl({ siteBaseUrl: env.NEXT_PUBLIC_BLOG_URL }),
+        transformer: superjson,
+        headers() {
+          const h = headers();
+          const out: Record<string, string> = {};
+          h.forEach((v, k) => {
+            out[k] = v;
+          });
+
+          const cookie = cookies().toString();
+          if (cookie) out.cookie = cookie;
+
+          out["x-trpc-source"] = "rsc-http";
+          return out;
+        },
+        fetch: noStoreFetch,
+      }),
+    ],
+  }),
+);
+
+// This will be used acorss the RSC so we have the context full
+// REMEMBER: use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
+export const trpcHttpServerSideClient = getHttpClient();

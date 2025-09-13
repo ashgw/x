@@ -10,12 +10,12 @@ import {
 import { env } from "@ashgw/env";
 import { BlogPostPage } from "~/app/components/pages/[post]";
 import { HydrateClient } from "~/trpc/server";
-import { httpClient } from "~/trpc/callers/server/http";
+import { trpcHttpServerSideClient } from "~/trpc/callers/server/http";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
 const getPostCached = cache((slug: string) =>
-  httpClient.post.getDetailedPublicPost.query({ slug }),
+  trpcHttpServerSideClient.post.getDetailedPublicPost.query({ slug }),
 );
 
 export async function generateMetadata({
