@@ -6,7 +6,6 @@ import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import superjson from "superjson";
 import type { AppRouter } from "~/api/router";
 import { env } from "@ashgw/env";
-import { getTrpcUrl } from "./client";
 import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
 import type { NextRequest, NextResponse } from "next/server";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
@@ -17,6 +16,7 @@ import { appRouter } from "~/api/router";
 import { createCallerFactory } from "~/trpc/root";
 import { createTRPCContext } from "~/trpc/context";
 import { makeQueryClient } from "~/trpc/callers/query-client";
+import { getTrpcUrl } from "./client";
 
 const nakedCtx = createTRPCContext({
   db,
@@ -41,12 +41,24 @@ export const { trpc: trpcRpcServerSideClient, HydrateClient } =
 const noStoreFetch: typeof fetch = (input, init) =>
   fetch(input, { ...(init ?? {}), cache: "no-store" });
 
+const getTrpcBaseUrl = (): string => {
+  if (env.NEXT_PUBLIC_CURRENT_ENV === "development") {
+    // on my local machine
+    return env.NODE_ENV === "development"
+      ? "http://localhost:3001" //  next dev
+      : "http://localhost:3000"; // next build
+  } else {
+    // running on a server somewhere, this is already set
+    return env.NEXT_PUBLIC_BLOG_URL;
+  }
+};
+
 const getHttpClient = cache(() =>
   createTRPCClient<AppRouter>({
     links: [
       loggerLink(),
       httpBatchLink({
-        url: getTrpcUrl({ siteBaseUrl: env.NEXT_PUBLIC_BLOG_URL }),
+        url: getTrpcUrl({ siteBaseUrl: getTrpcBaseUrl() }),
         transformer: superjson,
         headers() {
           const h = headers();

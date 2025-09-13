@@ -21,8 +21,6 @@ export function getOptimizedQueryClient() {
 }
 
 export function getTrpcUrl({ siteBaseUrl }: { siteBaseUrl: string }) {
-  // For client-side requests, use relative path
-  // For server-side requests, use full URL
   return isBrowser ? trpcUri : `${siteBaseUrl}${trpcUri}`;
 }
 
