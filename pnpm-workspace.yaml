@@ -26,12 +26,19 @@ catalog:
   "jiti": "^2.3.3"
   framer-motion: ^10.17.4
   "@types/node": ^20.11.17
-  "@tanstack/react-query": "5.71.10" # TODO: add this to catalogs & pin 5
   "@ashgw/ts-env": 1.5.3
   react-hook-form: "7.53.0"
   zod: 3.23.8
+  superjson: "2.2.1"
 
 catalogs:
+  react-query5:
+    "@tanstack/react-query": "5.71.10"
+  ts-rest3:
+    "@ts-rest/core": "3.52.1"
+    "@ts-rest/open-api": "3.52.1"
+    "@ts-rest/react-query": "3.52.1"
+    "@ts-rest/serverless": "3.52.1"
   trpc11:
     "@trpc/client": "11.0.2"
     "@trpc/next": "11.0.2"

@@ -24,7 +24,7 @@ import {
 import type { UserLoginDto } from "~/api/models";
 import { userLoginSchemaDto } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 export function LoginPage() {
   const router = useRouter();

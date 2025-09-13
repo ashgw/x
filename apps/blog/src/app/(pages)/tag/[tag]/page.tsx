@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { createMetadata } from "@ashgw/seo";
 
 import { TagsPage } from "~/app/components/pages/[tag]";
-import { HydrateClient, trpcServerSide } from "~/trpc/server";
+import { trpcHttpServerSideClient, HydrateClient } from "~/trpc/callers/server";
 
 interface DynamicRouteParams {
   params: { tag: string };
@@ -17,7 +17,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function Tags({ params }: DynamicRouteParams) {
-  const posts = await trpcServerSide.post.getPublicPostCards();
+  const posts = await trpcHttpServerSideClient.post.getPublicPostCards.query();
   return (
     <HydrateClient>
       <TagsPage posts={posts} tag={params.tag} />;

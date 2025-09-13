@@ -18,7 +18,7 @@ import {
 
 import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
 import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 export function Newsletter() {
   const form = useForm<NewsletterSubscribeDto>({
@@ -33,9 +33,9 @@ export function Newsletter() {
       });
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
       toast.error("Something went wrong", {
-        description: "Please try again later",
+        description: error.message,
       });
     },
   });

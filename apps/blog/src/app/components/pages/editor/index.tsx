@@ -17,7 +17,7 @@ import { useStore } from "~/app/stores";
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 import { SoundProvider } from "../../misc/SoundContext";
 import { SoundToggle } from "../../misc/SoundToggle";
 import { BlogList, TrashList } from "./components/lists/ItemList";

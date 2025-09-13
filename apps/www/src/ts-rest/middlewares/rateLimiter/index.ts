@@ -1,35 +1,34 @@
-import { getFingerprint } from "./getFingerprint";
-import type { RateLimiter } from "./rl";
-import { createRateLimiter } from "./rl";
-import { windowToSeconds } from "./window";
-import type { RlWindow } from "./window";
 import type { SequentialMiddleware } from "~/@ashgw/ts-rest";
 import { middlewareResponse, middlewareFn } from "~/@ashgw/ts-rest";
 import type { GlobalContext } from "~/ts-rest/context";
+import { RateLimiterService } from "@ashgw/rate-limiter";
+import type { RlWindow } from "@ashgw/rate-limiter";
 
 interface RateLimiterCtx {
-  rl: RateLimiter;
+  rateLimitWindow: RlWindow;
 }
 
+//  TODO: use a presistent kv here since lambdas don't presist shit
 export function rateLimiter({
   limit,
 }: {
   limit: { every: RlWindow };
 }): SequentialMiddleware<RateLimiterCtx> {
-  const { rl } = createRateLimiter(limit.every);
+  const rateLimitWindow = limit.every;
+  const rl = new RateLimiterService(limit.every);
   const mw = middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
-    if (!req.ctx.rl.canPass(getFingerprint({ req }))) {
+    if (!rl.canPass(rl.fp({ req }))) {
       return middlewareResponse.errors.tooManyRequests({
         body: {
           message: `You're limited for the next ${limit.every}`,
         },
-        retryAfterSeconds: windowToSeconds(limit.every),
+        retryAfterSeconds: rl.windowToSeconds(limit.every),
       });
     }
-    req.ctx.rl = rl; // we need to explicitly set the context here so it sticks
+    req.ctx.rateLimitWindow = rateLimitWindow; // we need to explicitly set the context here so it sticks
   });
   return {
     mw,
-    ctx: { rl },
+    ctx: { rateLimitWindow },
   };
 }
