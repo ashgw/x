@@ -9,7 +9,7 @@ import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: middleware()
-    .use(rateLimiter({ limit: { every: "3s" } }))
+    .use(rateLimiter({ limit: { every: "15s" } }))
     .use(cronAuthed())
     .route(contract.purgeViewWindow)(async () => {
     return await webhooks.purgeViewWindow();
