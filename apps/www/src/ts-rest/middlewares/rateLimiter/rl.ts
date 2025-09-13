@@ -1,3 +1,4 @@
+// TODO: add this to another package & implement an actual cache
 import type { RlWindow } from "./window";
 import { parseWindow } from "./window";
 
@@ -6,7 +7,6 @@ export interface RateLimiter {
   every: RlWindow;
 }
 
-// TODO: add this to another package & implement an actual cache
 export function createRateLimiter(every: RlWindow): { rl: RateLimiter } {
   const lastCalled = new Map<string, number>();
 

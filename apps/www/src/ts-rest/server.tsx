@@ -1,35 +1,41 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { makeQueryClient } from "./query-client";
-import { tsrQueryClientSide } from "~/ts-rest/client";
+import { tsrQueryClientSideClient } from "~/ts-rest/client";
 
 /**
-usage like:
-```ts
-  import {
-      dehydrate,
-      HydrationBoundary,
-      QueryClient,
-  } from "@tanstack/react-query";
+ * Use this in `getServerSideProps`, `getStaticProps`, or any server-side
+ * environment to prefetch data before rendering. Data is then dehydrated
+ * and passed down to the client to avoid waterfalls.
+ *
+ * Example:
+ * ```ts
+ * // Prefetch queries on the server
+ * await tsrQueryServerSideClient.posts.getAll.prefetchQuery({
+ *   queryKey: ['POSTS'],
+ * });
+ *
+ */
+export const tsrQueryServerSideClient =
+  tsrQueryClientSideClient.initQueryClient(makeQueryClient());
 
-  await tsrQueryServerSide.getPosts.prefetchQuery({ queryKey: ['POSTS'] });
-
-  return (
-    <HydrationBoundary state={dehydrate(tsrQueryServerSide)}>
-      <Posts />
-    </HydrationBoundary>
-  );
-```
-*/
-export const tsrQueryServerSide =
-  tsrQueryClientSide.initQueryClient(makeQueryClient());
-
-// TODO: add docs on how to use this
+/**
+ * A thin wrapper that hydrates React Query’s cache on the client
+ * with state that was dehydrated on the server.
+ *
+ * Usage:
+ * ```tsx
+ * // In your layout or page:
+ * <HydrateClient>
+ *   <Posts />
+ * </HydrateClient>
+ * ```
+ */
 export function HydrateClient(
   props: Readonly<{
     children: React.ReactNode;
   }>,
 ) {
-  const dehydratedState = dehydrate(tsrQueryServerSide);
+  const dehydratedState = dehydrate(tsrQueryServerSideClient);
 
   return (
     <HydrationBoundary state={dehydratedState}>

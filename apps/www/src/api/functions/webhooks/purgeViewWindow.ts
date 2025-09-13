@@ -1,5 +1,5 @@
 import { logger, monitor } from "@ashgw/observability";
-import type { PurgeViewWindowResponses } from "~/api/schemas/responses";
+import type { PurgeViewWindowResponses } from "~/api/models";
 import { db } from "@ashgw/db";
 
 const RETAIN_DAYS = 2; // keep 2 days for safety
@@ -28,7 +28,7 @@ export async function purgeViewWindow(): Promise<PurgeViewWindowResponses> {
     }
 
     return {
-      status: 200,
+      status: 204,
       body: undefined,
     };
   } catch (error) {
