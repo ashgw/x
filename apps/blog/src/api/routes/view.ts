@@ -4,7 +4,11 @@ import { trackViewRoSchema, trackViewSchemaDto } from "../models/view";
 import { ViewService } from "../services/view";
 
 export const viewRouter = router({
-  trackView: publicProcedure()
+  trackView: publicProcedure({
+    limit: {
+      every: "1s",
+    },
+  })
     .input(trackViewSchemaDto)
     .output(trackViewRoSchema)
     .mutation(async ({ input: { slug }, ctx: { db, req } }) => {

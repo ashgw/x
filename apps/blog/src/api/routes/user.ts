@@ -28,7 +28,7 @@ export const userRouter = router({
 
   login: publicProcedure({
     limit: {
-      every: "2s",
+      every: "3s",
     },
   })
     .input(userLoginSchemaDto)
@@ -50,7 +50,7 @@ export const userRouter = router({
 
   changePassword: authenticatedProcedure({
     limit: {
-      every: "10s",
+      every: "2s",
     },
   })
     .input(userChangePasswordSchemaDto)
