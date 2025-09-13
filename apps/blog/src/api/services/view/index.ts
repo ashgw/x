@@ -4,7 +4,6 @@ import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { logger } from "@ashgw/observability";
 import type { TrackViewRo } from "~/api/models/view";
-
 export class ViewService {
   private readonly db: DatabaseClient;
   private readonly req: NextRequest;
