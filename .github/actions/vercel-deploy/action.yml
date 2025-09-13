@@ -4,19 +4,19 @@ description: Deploy to Vercel and set the URL
 
 inputs:
   deployment_environment:
-    description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
+    description: "Environment: 'production' or 'preview'"
     required: true
   app_name:
-    description: "The working directory/project name you're trying to deploy. Example: 'www', 'blog'"
+    description: "App dir / project name, e.g. 'www' or 'blog'"
     required: true
   GITHUB_TOKEN:
     description: "GitHub token"
     required: true
   VERCEL_TOKEN:
-    description: "Vercel token for authentication"
+    description: "Vercel token"
     required: true
   VERCEL_ORG_ID:
-    description: "Vercel organization ID"
+    description: "Vercel org ID"
     required: true
   VERCEL_PROJECT_ID:
     description: "Vercel project ID"
@@ -32,14 +32,41 @@ runs:
         VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
       run: |
-        echo "Building..."
-        pnpm vercel pull --yes --environment=${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
-        pnpm vercel build --yes --token=$VERCEL_TOKEN
-        echo "Deploying..."
-        DEPLOY_URL=$(pnpm vercel deploy --yes --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
-        echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
-        echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"
-        echo "${{ inputs.deployment_environment }}-url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+        set -euo pipefail
+
+        APP="${{ inputs.app_name }}"
+        ENVIRONMENT="${{ inputs.deployment_environment }}"
+
+        echo "→ Pull env: $ENVIRONMENT"
+        pnpm vercel pull --yes --environment="$ENVIRONMENT" --token="$VERCEL_TOKEN"
+
+        echo "→ Build ($ENVIRONMENT)"
+        if [ "$ENVIRONMENT" = "production" ]; then
+          pnpm vercel build --prod --yes --token="$VERCEL_TOKEN"
+          echo "→ Deploy (prebuilt, prod)"
+          DEPLOY_OUTPUT="$(pnpm vercel deploy --prebuilt --prod --yes --token="$VERCEL_TOKEN")"
+          DEPLOY_URL="$(printf '%s\n' "$DEPLOY_OUTPUT" | awk '/^Production: /{print $2}' | tail -n1)"
+        else
+          pnpm vercel build --yes --token="$VERCEL_TOKEN"
+          echo "→ Deploy (prebuilt, preview)"
+          DEPLOY_OUTPUT="$(pnpm vercel deploy --prebuilt --yes --token="$VERCEL_TOKEN")"
+          DEPLOY_URL="$(printf '%s\n' "$DEPLOY_OUTPUT" | awk '/^Preview: /{print $2}' | tail -n1)"
+        fi
+
+        # Fallback: grab the last URL if format changes
+        if [ -z "${DEPLOY_URL:-}" ]; then
+          DEPLOY_URL="$(printf '%s\n' "$DEPLOY_OUTPUT" | grep -Eo 'https?://[^ ]+' | tail -n1 || true)"
+        fi
+        if [ -z "${DEPLOY_URL:-}" ]; then
+          echo "::error::Failed to parse deployment URL"
+          echo "$DEPLOY_OUTPUT"
+          exit 1
+        fi
+
+        echo "→ Deployed: $DEPLOY_URL"
+        echo "DEPLOY_URL=$DEPLOY_URL" >> "$GITHUB_ENV"
+        echo "::notice title=${ENVIRONMENT} URL::$DEPLOY_URL"
+        echo "${ENVIRONMENT}-url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
 
     - name: Notify about the deployment URL
       if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
@@ -55,12 +82,12 @@ runs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## ${process.env.DEPLOYMENT_ENVIRONMENT} Deployment Ready! 
+            body: `## ${process.env.DEPLOYMENT_ENVIRONMENT} Deployment Ready!
 
             ### App: \`${process.env.DEPLOYED_APP}\`
-            
+
             **${process.env.DEPLOYMENT_ENVIRONMENT} URL:** [Check it out here](${process.env.DEPLOY_URL})
-            
+
             ---
-            > This ${process.env.DEPLOYMENT_ENVIRONMENT} environment reflects the changes in this PR. And deploys this version of the app as soons as the "deploy-preview" label is added`
+            > This ${process.env.DEPLOYMENT_ENVIRONMENT} environment reflects the changes in this PR.`
           })
