@@ -3,7 +3,7 @@ export {
   cronAuthedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
   noContentSchemaResponse,
-  rateLimiterMiddlwareSchemaResponse,
+  rateLimiterMiddlewareSchemaResponse,
 } from "./responses";
 export { cronAuthedMiddlewareHeaderSchemaDto } from "./dtos";
 export type { CronAuthedMiddlewareHeaderDto } from "./dtos";

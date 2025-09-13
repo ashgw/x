@@ -15,7 +15,7 @@ export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
     .describe("Missing or invalid x-cron-token"),
 });
 
-export const rateLimiterMiddlwareSchemaResponse = createSchemaResponses({
+export const rateLimiterMiddlewareSchemaResponse = createSchemaResponses({
   429: httpErrorSchema
     .tooManyRequests()
     .describe("Exceeded the allowed window to make requests"),

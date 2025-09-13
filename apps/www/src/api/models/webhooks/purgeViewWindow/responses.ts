@@ -3,12 +3,12 @@ import { createSchemaResponses } from "~/@ashgw/ts-rest";
 import {
   cronAuthedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
-  rateLimiterMiddlwareSchemaResponse,
+  rateLimiterMiddlewareSchemaResponse,
   noContentSchemaResponse,
 } from "../../shared/responses";
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
-  ...rateLimiterMiddlwareSchemaResponse,
+  ...rateLimiterMiddlewareSchemaResponse,
   ...cronAuthedMiddlewareSchemaResponse,
   ...noContentSchemaResponse,
   ...internalErrorSchemaResponse,
