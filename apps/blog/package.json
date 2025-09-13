@@ -31,6 +31,7 @@
     "@ashgw/css": "workspace:*",
     "@ashgw/db": "workspace:*",
     "@ashgw/env": "workspace:*",
+    "@ashgw/rate-limiter": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@ashgw/seo": "workspace:*",
     "@ashgw/storage": "workspace:*",
