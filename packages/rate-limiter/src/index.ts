@@ -10,6 +10,9 @@ export class RateLimiterService {
     this.every = every;
   }
 
+  public updateWindow(newWindow: RlWindow): void {
+    this.every = newWindow;
+  }
   public canPass(key: string): boolean {
     const now = Date.now();
     const last = this.lastCalled.get(key) ?? 0;
