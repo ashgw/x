@@ -6,7 +6,7 @@ import { router } from "~/api/router";
 import {
   setupRequestMiddleware,
   setupResponseHandlers,
-} from "~/ts-rest/middlewares/global-setup";
+} from "~/ts-rest/middlewares";
 
 export const runtime = "nodejs";
 

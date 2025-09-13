@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 import { env } from "@ashgw/env";
 
+// TODO: add this to it's own package and call it fp
 export function getFingerprint({ req }: { req: Request }): string {
   const forwarded = req.headers.get("forwarded");
   const fromForwarded = forwarded?.match(/for="?([^;," ]+)"?/i)?.[1];

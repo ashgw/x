@@ -1,4 +1,4 @@
-// TODO: export this in it's own package
+// TODO: export this in it's own package to be used both here on on tRPC
 import type { Optional } from "ts-roids";
 import { defaultShouldDehydrateQuery } from "@tanstack/react-query"; // TODO: add these to the package
 import superjson from "superjson"; //  TODO: add superjson in catalog
