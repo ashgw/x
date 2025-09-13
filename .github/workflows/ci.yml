@@ -11,6 +11,24 @@ on:
       - synchronize
 
   workflow_dispatch:
+    inputs:
+      app:
+        description: "App to deploy (manual runs only)"
+        required: true
+        type: choice
+        options:
+          - both
+          - www
+          - blog
+        default: both
+      environment:
+        description: "Target environment (manual runs only)"
+        required: true
+        type: choice
+        options:
+          - preview
+          - production
+        default: preview
 
 permissions:
   contents: write
@@ -23,7 +41,6 @@ concurrency:
 
 jobs:
   validate-pr:
-    # conventional commit validation
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/on-workflow-call-pr-validate-title.yml
     secrets: inherit
@@ -78,10 +95,10 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  # just a trigger to dispatch
+  # trigger preview gate
   preview-deployment:
     needs: [mergeable]
-    if: github.ref == 'refs/heads/main'
+    if: (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.environment == 'preview')
     uses: ./.github/workflows/on-workflow-call-trigger-deployment.yml
     with:
       deployment_environment: preview
@@ -89,6 +106,7 @@ jobs:
 
   www-preview-deployment:
     needs: [preview-deployment]
+    if: needs.preview-deployment.result == 'success' && (github.event_name != 'workflow_dispatch' || inputs.app == 'www' || inputs.app == 'both')
     uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: preview
@@ -97,16 +115,16 @@ jobs:
 
   blog-preview-deployment:
     needs: [preview-deployment]
+    if: needs.preview-deployment.result == 'success' && (github.event_name != 'workflow_dispatch' || inputs.app == 'blog' || inputs.app == 'both')
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: preview
       app_name: blog
     secrets: inherit
 
-  # same here
   production-deployment:
-    if: github.ref == 'refs/heads/main'
     needs: [mergeable]
+    if: (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.environment == 'production')
     uses: ./.github/workflows/on-workflow-call-trigger-deployment.yml
     with:
       deployment_environment: production
@@ -114,6 +132,7 @@ jobs:
 
   www-production-deployment:
     needs: [production-deployment]
+    if: needs.production-deployment.result == 'success' && (github.event_name != 'workflow_dispatch' || inputs.app == 'www' || inputs.app == 'both')
     uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: production
@@ -122,6 +141,7 @@ jobs:
 
   blog-production-deployment:
     needs: [production-deployment]
+    if: needs.production-deployment.result == 'success' && (github.event_name != 'workflow_dispatch' || inputs.app == 'blog' || inputs.app == 'both')
     uses: ./.github/workflows/on-workflow-call-container-deployment.yml
     with:
       deployment_environment: production
