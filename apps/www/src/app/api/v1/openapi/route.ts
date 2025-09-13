@@ -19,6 +19,7 @@ export function GET() {
       },
     },
     openapi: "3.1.0",
+    setOperationId: true,
     servers: [{ url: new URL(endPoint, env.NEXT_PUBLIC_WWW_URL).toString() }],
   });
   return NextResponse.json(doc, { status: 200 });
