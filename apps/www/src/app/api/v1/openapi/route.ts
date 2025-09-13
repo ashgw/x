@@ -14,8 +14,11 @@ export function GET() {
       title: "www API v1",
       version: "1.0.0",
       description: "REST",
+      contact: {
+        email: "oss@ashgw.me",
+      },
     },
-    openapi: "3.0.3",
+    openapi: "3.1.0",
     servers: [{ url: new URL(endPoint, env.NEXT_PUBLIC_WWW_URL).toString() }],
   });
   return NextResponse.json(doc, { status: 200 });
