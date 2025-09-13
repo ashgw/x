@@ -64,11 +64,9 @@ export function HomePage() {
                 </motion.h1>
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
-                    I prefer to use{" "}
-                    <Link href={links.twitter.link} name="X"></Link> for most
-                    communication. I use{" "}
-                    <Link href={links.keyBase} name="GPG"></Link> for secure
-                    communication, check my{" "}
+                    Best way to reach me is to shoot me a DM on{" "}
+                    <Link href={links.twitter.link} name="X"></Link>.<br /> I
+                    use{" "}
                     <button
                       onClick={() => {
                         if (gpgQuery.data) {
@@ -85,10 +83,12 @@ export function HomePage() {
                       }}
                     >
                       <strong className="glows text-white underline">
-                        ID.
+                        GPG
                       </strong>
                     </button>{" "}
-                    Otherwise, you can either
+                    for
+                    <Link href={links.keyBase} name="secure"></Link>{" "}
+                    communication. Otherwise just email me
                   </TextContent>
                 </div>
               </div>
