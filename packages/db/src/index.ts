@@ -9,7 +9,7 @@ import ws from "ws";
 
 import { env } from "@ashgw/env";
 
-import { PrismaClient as FullPrismaClient } from "./generated/client";
+import { PrismaClient as FullPrismaClient } from "@prisma/client";
 
 export type DatabaseClient = Omit<
   FullPrismaClient,
