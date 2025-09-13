@@ -38,9 +38,6 @@ const getQueryClient = cache(makeQueryClient);
 export const { trpc: trpcRpcServerSideClient, HydrateClient } =
   createHydrationHelpers<AppRouter>(serverSideCaller, getQueryClient);
 
-const noStoreFetch: typeof fetch = (input, init) =>
-  fetch(input, { ...(init ?? {}), cache: "no-store" });
-
 const getTrpcBaseUrl = (): string => {
   if (env.NEXT_PUBLIC_CURRENT_ENV === "development") {
     // on my local machine
@@ -73,7 +70,6 @@ const getHttpClient = cache(() =>
           out["x-trpc-source"] = "rsc-http";
           return out;
         },
-        fetch: noStoreFetch,
       }),
     ],
   }),
