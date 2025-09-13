@@ -1,15 +1,9 @@
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { NextRequest, NextResponse } from "next/server";
 
+import { db } from "@ashgw/db";
 import type { DatabaseClient } from "@ashgw/db";
-
 import type { UserRo } from "~/api/models";
-
-export function createInnerTRPCContext(opts: { db: DatabaseClient }) {
-  return {
-    db: opts.db,
-  };
-}
 
 export function createTRPCContext(opts: {
   req: NextRequest;
@@ -17,21 +11,13 @@ export function createTRPCContext(opts: {
   trpcInfo: FetchCreateContextFnOptions["info"];
   db: DatabaseClient;
 }) {
-  const innerContext = createInnerTRPCContext({
-    db: opts.db,
-  });
-
   return {
-    ...innerContext,
     req: opts.req,
     res: opts.res,
     trpcInfo: opts.trpcInfo,
+    db: db,
   };
 }
-
-export type InnerTrpcContext = Awaited<
-  ReturnType<typeof createInnerTRPCContext>
->;
 
 export type TrpcContext = Awaited<ReturnType<typeof createTRPCContext>>;
 

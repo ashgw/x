@@ -6,22 +6,18 @@ import { expect, test } from "vitest";
 import { db } from "@ashgw/db";
 
 import type { AppRouter } from "~/api/router";
-import type { TrpcContext } from "~/trpc/context";
 import { postCardSchemaRo, postArticleSchemaRo } from "~/api/models";
 import { appRouter } from "~/api/router";
-import { createInnerTRPCContext } from "~/trpc/context";
+import { createTRPCContext } from "~/trpc/context";
 import { createCallerFactory } from "~/trpc/root";
 
 function createTestContext() {
-  const innerContext = createInnerTRPCContext({
+  return createTRPCContext({
     db,
-  });
-  return {
-    ...innerContext,
     req: {} as NextRequest,
     res: {} as NextResponse,
     trpcInfo: {} as FetchCreateContextFnOptions["info"],
-  } satisfies TrpcContext;
+  });
 }
 
 test("load and validate all blog posts", async () => {

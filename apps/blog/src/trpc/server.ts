@@ -10,15 +10,11 @@ import { db } from "@ashgw/db";
 import type { AppRouter } from "~/api/router";
 import { appRouter } from "~/api/router";
 import { createCallerFactory } from "~/trpc/root";
-import { createInnerTRPCContext, createTRPCContext } from "./context";
+import { createTRPCContext } from "./context";
 import { makeQueryClient } from "./query-client";
 
-const innerContext = createInnerTRPCContext({
-  db,
-});
-
 const context = createTRPCContext({
-  ...innerContext,
+  db,
   req: {} as NextRequest,
   res: {} as NextResponse,
   trpcInfo: {} as TRPCRequestInfo,
