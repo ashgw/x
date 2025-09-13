@@ -36,6 +36,9 @@ runs:
         pnpm vercel pull --yes --environment=${{ inputs.deployment_environment }} --token=$VERCEL_TOKEN
         pnpm vercel build --yes --token=$VERCEL_TOKEN
         echo "Deploying..."
+        # here we need the command to be 
+        DEPLOY_URL=$(pnpm vercel deploy --pord --yes --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
+        # if the input.deployment is production, else we keep it preview as it is right now the standard
         DEPLOY_URL=$(pnpm vercel deploy --yes --token=$VERCEL_TOKEN | grep -Eo 'https?://[^ ]+')
         echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
         echo "::notice title=${{ inputs.deployment_environment }} URL::$DEPLOY_URL"

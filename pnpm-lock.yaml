@@ -765,6 +765,12 @@ importers:
       '@prisma/client':
         specifier: catalog:prisma6
         version: 6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3)
+      bufferutil:
+        specifier: ^4.0.9
+        version: 4.0.9
+      prisma:
+        specifier: catalog:prisma6
+        version: 6.4.1(typescript@5.6.3)
       prisma-markdown:
         specifier: 2.0.0
         version: 2.0.0(@prisma/client@6.4.1(prisma@6.4.1(typescript@5.6.3))(typescript@5.6.3))(prisma@6.4.1(typescript@5.6.3))
@@ -787,12 +793,6 @@ importers:
       '@types/ws':
         specifier: ^8.18.1
         version: 8.18.1
-      bufferutil:
-        specifier: ^4.0.9
-        version: 4.0.9
-      prisma:
-        specifier: catalog:prisma6
-        version: 6.4.1(typescript@5.6.3)
       ts-roids:
         specifier: 'catalog:'
         version: 2.0.0
