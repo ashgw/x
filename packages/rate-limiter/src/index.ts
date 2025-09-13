@@ -1,5 +1,4 @@
 import { getFingerprint } from "./getFingerprint";
-import { createRateLimiter } from "./rl";
 
 export type RlWindow = `${number}s` | `${number}h` | `${number}d`;
 
@@ -15,7 +14,7 @@ export class RateLimiterService {
     const now = Date.now();
     const last = this.lastCalled.get(key) ?? 0;
 
-    if (now - last < RateLimiterService.parseWindow(this.every)) {
+    if (now - last < this.parseWindow(this.every)) {
       return false; // too soon
     }
 
@@ -23,15 +22,15 @@ export class RateLimiterService {
     return true;
   }
 
-  public static fp({ req }: { req: Request }): string {
+  public fp({ req }: { req: Request }): string {
     return getFingerprint({ req });
   }
 
-  public static windowToSeconds(window: RlWindow): number {
-    return Math.floor(RateLimiterService.parseWindow(window) / 1000);
+  public windowToSeconds(window: RlWindow): number {
+    return Math.floor(this.parseWindow(window) / 1000);
   }
 
-  public static parseWindow(window: RlWindow): number {
+  public parseWindow(window: RlWindow): number {
     const m = /^(\d+)([shd])$/.exec(window);
     if (!m) {
       throw new Error(`Invalid RlWindow value: ${window}`);
@@ -54,5 +53,3 @@ export class RateLimiterService {
     }
   }
 }
-
-export const a = new RateLimiterService("10s");
