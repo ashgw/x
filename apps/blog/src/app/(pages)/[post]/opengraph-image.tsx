@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { logger, monitor } from "@ashgw/observability";
-import { httpClient } from "~/trpc/http";
+import { httpClient } from "~/trpc/callers/server/http";
 
 export const runtime = "nodejs";
 

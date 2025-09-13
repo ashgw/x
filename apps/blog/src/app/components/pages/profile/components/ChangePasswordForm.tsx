@@ -18,7 +18,7 @@ import {
 
 import type { UserChangePasswordDto } from "~/api/models";
 import { userChangePasswordSchemaDto } from "~/api/models";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 export function ChangePasswordForm() {
   const form = useForm<UserChangePasswordDto>({

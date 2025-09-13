@@ -4,7 +4,7 @@ import { createMetadata } from "@ashgw/seo";
 
 import { TagsPage } from "~/app/components/pages/[tag]";
 import { HydrateClient } from "~/trpc/server";
-import { httpClient } from "~/trpc/http";
+import { httpClient } from "~/trpc/callers/server/http";
 
 interface DynamicRouteParams {
   params: { tag: string };

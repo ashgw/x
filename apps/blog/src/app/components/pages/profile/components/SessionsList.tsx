@@ -18,7 +18,7 @@ import {
 } from "@ashgw/ui";
 
 import type { SessionRo } from "~/api/models";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 const tableVariants = {
   hidden: { opacity: 0 },

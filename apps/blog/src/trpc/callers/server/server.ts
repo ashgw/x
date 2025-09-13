@@ -10,8 +10,8 @@ import { db } from "@ashgw/db";
 import type { AppRouter } from "~/api/router";
 import { appRouter } from "~/api/router";
 import { createCallerFactory } from "~/trpc/root";
-import { createTRPCContext } from "./context";
-import { makeQueryClient } from "./query-client";
+import { createTRPCContext } from "~/trpc/context";
+import { makeQueryClient } from "~/trpc/callers/query-client";
 
 const context = createTRPCContext({
   db,
@@ -26,6 +26,7 @@ const serverSideCaller = createCallerFactory(appRouter)(context);
 //            will return the same client during the same request.
 const getQueryClient = cache(makeQueryClient);
 
+// THIS CALLER WOULD ONMY BE USED FOR TESTS & WHAT NOT SINCE THE CONTEXT IS STRIPPED
 // use HydrateClient for server side hydration if not using the default fallbacks provided by Next.js
 export const { trpc: trpcServerSide, HydrateClient } =
   createHydrationHelpers<AppRouter>(serverSideCaller, getQueryClient);

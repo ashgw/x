@@ -3,7 +3,7 @@ import type { Optional } from "ts-roids";
 import { createTRPCReact } from "@trpc/react-query";
 
 import type { AppRouter } from "~/api/router";
-import { trpcUri } from "./endpoint";
+import { trpcUri } from "../endpoint";
 import { makeQueryClient } from "./query-client";
 
 let clientQueryClientSingleton: Optional<QueryClient> = null;

@@ -2,16 +2,13 @@ import "server-only";
 import { cache } from "react";
 import { headers, cookies } from "next/headers";
 
-import { createTRPCClient } from "@trpc/client";
+import { createTRPCClient, loggerLink } from "@trpc/client";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 
 import superjson from "superjson";
 import type { AppRouter } from "~/api/router";
-import { trpcUri } from "~/trpc/endpoint";
-import { makeQueryClient } from "./query-client";
 import { env } from "@ashgw/env";
-
-export const getQueryClient = cache(makeQueryClient);
+import { getTrpcUrl } from "../client";
 
 const noStoreFetch: typeof fetch = (input, init) =>
   fetch(input, { ...(init ?? {}), cache: "no-store" });
@@ -19,9 +16,9 @@ const noStoreFetch: typeof fetch = (input, init) =>
 export const getHttpClient = cache(() =>
   createTRPCClient<AppRouter>({
     links: [
-      // loggerLink(), // optional
+      loggerLink(),
       httpBatchLink({
-        url: env.NEXT_PUBLIC_BLOG_URL + trpcUri,
+        url: getTrpcUrl({ siteBaseUrl: env.NEXT_PUBLIC_BLOG_URL }),
         transformer: superjson,
         headers() {
           const h = headers();
@@ -42,4 +39,5 @@ export const getHttpClient = cache(() =>
   }),
 );
 
+// This will be used acorss the RSC so we have the context full
 export const httpClient = getHttpClient();
