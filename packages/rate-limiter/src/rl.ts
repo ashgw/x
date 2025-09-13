@@ -1,4 +1,4 @@
-// TODO: add this to another package & implement an actual cache
+// TODO: use redis, since this won't work on lambdas
 import type { RlWindow } from "./window";
 import { parseWindow } from "./window";
 
