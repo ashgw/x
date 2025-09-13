@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { trpcServerSide } from "~/trpc/server";
 import { logger, monitor } from "@ashgw/observability";
+import { httpClient } from "~/trpc/http";
 
 export const runtime = "nodejs";
 
@@ -25,7 +25,7 @@ const clamp = (s: string, n: number) =>
 
 export default async function Image(_: Request, { params }: RouteCtx) {
   try {
-    const post = await trpcServerSide.post.getDetailedPublicPost({
+    const post = await httpClient.post.getDetailedPublicPost.query({
       slug: params.post,
     });
 
