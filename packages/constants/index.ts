@@ -1,9 +1,8 @@
 export const email = "oss@ashgw.me";
 export const repo_source = "https://github.com/ashgw/x";
-export const creator = "@ashgw";
+export const creator = "AG";
 export const site_name = creator;
 
-// slashless links
 export const links = {
   keyBase: "https://keybase.io/ashgw",
   gitHub: {
@@ -11,7 +10,7 @@ export const links = {
     link: "https://github.com/ashgw",
   },
   twitter: {
-    link: "httpsE://x.com/rccyx_",
+    link: "https://x.com/rccyx_",
     handle: "@rccyx_",
   },
 } as const;
