@@ -53,7 +53,7 @@ const getTrpcBaseUrl = (): string => {
 const getHttpClient = cache(() =>
   createTRPCClient<AppRouter>({
     links: [
-      loggerLink(),
+      ...(env.NEXT_PUBLIC_CURRENT_ENV === "development" ? [loggerLink()] : []),
       httpBatchLink({
         url: getTrpcUrl({ siteBaseUrl: getTrpcBaseUrl() }),
         transformer: superjson,
