@@ -1,18 +1,17 @@
-export const email = "contact@ashgw.me";
+export const email = "oss@ashgw.me";
 export const repo_source = "https://github.com/ashgw/x";
-export const creator = "Ashref Gwader";
-export const site_name = creator;
+export const creator = "@rccyx";
+export const site_name = "AG";
 
-// slashless links
 export const links = {
-  npm: "https://www.npmjs.com/~ashgw",
-  crates: "https://crates.io/users/AshGw",
-  pypi: "https://pypi.org/user/AshGw",
   keyBase: "https://keybase.io/ashgw",
-  gitHub: "https://github.com/ashgw",
+  gitHub: {
+    username: "ashgw",
+    link: "https://github.com/ashgw",
+  },
   twitter: {
-    link: "https://x.com/ashrefgwader",
-    handle: "@ashrefgwader",
+    link: "https://x.com/rccyx_",
+    handle: "@rccyx_",
   },
 } as const;
 

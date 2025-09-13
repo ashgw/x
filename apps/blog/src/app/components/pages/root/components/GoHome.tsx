@@ -1,20 +1,30 @@
 "use client";
 
 import { Suspense } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 
-import { env } from "@ashgw/env";
-
 function GoHomeContent() {
+  const router = useRouter();
   const pathname = usePathname();
-  const isRootPath = pathname === "/";
+
+  const handleClick = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
+  };
+
   const strokeWidth = 2;
+
   return (
-    <Link
-      href={isRootPath ? env.NEXT_PUBLIC_WWW_URL : "/"}
-      className="dimmed-4 hover:text-foreground mb-4 ml-5 mt-5 inline-flex items-center"
+    <button
+      type="button"
+      onClick={handleClick}
+      className={`mb-4 ml-5 mt-5 inline-flex items-center hover:text-foreground ${
+        pathname === "/" ? "invisible dimmed-4" : ""
+      }`}
     >
       <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-white/10 px-3 py-2 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:pr-5 md:scale-125">
         <ChevronLeft
@@ -30,7 +40,7 @@ function GoHomeContent() {
           strokeWidth={strokeWidth}
         />
       </div>
-    </Link>
+    </button>
   );
 }
 
