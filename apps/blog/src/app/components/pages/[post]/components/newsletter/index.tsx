@@ -33,9 +33,9 @@ export function Newsletter() {
       });
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
       toast.error("Something went wrong", {
-        description: "Please try again later",
+        description: error.message,
       });
     },
   });

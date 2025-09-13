@@ -16,7 +16,6 @@ export const rateLimiterMiddleware = (input: {
         message: `You're limited for the next ${input.limit.every}`,
       });
     }
-
     return next({
       ctx: {
         ...ctx,
