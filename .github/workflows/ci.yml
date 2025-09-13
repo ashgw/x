@@ -88,8 +88,7 @@ jobs:
     secrets: inherit
 
   www-preview-deployment:
-    # TODO: uncomment after testing
-    # needs: [preview-deployment]
+    needs: [preview-deployment]
     uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
       deployment_environment: preview
