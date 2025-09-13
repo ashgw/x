@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
@@ -10,19 +10,26 @@ import { email, links } from "@ashgw/constants";
 
 import Link from "./components/Link";
 import { env } from "@ashgw/env";
+import { ToggleSwitch } from "@ashgw/ui";
 
 export function HomePage() {
   const [, copyToClipboard] = useCopyToClipboard();
+  const [isToggled, setIsToggled] = useState(false);
 
   const emailAddress = useMemo(
     () => (email.startsWith("mailto:") ? email.slice(7) : email),
     [],
   );
 
-  const handleCopyEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    copyToClipboard(emailAddress);
-    toast.success("Email copied to clipboard");
+  const handleToggle = (state: boolean) => {
+    setIsToggled(state);
+    if (state) {
+      copyToClipboard(links.twitter.link);
+      toast.success("X copied");
+    } else {
+      copyToClipboard(emailAddress);
+      toast.success("Email copied");
+    }
   };
 
   return (
@@ -47,17 +54,23 @@ export function HomePage() {
                     <br /> You might want to read my{" "}
                     <Link href={env.NEXT_PUBLIC_BLOG_URL} name="blog" />
                     <br />
-                    Shoot me an{" "}
-                    <button
-                      type="button"
-                      onClick={handleCopyEmail}
-                      aria-label="Copy email to clipboard"
-                    >
-                      <strong className="glows text-white underline">
-                        email
-                      </strong>
-                    </button>
+                    You might as well
                   </TextContent>
+                </div>
+                <div className="mx-auto max-w-sm space-y-4 scale-80">
+                  <motion.div
+                    className="space-y-4"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: 1 }}
+                  >
+                    <ToggleSwitch
+                      leftButtonText="Email"
+                      rightButtonText="X"
+                      isToggled={isToggled}
+                      onToggle={handleToggle}
+                    />
+                  </motion.div>
                 </div>
               </div>
             </div>
