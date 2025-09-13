@@ -18,7 +18,6 @@ export async function purgeTrashPosts(): Promise<PurgeTrashPostsResponses> {
     });
     return { status: 204, body: undefined };
   } catch (error) {
-    logger.error("purgeTrashPosts cleanup failed", { error });
     monitor.next.captureException({ error });
     return {
       status: 500,

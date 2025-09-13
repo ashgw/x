@@ -6,7 +6,7 @@ import type { EmptyObject } from "ts-roids";
 
 type CronAuthedContext = EmptyObject; //  nothing we need to pass down here really
 
-export function cornAuthed(): SequentialMiddleware<CronAuthedContext> {
+export function cronAuthed(): SequentialMiddleware<CronAuthedContext> {
   const mw = middlewareFn<GlobalContext, CronAuthedContext>((req, _res) => {
     if (req.headers.get("x-cron-token") !== env.X_CRON_TOKEN) {
       return middlewareResponse.errors.unauthorized({

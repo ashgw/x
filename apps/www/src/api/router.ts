@@ -3,21 +3,21 @@ import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { webhooks } from "~/api/functions/webhooks";
-import { rateLimiter, cornAuthed } from "~/ts-rest/middlewares";
+import { rateLimiter, cronAuthed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
-import { createRouterWithContext, middlware } from "~/@ashgw/ts-rest";
+import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
-  purgeViewWindow: middlware()
+  purgeViewWindow: middleware()
     .use(rateLimiter({ limit: { every: "3s" } }))
-    .use(cornAuthed())
+    .use(cronAuthed())
     .route(contract.purgeViewWindow)(async () => {
     return await webhooks.purgeViewWindow();
   }),
 
-  purgeTrashPosts: middlware()
+  purgeTrashPosts: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
-    .use(cornAuthed())
+    .use(cronAuthed())
     .route(contract.purgeTrashPosts)(async () => {
     return await webhooks.purgeTrashPosts();
   }),
