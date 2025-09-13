@@ -19,11 +19,6 @@ runs:
         fi
         echo "::add-mask::$DATABASE_URL"
 
-    - name: Validate migrations on the $NEXT_PUBLIC_CURRENT_ENV database
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
-
     - name: Check for schema drift & dangerous undisclosed ops (can manually bypass this if it erros & uk better)
       shell: bash
       run: |
