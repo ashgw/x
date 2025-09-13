@@ -19,12 +19,27 @@ export function authenticatedProcedure(opts?: { limit?: { every: RlWindow } }) {
   return publicProcedure(opts).use(authMiddleware({}));
 }
 
-export function adminProcedure(opts?: { limit?: { every: RlWindow } }) {
-  return publicProcedure(opts).use(
+function authorizedProcedure({
+  requiredRole,
+  limit,
+}: {
+  requiredRole: UserRoleEnum;
+  limit?: { every: RlWindow };
+}) {
+  return publicProcedure({
+    limit,
+  }).use(
     authMiddleware({
       withAuthorization: {
-        requiredRole: UserRoleEnum.ADMIN,
+        requiredRole,
       },
     }),
   );
+}
+
+export function adminProcedure(opts?: { limit?: { every: RlWindow } }) {
+  return authorizedProcedure({
+    requiredRole: UserRoleEnum.ADMIN,
+    limit: opts?.limit,
+  });
 }
