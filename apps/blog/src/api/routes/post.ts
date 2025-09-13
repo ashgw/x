@@ -30,7 +30,7 @@ export const postRouter = router({
       return await blogService.getPublicPostCards();
     }),
 
-  getAllAdminPosts: adminProcedure
+  getAllAdminPosts: adminProcedure({})
     .input(z.void())
     .output(z.array(postArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
@@ -38,7 +38,7 @@ export const postRouter = router({
       return await blogService.getAllAdminPosts();
     }),
 
-  createPost: adminProcedure
+  createPost: adminProcedure({})
     .input(postEditorSchemaDto)
     .output(postArticleSchemaRo)
     .mutation(async ({ input, ctx: { db } }) => {
@@ -46,7 +46,7 @@ export const postRouter = router({
       return await blogService.createPost(input);
     }),
 
-  updatePost: adminProcedure
+  updatePost: adminProcedure({})
     .input(postUpdateSchemaDto)
     .output(postArticleSchemaRo)
     .mutation(async ({ input: { data, slug }, ctx: { db } }) => {
@@ -54,7 +54,7 @@ export const postRouter = router({
       return await blogService.updatePost({ slug, data });
     }),
 
-  trashPost: adminProcedure
+  trashPost: adminProcedure({})
     .input(postDeleteSchemaDto)
     .output(z.void())
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
@@ -62,7 +62,7 @@ export const postRouter = router({
       await blogService.trashPost({ originalSlug: slug });
     }),
 
-  getTrashedPosts: adminProcedure
+  getTrashedPosts: adminProcedure({})
     .input(z.void())
     .output(z.array(trashPostArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
@@ -70,7 +70,7 @@ export const postRouter = router({
       return await blogService.getTrashedPosts();
     }),
 
-  purgeTrash: adminProcedure
+  purgeTrash: adminProcedure({})
     .input(z.object({ trashId: z.string().min(1) }))
     .output(z.void())
     .mutation(async ({ input: { trashId }, ctx: { db } }) => {
@@ -78,7 +78,7 @@ export const postRouter = router({
       await blogService.purgeTrash({ trashId });
     }),
 
-  restoreFromTrash: adminProcedure
+  restoreFromTrash: adminProcedure({})
     .input(z.object({ trashId: z.string().min(1) }))
     .output(z.void())
     .mutation(async ({ input: { trashId }, ctx: { db } }) => {

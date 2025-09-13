@@ -2,15 +2,29 @@ import { UserRoleEnum } from "~/api/models";
 import { authMiddleware } from "./middlewares/auth";
 import { timingMiddleware } from "./middlewares/timing";
 import { procedure } from "./root";
+import type { RlWindow } from "@ashgw/rate-limiter";
+import { rateLimiterMiddleware } from "./middlewares/rl";
 
-export const publicProcedure = procedure.use(timingMiddleware);
+const timedProcedure = procedure.use(timingMiddleware);
 
-export const authedProcedure = publicProcedure.use(authMiddleware({}));
+export function publicProcedure(opts?: {
+  withRatelimit?: { limit: { every: RlWindow } };
+}) {
+  let proc = timedProcedure;
+  if (opts?.withRatelimit) {
+    proc = proc.use(rateLimiterMiddleware({ ...opts.withRatelimit }));
+  }
+  return proc;
+}
 
-export const adminProcedure = publicProcedure.use(
-  authMiddleware({
-    withAuthorization: {
-      requiredRole: UserRoleEnum.ADMIN,
-    },
-  }),
-);
+export function adminProcedure(opts?: {
+  withRatelimit?: { limit: { every: RlWindow } };
+}) {
+  return publicProcedure(opts).use(
+    authMiddleware({
+      withAuthorization: {
+        requiredRole: UserRoleEnum.ADMIN,
+      },
+    }),
+  );
+}
