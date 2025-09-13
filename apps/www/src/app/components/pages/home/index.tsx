@@ -11,12 +11,11 @@ import { ToggleSwitch } from "@ashgw/ui";
 
 import { tsrQueryClientSide } from "~/ts-rest/client";
 import Link from "./components/Link";
-import { CalBooking } from "./components/CalBooking";
+import { env } from "@ashgw/env";
 
 export function HomePage() {
   const [, copyToClipboard] = useCopyToClipboard();
   const [isToggled, setIsToggled] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
 
   const gpgQuery = tsrQueryClientSide.gpg.useQuery({
     queryKey: ["gpgQuery"],
@@ -31,9 +30,10 @@ export function HomePage() {
   const handleToggle = (state: boolean) => {
     setIsToggled(state);
     if (state) {
-      setShowCalendar(true);
+      // DM on X
+      window.open(links.twitter.link, "_blank", "noopener");
     } else {
-      setShowCalendar(false);
+      // Email
       window.location.href = `mailto:${email}`;
     }
   };
@@ -46,27 +46,20 @@ export function HomePage() {
             <div className="space-y-6 text-center">
               <div className="space-y-2">
                 <motion.h1
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  initial={{
-                    opacity: 0,
-                    y: -30,
-                  }}
-                  transition={{
-                    duration: 0.3,
-                    ease: "easeInOut",
-                  }}
+                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -30 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="my-2 text-5xl font-bold leading-10"
                 >
-                  <span className="">Get in touch</span>
+                  <span className="">4V8zJC</span>
                 </motion.h1>
                 <div className="mx-auto max-w-[600px]">
                   <TextContent>
-                    Best way to reach me is to shoot me a DM on{" "}
-                    <Link href={links.twitter.link} name="X"></Link>.<br /> I
-                    use{" "}
+                    You might want to read my{" "}
+                    <Link href={env.NEXT_PUBLIC_BLOG_URL} name="blog" />.<br />{" "}
+                    I just pushed new content on my{" "}
+                    <Link href={links.gitHub.link} name="Onlyfans" />
+                    .<br />I use{" "}
                     <button
                       onClick={() => {
                         if (gpgQuery.data) {
@@ -75,10 +68,10 @@ export function HomePage() {
                             description:
                               "PGP public key block is copied to your clipboard",
                           });
+                          return;
                         }
                         if (gpgQuery.error) {
                           toast.error("!Oops my bad, please try again later");
-                          return;
                         }
                       }}
                     >
@@ -86,12 +79,12 @@ export function HomePage() {
                         GPG
                       </strong>
                     </button>{" "}
-                    for
-                    <Link href={links.keyBase} name="secure"></Link>{" "}
-                    communication. Otherwise just email me
+                    for <Link href={links.keyBase} name="secure" />{" "}
+                    communication. or <Link href={email} name="email" /> me
                   </TextContent>
                 </div>
               </div>
+
               <div className="mx-auto max-w-sm space-y-4">
                 <motion.div
                   className="space-y-4"
@@ -100,31 +93,13 @@ export function HomePage() {
                   transition={{ duration: 0.4, delay: 1 }}
                 >
                   <ToggleSwitch
-                    leftButtonText="Email Me"
-                    rightButtonText="Book a Call"
+                    leftButtonText="Email"
+                    rightButtonText="Keybase"
                     isToggled={isToggled}
                     onToggle={handleToggle}
                   />
                 </motion.div>
               </div>
-
-              {showCalendar ? (
-                <motion.div
-                  className="mt-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="mx-auto max-w-4xl">
-                    <div className="rounded-lg p-6 shadow-lg">
-                      <CalBooking
-                        calLink="ashgw/default"
-                        config={{ theme: "dark" }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              ) : null}
             </div>
           </div>
         </section>

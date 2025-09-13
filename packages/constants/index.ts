@@ -9,7 +9,10 @@ export const links = {
   crates: "https://crates.io/users/AshGw",
   pypi: "https://pypi.org/user/AshGw",
   keyBase: "https://keybase.io/ashgw",
-  gitHub: "https://github.com/ashgw",
+  gitHub: {
+    username: "ashgw",
+    link: "https://github.com/ashgw",
+  },
   twitter: {
     link: "https://x.com/rccyx_",
     handle: "@rccyx_",
