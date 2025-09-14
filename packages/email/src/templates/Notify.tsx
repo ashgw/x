@@ -21,7 +21,7 @@ export const PersonalNotification = ({
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
-          <Text style={heading}>Personal Notification</Text>
+          <Text style={heading}>Service Notification</Text>
         </Section>
         <Hr style={hr} />
         <Section style={content}>

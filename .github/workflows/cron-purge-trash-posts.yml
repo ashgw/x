@@ -22,4 +22,3 @@ jobs:
           curl -i -X DELETE \
             "$NEXT_PUBLIC_WWW_URL/api/v1/purge-trash-posts" \
             -H "x-cron-token: $X_CRON_TOKEN"
-

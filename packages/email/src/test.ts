@@ -2,9 +2,9 @@ import { emailService } from ".";
 import { env } from "@ashgw/env";
 
 await emailService.sendNotification({
-  subject: "Just a Quick Note",
-  title: "Hey, it worked",
+  subject: "Deployment Complete",
+  title: "All Systems Go",
   message:
-    "This is just a test message to confirm things are running fine on my end. No reply is needed, it's only for me.",
+    "Your latest build was deployed successfully at 2025-09-15 01:00 UTC. No errors were detected and the service is healthy.",
   to: env.PERSONAL_EMAIL,
 });
