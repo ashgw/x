@@ -32,6 +32,7 @@
     "@ashgw/cross-runtime": "workspace:*",
     "@ashgw/css": "workspace:*",
     "@ashgw/db": "workspace:*",
+    "@ashgw/email": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@ashgw/rate-limiter": "workspace:*",
