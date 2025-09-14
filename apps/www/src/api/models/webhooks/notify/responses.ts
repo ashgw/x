@@ -3,13 +3,13 @@ import { createSchemaResponses } from "~/@ashgw/ts-rest";
 import {
   cronAuthedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
-  noContentSchemaResponse,
+  okSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
 } from "../../shared/responses";
 
 export const notifySchemaResponses = createSchemaResponses({
+  ...okSchemaResponse,
   ...internalErrorSchemaResponse,
-  ...noContentSchemaResponse,
   ...rateLimiterMiddlewareSchemaResponse,
   ...cronAuthedMiddlewareSchemaResponse,
 });

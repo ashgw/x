@@ -19,7 +19,7 @@ export async function notify(input: {
     });
 
     logger.info("Email notification sent successfully");
-    return { status: 204, body: undefined };
+    return { status: 200, body: undefined };
   } catch (error) {
     monitor.next.captureException({ error });
     logger.error("Failed to send notification", { error });
