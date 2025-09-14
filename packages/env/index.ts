@@ -61,6 +61,7 @@ const serverVars = {
       { message: "Must be a valid S3 or CloudFront URL" },
     ),
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
+  RESEND_API_KEY: z.string().min(20).startsWith("re_"),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -76,6 +77,7 @@ export const env = createEnv({
     X_CRON_TOKEN: process.env.X_CRON_TOKEN,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
