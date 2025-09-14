@@ -3,35 +3,12 @@ import { Resend } from "resend";
 import type { CreateEmailOptions } from "resend";
 import { render } from "@react-email/render";
 import { InternalError } from "@ashgw/observability";
-
+import { notifyEmail } from "@ashgw/constants";
 import PersonalNotification from "./templates/Notify";
 import { env } from "@ashgw/env";
-
-type OneOrMany<T> = T | T[];
-
-export interface SendParams {
-  from: string;
-  to: OneOrMany<string>;
-  subject: string;
-  html: string;
-  cc?: OneOrMany<string>;
-  bcc?: OneOrMany<string>;
-}
-
-export interface SendResult {
-  id: string;
-}
-
-export interface SendNotificationParams {
-  to: OneOrMany<string>;
-  title: string;
-  message: string;
-  subject?: string;
-}
-
-const DEFAULT_FROM = "notify@ashgw.me";
-
+import type { SendParams, SendResult, SendNotificationParams } from "./types";
 export class EmailService {
+  public readonly from = notifyEmail;
   public async send({
     from,
     to,
@@ -80,7 +57,7 @@ export class EmailService {
     const html = await render(element, { pretty: true });
 
     return this.send({
-      from: DEFAULT_FROM,
+      from: this.from,
       to,
       subject: subject ?? title,
       html,

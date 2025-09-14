@@ -9,6 +9,7 @@
     "build": "pnpx react-email build --dir ./src/templates"
   },
   "dependencies": {
+    "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@react-email/components": "0.5.3",
@@ -31,3 +32,4 @@
   },
   "type": "module"
 }
+
