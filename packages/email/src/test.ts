@@ -2,9 +2,9 @@ import { emailService } from ".";
 import { env } from "@ashgw/env";
 
 await emailService.sendNotification({
-  subject: "Service Confirmation",
-  title: "Request Completed",
+  subject: "Just a Quick Note",
+  title: "Hey, it worked",
   message:
-    "Your recent request has been completed successfully. This is an automated notification — please do not reply.",
+    "This is just a test message to confirm things are running fine on my end. No reply is needed, it's only for me.",
   to: env.PERSONAL_EMAIL,
 });
