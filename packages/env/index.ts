@@ -62,6 +62,7 @@ const serverVars = {
     ),
   KIT_API_KEY: z.string().min(20).startsWith("kit_"),
   RESEND_API_KEY: z.string().min(20).startsWith("re_"),
+  PERSONAL_EMAIL: z.string().min(10).max(30),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -75,6 +76,7 @@ export const env = createEnv({
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
     X_CRON_TOKEN: process.env.X_CRON_TOKEN,
+    PERSONAL_EMAIL: process.env.PERSONAL_EMAIL,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,

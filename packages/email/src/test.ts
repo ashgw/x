@@ -1,9 +1,10 @@
 import { emailService } from ".";
+import { env } from "@ashgw/env";
 
 await emailService.sendNotification({
-  subject: "Deployment Notification",
-  title: "Deployment Success",
+  subject: "Service Confirmation",
+  title: "Request Completed",
   message:
-    "The deployment has been successfully completed. It's deployed to production.",
-  to: "oss@ashgw.me",
+    "Your recent request has been completed successfully. This is an automated notification — please do not reply.",
+  to: env.PERSONAL_EMAIL,
 });

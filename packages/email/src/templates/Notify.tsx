@@ -33,7 +33,7 @@ export const PersonalNotification = ({
           <Text style={footerText}>© 2025 @ashgw. All rights reserved.</Text>
           <Text style={footerSub}>
             You’re receiving this notification because it was triggered by one
-            of your services.
+            of my services.
           </Text>
         </Section>
       </Container>
