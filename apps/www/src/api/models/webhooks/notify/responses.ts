@@ -5,13 +5,13 @@ import {
   internalErrorSchemaResponse,
   okSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
-} from "../../shared/responses";
+} from "~/api/models/shared/responses";
 
 export const notifySchemaResponses = createSchemaResponses({
-  ...okSchemaResponse,
-  ...internalErrorSchemaResponse,
   ...rateLimiterMiddlewareSchemaResponse,
   ...cronAuthedMiddlewareSchemaResponse,
+  ...okSchemaResponse,
+  ...internalErrorSchemaResponse,
 });
 
 export type NotifyResponses = InferResponses<typeof notifySchemaResponses>;
