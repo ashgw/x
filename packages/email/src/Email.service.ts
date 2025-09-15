@@ -2,14 +2,26 @@ import * as React from "react";
 import { Resend } from "resend";
 import type { CreateEmailOptions } from "resend";
 import { render } from "@react-email/render";
-import { notifyEmail } from "@ashgw/constants";
+
 import NotificationTemplate from "./templates/Notify";
 import { env } from "@ashgw/env";
 import type { SendParams, SendResult, SendNotificationParams } from "./types";
 
 class EmailService {
-  private readonly from = `ashgw[bot] <${notifyEmail}>`;
+  private _notifyEmail = "no-reply@notify.ashgw.me";
   private _cached?: Resend;
+  public get notifyEmail(): string {
+    return this._notifyEmail;
+  }
+
+  public set notifyEmail(value: string) {
+    this._notifyEmail = value;
+  }
+
+  private get from(): string {
+    return `ashgw[bot] <${this._notifyEmail}>`;
+  }
+
   public async send({
     from,
     to,
