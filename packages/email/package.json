@@ -11,10 +11,7 @@
   "dependencies": {
     "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
-    "@ashgw/observability": "workspace:*",
     "@react-email/components": "0.5.3",
-    "@types/react": "catalog:react18",
-    "@types/react-dom": "catalog:react18",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "resend": "6.0.3"
@@ -23,6 +20,8 @@
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@react-email/preview-server": "^4.2.11",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
     "react-email": "^4.2.11",
     "react-mail": "^0.0.1",
     "typescript": "catalog:"

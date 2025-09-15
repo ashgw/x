@@ -811,18 +811,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
-      '@ashgw/observability':
-        specifier: workspace:*
-        version: link:../observabiliy
       '@react-email/components':
         specifier: 0.5.3
         version: 0.5.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react':
-        specifier: catalog:react18
-        version: 18.3.18
-      '@types/react-dom':
-        specifier: catalog:react18
-        version: 18.3.5(@types/react@18.3.18)
       react:
         specifier: catalog:react18
         version: 18.3.1
@@ -842,6 +833,12 @@ importers:
       '@react-email/preview-server':
         specifier: ^4.2.11
         version: 4.2.11(@emotion/is-prop-valid@1.2.2)(@opentelemetry/api@1.9.0)(bufferutil@4.0.9)(postcss@8.4.47)(sass@1.69.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))
+      '@types/react':
+        specifier: catalog:react18
+        version: 18.3.18
+      '@types/react-dom':
+        specifier: catalog:react18
+        version: 18.3.5(@types/react@18.3.18)
       react-email:
         specifier: ^4.2.11
         version: 4.2.11(bufferutil@4.0.9)
