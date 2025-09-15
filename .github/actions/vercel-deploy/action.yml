@@ -28,7 +28,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Capture start timestamp
+      id: start
+      shell: bash
+      run: |
+        echo "start_ts=$(date +%s)" >> "$GITHUB_OUTPUT"
+
     - name: Build and deploy for Vercel
+      id: deploy
       shell: bash
       env:
         VERCEL_TOKEN: ${{ inputs.VERCEL_TOKEN }}
@@ -69,7 +76,13 @@ runs:
         echo "→ Deployed: $DEPLOY_URL"
         echo "DEPLOY_URL=$DEPLOY_URL" >> "$GITHUB_ENV"
         echo "::notice title=${ENVIRONMENT} URL::$DEPLOY_URL"
-        echo "${ENVIRONMENT}-url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+        echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+
+    - name: Capture end timestamp
+      id: end
+      shell: bash
+      run: |
+        echo "end_ts=$(date +%s)" >> "$GITHUB_OUTPUT"
 
     - name: Notify about the deployment URL
       if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
@@ -78,42 +91,60 @@ runs:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         DEPLOYMENT_ENVIRONMENT: ${{ inputs.deployment_environment }}
         DEPLOYED_APP: ${{ inputs.app_name }}
-
+        DEPLOY_URL: ${{ steps.deploy.outputs.deploy_url }}
       with:
         script: |
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## ${process.env.DEPLOYMENT_ENVIRONMENT} Deployment Ready!
+            body: `## ${process.env.DEPLOYMENT_ENVIRONMENT} Deployment Ready
 
-            ### App: \`${process.env.DEPLOYED_APP}\`
+            **App:** \`${process.env.DEPLOYED_APP}\`
 
-            **${process.env.DEPLOYMENT_ENVIRONMENT} URL:** [Check it out here](${process.env.DEPLOY_URL})
+            **${process.env.DEPLOYMENT_ENVIRONMENT} URL:** [${process.env.DEPLOY_URL}](${process.env.DEPLOY_URL})
 
             ---
-            > This ${process.env.DEPLOYMENT_ENVIRONMENT} environment reflects the changes in this PR.`
+            This ${process.env.DEPLOYMENT_ENVIRONMENT} environment reflects the changes in this PR.`
           })
 
-    - name: Notify • deploy ok
+    - name: Notify • Deploy OK
       if: success()
       uses: ashgw/notify@main
       with:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "Deployment Succeeded"
-        message: >-
-          Vercel deploy succeeded for ${{ inputs.app_name }} → ${{ inputs.deployment_environment }}.
-          URL: ${{ env.DEPLOY_URL }}
-          Actor: @${{ github.actor }}
-          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        message: |
+          ## Deployment Succeeded
 
-    - name: Notify • deploy fail
+          ### Deployment Details
+          - **App:** `${{ inputs.app_name }}`
+          - **Environment:** `${{ inputs.deployment_environment }}`
+          - **Actor:** @${{ github.actor }}
+          - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - **Deployment URL:** ${{ env.DEPLOY_URL }}
+          - **Duration:** $(( ${{ steps.end.outputs.end_ts }} - ${{ steps.start.outputs.start_ts }} )) seconds
+
+          ---
+          The application is now live.
+
+    - name: Notify • Deploy Fail
       if: failure()
       uses: ashgw/notify@main
       with:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "Deployment Failed"
-        message: >-
-          Vercel deploy failed for ${{ inputs.app_name }} → ${{ inputs.deployment_environment }}.
-          Actor: @${{ github.actor }}
-          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        message: |
+          ## Deployment Failed
+
+          ### Deployment Details
+          - **App:** `${{ inputs.app_name }}`
+          - **Environment:** `${{ inputs.deployment_environment }}`
+          - **Actor:** @${{ github.actor }}
+          - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - **Duration:** $(( ${{ steps.end.outputs.end_ts }} - ${{ steps.start.outputs.start_ts }} )) seconds
+
+          ---
+          Redeploy attempt failed. Check workflow logs for details.
