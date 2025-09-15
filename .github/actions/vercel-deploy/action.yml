@@ -12,6 +12,9 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub token"
     required: true
+  NOTIFY_TOKEN:
+    description: "Notify token"
+    required: true
   VERCEL_TOKEN:
     description: "Vercel token"
     required: true
@@ -96,7 +99,7 @@ runs:
       if: success()
       uses: ashgw/notify@main
       with:
-        token: ${{ secrets.NOTIFY_TOKEN }}
+        token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} ok"
         message: >-
           Vercel deploy **succeeded** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
@@ -108,7 +111,7 @@ runs:
       if: failure()
       uses: ashgw/notify@main
       with:
-        token: ${{ secrets.NOTIFY_TOKEN }}
+        token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} fail"
         message: >-
           Vercel deploy **failed** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.

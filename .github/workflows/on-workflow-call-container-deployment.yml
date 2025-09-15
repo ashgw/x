@@ -37,3 +37,4 @@ jobs:
           app_name: ${{ inputs.app_name}} # only blog for now
           CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ${{ secrets.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GHCR_PAT_BLOG }}
+          NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}

@@ -10,6 +10,9 @@ inputs:
   app_name:
     description: "App name, either 'blog' or 'www' or whatever app you're running"
     required: true
+  NOTIFY_TOKEN:
+    description: "Notify token"
+    required: true
   CONTAINER_DEPLOYMENT_SERVICE_TOKEN:
     description: "API token"
     required: true
@@ -112,7 +115,7 @@ runs:
       if: success()
       uses: ashgw/notify@main
       with:
-        token: ${{ secrets.NOTIFY_TOKEN }}
+        token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} ok"
         message: >-
           Koyeb redeploy **succeeded** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
@@ -123,7 +126,7 @@ runs:
       if: failure()
       uses: ashgw/notify@main
       with:
-        token: ${{ secrets.NOTIFY_TOKEN }}
+        token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} fail"
         message: >-
           Koyeb redeploy **failed** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
