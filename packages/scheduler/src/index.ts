@@ -5,10 +5,15 @@ import type { Payload, ScheduleDto, ScheduleRo } from "./types";
 const qstashClient = new QstashClient({ token: env.QSTASH_TOKEN });
 
 export class SchedulerService {
-  public headers = {
-    "Content-Type": "application/json",
-    "x-api-token": env.X_API_TOKEN,
-  } as const;
+  constructor(
+    private readonly _headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    },
+  ) {}
+
+  public headers(headers: Record<string, string>): SchedulerService {
+    return new SchedulerService({ ...this._headers, ...headers });
+  }
 
   public async schedule(input: ScheduleDto): Promise<ScheduleRo> {
     if (input.at) {
@@ -23,7 +28,7 @@ export class SchedulerService {
     });
   }
 
-  public async scheduleAt(input: {
+  private async scheduleAt(input: {
     url: string;
     payload: Payload;
     atTime: string;
@@ -31,15 +36,13 @@ export class SchedulerService {
     const response = await qstashClient.publish({
       url: input.url,
       body: input.payload,
-      headers: this.headers,
+      headers: this._headers,
       notBefore: SchedulerService._toUnixSecond(input.atTime),
     });
-    return {
-      id: response.messageId,
-    };
+    return { id: response.messageId };
   }
 
-  public async scheduleCron(input: {
+  private async scheduleCron(input: {
     url: string;
     payload: Payload;
     expression: string;
@@ -48,11 +51,9 @@ export class SchedulerService {
       destination: input.url,
       cron: input.expression,
       body: input.payload,
-      headers: this.headers,
+      headers: this._headers,
     });
-    return {
-      id: response.scheduleId,
-    };
+    return { id: response.scheduleId };
   }
 
   private static _toUnixSecond(isoString: string): number {
