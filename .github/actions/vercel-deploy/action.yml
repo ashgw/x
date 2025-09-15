@@ -115,11 +115,10 @@ runs:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "Deployment Succeeded"
         message: |
-          ## Deployment Succeeded
+          ### Details
 
-          ### Deployment Details
-          - **App:** `${{ inputs.app_name }}`
-          - **Environment:** `${{ inputs.deployment_environment }}`
+          - **App:** ${{ inputs.app_name }}
+          - **Environment:** ${{ inputs.deployment_environment }}
           - **Actor:** @${{ github.actor }}
           - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
@@ -136,11 +135,9 @@ runs:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "Deployment Failed"
         message: |
-          ## Deployment Failed
-
-          ### Deployment Details
-          - **App:** `${{ inputs.app_name }}`
-          - **Environment:** `${{ inputs.deployment_environment }}`
+          ### Details
+          - **App:** ${{ inputs.app_name }}
+          - **Environment:** ${{ inputs.deployment_environment }}
           - **Actor:** @${{ github.actor }}
           - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
