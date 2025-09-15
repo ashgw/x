@@ -15,17 +15,18 @@ export const notifyBodySchemaDto = z.object({
   type: z
     .nativeEnum(NotificationType)
     .describe("The type of the notification."),
+  subject: z
+    .string()
+    .min(1)
+    .max(30)
+    .optional()
+    .describe("The subject of the notification."),
   title: z.string().min(1).max(30).describe("The title of the notification."),
   message: z
     .string()
     .min(1)
     .max(10000)
     .describe("The message of the notification."),
-  subject: z
-    .string()
-    .min(1)
-    .max(30)
-    .describe("The subject of the notification."),
 });
 
 export type NotifyHeadersDto = z.infer<typeof notifyHeadersSchemaDto>;
