@@ -1,4 +1,4 @@
-import { logger } from "@ashgw/observability";
+import { logger, monitor } from "@ashgw/observability";
 import { env } from "@ashgw/env";
 import { endPoint } from "~/ts-rest/endpoint";
 import { Client } from "@upstash/qstash";
@@ -13,7 +13,8 @@ import { NotificationType } from "@ashgw/email";
 function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
   const { ...rest } = input;
   return {
-    ...rest,
+    message: rest.message,
+    title: rest.title,
     type: NotificationType.REMINDER,
   };
 }
@@ -78,7 +79,7 @@ export async function reminder(input: {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        ...(env.X_API_TOKEN ? { "x-api-token": env.X_API_TOKEN } : {}),
+        "x-api-token": env.X_API_TOKEN,
       },
     });
 
@@ -88,9 +89,10 @@ export async function reminder(input: {
     };
   } catch (error) {
     logger.error("reminder scheduling failed", { error });
+    monitor.next.captureException({ error });
     return {
       status: 500,
-      body: { code: "INTERNAL_ERROR", message: "Internal error" },
+      body: { code: "INTERNAL_EROR", message: "Internal error" },
     };
   }
 }
