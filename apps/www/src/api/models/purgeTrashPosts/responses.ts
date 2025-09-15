@@ -1,7 +1,7 @@
 import type { InferResponses } from "~/@ashgw/ts-rest";
 import { createSchemaResponses } from "~/@ashgw/ts-rest";
 import {
-  cronAuthedMiddlewareSchemaResponse,
+  authedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
   noContentSchemaResponse,
@@ -9,7 +9,7 @@ import {
 
 export const purgeTrashPostsSchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
-  ...cronAuthedMiddlewareSchemaResponse,
+  ...authedMiddlewareSchemaResponse,
   ...noContentSchemaResponse,
   ...internalErrorSchemaResponse,
 });

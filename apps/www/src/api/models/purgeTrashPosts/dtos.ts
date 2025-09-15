@@ -1,8 +1,8 @@
 import type { z } from "zod";
-import { cronAuthedMiddlewareHeaderSchemaDto } from "../shared";
+import { authedMiddlewareHeaderSchemaDto } from "../shared";
 
 export const purgeTrashPostsHeadersSchemaDto =
-  cronAuthedMiddlewareHeaderSchemaDto;
+  authedMiddlewareHeaderSchemaDto.extend({});
 
 export type PurgeTrashPostsHeadersDto = z.infer<
   typeof purgeTrashPostsHeadersSchemaDto

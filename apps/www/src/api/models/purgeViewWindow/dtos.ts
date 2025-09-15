@@ -1,10 +1,10 @@
 import type { z } from "zod";
-import { cronAuthedMiddlewareHeaderSchemaDto } from "../shared";
+import { authedMiddlewareHeaderSchemaDto } from "../shared";
 
 // ========== Schemas ==========
 
 export const purgeViewWindowHeadersSchemaDto =
-  cronAuthedMiddlewareHeaderSchemaDto;
+  authedMiddlewareHeaderSchemaDto.extend({});
 
 // ========== Types ==========
 
