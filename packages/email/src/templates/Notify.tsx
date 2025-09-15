@@ -7,6 +7,7 @@ import {
   Text,
   Hr,
 } from "@react-email/components";
+import { Markdown } from "@react-email/markdown";
 import * as React from "react";
 import type { NotificationType } from "../types";
 
@@ -20,60 +21,67 @@ export const NotificationTemplate = ({
   type,
 }: {
   title: string;
-  message: string;
+  message: string; // Markdown string
   type: NotificationType;
-}) => (
-  <Html>
-    <Head />
-    <Body
-      style={{
-        margin: 0,
-        padding: 0,
-        backgroundColor: "#0d1117", // GitHub-like dark
-        fontFamily:
-          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
-      }}
-    >
-      <table
-        role="presentation"
-        border={0}
-        cellPadding={0}
-        cellSpacing={0}
-        width="100%"
-        style={{ backgroundColor: "#0d1117" }}
+}) => {
+  const typeLabel =
+    typeof type === "string" ? capitalize(type.toLowerCase()) : "Notification";
+
+  return (
+    <Html>
+      <Head />
+      <Body
+        style={{
+          margin: 0,
+          padding: 0,
+          backgroundColor: "#0d1117",
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
+        }}
       >
-        <tr>
-          <td align="center">
-            <Container style={container}>
-              <Section style={header}>
-                <Text style={heading}>
-                  {typeof type === "string"
-                    ? capitalize(type.toLowerCase())
-                    : "Notification"}
-                </Text>
-              </Section>
-              <Hr style={hr} />
-              <Section style={content}>
-                <Text style={messageTitle}>{title}</Text>
-                <Text style={messageBody}>{message}</Text>
-              </Section>
-              <Hr style={hr} />
-              <Section style={footer}>
-                <Text style={footerText}>
-                  © 2025 @ashgw. All rights reserved.
-                </Text>
-                <Text style={footerSub}>
-                  You’re receiving this notification because it was triggered by
-                  one of my services.
-                </Text>
-              </Section>
-            </Container>
-          </td>
-        </tr>
-      </table>
-    </Body>
-  </Html>
-);
+        <table
+          role="presentation"
+          border={0}
+          cellPadding={0}
+          cellSpacing={0}
+          width="100%"
+          style={{ backgroundColor: "#0d1117" }}
+        >
+          <tr>
+            <td align="center">
+              <Container style={container}>
+                <Section style={header}>
+                  <Text style={heading}>{typeLabel}</Text>
+                </Section>
+
+                <Hr style={hr} />
+
+                <Section style={content}>
+                  <Text style={messageTitle}>{title}</Text>
+                  <div style={markdownWrap}>
+                    <Markdown>{message}</Markdown>
+                  </div>
+                </Section>
+
+                <Hr style={hr} />
+
+                <Section style={footer}>
+                  <Text style={footerText}>
+                    © 2025 @ashgw. All rights reserved.
+                  </Text>
+                  <Text style={footerSub}>
+                    You’re receiving this notification because it was triggered
+                    by one of my services.
+                  </Text>
+                </Section>
+              </Container>
+            </td>
+          </tr>
+        </table>
+      </Body>
+    </Html>
+  );
+};
 
 export default NotificationTemplate;
 
@@ -101,21 +109,21 @@ const heading = {
 
 const content = {
   padding: "20px",
-  textAlign: "center" as const,
+  textAlign: "left" as const,
 };
 
 const messageTitle = {
   fontSize: "18px",
   fontWeight: 600,
   color: "#ffffff",
-  marginBottom: "8px",
+  margin: "0 0 12px 0",
 };
 
-const messageBody = {
-  fontSize: "15px",
+const markdownWrap = {
   color: "#cccccc",
+  fontSize: "15px",
   lineHeight: "1.5",
-};
+} as const;
 
 const hr = {
   borderColor: "#333333",
