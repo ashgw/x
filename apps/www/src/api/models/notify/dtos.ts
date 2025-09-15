@@ -23,7 +23,7 @@ export const notifyBodySchemaDto = z.object({
   message: z
     .string()
     .min(1)
-    .max(30000)
+    .max(10000)
     .describe("The message of the notification, written in markdown."),
 });
 
