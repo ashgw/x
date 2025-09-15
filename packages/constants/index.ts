@@ -1,4 +1,4 @@
-export const email = "oss@ashgw.me";
+export const ossEmail = "oss@ashgw.me";
 export const repo_source = "https://github.com/ashgw/x";
 export const creator = "@rccyx";
 export const site_name = "AG";

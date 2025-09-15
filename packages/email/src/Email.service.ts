@@ -7,7 +7,7 @@ import NotificationTemplate from "./templates/Notify";
 import { env } from "@ashgw/env";
 import type { SendParams, SendResult, SendNotificationParams } from "./types";
 
-export class EmailService {
+class EmailService {
   private readonly from = notifyEmail;
   public async send({
     from,
@@ -69,4 +69,4 @@ export class EmailService {
   }
 }
 
-export const emailService = new EmailService();
+export const email = new EmailService();
