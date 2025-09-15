@@ -1,35 +1,8 @@
 import { Client as QstashClient } from "@upstash/qstash";
 import { env } from "@ashgw/env";
-import type { ExclusiveUnion } from "ts-roids";
+import type { Payload, ScheduleDto, ScheduleRo } from "./types";
 
 const qstashClient = new QstashClient({ token: env.QSTASH_TOKEN });
-
-type Payload =
-  | Blob
-  | FormData
-  | URLSearchParams
-  | ReadableStream<Uint8Array>
-  | string;
-
-interface ScheduleRo {
-  id: string;
-}
-
-interface ScheduleBaseDto {
-  url: string;
-  payload: Payload;
-}
-
-type ScheduleType = ExclusiveUnion<
-  | {
-      atTime: {
-        datetimeIso: string;
-      };
-    }
-  | { cron: { expression: string } }
->;
-
-type ScheduleDto = ScheduleBaseDto & ScheduleType;
 
 export class SchedulerService {
   private static _headers = {
@@ -38,9 +11,9 @@ export class SchedulerService {
   } as const;
 
   public async schedule(input: ScheduleDto): Promise<ScheduleRo> {
-    if (input.atTime) {
+    if (input.at) {
       return this.scheduleAt({
-        at: input.atTime.datetimeIso,
+        atTime: input.at.datetimeIso,
         ...input,
       });
     }
@@ -53,13 +26,13 @@ export class SchedulerService {
   public async scheduleAt(input: {
     url: string;
     payload: Payload;
-    at: string;
+    atTime: string;
   }): Promise<ScheduleRo> {
     const response = await qstashClient.publish({
       url: input.url,
       body: input.payload,
       headers: SchedulerService._headers,
-      notBefore: SchedulerService._toUnixSecond(input.at),
+      notBefore: SchedulerService._toUnixSecond(input.atTime),
     });
     return {
       id: response.messageId,
