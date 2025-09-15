@@ -48,8 +48,7 @@ export const contract = createContract(c)({
     path: "/purge-view-window",
     strictStatusCodes: true,
     summary: "Purge view window data",
-    description:
-      "Deletes cached or temporary view window data from the system.",
+    description: "Deletes cached or temporary view window data from the blog.",
     headers: purgeViewWindowHeadersSchemaDto,
     responses: purgeViewWindowSchemaResponses,
   },

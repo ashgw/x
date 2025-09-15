@@ -65,6 +65,7 @@
     "DIRECT_URL",
     "RESEND_API_KEY",
     "X_API_TOKEN",
+    "QSTASH_TOKEN",
     "SENTRY_PROJECT",
     "SENTRY_ORG",
     "SENTRY_AUTH_TOKEN",
