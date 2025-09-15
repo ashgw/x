@@ -9,7 +9,7 @@ import {
 import { reminderMessageCreatedSchemaRo } from "./ros";
 
 export const reminderSchemaResponses = createSchemaResponses({
-  200: z.object({
+  201: z.object({
     created: z.array(reminderMessageCreatedSchemaRo),
   }),
   ...rateLimiterMiddlewareSchemaResponse,
