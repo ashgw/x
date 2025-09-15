@@ -5,14 +5,49 @@ import {
   Container,
   Section,
   Text,
-  Hr,
 } from "@react-email/components";
 import { Markdown } from "@react-email/markdown";
 import * as React from "react";
 import type { NotificationType } from "../types";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
+import { visit } from "unist-util-visit";
+import type { Root, Parent } from "mdast";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// lightweight guard: strip raw HTML tags and images; keep links/text
+function sanitizeMarkdown(input: string): string {
+  const removeHtmlAndImages = () => {
+    return (tree: Root) => {
+      visit(tree, "html", (_node, index, parent) => {
+        if (parent && typeof index === "number") {
+          (parent as Parent).children.splice(index, 1);
+        }
+      });
+      visit(tree, "image", (_node, index, parent) => {
+        if (parent && typeof index === "number") {
+          (parent as Parent).children.splice(index, 1);
+        }
+      });
+      visit(tree, "imageReference", (_node, index, parent) => {
+        if (parent && typeof index === "number") {
+          (parent as Parent).children.splice(index, 1);
+        }
+      });
+    };
+  };
+
+  const file = unified()
+    .use(remarkParse)
+    .use(removeHtmlAndImages)
+    .use(remarkStringify)
+    .processSync(input);
+
+  return String(file);
 }
 
 export const NotificationTemplate = ({
@@ -26,6 +61,7 @@ export const NotificationTemplate = ({
     typeof type === "string"
       ? capitalize(type.toLowerCase()) + " Notification"
       : "Notification";
+  const safeMessage = sanitizeMarkdown(message);
 
   return (
     <Html>
@@ -53,17 +89,15 @@ export const NotificationTemplate = ({
                 <Section style={header}>
                   <Text style={heading}>{typeLabel}</Text>
                 </Section>
-
-                <Hr style={hr} />
-
                 <Section style={content}>
                   <div style={markdownWrap}>
-                    <Markdown>{message}</Markdown>
+                    <Markdown
+                      markdownCustomStyles={{ link: { color: "#58a6ff" } }}
+                    >
+                      {safeMessage}
+                    </Markdown>
                   </div>
                 </Section>
-
-                <Hr style={hr} />
-
                 <Section style={footer}>
                   <Text style={footerText}>
                     © 2025 @ashgw. All rights reserved.
@@ -107,6 +141,7 @@ const heading = {
 };
 
 const content = {
+  marginTop: "-20px",
   padding: "20px",
   textAlign: "left" as const,
 };
@@ -116,11 +151,6 @@ const markdownWrap = {
   fontSize: "15px",
   lineHeight: "1.5",
 } as const;
-
-const hr = {
-  borderColor: "#dddddd",
-  margin: 0,
-};
 
 const footer = {
   backgroundColor: "#f5f5f5",
