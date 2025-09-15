@@ -8,7 +8,7 @@ import { env } from "@ashgw/env";
 import type { SendParams, SendResult, SendNotificationParams } from "./types";
 
 class EmailService {
-  private readonly from = `Ashgw <${notifyEmail}>`;
+  private readonly from = `ashgw[bot] <${notifyEmail}>`;
   private _cached?: Resend;
   public async send({
     from,
