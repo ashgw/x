@@ -1,15 +1,15 @@
 import type { InferResponses } from "~/@ashgw/ts-rest";
 import { createSchemaResponses } from "~/@ashgw/ts-rest";
 import {
-  cronAuthedMiddlewareSchemaResponse,
+  authedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
   noContentSchemaResponse,
-} from "../../shared/responses";
+} from "../shared/responses";
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
-  ...cronAuthedMiddlewareSchemaResponse,
+  ...authedMiddlewareSchemaResponse,
   ...noContentSchemaResponse,
   ...internalErrorSchemaResponse,
 });

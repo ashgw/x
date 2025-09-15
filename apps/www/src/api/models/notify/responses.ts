@@ -1,7 +1,7 @@
 import type { InferResponses } from "~/@ashgw/ts-rest";
 import { createSchemaResponses } from "~/@ashgw/ts-rest";
 import {
-  cronAuthedMiddlewareSchemaResponse,
+  authedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
   okSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
@@ -9,7 +9,7 @@ import {
 
 export const notifySchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
-  ...cronAuthedMiddlewareSchemaResponse,
+  ...authedMiddlewareSchemaResponse,
   ...okSchemaResponse,
   ...internalErrorSchemaResponse,
 });

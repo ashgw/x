@@ -29,7 +29,7 @@ RUN --mount=type=secret,id=DATABASE_URL \
     --mount=type=secret,id=S3_BUCKET_URL \
     --mount=type=secret,id=KIT_API_KEY \
     --mount=type=secret,id=IP_HASH_SALT \
-    --mount=type=secret,id=X_CRON_TOKEN \
+    --mount=type=secret,id=X_API_TOKEN \
     --mount=type=secret,id=SENTRY_ORG \
     --mount=type=secret,id=SENTRY_PROJECT \
     --mount=type=secret,id=SENTRY_AUTH_TOKEN \
@@ -45,21 +45,27 @@ RUN --mount=type=secret,id=DATABASE_URL \
 set -eu
 exp() { [ -f "/run/secrets/$1" ] && export "$1=$(cat /run/secrets/$1)"; }
 
-exp DATABASE_URL
-exp S3_BUCKET_NAME
-exp S3_BUCKET_REGION
-exp S3_BUCKET_ACCESS_KEY_ID
-exp S3_BUCKET_SECRET_KEY
-exp S3_BUCKET_URL
-exp KIT_API_KEY
-exp IP_HASH_SALT
-exp NEXT_PUBLIC_WWW_URL
-exp NEXT_PUBLIC_BLOG_URL
-exp NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID
-exp NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID
-exp NEXT_PUBLIC_SENTRY_DSN
-exp NEXT_PUBLIC_POSTHOG_KEY
-exp NEXT_PUBLIC_POSTHOG_HOST
+exp DATABASE_URL 
+exp DIRECT_URL 
+exp S3_BUCKET_NAME 
+exp S3_BUCKET_REGION 
+exp S3_BUCKET_ACCESS_KEY_ID 
+exp S3_BUCKET_SECRET_KEY 
+exp S3_BUCKET_URL 
+exp KIT_API_KEY 
+exp IP_HASH_SALT 
+exp X_API_TOKEN 
+exp SENTRY_ORG 
+exp SENTRY_PROJECT 
+exp SENTRY_AUTH_TOKEN 
+exp NEXT_PUBLIC_CURRENT_ENV 
+exp NEXT_PUBLIC_WWW_URL 
+exp NEXT_PUBLIC_BLOG_URL 
+exp NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID 
+exp NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID 
+exp NEXT_PUBLIC_SENTRY_DSN 
+exp NEXT_PUBLIC_POSTHOG_KEY 
+exp NEXT_PUBLIC_POSTHOG_HOST 
 
 pnpm install --frozen-lockfile
 
@@ -73,3 +79,4 @@ EOSH
 USER node
 EXPOSE ${PORT}
 CMD ["pnpm", "--filter", "@ashgw/blog", "start"]
+

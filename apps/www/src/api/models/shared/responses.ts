@@ -9,10 +9,10 @@ export const noContentSchemaResponse = createSchemaResponses({
   204: c.noBody(),
 });
 
-export const cronAuthedMiddlewareSchemaResponse = createSchemaResponses({
+export const authedMiddlewareSchemaResponse = createSchemaResponses({
   401: httpErrorSchema
     .unauthorized()
-    .describe("Missing or invalid x-cron-token"),
+    .describe("Missing or invalid x-api-token"),
 });
 
 export const rateLimiterMiddlewareSchemaResponse = createSchemaResponses({
