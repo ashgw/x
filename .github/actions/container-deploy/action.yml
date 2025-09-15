@@ -29,17 +29,21 @@ runs:
         echo "${{ inputs.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
     - name: Build image with script
+      id: build
       shell: bash
       run: |
         set -euo pipefail
-        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:${{ inputs.environment }}"
+        START_TS=$(date +%s)
+        echo "start_ts=$START_TS" >> "$GITHUB_OUTPUT"
+
+        IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:${{ inputs.deployment_environment }}"
         ./deployment/${{ inputs.app_name }}/build \
-          --env "${{ inputs.environment }}" \
+          --env "${{ inputs.deployment_environment }}" \
           --service "${{ inputs.app_name }}" \
           --image "$IMAGE"
 
     - name: Push image (production + latest)
-      if: ${{ inputs.environment == 'production' }}
+      if: ${{ inputs.deployment_environment == 'production' }}
       shell: bash
       run: |
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:production"
@@ -85,6 +89,19 @@ runs:
         # Redeploy
         koyeb service redeploy "$DEPLOY_TARGET"
 
+    - name: Capture end timestamp
+      id: end
+      shell: bash
+      run: |
+        END_TS=$(date +%s)
+        echo "end_ts=$END_TS" >> "$GITHUB_OUTPUT"
+
+    - name: Compute duration
+      id: duration
+      shell: bash
+      run: |
+        echo "seconds=$(( ${{ steps.end.outputs.end_ts }} - ${{ steps.build.outputs.start_ts }} ))" >> "$GITHUB_OUTPUT"
+
     - name: Notify about preview deployment
       if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
       env:
@@ -95,14 +112,14 @@ runs:
         script: |
           const app = process.env.DEPLOYED_APP;
           const body = [
-            `## ${app} Preview Deployment Ready!`,
+            `## ${app} Preview Deployment Ready`,
             ``,
-            `### App: \`${app}\``,
+            `**App:** \`${app}\``,
             ``,
-            `**Preview URL:** [Check it out here](https://${app}-preview.ashgw.me)`,
+            `**Preview URL:** [${app}-preview.ashgw.me](https://${app}-preview.ashgw.me)`,
             ``,
             `---`,
-            `> This preview environment reflects the changes in this PR. It deploys this version of the app as soon as the "deploy-preview" label is added.`
+            `This preview reflects the changes in this PR. It auto-deploys when the \`deploy-preview\` label is applied.`
           ].join("\n");
           await github.rest.issues.createComment({
             issue_number: context.issue.number,
@@ -111,24 +128,39 @@ runs:
             body
           });
 
-    - name: Notify • deploy ok
+    - name: Notify • Deploy OK
       if: success()
       uses: ashgw/notify@main
       with:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "Deployment Succeeded"
-        message: >-
-          Koyeb redeploy succeeded for ${{ inputs.app_name }} → ${{ inputs.deployment_environment }}.
-          Actor: @${{ github.actor }}
-          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        message: |
+          ### Details
+          - **App:** ${{ inputs.app_name }}
+          - **Environment:** `${{ inputs.deployment_environment }}`
+          - **Actor:** @${{ github.actor }}
+          - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - **Duration:** ${{ steps.duration.outputs.seconds }} seconds
 
-    - name: Notify • deploy fail
+          ---
+          The application is now live.
+
+    - name: Notify • Deploy Fail
       if: failure()
       uses: ashgw/notify@main
       with:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "Deployment Failed"
-        message: >-
-          Koyeb redeploy failed for ${{ inputs.app_name }} → ${{ inputs.deployment_environment }}.
-          Actor: @${{ github.actor }}
-          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        message: |
+          ### Details
+
+          - **App:** ${{ inputs.app_name }}
+          - **Environment:** ${{ inputs.deployment_environment }}
+          - **Actor:** @${{ github.actor }}
+          - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - **Duration:** ${{ steps.duration.outputs.seconds }} seconds
+
+          ---
+          Redeploy attempt failed. Check workflow logs for details.

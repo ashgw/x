@@ -5,75 +5,116 @@ import {
   Container,
   Section,
   Text,
-  Hr,
 } from "@react-email/components";
+import { Markdown } from "@react-email/markdown";
 import * as React from "react";
 import type { NotificationType } from "../types";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
+import { visit } from "unist-util-visit";
+import type { Root, Parent } from "mdast";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+// lightweight guard: strip raw HTML tags and images; keep links/text
+function sanitizeMarkdown(input: string): string {
+  const removeHtmlAndImages = () => {
+    return (tree: Root) => {
+      visit(tree, "html", (_node, index, parent) => {
+        if (parent && typeof index === "number") {
+          (parent as Parent).children.splice(index, 1);
+        }
+      });
+      visit(tree, "image", (_node, index, parent) => {
+        if (parent && typeof index === "number") {
+          (parent as Parent).children.splice(index, 1);
+        }
+      });
+      visit(tree, "imageReference", (_node, index, parent) => {
+        if (parent && typeof index === "number") {
+          (parent as Parent).children.splice(index, 1);
+        }
+      });
+    };
+  };
+
+  const file = unified()
+    .use(remarkParse)
+    .use(removeHtmlAndImages)
+    .use(remarkStringify)
+    .processSync(input);
+
+  return String(file);
+}
+
 export const NotificationTemplate = ({
-  title,
   message,
   type,
 }: {
-  title: string;
-  message: string;
+  message: string; // Markdown string
   type: NotificationType;
-}) => (
-  <Html>
-    <Head />
-    <Body
-      style={{
-        margin: 0,
-        padding: 0,
-        backgroundColor: "#0d1117", // GitHub-like dark
-        fontFamily:
-          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
-      }}
-    >
-      <table
-        role="presentation"
-        border={0}
-        cellPadding={0}
-        cellSpacing={0}
-        width="100%"
-        style={{ backgroundColor: "#0d1117" }}
+}) => {
+  const typeLabel =
+    typeof type === "string"
+      ? capitalize(type.toLowerCase()) + " Notification"
+      : "Notification";
+  const safeMessage = sanitizeMarkdown(message);
+
+  return (
+    <Html>
+      <Head />
+      <Body
+        style={{
+          margin: 0,
+          padding: 0,
+          backgroundColor: "#ffffff",
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
+        }}
       >
-        <tr>
-          <td align="center">
-            <Container style={container}>
-              <Section style={header}>
-                <Text style={heading}>
-                  {typeof type === "string"
-                    ? capitalize(type.toLowerCase())
-                    : "Notification"}
-                </Text>
-              </Section>
-              <Hr style={hr} />
-              <Section style={content}>
-                <Text style={messageTitle}>{title}</Text>
-                <Text style={messageBody}>{message}</Text>
-              </Section>
-              <Hr style={hr} />
-              <Section style={footer}>
-                <Text style={footerText}>
-                  © 2025 @ashgw. All rights reserved.
-                </Text>
-                <Text style={footerSub}>
-                  You’re receiving this notification because it was triggered by
-                  one of my services.
-                </Text>
-              </Section>
-            </Container>
-          </td>
-        </tr>
-      </table>
-    </Body>
-  </Html>
-);
+        <table
+          role="presentation"
+          border={0}
+          cellPadding={0}
+          cellSpacing={0}
+          width="100%"
+          style={{ backgroundColor: "#ffffff" }}
+        >
+          <tr>
+            <td align="center">
+              <Container style={container}>
+                <Section style={header}>
+                  <Text style={heading}>{typeLabel}</Text>
+                </Section>
+                <Section style={content}>
+                  <div style={markdownWrap}>
+                    <Markdown
+                      markdownCustomStyles={{ link: { color: "#58a6ff" } }}
+                    >
+                      {safeMessage}
+                    </Markdown>
+                  </div>
+                </Section>
+                <Section style={footer}>
+                  <Text style={footerText}>
+                    © 2025 @ashgw. All rights reserved.
+                  </Text>
+                  <Text style={footerSub}>
+                    You’re receiving this notification because it was triggered
+                    by one of my services.
+                  </Text>
+                </Section>
+              </Container>
+            </td>
+          </tr>
+        </table>
+      </Body>
+    </Html>
+  );
+};
 
 export default NotificationTemplate;
 
@@ -81,13 +122,13 @@ const container = {
   margin: "0 auto",
   width: "100%",
   maxWidth: "600px",
-  backgroundColor: "#111111",
+  backgroundColor: "#ffffff",
   borderRadius: "8px",
   overflow: "hidden",
 };
 
 const header = {
-  backgroundColor: "#1a1a1a",
+  backgroundColor: "#f5f5f5",
   padding: "20px",
   textAlign: "center" as const,
 };
@@ -95,47 +136,36 @@ const header = {
 const heading = {
   fontSize: "20px",
   fontWeight: "bold",
-  color: "#ffffff",
+  color: "#222222",
   margin: 0,
 };
 
 const content = {
+  marginTop: "-20px",
   padding: "20px",
-  textAlign: "center" as const,
+  textAlign: "left" as const,
 };
 
-const messageTitle = {
-  fontSize: "18px",
-  fontWeight: 600,
-  color: "#ffffff",
-  marginBottom: "8px",
-};
-
-const messageBody = {
+const markdownWrap = {
+  color: "#333333",
   fontSize: "15px",
-  color: "#cccccc",
   lineHeight: "1.5",
-};
-
-const hr = {
-  borderColor: "#333333",
-  margin: 0,
-};
+} as const;
 
 const footer = {
-  backgroundColor: "#1a1a1a",
+  backgroundColor: "#f5f5f5",
   padding: "16px 20px",
   textAlign: "center" as const,
 };
 
 const footerText = {
   fontSize: "12px",
-  color: "#888888",
+  color: "#666666",
   margin: "0 0 4px 0",
 };
 
 const footerSub = {
   fontSize: "12px",
-  color: "#555555",
+  color: "#999999",
   margin: 0,
 };

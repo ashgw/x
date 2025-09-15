@@ -62,7 +62,6 @@ class EmailService {
     subject,
   }: SendNotificationParams): Promise<SendResult> {
     const element = React.createElement(NotificationTemplate, {
-      title,
       type,
       message,
     });
