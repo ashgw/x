@@ -1,4 +1,4 @@
-import { InternalError, logger, monitor } from "@ashgw/observability";
+import { logger, monitor } from "@ashgw/observability";
 import { env } from "@ashgw/env";
 import { endPoint } from "~/ts-rest/endpoint";
 import type { ReminderBodyDto } from "~/api/models/reminder";
