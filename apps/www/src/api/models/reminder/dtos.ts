@@ -2,36 +2,35 @@ import { z } from "zod";
 import { notifyBodySchemaDto } from "../notify";
 
 // need to require timezone in ISO to avoid accidental UTC mistakes
-const isoDateTime = z.string().datetime({ offset: true });
+const isoDateTimeSchema = z.string().datetime({ offset: true });
 
 export const reminderPayloadSchemaDto = z.object({
   notification: notifyBodySchemaDto,
 });
 
-const scheduleAtSchema = z.object({
+const scheduleAtSchema = reminderPayloadSchemaDto.extend({
   kind: z.literal("at"),
-  at: isoDateTime,
+  at: isoDateTimeSchema,
+});
+
+const scheduleCronSchema = reminderPayloadSchemaDto.extend({
+  kind: z.literal("cron"),
+  // allow CRON_TZ=Zone at the start if you want local time
+  cron: z.string().min(1).max(128),
 });
 
 const scheduleMultiAtSchema = z.object({
   kind: z.literal("multiAt"),
-  at: z.array(isoDateTime).min(1).max(10),
+  at: z.array(isoDateTimeSchema).min(1).max(10),
   notifications: z.array(notifyBodySchemaDto).min(1),
 });
 
-const scheduleCronSchema = z.object({
-  kind: z.literal("cron"),
-  // allow CRON_TZ=Zone at the start if you want local time
-  cron: z.string().min(1).max(255),
-});
-
-export const reminderCreateSchemaDto = z.object({
-  payload: reminderPayloadSchemaDto,
+export const createReminderBodySchemaDto = z.object({
   schedule: z.discriminatedUnion("kind", [
     scheduleAtSchema,
-    scheduleMultiAtSchema,
     scheduleCronSchema,
+    scheduleMultiAtSchema,
   ]),
 });
 
-export type ReminderCreateDto = z.infer<typeof reminderCreateSchemaDto>;
+export type CreateReminderBodyDto = z.infer<typeof createReminderBodySchemaDto>;
