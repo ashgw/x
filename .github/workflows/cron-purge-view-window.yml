@@ -17,8 +17,5 @@ jobs:
 
       - name: Purge View Window
         shell: bash
-        run: |
-          set -euo pipefail
-          curl -i -X DELETE \
-            "$NEXT_PUBLIC_WWW_URL/api/v1/purge-view-window" \
-            -H "x-cron-token: $X_CRON_TOKEN"
+        run: ./scripts/cron/purge-view-window.sh
+

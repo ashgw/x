@@ -22,6 +22,13 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     return await webhooks.purgeTrashPosts();
   }),
 
+  notify: middleware()
+    .use(rateLimiter({ limit: { every: "1s" } }))
+    .use(cronAuthed())
+    .route(contract.notify)(async ({ body }) => {
+    return await webhooks.notify({ body });
+  }),
+
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
       query,

@@ -27,10 +27,10 @@ const serverVars = {
     .enum(["production", "development", "test"])
     .optional()
     .describe("NextJS is taking care of this basically"),
-  SENTRY_ORG: z.string().min(2),
-  X_CRON_TOKEN: z.string().length(32),
-  SENTRY_PROJECT: z.string().min(2),
-  SENTRY_AUTH_TOKEN: z.string().min(20),
+  SENTRY_ORG: z.string().min(2).max(255),
+  X_CRON_TOKEN: z.string().length(32).max(255),
+  SENTRY_PROJECT: z.string().min(2).max(255),
+  SENTRY_AUTH_TOKEN: z.string().min(20).max(255),
   IP_HASH_SALT: z
     .string()
     .min(32, "IP hash salt must be at least 32 characters long")
@@ -60,7 +60,9 @@ const serverVars = {
       (url) => url.includes("amazonaws.com") || url.includes("cloudfront.net"),
       { message: "Must be a valid S3 or CloudFront URL" },
     ),
-  KIT_API_KEY: z.string().min(20).startsWith("kit_"),
+  KIT_API_KEY: z.string().min(20).startsWith("kit_").max(255),
+  RESEND_API_KEY: z.string().min(20).startsWith("re_").max(255),
+  PERSONAL_EMAIL: z.string().email().max(255),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -74,8 +76,10 @@ export const env = createEnv({
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
     X_CRON_TOKEN: process.env.X_CRON_TOKEN,
+    PERSONAL_EMAIL: process.env.PERSONAL_EMAIL,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     KIT_API_KEY: process.env.KIT_API_KEY,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_BUCKET_REGION: process.env.S3_BUCKET_REGION,
     S3_BUCKET_ACCESS_KEY_ID: process.env.S3_BUCKET_ACCESS_KEY_ID,
