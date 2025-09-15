@@ -6,7 +6,7 @@ import { useCopyToClipboard } from "react-use";
 import { toast, Toaster } from "sonner";
 
 import { TextContent } from "@ashgw/components";
-import { email, links } from "@ashgw/constants";
+import { ossEmail, links } from "@ashgw/constants";
 
 import Link from "./components/Link";
 import { env } from "@ashgw/env";
@@ -17,7 +17,7 @@ export function HomePage() {
   const [isToggled, setIsToggled] = useState(false);
 
   const emailAddress = useMemo(
-    () => (email.startsWith("mailto:") ? email.slice(7) : email),
+    () => (ossEmail.startsWith("mailto:") ? ossEmail.slice(7) : ossEmail),
     [],
   );
 
