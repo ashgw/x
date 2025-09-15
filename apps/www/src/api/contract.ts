@@ -1,5 +1,4 @@
 import { c } from "../ts-rest/root";
-import type { Keys } from "ts-roids";
 import { createContract } from "~/@ashgw/ts-rest";
 import {
   healthCheckSchemaResponses,
@@ -19,18 +18,6 @@ import {
 } from "~/api/models";
 
 export const contract = createContract(c)({
-  notify: {
-    method: "POST",
-    path: "/notify",
-    strictStatusCodes: true,
-    summary: "Send notification",
-    description:
-      "Dispatches a system notification using the provided headers and body payload.",
-    headers: notifyHeadersSchemaDto,
-    body: notifyBodySchemaDto,
-    responses: notifySchemaResponses,
-  },
-
   reminder: {
     method: "POST",
     path: "/reminder",
@@ -41,6 +28,18 @@ export const contract = createContract(c)({
     headers: reminderHeadersSchemaDto,
     body: reminderBodySchemaDto,
     responses: reminderSchemaResponses,
+  },
+
+  notify: {
+    method: "POST",
+    path: "/notify",
+    strictStatusCodes: true,
+    summary: "Send notification",
+    description:
+      "Dispatches a system notification using the provided headers and body payload.",
+    headers: notifyHeadersSchemaDto,
+    body: notifyBodySchemaDto,
+    responses: notifySchemaResponses,
   },
 
   purgeViewWindow: {
@@ -115,6 +114,3 @@ export const contract = createContract(c)({
     responses: fetchTextFromUpstreamSchemaResponses,
   },
 });
-
-type Contract = typeof contract;
-export type ContractRoute = Contract[Keys<Contract>];
