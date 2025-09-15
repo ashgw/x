@@ -13,9 +13,36 @@ import {
   notifyHeadersSchemaDto,
   notifyBodySchemaDto,
   notifySchemaResponses,
+  reminderSchemaResponses,
+  reminderHeadersSchemaDto,
+  reminderBodySchemaDto,
 } from "~/api/models";
 
 export const contract = createContract(c)({
+  notify: {
+    method: "POST",
+    path: "/notify",
+    strictStatusCodes: true,
+    summary: "Send notification",
+    description:
+      "Dispatches a system notification using the provided headers and body payload.",
+    headers: notifyHeadersSchemaDto,
+    body: notifyBodySchemaDto,
+    responses: notifySchemaResponses,
+  },
+
+  reminder: {
+    method: "POST",
+    path: "/reminder",
+    strictStatusCodes: true,
+    summary: "Create reminder",
+    description:
+      "Creates a reminder using the provided headers and body payload.",
+    headers: reminderHeadersSchemaDto,
+    body: reminderBodySchemaDto,
+    responses: reminderSchemaResponses,
+  },
+
   purgeViewWindow: {
     method: "DELETE",
     path: "/purge-view-window",
@@ -35,18 +62,6 @@ export const contract = createContract(c)({
     description: "Permanently deletes all posts currently in the trash bin.",
     headers: purgeTrashPostsHeadersSchemaDto,
     responses: purgeTrashPostsSchemaResponses,
-  },
-
-  notify: {
-    method: "POST",
-    path: "/notify",
-    strictStatusCodes: true,
-    summary: "Send notification",
-    description:
-      "Dispatches a system notification using the provided headers and body payload.",
-    headers: notifyHeadersSchemaDto,
-    body: notifyBodySchemaDto,
-    responses: notifySchemaResponses,
   },
 
   healthCheck: {

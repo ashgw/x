@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { notifyBodySchemaDto } from "../notify";
+import { authedMiddlewareHeaderSchemaDto } from "../shared";
 
 // need to require timezone in ISO to avoid accidental UTC mistakes
 const isoDateTimeSchema = z
@@ -40,7 +41,7 @@ const scheduleMultiAtSchema = z.object({
     ),
 });
 
-export const createReminderBodySchemaDto = z
+export const reminderBodySchemaDto = z
   .object({
     schedule: z.discriminatedUnion("kind", [
       scheduleAtSchema,
@@ -50,4 +51,8 @@ export const createReminderBodySchemaDto = z
   })
   .describe("The reminder to create.");
 
-export type CreateReminderBodyDto = z.infer<typeof createReminderBodySchemaDto>;
+export const reminderHeadersSchemaDto = authedMiddlewareHeaderSchemaDto;
+
+export type ReminderBodyDto = z.infer<typeof reminderBodySchemaDto>;
+
+export type ReminderHeadersDto = z.infer<typeof reminderHeadersSchemaDto>;
