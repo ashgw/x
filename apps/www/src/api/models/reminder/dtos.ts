@@ -17,7 +17,11 @@ const scheduleCronSchema = z.object({
   kind: z.literal("cron").describe("At a specific date and time"),
   cron: z.object({
     timezone: z.string().min(1).max(128).describe("e.g. 'America/New_York'"),
-    expression: z.string().min(1).max(16).describe("e.g. '0 0 * * *'"),
+    expression: z
+      .string()
+      .min(1)
+      .max(16)
+      .describe("the 5 or 6 part POSIX cron expression, e.g. '0 0 * * *'"),
   }),
   notification: notifyBodySchemaDto,
 });
