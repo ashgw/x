@@ -36,7 +36,7 @@ export async function reminder({
   body: ReminderBodyDto;
 }): Promise<ReminderResponses> {
   try {
-    const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/reminder";
+    const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
 
     if (schedule.kind === "at") {
       const result = await client.publish({
