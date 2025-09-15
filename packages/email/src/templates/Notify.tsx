@@ -16,11 +16,9 @@ function capitalize(str: string) {
 }
 
 export const NotificationTemplate = ({
-  title,
   message,
   type,
 }: {
-  title: string;
   message: string; // Markdown string
   type: NotificationType;
 }) => {
@@ -36,7 +34,7 @@ export const NotificationTemplate = ({
         style={{
           margin: 0,
           padding: 0,
-          backgroundColor: "#0d1117",
+          backgroundColor: "#ffffff",
           fontFamily:
             "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
         }}
@@ -47,7 +45,7 @@ export const NotificationTemplate = ({
           cellPadding={0}
           cellSpacing={0}
           width="100%"
-          style={{ backgroundColor: "#0d1117" }}
+          style={{ backgroundColor: "#ffffff" }}
         >
           <tr>
             <td align="center">
@@ -59,7 +57,6 @@ export const NotificationTemplate = ({
                 <Hr style={hr} />
 
                 <Section style={content}>
-                  <Text style={messageTitle}>{title}</Text>
                   <div style={markdownWrap}>
                     <Markdown>{message}</Markdown>
                   </div>
@@ -91,13 +88,13 @@ const container = {
   margin: "0 auto",
   width: "100%",
   maxWidth: "600px",
-  backgroundColor: "#111111",
+  backgroundColor: "#ffffff",
   borderRadius: "8px",
   overflow: "hidden",
 };
 
 const header = {
-  backgroundColor: "#1a1a1a",
+  backgroundColor: "#f5f5f5",
   padding: "20px",
   textAlign: "center" as const,
 };
@@ -105,7 +102,7 @@ const header = {
 const heading = {
   fontSize: "20px",
   fontWeight: "bold",
-  color: "#ffffff",
+  color: "#222222",
   margin: 0,
 };
 
@@ -114,38 +111,31 @@ const content = {
   textAlign: "left" as const,
 };
 
-const messageTitle = {
-  fontSize: "18px",
-  fontWeight: 600,
-  color: "#ffffff",
-  margin: "0 0 12px 0",
-};
-
 const markdownWrap = {
-  color: "#cccccc",
+  color: "#333333",
   fontSize: "15px",
   lineHeight: "1.5",
 } as const;
 
 const hr = {
-  borderColor: "#333333",
+  borderColor: "#dddddd",
   margin: 0,
 };
 
 const footer = {
-  backgroundColor: "#1a1a1a",
+  backgroundColor: "#f5f5f5",
   padding: "16px 20px",
   textAlign: "center" as const,
 };
 
 const footerText = {
   fontSize: "12px",
-  color: "#888888",
+  color: "#666666",
   margin: "0 0 4px 0",
 };
 
 const footerSub = {
   fontSize: "12px",
-  color: "#555555",
+  color: "#999999",
   margin: 0,
 };
