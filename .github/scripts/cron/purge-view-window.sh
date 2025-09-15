@@ -10,6 +10,8 @@ echo "→ Purging view window from $NEXT_PUBLIC_WWW_URL"
 curl -fsSL -X DELETE \
   "$NEXT_PUBLIC_WWW_URL/api/v1/purge-view-window" \
   -H "x-cron-token: $X_CRON_TOKEN"
+  --connect-timeout 5 --max-time 30 \
+  --retry 3 --retry-delay 2 --retry-connrefused
 
 echo "✅ View window purge completed."
 

@@ -11,7 +11,9 @@ require_env "X_CRON_TOKEN"
 echo "→ Purging trash posts from $NEXT_PUBLIC_WWW_URL"
 curl -fsSL -X DELETE \
   "$NEXT_PUBLIC_WWW_URL/api/v1/purge-trash-posts" \
-  -H "x-cron-token: $X_CRON_TOKEN"
+  -H "x-cron-token: $X_CRON_TOKEN" \
+  --connect-timeout 5 --max-time 30 \
+  --retry 3 --retry-delay 2 --retry-connrefused
 
 echo "✅ Trash posts purge completed."
 
