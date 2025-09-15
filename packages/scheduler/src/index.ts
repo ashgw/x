@@ -11,9 +11,6 @@ import type {
 
 const qstashClient = new QstashClient({ token: env.QSTASH_TOKEN });
 
-// TODO: throw errors here if bad
-// TODO: add InternalError usage & logger later
-// simply console.error now
 class SchedulerService {
   constructor(
     private readonly _headers: Record<string, string> = {
@@ -25,7 +22,6 @@ class SchedulerService {
     return new SchedulerService({ ...this._headers, ...headers });
   }
 
-  // Overloads give exact return types based on input
   public async schedule(input: AtDto): Promise<ScheduleAtResult>;
   public async schedule(input: CronDto): Promise<ScheduleCronResult>;
   public async schedule(
