@@ -1,12 +1,16 @@
 import { z } from "zod";
 import { isoDateTimeSchema } from "./shared";
 
-export const reminderMessageSchemaRo = z
+export const reminderMessageCreatedSchemaRo = z
   .object({
-    kind: z.literal("message"),
+    kind: z.enum(["message", "schedule"]),
     id: z.string().min(1).max(255),
     at: isoDateTimeSchema.optional(),
   })
-  .describe("The reminder message created successfully.");
+  .describe(
+    "The reminder message or schedule created successfully by the upstream service.",
+  );
 
-export type ReminderMessageRo = z.infer<typeof reminderMessageSchemaRo>;
+export type ReminderMessageCreatedRo = z.infer<
+  typeof reminderMessageCreatedSchemaRo
+>;

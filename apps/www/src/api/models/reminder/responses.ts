@@ -6,11 +6,11 @@ import {
   internalErrorSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
 } from "~/api/models/shared/responses";
-import { reminderMessageSchemaRo } from "./ros";
+import { reminderMessageCreatedSchemaRo } from "./ros";
 
 export const reminderSchemaResponses = createSchemaResponses({
   200: z.object({
-    created: z.array(reminderMessageSchemaRo),
+    created: z.array(reminderMessageCreatedSchemaRo),
   }),
   ...rateLimiterMiddlewareSchemaResponse,
   ...authedMiddlewareSchemaResponse,
@@ -18,5 +18,3 @@ export const reminderSchemaResponses = createSchemaResponses({
 });
 
 export type ReminderResponses = InferResponses<typeof reminderSchemaResponses>;
-
-export type ReminderMessageRo = z.infer<typeof reminderMessageSchemaRo>;

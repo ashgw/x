@@ -5,7 +5,7 @@ import { Client } from "@upstash/qstash";
 import type {
   ReminderBodyDto,
   ReminderResponses,
-  ReminderMessageRo,
+  ReminderMessageCreatedRo,
 } from "~/api/models";
 import type { NotifyBodyDto } from "~/api/models/notify";
 import { NotificationType } from "@ashgw/email";
@@ -51,7 +51,7 @@ export async function reminder(input: {
     }
 
     if (s.kind === "multiAt") {
-      const created: ReminderMessageRo[] = [];
+      const created: ReminderMessageCreatedRo[] = [];
 
       for (const item of s.notifications) {
         const payload = transformToReminderPayload(item.notification);
