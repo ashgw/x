@@ -7,14 +7,12 @@
     "lint": "tsc --noEmit; eslint ."
   },
   "dependencies": {
-    "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@upstash/qstash": "2.8.2"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
   "exports": {
