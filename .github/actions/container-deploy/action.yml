@@ -107,3 +107,25 @@ runs:
             repo: context.repo.repo,
             body
           });
+
+    - name: Notify • deploy ok
+      if: success()
+      uses: ashgw/notify@v1
+      with:
+        token: ${{ secrets.NOTIFY_TOKEN }}
+        title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} ok"
+        message: >-
+          Koyeb redeploy **succeeded** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
+          Actor: @${{ github.actor }}
+          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+    - name: Notify • deploy fail
+      if: failure()
+      uses: ashgw/notify@v1
+      with:
+        token: ${{ secrets.NOTIFY_TOKEN }}
+        title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} fail"
+        message: >-
+          Koyeb redeploy **failed** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
+          Actor: @${{ github.actor }}
+          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
