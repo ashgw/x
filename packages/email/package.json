@@ -6,7 +6,7 @@
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint .",
     "dev-template": " pnpx react-email dev --dir ./src/templates",
-    "test": "tsx src/test.ts"
+    "test-email": "tsx src/test.ts"
   },
   "dependencies": {
     "@ashgw/constants": "workspace:*",
