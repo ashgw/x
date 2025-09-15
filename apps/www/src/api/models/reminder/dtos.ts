@@ -2,7 +2,10 @@ import { z } from "zod";
 import { notifyBodySchemaDto } from "../notify";
 
 // need to require timezone in ISO to avoid accidental UTC mistakes
-const isoDateTimeSchema = z.string().datetime({ offset: true });
+const isoDateTimeSchema = z
+  .string()
+  .datetime({ offset: true })
+  .describe("e.g. '2025-01-01T00:00:00+00:00'");
 
 export const reminderPayloadSchemaDto = z.object({
   notification: notifyBodySchemaDto,
@@ -15,12 +18,14 @@ const scheduleAtSchema = reminderPayloadSchemaDto.extend({
 
 const scheduleCronSchema = reminderPayloadSchemaDto.extend({
   kind: z.literal("cron"),
-  // allow CRON_TZ=Zone at the start if you want local time
-  cron: z.string().min(1).max(128),
+  cron: z.object({
+    timezone: z.string().min(1).max(128).describe("e.g. 'America/New_York'"),
+    expression: z.string().min(1).max(16).describe("e.g. '0 0 * * *'"),
+  }),
 });
 
 const scheduleMultiAtSchema = z.object({
-  kind: z.literal("multiAt"),
+  kind: z.literal("multiAt").describe("At multiple specific date and times"),
   at: z.array(isoDateTimeSchema).min(1).max(10),
   notifications: z.array(notifyBodySchemaDto).min(1),
 });
