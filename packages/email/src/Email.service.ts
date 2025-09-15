@@ -9,6 +9,7 @@ import type { SendParams, SendResult, SendNotificationParams } from "./types";
 
 class EmailService {
   private readonly from = notifyEmail;
+  private _cached?: Resend;
   public async send({
     from,
     to,
@@ -65,7 +66,8 @@ class EmailService {
   }
 
   private _client(): Resend {
-    return new Resend(env.RESEND_API_KEY);
+    if (!this._cached) this._cached = new Resend(env.RESEND_API_KEY);
+    return this._cached;
   }
 }
 
