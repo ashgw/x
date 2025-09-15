@@ -1,7 +1,7 @@
 import { logger, monitor } from "@ashgw/observability";
 import type { NotifyResponses } from "~/api/models";
 import { email } from "@ashgw/email";
-import type { NotifyBodyDto } from "~/api/models/webhooks/notify";
+import type { NotifyBodyDto } from "~/api/models/notify";
 import { env } from "@ashgw/env";
 
 export async function notify(input: {

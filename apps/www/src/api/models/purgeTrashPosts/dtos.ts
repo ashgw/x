@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { cronAuthedMiddlewareHeaderSchemaDto } from "../../shared";
+import { cronAuthedMiddlewareHeaderSchemaDto } from "../shared";
 
 export const purgeTrashPostsHeadersSchemaDto =
   cronAuthedMiddlewareHeaderSchemaDto;

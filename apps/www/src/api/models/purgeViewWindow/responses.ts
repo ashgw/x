@@ -5,7 +5,7 @@ import {
   internalErrorSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
   noContentSchemaResponse,
-} from "../../shared/responses";
+} from "../shared/responses";
 
 export const purgeViewWindowSchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
