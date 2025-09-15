@@ -8,20 +8,29 @@ import {
   Hr,
 } from "@react-email/components";
 import * as React from "react";
+import type { NotificationType } from "../types";
 
-export const PersonalNotification = ({
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const NotificationTemplate = ({
   title,
   message,
+  type,
 }: {
   title: string;
   message: string;
+  type: NotificationType;
 }) => (
   <Html>
     <Head />
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
-          <Text style={heading}>Service Notification</Text>
+          <Text style={heading}>
+            {capitalize(type.toLowerCase())} Notification
+          </Text>
         </Section>
         <Hr style={hr} />
         <Section style={content}>
@@ -41,7 +50,7 @@ export const PersonalNotification = ({
   </Html>
 );
 
-export default PersonalNotification;
+export default NotificationTemplate;
 
 const main = {
   backgroundColor: "#f6f6f6",

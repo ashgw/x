@@ -11,6 +11,9 @@ export const notifyBodySchemaDto = z.object({
     .describe(
       "The email address to send the notification to. If not provided, the notification will be sent to my personal email address.",
     ),
+  type: z
+    .nativeEnum(NotificationType)
+    .describe("The type of the notification."),
   title: z.string().min(1).max(30).describe("The title of the notification."),
   message: z
     .string()
