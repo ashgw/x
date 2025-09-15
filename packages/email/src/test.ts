@@ -1,8 +1,8 @@
 import { env } from "@ashgw/env";
 import { NotificationType } from "./types";
-import { emailService } from "./Email.service";
+import { email } from ".";
 
-await emailService.sendNotification({
+await email.sendNotification({
   subject: "Deployment Complete",
   title: "All Systems Go",
   type: NotificationType.SERVICE,
