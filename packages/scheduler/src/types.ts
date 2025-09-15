@@ -1,9 +1,4 @@
-export type Payload =
-  | Blob
-  | FormData
-  | URLSearchParams
-  | ReadableStream<Uint8Array>
-  | string;
+export type Payload = string;
 
 export interface ScheduleBaseDto {
   url: string;
