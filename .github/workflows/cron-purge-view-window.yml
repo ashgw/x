@@ -19,3 +19,22 @@ jobs:
         shell: bash
         run: ./scripts/cron/purge-view-window.sh
 
+      - name: Notify • cron ok
+        if: success()
+        uses: ashgw/notify@main
+        with:
+          token: ${{ secrets.NOTIFY_TOKEN }}
+          title: "cron: purge-view-window ok"
+          message: >-
+            Window purge succeeded on ${{ env.NEXT_PUBLIC_WWW_URL }}.
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Notify • cron fail
+        if: failure()
+        uses: ashgw/notify@main
+        with:
+          token: ${{ secrets.NOTIFY_TOKEN }}
+          title: "cron: purge-view-window fail"
+          message: >-
+            Window purge failed on ${{ env.NEXT_PUBLIC_WWW_URL }}.
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

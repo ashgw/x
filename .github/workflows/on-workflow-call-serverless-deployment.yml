@@ -56,6 +56,7 @@ jobs:
           deployment_environment: ${{ inputs.deployment_environment }}
           app_name: ${{ inputs.app_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}
           VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
