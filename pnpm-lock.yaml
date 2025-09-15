@@ -840,13 +840,13 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript
       '@react-email/preview-server':
-        specifier: 4.2.11
+        specifier: ^4.2.11
         version: 4.2.11(@emotion/is-prop-valid@1.2.2)(@opentelemetry/api@1.9.0)(bufferutil@4.0.9)(postcss@8.4.47)(sass@1.69.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))
       react-email:
-        specifier: 4.2.11
+        specifier: ^4.2.11
         version: 4.2.11(bufferutil@4.0.9)
       react-mail:
-        specifier: 0.0.1
+        specifier: ^0.0.1
         version: 0.0.1
       typescript:
         specifier: 'catalog:'
@@ -11922,9 +11922,9 @@ snapshots:
       '@babel/helper-compilation-targets': 7.25.9
       '@babel/helper-module-transforms': 7.25.9(@babel/core@7.25.9)
       '@babel/helpers': 7.25.9
-      '@babel/parser': 7.25.9
+      '@babel/parser': 7.28.4
       '@babel/template': 7.25.9
-      '@babel/traverse': 7.25.9
+      '@babel/traverse': 7.28.4
       '@babel/types': 7.25.9
       convert-source-map: 2.0.0
       debug: 4.4.1
@@ -11942,9 +11942,9 @@ snapshots:
       '@babel/helper-compilation-targets': 7.27.2
       '@babel/helper-module-transforms': 7.28.3(@babel/core@7.26.10)
       '@babel/helpers': 7.28.4
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
-      '@babel/traverse': 7.27.0
+      '@babel/traverse': 7.28.4
       '@babel/types': 7.28.4
       convert-source-map: 2.0.0
       debug: 4.4.1
@@ -11979,7 +11979,7 @@ snapshots:
     dependencies:
       '@babel/compat-data': 7.25.9
       '@babel/helper-validator-option': 7.25.9
-      browserslist: 4.24.2
+      browserslist: 4.26.0
       lru-cache: 5.1.1
       semver: 6.3.1
 
@@ -11987,7 +11987,7 @@ snapshots:
     dependencies:
       '@babel/compat-data': 7.28.4
       '@babel/helper-validator-option': 7.27.1
-      browserslist: 4.24.2
+      browserslist: 4.26.0
       lru-cache: 5.1.1
       semver: 6.3.1
 
@@ -12008,8 +12008,8 @@ snapshots:
 
   '@babel/helper-module-imports@7.25.9':
     dependencies:
-      '@babel/traverse': 7.25.9
-      '@babel/types': 7.25.9
+      '@babel/traverse': 7.28.4
+      '@babel/types': 7.28.4
     transitivePeerDependencies:
       - supports-color
 
@@ -12026,7 +12026,7 @@ snapshots:
       '@babel/helper-module-imports': 7.25.9
       '@babel/helper-simple-access': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
-      '@babel/traverse': 7.25.9
+      '@babel/traverse': 7.28.4
     transitivePeerDependencies:
       - supports-color
 
@@ -12041,8 +12041,8 @@ snapshots:
 
   '@babel/helper-simple-access@7.25.9':
     dependencies:
-      '@babel/traverse': 7.25.9
-      '@babel/types': 7.25.9
+      '@babel/traverse': 7.28.4
+      '@babel/types': 7.28.4
     transitivePeerDependencies:
       - supports-color
 
@@ -12064,8 +12064,8 @@ snapshots:
 
   '@babel/helpers@7.25.9':
     dependencies:
-      '@babel/template': 7.25.9
-      '@babel/types': 7.25.9
+      '@babel/template': 7.27.2
+      '@babel/types': 7.28.4
 
   '@babel/helpers@7.28.4':
     dependencies:
@@ -12102,9 +12102,9 @@ snapshots:
 
   '@babel/template@7.25.9':
     dependencies:
-      '@babel/code-frame': 7.25.9
-      '@babel/parser': 7.25.9
-      '@babel/types': 7.25.9
+      '@babel/code-frame': 7.27.1
+      '@babel/parser': 7.28.4
+      '@babel/types': 7.28.4
 
   '@babel/template@7.27.2':
     dependencies:
@@ -12131,7 +12131,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.25.9
       '@babel/generator': 7.25.9
-      '@babel/parser': 7.25.9
+      '@babel/parser': 7.28.4
       '@babel/template': 7.25.9
       '@babel/types': 7.25.9
       debug: 4.4.1
@@ -12143,7 +12143,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/generator': 7.28.3
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
       '@babel/types': 7.28.4
       debug: 4.4.1
@@ -13363,7 +13363,7 @@ snapshots:
 
   '@mapbox/node-pre-gyp@1.0.11':
     dependencies:
-      detect-libc: 2.0.3
+      detect-libc: 2.1.0
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
       node-fetch: 2.7.0
@@ -17627,7 +17627,7 @@ snapshots:
 
   '@sentry/bundler-plugin-core@3.2.2':
     dependencies:
-      '@babel/core': 7.25.9
+      '@babel/core': 7.26.10
       '@sentry/babel-plugin-component-annotate': 3.2.2
       '@sentry/cli': 2.42.2
       dotenv: 16.4.5
@@ -19911,8 +19911,7 @@ snapshots:
 
   detect-libc@2.0.3: {}
 
-  detect-libc@2.1.0:
-    optional: true
+  detect-libc@2.1.0: {}
 
   detect-node-es@1.1.0: {}
 
@@ -22476,7 +22475,7 @@ snapshots:
     dependencies:
       '@next/env': 15.5.2
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001669
+      caniuse-lite: 1.0.30001741
       postcss: 8.4.31
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -22501,7 +22500,7 @@ snapshots:
     dependencies:
       '@next/env': 15.5.2
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001669
+      caniuse-lite: 1.0.30001741
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 19.0.0(react@18.3.1)
@@ -22823,7 +22822,7 @@ snapshots:
 
   parse-json@5.2.0:
     dependencies:
-      '@babel/code-frame': 7.25.9
+      '@babel/code-frame': 7.27.1
       error-ex: 1.3.2
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
@@ -23723,7 +23722,7 @@ snapshots:
   sharp@0.34.1:
     dependencies:
       color: 4.2.3
-      detect-libc: 2.0.3
+      detect-libc: 2.1.0
       semver: 7.7.2
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.1
