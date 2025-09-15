@@ -27,10 +27,10 @@ const serverVars = {
     .enum(["production", "development", "test"])
     .optional()
     .describe("NextJS is taking care of this basically"),
-  SENTRY_ORG: z.string().min(2),
-  X_CRON_TOKEN: z.string().length(32),
-  SENTRY_PROJECT: z.string().min(2),
-  SENTRY_AUTH_TOKEN: z.string().min(20),
+  SENTRY_ORG: z.string().min(2).max(255),
+  X_CRON_TOKEN: z.string().length(32).max(255),
+  SENTRY_PROJECT: z.string().min(2).max(255),
+  SENTRY_AUTH_TOKEN: z.string().min(20).max(255),
   IP_HASH_SALT: z
     .string()
     .min(32, "IP hash salt must be at least 32 characters long")
@@ -60,9 +60,9 @@ const serverVars = {
       (url) => url.includes("amazonaws.com") || url.includes("cloudfront.net"),
       { message: "Must be a valid S3 or CloudFront URL" },
     ),
-  KIT_API_KEY: z.string().min(20).startsWith("kit_"),
-  RESEND_API_KEY: z.string().min(20).startsWith("re_"),
-  PERSONAL_EMAIL: z.string().min(10).max(30),
+  KIT_API_KEY: z.string().min(20).startsWith("kit_").max(255),
+  RESEND_API_KEY: z.string().min(20).startsWith("re_").max(255),
+  PERSONAL_EMAIL: z.string().email().max(255),
 };
 
 const serverVarsTuple = envTuple(serverVars);
