@@ -3,7 +3,7 @@ name: Container Deployment
 description: Build and deploy container image
 
 inputs:
-  environment:
+  deployment_environment:
     description: "Environment, either 'production' or 'preview' (this will determine which image is pushed and where it redeploys)"
     required: true
     default: "preview"
@@ -49,7 +49,7 @@ runs:
         docker push "$LATEST"
 
     - name: Push image (preview)
-      if: ${{ inputs.environment == 'preview' }}
+      if: ${{ inputs.deployment_environment == 'preview' }}
       shell: bash
       run: |
         IMAGE="ghcr.io/${{ github.repository_owner }}/${{ inputs.app_name }}:preview"
@@ -71,14 +71,14 @@ runs:
         export PATH="$HOME/.koyeb/bin:$PATH"
 
         # Choose target
-        if [[ "${{ inputs.environment }}" == "production" ]]; then
+        if [[ "${{ inputs.deployment_environment }}" == "production" ]]; then
           echo "Deploying to production environment"
           DEPLOY_TARGET="${{ inputs.app_name }}/${{ inputs.app_name }}"
-        elif [[ "${{ inputs.environment }}" == "preview" ]]; then
+        elif [[ "${{ inputs.deployment_environment }}" == "preview" ]]; then
           echo "Deploying to preview environment"
           DEPLOY_TARGET="${{ inputs.app_name }}-preview/${{ inputs.app_name }}-preview"
         else
-          echo "Unknown environment: ${{ inputs.environment }}"
+          echo "Unknown environment: ${{ inputs.deployment_environment }}"
           exit 1
         fi
 
