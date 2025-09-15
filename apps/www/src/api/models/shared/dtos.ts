@@ -1,14 +1,14 @@
 import { z } from "zod";
 
-export const cronAuthedMiddlewareHeaderSchemaDto = z
+export const authedMiddlewareHeaderSchemaDto = z
   .object({
-    "x-cron-token": z
+    "x-api-token": z
       .string()
       .length(32)
-      .describe("Secret cron authorization token."),
+      .describe("Secret API authorization token."),
   })
-  .describe("Header required for any cron-authenticated request");
+  .describe("Header required for any API-authenticated request");
 
-export type CronAuthedMiddlewareHeaderDto = z.infer<
-  typeof cronAuthedMiddlewareHeaderSchemaDto
+export type AuthedMiddlewareHeaderDto = z.infer<
+  typeof authedMiddlewareHeaderSchemaDto
 >;

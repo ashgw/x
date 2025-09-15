@@ -2,32 +2,28 @@ import { contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
-import { webhooks } from "~/api/functions/webhooks";
-import { rateLimiter, cronAuthed } from "~/ts-rest/middlewares";
+import { rateLimiter, authed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
 import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
+import { purgeViewWindow } from "./functions/purgeViewWindow";
+import { purgeTrashPosts } from "./functions/purgeTrashPosts";
+import { notify } from "./functions/notify";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: middleware()
-    .use(rateLimiter({ limit: { every: "15s" } }))
-    .use(cronAuthed())
-    .route(contract.purgeViewWindow)(async () => {
-    return await webhooks.purgeViewWindow();
-  }),
+    .use(rateLimiter({ limit: { every: "5s" } }))
+    .use(authed())
+    .route(contract.purgeViewWindow)(async () => await purgeViewWindow()),
 
   purgeTrashPosts: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
-    .use(cronAuthed())
-    .route(contract.purgeTrashPosts)(async () => {
-    return await webhooks.purgeTrashPosts();
-  }),
+    .use(authed())
+    .route(contract.purgeTrashPosts)(async () => await purgeTrashPosts()),
 
   notify: middleware()
     .use(rateLimiter({ limit: { every: "1s" } }))
-    .use(cronAuthed())
-    .route(contract.notify)(async ({ body }) => {
-    return await webhooks.notify({ body });
-  }),
+    .use(authed())
+    .route(contract.notify)(async ({ body }) => await notify({ body })),
 
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
@@ -42,7 +38,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     }),
 
   debion: async ({ query }) =>
-    fetchTextFromUpstream({
+    await fetchTextFromUpstream({
       query,
       fetchUrl: { github: { repo: "debion", scriptPath: "setup" } },
       opts: {
@@ -52,7 +48,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     }),
 
   whisper: async ({ query }) =>
-    fetchTextFromUpstream({
+    await fetchTextFromUpstream({
       query,
       fetchUrl: { github: { repo: "whisper", scriptPath: "setup" } },
       opts: {
@@ -62,7 +58,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     }),
 
   gpg: async ({ query }) =>
-    fetchTextFromUpstream({
+    await fetchTextFromUpstream({
       query,
       fetchUrl: { direct: { url: gpg.publicUrl } },
       opts: {
@@ -70,5 +66,5 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         cacheControl: "s-maxage=86400, stale-while-revalidate=86400",
       },
     }),
-  healthCheck: async () => healthCheck(),
+  healthCheck: async () => await healthCheck(),
 });

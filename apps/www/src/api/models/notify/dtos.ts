@@ -1,8 +1,8 @@
-import { cronAuthedMiddlewareHeaderSchemaDto } from "~/api/models/shared/dtos";
+import { authedMiddlewareHeaderSchemaDto } from "~/api/models/shared/dtos";
 import { z } from "zod";
 import { NotificationType } from "@ashgw/email";
 
-export const notifyHeadersSchemaDto = cronAuthedMiddlewareHeaderSchemaDto;
+export const notifyHeadersSchemaDto = authedMiddlewareHeaderSchemaDto;
 
 export const notifyBodySchemaDto = z.object({
   to: z
@@ -12,9 +12,7 @@ export const notifyBodySchemaDto = z.object({
     .describe(
       "The email address to send the notification to. If not provided, the notification will be sent to my personal email address.",
     ),
-  type: z
-    .nativeEnum(NotificationType)
-    .describe("The type of the notification."),
+  type: z.nativeEnum(NotificationType).describe("The type of the notification"),
   subject: z
     .string()
     .min(1)

@@ -1,9 +1,9 @@
 export {
   okSchemaResponse,
-  cronAuthedMiddlewareSchemaResponse,
+  authedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,
   noContentSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
 } from "./responses";
-export { cronAuthedMiddlewareHeaderSchemaDto } from "./dtos";
-export type { CronAuthedMiddlewareHeaderDto } from "./dtos";
+export { authedMiddlewareHeaderSchemaDto } from "./dtos";
+export type { AuthedMiddlewareHeaderDto } from "./dtos";
