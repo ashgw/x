@@ -23,8 +23,8 @@ export const notifyBodySchemaDto = z.object({
   message: z
     .string()
     .min(1)
-    .max(10000)
-    .describe("The message of the notification."),
+    .max(30000)
+    .describe("The message of the notification, written in markdown."),
 });
 
 export type NotifyHeadersDto = z.infer<typeof notifyHeadersSchemaDto>;
