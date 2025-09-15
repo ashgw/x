@@ -36,6 +36,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
     "@ashgw/rate-limiter": "workspace:*",
+    "@ashgw/scheduler": "workspace:*",
     "@ashgw/seo": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@calcom/embed-react": "1.5.2",

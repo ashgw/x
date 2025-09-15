@@ -431,6 +431,9 @@ importers:
       '@ashgw/rate-limiter':
         specifier: workspace:*
         version: link:../../packages/rate-limiter
+      '@ashgw/scheduler':
+        specifier: workspace:*
+        version: link:../../packages/scheduler
       '@ashgw/seo':
         specifier: workspace:*
         version: link:../../packages/seo
