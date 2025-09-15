@@ -7,15 +7,10 @@ const QSTASH_BASE = "https://qstash.upstash.io/v2";
 
 type Json = Record<string, unknown>;
 
-/**
- * Schedules reminders via Upstash QStash to call your public /notify endpoint.
- * The router must pass the absolute base URL (derived from request headers).
- */
 export async function reminder(input: {
-  baseUrl: string; // e.g. "https://yourdomain.com"
   body: ReminderBodyDto;
 }): Promise<ReminderResponses> {
-  const notifyUrl = `${input.baseUrl}${endPoint}/notify`;
+  const notifyUrl = `${env.NEXT_PUBLIC_WWW_URL}${endPoint}/notify`;
 
   try {
     const s = input.body.schedule;
@@ -59,7 +54,6 @@ export async function reminder(input: {
         body: { created: [{ kind: "schedule", id }] },
       };
     }
-    throw new Error(`Unsupported schedule kind: ${s.kind}`);
   } catch (error) {
     logger.error("reminder scheduling failed", { error });
     monitor.next.captureException({ error });
