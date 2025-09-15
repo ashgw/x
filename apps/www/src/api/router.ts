@@ -1,15 +1,23 @@
 import { contract } from "~/api/contract";
-import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
-import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
 import { rateLimiter, authed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
 import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
-import { purgeViewWindow } from "./functions/purgeViewWindow";
-import { purgeTrashPosts } from "./functions/purgeTrashPosts";
-import { notify } from "./functions/notify";
+import {
+  purgeTrashPosts,
+  purgeViewWindow,
+  notify,
+  fetchTextFromUpstream,
+  healthCheck,
+  reminder,
+} from "./functions";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
+  reminder: middleware()
+    .use(rateLimiter({ limit: { every: "1s" } }))
+    .use(authed())
+    .route(contract.reminder)(async ({ body }) => await reminder({ body })),
+
   purgeViewWindow: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
     .use(authed())
