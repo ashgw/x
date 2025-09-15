@@ -96,6 +96,12 @@ runs:
         END_TS=$(date +%s)
         echo "end_ts=$END_TS" >> "$GITHUB_OUTPUT"
 
+    - name: Compute duration
+      id: duration
+      shell: bash
+      run: |
+        echo "seconds=$(( ${{ steps.end.outputs.end_ts }} - ${{ steps.build.outputs.start_ts }} ))" >> "$GITHUB_OUTPUT"
+
     - name: Notify about preview deployment
       if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
       env:
@@ -135,7 +141,7 @@ runs:
           - **Actor:** @${{ github.actor }}
           - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          - **Duration:** $(( ${{ steps.end.outputs.end_ts }} - ${{ steps.build.outputs.start_ts }} )) seconds
+          - **Duration:** ${{ steps.duration.outputs.seconds }} seconds
 
           ---
           The application is now live.
@@ -154,7 +160,7 @@ runs:
           - **Actor:** @${{ github.actor }}
           - **Commit:** [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           - **Run:** [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          - **Duration:** $(( ${{ steps.end.outputs.end_ts }} - ${{ steps.build.outputs.start_ts }} )) seconds
+          - **Duration:** ${{ steps.duration.outputs.seconds }} seconds
 
           ---
           Redeploy attempt failed. Check workflow logs for details.
