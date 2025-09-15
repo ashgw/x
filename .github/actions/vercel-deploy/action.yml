@@ -94,7 +94,7 @@ runs:
 
     - name: Notify • deploy ok
       if: success()
-      uses: ashgw/notify@v1
+      uses: ashgw/notify@main
       with:
         token: ${{ secrets.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} ok"
@@ -106,7 +106,7 @@ runs:
 
     - name: Notify • deploy fail
       if: failure()
-      uses: ashgw/notify@v1
+      uses: ashgw/notify@main
       with:
         token: ${{ secrets.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} fail"
