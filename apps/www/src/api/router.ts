@@ -2,7 +2,7 @@ import { contract } from "~/api/contract";
 import { fetchTextFromUpstream } from "~/api/functions/fetchTextFromUpstream";
 import { healthCheck } from "~/api/functions/healthCheck";
 import { gpg } from "@ashgw/constants";
-import { rateLimiter, cronAuthed } from "~/ts-rest/middlewares";
+import { rateLimiter, authed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
 import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
 import { purgeViewWindow } from "./functions/purgeViewWindow";
@@ -12,17 +12,17 @@ import { notify } from "./functions/notify";
 export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
-    .use(cronAuthed())
+    .use(authed())
     .route(contract.purgeViewWindow)(async () => await purgeViewWindow()),
 
   purgeTrashPosts: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
-    .use(cronAuthed())
+    .use(authed())
     .route(contract.purgeTrashPosts)(async () => await purgeTrashPosts()),
 
   notify: middleware()
     .use(rateLimiter({ limit: { every: "1s" } }))
-    .use(cronAuthed())
+    .use(authed())
     .route(contract.notify)(async ({ body }) => await notify({ body })),
 
   bootstrap: async ({ query }) =>
