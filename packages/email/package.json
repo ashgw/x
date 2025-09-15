@@ -5,8 +5,7 @@
   "scripts": {
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint .",
-    "dev": " pnpx react-email dev --dir ./src/templates",
-    "build": "pnpx react-email build --dir ./src/templates",
+    "dev-template": " pnpx react-email dev --dir ./src/templates",
     "test": "tsx src/test.ts"
   },
   "dependencies": {
@@ -33,4 +32,3 @@
   },
   "type": "module"
 }
-
