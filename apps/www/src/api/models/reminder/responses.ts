@@ -6,14 +6,15 @@ import {
   internalErrorSchemaResponse,
   rateLimiterMiddlewareSchemaResponse,
 } from "~/api/models/shared/responses";
+import { isoDateTimeSchema } from "./shared";
 
 export const reminderSchemaResponses = createSchemaResponses({
   200: z.object({
     created: z.array(
       z.object({
         kind: z.enum(["message", "schedule"]),
-        id: z.string(),
-        at: z.string().optional(),
+        id: z.string().min(1).max(255),
+        at: isoDateTimeSchema.optional(),
       }),
     ),
   }),

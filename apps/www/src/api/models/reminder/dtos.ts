@@ -1,12 +1,7 @@
 import { z } from "zod";
 import { notifyBodySchemaDto } from "../notify";
 import { authedMiddlewareHeaderSchemaDto } from "../shared";
-
-// need to require timezone in ISO to avoid accidental UTC mistakes
-const isoDateTimeSchema = z
-  .string()
-  .datetime({ offset: true })
-  .describe("e.g. '2025-01-01T00:00:00+00:00'");
+import { isoDateTimeSchema } from "./shared";
 
 const scheduleAtSchema = z.object({
   kind: z.literal("at").describe("At a specific date and time"),
