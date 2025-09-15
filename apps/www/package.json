@@ -20,7 +20,6 @@
     "lint:ts": "tsc --noEmit; eslint .",
     "postbuild": "echo 'next-sitemap'",
     "start": "next start",
-    "test": "pnpm test:unit-integration; pnpm test:e2e",
     "test:e2e": "cd test/e2e && npx playwright test",
     "test:unit-integration": "vitest run --config=vitest.config.ts",
     "with-env": "dotenv -e ../../.env --"
