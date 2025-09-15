@@ -23,20 +23,21 @@ function toUnixSeconds(isoString: string): number {
   return Math.floor(new Date(isoString).getTime() / 1000);
 }
 
-export async function reminder(input: {
+export async function reminder({
+  body: { schedule },
+}: {
   body: ReminderBodyDto;
 }): Promise<ReminderResponses> {
   try {
     const client = new Client({ token: env.QSTASH_TOKEN });
     const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/reminder";
-    const s = input.body.schedule;
 
-    if (s.kind === "at") {
-      const payload = transformToReminderPayload(s.notification);
+    if (schedule.kind === "at") {
+      const payload = transformToReminderPayload(schedule.notification);
       const result = await client.publish({
         url: notifyUrl,
         body: JSON.stringify(payload),
-        notBefore: toUnixSeconds(s.at),
+        notBefore: toUnixSeconds(schedule.at),
         headers: {
           "Content-Type": "application/json",
           "x-api-token": env.X_API_TOKEN,
@@ -46,15 +47,15 @@ export async function reminder(input: {
       return {
         status: 200,
         body: {
-          created: [{ kind: "message", id: result.messageId, at: s.at }],
+          created: [{ kind: "message", id: result.messageId, at: schedule.at }],
         },
       };
     }
 
-    if (s.kind === "multiAt") {
+    if (schedule.kind === "multiAt") {
       const created: ReminderMessageCreatedRo[] = [];
 
-      for (const item of s.notifications) {
+      for (const item of schedule.notifications) {
         const payload = transformToReminderPayload(item.notification);
         const result = await client.publish({
           url: notifyUrl,
@@ -70,12 +71,10 @@ export async function reminder(input: {
 
       return { status: 200, body: { created } };
     }
-
-    // cron schedule
-    const payload = transformToReminderPayload(s.notification);
-    const schedule = await client.schedules.create({
+    const payload = transformToReminderPayload(schedule.notification);
+    const upstashSchedule = await client.schedules.create({
       destination: notifyUrl,
-      cron: s.cron.expression,
+      cron: schedule.cron.expression,
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
@@ -85,14 +84,14 @@ export async function reminder(input: {
 
     return {
       status: 200,
-      body: { created: [{ kind: "schedule", id: schedule.scheduleId }] },
+      body: { created: [{ kind: "schedule", id: upstashSchedule.scheduleId }] },
     };
   } catch (error) {
     logger.error("reminder scheduling failed", { error });
     monitor.next.captureException({ error });
     return {
       status: 500,
-      body: { code: "INTERNAL_EROR", message: "Internal error" },
+      body: { code: "INTERNAL_ERROR", message: "Internal error" },
     };
   }
 }
