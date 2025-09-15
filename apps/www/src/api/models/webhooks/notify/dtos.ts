@@ -1,5 +1,6 @@
 import { cronAuthedMiddlewareHeaderSchemaDto } from "~/api/models/shared/dtos";
 import { z } from "zod";
+import { NotificationType } from "@ashgw/email";
 
 export const notifyHeadersSchemaDto = cronAuthedMiddlewareHeaderSchemaDto;
 

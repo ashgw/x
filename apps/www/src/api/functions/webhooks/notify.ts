@@ -15,6 +15,7 @@ export async function notify(input: {
       to: input.body.to ?? env.PERSONAL_EMAIL,
       title: input.body.title,
       subject: input.body.subject,
+      type: input.body.type,
       message: input.body.message,
     });
 
