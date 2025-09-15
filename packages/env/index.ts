@@ -63,6 +63,7 @@ const serverVars = {
   KIT_API_KEY: z.string().min(20).startsWith("kit_").max(255),
   RESEND_API_KEY: z.string().min(20).startsWith("re_").max(255),
   PERSONAL_EMAIL: z.string().email().max(255),
+  QSTASH_TOKEN: z.string().endsWith("=").min(20).max(255),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -75,6 +76,7 @@ export const env = createEnv({
   disablePrefix: [...serverVarsTuple],
   prefix: "NEXT_PUBLIC",
   runtimeEnv: {
+    QSTASH_TOKEN: process.env.QSTASH_TOKEN,
     X_API_TOKEN: process.env.X_API_TOKEN,
     PERSONAL_EMAIL: process.env.PERSONAL_EMAIL,
     IP_HASH_SALT: process.env.IP_HASH_SALT,
