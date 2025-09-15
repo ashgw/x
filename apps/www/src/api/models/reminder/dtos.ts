@@ -27,7 +27,12 @@ const scheduleCronSchema = reminderPayloadSchemaDto.extend({
 const scheduleMultiAtSchema = z.object({
   kind: z.literal("multiAt").describe("At multiple specific date and times"),
   at: z.array(isoDateTimeSchema).min(1).max(10),
-  notifications: z.array(notifyBodySchemaDto).min(1),
+  notifications: z
+    .array(notifyBodySchemaDto)
+    .min(1)
+    .describe(
+      "Notifications to send at each date and time, sequentially, at least one notification is required",
+    ),
 });
 
 export const createReminderBodySchemaDto = z.object({
