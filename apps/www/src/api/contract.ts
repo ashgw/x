@@ -1,5 +1,4 @@
 import { c } from "../ts-rest/root";
-import type { Keys } from "ts-roids";
 import { createContract } from "~/@ashgw/ts-rest";
 import {
   healthCheckSchemaResponses,
@@ -13,28 +12,22 @@ import {
   notifyHeadersSchemaDto,
   notifyBodySchemaDto,
   notifySchemaResponses,
+  reminderSchemaResponses,
+  reminderHeadersSchemaDto,
+  reminderBodySchemaDto,
 } from "~/api/models";
 
 export const contract = createContract(c)({
-  purgeViewWindow: {
-    method: "DELETE",
-    path: "/purge-view-window",
+  reminder: {
+    method: "POST",
+    path: "/reminder",
     strictStatusCodes: true,
-    summary: "Purge view window data",
+    summary: "Create reminder",
     description:
-      "Deletes cached or temporary view window data from the system.",
-    headers: purgeViewWindowHeadersSchemaDto,
-    responses: purgeViewWindowSchemaResponses,
-  },
-
-  purgeTrashPosts: {
-    method: "DELETE",
-    path: "/purge-trash-posts",
-    strictStatusCodes: true,
-    summary: "Purge trashed posts",
-    description: "Permanently deletes all posts currently in the trash bin.",
-    headers: purgeTrashPostsHeadersSchemaDto,
-    responses: purgeTrashPostsSchemaResponses,
+      "Creates a reminder using the provided headers and body payload.",
+    headers: reminderHeadersSchemaDto,
+    body: reminderBodySchemaDto,
+    responses: reminderSchemaResponses,
   },
 
   notify: {
@@ -47,6 +40,26 @@ export const contract = createContract(c)({
     headers: notifyHeadersSchemaDto,
     body: notifyBodySchemaDto,
     responses: notifySchemaResponses,
+  },
+
+  purgeViewWindow: {
+    method: "DELETE",
+    path: "/purge-view-window",
+    strictStatusCodes: true,
+    summary: "Purge view window data",
+    description: "Deletes cached or temporary view window data from the blog.",
+    headers: purgeViewWindowHeadersSchemaDto,
+    responses: purgeViewWindowSchemaResponses,
+  },
+
+  purgeTrashPosts: {
+    method: "DELETE",
+    path: "/purge-trash-posts",
+    strictStatusCodes: true,
+    summary: "Purge trashed posts",
+    description: "Permanently deletes all posts currently in the trash bin.",
+    headers: purgeTrashPostsHeadersSchemaDto,
+    responses: purgeTrashPostsSchemaResponses,
   },
 
   healthCheck: {
@@ -101,6 +114,3 @@ export const contract = createContract(c)({
     responses: fetchTextFromUpstreamSchemaResponses,
   },
 });
-
-type Contract = typeof contract;
-export type ContractRoute = Contract[Keys<Contract>];
