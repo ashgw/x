@@ -5,7 +5,7 @@ import type { Payload, ScheduleDto, ScheduleRo } from "./types";
 const qstashClient = new QstashClient({ token: env.QSTASH_TOKEN });
 
 export class SchedulerService {
-  private static _headers = {
+  public headers = {
     "Content-Type": "application/json",
     "x-api-token": env.X_API_TOKEN,
   } as const;
@@ -31,7 +31,7 @@ export class SchedulerService {
     const response = await qstashClient.publish({
       url: input.url,
       body: input.payload,
-      headers: SchedulerService._headers,
+      headers: this.headers,
       notBefore: SchedulerService._toUnixSecond(input.atTime),
     });
     return {
@@ -48,7 +48,7 @@ export class SchedulerService {
       destination: input.url,
       cron: input.expression,
       body: input.payload,
-      headers: SchedulerService._headers,
+      headers: this.headers,
     });
     return {
       id: response.scheduleId,
@@ -59,3 +59,5 @@ export class SchedulerService {
     return Math.floor(new Date(isoString).getTime() / 1000);
   }
 }
+
+export const scheduler = new SchedulerService();
