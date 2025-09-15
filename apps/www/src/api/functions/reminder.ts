@@ -1,7 +1,6 @@
 import { logger, monitor } from "@ashgw/observability";
 import { env } from "@ashgw/env";
 import { endPoint } from "~/ts-rest/endpoint";
-import { Client } from "@upstash/qstash";
 import type {
   ReminderBodyDto,
   ReminderResponses,
@@ -9,6 +8,10 @@ import type {
 } from "~/api/models";
 import type { NotifyBodyDto } from "~/api/models/notify";
 import { NotificationType } from "@ashgw/email";
+import { scheduler } from "@ashgw/scheduler";
+
+const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
+const authHeader = { "x-api-token": env.X_API_TOKEN };
 
 function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
   const { ...rest } = input;
@@ -19,32 +22,26 @@ function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
   };
 }
 
-function toUnixSeconds(isoString: string): number {
-  return Math.floor(new Date(isoString).getTime() / 1000);
-}
-
-const qstashHeaders = {
-  "Content-Type": "application/json",
-  "x-api-token": env.X_API_TOKEN,
-} as const;
-
-const client = new Client({ token: env.QSTASH_TOKEN });
-
 export async function reminder({
   body: { schedule },
 }: {
   body: ReminderBodyDto;
 }): Promise<ReminderResponses> {
   try {
-    const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
-
     if (schedule.kind === "at") {
-      const result = await client.publish({
-        url: notifyUrl,
-        body: JSON.stringify(transformToReminderPayload(schedule.notification)),
-        notBefore: toUnixSeconds(schedule.at),
-        headers: qstashHeaders,
-      });
+      const result = await scheduler
+        .headers({
+          ...authHeader,
+        })
+        .schedule({
+          at: {
+            datetimeIso: schedule.at,
+          },
+          payload: JSON.stringify(
+            transformToReminderPayload(schedule.notification),
+          ),
+          url: notifyUrl,
+        });
 
       return {
         status: 200,
@@ -56,29 +53,44 @@ export async function reminder({
 
     if (schedule.kind === "multiAt") {
       const created: ReminderMessageCreatedRo[] = [];
-
       for (const item of schedule.notifications) {
-        const result = await client.publish({
-          url: notifyUrl,
-          body: JSON.stringify(transformToReminderPayload(item.notification)),
-          notBefore: toUnixSeconds(item.at),
-          headers: qstashHeaders,
-        });
+        const result = await scheduler
+          .headers({
+            ...authHeader,
+          })
+          .schedule({
+            at: {
+              datetimeIso: item.at,
+            },
+            url: notifyUrl,
+            payload: JSON.stringify(
+              transformToReminderPayload(item.notification),
+            ),
+          });
+
         created.push({ kind: "message", id: result.messageId, at: item.at });
       }
 
       return { status: 200, body: { created } };
     }
-    const upstashSchedule = await client.schedules.create({
-      destination: notifyUrl,
-      cron: schedule.cron.expression,
-      body: JSON.stringify(transformToReminderPayload(schedule.notification)),
-      headers: qstashHeaders,
-    });
+
+    const result = await scheduler
+      .headers({
+        ...authHeader,
+      })
+      .schedule({
+        cron: {
+          expression: schedule.cron.expression,
+        },
+        url: notifyUrl,
+        payload: JSON.stringify(
+          transformToReminderPayload(schedule.notification),
+        ),
+      });
 
     return {
       status: 200,
-      body: { created: [{ kind: "schedule", id: upstashSchedule.scheduleId }] },
+      body: { created: [{ kind: "schedule", id: result.scheduleId }] },
     };
   } catch (error) {
     logger.error("reminder scheduling failed", { error });
