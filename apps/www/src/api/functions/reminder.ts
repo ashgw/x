@@ -44,7 +44,7 @@ export async function reminder({
         });
 
       return {
-        status: 200,
+        status: 201,
         body: {
           created: [{ kind: "message", id: result.messageId, at: schedule.at }],
         },
@@ -71,7 +71,7 @@ export async function reminder({
         created.push({ kind: "message", id: result.messageId, at: item.at });
       }
 
-      return { status: 200, body: { created } };
+      return { status: 201, body: { created } };
     }
 
     const result = await scheduler
@@ -89,7 +89,7 @@ export async function reminder({
       });
 
     return {
-      status: 200,
+      status: 201,
       body: { created: [{ kind: "schedule", id: result.scheduleId }] },
     };
   } catch (error) {
