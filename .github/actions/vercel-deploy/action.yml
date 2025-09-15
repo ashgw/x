@@ -102,7 +102,7 @@ runs:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} ok"
         message: >-
-          Vercel deploy **succeeded** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
+          Vercel deploy succeeded for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
           URL: ${{ env.DEPLOY_URL }}
           Actor: @${{ github.actor }}
           Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -114,6 +114,6 @@ runs:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} fail"
         message: >-
-          Vercel deploy **failed** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
+          Vercel deploy failed for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
           Actor: @${{ github.actor }}
           Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

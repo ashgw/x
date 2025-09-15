@@ -118,7 +118,7 @@ runs:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} ok"
         message: >-
-          Koyeb redeploy **succeeded** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
+          Koyeb redeploy succeeded for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
           Actor: @${{ github.actor }}
           Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
@@ -129,6 +129,6 @@ runs:
         token: ${{ inputs.NOTIFY_TOKEN }}
         title: "deploy: ${{ inputs.app_name }} ${{ inputs.deployment_environment }} fail"
         message: >-
-          Koyeb redeploy **failed** for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
+          Koyeb redeploy failed for `${{ inputs.app_name }}` → `${{ inputs.deployment_environment }}`.
           Actor: @${{ github.actor }}
           Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
