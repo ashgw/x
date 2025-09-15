@@ -25,7 +25,9 @@ export const NotificationTemplate = ({
   type: NotificationType;
 }) => {
   const typeLabel =
-    typeof type === "string" ? capitalize(type.toLowerCase()) : "Notification";
+    typeof type === "string"
+      ? capitalize(type.toLowerCase()) + " Notification"
+      : "Notification";
 
   return (
     <Html>
