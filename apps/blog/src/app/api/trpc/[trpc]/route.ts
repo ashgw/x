@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { db } from "@ashgw/db";
-import { logger, monitor } from "@ashgw/observability";
+import { monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 import { appRouter } from "~/api/router";
 import { createTRPCContext } from "~/trpc/context";

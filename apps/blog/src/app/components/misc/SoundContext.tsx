@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 interface SoundContextType {
   isPlaying: boolean;

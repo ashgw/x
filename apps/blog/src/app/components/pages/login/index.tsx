@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   Button,
   Form,

@@ -1,5 +1,5 @@
 {
-  "name": "@ashgw/observability",
+  "name": "@ashgw/logger",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,10 +8,7 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
-    "@ashgw/logger": "workspace:*",
-    "@logtail/next": "0.2.1",
-    "@sentry/nextjs": "9.8.0",
-    "next": "catalog:"
+    "@logtail/next": "0.2.1"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

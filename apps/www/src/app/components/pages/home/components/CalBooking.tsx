@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 interface CalBookingProps {
   calLink?: string;

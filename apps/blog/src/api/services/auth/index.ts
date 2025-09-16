@@ -4,7 +4,8 @@ import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
-import { InternalError, logger } from "@ashgw/observability";
+import { InternalError } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
