@@ -91,7 +91,7 @@ export async function reminder({
 
       return {
         status: 201,
-        body: { created: [{ kind: "schedule", id: result.messageId }] },
+        body: { created: [{ kind: "message", id: result.messageId }] },
       };
     }
     const result = await scheduler
