@@ -7,6 +7,8 @@ import type {
   CronDto,
   ScheduleAtResult,
   ScheduleCronResult,
+  ScheduleDelayResult,
+  DelayDto,
 } from "./types";
 
 const qstashClient = new QstashClient({ token: env.QSTASH_TOKEN });
@@ -24,6 +26,7 @@ class SchedulerService {
 
   public async schedule(input: AtDto): Promise<ScheduleAtResult>;
   public async schedule(input: CronDto): Promise<ScheduleCronResult>;
+  public async schedule(input: DelayDto): Promise<ScheduleDelayResult>;
   public async schedule(
     input: ScheduleDto,
   ): Promise<ScheduleAtResult | ScheduleCronResult> {
@@ -34,13 +37,21 @@ class SchedulerService {
         payload: input.payload,
       });
     }
-    return this.scheduleCron({
-      expression: input.cron.expression,
-      url: input.url,
-      payload: input.payload,
-    });
+    if ("delay" in input) {
+      return this.scheduleDelay({
+        delaySeconds: input.delay.seconds,
+        url: input.url,
+        payload: input.payload,
+      });
+    } else {
+      // cron
+      return this.scheduleCron({
+        expression: input.cron.expression,
+        url: input.url,
+        payload: input.payload,
+      });
+    }
   }
-
   private async scheduleAt(input: {
     url: string;
     payload: Payload;
@@ -51,6 +62,20 @@ class SchedulerService {
       body: input.payload,
       headers: this._headers,
       notBefore: SchedulerService._toUnixSecond(input.atTime),
+    });
+    return { messageId: response.messageId };
+  }
+
+  private async scheduleDelay(input: {
+    url: string;
+    payload: Payload;
+    delaySeconds: number;
+  }): Promise<ScheduleDelayResult> {
+    const response = await qstashClient.publish({
+      url: input.url,
+      body: input.payload,
+      headers: this._headers,
+      notBefore: input.delaySeconds,
     });
     return { messageId: response.messageId };
   }
