@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   Badge,
   Button,

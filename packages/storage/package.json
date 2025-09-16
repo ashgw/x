@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
-    "@ashgw/observability": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@aws-sdk/client-s3": "3.803.0",
     "@smithy/node-http-handler": "4.1.1"
   },

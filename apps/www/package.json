@@ -35,6 +35,7 @@
     "@ashgw/email": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/observability": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@ashgw/rate-limiter": "workspace:*",
     "@ashgw/scheduler": "workspace:*",
     "@ashgw/seo": "workspace:*",

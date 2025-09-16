@@ -425,6 +425,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@ashgw/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@ashgw/observability':
         specifier: workspace:*
         version: link:../../packages/observabiliy
@@ -663,9 +666,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
-      '@ashgw/observability':
+      '@ashgw/logger':
         specifier: workspace:*
-        version: link:../observabiliy
+        version: link:../logger
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../ui
@@ -759,9 +762,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
-      '@ashgw/observability':
+      '@ashgw/logger':
         specifier: workspace:*
-        version: link:../observabiliy
+        version: link:../logger
       '@neondatabase/serverless':
         specifier: 1.0.0
         version: 1.0.0
@@ -913,6 +916,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
+      '@ashgw/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@logtail/next':
         specifier: 0.2.1
         version: 0.2.1(next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.0.0(react@19.1.0))(react@19.1.0)(sass@1.69.7))(react@19.1.0)
@@ -1050,9 +1056,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
-      '@ashgw/observability':
+      '@ashgw/logger':
         specifier: workspace:*
-        version: link:../observabiliy
+        version: link:../logger
       '@aws-sdk/client-s3':
         specifier: 3.803.0
         version: 3.803.0

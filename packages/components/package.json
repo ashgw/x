@@ -12,7 +12,7 @@
     "@ashgw/analytics": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
-    "@ashgw/observability": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@ashgw/ui": "workspace:*",
     "@nextui-org/react": "catalog:",
     "framer-motion": "catalog:"

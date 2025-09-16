@@ -18,7 +18,8 @@ import {
 import { NodeHttpHandler } from "@smithy/node-http-handler";
 
 import { env } from "@ashgw/env";
-import { InternalError, logger } from "@ashgw/observability";
+import { InternalError } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 import type { Folder } from "../base";
 import { BaseStorageService } from "../base";

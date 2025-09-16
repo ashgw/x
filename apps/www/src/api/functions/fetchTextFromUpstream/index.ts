@@ -1,4 +1,5 @@
-import { logger, monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
+import { monitor } from "@ashgw/observability";
 import type { FetchTextFromUpstreamQueryDto } from "~/api/models";
 import type {
   FetchGpgFromUpstreamResponses,

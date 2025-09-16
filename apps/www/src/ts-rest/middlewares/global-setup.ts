@@ -1,6 +1,6 @@
 import { db } from "@ashgw/db";
 import type { GlobalContext } from "../context";
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   createGlobalRequestMiddleware,
   responseHandlersFn,
