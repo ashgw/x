@@ -63,13 +63,15 @@ export async function reminder({
 
     if (schedule.kind === "delay") {
       const delayObject = () => {
-        return schedule.delay.unit === "days"
-          ? { days: schedule.delay.value }
-          : schedule.delay.unit === "hours"
-            ? { hours: schedule.delay.value }
-            : schedule.delay.unit === "minutes"
-              ? { minutes: schedule.delay.value }
-              : { seconds: schedule.delay.value };
+        const value = schedule.delay.value;
+        const unitMap = {
+          days: { days: value },
+          hours: { hours: value },
+          minutes: { minutes: value },
+          seconds: { seconds: value },
+        } as const;
+
+        return unitMap[schedule.delay.unit];
       };
 
       const result = await scheduler
