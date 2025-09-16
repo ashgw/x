@@ -26,7 +26,8 @@ export class BetterStackTransport implements Transport {
 
   private async ensureClient(): Promise<void> {
     if (this.client) return;
-    if (!this.importPromise) {
+
+    if (this.importPromise === undefined) {
       this.importPromise = (async () => {
         type NextLogtailCtor = new (token: string) => unknown;
         const modUnknown = (await import("@logtail/next")) as unknown;
@@ -51,6 +52,7 @@ export class BetterStackTransport implements Transport {
         }
       })();
     }
+
     await this.importPromise;
   }
 
