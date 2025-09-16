@@ -35,32 +35,8 @@ const LOG_LEVELS: Record<LogLevel, number> = {
   fatal: 60,
 };
 
-function readEnv(key: string): string | undefined {
-  try {
-    // In Next.js client bundles, NEXT_PUBLIC_* are replaced at build time.
-    // Guard access for edge/browser where process may be undefined.
-    const g = globalThis as unknown as {
-      process?: { env?: Record<string, string | undefined> };
-    };
-    return g.process?.env?.[key];
-  } catch {
-    // noop
-  }
-  return undefined;
-}
-
 function detectRuntimeEnv(): RuntimeEnv {
   return env.NEXT_PUBLIC_CURRENT_ENV;
-}
-
-function parseLogLevel(
-  value: string | undefined,
-  fallback: LogLevel,
-): LogLevel {
-  if (!value) return fallback;
-  const v = value.toLowerCase();
-  if (Object.prototype.hasOwnProperty.call(LOG_LEVELS, v)) return v as LogLevel;
-  return fallback;
 }
 
 function nowIso(): string {
@@ -323,35 +299,25 @@ export function createLogger(options?: LoggerOptions): Logger {
   return new Logger(options);
 }
 
-// Auto-configured default logger
 function resolveDefaultLogger(): Logger {
-  const env = detectRuntimeEnv();
-  const forcedLevel = parseLogLevel(
-    readEnv("NEXT_PUBLIC_LOG_LEVEL"),
-    env === "development" ? "debug" : "info",
-  );
+  const runtimeEnv = detectRuntimeEnv();
+  const forcedLevel = runtimeEnv === "development" ? "debug" : "info";
 
   const transports: Transport[] = [];
 
-  // Console transport behavior based on env
-  if (env === "development") {
+  if (runtimeEnv === "development") {
     transports.push(new ConsoleTransport({ level: "trace" }));
-  } else if (env === "preview") {
+  } else if (runtimeEnv === "preview") {
     transports.push(new ConsoleTransport({ level: "warn" }));
   } else {
     // production: keep console minimal to avoid noise, but surface warnings/errors locally
     transports.push(new ConsoleTransport({ level: "warn" }));
   }
 
-  // Better Stack (Logtail) token lookup
-  const token =
-    readEnv("NEXT_PUBLIC_BETTER_STACK_TOKEN") ??
-    readEnv("NEXT_PUBLIC_LOGTAIL_TOKEN") ??
-    readEnv("BETTER_STACK_TOKEN") ??
-    readEnv("LOGTAIL_TOKEN");
+  const logtailToken = env.NEXT_PUBLIC_LOGTAIL_INGESTION_TOKEN;
 
-  if (token) {
-    transports.push(new BetterStackTransport(token));
+  if (logtailToken) {
+    transports.push(new BetterStackTransport(logtailToken));
   }
 
   const logger = new Logger({
