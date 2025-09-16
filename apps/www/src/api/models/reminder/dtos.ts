@@ -11,7 +11,7 @@ const scheduleAtSchema = z.object({
 
 const scheduleDelaySchema = z.object({
   kind: z.literal("delay").describe("Delay for a specific number of seconds"),
-  delay: z.number().int().positive().describe("The number of seconds to delay"),
+  delay: z.bigint().positive().describe("The number of seconds to delay"),
   notification: notifyBodySchemaDto,
 });
 

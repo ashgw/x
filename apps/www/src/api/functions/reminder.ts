@@ -82,7 +82,9 @@ export async function reminder({
           ...headers,
         })
         .schedule({
-          delay: { seconds: schedule.delay },
+          delay: {
+            seconds: schedule.delay,
+          },
           url: notifyUrl,
           payload: JSON.stringify(
             transformToReminderPayload(schedule.notification),
