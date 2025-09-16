@@ -17,7 +17,6 @@ export const setupRequestMiddleware = () => createGlobalContext;
 export const setupResponseHandlers = responseHandlersFn<void, GlobalContext>(
   (_res, req) => {
     logger.info("[REST] took %sms", {
-      requestedAt: req.ctx.requestedAt,
       took: new Date().getTime() - req.ctx.requestedAt.getTime(),
     });
   },
