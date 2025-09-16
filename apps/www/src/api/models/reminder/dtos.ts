@@ -9,9 +9,26 @@ const scheduleAtSchema = z.object({
   notification: notifyBodySchemaDto,
 });
 
-const scheduleDelaySchema = z.object({
-  kind: z.literal("delay").describe("Delay for a specific number of seconds"),
-  delay: z.bigint().positive().describe("The number of seconds to delay"),
+export const scheduleDelaySchema = z.object({
+  kind: z.literal("delay").describe("Delay for a specific duration"),
+  delay: z.discriminatedUnion("unit", [
+    z.object({
+      unit: z.literal("seconds"),
+      value: z.bigint().positive().describe("The number of seconds to delay"),
+    }),
+    z.object({
+      unit: z.literal("minutes"),
+      value: z.bigint().positive().describe("The number of minutes to delay"),
+    }),
+    z.object({
+      unit: z.literal("hours"),
+      value: z.bigint().positive().describe("The number of hours to delay"),
+    }),
+    z.object({
+      unit: z.literal("days"),
+      value: z.bigint().positive().describe("The number of days to delay"),
+    }),
+  ]),
   notification: notifyBodySchemaDto,
 });
 
