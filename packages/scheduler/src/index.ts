@@ -1,5 +1,6 @@
 import { Client as QstashClient } from "@upstash/qstash";
 import { env } from "@ashgw/env";
+import type { ExclusiveUnion } from "ts-roids";
 import type {
   Payload,
   ScheduleDto,
@@ -66,17 +67,40 @@ class SchedulerService {
     return { messageId: response.messageId };
   }
 
-  private async scheduleDelay(input: {
+  private async scheduleDelay<
+    Delay extends ExclusiveUnion<
+      | { seconds: bigint }
+      | { minutes: bigint }
+      | { hours: bigint }
+      | { days: bigint }
+    >,
+  >({
+    delay,
+    payload,
+    url,
+  }: {
     url: string;
     payload: Payload;
-    delaySeconds: bigint;
+    delay: Delay;
   }): Promise<ScheduleDelayResult> {
+    type Unit = "s" | "m" | "h" | "d";
+    type Duration = `${bigint}${Unit}`;
+
+    const normalizedDelay = delay.days
+      ? (`${delay.days}d` as Duration)
+      : delay.hours
+        ? (`${delay.hours}h` as Duration)
+        : delay.minutes
+          ? (`${delay.minutes}m` as Duration)
+          : (`${delay.seconds}s` as Duration);
+
     const response = await qstashClient.publish({
-      url: input.url,
-      body: input.payload,
+      url: url,
+      body: payload,
       headers: this._headers,
-      delay: `${input.delaySeconds}s`,
+      delay: normalizedDelay,
     });
+
     return { messageId: response.messageId };
   }
 
