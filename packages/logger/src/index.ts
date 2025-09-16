@@ -6,25 +6,13 @@
   - Minimal overhead; async transports are fire-and-forget with optional flush()
 */
 import { env } from "@ashgw/env";
-
-export type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
-
-export type RuntimeEnv = "production" | "development" | "preview";
-
-export type LogContext = Record<string, unknown> | undefined;
-
-export interface LogRecord {
-  level: LogLevel;
-  message: string;
-  timestamp: string; // ISO
-  context?: LogContext;
-  error?: unknown;
-}
-
-export interface Transport {
-  log(record: LogRecord): void | Promise<void>;
-  flush?(): Promise<void>;
-}
+import type {
+  LogLevel,
+  RuntimeEnv,
+  LogContext,
+  LogRecord,
+  Transport,
+} from "./types";
 
 const LOG_LEVELS: Record<LogLevel, number> = {
   trace: 10,
