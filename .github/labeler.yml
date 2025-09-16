@@ -10,7 +10,7 @@ docs:
 db:
   - changed-files:
       - any-glob-to-any-file:
-          - packges/db/**
+          - packages/db/**
 
 fix:
   - head-branch: ["^fix", "fixed"]
@@ -44,11 +44,6 @@ www:
       - any-glob-to-any-file:
           - apps/www/*
 
-api:
-  - changed-files:
-      - any-glob-to-any-file:
-          - apps/api/*
-
 ui:
   - changed-files:
       - any-glob-to-any-file:
@@ -73,3 +68,28 @@ build:
   - changed-files:
       - any-glob-to-any-file:
           - "**/package.json"
+
+logger:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/logger/*
+
+email:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/email/*
+
+storage:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/storage/*
+
+rate-limiter:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/rate-limiter/*
+
+scheuler:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/scheduler/*
