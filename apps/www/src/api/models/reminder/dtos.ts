@@ -2,17 +2,23 @@ import { z } from "zod";
 import { notifyBodySchemaDto } from "../notify";
 import { authedMiddlewareHeaderSchemaDto } from "../shared";
 import { isoDateTimeSchema } from "./shared";
+import { NotificationType } from "@ashgw/email";
 
-const notificationSchema = notifyBodySchemaDto.omit({
-  type: true,
-  to: true,
-  subject: true,
-});
+const reminderNotificationSchema = notifyBodySchemaDto
+  .omit({
+    to: true,
+    subject: true,
+  })
+  .extend({
+    type: z
+      .literal(NotificationType.REMINDER)
+      .default(NotificationType.REMINDER),
+  });
 
 const scheduleAtSchema = z.object({
   kind: z.literal("at").describe("At a specific date and time"),
   at: isoDateTimeSchema,
-  notification: notificationSchema,
+  notification: reminderNotificationSchema,
 });
 
 export const scheduleDelaySchema = z.object({
@@ -35,7 +41,7 @@ export const scheduleDelaySchema = z.object({
       value: z.bigint().positive().describe("The number of days to delay"),
     }),
   ]),
-  notification: notificationSchema,
+  notification: reminderNotificationSchema,
 });
 
 const scheduleCronSchema = z.object({
@@ -48,7 +54,7 @@ const scheduleCronSchema = z.object({
       .max(16)
       .describe("the 5 or 6 part POSIX cron expression, e.g. '0 0 * * *'"),
   }),
-  notification: notificationSchema,
+  notification: reminderNotificationSchema,
 });
 
 const scheduleMultiAtSchema = z.object({
@@ -57,7 +63,7 @@ const scheduleMultiAtSchema = z.object({
     .array(
       z.object({
         at: isoDateTimeSchema,
-        notification: notificationSchema,
+        notification: reminderNotificationSchema,
       }),
     )
     .describe(

@@ -7,20 +7,9 @@ import type {
   ReminderMessageCreatedRo,
   ReminderHeadersDto,
 } from "~/api/models";
-import type { NotifyBodyDto } from "~/api/models/notify";
-import { NotificationType } from "@ashgw/email";
 import { scheduler } from "@ashgw/scheduler";
 
 const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
-
-function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
-  const { ...rest } = input;
-  return {
-    message: rest.message,
-    title: rest.title,
-    type: NotificationType.REMINDER,
-  };
-}
 
 export async function reminder({
   body: { schedule },
@@ -39,9 +28,7 @@ export async function reminder({
           at: {
             datetimeIso: schedule.at,
           },
-          payload: JSON.stringify(
-            transformToReminderPayload(schedule.notification),
-          ),
+          payload: JSON.stringify(schedule.notification),
           url: notifyUrl,
         });
 
@@ -65,9 +52,7 @@ export async function reminder({
               datetimeIso: item.at,
             },
             url: notifyUrl,
-            payload: JSON.stringify(
-              transformToReminderPayload(item.notification),
-            ),
+            payload: JSON.stringify(item.notification),
           });
 
         created.push({ kind: "message", id: result.messageId, at: item.at });
@@ -94,9 +79,7 @@ export async function reminder({
         .schedule({
           delay: { ...delayObject() },
           url: notifyUrl,
-          payload: JSON.stringify(
-            transformToReminderPayload(schedule.notification),
-          ),
+          payload: JSON.stringify(schedule.notification),
         });
 
       return {
@@ -113,9 +96,7 @@ export async function reminder({
           expression: schedule.cron.expression,
         },
         url: notifyUrl,
-        payload: JSON.stringify(
-          transformToReminderPayload(schedule.notification),
-        ),
+        payload: JSON.stringify(schedule.notification),
       });
 
     return {
