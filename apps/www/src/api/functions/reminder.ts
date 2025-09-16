@@ -5,13 +5,13 @@ import type {
   ReminderBodyDto,
   ReminderResponses,
   ReminderMessageCreatedRo,
+  ReminderHeadersDto,
 } from "~/api/models";
 import type { NotifyBodyDto } from "~/api/models/notify";
 import { NotificationType } from "@ashgw/email";
 import { scheduler } from "@ashgw/scheduler";
 
 const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
-const authHeader = { "x-api-token": env.X_API_TOKEN };
 
 function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
   const { ...rest } = input;
@@ -24,14 +24,16 @@ function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
 
 export async function reminder({
   body: { schedule },
+  headers,
 }: {
   body: ReminderBodyDto;
+  headers: ReminderHeadersDto;
 }): Promise<ReminderResponses> {
   try {
     if (schedule.kind === "at") {
       const result = await scheduler
         .headers({
-          ...authHeader,
+          ...headers,
         })
         .schedule({
           at: {
@@ -56,7 +58,7 @@ export async function reminder({
       for (const item of schedule.notifications) {
         const result = await scheduler
           .headers({
-            ...authHeader,
+            ...headers,
           })
           .schedule({
             at: {
@@ -77,7 +79,7 @@ export async function reminder({
     if (schedule.kind === "delay") {
       const result = await scheduler
         .headers({
-          ...authHeader,
+          ...headers,
         })
         .schedule({
           delay: { seconds: schedule.delay },
@@ -94,7 +96,7 @@ export async function reminder({
     }
     const result = await scheduler
       .headers({
-        ...authHeader,
+        ...headers,
       })
       .schedule({
         cron: {

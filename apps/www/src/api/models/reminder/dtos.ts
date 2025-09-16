@@ -53,7 +53,9 @@ export const reminderBodySchemaDto = z
   })
   .describe("The reminder to create.");
 
-export const reminderHeadersSchemaDto = authedMiddlewareHeaderSchemaDto;
+export const reminderHeadersSchemaDto = authedMiddlewareHeaderSchemaDto.extend(
+  {},
+);
 
 export type ReminderBodyDto = z.infer<typeof reminderBodySchemaDto>;
 
