@@ -62,7 +62,7 @@ export async function reminder({
     }
 
     if (schedule.kind === "delay") {
-      const delayObject = () => {
+      const delayObjectNormalizer = () => {
         const value = schedule.delay.value;
         const unitMap = {
           days: { days: value },
@@ -79,7 +79,7 @@ export async function reminder({
           ...headers,
         })
         .schedule({
-          delay: { ...delayObject() },
+          delay: { ...delayObjectNormalizer() },
           url: notifyUrl,
           payload: JSON.stringify(schedule.notification),
         });

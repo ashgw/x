@@ -31,19 +31,19 @@ export const scheduleDelaySchema = withNotification({
   delay: z.discriminatedUnion("unit", [
     z.object({
       unit: z.literal("seconds"),
-      value: z.bigint().positive().describe("The number of seconds to delay"),
+      value: z.number().positive().describe("The number of seconds to delay"),
     }),
     z.object({
       unit: z.literal("minutes"),
-      value: z.bigint().positive().describe("The number of minutes to delay"),
+      value: z.number().positive().describe("The number of minutes to delay"),
     }),
     z.object({
       unit: z.literal("hours"),
-      value: z.bigint().positive().describe("The number of hours to delay"),
+      value: z.number().positive().describe("The number of hours to delay"),
     }),
     z.object({
       unit: z.literal("days"),
-      value: z.bigint().positive().describe("The number of days to delay"),
+      value: z.number().positive().describe("The number of days to delay"),
     }),
   ]),
 });
