@@ -323,6 +323,9 @@ importers:
       '@ashgw/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
+      '@ashgw/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@ashgw/next-config':
         specifier: workspace:*
         version: link:../../tooling/next

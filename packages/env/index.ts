@@ -5,8 +5,6 @@ import { colors } from "./colors";
 import { envTuple } from "./env-tuple";
 import { databaseUrlSchema } from "./schemas";
 
-const isBrowser = typeof window !== "undefined";
-
 const clientVars = {
   CURRENT_ENV: z
     .enum(["development", "preview", "production"])
@@ -103,10 +101,11 @@ export const env = createEnv({
     NEXT_PUBLIC_BLOG_URL: process.env.NEXT_PUBLIC_BLOG_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
-    NEXT_PUBLIC_LOGTAIL_INGESTION_TOKEN: process.env.LOGTAIL_INGESTION_TOKEN,
+    NEXT_PUBLIC_LOGTAIL_INGESTION_TOKEN:
+      process.env.NEXT_PUBLIC_LOGTAIL_INGESTION_TOKEN,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
-  skipValidation: isBrowser,
+  skipValidation: typeof window !== "undefined", // don't validate on the client, we validate at build time
 });
 
 // eslint-disable-next-line no-restricted-syntax

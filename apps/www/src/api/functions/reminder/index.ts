@@ -1,4 +1,5 @@
-import { logger, monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
+import { monitor } from "@ashgw/observability";
 import { env } from "@ashgw/env";
 import { endPoint } from "~/ts-rest/endpoint";
 import type {

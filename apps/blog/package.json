@@ -78,6 +78,7 @@
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/next-config": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@ashgw/playwright-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tailwind-config": "workspace:*",
