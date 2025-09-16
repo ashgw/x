@@ -74,6 +74,24 @@ export async function reminder({
       return { status: 201, body: { created } };
     }
 
+    if (schedule.kind === "delay") {
+      const result = await scheduler
+        .headers({
+          ...authHeader,
+        })
+        .schedule({
+          delay: { seconds: schedule.delay },
+          url: notifyUrl,
+          payload: JSON.stringify(
+            transformToReminderPayload(schedule.notification),
+          ),
+        });
+
+      return {
+        status: 201,
+        body: { created: [{ kind: "schedule", id: result.messageId }] },
+      };
+    }
     const result = await scheduler
       .headers({
         ...authHeader,
