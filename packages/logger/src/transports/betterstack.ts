@@ -60,7 +60,7 @@ export class BetterStackTransport implements Transport {
     if (!client) return;
 
     const context = record.context ?? {};
-    the const message = record.message;
+    const message = record.message;
     const level = record.level;
     const withExtras = {
       timestamp: record.timestamp,
