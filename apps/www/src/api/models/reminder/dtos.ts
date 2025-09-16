@@ -9,6 +9,12 @@ const scheduleAtSchema = z.object({
   notification: notifyBodySchemaDto,
 });
 
+const scheduleDelaySchema = z.object({
+  kind: z.literal("delay").describe("Delay for a specific number of seconds"),
+  delay: z.number().int().positive().describe("The number of seconds to delay"),
+  notification: notifyBodySchemaDto,
+});
+
 const scheduleCronSchema = z.object({
   kind: z.literal("cron").describe("At a specific date and time"),
   cron: z.object({
@@ -40,6 +46,7 @@ export const reminderBodySchemaDto = z
   .object({
     schedule: z.discriminatedUnion("kind", [
       scheduleAtSchema,
+      scheduleDelaySchema,
       scheduleCronSchema,
       scheduleMultiAtSchema,
     ]),

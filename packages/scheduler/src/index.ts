@@ -29,7 +29,7 @@ class SchedulerService {
   public async schedule(input: DelayDto): Promise<ScheduleDelayResult>;
   public async schedule(
     input: ScheduleDto,
-  ): Promise<ScheduleAtResult | ScheduleCronResult> {
+  ): Promise<ScheduleAtResult | ScheduleCronResult | ScheduleDelayResult> {
     if ("at" in input) {
       return this.scheduleAt({
         atTime: input.at.datetimeIso,
