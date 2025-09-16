@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
-    "@upstash/qstash": "2.8.2"
+    "@upstash/qstash": "2.8.2",
+    "ts-roids": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

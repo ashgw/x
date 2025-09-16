@@ -16,7 +16,9 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   reminder: middleware()
     .use(rateLimiter({ limit: { every: "1s" } }))
     .use(authed())
-    .route(contract.reminder)(async ({ body }) => await reminder({ body })),
+    .route(contract.reminder)(
+    async ({ body, headers }) => await reminder({ body, headers }),
+  ),
 
   purgeViewWindow: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
