@@ -1,4 +1,4 @@
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 import { middleware, t } from "~/trpc/root";
 

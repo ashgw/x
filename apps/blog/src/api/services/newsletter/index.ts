@@ -1,5 +1,6 @@
 import { env } from "@ashgw/env";
-import { InternalError, logger } from "@ashgw/observability";
+import { InternalError } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 interface SubscribeInput {
   email: string;

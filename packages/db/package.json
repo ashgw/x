@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
-    "@ashgw/observability": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@neondatabase/serverless": "1.0.0",
     "@prisma/adapter-neon": "6.4.1",
     "@prisma/client": "catalog:prisma6",

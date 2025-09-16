@@ -9,7 +9,7 @@ import { toast, Toaster } from "sonner";
 import { observer } from "mobx-react-lite";
 
 import type { EntityViewState } from "@ashgw/ui";
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import { Skeleton } from "@ashgw/ui";
 
 import { useStore } from "~/app/stores";

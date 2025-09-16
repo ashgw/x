@@ -1,4 +1,5 @@
-import { logger, monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
+import { monitor } from "@ashgw/observability";
 import type { PurgeViewWindowResponses } from "~/api/models";
 import { db } from "@ashgw/db";
 

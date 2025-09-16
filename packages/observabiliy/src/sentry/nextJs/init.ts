@@ -1,7 +1,7 @@
 // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import * as Sentry from "@sentry/nextjs";
 import { env } from "@ashgw/env";
-import { logger } from "../../log";
+import { logger } from "@ashgw/logger";
 
 /**
  * Initializes Sentry for error tracking and performance monitoring.
@@ -13,7 +13,7 @@ export const init = ({
 }: {
   runtime: "server" | "browser";
 }): ReturnType<typeof Sentry.init> => {
-  logger.log(runtime);
+  logger.info(runtime);
   return Sentry.init({
     // The Data Source Name (DSN) is required to connect to your Sentry project.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#dsn

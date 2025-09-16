@@ -1,6 +1,6 @@
 import { db } from "@ashgw/db";
 import type { GlobalContext } from "../context";
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   createGlobalRequestMiddleware,
   responseHandlersFn,
@@ -16,10 +16,8 @@ export const setupRequestMiddleware = () => createGlobalContext;
 
 export const setupResponseHandlers = responseHandlersFn<void, GlobalContext>(
   (_res, req) => {
-    logger.log(
-      "[REST] took",
-      new Date().getTime() - req.ctx.requestedAt.getTime(),
-      "ms",
-    );
+    logger.info("[REST] took %sms", {
+      took: new Date().getTime() - req.ctx.requestedAt.getTime(),
+    });
   },
 );

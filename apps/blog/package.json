@@ -77,6 +77,7 @@
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@ashgw/next-config": "workspace:*",
     "@ashgw/playwright-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",

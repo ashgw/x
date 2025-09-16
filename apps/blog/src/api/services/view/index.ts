@@ -2,7 +2,7 @@ import { createHash } from "crypto";
 import type { NextRequest } from "next/server";
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import type { TrackViewRo } from "~/api/models/view";
 export class ViewService {
   private readonly db: DatabaseClient;
