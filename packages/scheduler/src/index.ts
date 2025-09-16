@@ -76,22 +76,20 @@ class SchedulerService {
     payload: Payload;
     delay: Delay;
   }): Promise<ScheduleDelayResult> {
-    type Unit = "s" | "m" | "h" | "d";
-    type Duration = `${bigint}${Unit}`;
-
-    const normalizedDelay = delay.days
-      ? (`${delay.days}d` as Duration)
+    // here we just convert anuything we het into secoodsnand we send it as just an integer
+    const normalizedDelayInSeconds = delay.days
+      ? delay.days * 24 * 60 * 60
       : delay.hours
-        ? (`${delay.hours}h` as Duration)
+        ? delay.hours * 60 * 60
         : delay.minutes
-          ? (`${delay.minutes}m` as Duration)
-          : (`${delay.seconds}s` as Duration);
+          ? delay.minutes * 60
+          : delay.seconds;
 
     const response = await qstashClient.publish({
       url: url,
       body: payload,
       headers: this._headers,
-      delay: normalizedDelay,
+      delay: normalizedDelayInSeconds,
     });
 
     return { messageId: response.messageId };

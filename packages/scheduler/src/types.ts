@@ -12,10 +12,10 @@ export interface AtDto extends ScheduleBaseDto {
 }
 
 export type Delay = ExclusiveUnion<
-  | { seconds: bigint }
-  | { minutes: bigint }
-  | { hours: bigint }
-  | { days: bigint }
+  | { seconds: number }
+  | { minutes: number }
+  | { hours: number }
+  | { days: number }
 >;
 
 export interface DelayDto extends ScheduleBaseDto {
