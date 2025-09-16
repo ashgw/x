@@ -5,41 +5,30 @@ import type {
   ReminderBodyDto,
   ReminderResponses,
   ReminderMessageCreatedRo,
+  ReminderHeadersDto,
 } from "~/api/models";
-import type { NotifyBodyDto } from "~/api/models/notify";
-import { NotificationType } from "@ashgw/email";
 import { scheduler } from "@ashgw/scheduler";
 
 const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
-const authHeader = { "x-api-token": env.X_API_TOKEN };
-
-function transformToReminderPayload(input: NotifyBodyDto): NotifyBodyDto {
-  const { ...rest } = input;
-  return {
-    message: rest.message,
-    title: rest.title,
-    type: NotificationType.REMINDER,
-  };
-}
 
 export async function reminder({
   body: { schedule },
+  headers,
 }: {
   body: ReminderBodyDto;
+  headers: ReminderHeadersDto;
 }): Promise<ReminderResponses> {
   try {
     if (schedule.kind === "at") {
       const result = await scheduler
         .headers({
-          ...authHeader,
+          ...headers,
         })
         .schedule({
           at: {
             datetimeIso: schedule.at,
           },
-          payload: JSON.stringify(
-            transformToReminderPayload(schedule.notification),
-          ),
+          payload: JSON.stringify(schedule.notification),
           url: notifyUrl,
         });
 
@@ -56,16 +45,14 @@ export async function reminder({
       for (const item of schedule.notifications) {
         const result = await scheduler
           .headers({
-            ...authHeader,
+            ...headers,
           })
           .schedule({
             at: {
               datetimeIso: item.at,
             },
             url: notifyUrl,
-            payload: JSON.stringify(
-              transformToReminderPayload(item.notification),
-            ),
+            payload: JSON.stringify(item.notification),
           });
 
         created.push({ kind: "message", id: result.messageId, at: item.at });
@@ -74,18 +61,44 @@ export async function reminder({
       return { status: 201, body: { created } };
     }
 
+    if (schedule.kind === "delay") {
+      const delayObjectNormalizer = () => {
+        const value = schedule.delay.value;
+        const unitMap = {
+          days: { days: value },
+          hours: { hours: value },
+          minutes: { minutes: value },
+          seconds: { seconds: value },
+        } as const;
+
+        return unitMap[schedule.delay.unit];
+      };
+
+      const result = await scheduler
+        .headers({
+          ...headers,
+        })
+        .schedule({
+          delay: { ...delayObjectNormalizer() },
+          url: notifyUrl,
+          payload: JSON.stringify(schedule.notification),
+        });
+
+      return {
+        status: 201,
+        body: { created: [{ kind: "message", id: result.messageId }] },
+      };
+    }
     const result = await scheduler
       .headers({
-        ...authHeader,
+        ...headers,
       })
       .schedule({
         cron: {
           expression: schedule.cron.expression,
         },
         url: notifyUrl,
-        payload: JSON.stringify(
-          transformToReminderPayload(schedule.notification),
-        ),
+        payload: JSON.stringify(schedule.notification),
       });
 
     return {
