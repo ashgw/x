@@ -77,17 +77,14 @@ export async function reminder({
     }
 
     if (schedule.kind === "delay") {
-      const delayObjectFn = () => {
-        if (schedule.delay.unit === "days") {
-          return { days: schedule.delay.value };
-        }
-        if (schedule.delay.unit === "hours") {
-          return { hours: schedule.delay.value };
-        }
-        if (schedule.delay.unit === "minutes") {
-          return { minutes: schedule.delay.value };
-        }
-        return { seconds: schedule.delay.value };
+      const delayObject = () => {
+        return schedule.delay.unit === "days"
+          ? { days: schedule.delay.value }
+          : schedule.delay.unit === "hours"
+            ? { hours: schedule.delay.value }
+            : schedule.delay.unit === "minutes"
+              ? { minutes: schedule.delay.value }
+              : { seconds: schedule.delay.value };
       };
 
       const result = await scheduler
@@ -95,7 +92,7 @@ export async function reminder({
           ...headers,
         })
         .schedule({
-          delay: { ...delayObjectFn() },
+          delay: { ...delayObject() },
           url: notifyUrl,
           payload: JSON.stringify(
             transformToReminderPayload(schedule.notification),
