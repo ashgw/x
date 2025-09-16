@@ -69,13 +69,13 @@ class SchedulerService {
   private async scheduleDelay(input: {
     url: string;
     payload: Payload;
-    delaySeconds: number;
+    delaySeconds: bigint;
   }): Promise<ScheduleDelayResult> {
     const response = await qstashClient.publish({
       url: input.url,
       body: input.payload,
       headers: this._headers,
-      notBefore: input.delaySeconds,
+      delay: `${input.delaySeconds}s`,
     });
     return { messageId: response.messageId };
   }
