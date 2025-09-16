@@ -16,11 +16,12 @@ import {
   reminderHeadersSchemaDto,
   reminderBodySchemaDto,
 } from "~/api/models";
+import { endpoints } from "./endpoints";
 
 export const contract = createContract(c)({
   reminder: {
     method: "POST",
-    path: "/reminder",
+    path: endpoints.reminder,
     strictStatusCodes: true,
     summary: "Create reminder",
     description:
@@ -32,7 +33,7 @@ export const contract = createContract(c)({
 
   notify: {
     method: "POST",
-    path: "/notify",
+    path: endpoints.notify,
     strictStatusCodes: true,
     summary: "Send notification",
     description:
@@ -44,7 +45,7 @@ export const contract = createContract(c)({
 
   purgeViewWindow: {
     method: "DELETE",
-    path: "/purge-view-window",
+    path: endpoints.purgeViewWindow,
     strictStatusCodes: true,
     summary: "Purge view window data",
     description: "Deletes cached or temporary view window data from the blog.",
@@ -54,7 +55,7 @@ export const contract = createContract(c)({
 
   purgeTrashPosts: {
     method: "DELETE",
-    path: "/purge-trash-posts",
+    path: endpoints.purgeTrashPosts,
     strictStatusCodes: true,
     summary: "Purge trashed posts",
     description: "Permanently deletes all posts currently in the trash bin.",
@@ -64,7 +65,7 @@ export const contract = createContract(c)({
 
   healthCheck: {
     method: "GET",
-    path: "/health-check",
+    path: endpoints.healthCheck,
     strictStatusCodes: true,
     summary: "Health check",
     description: "Simple liveness probe to verify the API is running.",
@@ -73,7 +74,7 @@ export const contract = createContract(c)({
 
   bootstrap: {
     method: "GET",
-    path: "/bootstrap",
+    path: endpoints.bootstrap,
     strictStatusCodes: true,
     summary: "Fetch bootstrap script",
     description:
@@ -84,7 +85,7 @@ export const contract = createContract(c)({
 
   gpg: {
     method: "GET",
-    path: "/gpg",
+    path: endpoints.gpg,
     strictStatusCodes: true,
     summary: "Fetch public GPG key",
     description: "Returns my armored public GPG key as plain text.",
@@ -94,7 +95,7 @@ export const contract = createContract(c)({
 
   debion: {
     method: "GET",
-    path: "/debion",
+    path: endpoints.debion,
     strictStatusCodes: true,
     summary: "Fetch Debion setup script",
     description:
@@ -105,7 +106,7 @@ export const contract = createContract(c)({
 
   whisper: {
     method: "GET",
-    path: "/whisper",
+    path: endpoints.whisper,
     strictStatusCodes: true,
     summary: "Fetch Whisper setup script",
     description:

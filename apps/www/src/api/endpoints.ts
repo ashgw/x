@@ -8,4 +8,4 @@ export const endpoints = {
   bootstrap: "/bootstrap",
   debion: "/debion",
   whisper: "/whisper",
-};
+} as const;

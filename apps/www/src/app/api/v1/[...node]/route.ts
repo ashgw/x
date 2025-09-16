@@ -1,7 +1,7 @@
 import { logger } from "@ashgw/logger";
 import { createNextHandler } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
-import { endPoint } from "~/ts-rest/endpoint";
+import { apiV1endpoint } from "~/ts-rest/endpoint";
 import { monitor } from "@ashgw/observability";
 import { router } from "~/api/router";
 import {
@@ -12,7 +12,7 @@ import {
 export const runtime = "nodejs";
 
 const handler = createNextHandler(contract, router, {
-  basePath: endPoint,
+  basePath: apiV1endpoint,
   handlerType: "app-router",
   responseValidation: true,
   jsonQuery: false,

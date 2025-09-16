@@ -1,1 +1,1 @@
-export const endPoint = "/api/v1";
+export const apiV1endpoint = "/api/v1";

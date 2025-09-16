@@ -1,11 +1,11 @@
 import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 import { initClient } from "@ts-rest/core";
 import { contract } from "~/api/contract";
-import { endPoint } from "~/ts-rest/endpoint";
+import { apiV1endpoint } from "~/ts-rest/endpoint";
 import type { InitClientArgs } from "@ts-rest/core";
 
 const args = {
-  baseUrl: endPoint,
+  baseUrl: apiV1endpoint,
   baseHeaders: {}, // can be used for auth, for exmaple, extract a CSRF token with a session cookie & send
   validateResponse: true, // If true, validates responses against your schemas at runtime.
   throwOnUnknownStatus: true, //  If true, throws if server returns a status not declared in your contract.
