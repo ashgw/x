@@ -8,8 +8,8 @@ import {
   userLoginSchemaDto,
   userSchemaRo,
   userTerminateSpecificSessionSchemaDto,
-} from "../models";
-import { AuthService } from "../services";
+} from "~/api/models";
+import { AuthService } from "~/api/services";
 
 const userAuthService = (ctx: TrpcContext) =>
   new AuthService({

@@ -1,3 +1,3 @@
-export * from "./Date.service";
-export * from "./Name.service";
-export * from "./WordCounter.service";
+export * from "./date.service";
+export * from "./name.service";
+export * from "./wordcounter.service";

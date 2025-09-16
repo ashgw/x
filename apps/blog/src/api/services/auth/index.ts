@@ -11,7 +11,7 @@ import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
-import { CookieService } from "./Cookie.service";
+import { CookieService } from "./cookie.service";
 
 export class AuthService {
   private readonly db: DatabaseClient;
