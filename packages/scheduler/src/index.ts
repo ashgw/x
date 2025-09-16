@@ -1,6 +1,5 @@
 import { Client as QstashClient } from "@upstash/qstash";
 import { env } from "@ashgw/env";
-import type { ExclusiveUnion } from "ts-roids";
 import type {
   Payload,
   ScheduleDto,
@@ -10,6 +9,7 @@ import type {
   ScheduleCronResult,
   ScheduleDelayResult,
   DelayDto,
+  Delay,
 } from "./types";
 
 const qstashClient = new QstashClient({ token: env.QSTASH_TOKEN });
@@ -40,7 +40,7 @@ class SchedulerService {
     }
     if ("delay" in input) {
       return this.scheduleDelay({
-        delaySeconds: input.delay.seconds,
+        delay: input.delay,
         url: input.url,
         payload: input.payload,
       });
@@ -67,14 +67,7 @@ class SchedulerService {
     return { messageId: response.messageId };
   }
 
-  private async scheduleDelay<
-    Delay extends ExclusiveUnion<
-      | { seconds: bigint }
-      | { minutes: bigint }
-      | { hours: bigint }
-      | { days: bigint }
-    >,
-  >({
+  private async scheduleDelay({
     delay,
     payload,
     url,

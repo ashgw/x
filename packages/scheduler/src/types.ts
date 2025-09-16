@@ -1,3 +1,5 @@
+import type { ExclusiveUnion } from "ts-roids";
+
 export type Payload = string;
 
 export interface ScheduleBaseDto {
@@ -9,8 +11,15 @@ export interface AtDto extends ScheduleBaseDto {
   at: { datetimeIso: string };
 }
 
+export type Delay = ExclusiveUnion<
+  | { seconds: bigint }
+  | { minutes: bigint }
+  | { hours: bigint }
+  | { days: bigint }
+>;
+
 export interface DelayDto extends ScheduleBaseDto {
-  delay: { seconds: number };
+  delay: Delay;
 }
 
 export interface CronDto extends ScheduleBaseDto {
