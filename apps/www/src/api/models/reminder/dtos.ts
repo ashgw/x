@@ -3,10 +3,16 @@ import { notifyBodySchemaDto } from "../notify";
 import { authedMiddlewareHeaderSchemaDto } from "../shared";
 import { isoDateTimeSchema } from "./shared";
 
+const notificationSchema = notifyBodySchemaDto.omit({
+  type: true,
+  to: true,
+  subject: true,
+});
+
 const scheduleAtSchema = z.object({
   kind: z.literal("at").describe("At a specific date and time"),
   at: isoDateTimeSchema,
-  notification: notifyBodySchemaDto,
+  notification: notificationSchema,
 });
 
 export const scheduleDelaySchema = z.object({
@@ -29,7 +35,7 @@ export const scheduleDelaySchema = z.object({
       value: z.bigint().positive().describe("The number of days to delay"),
     }),
   ]),
-  notification: notifyBodySchemaDto,
+  notification: notificationSchema,
 });
 
 const scheduleCronSchema = z.object({
@@ -42,7 +48,7 @@ const scheduleCronSchema = z.object({
       .max(16)
       .describe("the 5 or 6 part POSIX cron expression, e.g. '0 0 * * *'"),
   }),
-  notification: notifyBodySchemaDto,
+  notification: notificationSchema,
 });
 
 const scheduleMultiAtSchema = z.object({
@@ -51,7 +57,7 @@ const scheduleMultiAtSchema = z.object({
     .array(
       z.object({
         at: isoDateTimeSchema,
-        notification: notifyBodySchemaDto,
+        notification: notificationSchema,
       }),
     )
     .describe(
