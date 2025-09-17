@@ -1,0 +1,40 @@
+name: Cron / Purge Trashed Posts
+
+on:
+  schedule:
+    # run on the 1st of every month at 02:20 UTC
+    - cron: "20 2 1 * *"
+  workflow_dispatch:
+
+jobs:
+  purge_trash_posts:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: ./.github/actions/setup-env
+        with:
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+
+      - name: Purge Trash Posts
+        shell: bash
+        run: ./scripts/cron/purge-trash-posts.sh
+
+      - name: Notify • cron ok
+        if: success()
+        uses: ashgw/notify@main
+        with:
+          token: ${{ secrets.NOTIFY_TOKEN }}
+          title: "cron: purge-trash ok"
+          message: >-
+            Monthly trash purge succeeded on ${{ env.NEXT_PUBLIC_WWW_URL }}.
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Notify • cron fail
+        if: failure()
+        uses: ashgw/notify@main
+        with:
+          token: ${{ secrets.NOTIFY_TOKEN }}
+          title: "cron: purge-trash fail"
+          message: >-
+            Monthly trash purge failed on ${{ env.NEXT_PUBLIC_WWW_URL }}.
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

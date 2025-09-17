@@ -2,6 +2,7 @@
 description: Logging & Monitoring Practices
 globs: *.tsx, *.ts
 ---
+
 We use a centralized logger defined in the `@ashgw/observability` package. This ensures consistent, structured logging throughout the codebase for better maintainability and observability.
 
 ---
@@ -11,51 +12,32 @@ We use a centralized logger defined in the `@ashgw/observability` package. This 
 Always import the logger from the observability package:
 
 ```ts
-import { logger } from '@ashgw/observability';
+import { logger } from "@ashgw/observability";
 ```
 
 ---
 
 ## Sentry Integration
 
-Sentry is used for error tracking and performance monitoring. Whenever an error occurs import it
-```ts
-+import { sentry } from '@ashgw/observability';
-```
-
-This is not the actual sentry object you get from sentry directly but a wrapper around it
-
-Example use case 
-```ts
-sentry.next.captureException({ error })
-```
----
+## Sentry is used for error tracking and performance monitoring. Whenever an error occurs it bubbles up and gets caught by Sentry.
 
 ## Best Practices
 
-- **Never use `console`** to log anything, always use the logger  
+- **Never EVER use `console`** to log anything, always use the logger  
   Always use the centralized logger to benefit from log levels, structured output, and centralized control.
 
-- **Use appropriate log levels**  
-  ```ts
-  import { logger } from '@ashgw/observability'
+- **Use appropriate log levels**
 
-  logger.info('Informational message');
-  logger.warn('Warning message');
-  logger.error('Error message', error);
+  ```ts
+  import { logger } from "@ashgw/logger";
+
+  logger.info("Informational message");
+  logger.warn("Warning message");
+  logger.error("Error message", error);
   ```
 
 ---
 
 ## Error Handling
 
-+When catching errors, log them and report to Sentry:
-
-```ts
-try {
-  // Operation that might fail
-} catch (error) {
-  logger.error('Operation failed', error);
-  sentry.next.captureException({ error });
-}
-```
++When catching errors, log them only, don't report to sentry since erorrs bubble up to `tRPC` or `ts-rest` handlers anyway and get reported there through sentry, use logging so we know what's happening

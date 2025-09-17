@@ -9,12 +9,11 @@ import ws from "ws";
 
 import { env } from "@ashgw/env";
 
-import { PrismaClient as FullPrismaClient } from "./generated/client";
+import { PrismaClient as FullPrismaClient } from "@prisma/client";
 
-// keeping only the methods I actually call
 export type DatabaseClient = Omit<
   FullPrismaClient,
-  // | "$transaction" //  need it for some, might change
+  // | "$transaction" //  need it for some
   | "$connect"
   | "$disconnect"
   | "$on"
@@ -26,7 +25,7 @@ export type DatabaseClient = Omit<
   | "$queryRawUnsafe"
 >;
 
-// global cache to survive hot-reloads
+// global cache to survive hot-reloads in dev
 const globalForDb = globalThis as unknown as {
   prisma: MaybeUndefined<DatabaseClient>;
 };
@@ -73,7 +72,7 @@ const db =
         transactionOptions,
       }) satisfies DatabaseClient));
 
-// store the singleton in dev to avoid leaks when reloading
+// store the singleton in next dev to avoid leaks when reloading
 if (env.NODE_ENV === "development") {
   globalForDb.prisma = db;
 }

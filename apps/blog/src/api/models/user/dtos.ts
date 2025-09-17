@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { email, id } from "../_shared";
 
 const passwordSchema = z
   .string()
@@ -13,7 +14,7 @@ const passwordSchema = z
 
 // ========== Schemas ==========
 export const userLoginSchemaDto = z.object({
-  email: z.string().email().max(255),
+  email,
   password: passwordSchema,
 });
 
@@ -37,7 +38,7 @@ export const userChangePasswordSchemaDto = z
   });
 
 export const userTerminateSpecificSessionSchemaDto = z.object({
-  sessionId: z.string().cuid(),
+  sessionId: id,
 });
 
 // ========== Types ==========

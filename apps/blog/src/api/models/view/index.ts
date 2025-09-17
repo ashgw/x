@@ -1,13 +1,18 @@
 import { z } from "zod";
+import { slug } from "../_shared";
 
 // ========== DTOs ==========
 
 export const trackViewSchemaDto = z.object({
-  postSlug: z.string().min(1).max(255),
+  slug,
 });
 
 // ========== ROs ==========
-//
+export const trackViewRoSchema = z.object({
+  total: z.number().int().nonnegative(),
+});
+
 // ========== Types ==========
 
 export type TrackViewDto = z.infer<typeof trackViewSchemaDto>;
+export type TrackViewRo = z.infer<typeof trackViewRoSchema>;

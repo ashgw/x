@@ -4,17 +4,18 @@ import { Plus } from "lucide-react";
 import { Button } from "@ashgw/ui";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 import { useAuth } from "~/app/hooks/auth";
 import { PreviewToggle } from "../preview/components/PreviewToggle";
 import { ProfileButton } from "./components/ProfileButton";
 import { SortOptions } from "./components/SortOptions";
+import { ViewToggle } from "../ViewToggle";
 
 interface HeaderProps {
   onClick: () => void;
   sortOptions: SortOptionsType;
   onSortOptionsChange: (options: SortOptionsType) => void;
-  blogs: PostDetailRo[];
+  blogs: PostArticleRo[];
   isPreviewEnabled: boolean;
   onTogglePreview: () => void;
 }
@@ -51,6 +52,7 @@ export function Header({
         </motion.h1>
         <div className="flex items-center gap-3">
           {user ? <ProfileButton /> : null}
+          <ViewToggle />
           <PreviewToggle
             isPreviewEnabled={isPreviewEnabled}
             onToggle={onTogglePreview}

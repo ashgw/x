@@ -1,87 +1,44 @@
 name: CI / DB Migrate
 
-description: Run database migrations
+description: Run database migrations (against the real DB)
 
 inputs:
-  NODE_ENV:
+  comment_on_pr:
     required: true
-    description: "The environment to run the migrations in, can be 'development' or 'production' or 'preview'"
-  with_deploy:
-    required: true
-    description: "Whether to run the migration deployment step ('yes' or 'no')"
-  DATABASE_URL:
-    required: true
-    description: "The database URL"
-  TEMPORARY_CONTAINER_DATABASE_URL:
-    required: true
-    description: "The temporary DB URL to test migrations"
+    description: "Whether to comment on the PR ('yes' or 'no') after running the migration"
 
 runs:
   using: "composite"
   steps:
-    - name: Set environment variables
+    - name: Mask database url if not done already
       shell: bash
       run: |
-        echo "DATABASE_URL=${{ inputs.DATABASE_URL }}" >> $GITHUB_ENV
-        echo "::add-mask::${{ inputs.DATABASE_URL }}"
+        set -euo pipefail
+        if [[ -z "${DATABASE_URL:-}" ]]; then
+          echo "DATABASE_URL is not set"; exit 1
+        fi
+        if [[ -z "${DIRECT_URL:-}" ]]; then
+          echo "DIRECT_URL is not set"; exit 1
+        fi
+        echo "::add-mask::$DATABASE_URL"
+        echo "::add-mask::$DIRECT_URL"
 
-    - name: Check for schema drift
+    - name: Deploy pending migrations on the $NEXT_PUBLIC_CURRENT_ENV database
       shell: bash
       run: |
-        pnpm --filter @ashgw/db exec prisma migrate diff \
-        --from-url="$DATABASE_URL" \
-        --to-schema-datamodel=./prisma/schema.prisma \
-        --script > migration.sql 2>&1
-
-        chmod +x .github/scripts/check-migration-safety.sh
-        .github/scripts/check-migration-safety.sh migration.sql
-
-    - name: Test migrations in an ephemeral Docker container
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db start
-
-        echo "Waiting for DB to be ready..."
-        for i in {1..30}; do
-          pg_isready -h localhost -p 5432 -U postgres && break
-          sleep 2
-        done
-
-        export DATABASE_URL="${{ inputs.TEMPORARY_CONTAINER_DATABASE_URL }}"
-        echo "Running migration reset..."
-        pnpm --filter @ashgw/db migrate:reset --force
-
-        echo "Validating migrations..."
-        pnpm --filter @ashgw/db migrate:status
-
-        STATUS=$?
-        echo "Cleaning up..."
-        pnpm --filter @ashgw/db stop
-
-        exit $STATUS
-
-    - name: Run migrations on the ${{ inputs.NODE_ENV }} database
-      if: inputs.with_deploy == 'yes'
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate deploy 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
-
-    - name: Validate migrations on the ${{ inputs.NODE_ENV }} database
-      if: inputs.with_deploy == 'yes'
-      shell: bash
-      run: |
-        pnpm --filter @ashgw/db exec prisma migrate status 2>&1 | grep -v "Datasource" | grep -v "database" | grep -v "schema" | grep -v "at"
+        pnpm --filter @ashgw/db migrate:deploy 2>&1 | grep -v "schema" | grep -v "at"
 
     - name: Comment on PR
-      if: inputs.with_deploy == 'yes' && github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request' && inputs.comment_on_pr == 'yes'
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
+
       run: |
         pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         repo="${{ github.repository }}"
 
-        comment_body="Database migrations were successfully deployed to the ${{ inputs.NODE_ENV }} branch of the database."
+        comment_body="Database migrations were successfully deployed to the $NEXT_PUBLIC_CURRENT_ENV branch of the database."
 
         curl -s -X POST \
           -H "Authorization: token $GH_TOKEN" \

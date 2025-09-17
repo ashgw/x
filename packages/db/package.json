@@ -26,9 +26,9 @@
     }
   },
   "scripts": {
+    "execute": "prisma db execute",
     "format": "prettier . --write",
     "format:schema": "prisma format",
-    "execute": "prisma db execute",
     "generate": "prisma generate",
     "lint": "tsc --noEmit && eslint .",
     "migrate:deploy": "prisma migrate deploy",
@@ -48,21 +48,21 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
-    "@ashgw/observability": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@neondatabase/serverless": "1.0.0",
     "@prisma/adapter-neon": "6.4.1",
     "@prisma/client": "catalog:prisma6",
+    "bufferutil": "4.0.9",
+    "prisma": "catalog:prisma6",
     "prisma-markdown": "2.0.0",
     "server-only": "0.0.1",
     "ws": "8.18.1",
-    "zod": "3.23.8"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@types/ws": "^8.18.1",
-    "bufferutil": "^4.0.9",
-    "prisma": "catalog:prisma6",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
   }

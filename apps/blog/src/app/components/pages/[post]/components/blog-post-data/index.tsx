@@ -1,20 +1,21 @@
+"use client";
 import Link from "next/link";
-import { Edit, Eye } from "lucide-react";
+import { Edit } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
+import { Views } from "~/app/components/misc/views";
 
-import type { PostDetailRo } from "~/api/models";
 import { featuredComponents } from "~/app/components/pages/[post]/components/mdx-custom/featured/blog";
 import { ScrollUp } from "~/app/components/pages/home/components/postCards/components/ScrollUp";
-import { formatViews } from "~/utils/formatViews";
 import { H1 } from "../mdx-custom/headers";
 import { MDX } from "../mdx-custom/mdx";
+import type { PostArticleRo } from "~/api/models";
 import { ReleaseDate } from "./ReleaseDate";
 import { ViewTracker } from "./ViewTracker";
 
 interface BlogPostProps {
-  postData: PostDetailRo;
+  postData: PostArticleRo;
 }
 
 export function BlogPostData({ postData }: BlogPostProps) {
@@ -40,15 +41,12 @@ export function BlogPostData({ postData }: BlogPostProps) {
         <div className="text-muted-foreground flex items-center gap-2">
           <ReleaseDate date={postData.firstModDate.toISOString()} />
           <span className="scale-150 select-none text-white/40">·</span>
-          <div
-            className="flex items-center gap-1"
-            title={`${postData.views} views`}
-          >
-            <Eye className="h-3 w-3 opacity-70" />
-            <span className="text-sm opacity-70">
-              {formatViews(postData.views)}
-            </span>
-          </div>
+          <Views
+            slug={postData.slug}
+            initial={postData.views}
+            className="text-sm opacity-70"
+            titlePrefix=""
+          />
         </div>
         <div>
           {DateService.isSameMonthAndYear({

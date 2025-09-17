@@ -13,5 +13,8 @@ permissions:
 jobs:
   blog-deploy-preview:
     if: github.event.label.name == 'deploy-preview'
-    uses: ./.github/workflows/on-workflow-call-blog-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-container-deployment.yml
+    with:
+      deployment_environment: preview
+      app_name: blog
     secrets: inherit

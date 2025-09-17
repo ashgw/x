@@ -5,7 +5,11 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
 import { COOKIE_NAMES, HEADER_NAMES } from "~/api/services/auth/consts";
-import { getQueryClient, getTrpcUrl, trpcClientSide } from "./client";
+import {
+  getOptimizedQueryClient,
+  getTrpcUrl,
+  trpcClientSide,
+} from "./callers/client";
 import { transformer } from "./transformer";
 
 const isBrowser = typeof window !== "undefined";
@@ -32,7 +36,7 @@ export function TRPCProvider(
   //       have a suspense boundary between this and the code that may
   //       suspend because React will throw away the client on the initial
   //       render if it suspends and there ais no boundary
-  const queryClientInstance = getQueryClient();
+  const queryClientInstance = getOptimizedQueryClient();
   const [trpcClientInstance] = useState(() =>
     trpcClientSide.createClient({
       links: [

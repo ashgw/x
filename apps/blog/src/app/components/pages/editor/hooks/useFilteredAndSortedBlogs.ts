@@ -2,10 +2,10 @@ import type { MaybeUndefined } from "ts-roids";
 import { useMemo } from "react";
 
 import type { SortOptions } from "../components/header/components/SortOptions";
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 
 export function useFilteredAndSortedBlogs(
-  blogs: MaybeUndefined<PostDetailRo[]>,
+  blogs: MaybeUndefined<PostArticleRo[]>,
   sortOptions: SortOptions,
 ) {
   return useMemo(() => {

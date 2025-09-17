@@ -7,23 +7,28 @@ docs:
       - any-glob-to-any-file:
           - "**/docs/**"
 
+db:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/db/**
+
 fix:
   - head-branch: ["^fix", "fixed"]
 
 tooling:
   - changed-files:
       - any-glob-to-any-file:
-          - tooling/*
+          - tooling/**
 
 ci:
   - changed-files:
       - any-glob-to-any-file:
-          - .github/*
+          - .github/**
 
 infra:
   - changed-files:
       - any-glob-to-any-file:
-          - infrastructure/*
+          - infrastructure/**
 
 env:
   - changed-files:
@@ -38,11 +43,6 @@ www:
   - changed-files:
       - any-glob-to-any-file:
           - apps/www/*
-
-api:
-  - changed-files:
-      - any-glob-to-any-file:
-          - apps/api/*
 
 ui:
   - changed-files:
@@ -68,3 +68,29 @@ build:
   - changed-files:
       - any-glob-to-any-file:
           - "**/package.json"
+
+logger:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/logger/*
+
+email:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/email/*
+
+storage:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/storage/*
+
+rate-limiter:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/rate-limiter/*
+
+scheuler:
+  - changed-files:
+      - any-glob-to-any-file:
+          - packages/scheduler/**
+

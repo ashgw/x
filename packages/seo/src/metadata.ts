@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import merge from "lodash.merge";
-import { CREATOR, LINKS } from "@ashgw/constants";
+import { creator, links, site_name } from "@ashgw/constants";
 
 interface MetadataInput extends Omit<Metadata, "description" | "title"> {
   title: string;
@@ -9,9 +9,9 @@ interface MetadataInput extends Omit<Metadata, "description" | "title"> {
   canonical?: string;
 }
 
-const applicationName = "ashgw";
-const publisher = CREATOR;
-const twitterHandle = LINKS.twitter.handle;
+const applicationName = site_name;
+const publisher = creator;
+const twitterHandle = links.twitter.handle;
 
 export const createMetadata = ({
   title,

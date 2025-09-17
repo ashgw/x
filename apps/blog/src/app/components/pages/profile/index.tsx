@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 
-import { logger, monitor } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   Badge,
   Button,
@@ -19,7 +19,7 @@ import {
 
 import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
 import { SessionsList } from "./components/SessionsList";
 import { UserInfo } from "./components/UserInfo";
@@ -74,7 +74,6 @@ export function ProfilePage() {
       router.push("/login");
     } catch (error) {
       logger.error("Logout failed", { error });
-      monitor.next.captureException({ error });
       toast.error("Failed to logout, please try again later");
     }
   };

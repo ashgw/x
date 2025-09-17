@@ -13,7 +13,8 @@ permissions:
 jobs:
   www-deploy-preview:
     if: github.event.label.name == 'deploy-preview'
-    uses: ./.github/workflows/on-workflow-call-www-preview-deployment.yml
+    uses: ./.github/workflows/on-workflow-call-serverless-deployment.yml
     with:
-      add_comment: true
+      deployment_environment: preview
+      app_name: www
     secrets: inherit

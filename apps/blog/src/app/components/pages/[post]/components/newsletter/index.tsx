@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   Button,
   Form,
@@ -18,12 +18,12 @@ import {
 
 import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
 import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 export function Newsletter() {
   const form = useForm<NewsletterSubscribeDto>({
     resolver: zodResolver(newsletterSubscribeDtoSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const subscribeMutation = trpcClientSide.newsletter.subscribe.useMutation({
@@ -33,9 +33,9 @@ export function Newsletter() {
       });
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
       toast.error("Something went wrong", {
-        description: "Please try again later",
+        description: error.message,
       });
     },
   });
@@ -99,7 +99,8 @@ export function Newsletter() {
           </form>
         </Form>
         <p className="dimmed-3 mt-4 text-center text-sm">
-          Subscribe to my newsletter. The extension of these thoughts and more.
+          Subscribe to my newsletter. No gimmicks, just food for thought &
+          sauce.
         </p>
       </div>
       <Toaster position="bottom-right" />

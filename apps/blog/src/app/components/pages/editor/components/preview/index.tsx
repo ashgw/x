@@ -24,7 +24,7 @@ export function BlogPreview({
   title,
   creationDate,
 }: BlogPreviewProps) {
-  const mdxContent = form.watch("mdxContent");
+  const mdxContent = form.watch("mdxText");
   const titleValue = form.watch("title");
 
   if (!isVisible) return null;
@@ -53,6 +53,7 @@ export function BlogPreview({
           <div className="flex items-center justify-between">
             <H1 id={titleValue || title}>{titleValue || title}</H1>
           </div>
+          a
           <div className="mb-8 flex items-center justify-between text-sm">
             <div>{formattedDate}</div>
             <div>

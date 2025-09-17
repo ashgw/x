@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import { NotFound } from "@ashgw/components";
 import {
@@ -8,20 +9,20 @@ import {
 } from "@ashgw/seo";
 import { env } from "@ashgw/env";
 import { BlogPostPage } from "~/app/components/pages/[post]";
-import { HydrateClient, trpcServerSide } from "~/trpc/server";
-
-interface DynamicRouteParams {
-  params: { post: string };
-}
+import { trpcHttpServerSideClient, HydrateClient } from "~/trpc/callers/server";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
+const getPostCached = cache((slug: string) =>
+  trpcHttpServerSideClient.post.getDetailedPublicPost.query({ slug }),
+);
+
 export async function generateMetadata({
   params,
-}: DynamicRouteParams): Promise<Metadata> {
-  const postData = await trpcServerSide.post.getPost({
-    slug: params.post,
-  });
+}: {
+  params: { post: string };
+}): Promise<Metadata> {
+  const postData = await getPostCached(params.post);
   if (!postData) {
     return {
       title: "Post not found",
@@ -33,9 +34,7 @@ export async function generateMetadata({
       },
     };
   }
-
   const isDraft = !postData.isReleased;
-
   return createMetadata({
     title: postData.title,
     robots: isDraft
@@ -50,14 +49,10 @@ export async function generateMetadata({
   });
 }
 
-export default async function Page({ params }: DynamicRouteParams) {
-  const postData = await trpcServerSide.post.getPost({
-    slug: params.post,
-  });
-
-  if (!postData) {
-    return <NotFound message={`No post found that matches  /${params.post}`} />;
-  }
+export default async function Page({ params }: { params: { post: string } }) {
+  const postData = await getPostCached(params.post);
+  if (!postData)
+    return <NotFound message={`No post found that matches /${params.post}`} />;
 
   return (
     <HydrateClient>
@@ -71,17 +66,13 @@ export default async function Page({ params }: DynamicRouteParams) {
             publishedAt: postData.firstModDate.toISOString(),
             updatedAt: postData.lastModDate.toISOString(),
           },
-          siteUrl: siteUrl,
+          siteUrl,
         })}
       />
       <JsonLd
         code={breadcrumbsJsonLd([
-          { name: "Home", url: siteUrl },
-          { name: "Blog", url: `${siteUrl}/blog` },
-          {
-            name: postData.title,
-            url: `${siteUrl}/${postData.slug}`,
-          },
+          { name: "Blog", url: `${siteUrl}` },
+          { name: postData.title, url: `${siteUrl}/${postData.slug}` },
         ])}
       />
       <BlogPostPage postData={postData} />

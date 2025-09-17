@@ -4,45 +4,28 @@
 
 import { z } from "zod";
 
-import { PostCategoryEnum } from "./shared";
-
-const slugSchema = z.string().min(1).max(255);
+import { category, mdxText, summary, tags, title } from "./shared";
+import { slug } from "../_shared";
 // ========== Schemas ==========
 export const postGetSchemaDto = z.object({
-  slug: slugSchema,
+  slug,
 });
 
 export const postDeleteSchemaDto = z.object({
-  slug: slugSchema,
+  slug,
 });
 
 export const postEditorSchemaDto = z.object({
-  title: z
-    .string()
-    .min(2, { message: "Title is too short" })
-    .max(30, { message: "Title won't fit on the cards" }), // the slug will be the same basically
-  summary: z
-    .string()
-    .min(20, { message: "Summary is too short" })
-    .max(90, { message: "Summary is too long" }), // SEO title will be the same for now, 90 chars so it looks good on cards layout
-  category: z.nativeEnum(PostCategoryEnum),
-  tags: z
-    .array(
-      z.string().min(1).max(10, { message: "Tag is too long, it won't fit" }),
-    )
-    .max(3, { message: "You can only have up to 3 tags" })
-    .min(1, {
-      message: "You must have at least 1 tag",
-    }),
+  title,
+  summary,
+  category,
+  tags,
+  mdxText,
   isReleased: z.boolean(),
-  mdxContent: z
-    .string()
-    .min(1, { message: "MDX content is required" })
-    .max(30000, { message: "MDX content is too long" }),
 });
 
 export const postUpdateSchemaDto = z.object({
-  slug: slugSchema,
+  slug,
   data: postEditorSchemaDto,
 });
 

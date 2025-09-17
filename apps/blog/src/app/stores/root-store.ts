@@ -1,12 +1,15 @@
 import { makeAutoObservable } from "mobx";
 
-import { ViewsStore } from "./views";
+import { EditorStore } from "./editor";
+import { ViewStore } from "./viewstore";
 
 export class RootStore {
-  public readonly views: ViewsStore;
+  public readonly editor: EditorStore;
+  public readonly view: ViewStore;
 
   constructor() {
-    this.views = new ViewsStore();
+    this.editor = new EditorStore();
+    this.view = new ViewStore();
     makeAutoObservable(this, {}, { autoBind: true });
   }
 }

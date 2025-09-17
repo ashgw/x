@@ -13,6 +13,7 @@ const baseConfig = {
     "@ashgw/constants",
     "@ashgw/cross-runtime",
     "@ashgw/observability",
+    "@ashgw/logger",
     "@ashgw/seo",
     "@ashgw/vitest",
     "@ashgw/playwright",
@@ -20,13 +21,14 @@ const baseConfig = {
     "@ashgw/typescript",
     "@ashgw/db",
     "@ashgw/analytics",
+    "@ashgw/rate-limiter",
+    "@ashgw/storage",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
-  // I talked about deez
   // https://github.com/ashgw/security-header-middlewares
   headers() {
     return Promise.resolve([
@@ -86,22 +88,6 @@ const baseConfig = {
         ],
       },
     ]);
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "ashgw-blog-public-images.s3.us-east-2.amazonaws.com", // TODO: use env here
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
-        port: "",
-        pathname: "/**",
-      },
-    ],
   },
 };
 

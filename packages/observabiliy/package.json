@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@ashgw/env": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@logtail/next": "0.2.1",
     "@sentry/nextjs": "9.8.0",
     "next": "catalog:"

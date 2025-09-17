@@ -2,10 +2,10 @@ import type { Optional } from "ts-roids";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 
 import type { UserRo } from "~/api/models";
-import { trpcClientSide } from "~/trpc/client";
+import { trpcClientSide } from "~/trpc/callers/client";
 
 interface UseAuthReturn {
   user: Optional<UserRo>;

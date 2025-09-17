@@ -1,0 +1,6 @@
+[[rules]]
+id = "ignore-docker-secrets"
+description = "Ignore docker build --secret lines"
+regex = '''--secret id=.*SECRET_KEY'''
+entropy = 0.0
+
