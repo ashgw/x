@@ -1,7 +1,7 @@
 import { logger } from "@ashgw/logger";
 import { monitor } from "@ashgw/observability";
 import { env } from "@ashgw/env";
-import { endPoint } from "~/ts-rest/endpoint";
+import { apiV1endpoint } from "~/ts-rest/endpoint";
 import type {
   ReminderBodyDto,
   ReminderResponses,
@@ -9,8 +9,9 @@ import type {
   ReminderHeadersDto,
 } from "~/api/models";
 import { scheduler } from "@ashgw/scheduler";
+import { endpoints } from "~/api/endpoints";
 
-const notifyUrl = env.NEXT_PUBLIC_WWW_URL + endPoint + "/notify";
+const notifyUrl = env.NEXT_PUBLIC_WWW_URL + apiV1endpoint + endpoints.notify;
 
 export async function reminder({
   body: { schedule },
