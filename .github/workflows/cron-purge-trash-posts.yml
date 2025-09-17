@@ -9,11 +9,18 @@ on:
 jobs:
   purge_trash_posts:
     runs-on: ubuntu-latest
-    environment: production
+    # environment: production don't ask me & run auto
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+
     steps:
       - uses: ./.github/actions/setup-env
         with:
-          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_CRON_PRODUCTION_TOKEN }}
 
       - name: Purge Trash Posts
         shell: bash
@@ -24,17 +31,24 @@ jobs:
         uses: ashgw/notify@main
         with:
           token: ${{ secrets.NOTIFY_TOKEN }}
-          title: "cron: purge-trash ok"
+          title: "Cron Succeeded"
           message: >-
-            Monthly trash purge succeeded on ${{ env.NEXT_PUBLIC_WWW_URL }}.
-            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ## Details
+
+            - Monthly trash purge succeeded on ${{ env.NEXT_PUBLIC_WWW_URL }}.
+
+            - **Run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Notify • cron fail
         if: failure()
         uses: ashgw/notify@main
         with:
           token: ${{ secrets.NOTIFY_TOKEN }}
-          title: "cron: purge-trash fail"
+          title: "Cron Failed"
           message: >-
-            Monthly trash purge failed on ${{ env.NEXT_PUBLIC_WWW_URL }}.
-            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ## Details
+
+            - Monthly trash purge failed on ${{ env.NEXT_PUBLIC_WWW_URL }}.
+
+            - **Run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
