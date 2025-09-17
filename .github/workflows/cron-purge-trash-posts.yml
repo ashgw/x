@@ -22,7 +22,7 @@ jobs:
 
       - name: Purge Trash Posts
         shell: bash
-        run: ./scripts/cron/purge-trash-posts.sh
+        run: .github/scripts/cron/purge-trash-posts.sh
 
       - name: Notify • cron ok
         if: success()

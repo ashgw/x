@@ -23,7 +23,7 @@ jobs:
 
       - name: Purge View Window
         shell: bash
-        run: ./scripts/cron/purge-view-window.sh
+        run: .github/scripts/cron/purge-view-window.sh
 
       - name: Notify • cron ok
         if: success()
