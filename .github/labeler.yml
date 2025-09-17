@@ -18,17 +18,17 @@ fix:
 tooling:
   - changed-files:
       - any-glob-to-any-file:
-          - tooling/*
+          - tooling/**
 
 ci:
   - changed-files:
       - any-glob-to-any-file:
-          - .github/*
+          - .github/**
 
 infra:
   - changed-files:
       - any-glob-to-any-file:
-          - infrastructure/*
+          - infrastructure/**
 
 env:
   - changed-files:
@@ -92,4 +92,5 @@ rate-limiter:
 scheuler:
   - changed-files:
       - any-glob-to-any-file:
-          - packages/scheduler/*
+          - packages/scheduler/**
+
