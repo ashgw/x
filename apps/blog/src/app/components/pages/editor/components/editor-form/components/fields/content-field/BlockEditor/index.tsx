@@ -20,7 +20,7 @@ import {
 import { Maximize2, Minimize2, Plus } from "lucide-react";
 import { nanoid } from "nanoid";
 
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 import {
   Button,
   Command,
