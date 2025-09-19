@@ -1,5 +1,5 @@
 "use client";
-
+// TODO: this file is bloated as a bich, refactor into smaller components & make it make sense
 import type { SubmitHandler } from "react-hook-form";
 import type { Optional } from "ts-roids";
 import { useCallback, useEffect, useState } from "react";
@@ -20,7 +20,7 @@ import { trpcClientSide } from "~/trpc/callers/client";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { useStore } from "~/app/stores";
 import { TrashList } from "./components/lists/ItemList";
-import { BlogList, ConfirmBlogDeleteModal,  } from "./components/blog-list";
+import { BlogList, ConfirmBlogDeleteModal } from "./components/blog-list";
 import { BlogPreview } from "./components/preview";
 import { PostEditorForm } from "./components/editor-form";
 import { SoundProvider, SoundToggle } from "./components/sound";
@@ -41,7 +41,7 @@ export const EditorPage = observer(() => {
   const [showPreview, setShowPreview] = useState(false);
   const [isDeletingBlog, setIsDeletingBlog] = useState(false);
   const [selectedBlog, setSelectedBlog] =
-    useState<Optional<PostDetailRo>>(null);
+    useState<Optional<PostArticleRo>>(null);
 
   const { store } = useStore();
 
@@ -122,9 +122,8 @@ export const EditorPage = observer(() => {
   );
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
-<<<<<<< HEAD
     onBlogFound: useCallback(
-      (blog: PostDetailRo) => {
+      (blog: PostArticleRo) => {
         // Only load from URL if no blog is currently selected
         if (!selectedBlog) {
           handleEditBlog(blog);
@@ -132,12 +131,11 @@ export const EditorPage = observer(() => {
       },
       [handleEditBlog, selectedBlog],
     ),
-    skipLoading: showPreview || isDeletingBlog || !!selectedBlog, // Skip loading if preview mode, deleting, or blog already selected
-=======
-    onBlogFound: handleEditBlog,
     skipLoading:
-      showPreview || isDeletingBlog || store.editor.viewMode === "trash", // Skip when in trash view too
->>>>>>> origin
+      showPreview ||
+      isDeletingBlog ||
+      !!selectedBlog ||
+      store.editor.viewMode === "trash", // Skip loading if preview mode, deleting, or blog already selected
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
@@ -248,28 +246,18 @@ export const EditorPage = observer(() => {
     window.history.replaceState({}, "", url.toString());
   }
 
-<<<<<<< HEAD
-  function handleDeleteBlog(blog: PostDetailRo) {
-=======
   function handleDeleteBlog(blog: PostArticleRo) {
->>>>>>> origin
     setIsDeletingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
   function confirmDelete() {
     if (deleteModal.visible) {
-<<<<<<< HEAD
-      deleteMutation.mutate({ slug: deleteModal.entity.slug });
-      if (selectedBlog?.slug === deleteModal.entity.slug) {
-        setSelectedBlog(null);
-      }
-=======
       trashPost.mutate({ slug: deleteModal.entity.slug });
->>>>>>> origin
     }
   }
 
+  // TODO: remove this function and just use onClose directly in modal
   function cancelDelete() {
     setDeleteModal({ visible: false });
     setIsDeletingBlog(false);
@@ -347,7 +335,7 @@ export const EditorPage = observer(() => {
                     <BlogPreview
                       key="preview"
                       isVisible={showPreview}
-                      formData={formValues}
+                      form={form}
                       title={
                         editModal.visible
                           ? editModal.entity.title
@@ -377,42 +365,8 @@ export const EditorPage = observer(() => {
                 Select an item to restore or purge.
               </div>
             </div>
-<<<<<<< HEAD
-          ) : (
-            <div className="lg:col-span-2">
-              <AnimatePresence mode="wait" initial={false}>
-                <PostEditorForm
-                  key="editor"
-                  form={form}
-                  onSubmit={onSubmit}
-                  isSubmitting={isSubmitting}
-                  isHidden={showPreview}
-                />
-                {showPreview ? (
-                  <BlogPreview
-                    key="preview"
-                    isVisible={showPreview}
-                    form={form}
-                    title={
-                      editModal.visible
-                        ? editModal.entity.title
-                        : "Preview Title"
-                    }
-                    creationDate={
-                      editModal.visible
-                        ? editModal.entity.firstModDate.toISOString()
-                        : new Date().toISOString()
-                    }
-                  />
-                ) : null}
-              </AnimatePresence>
-            </div>
-          )}
-        </div>
-=======
           </div>
         )}
->>>>>>> origin
         {deleteModal.visible ? (
           <ConfirmBlogDeleteModal
             blog={deleteModal.entity}
