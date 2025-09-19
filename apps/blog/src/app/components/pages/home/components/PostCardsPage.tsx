@@ -6,9 +6,6 @@ export function PostCardsPage({ posts }: { posts: PostCardRo[] }) {
   return (
     <>
       <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
-        <h1 className="mb-8 hidden text-2xl font-medium tracking-tighter">
-          Unclassified, raw
-        </h1>
         <PostsProvider>
           <PostCards posts={posts} />
         </PostsProvider>
