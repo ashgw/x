@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 
 import { Button } from "@ashgw/ui";
 
-import type { PostDetailRo } from "~/api/models/post";
+import type { PostArticleRo } from "~/api/models/post";
 
 interface BlogItemProps {
-  blog: PostDetailRo;
+  blog: PostArticleRo;
   index: number;
-  onEdit: (blog: PostDetailRo) => void;
-  onDelete: (blog: PostDetailRo) => void;
+  onEdit: (blog: PostArticleRo) => void;
+  onDelete: (blog: PostArticleRo) => void;
   shouldReduceMotion: boolean;
 }
 
