@@ -4,7 +4,7 @@
 
 import { z } from "zod";
 
-import { id, slug } from "../_shared";
+import { id, slug } from "../shared";
 import { category, mdxText, summary, tags, title } from "./shared";
 
 // ========== Schemas ==========

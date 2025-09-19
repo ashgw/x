@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { email, id } from "../_shared";
+import { email, id } from "../shared";
 
 const passwordSchema = z
   .string()
