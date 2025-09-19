@@ -9,7 +9,7 @@ import { useAuth } from "~/app/hooks/auth";
 import { PreviewToggle } from "../preview/components/PreviewToggle";
 import { ProfileButton } from "./components/ProfileButton";
 import { SortOptions } from "./components/SortOptions";
-import { ViewToggle } from "../ViewToggle";
+import { ViewToggle } from "./components/ViewToggle";
 
 interface HeaderProps {
   onClick: () => void;
