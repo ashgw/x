@@ -10,7 +10,11 @@ interface LinkProps {
 
 const Link = ({ href, name, inNewTab = false }: LinkProps) => {
   return (
-    <NextLink href={href} target={inNewTab ? "_blank" : undefined}>
+    <NextLink
+      href={href}
+      target={inNewTab ? "_blank" : undefined}
+      rel={inNewTab ? "noopener noreferrer" : undefined}
+    >
       <span> </span>
       <strong className="glows text-white">{name}</strong>
       <span> </span>
