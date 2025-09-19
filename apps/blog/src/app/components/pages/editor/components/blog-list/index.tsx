@@ -1,2 +1,2 @@
-export { BlogList } from "./components/BlogList";
-export { ConfirmBlogDeleteModal } from "./components/ConfirmBlogDeleteModal";
+export { BlogList } from "../lists/ItemList";
+export { ConfirmBlogDeleteModal } from "../modals/ConfirmBlogDeleteModal";

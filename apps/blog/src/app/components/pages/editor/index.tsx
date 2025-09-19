@@ -39,7 +39,7 @@ export const EditorPage = observer(() => {
   });
 
   const [showPreview, setShowPreview] = useState(false);
-  const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+  const [isTrashingBlog, setIsTrashingBlog] = useState(false);
   const [selectedBlog, setSelectedBlog] =
     useState<Optional<PostArticleRo>>(null);
 
@@ -80,9 +80,11 @@ export const EditorPage = observer(() => {
   });
 
   const utils = trpcClientSide.useUtils();
+
   const postsQuery = trpcClientSide.post.getAllAdminPosts.useQuery(undefined, {
     enabled: store.editor.viewMode === "active",
   });
+
   const trashedQuery = trpcClientSide.post.getTrashedPosts.useQuery(undefined, {
     enabled: store.editor.viewMode === "trash",
   });
@@ -104,7 +106,7 @@ export const EditorPage = observer(() => {
   const handleEditBlog = useCallback(
     (blog: PostArticleRo) => {
       // Don't load blog content if we're in the process of deleting
-      if (isDeletingBlog) return;
+      if (isTrashingBlog) return;
 
       setSelectedBlog(blog);
       setEditModal({ visible: true, entity: blog });
@@ -118,7 +120,7 @@ export const EditorPage = observer(() => {
       });
       logger.info("Editing blog", { slug: blog.slug });
     },
-    [form, isDeletingBlog],
+    [form, isTrashingBlog],
   );
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
@@ -133,7 +135,7 @@ export const EditorPage = observer(() => {
     ),
     skipLoading:
       showPreview ||
-      isDeletingBlog ||
+      isTrashingBlog ||
       !!selectedBlog ||
       store.editor.viewMode === "trash", // Skip loading if preview mode, deleting, or blog already selected
   });
@@ -182,7 +184,7 @@ export const EditorPage = observer(() => {
       void utils.post.getAllAdminPosts.invalidate();
       void utils.post.getTrashedPosts.invalidate();
       setDeleteModal({ visible: false });
-      setIsDeletingBlog(false);
+      setIsTrashingBlog(false);
 
       // If editing the deleted blog, reset form
       if (
@@ -198,7 +200,7 @@ export const EditorPage = observer(() => {
       toast.error("Failed to delete post", {
         description: error.message,
       });
-      setIsDeletingBlog(false);
+      setIsTrashingBlog(false);
     },
   });
 
@@ -247,7 +249,7 @@ export const EditorPage = observer(() => {
   }
 
   function handleDeleteBlog(blog: PostArticleRo) {
-    setIsDeletingBlog(true);
+    setIsTrashingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
@@ -260,7 +262,7 @@ export const EditorPage = observer(() => {
   // TODO: remove this function and just use onClose directly in modal
   function cancelDelete() {
     setDeleteModal({ visible: false });
-    setIsDeletingBlog(false);
+    setIsTrashingBlog(false);
   }
 
   const togglePreview = useCallback(() => {
@@ -280,7 +282,7 @@ export const EditorPage = observer(() => {
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   // Show editor loading state only when we're expecting to load a blog from URL
-  const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isDeletingBlog;
+  const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isTrashingBlog;
 
   return (
     <SoundProvider>
@@ -303,7 +305,7 @@ export const EditorPage = observer(() => {
                 blogs={filteredAndSortedBlogs}
                 onEdit={handleEditBlog}
                 onDelete={handleDeleteBlog}
-                isLoading={isLoadingBlog && !isDeletingBlog}
+                isLoading={isLoadingBlog && !isTrashingBlog}
               />
             ) : (
               <BlogList
@@ -311,7 +313,7 @@ export const EditorPage = observer(() => {
                 onEdit={handleEditBlog}
                 onDelete={handleDeleteBlog}
                 isLoading={
-                  postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
+                  postsQuery.isLoading || (isLoadingBlog && !isTrashingBlog)
                 }
               />
             )}
