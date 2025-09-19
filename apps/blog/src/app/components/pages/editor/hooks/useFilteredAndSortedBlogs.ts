@@ -1,8 +1,8 @@
 import type { MaybeUndefined } from "ts-roids";
 import { useMemo } from "react";
 
-import type { SortOptions } from "../components/SortOptions";
-import type { PostArticleRo } from "~/api/models/post";
+import type { SortOptions } from "../components/header/components/SortOptions";
+import type { PostArticleRo } from "~/api/models";
 
 export function useFilteredAndSortedBlogs(
   blogs: MaybeUndefined<PostArticleRo[]>,

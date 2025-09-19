@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { slug } from "../_shared";
+import { slug } from "../shared";
 
 // ========== DTOs ==========
 

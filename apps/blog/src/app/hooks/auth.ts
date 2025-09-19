@@ -10,7 +10,6 @@ import { trpcClientSide } from "~/trpc/callers/client";
 interface UseAuthReturn {
   user: Optional<UserRo>;
   isLoading: boolean;
-  requireAuth: (redirectTo?: string) => boolean;
   logout: () => Promise<void>;
 }
 
@@ -30,24 +29,9 @@ export function useAuth(): UseAuthReturn {
     }
   }, [logoutMutation, router, utils.user.me]);
 
-  const requireAuth = useCallback(
-    (redirectTo = "/login") => {
-      if (isLoading) return false;
-
-      if (!user && redirectTo) {
-        router.push(redirectTo);
-        return false;
-      }
-
-      return !user;
-    },
-    [isLoading, user, router],
-  );
-
   return {
     user: user ?? null,
     isLoading,
-    requireAuth,
     logout,
   };
 }

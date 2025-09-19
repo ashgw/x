@@ -1,0 +1,1 @@
+export { BlogLink } from "./Link";

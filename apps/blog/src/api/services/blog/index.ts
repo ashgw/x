@@ -94,7 +94,6 @@ export class BlogService {
 
   public async createPost(data: PostEditorDto): Promise<PostArticleRo> {
     const slug = this._slugify(data.title);
-
     const existingPost = await this.db.post.findUnique({ where: { slug } });
     if (existingPost) {
       throw new InternalError({

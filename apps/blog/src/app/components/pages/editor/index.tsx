@@ -1,6 +1,7 @@
 "use client";
-
+// TODO: this file is bloated as a bich, refactor into smaller components & make it make sense
 import type { SubmitHandler } from "react-hook-form";
+import type { Optional } from "ts-roids";
 import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence } from "framer-motion";
@@ -12,19 +13,17 @@ import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/logger";
 import { Skeleton } from "@ashgw/ui";
 
-import { useStore } from "~/app/stores";
-
-import type { SortOptions as SortOptionsType } from "./components/SortOptions";
+import { Header } from "./components/header";
+import type { SortOptions as SortOptionsType } from "./components/header/components/SortOptions";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
-import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/callers/client";
-import { SoundProvider } from "../../misc/SoundContext";
-import { SoundToggle } from "../../misc/SoundToggle";
-import { BlogList, TrashList } from "./components/lists/ItemList";
-import { BlogPreview } from "./components/BlogPreview";
-import { ConfirmBlogDeleteModal } from "./components/modals/ConfirmBlogDeleteModal";
-import { PostEditorForm } from "./components/Form";
-import { Header } from "./components/Header";
+import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
+import { useStore } from "~/app/stores";
+import { TrashList } from "./components/lists/ItemList";
+import { BlogList, ConfirmBlogDeleteModal } from "./components/blog-list";
+import { BlogPreview } from "./components/preview";
+import { PostEditorForm } from "./components/editor-form";
+import { SoundProvider, SoundToggle } from "./components/sound";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
@@ -40,7 +39,9 @@ export const EditorPage = observer(() => {
   });
 
   const [showPreview, setShowPreview] = useState(false);
-  const [isDeletingBlog, setIsDeletingBlog] = useState(false);
+  const [isTrashingBlog, setIsTrashingBlog] = useState(false);
+  const [selectedBlog, setSelectedBlog] =
+    useState<Optional<PostArticleRo>>(null);
 
   const { store } = useStore();
 
@@ -79,9 +80,11 @@ export const EditorPage = observer(() => {
   });
 
   const utils = trpcClientSide.useUtils();
+
   const postsQuery = trpcClientSide.post.getAllAdminPosts.useQuery(undefined, {
     enabled: store.editor.viewMode === "active",
   });
+
   const trashedQuery = trpcClientSide.post.getTrashedPosts.useQuery(undefined, {
     enabled: store.editor.viewMode === "trash",
   });
@@ -103,8 +106,9 @@ export const EditorPage = observer(() => {
   const handleEditBlog = useCallback(
     (blog: PostArticleRo) => {
       // Don't load blog content if we're in the process of deleting
-      if (isDeletingBlog) return;
+      if (isTrashingBlog) return;
 
+      setSelectedBlog(blog);
       setEditModal({ visible: true, entity: blog });
       form.reset({
         title: blog.title,
@@ -116,13 +120,24 @@ export const EditorPage = observer(() => {
       });
       logger.info("Editing blog", { slug: blog.slug });
     },
-    [form, isDeletingBlog],
+    [form, isTrashingBlog],
   );
 
   const { isLoadingBlog, blogSlug } = useQueryParamBlog({
-    onBlogFound: handleEditBlog,
+    onBlogFound: useCallback(
+      (blog: PostArticleRo) => {
+        // Only load from URL if no blog is currently selected
+        if (!selectedBlog) {
+          handleEditBlog(blog);
+        }
+      },
+      [handleEditBlog, selectedBlog],
+    ),
     skipLoading:
-      showPreview || isDeletingBlog || store.editor.viewMode === "trash", // Skip when in trash view too
+      showPreview ||
+      isTrashingBlog ||
+      !!selectedBlog ||
+      store.editor.viewMode === "trash", // Skip loading if preview mode, deleting, or blog already selected
   });
 
   const filteredAndSortedBlogs = useFilteredAndSortedBlogs(
@@ -169,7 +184,7 @@ export const EditorPage = observer(() => {
       void utils.post.getAllAdminPosts.invalidate();
       void utils.post.getTrashedPosts.invalidate();
       setDeleteModal({ visible: false });
-      setIsDeletingBlog(false);
+      setIsTrashingBlog(false);
 
       // If editing the deleted blog, reset form
       if (
@@ -185,7 +200,7 @@ export const EditorPage = observer(() => {
       toast.error("Failed to delete post", {
         description: error.message,
       });
-      setIsDeletingBlog(false);
+      setIsTrashingBlog(false);
     },
   });
 
@@ -217,6 +232,7 @@ export const EditorPage = observer(() => {
   });
 
   function handleNewBlog() {
+    setSelectedBlog(null);
     setEditModal({ visible: false });
     form.reset({
       title: "",
@@ -226,10 +242,14 @@ export const EditorPage = observer(() => {
       isReleased: false,
       mdxText: "",
     });
+    // Clear URL query parameter
+    const url = new URL(window.location.href);
+    url.searchParams.delete("blog");
+    window.history.replaceState({}, "", url.toString());
   }
 
   function handleDeleteBlog(blog: PostArticleRo) {
-    setIsDeletingBlog(true);
+    setIsTrashingBlog(true);
     setDeleteModal({ visible: true, entity: blog });
   }
 
@@ -239,9 +259,10 @@ export const EditorPage = observer(() => {
     }
   }
 
+  // TODO: remove this function and just use onClose directly in modal
   function cancelDelete() {
     setDeleteModal({ visible: false });
-    setIsDeletingBlog(false);
+    setIsTrashingBlog(false);
   }
 
   const togglePreview = useCallback(() => {
@@ -261,8 +282,7 @@ export const EditorPage = observer(() => {
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   // Show editor loading state only when we're expecting to load a blog from URL
-  const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isDeletingBlog;
-  const formValues = form.watch();
+  const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isTrashingBlog;
 
   return (
     <SoundProvider>
@@ -285,7 +305,7 @@ export const EditorPage = observer(() => {
                 blogs={filteredAndSortedBlogs}
                 onEdit={handleEditBlog}
                 onDelete={handleDeleteBlog}
-                isLoading={isLoadingBlog && !isDeletingBlog}
+                isLoading={isLoadingBlog && !isTrashingBlog}
               />
             ) : (
               <BlogList
@@ -293,7 +313,7 @@ export const EditorPage = observer(() => {
                 onEdit={handleEditBlog}
                 onDelete={handleDeleteBlog}
                 isLoading={
-                  postsQuery.isLoading || (isLoadingBlog && !isDeletingBlog)
+                  postsQuery.isLoading || (isLoadingBlog && !isTrashingBlog)
                 }
               />
             )}
@@ -317,7 +337,7 @@ export const EditorPage = observer(() => {
                     <BlogPreview
                       key="preview"
                       isVisible={showPreview}
-                      formData={formValues}
+                      form={form}
                       title={
                         editModal.visible
                           ? editModal.entity.title
