@@ -13,31 +13,17 @@ import type { EntityViewState } from "@ashgw/ui";
 import { logger } from "@ashgw/logger";
 import { Skeleton } from "@ashgw/ui";
 
-<<<<<<< HEAD
-import type { SortOptions as SortOptionsType } from "./components/header/components/SortOptions";
-import type { PostDetailRo, PostEditorDto } from "~/api/models/post";
-import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
-import { trpcClientSide } from "~/trpc/client";
-import { BlogList, ConfirmBlogDeleteModal } from "./components/blog-list";
-import { PostEditorForm } from "./components/editor-form";
 import { Header } from "./components/header";
-import { BlogPreview } from "./components/preview";
-import { SoundProvider, SoundToggle } from "./components/sound";
-=======
-import { useStore } from "~/app/stores";
-
-import type { SortOptions as SortOptionsType } from "./components/SortOptions";
+import type { SortOptions as SortOptionsType } from "./components/header/components/SortOptions";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
-import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 import { trpcClientSide } from "~/trpc/callers/client";
-import { SoundProvider } from "../../misc/SoundContext";
-import { SoundToggle } from "../../misc/SoundToggle";
-import { BlogList, TrashList } from "./components/lists/ItemList";
-import { BlogPreview } from "./components/BlogPreview";
-import { ConfirmBlogDeleteModal } from "./components/modals/ConfirmBlogDeleteModal";
-import { PostEditorForm } from "./components/Form";
-import { Header } from "./components/Header";
->>>>>>> origin
+import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
+import { useStore } from "~/app/stores";
+import { TrashList } from "./components/lists/ItemList";
+import { BlogList, ConfirmBlogDeleteModal,  } from "./components/blog-list";
+import { BlogPreview } from "./components/preview";
+import { PostEditorForm } from "./components/editor-form";
+import { SoundProvider, SoundToggle } from "./components/sound";
 import { useFilteredAndSortedBlogs } from "./hooks/useFilteredAndSortedBlogs";
 import { useQueryParamBlog } from "./hooks/useQueryParamBlog";
 
