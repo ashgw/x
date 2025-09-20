@@ -27,12 +27,12 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
       </Button>
 
       {!user ? (
-        <Link href="/login">
-          <Button variant="squared:default" type="submit">
+        <Button variant="squared:default" type="button" asChild>
+          <Link href="/login">
             <LogIn className="mr-2 h-4 w-4" />
             Login to save
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       ) : (
         <Button
           variant="squared:default"
