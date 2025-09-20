@@ -7,9 +7,9 @@ import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Skeleton } from "@ashgw/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
-import { featuredComponents } from "~/app/components/pages/[post]/components/mdx-custom/featured/blog";
-import { H1 } from "../../../[post]/components/mdx-custom/headers";
-import { ClientMDX } from "../../../[post]/components/mdx-custom/mdx/client";
+import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";
+import { H1 } from "../../../../shared/mdx-custom/headers";
+import { ClientMDX } from "../../../../shared/mdx-custom/mdx/client";
 
 interface BlogPreviewProps {
   isVisible: boolean;

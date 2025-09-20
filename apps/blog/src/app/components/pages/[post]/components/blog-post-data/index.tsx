@@ -4,12 +4,12 @@ import { Edit } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Button } from "@ashgw/ui";
-import { Views } from "~/app/components/misc/views";
+import { Views } from "~/app/components/shared/views";
 
-import { featuredComponents } from "~/app/components/pages/[post]/components/mdx-custom/featured/blog";
+import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";
 import { ScrollUp } from "~/app/components/pages/home/components/postCards/components/ScrollUp";
-import { H1 } from "../mdx-custom/headers";
-import { MDX } from "../mdx-custom/mdx";
+import { H1 } from "../../../../shared/mdx-custom/headers";
+import { MDX } from "../../../../shared/mdx-custom/mdx";
 import type { PostArticleRo } from "~/api/models";
 import { ReleaseDate } from "./ReleaseDate";
 import { ViewTracker } from "./ViewTracker";

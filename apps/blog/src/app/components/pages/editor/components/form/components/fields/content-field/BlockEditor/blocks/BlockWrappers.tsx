@@ -10,7 +10,7 @@ import {
   Spacer2,
   Spacer3,
   TextContent,
-} from "~/app/components/pages/[post]/components/mdx-custom";
+} from "~/app/components/shared/mdx-custom";
 
 export const HeadingOneWrapper = ({ text }: BlockProps) => <H1>{text}</H1>;
 

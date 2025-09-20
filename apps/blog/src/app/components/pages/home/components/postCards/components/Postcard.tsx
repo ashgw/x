@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Views } from "~/app/components/misc/views";
+import { Views } from "~/app/components/shared/views";
 
 import { DateService } from "@ashgw/cross-runtime";
 
