@@ -90,14 +90,14 @@ export function EditorLayout({ editor }: EditorLayoutProps) {
         </div>
       )}
 
-      {editor.modals.delete.visible && (
+      {editor.modals.delete.visible ? (
         <ConfirmBlogDeleteModal
           blog={editor.modals.delete.entity}
           onConfirm={editor.actions.confirmDelete}
           onCancel={editor.actions.cancelDelete}
           isDeleting={editor.actions.isDeletingPost}
         />
-      )}
+      ) : null}
     </div>
   );
 }
