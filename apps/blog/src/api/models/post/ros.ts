@@ -15,7 +15,6 @@ export const postCardSchemaRo = z.object({
   tags,
   category,
   summary,
-  seoTitle: summary,
   firstModDate: z.date(),
   minutesToRead: z.union([z.string(), z.number()]),
   views: z.number().default(0),

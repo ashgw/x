@@ -18,7 +18,6 @@ export class PostMapper {
     return {
       slug: post.slug,
       title: post.title,
-      seoTitle: post.seoTitle,
       summary: post.summary,
       firstModDate: post.firstModDate,
       minutesToRead: post.minutesToRead,

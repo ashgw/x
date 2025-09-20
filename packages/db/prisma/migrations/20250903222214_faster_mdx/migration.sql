@@ -30,7 +30,6 @@ CREATE TABLE "TrashPost" (
     "id" TEXT NOT NULL,
     "originalSlug" VARCHAR(255) NOT NULL,
     "title" VARCHAR(30) NOT NULL,
-    "seoTitle" VARCHAR(100) NOT NULL,
     "summary" VARCHAR(100) NOT NULL,
     "firstModDate" TIMESTAMP(3) NOT NULL,
     "lastModDate" TIMESTAMP(3) NOT NULL,

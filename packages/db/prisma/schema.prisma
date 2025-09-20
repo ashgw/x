@@ -15,7 +15,6 @@ datasource db {
 model Post {
   slug          String     @id @db.VarChar(255)
   title         String     @db.VarChar(30)
-  seoTitle      String     @db.VarChar(100)
   summary       String     @db.VarChar(100)
   firstModDate  DateTime   @default(now())
   lastModDate   DateTime   @updatedAt
@@ -36,7 +35,6 @@ model TrashPost {
   id            String       @id @default(cuid())
   originalSlug  String       @db.VarChar(255)
   title         String       @db.VarChar(30)
-  seoTitle      String       @db.VarChar(100)
   summary       String       @db.VarChar(100)
   firstModDate  DateTime
   lastModDate   DateTime
