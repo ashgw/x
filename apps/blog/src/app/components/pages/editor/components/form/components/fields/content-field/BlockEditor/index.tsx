@@ -61,7 +61,7 @@ function parseBlock(blockStr: string): Block | null {
     // Try to match component syntax first
     // Updated regex to handle multiline content with dotall flag
     const componentRegex =
-      /<(\w+)(?:\s+([^>]+))?>([^]*?)<\/\1>|<(\w+)(?:\s+([^>]+))?\/>/s;
+      /<(\w+)(?:\s+([^>]+))?>(.*?)<\/\1>|<(\w+)(?:\s+([^>]+))?\/>/s;
     const componentMatch = componentRegex.exec(blockStr);
 
     if (componentMatch) {
