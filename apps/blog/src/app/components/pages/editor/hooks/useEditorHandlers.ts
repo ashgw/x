@@ -8,7 +8,7 @@ import type { Optional } from "ts-roids";
 import { logger } from "@ashgw/logger";
 import type { EntityViewState } from "@ashgw/ui";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
-import { useStore } from "~/app/stores";
+// no store access here; store updates handled in mutations hook
 
 import type { useEditorForm } from "./useEditorForm";
 import type { useEditorModals } from "./useEditorModals";
@@ -30,7 +30,7 @@ export function useEditorHandlers({
   mutations,
   editModal,
   deleteModal,
-  selectedBlog,
+  selectedBlog: _selectedBlog,
   setSelectedBlog,
 }: UseEditorHandlersParams) {
   const handleNewBlog = useCallback(() => {
@@ -82,14 +82,14 @@ export function useEditorHandlers({
   );
 
   const handleRestore = useCallback(
-    (item: PostArticleRo) => {
+    (item: { id: string }) => {
       mutations.restoreMutation.mutate({ trashId: item.id });
     },
     [mutations],
   );
 
   const handlePurge = useCallback(
-    (item: PostArticleRo) => {
+    (item: { id: string }) => {
       mutations.purgeMutation.mutate({ trashId: item.id });
     },
     [mutations],

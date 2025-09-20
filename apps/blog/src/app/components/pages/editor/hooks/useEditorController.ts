@@ -156,8 +156,8 @@ export function useEditorController() {
       handleDeleteBlog: handlers.handleDeleteBlog,
       confirmDelete: handlers.confirmDelete,
       cancelDelete: handlers.cancelDelete,
-      restoreMutation: handlers.handleRestore,
-      purgeMutation: handlers.handlePurge,
+      restoreMutation: mutations.restoreMutation,
+      purgeMutation: mutations.purgeMutation,
       onSubmit: handlers.onSubmit,
     },
   };
