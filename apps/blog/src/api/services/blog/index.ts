@@ -109,7 +109,7 @@ export class BlogService {
       data: {
         slug,
         title: data.title,
-        seoTitle: data.title,
+        seoTitle: data.summary,
         summary: data.summary,
         isReleased: data.isReleased,
         firstModDate: now,
@@ -155,7 +155,7 @@ export class BlogService {
       where: { slug },
       data: {
         title: data.title,
-        seoTitle: data.title,
+        seoTitle: data.summary,
         summary: data.summary,
         isReleased: data.isReleased,
         lastModDate: new Date(),
