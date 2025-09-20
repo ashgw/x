@@ -5,7 +5,8 @@
 import { z } from "zod";
 
 import { category, mdxText, summary, tags, title } from "./shared";
-import { slug } from "../_shared";
+import { slug } from "../shared";
+
 // ========== Schemas ==========
 export const postGetSchemaDto = z.object({
   slug,

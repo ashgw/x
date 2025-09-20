@@ -30,6 +30,7 @@ jobs:
         uses: ashgw/notify@main
         with:
           token: ${{ secrets.NOTIFY_TOKEN }}
+
           title: "Cron Succeeded"
           message: >-
             ## Details
@@ -43,6 +44,7 @@ jobs:
         uses: ashgw/notify@main
         with:
           token: ${{ secrets.NOTIFY_TOKEN }}
+
           title: "Cron Failed"
           message: >-
             ## Details
@@ -50,4 +52,3 @@ jobs:
             - Monthly trash purge failed on ${{ env.NEXT_PUBLIC_WWW_URL }}.
 
             - **Run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-

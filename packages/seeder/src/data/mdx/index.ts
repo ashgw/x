@@ -10,7 +10,6 @@ const __dirname = path.dirname(__filename);
 interface Blog {
   slug: string;
   title: string;
-  seoTitle: string;
   summary: string;
   isReleased: boolean;
   firstModDate: Date;
@@ -35,8 +34,6 @@ export const blogs: Blog[] = [
   {
     slug: "bounce-tracking",
     title: "Bounce Tracking",
-    seoTitle:
-      "As third-party cookies phase out, bounce tracking continues to monitor your behavior",
     summary: "As third-party cookies phase out, your behavior is still tracked",
     isReleased: true,
     firstModDate: new Date("2023-10-09T08:15:00-04:00"),
@@ -49,7 +46,6 @@ export const blogs: Blog[] = [
   {
     slug: "branded-types",
     title: "Branded Types",
-    seoTitle: "Write Safer TypeScript with Branded Types",
     summary: "Write safer TypeScript with branded types",
     isReleased: true,
     firstModDate: new Date("2024-04-27T09:15:00-04:00"),
@@ -62,7 +58,6 @@ export const blogs: Blog[] = [
   {
     slug: "cholesterol",
     title: "Cholesterol",
-    seoTitle: "How bad science hijacked medicine and destroyed public health",
     summary: "How bad science hijacked medicine and destroyed public health",
     isReleased: true,
     firstModDate: new Date("2025-02-07T09:15:00-04:00"),
@@ -75,7 +70,6 @@ export const blogs: Blog[] = [
   {
     slug: "debates",
     title: "Debates",
-    seoTitle: "I won't debate you",
     summary: "I won't debate you",
     isReleased: true,
     firstModDate: new Date("2024-01-01T19:45:00-04:00"),
@@ -89,7 +83,6 @@ export const blogs: Blog[] = [
   {
     slug: "dumb-questions",
     title: "Dumb Questions",
-    seoTitle: "Why Dumb Questions Are a Sign of System Failure",
     summary: "Why they exist and what they reveal about systemic inefficiency",
     isReleased: true,
     firstModDate: new Date("2024-11-18T09:15:00-04:00"),

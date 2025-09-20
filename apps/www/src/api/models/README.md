@@ -5,6 +5,7 @@
 - Barrel: `models/index.ts` re-exports each feature
 
 ## Naming
+
 - Schema values
   - Headers: `<Feature>HeadersSchemaDto`
   - Query: `<Feature>QuerySchemaDto`
@@ -19,6 +20,7 @@
   - Re-exports in `index.ts`
 
 ## Schema strictness
+
 - No `any`. No `z.any()`. Use precise primitives, enums, and unions.
 - Validate aggressively: `.min()`, `.max()`, `.regex()`, `.email()`, `.length()`. Always think of abuse by bad actors.
 - Numbers from query arrive as strings. Validate as `string` then `.transform(Number)` and `pipe` to bounded `z.number().int()`.
@@ -27,16 +29,18 @@
 - Headers for protected routes must extend `authedMiddlewareHeaderSchemaDto`.
 
 ## Responses
+
 - Build with `createSchemaResponses({ ... })`.
 - Success: `okSchemaResponse` for 200, `noContentSchemaResponse` for 204.
 - Failures to compose when relevant: `rateLimiterMiddlewareSchemaResponse`, `authedMiddlewareSchemaResponse`, `internalErrorSchemaResponse`.
 - Non JSON bodies use `c.otherResponse({ contentType, body })`.
 
 ## Exports
+
 - Feature `index.ts` re-exports schemas and types only.
 - Add the feature to `models/index.ts` via `export * from "./<feature>";`.
 
 ## Contract and handlers
+
 - Contract routes use these schemas and set `strictStatusCodes: true`.
 - Handlers return `Promise<<Feature>Responses>` exactly.
-

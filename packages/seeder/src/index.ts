@@ -39,7 +39,6 @@ async function seedPosts() {
       where: { slug: blog.slug },
       update: {
         title: blog.title,
-        seoTitle: blog.seoTitle,
         summary: blog.summary,
         isReleased: blog.isReleased,
         firstModDate: blog.firstModDate,
@@ -52,7 +51,6 @@ async function seedPosts() {
       create: {
         slug: blog.slug,
         title: blog.title,
-        seoTitle: blog.seoTitle,
         summary: blog.summary,
         isReleased: blog.isReleased,
         firstModDate: blog.firstModDate,

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { UserRoleEnum } from "./shared";
-import { email, id } from "../_shared";
+import { email, id } from "../shared";
 
 // ========== Schemas ==========
 export const sessionSchemaRo = z.object({

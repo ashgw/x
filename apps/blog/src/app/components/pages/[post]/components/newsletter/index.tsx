@@ -29,7 +29,7 @@ export function Newsletter() {
   const subscribeMutation = trpcClientSide.newsletter.subscribe.useMutation({
     onSuccess: () => {
       toast.success("You're in!", {
-        description: "Welcome aboard. Thanks for joining!",
+        description: "Welcome aboard!",
       });
       form.reset();
     },
