@@ -3,7 +3,7 @@
 import React, { memo } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-import { Button, ScrollArea, Skeleton, Badge } from "@ashgw/ui";
+import { Button, ScrollArea, Skeleton } from "@ashgw/ui";
 
 import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 
@@ -230,7 +230,6 @@ export const createTrashListConfig = (
   renderMetadata: (item) => (
     <>
       <span>{new Date(item.deletedAt).toLocaleString()}</span>
-      <Badge variant="outline">{item.category}</Badge>
     </>
   ),
   getActions: (item) => [
