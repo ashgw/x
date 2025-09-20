@@ -12,7 +12,7 @@ We use a centralized logger defined in the `@ashgw/observability` package. This 
 Always import the logger from the observability package:
 
 ```ts
-import { logger } from "@ashgw/observability";
+import { logger } from "@ashgw/logger";
 ```
 
 ---

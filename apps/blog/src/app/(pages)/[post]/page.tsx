@@ -44,7 +44,7 @@ export async function generateMetadata({
           googleBot: { index: false, follow: false },
         }
       : undefined,
-    description: postData.seoTitle,
+    description: postData.summary,
     keywords: postData.tags,
   });
 }

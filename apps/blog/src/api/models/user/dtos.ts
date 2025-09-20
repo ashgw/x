@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { email, id } from "../_shared";
+import { email, id } from "../shared";
 
 const passwordSchema = z
   .string()
@@ -31,6 +31,10 @@ export const userChangePasswordSchemaDto = z
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
+  })
+  .refine((data) => data.currentPassword !== data.newPassword, {
+    message: "New password must be different from the current one",
+    path: ["newPassword"],
   });
 
 export const userTerminateSpecificSessionSchemaDto = z.object({

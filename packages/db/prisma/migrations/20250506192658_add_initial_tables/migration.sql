@@ -11,7 +11,6 @@ CREATE TYPE "UploadType" AS ENUM ('IMAGE', 'AUDIO', 'MDX', 'OTHER');
 CREATE TABLE "Post" (
     "slug" VARCHAR(255) NOT NULL,
     "title" VARCHAR(30) NOT NULL,
-    "seoTitle" VARCHAR(100) NOT NULL,
     "summary" VARCHAR(100) NOT NULL,
     "firstModDate" TIMESTAMP(3) NOT NULL,
     "lastModDate" TIMESTAMP(3) NOT NULL,

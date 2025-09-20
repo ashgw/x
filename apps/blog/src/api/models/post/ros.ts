@@ -4,7 +4,7 @@
 
 import { z } from "zod";
 
-import { id, slug } from "../_shared";
+import { id, slug } from "../shared";
 import { category, mdxText, summary, tags, title } from "./shared";
 
 // ========== Schemas ==========
@@ -15,7 +15,6 @@ export const postCardSchemaRo = z.object({
   tags,
   category,
   summary,
-  seoTitle: summary,
   firstModDate: z.date(),
   minutesToRead: z.union([z.string(), z.number()]),
   views: z.number().default(0),

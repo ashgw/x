@@ -15,3 +15,6 @@ export * from "./textarea";
 export * from "./entity-view-state";
 export * from "./scroll-area";
 export * from "./table";
+export * from "./dialog";
+export * from "./popover";
+export * from "./command";

@@ -94,7 +94,6 @@ export class BlogService {
 
   public async createPost(data: PostEditorDto): Promise<PostArticleRo> {
     const slug = this._slugify(data.title);
-
     const existingPost = await this.db.post.findUnique({ where: { slug } });
     if (existingPost) {
       throw new InternalError({
@@ -110,7 +109,6 @@ export class BlogService {
       data: {
         slug,
         title: data.title,
-        seoTitle: data.title,
         summary: data.summary,
         isReleased: data.isReleased,
         firstModDate: now,
@@ -156,7 +154,6 @@ export class BlogService {
       where: { slug },
       data: {
         title: data.title,
-        seoTitle: data.title,
         summary: data.summary,
         isReleased: data.isReleased,
         lastModDate: new Date(),
@@ -200,7 +197,6 @@ export class BlogService {
         data: {
           originalSlug: post.slug,
           title: post.title,
-          seoTitle: post.seoTitle,
           summary: post.summary,
           firstModDate: post.firstModDate,
           lastModDate: post.lastModDate,
@@ -252,7 +248,6 @@ export class BlogService {
         data: {
           slug: trash.originalSlug,
           title: trash.title,
-          seoTitle: trash.seoTitle,
           summary: trash.summary,
           firstModDate: trash.firstModDate,
           lastModDate: trash.lastModDate,
