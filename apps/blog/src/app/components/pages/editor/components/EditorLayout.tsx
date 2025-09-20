@@ -25,7 +25,7 @@ export function EditorLayout({
       <Header
         onClick={handlers.handleNewBlog}
         sortOptions={ui.sortOptions}
-        onSortOptionsChange={ui.setSortOptions}
+        onSortOptionsChange={(opts) => ui.setSortOptions(opts)}
         blogs={data.activePosts}
         isPreviewEnabled={preview.showPreview}
         onTogglePreview={preview.togglePreview}
@@ -106,3 +106,5 @@ export function EditorLayout({
     </div>
   );
 }
+
+export default EditorLayout;

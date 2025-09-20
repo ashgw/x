@@ -1,5 +1,6 @@
 "use client";
 
+import type { SortOptions } from "../components/header/components/SortOptions";
 import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,7 +12,7 @@ import type { Optional } from "ts-roids";
 import { useStore } from "~/app/stores";
 import { trpcClientSide } from "~/trpc/callers/client";
 import { logger } from "@ashgw/logger";
-
+import type { EntityViewState } from "@ashgw/ui";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 
@@ -23,30 +24,25 @@ export type UseEditorControllerReturn = ReturnType<typeof useEditorController>;
 export function useEditorController() {
   const { store } = useStore();
 
-  const [editModal, setEditModal] = useState<{
-    visible: boolean;
-    entity?: PostArticleRo;
-  }>({
+  const [editModal, setEditModal] = useState<EntityViewState<PostArticleRo>>({
     visible: false,
   });
-  const [deleteModal, setDeleteModal] = useState<{
-    visible: boolean;
-    entity?: PostArticleRo;
-  }>({
-    visible: false,
-  });
+
+  const [deleteModal, setDeleteModal] = useState<
+    EntityViewState<PostArticleRo>
+  >({ visible: false });
 
   const [showPreview, setShowPreview] = useState(false);
   const [isTrashingBlog, setIsTrashingBlog] = useState(false);
   const [selectedBlog, setSelectedBlog] =
     useState<Optional<PostArticleRo>>(null);
 
-  const [sortOptions, setSortOptions] = useState({
-    sortField: "lastModDate" as const,
-    sortOrder: "desc" as const,
-    statusFilter: "all" as const,
-    categoryFilter: "all" as const,
-    tagFilter: null as Optional<string>,
+  const [sortOptions, setSortOptions] = useState<SortOptions>({
+    sortField: "lastModDate",
+    sortOrder: "desc",
+    statusFilter: "all",
+    categoryFilter: "all",
+    tagFilter: null,
   });
 
   const form = useForm<PostEditorDto>({
@@ -167,7 +163,7 @@ export function useEditorController() {
   const trashPost = trpcClientSide.post.trashPost.useMutation({
     onSuccess: () => {
       toast.success("Blog post deleted successfully");
-      if (deleteModal.visible && deleteModal.entity) {
+      if (deleteModal.visible) {
         store.editor.movePostToTrash(deleteModal.entity.slug);
       }
       void utils.post.getAllAdminPosts.invalidate();
@@ -178,8 +174,6 @@ export function useEditorController() {
       if (
         editModal.visible &&
         deleteModal.visible &&
-        editModal.entity &&
-        deleteModal.entity &&
         editModal.entity.slug === deleteModal.entity.slug
       ) {
         handleNewBlog();
@@ -224,10 +218,10 @@ export function useEditorController() {
   }, []);
 
   const confirmDelete = useCallback(() => {
-    if (deleteModal.visible && deleteModal.entity) {
+    if (deleteModal.visible) {
       trashPost.mutate({ slug: deleteModal.entity.slug });
     }
-  }, [deleteModal.visible, deleteModal.entity, trashPost]);
+  }, [trashPost]);
 
   const cancelDelete = useCallback(() => {
     setDeleteModal({ visible: false });
@@ -236,7 +230,7 @@ export function useEditorController() {
 
   // Submit
   const onSubmit: SubmitHandler<PostEditorDto> = (data) => {
-    if (editModal.visible && editModal.entity) {
+    if (editModal.visible) {
       updateMutation.mutate({ slug: editModal.entity.slug, data });
     } else {
       createMutation.mutate(data);
@@ -260,14 +254,12 @@ export function useEditorController() {
 
   const showEditorSkeleton = isLoadingBlog && !!blogSlug && !isTrashingBlog;
 
-  const previewTitle =
-    editModal.visible && editModal.entity
-      ? editModal.entity.title
-      : "Preview Title";
-  const previewCreationDate =
-    editModal.visible && editModal.entity
-      ? editModal.entity.firstModDate.toISOString()
-      : new Date().toISOString();
+  const previewTitle = editModal.visible
+    ? editModal.entity.title
+    : "Preview Title";
+  const previewCreationDate = editModal.visible
+    ? editModal.entity.firstModDate.toISOString()
+    : new Date().toISOString();
 
   return {
     ui: {
