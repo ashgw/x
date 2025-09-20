@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Toaster } from "sonner";
 
 import { SoundProvider, SoundToggle } from "./components/sound";
-import { EditorLayout } from "./components/EditorLayout";
+import { EditorLayout } from "./components/editor-layout/EditorLayout";
 import { useEditorController } from "./hooks/useEditorController";
 
 export const EditorPage = observer(() => {

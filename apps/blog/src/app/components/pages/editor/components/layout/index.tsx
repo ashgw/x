@@ -3,14 +3,14 @@
 import { AnimatePresence } from "framer-motion";
 import { Skeleton } from "@ashgw/ui";
 
-import { Header } from "./header";
-import { BlogList } from "./blog-list";
-import { TrashList } from "./lists/ItemList";
-import { ConfirmBlogDeleteModal } from "./blog-list";
-import { PostEditorForm } from "./editor-form";
-import { BlogPreview } from "./preview";
+import { Header } from "../header";
+import { BlogList } from "../blog-list";
+import { TrashList } from "../lists/ItemList";
+import { ConfirmBlogDeleteModal } from "../blog-list";
+import { PostEditorForm } from "../editor-form";
+import { BlogPreview } from "../preview";
 
-import type { UseEditorControllerReturn } from "../hooks/useEditorController";
+import type { UseEditorControllerReturn } from "../../hooks/useEditorController";
 
 export function EditorLayout({
   controller,
