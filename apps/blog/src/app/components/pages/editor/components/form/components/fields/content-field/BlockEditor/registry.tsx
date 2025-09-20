@@ -29,6 +29,21 @@ import { HeadingBlockEditor } from "./blocks/HeadingBlock";
 import { LinkBlockEditor } from "./blocks/LinkBlock";
 import { TextBlockEditor } from "./blocks/TextBlock";
 
+function escapeText(s: string) {
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("${", "\\${");
+}
+
+function escapeAttr(s: string) {
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("${", "\\${");
+}
+
 export const blockRegistry: BlockRegistry = {
   H1: {
     type: "H1",
@@ -37,7 +52,8 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: HeadingBlockEditor,
     Preview: HeadingOneWrapper,
-    serialize: ({ text }: BlockProps) => `<H1>\n${text}\n</H1>`,
+    serialize: ({ text }: BlockProps) =>
+      `<H1>\n${escapeText(text ?? "")}\n</H1>`,
   },
   H2: {
     type: "H2",
@@ -46,7 +62,8 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: HeadingBlockEditor,
     Preview: HeadingTwoWrapper,
-    serialize: ({ text }: BlockProps) => `<H2>\n${text}\n</H2>`,
+    serialize: ({ text }: BlockProps) =>
+      `<H2>\n${escapeText(text ?? "")}\n</H2>`,
   },
   H3: {
     type: "H3",
@@ -55,7 +72,8 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: HeadingBlockEditor,
     Preview: HeadingThreeWrapper,
-    serialize: ({ text }: BlockProps) => `<H3>\n${text}\n</H3>`,
+    serialize: ({ text }: BlockProps) =>
+      `<H3>\n${escapeText(text ?? "")}\n</H3>`,
   },
   C: {
     type: "C",
@@ -64,7 +82,7 @@ export const blockRegistry: BlockRegistry = {
     defaultProps: { text: "" },
     Editor: TextBlockEditor,
     Preview: TextWrapper,
-    serialize: ({ text }: BlockProps) => `<C>\n${text}\n</C>`,
+    serialize: ({ text }: BlockProps) => `<C>\n${escapeText(text ?? "")}\n</C>`,
   },
   Code: {
     type: "Code",
@@ -74,10 +92,13 @@ export const blockRegistry: BlockRegistry = {
     Editor: CodeBlockEditor,
     Preview: CodeWrapper,
     serialize: ({ code, language }: BlockProps) => {
-      // Use direct type guard to avoid linter error
-      const safeCode =
-        typeof code === "string" ? code.replace(/`/g, "\\`") : "";
-      return `<Code code={\`${safeCode}\`} language="${language ?? "typescript"}" />`;
+      const raw = typeof code === "string" ? code : "";
+      const safeCode = raw.replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+      const safeLang =
+        typeof language === "string"
+          ? language.replace(/"/g, "&quot;")
+          : "typescript";
+      return `<Code code={\`${safeCode}\`} language="${safeLang}" />`;
     },
   },
   D: {
@@ -97,7 +118,7 @@ export const blockRegistry: BlockRegistry = {
     Editor: LinkBlockEditor,
     Preview: LinkWrapper,
     serialize: ({ text, href }: BlockProps) =>
-      `<L href="${href}">\n${text}\n</L>`,
+      `<L href="${escapeAttr(href ?? "")}">\n${escapeText(text ?? "")}\n</L>`,
   },
   S: {
     type: "S",
