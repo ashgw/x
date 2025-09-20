@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { Button, Textarea } from "@ashgw/ui";
@@ -76,16 +76,25 @@ export function CodeBlockEditor({
   onChange,
   isPreview,
 }: BlockEditorProps) {
+  // Persist default once if missing
+  useEffect(() => {
+    if (!value.language) {
+      onChange({ ...value, language: "typescript" });
+    }
+  }, [value.language, onChange, value]);
+
   if (isPreview) {
     return null;
   }
+
+  const selectedLanguage = value.language ?? "typescript";
 
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <label className="text-sm font-medium">Language:</label>
         <LanguageSelect
-          value={value.language ?? "typescript"}
+          value={selectedLanguage}
           onValueChange={(language: string) => onChange({ ...value, language })}
         />
       </div>
