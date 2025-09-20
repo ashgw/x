@@ -6,32 +6,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum, postEditorSchemaDto } from "~/api/models/post";
 
-export function useEditorForm() {
+const DEFAULT_VALUES: PostEditorDto = {
+  title: "",
+  summary: "",
+  category: PostCategoryEnum.SOFTWARE,
+  tags: [],
+  isReleased: false,
+  mdxText: "",
+};
+
+export function useEditorFormState() {
   const form = useForm<PostEditorDto>({
     resolver: zodResolver(postEditorSchemaDto),
     mode: "onChange",
-    defaultValues: {
-      title: "",
-      summary: "",
-      category: PostCategoryEnum.SOFTWARE,
-      tags: [],
-      isReleased: false,
-      mdxText: "",
-    },
+    defaultValues: DEFAULT_VALUES,
   });
 
-  const resetForm = () => {
-    form.reset({
-      title: "",
-      summary: "",
-      category: PostCategoryEnum.SOFTWARE,
-      tags: [],
-      isReleased: false,
-      mdxText: "",
-    });
+  const resetToEmpty = () => {
+    form.reset(DEFAULT_VALUES);
   };
 
-  const loadBlogIntoForm = (blog: PostArticleRo) => {
+  const loadFromBlog = (blog: PostArticleRo) => {
     form.reset({
       title: blog.title,
       summary: blog.summary,
@@ -44,7 +39,8 @@ export function useEditorForm() {
 
   return {
     form,
-    resetForm,
-    loadBlogIntoForm,
+    resetToEmpty,
+    loadFromBlog,
   };
 }
+

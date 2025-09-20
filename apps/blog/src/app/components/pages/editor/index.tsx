@@ -5,14 +5,14 @@ import { Toaster } from "sonner";
 
 import { SoundProvider, SoundToggle } from "./components/sound";
 import { EditorLayout } from "./components/layout";
-import { useEditorController } from "./hooks/useEditorController";
+import { useEditor } from "./hooks/useEditor";
 
 export const EditorPage = observer(() => {
-  const controller = useEditorController();
+  const editor = useEditor();
 
   return (
     <SoundProvider>
-      <EditorLayout controller={controller} />
+      <EditorLayout editor={editor} />
       <SoundToggle />
       <Toaster position="bottom-right" />
     </SoundProvider>

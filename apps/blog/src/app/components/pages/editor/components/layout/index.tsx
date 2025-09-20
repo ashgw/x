@@ -10,43 +10,42 @@ import { ConfirmBlogDeleteModal } from "../list";
 import { PostEditorForm } from "../form";
 import { BlogPreview } from "../preview";
 
-import type { UseEditorControllerReturn } from "../../hooks/useEditorController";
+import type { UseEditorReturn } from "../../hooks/useEditor";
 
-export function EditorLayout({
-  controller,
-}: {
-  controller: UseEditorControllerReturn;
-}) {
-  const { ui, data, handlers, editor, trash, preview, modals, mutations } =
-    controller;
+interface EditorLayoutProps {
+  editor: UseEditorReturn;
+}
+
+export function EditorLayout({ editor }: EditorLayoutProps) {
+  const showActiveView: boolean = editor.data.viewMode === "active";
+  const showDeleteModalOverlay: boolean = editor.modals.delete.visible;
 
   return (
     <div className="container mx-auto p-8">
       <Header
-        onClick={handlers.handleNewBlog}
-        sortOptions={ui.sortOptions}
-        onSortOptionsChange={(opts) => ui.setSortOptions(opts)}
-        blogs={data.activePosts}
-        isPreviewEnabled={preview.showPreview}
-        onTogglePreview={preview.togglePreview}
+        onClick={editor.actions.startNewBlog}
+        sortOptions={editor.sorting.options}
+        onSortOptionsChange={editor.sorting.setOptions}
+        blogs={editor.data.posts}
+        isPreviewEnabled={editor.preview.isEnabled}
+        onTogglePreview={editor.preview.toggle}
       />
 
-      {ui.viewMode === "active" ? (
+      {showActiveView ? (
         <div
-          className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${modals.deleteModal.visible ? "pointer-events-none" : ""}`}
+          className={`grid grid-cols-1 gap-8 lg:grid-cols-3 ${showDeleteModalOverlay ? "pointer-events-none" : ""}`}
         >
           <BlogList
-            blogs={data.filteredAndSortedBlogs}
-            onEdit={handlers.handleEditBlog}
-            onDelete={handlers.handleDeleteBlog}
+            blogs={editor.data.posts}
+            onEdit={editor.actions.editBlog}
+            onDelete={editor.actions.deleteBlog}
             isLoading={
-              data.postsQuery.isLoading ||
-              (data.isLoadingBlog && !ui.isTrashingBlog)
+              editor.data.isLoadingPosts || editor.data.showEditorSkeleton
             }
-            errorMessage={data.postsQuery.error?.message}
+            errorMessage={editor.data.postsError}
           />
 
-          {data.showEditorSkeleton ? (
+          {editor.data.showEditorSkeleton ? (
             <div className="lg:col-span-2">
               <div className="bg-card rounded-lg border p-4">
                 <Skeleton className="w-full" />
@@ -57,20 +56,20 @@ export function EditorLayout({
               <AnimatePresence mode="wait" initial={false}>
                 <PostEditorForm
                   key="editor"
-                  form={editor.form}
-                  onSubmit={handlers.onSubmit}
-                  isSubmitting={mutations.isSubmitting}
-                  isHidden={preview.showPreview}
+                  form={editor.form.formInstance}
+                  onSubmit={editor.form.onSubmit}
+                  isSubmitting={editor.form.isSubmitting}
+                  isHidden={editor.preview.isEnabled}
                 />
-                {preview.showPreview ? (
+                {editor.preview.isEnabled && (
                   <BlogPreview
                     key="preview"
-                    isVisible={preview.showPreview}
-                    form={editor.form}
-                    title={editor.previewTitle}
-                    creationDate={editor.previewCreationDate}
+                    isVisible={editor.preview.isEnabled}
+                    form={editor.form.formInstance}
+                    title={editor.preview.title}
+                    creationDate={editor.preview.date}
                   />
-                ) : null}
+                )}
               </AnimatePresence>
             </div>
           )}
@@ -78,14 +77,10 @@ export function EditorLayout({
       ) : (
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <TrashList
-            items={data.trashedPosts}
-            onRestore={(item) =>
-              handlers.restoreMutation.mutate({ trashId: item.id })
-            }
-            onPurge={(item) =>
-              handlers.purgeMutation.mutate({ trashId: item.id })
-            }
-            isLoading={trash.trashedQuery.isLoading}
+            items={editor.data.trashedPosts}
+            onRestore={editor.actions.restoreBlog}
+            onPurge={editor.actions.purgeBlog}
+            isLoading={editor.data.isLoadingTrashed}
           />
           <div className="lg:col-span-2">
             <div className="text-muted-foreground flex h-full items-center justify-center rounded-lg border p-4">
@@ -95,14 +90,14 @@ export function EditorLayout({
         </div>
       )}
 
-      {modals.deleteModal.visible ? (
+      {editor.modals.delete.visible && (
         <ConfirmBlogDeleteModal
-          blog={modals.deleteModal.entity}
-          onConfirm={handlers.confirmDelete}
-          onCancel={handlers.cancelDelete}
-          isDeleting={mutations.trashPost.isPending}
+          blog={editor.modals.delete.entity}
+          onConfirm={editor.actions.confirmDelete}
+          onCancel={editor.actions.cancelDelete}
+          isDeleting={editor.actions.isDeletingPost}
         />
-      ) : null}
+      )}
     </div>
   );
 }
