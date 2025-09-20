@@ -12,20 +12,26 @@ interface BlockItemProps {
   block: Block;
   onDelete: () => void;
   onChange: (props: BlockProps) => void;
-  isDragging?: boolean;
+  isDragging?: boolean; // optional override, defaults to dnd-kit hook state
 }
 
 export function BlockItem({
   block,
   onDelete,
   onChange,
-  isDragging,
+  isDragging: propIsDragging,
 }: BlockItemProps) {
   const [isPreview, setIsPreview] = useState(false);
   const blockDef = blockRegistry[block.type];
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: block.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging: hookIsDragging,
+  } = useSortable({ id: block.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -34,9 +40,12 @@ export function BlockItem({
 
   const { Preview: PreviewComponent, Editor: EditorComponent } = blockDef;
 
-  // Determine block types for styling
+  // determine block types for styling
   const isCodeBlock = block.type === "Code";
   const isLinkBlock = block.type === "L";
+
+  // prefer hook state, fallback to prop if provided
+  const isDragging = propIsDragging ?? hookIsDragging;
 
   return (
     <div
@@ -50,7 +59,7 @@ export function BlockItem({
         isPreview ? "bg-muted/30" : "bg-card",
       )}
     >
-      {/* Block Type Label */}
+      {/* block type label */}
       <div className="text-muted-foreground absolute left-2 top-2 flex items-center gap-2 text-xs">
         <span className="bg-primary/10 flex h-5 w-5 items-center justify-center rounded-full">
           {blockDef.icon}
@@ -58,7 +67,7 @@ export function BlockItem({
         <span>{blockDef.label}</span>
       </div>
 
-      {/* Action Buttons */}
+      {/* action buttons */}
       <div className="absolute right-2 top-2 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <Button
           variant={isPreview ? "secondary" : "ghost"}
@@ -97,7 +106,7 @@ export function BlockItem({
         </Button>
       </div>
 
-      {/* Content Area */}
+      {/* content area */}
       <div className="pt-10">
         {isPreview ? (
           <div
