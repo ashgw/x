@@ -55,17 +55,16 @@ export function HomePage() {
                     <br /> You might want to read my{" "}
                     <Link href={env.NEXT_PUBLIC_BLOG_URL} name="blog" />
                     <br />
-                    You might as well{" "}
+                    You can{" "}
                     <button
                       type="button"
                       onClick={copyEmail}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") copyEmail();
                       }}
-                      className="underline underline-offset-4 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary rounded-sm"
                       aria-label="Copy email address"
                     >
-                      email
+                      <strong className="glows text-white">email</strong>
                     </button>{" "}
                     or{" "}
                     <button
@@ -74,10 +73,9 @@ export function HomePage() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") copyX();
                       }}
-                      className="underline underline-offset-4 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary rounded-sm"
                       aria-label="Copy X handle"
                     >
-                      x
+                      <strong className="glows text-white">x</strong>
                     </button>
                   </motion.p>
                 </div>
