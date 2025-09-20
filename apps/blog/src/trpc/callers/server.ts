@@ -3,7 +3,6 @@ import { cache } from "react";
 import { headers, cookies } from "next/headers";
 import { createTRPCClient, loggerLink } from "@trpc/client";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
-import superjson from "superjson";
 import type { AppRouter } from "~/api/router";
 import { env } from "@ashgw/env";
 import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
@@ -17,6 +16,7 @@ import { createCallerFactory } from "~/trpc/root";
 import { createTRPCContext } from "~/trpc/context";
 import { makeQueryClient } from "~/trpc/callers/query-client";
 import { getTrpcUrl } from "./client";
+import { transformer } from "../transformer";
 
 /**
  * create a "naked" trpc context for direct server-side calls.
@@ -74,7 +74,7 @@ const getHttpClient = cache(() =>
       ...(env.NEXT_PUBLIC_CURRENT_ENV === "development" ? [loggerLink()] : []),
       httpBatchLink({
         url: getTrpcUrl({ siteBaseUrl: getTrpcBaseUrl() }),
-        transformer: superjson,
+        transformer,
         headers() {
           // forward incoming headers
           const h = headers();
