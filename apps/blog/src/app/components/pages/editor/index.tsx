@@ -18,5 +18,3 @@ export const EditorPage = observer(() => {
     </SoundProvider>
   );
 });
-
-export default EditorPage;

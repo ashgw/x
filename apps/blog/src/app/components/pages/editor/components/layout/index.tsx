@@ -101,5 +101,3 @@ export function EditorLayout({ editor }: EditorLayoutProps) {
     </div>
   );
 }
-
-export default EditorLayout;
