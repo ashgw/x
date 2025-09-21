@@ -4,9 +4,9 @@ import { logger } from "@ashgw/logger";
 import { init as SentryInit, replayIntegration } from "@sentry/nextjs";
 
 /**
- * Initializes Sentry for error tracking and performance monitoring.
- * This function configures Sentry based on the runtime environment (server or browser).
- * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/initialization/ for more details on initialization.
+ * Initializes Sentry for Next.js. One initializer serves both server and browser.
+ * Next auto-loads this via sentry.server.config.ts and sentry.client.config.ts,
+ * so we avoid manual init calls in app code and prevent double initialization.
  */
 export const init = ({
   runtime,
@@ -17,8 +17,10 @@ export const init = ({
   const isDevelopment = currentEnv === "development";
   const isProduction = currentEnv === "production";
 
+  // Keep prod sampling modest to control cost; open the firehose in non-prod for debugging.
   const tracesSampleRate = isProduction ? 0.1 : 1.0;
   const profilesSampleRate = isProduction ? 0.1 : 1.0;
+  // Replays: small background sample; always capture a replay when an error happens.
   const replaysSessionSampleRate = isProduction ? 0.1 : 0.2;
   const replaysOnErrorSampleRate = 1.0;
 
@@ -26,16 +28,15 @@ export const init = ({
 
   return SentryInit({
     dsn: env.NEXT_PUBLIC_SENTRY_DSN,
-
-    // Environment and enabling
+    // Mark events with our actual deploy environment and keep Sentry off in local dev.
     environment: currentEnv,
     debug: isDevelopment,
-    enabled:
-      Boolean(env.NEXT_PUBLIC_SENTRY_DSN) && currentEnv !== "development",
+    enabled: currentEnv !== "development",
 
     // Performance & Profiling
     tracesSampleRate,
     profilesSampleRate,
+    // Only propagate tracing to our own hosts and local dev.
     tracePropagationTargets: [
       env.NEXT_PUBLIC_WWW_URL,
       env.NEXT_PUBLIC_BLOG_URL,
@@ -47,7 +48,7 @@ export const init = ({
     replaysSessionSampleRate,
     replaysOnErrorSampleRate,
 
-    // PII scrubbing and event hygiene
+    // Quick hygiene: strip sensitive headers if they sneak in.
     beforeSend(event) {
       const headers = event.request?.headers as
         | Record<string, string>
@@ -59,8 +60,8 @@ export const init = ({
       return event;
     },
 
+    // Reduce noise from common benign client-side errors.
     ignoreErrors: [
-      // common benign browser errors
       "ResizeObserver loop limit exceeded",
       "Non-Error promise rejection captured",
       /network\s?error/i,
@@ -77,6 +78,8 @@ export const init = ({
               onError: (error) => {
                 logger.error("Sentry replay error", error, {
                   service: "Sentry Replay",
+                  runtime,
+                  currentEnv,
                 });
               },
             }),

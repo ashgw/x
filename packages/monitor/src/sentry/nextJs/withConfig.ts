@@ -4,10 +4,8 @@ import { withSentryConfig } from "@sentry/nextjs";
 import { env } from "@ashgw/env";
 
 /**
- * Sentry configuration options for Next.js.
- * This configuration is used to set up Sentry for error tracking and performance monitoring.
- *
- * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+ * Wraps a Next.js config with Sentry's build-time plugin.
+ * This handles source maps upload, component annotations, and a tunnel route.
  */
 const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   org: env.SENTRY_ORG,
@@ -16,28 +14,25 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   silent: env.NODE_ENV === "production",
   debug: env.NEXT_PUBLIC_CURRENT_ENV === "development",
   sentryUrl: " https://sentry.io/", // can change if self hosted
-  telemetry: false, // for privacy
-  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  telemetry: false,
+  // Upload more sourcemaps for better stack traces. Costs a bit more build time.
   widenClientFileUpload: true,
-  // This will unlock the capability to search for Replays in Sentry by component name
+  // Adds component names to Sentry replays (useful for searching in replays UI).
   reactComponentAnnotation: {
     enabled: true,
   },
-  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // Note: Keeping this commented can avoid increased server load. Enable if you need it.
-  tunnelRoute: "/monitoring",
-  // Hide source maps from client bundles in production, keep them in dev for DX
+  // Route client traffic through our app to dodge ad-blockers.
+  // If you don't need it, set tunnelRoute to undefined and remove the rewrite below.
+  // tunnelRoute: "/monitoring",
+  // Keep client sourcemaps hidden in prod builds. Still upload to Sentry so traces are readable.
   sourcemaps: {
     disable: env.NODE_ENV === "production" ? true : false,
     deleteSourcemapsAfterUpload: env.NODE_ENV === "production",
   },
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  // Strip Sentry's own console logs from bundles.
   disableLogger: true,
 };
 
-/**
- * Wraps the provided Next.js configuration with Sentry configuration.
- */
 export const withConfig = <NC extends NextConfig>({
   nextConfig,
 }: {
@@ -46,7 +41,8 @@ export const withConfig = <NC extends NextConfig>({
   const nextConfigWithTranspile = {
     ...nextConfig,
     transpilePackages: ["@sentry/nextjs"],
-    // Expose the tunnel route rewrite so the client sends events to our backend path
+    // Expose a rewrite for the tunnel route. The SDK determines the final ingest URL
+    // from the DSN, so this destination acts like a placeholder.
     async rewrites() {
       const baseRewrites =
         typeof nextConfig.rewrites === "function"
@@ -56,10 +52,10 @@ export const withConfig = <NC extends NextConfig>({
         {
           source: "/monitoring",
           destination:
-            "https://o447951.ingest.sentry.io/api/:project/envelope/", // placeholder; SDK will override with DSN project
+            "https://o447951.ingest.sentry.io/api/:project/envelope/",
         },
       ];
-      // Merge rewrites format (array or object with beforeFiles/afterFiles)
+      // Merge rewrites regardless of whether user returns an array or object shape.
       if (Array.isArray(baseRewrites)) {
         return [...baseRewrites, ...extra];
       }
