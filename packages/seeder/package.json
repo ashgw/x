@@ -25,7 +25,7 @@
     "@ashgw/db": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/ts-env": "catalog:",
-    "argon2": "0.44.0",
+    "argon2": "catalog:",
     "aws-sdk": "2.1692.0"
   },
   "devDependencies": {
