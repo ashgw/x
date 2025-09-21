@@ -1,5 +1,5 @@
 import { logger } from "@ashgw/logger";
-import { monitor } from "@ashgw/observability";
+import { monitor } from "@ashgw/monitor";
 import type { NotifyResponses } from "~/api/models";
 import { email } from "@ashgw/email";
 import type { NotifyBodyDto } from "~/api/models/notify";

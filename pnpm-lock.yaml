@@ -193,9 +193,9 @@ importers:
       '@ashgw/error':
         specifier: workspace:*
         version: link:../../packages/error
-      '@ashgw/observability':
+      '@ashgw/monitor':
         specifier: workspace:*
-        version: link:../../packages/observabiliy
+        version: link:../../packages/monitoring
       '@ashgw/rate-limiter':
         specifier: workspace:*
         version: link:../../packages/rate-limiter
@@ -449,9 +449,9 @@ importers:
       '@ashgw/logger':
         specifier: workspace:*
         version: link:../../packages/logger
-      '@ashgw/observability':
+      '@ashgw/monitor':
         specifier: workspace:*
-        version: link:../../packages/observabiliy
+        version: link:../../packages/monitoring
       '@ashgw/rate-limiter':
         specifier: workspace:*
         version: link:../../packages/rate-limiter
@@ -956,7 +956,7 @@ importers:
         specifier: 'catalog:'
         version: 5.6.3
 
-  packages/observabiliy:
+  packages/monitoring:
     dependencies:
       '@ashgw/env':
         specifier: workspace:*
@@ -18865,7 +18865,7 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.6.1
+      '@types/pg': 8.11.13
 
   '@types/pg@8.11.13':
     dependencies:

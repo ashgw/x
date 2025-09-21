@@ -12,7 +12,7 @@ const baseConfig = {
     "@ashgw/models",
     "@ashgw/constants",
     "@ashgw/cross-runtime",
-    "@ashgw/observability",
+    "@ashgw/monitor",
     "@ashgw/logger",
     "@ashgw/seo",
     "@ashgw/vitest",

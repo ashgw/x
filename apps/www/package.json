@@ -36,7 +36,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
     "@ashgw/logger": "workspace:*",
-    "@ashgw/observability": "workspace:*",
+    "@ashgw/monitor": "workspace:*",
     "@ashgw/rate-limiter": "workspace:*",
     "@ashgw/scheduler": "workspace:*",
     "@ashgw/seo": "workspace:*",
