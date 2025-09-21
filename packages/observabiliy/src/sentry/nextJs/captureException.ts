@@ -1,5 +1,4 @@
 import { captureException as sentryCaptureException } from "@sentry/nextjs";
-
 import { logger } from "@ashgw/logger";
 
 type Exception = Parameters<typeof sentryCaptureException>[0];

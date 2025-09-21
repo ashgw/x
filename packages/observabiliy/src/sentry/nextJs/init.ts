@@ -1,7 +1,7 @@
 // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/
-import * as Sentry from "@sentry/nextjs";
 import { env } from "@ashgw/env";
 import { logger } from "@ashgw/logger";
+import { init as SentryInit, replayIntegration } from "@sentry/nextjs";
 
 /**
  * Initializes Sentry for error tracking and performance monitoring.
@@ -12,9 +12,9 @@ export const init = ({
   runtime, // use these when using the replay integration, but i use it with Posthog anyway
 }: {
   runtime: "server" | "browser";
-}): ReturnType<typeof Sentry.init> => {
+}): ReturnType<typeof SentryInit> => {
   logger.info(runtime);
-  return Sentry.init({
+  return SentryInit({
     // The Data Source Name (DSN) is required to connect to your Sentry project.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#dsn
     dsn: env.NEXT_PUBLIC_SENTRY_DSN,
@@ -42,5 +42,15 @@ export const init = ({
     // Sample rate for session replays, controlling how often sessions are recorded.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#replays-session-sample-rate
     replaysSessionSampleRate: 0.1,
+    integrations: [
+      replayIntegration({
+        flushMaxDelay: 1000,
+        maxReplayDuration: 45 * 60 * 1000, // 45 minutes
+        minReplayDuration: 7 * 1000, // 7 seconds
+        onerror(error) {
+          logger.error("Sentry replay error", error);
+        },
+      }),
+    ],
   });
 };
