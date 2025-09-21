@@ -2,9 +2,23 @@ import type { AppCode, AppHttpBody } from "./codes";
 import { AppError } from "./error";
 
 export type HttpStatus =
-  | 400 | 401 | 403 | 404 | 405 | 409 | 412 | 413 | 422 | 429
-  | 408 | 499
-  | 500 | 501 | 502 | 503 | 504;
+  | 400
+  | 401
+  | 403
+  | 404
+  | 405
+  | 409
+  | 412
+  | 413
+  | 422
+  | 429
+  | 408
+  | 499
+  | 500
+  | 501
+  | 502
+  | 503
+  | 504;
 
 const httpByCode: Record<AppCode, HttpStatus> = {
   BAD_REQUEST: 400,
@@ -39,12 +53,17 @@ export function toHttp(e: AppError): { status: HttpStatus; body: AppHttpBody } {
   const body: AppHttpBody = {
     code: e.code,
     message: safeMessage,
-    ...(e.meta ? { meta: e.meta as Record<string, unknown> } : {}),
+    ...(e.exposeMessage && e.meta
+      ? { meta: e.meta as Record<string, unknown> }
+      : {}),
   };
   return { status, body };
 }
 
-export function toHttpFromUnknown(u: unknown): { status: HttpStatus; body: AppHttpBody } {
+export function toHttpFromUnknown(u: unknown): {
+  status: HttpStatus;
+  body: AppHttpBody;
+} {
   const e = AppError.fromUnknown(u, { code: "INTERNAL" });
   return toHttp(e);
 }
