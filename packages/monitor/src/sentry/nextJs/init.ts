@@ -21,7 +21,8 @@ export const init = ({
 
     // The tracesSampler function determines the sampling rate for performance monitoring.
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/performance/#traces-sampling
-    tracesSampler: () => 1,
+    // Capture 10% of traces
+    tracesSampler: () => (Math.random() < 0.1 ? 1 : 0),
 
     // The environment variable helps to distinguish between different environments (e.g., production, development).
     // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#environment
