@@ -55,7 +55,8 @@ export function toTrpc<TCtor extends TRPCErrorCtor<TrpcCode>>(
   e: AppError,
 ) {
   const code = trpcCodeFromApp(e.code);
-  return new ctor({ code, message: e.message, cause: e });
+  const message = e.exposeMessage ? e.message : "Internal error";
+  return new ctor({ code, message, cause: e });
 }
 
 export function toTrpcFromUnknown<TCtor extends TRPCErrorCtor<TrpcCode>>(
