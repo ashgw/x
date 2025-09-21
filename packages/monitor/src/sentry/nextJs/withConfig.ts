@@ -23,7 +23,7 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   },
   // Route client traffic through our app to dodge ad-blockers.
   // If you don't need it, set tunnelRoute to undefined and remove the rewrite below.
-  // tunnelRoute: "/monitoring",
+  tunnelRoute: "/monitoring",
   // Keep client sourcemaps hidden in prod builds. Still upload to Sentry so traces are readable.
   sourcemaps: {
     disable: env.NEXT_PUBLIC_CURRENT_ENV === "development" ? true : false,
