@@ -1,18 +1,16 @@
 "use client";
 
-import type { PropsWithChildren } from "react";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-import { AnalyticsProvider } from "@ashgw/analytics/provider";
+import { AnalyticsProvider } from "@ashgw/analytics/client";
+import React from "react";
 
-interface ProvidersProps extends PropsWithChildren {
-  site: "blog" | "www";
-}
-
-export function Providers({ children, site }: ProvidersProps) {
+export function Providers({
+  children,
+}: React.PropsWithChildren<NonNullable<unknown>>) {
   return (
-    <AnalyticsProvider site={site}>
+    <AnalyticsProvider>
       <NextThemesProvider
         attribute="class"
         defaultTheme="dark"
