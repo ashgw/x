@@ -1,4 +1,5 @@
-import { monitor } from "@ashgw/observability";
+import { monitor } from "@ashgw/monitor";
 
-export const register = monitor.next.initializeServer(); //  the client isn't initialized here as it's not used
+// Only export Sentry's request-error hook. Sentry itself is initialized by Next
+// through the sentry.*.config.ts files, not here.
 export const onRequestError = monitor.next.SentryLib.captureRequestError;

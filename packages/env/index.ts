@@ -19,6 +19,9 @@ const clientVars = {
   POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
   POSTHOG_HOST: z.string().url(),
   LOGTAIL_INGESTION_TOKEN: z.string().min(20).max(255),
+  // Disable Sentry tunneling by default. Optional so builds don't break.
+  // When omitted, consumers should assume tunneling is disabled.
+  DISABLE_SENTRY_TUNNELING: z.enum(["true", "false"]).optional(),
 };
 
 const serverVars = {
@@ -100,6 +103,8 @@ export const env = createEnv({
     NEXT_PUBLIC_WWW_URL: process.env.NEXT_PUBLIC_WWW_URL,
     NEXT_PUBLIC_BLOG_URL: process.env.NEXT_PUBLIC_BLOG_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEXT_PUBLIC_DISABLE_SENTRY_TUNNELING:
+      process.env.NEXT_PUBLIC_DISABLE_SENTRY_TUNNELING,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_LOGTAIL_INGESTION_TOKEN:
       process.env.NEXT_PUBLIC_LOGTAIL_INGESTION_TOKEN,

@@ -32,7 +32,7 @@
     "@ashgw/db": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
-    "@ashgw/observability": "workspace:*",
+    "@ashgw/monitor": "workspace:*",
     "@ashgw/rate-limiter": "workspace:*",
     "@ashgw/seo": "workspace:*",
     "@ashgw/storage": "workspace:*",

@@ -3,13 +3,13 @@ description: Logging & Monitoring Practices
 globs: *.tsx, *.ts
 ---
 
-We use a centralized logger defined in the `@ashgw/observability` package. This ensures consistent, structured logging throughout the codebase for better maintainability and observability.
+We use a centralized logger defined in the `@ashgw/logger` package. This ensures consistent, structured logging throughout the codebase for better maintainability.
 
 ---
 
 ## Logger Usage
 
-Always import the logger from the observability package:
+Always import the logger from the package:
 
 ```ts
 import { logger } from "@ashgw/logger";
