@@ -9,51 +9,79 @@ import { init as SentryInit, replayIntegration } from "@sentry/nextjs";
  * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/initialization/ for more details on initialization.
  */
 export const init = ({
-  runtime, // use these when using the replay integration, but i use it with Posthog anyway
+  runtime,
 }: {
   runtime: "server" | "browser";
 }): ReturnType<typeof SentryInit> => {
-  logger.info(runtime);
+  const currentEnv = env.NEXT_PUBLIC_CURRENT_ENV;
+  const isDevelopment = currentEnv === "development";
+  const isProduction = currentEnv === "production";
+
+  const tracesSampleRate = isProduction ? 0.1 : 1.0;
+  const profilesSampleRate = isProduction ? 0.1 : 1.0;
+  const replaysSessionSampleRate = isProduction ? 0.1 : 0.2;
+  const replaysOnErrorSampleRate = 1.0;
+
+  logger.info(`sentry:init:${runtime}`);
+
   return SentryInit({
-    // The Data Source Name (DSN) is required to connect to your Sentry project.
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#dsn
     dsn: env.NEXT_PUBLIC_SENTRY_DSN,
 
-    // The tracesSampler function determines the sampling rate for performance monitoring.
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/performance/#traces-sampling
-    // Capture 10% of traces
-    tracesSampler: () => (Math.random() < 0.1 ? 1 : 0),
+    // Environment and enabling
+    environment: currentEnv,
+    debug: isDevelopment,
+    enabled:
+      Boolean(env.NEXT_PUBLIC_SENTRY_DSN) && currentEnv !== "development",
 
-    // The environment variable helps to distinguish between different environments (e.g., production, development).
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#environment
-    environment: env.NEXT_PUBLIC_CURRENT_ENV,
+    // Performance & Profiling
+    tracesSampleRate,
+    profilesSampleRate,
+    tracePropagationTargets: [
+      env.NEXT_PUBLIC_WWW_URL,
+      env.NEXT_PUBLIC_BLOG_URL,
+      "localhost",
+      "127.0.0.1",
+    ],
 
-    // Enables debug mode for development, providing additional logging.
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#debug
-    debug: env.NEXT_PUBLIC_CURRENT_ENV === "development",
+    // Replays (browser only)
+    replaysSessionSampleRate,
+    replaysOnErrorSampleRate,
 
-    // Enables or disables Sentry based on the environment.
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/#enabled
-    enabled: env.NEXT_PUBLIC_CURRENT_ENV === "production",
+    // PII scrubbing and event hygiene
+    beforeSend(event) {
+      const headers = event.request?.headers as
+        | Record<string, string>
+        | undefined;
+      if (headers) {
+        delete headers.cookie;
+        delete headers.authorization;
+      }
+      return event;
+    },
 
-    // Sample rate for replays on error, controlling how often replays are recorded.
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#replays-on-error-sample-rate
-    replaysOnErrorSampleRate: 1.0,
+    ignoreErrors: [
+      // common benign browser errors
+      "ResizeObserver loop limit exceeded",
+      "Non-Error promise rejection captured",
+      /network\s?error/i,
+    ],
 
-    // Sample rate for session replays, controlling how often sessions are recorded.
-    // @see https://docs.sentry.io/platforms/javascript/guides/nextjs/replays/#replays-session-sample-rate
-    replaysSessionSampleRate: 0.1,
     integrations: [
-      replayIntegration({
-        flushMaxDelay: 1000,
-        maxReplayDuration: 45 * 60 * 1000, // 45 minutes
-        minReplayDuration: 7 * 1000, // 7 seconds
-        onError: (error) => {
-          logger.error("Sentry replay error", error, {
-            service: "Sentry Replay",
-          });
-        },
-      }),
+      // Only include Replay in the browser runtime
+      ...(runtime === "browser"
+        ? [
+            replayIntegration({
+              flushMaxDelay: 1000,
+              maxReplayDuration: 45 * 60 * 1000,
+              minReplayDuration: 7 * 1000,
+              onError: (error) => {
+                logger.error("Sentry replay error", error, {
+                  service: "Sentry Replay",
+                });
+              },
+            }),
+          ]
+        : []),
     ],
   });
 };

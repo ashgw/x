@@ -7,7 +7,7 @@ import { env } from "@ashgw/env";
  * Sentry configuration options for Next.js.
  * This configuration is used to set up Sentry for error tracking and performance monitoring.
  *
- * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/ for all available options.
+ * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
  */
 const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   org: env.SENTRY_ORG,
@@ -23,18 +23,13 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   reactComponentAnnotation: {
     enabled: true,
   },
-
-  // /*
-  //  * Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  //  * This can increase your server load as well as your hosting bill.
-  //  * Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  //  * side errors will fail.
-  //  */
-  // tunnelRoute: "/monitoring",
-  // Hides source maps from generated client bundles
+  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+  // Note: Keeping this commented can avoid increased server load. Enable if you need it.
+  tunnelRoute: "/monitoring",
+  // Hide source maps from client bundles in production, keep them in dev for DX
   sourcemaps: {
     disable: env.NODE_ENV === "production" ? true : false,
-    deleteSourcemapsAfterUpload: true,
+    deleteSourcemapsAfterUpload: env.NODE_ENV === "production",
   },
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
@@ -42,9 +37,6 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
 
 /**
  * Wraps the provided Next.js configuration with Sentry configuration.
- *
- * @param nextConfig - The original Next.js configuration object.
- * @returns The modified configuration object with Sentry integration.
  */
 export const withConfig = <NC extends NextConfig>({
   nextConfig,
@@ -54,7 +46,30 @@ export const withConfig = <NC extends NextConfig>({
   const nextConfigWithTranspile = {
     ...nextConfig,
     transpilePackages: ["@sentry/nextjs"],
-  };
+    // Expose the tunnel route rewrite so the client sends events to our backend path
+    async rewrites() {
+      const baseRewrites =
+        typeof nextConfig.rewrites === "function"
+          ? await nextConfig.rewrites()
+          : nextConfig.rewrites;
+      const extra = [
+        {
+          source: "/monitoring",
+          destination:
+            "https://o447951.ingest.sentry.io/api/:project/envelope/", // placeholder; SDK will override with DSN project
+        },
+      ];
+      // Merge rewrites format (array or object with beforeFiles/afterFiles)
+      if (Array.isArray(baseRewrites)) {
+        return [...baseRewrites, ...extra];
+      }
+      return {
+        beforeFiles: [...(baseRewrites?.beforeFiles ?? []), ...extra],
+        afterFiles: baseRewrites?.afterFiles ?? [],
+        fallback: baseRewrites?.fallback ?? [],
+      };
+    },
+  } as NC;
 
   return withSentryConfig(nextConfigWithTranspile, sentryConfig);
 };
