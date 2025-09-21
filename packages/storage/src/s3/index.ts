@@ -16,9 +16,9 @@ import {
   S3ServiceException,
 } from "@aws-sdk/client-s3";
 import { NodeHttpHandler } from "@smithy/node-http-handler";
-
+import { AppError } from "@ashgw/error";
 import { env } from "@ashgw/env";
-import { InternalError } from "@ashgw/observability";
+
 import { logger } from "@ashgw/logger";
 
 import type { Folder } from "../base";
@@ -202,7 +202,7 @@ export class S3Service extends BaseStorageService {
         );
 
         if (!res.Body) {
-          throw new InternalError({
+          throw new AppError({
             code: "NOT_FOUND",
             message: `File ${key} not found`,
           });

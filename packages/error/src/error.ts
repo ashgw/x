@@ -1,10 +1,25 @@
 import type { AppCode } from "./codes";
 
+interface UpstreamMeta {
+  service: string;
+  operation: string;
+}
+
+interface InternalMeta {
+  service: string;
+  op: string;
+}
+
+interface Meta extends Readonly<Record<string, unknown>> {
+  upstream?: UpstreamMeta;
+  internal?: InternalMeta;
+}
+
 export interface AppErrorOptions {
   readonly code: AppCode;
   readonly message?: string;
   readonly cause?: unknown;
-  readonly meta?: Readonly<Record<string, unknown>>;
+  readonly meta?: Meta;
   readonly exposeMessage?: boolean;
 }
 

@@ -12,6 +12,7 @@
     "@ashgw/constants": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
+    "@ashgw/logger": "workspace:*",
     "@react-email/components": "0.5.3",
     "@react-email/markdown": "0.0.15",
     "react": "catalog:react18",

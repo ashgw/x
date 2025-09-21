@@ -1,5 +1,5 @@
 import { env } from "@ashgw/env";
-import { InternalError } from "@ashgw/observability";
+import { AppError } from "@ashgw/error";
 import { logger } from "@ashgw/logger";
 
 interface SubscribeInput {
@@ -24,7 +24,7 @@ export class NewsletterService {
       await this._createSubscriber({ email });
     } catch (error) {
       logger.error("Newsletter subscription failed", { error, email });
-      throw new InternalError({
+      throw new AppError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to subscribe to newsletter",
         cause: error,
@@ -72,8 +72,8 @@ export class NewsletterService {
       const errorMessage =
         data.errors?.join(", ") ?? data.message ?? "Unknown error";
 
-      throw new InternalError({
-        code: "INTERNAL_SERVER_ERROR",
+      throw new AppError({
+        code: "INTERNAL",
         message: `Kit API error (${res.status}): ${errorMessage}`,
       });
     }

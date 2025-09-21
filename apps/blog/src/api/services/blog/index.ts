@@ -4,7 +4,7 @@ import fm from "front-matter";
 import type { DatabaseClient } from "@ashgw/db";
 import type { StorageClient } from "@ashgw/storage";
 import { WordCounterService } from "@ashgw/cross-runtime";
-import { InternalError } from "@ashgw/observability";
+import { AppError } from "@ashgw/error";
 import { logger } from "@ashgw/logger";
 
 import type {
@@ -96,7 +96,7 @@ export class BlogService {
     const slug = this._slugify(data.title);
     const existingPost = await this.db.post.findUnique({ where: { slug } });
     if (existingPost) {
-      throw new InternalError({
+      throw new AppError({
         code: "CONFLICT",
         message: `A post with slug "${slug}" already exists`,
       });
@@ -142,7 +142,7 @@ export class BlogService {
       select: { slug: true },
     });
     if (!existingPost) {
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: `Post with slug "${slug}" not found`,
       });
@@ -186,7 +186,7 @@ export class BlogService {
       where: { slug: originalSlug },
     });
     if (!post) {
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: `Post with slug "${originalSlug}" not found`,
       });
@@ -227,7 +227,7 @@ export class BlogService {
       where: { id: trashId },
     });
     if (!trash) {
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: "Trash item not found",
       });
@@ -237,7 +237,7 @@ export class BlogService {
       where: { slug: trash.originalSlug },
     });
     if (exists) {
-      throw new InternalError({
+      throw new AppError({
         code: "CONFLICT",
         message: "A live post already uses this slug",
       });

@@ -4,7 +4,7 @@ import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
-import { InternalError } from "@ashgw/observability";
+import { AppError } from "@ashgw/error";
 import { logger } from "@ashgw/logger";
 
 import type { UserLoginDto, UserRo } from "~/api/models";
@@ -37,7 +37,7 @@ export class AuthService {
     try {
       return await this._getUserWithSession();
     } catch (error) {
-      if (error instanceof InternalError) {
+      if (error instanceof AppError) {
         if (error.code === "UNAUTHORIZED") {
           return null;
         }
@@ -58,7 +58,7 @@ export class AuthService {
       // fake delay
       pbkdf2Sync(password, "0".repeat(32), 1000, 32, "sha256"); // fake delay
       logger.warn("User not found for: ", { email });
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: "User not found",
       });
@@ -73,7 +73,7 @@ export class AuthService {
       })
     ) {
       logger.warn("Invalid password for: ", { email });
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message: "Invalid credentials",
       });
@@ -125,7 +125,7 @@ export class AuthService {
 
     if (!user) {
       logger.warn("User not found when changing password", { userId });
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: "User not found",
       });
@@ -140,7 +140,7 @@ export class AuthService {
       logger.warn("Provided password does not match the user password", {
         userId,
       });
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message: "Incorrect password",
       });
@@ -168,7 +168,7 @@ export class AuthService {
 
     if (!currentSessionId) {
       logger.warn("No session cookie found, user is not logged in");
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message: "No session cookie found",
       });
@@ -184,7 +184,7 @@ export class AuthService {
     });
     if (!user) {
       logger.warn("User not found when terminating sessions", { userId });
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: "User not found",
       });
@@ -220,7 +220,7 @@ export class AuthService {
         "Could not find an associated session with the provided session for the user",
         { userId, sessionId },
       );
-      throw new InternalError({
+      throw new AppError({
         code: "NOT_FOUND",
         message: "Session not found",
       });
@@ -236,7 +236,7 @@ export class AuthService {
         },
       );
 
-      throw new InternalError({
+      throw new AppError({
         code: "FORBIDDEN",
         message: "You are not allowed to terminate this session",
       });
@@ -260,7 +260,7 @@ export class AuthService {
       const origin =
         this.req.headers.get("origin") ?? this.req.headers.get("referer");
       if (!origin) {
-        throw new InternalError({
+        throw new AppError({
           code: "FORBIDDEN",
           message: "Missing Origin/Referer",
         });
@@ -268,7 +268,7 @@ export class AuthService {
 
       const expectedOrigin = env.NEXT_PUBLIC_BLOG_URL;
       if (!origin.startsWith(expectedOrigin)) {
-        throw new InternalError({
+        throw new AppError({
           code: "FORBIDDEN",
           message: "CSRF origin mismatch",
         });
@@ -282,7 +282,7 @@ export class AuthService {
 
     if (!csrfCookieToken || csrfCookieToken !== requestCsrfHeaderValue) {
       logger.warn("CSRF validation failed");
-      throw new InternalError({
+      throw new AppError({
         code: "FORBIDDEN",
         message: "Invalid CSRF token",
       });
@@ -356,7 +356,7 @@ export class AuthService {
     const sessionId = CookieService.session.get({ req: this.req });
     if (!sessionId) {
       logger.info("No session cookie found");
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message: `No session cookie found`,
       });
@@ -371,7 +371,7 @@ export class AuthService {
     if (!csrfCookieToken || !csrfHeaderToken) {
       const message = `No CSRF token found, login again`;
       logger.info(message);
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message,
       });
@@ -394,7 +394,7 @@ export class AuthService {
 
     if (!session) {
       logger.info("Session not found", { sessionId });
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message: `No session found for this user`,
       });
@@ -402,7 +402,7 @@ export class AuthService {
 
     if (session.expiresAt < new Date()) {
       logger.info("Session expired", { sessionId });
-      throw new InternalError({
+      throw new AppError({
         code: "UNAUTHORIZED",
         message: `Session expired`,
       });
