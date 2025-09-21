@@ -14,6 +14,9 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   project: env.SENTRY_PROJECT,
   authToken: env.SENTRY_AUTH_TOKEN,
   silent: env.NODE_ENV === "production",
+  debug: env.NEXT_PUBLIC_CURRENT_ENV === "development",
+  sentryUrl: " https://sentry.io/", // can change if self hosted
+  telemetry: false, // for privacy
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
   // This will unlock the capability to search for Replays in Sentry by component name
@@ -31,17 +34,10 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   // Hides source maps from generated client bundles
   sourcemaps: {
     disable: env.NODE_ENV === "production" ? true : false,
+    deleteSourcemapsAfterUpload: true,
   },
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
-
-  /*
-   * Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-   * See the following for more information:
-   * https://docs.sentry.io/product/crons/
-   * https://vercel.com/docs/cron-jobs
-   */
-  automaticVercelMonitors: true,
 };
 
 /**
