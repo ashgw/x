@@ -1,12 +1,15 @@
-import { pbkdf2Sync, randomBytes } from "crypto";
+import argon2 from "argon2";
 
 import { db } from "@ashgw/db";
 import { blogs } from "./data/mdx";
 
-function hashPassword(password: string): string {
-  const salt = randomBytes(16).toString("hex");
-  const hash = pbkdf2Sync(password, salt, 1000, 32, "sha256").toString("hex");
-  return `${salt}:${hash}`;
+async function hashPassword(password: string): Promise<string> {
+  return argon2.hash(password, {
+    type: argon2.argon2id,
+    memoryCost: 64 * 1024, // 64 MB
+    timeCost: 2,
+    parallelism: 1,
+  });
 }
 
 async function createAdminUser() {
@@ -25,7 +28,7 @@ async function createAdminUser() {
     return;
   }
 
-  const passwordHash = hashPassword(password);
+  const passwordHash = await hashPassword(password);
   await db.user.create({
     data: { email, passwordHash, name, role: "ADMIN" },
   });

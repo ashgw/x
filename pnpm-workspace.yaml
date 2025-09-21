@@ -30,6 +30,7 @@ catalog:
   react-hook-form: "7.53.0"
   zod: 3.23.8
   superjson: "2.2.1"
+  argon2: "0.44.0"
 
 catalogs:
   react-query5:
