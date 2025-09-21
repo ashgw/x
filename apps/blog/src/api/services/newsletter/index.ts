@@ -23,9 +23,9 @@ export class NewsletterService {
     try {
       await this._createSubscriber({ email });
     } catch (error) {
-      logger.error("Newsletter subscription failed", { error, email });
+      logger.error("Newsletter subscription failed", { error });
       throw new AppError({
-        code: "INTERNAL_SERVER_ERROR",
+        code: "INTERNAL",
         message: "Failed to subscribe to newsletter",
         cause: error,
       });
