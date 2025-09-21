@@ -13,7 +13,7 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   authToken: env.SENTRY_AUTH_TOKEN,
   silent: env.NODE_ENV === "production",
   debug: env.NEXT_PUBLIC_CURRENT_ENV === "development",
-  sentryUrl: " https://sentry.io/", // can change if self hosted
+  sentryUrl: " https://sentry.io/",
   telemetry: false,
   // Upload more sourcemaps for better stack traces. Costs a bit more build time.
   widenClientFileUpload: true,
@@ -26,8 +26,7 @@ const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
   // tunnelRoute: "/monitoring",
   // Keep client sourcemaps hidden in prod builds. Still upload to Sentry so traces are readable.
   sourcemaps: {
-    disable: env.NODE_ENV === "production" ? true : false,
-    deleteSourcemapsAfterUpload: env.NODE_ENV === "production",
+    disable: env.NEXT_PUBLIC_CURRENT_ENV === "development" ? true : false,
   },
   // Strip Sentry's own console logs from bundles.
   disableLogger: true,
@@ -51,8 +50,7 @@ export const withConfig = <NC extends NextConfig>({
       const extra = [
         {
           source: "/monitoring",
-          destination:
-            "https://o447951.ingest.sentry.io/api/:project/envelope/",
+          destination: env.NEXT_PUBLIC_SENTRY_DSN,
         },
       ];
       // Merge rewrites regardless of whether user returns an array or object shape.
