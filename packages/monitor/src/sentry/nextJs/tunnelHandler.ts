@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { logger } from "@ashgw/logger";
+import { env } from "@ashgw/env";
 import { z } from "zod";
 
 /**
@@ -7,6 +8,9 @@ import { z } from "zod";
  * Can be re-used across apps to avoid duplicating logic.
  */
 export async function tunnelHandler(request: NextRequest) {
+  if (env.NEXT_PUBLIC_DISABLE_SENTRY_TUNNELING === "true") {
+    return new Response("Sentry tunnel disabled", { status: 404 });
+  }
   try {
     const envelope: string = await request.text();
     if (!envelope) {
