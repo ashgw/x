@@ -33,7 +33,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
-        <GlobalProviders site="blog">
+        <GlobalProviders>
           <TRPCProvider siteBaseUrl={siteUrl}>
             <StoreProvider>{children}</StoreProvider>
           </TRPCProvider>
