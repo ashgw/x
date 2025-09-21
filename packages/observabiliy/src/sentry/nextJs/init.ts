@@ -47,8 +47,10 @@ export const init = ({
         flushMaxDelay: 1000,
         maxReplayDuration: 45 * 60 * 1000, // 45 minutes
         minReplayDuration: 7 * 1000, // 7 seconds
-        onerror(error) {
-          logger.error("Sentry replay error", error);
+        onerror: (error) => {
+          logger.error("Sentry replay error", error, {
+            service: "Sentry Replay",
+          });
         },
       }),
     ],
