@@ -696,6 +696,9 @@ importers:
       '@ashgw/logger':
         specifier: workspace:*
         version: link:../logger
+      '@ashgw/monitor':
+        specifier: workspace:*
+        version: link:../monitor
       '@ashgw/ui':
         specifier: workspace:*
         version: link:../ui

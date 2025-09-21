@@ -14,6 +14,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/logger": "workspace:*",
     "@ashgw/ui": "workspace:*",
+    "@ashgw/monitor": "workspace:*",
     "@nextui-org/react": "catalog:",
     "framer-motion": "catalog:"
   },
