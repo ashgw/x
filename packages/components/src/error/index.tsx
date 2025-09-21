@@ -3,7 +3,7 @@
 import type NextError from "next/error";
 import { useEffect } from "react";
 
-import { monitor } from "@ashgw/observability";
+import { monitor } from "@ashgw/monitor";
 import { Button, toast } from "@ashgw/ui";
 
 export interface GlobalErrorProperties {

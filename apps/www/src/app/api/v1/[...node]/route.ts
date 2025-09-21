@@ -2,7 +2,7 @@ import { logger } from "@ashgw/logger";
 import { createNextHandler } from "@ts-rest/serverless/next";
 import { contract } from "~/api/contract";
 import { apiV1endpoint } from "~/ts-rest/endpoint";
-import { monitor } from "@ashgw/observability";
+import { monitor } from "@ashgw/monitor";
 import { router } from "~/api/router";
 import {
   setupRequestMiddleware,

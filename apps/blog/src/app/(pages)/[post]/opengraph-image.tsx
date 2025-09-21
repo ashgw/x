@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { monitor } from "@ashgw/observability";
+import { monitor } from "@ashgw/monitor";
 import { trpcHttpServerSideClient } from "~/trpc/callers/server";
 import { logger } from "@ashgw/logger";
 
