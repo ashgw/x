@@ -205,6 +205,12 @@ export class S3Service extends BaseStorageService {
           throw new AppError({
             code: "NOT_FOUND",
             message: `File ${key} not found`,
+            meta: {
+              upstream: {
+                service: "S3",
+                operation: "GetObject",
+              },
+            },
           });
         }
 
@@ -300,15 +306,15 @@ export class S3Service extends BaseStorageService {
 
   private _formatError(err: unknown, key: string): Error {
     if (err instanceof S3ServiceException && err.name === "NoSuchKey") {
-      return new InternalError({
+      return new AppError({
         code: "NOT_FOUND",
         message: `File ${key} not found`,
         cause: err,
       });
     }
 
-    return new InternalError({
-      code: "INTERNAL_SERVER_ERROR",
+    return new AppError({
+      code: "INTERNAL",
       message: `S3 operation failed for key "${key}"`,
       cause: err,
     });
