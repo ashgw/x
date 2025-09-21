@@ -1,22 +1,15 @@
 {
-  "name": "@ashgw/observability",
+  "name": "@ashgw/error",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint ."
   },
-  "dependencies": {
-    "@ashgw/env": "workspace:*",
-    "@ashgw/error": "workspace:*",
-    "@ashgw/logger": "workspace:*",
-    "@logtail/next": "0.2.1",
-    "@sentry/nextjs": "9.8.0",
-    "next": "catalog:"
-  },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
+    "ts-roids": "catalog:",
     "typescript": "catalog:"
   },
   "exports": {

@@ -18,22 +18,15 @@ type Hint = Parameters<typeof sentryCaptureException>[1];
 export const captureException = ({
   error,
   hint,
-  logErrorWith,
 }: {
   error: Exception;
   hint?: Hint;
-  logErrorWith?: { message: string };
 }): string => {
   const errorMessage = extractErrorMessage(error);
   try {
     sentryCaptureException(error, hint);
-    if (logErrorWith) {
-      logger.error(logErrorWith.message);
-    } else {
-      logger.error(`${errorMessage}`);
-    }
   } catch (e) {
-    logger.error("CANNOT CAPTURE SENTRY EXCEPTION:", e);
+    logger.fatal("CANNOT CAPTURE SENTRY EXCEPTION:", e);
   }
   return errorMessage;
 };

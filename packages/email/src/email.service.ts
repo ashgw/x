@@ -2,7 +2,8 @@ import * as React from "react";
 import { Resend } from "resend";
 import type { CreateEmailOptions } from "resend";
 import { render } from "@react-email/render";
-
+import { AppError } from "@ashgw/error";
+import { logger } from "@ashgw/logger";
 import NotificationTemplate from "./templates/Notify";
 import { env } from "@ashgw/env";
 import type { SendParams, SendResult, SendNotificationParams } from "./types";
@@ -46,9 +47,12 @@ class EmailService {
     const { data, error } = await client.emails.send(options);
 
     if (error) {
-      // eslint-disable-next-line no-restricted-syntax
-      console.debug(error);
-      throw new Error(error.message); // TODO: use internal error here, matter of fact, refactor sentry & logger & InternalError
+      logger.error("Failed to send email", error);
+      throw new AppError({
+        code: "INTERNAL",
+        message: "Failed to send email",
+        cause: error,
+      });
     }
 
     return { id: data.id };
