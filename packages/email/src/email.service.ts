@@ -48,6 +48,7 @@ class EmailService {
     if (error) {
       // eslint-disable-next-line no-restricted-syntax
       console.debug(error);
+      >>>>>>>>>>>
       throw new Error(error.message); // TODO: use internal error here, matter of fact, refactor sentry & logger & InternalError
     }
 

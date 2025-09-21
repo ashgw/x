@@ -190,6 +190,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@ashgw/error':
+        specifier: workspace:*
+        version: link:../../packages/error
       '@ashgw/observability':
         specifier: workspace:*
         version: link:../../packages/observabiliy
@@ -440,6 +443,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@ashgw/error':
+        specifier: workspace:*
+        version: link:../../packages/error
       '@ashgw/logger':
         specifier: workspace:*
         version: link:../../packages/logger
@@ -832,6 +838,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
+      '@ashgw/error':
+        specifier: workspace:*
+        version: link:../error
       '@react-email/components':
         specifier: 0.5.3
         version: 0.5.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -946,6 +955,9 @@ importers:
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
+      '@ashgw/error':
+        specifier: workspace:*
+        version: link:../error
       '@ashgw/logger':
         specifier: workspace:*
         version: link:../logger
