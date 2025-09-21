@@ -1039,6 +1039,9 @@ importers:
       '@ashgw/ts-env':
         specifier: 'catalog:'
         version: 1.5.3(zod@3.24.3)
+      argon2:
+        specifier: 0.44.0
+        version: 0.44.0
       aws-sdk:
         specifier: 2.1692.0
         version: 2.1692.0
