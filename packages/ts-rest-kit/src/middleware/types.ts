@@ -1,0 +1,82 @@
+import type { NextRequest } from "next/server";
+import type { GlobalTsrContext } from "../ctx";
+import type { TsRestRequest, TsRestResponse } from "@ts-rest/serverless/next";
+import type { GlobalContext } from "~/ts-rest/context";
+
+/**
+ * At runtime `req.ctx` is a live object. This type composes the global
+ * context with a LocalCtx fragment produced by the middleware chain.
+ */
+export type MergeTsrContextWith<
+  Gtx extends GlobalTsrContext,
+  LocalCtx,
+> = Gtx & {
+  ctx: Gtx["ctx"] & LocalCtx;
+};
+
+/**
+ * The request object shape that middleware and handlers receive.
+ * It includes the typed `ctx` plus the underlying TsRestRequest fields.
+ */
+export type MiddlewareRequest<
+  Gtx extends GlobalTsrContext,
+  LocalCtx,
+> = TsRestRequest & Gtx & MergeTsrContextWith<GlobalTsrContext, LocalCtx>;
+
+/** Minimal wrapper to expose the raw NextRequest when you need it. */
+export interface MiddlewareRespone {
+  nextRequest: NextRequest;
+}
+
+/** Request shape for Global response handlers. */
+export type ResponseHandlerResquest<Gtx extends GlobalTsrContext> =
+  TsRestRequest & Gtx;
+
+/** Response wrapper from ts-rest serverless adapter. */
+export type ResponseHandlerResponse = TsRestResponse;
+
+/**
+ * Return:
+ * - Response to short-circuit
+ * - void or undefined to continue
+ */
+export type MiddlewareReturn<LocalCtx> =
+  | void
+  | Response
+  | {
+      ctx: LocalCtx;
+    };
+
+export type MiddlewareFn<Gtx extends GlobalTsrContext, LocalCtx> = (
+  req: MiddlewareRequest<Gtx, LocalCtx>,
+  res: MiddlewareRespone,
+) => MiddlewareReturn<LocalCtx>;
+
+/** Post-response hook signature. */
+export type ResponseHandlersFn<FnReturntype, Gtx extends GlobalTsrContext> = (
+  res: ResponseHandlerResponse,
+  req: ResponseHandlerResquest<Gtx>,
+) => FnReturntype;
+
+/**
+ * SequentialMiddleware
+ *
+ * Pair of:
+ * - `ctx`: LocalCtx fragment to merge once per route
+ * - `mw`: the function to run on each request
+ */
+export interface SequentialMiddleware<LocalCtx> {
+  ctx: LocalCtx;
+  mw: MiddlewareFn<GlobalContext, LocalCtx>;
+}
+
+/** Convenience alias for middlewares that only provide a function (no static ctx). */
+export type SequentialMiddlewareFn<LocalCtx> = MiddlewareFn<
+  GlobalContext,
+  LocalCtx
+>;
+
+/** Union accepted by the sequential builder: pair or function-only. */
+export type SequentialItem<LocalCtx> =
+  | SequentialMiddleware<LocalCtx>
+  | SequentialMiddlewareFn<LocalCtx>;
