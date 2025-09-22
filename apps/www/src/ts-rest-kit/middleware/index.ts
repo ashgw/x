@@ -6,9 +6,9 @@ export type {
   MiddlewareReturn,
   ResponseHandlersFn,
   MiddlewareRequest,
-  MiddlewareResponse,
+  MiddlewareRespone,
   ResponseHandlerResponse,
-  ResponseHandlerRequest,
+  ResponseHandlerResquest,
 } from "./types";
 export { middlewareResponse } from "./response";
 export { middleware } from "./sequential";

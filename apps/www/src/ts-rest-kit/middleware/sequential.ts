@@ -2,7 +2,7 @@ import type { EmptyObject } from "ts-roids";
 import type { GlobalTsrContext } from "../ctx";
 import type {
   MiddlewareRequest,
-  MiddlewareResponse,
+  MiddlewareRespone,
   SequentialItem,
   SequentialMiddleware,
 } from "./types";
@@ -95,7 +95,7 @@ export function middleware<
           for (const item of chain) {
             type AnyFn = (
               rq: MiddlewareRequest<Gtx, unknown>,
-              rs: MiddlewareResponse,
+              rs: MiddlewareRespone,
             ) => unknown;
             const fn: AnyFn =
               typeof item === "function"

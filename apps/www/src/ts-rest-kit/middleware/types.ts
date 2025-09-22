@@ -23,12 +23,12 @@ export type MiddlewareRequest<
 > = TsRestRequest & Gtx & MergeTsrContextWith<Gtx, LocalCtx>;
 
 /** Minimal wrapper to expose the raw NextRequest when you need it. */
-export interface MiddlewareResponse {
+export interface MiddlewareRespone {
   nextRequest: NextRequest;
 }
 
 /** Request shape for Global response handlers. */
-export type ResponseHandlerRequest<Gtx extends GlobalTsrContext> =
+export type ResponseHandlerResquest<Gtx extends GlobalTsrContext> =
   TsRestRequest & Gtx;
 
 /** Response wrapper from ts-rest serverless adapter. */
@@ -48,13 +48,13 @@ export type MiddlewareReturn<LocalCtx> =
 
 export type MiddlewareFn<Gtx extends GlobalTsrContext, LocalCtx> = (
   req: MiddlewareRequest<Gtx, LocalCtx>,
-  res: MiddlewareResponse,
+  res: MiddlewareRespone,
 ) => MiddlewareReturn<LocalCtx>;
 
 /** Post-response hook signature. */
 export type ResponseHandlersFn<FnReturntype, Gtx extends GlobalTsrContext> = (
   res: ResponseHandlerResponse,
-  req: ResponseHandlerRequest<Gtx>,
+  req: ResponseHandlerResquest<Gtx>,
 ) => FnReturntype;
 
 /**
