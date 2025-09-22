@@ -6,7 +6,6 @@ interface RateLimiterCtx {
   rateLimitWindow: RlWindow;
 }
 
-//  TODO: use a presistent kv here since lambdas don't presist shit
 export function rateLimiter({ limit }: { limit: { every: RlWindow } }) {
   const rl = new RateLimiterService(limit.every);
   return middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
