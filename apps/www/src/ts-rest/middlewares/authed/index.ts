@@ -1,21 +1,28 @@
 import { env } from "@ashgw/env";
-import type { SequentialMiddleware } from "~/@ashgw/ts-rest";
-import { middlewareResponse, middlewareFn } from "~/@ashgw/ts-rest";
+import { middlewareResponse, middlewareFn } from "~/ts-rest-kit";
 import type { GlobalContext } from "~/ts-rest/context";
-import type { EmptyObject } from "ts-roids";
 
-type CronAuthedContext = EmptyObject; //  nothing we need to pass down here really
+interface AuthedCtx {
+  user: {
+    email: string;
+    name: string;
+  };
+}
 
-export function authed(): SequentialMiddleware<CronAuthedContext> {
-  const mw = middlewareFn<GlobalContext, CronAuthedContext>((req, _res) => {
+export function authed() {
+  const user = {
+    email: "admin@email.com",
+    name: "admin",
+  } as const;
+
+  return middlewareFn<GlobalContext, AuthedCtx>((req, _res) => {
     if (req.headers.get("x-api-token") !== env.X_API_TOKEN) {
       return middlewareResponse.errors.unauthorized({
         message: "Invalid token. You cannot perform this action",
       });
     }
+    return {
+      ctx: { user },
+    };
   });
-  return {
-    mw,
-    ctx: {},
-  };
 }

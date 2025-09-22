@@ -4,7 +4,7 @@ import { logger } from "@ashgw/logger";
 import {
   createGlobalRequestMiddleware,
   responseHandlersFn,
-} from "~/@ashgw/ts-rest";
+} from "~/ts-rest-kit";
 
 const createGlobalContext = createGlobalRequestMiddleware<GlobalContext>(
   (request) => {

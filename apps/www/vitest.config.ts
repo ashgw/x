@@ -14,6 +14,7 @@ export default mergeConfig(
     resolve: {
       alias: {
         // @see https://stackoverflow.com/questions/73022020/vitest-not-recognizing-absolute-import
+        "~": path.resolve(__dirname, "./src"),
         "~/lib": path.resolve(__dirname, "./src/lib/"),
       },
     },

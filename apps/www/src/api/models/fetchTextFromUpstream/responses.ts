@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { c } from "~/ts-rest/root";
-import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
+import { createSchemaResponses, httpErrorSchema } from "~/ts-rest-kit";
 import { internalErrorSchemaResponse } from "../shared/responses";
-import type { InferResponses } from "~/@ashgw/ts-rest";
+import type { InferResponses } from "~/ts-rest-kit";
 
 // ========== Schemas ==========
 

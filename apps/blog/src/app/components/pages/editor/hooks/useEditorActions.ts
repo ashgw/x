@@ -168,4 +168,3 @@ export function useEditorActions({ data, form, ui }: UseEditorActionsParams) {
     isDeletingPost: trashPost.isPending,
   };
 }
-

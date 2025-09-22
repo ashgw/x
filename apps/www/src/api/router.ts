@@ -2,7 +2,7 @@ import { contract } from "~/api/contract";
 import { gpg } from "@ashgw/constants";
 import { rateLimiter, authed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
-import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
+import { createRouterWithContext, middleware } from "~/ts-rest-kit";
 import {
   purgeTrashPosts,
   purgeViewWindow,
@@ -11,11 +11,12 @@ import {
   healthCheck,
   reminder,
 } from "./functions";
+import { logger } from "@ashgw/logger";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   reminder: middleware()
-    .use(rateLimiter({ limit: { every: "1s" } }))
     .use(authed())
+    .use(rateLimiter({ limit: { every: "1s" } }))
     .route(contract.reminder)(
     async ({ body, headers }) => await reminder({ body, headers }),
   ),
@@ -23,7 +24,29 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
     .use(authed())
-    .route(contract.purgeViewWindow)(async () => await purgeViewWindow()),
+    .route(contract.purgeViewWindow)(
+    async (
+      { headers },
+      {
+        request: {
+          ctx: {
+            requestedAt,
+            rateLimitWindow,
+            user: { email },
+          },
+        },
+      },
+    ) => {
+      logger.info("HELOOOOOOOWW");
+      logger.info("reminder body", {
+        headers,
+        email,
+        rateLimitWindow,
+        requestedAt,
+      });
+      return await purgeViewWindow();
+    },
+  ),
 
   purgeTrashPosts: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
