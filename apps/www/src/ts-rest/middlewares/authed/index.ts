@@ -1,5 +1,5 @@
 import { env } from "@ashgw/env";
-import { middlewareResponse, middlewareFn } from "ts-rest-kit";
+import { middlewareResponse, middlewareFn } from "~/ts-rest-kit";
 import type { GlobalContext } from "~/ts-rest/context";
 
 interface AuthedCtx {
