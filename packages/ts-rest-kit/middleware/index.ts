@@ -6,7 +6,7 @@ export type {
   MiddlewareReturn,
   ResponseHandlersFn,
   MiddlewareRequest,
-  MiddlewareResponse as MiddlewareRespone,
+  MiddlewareResponse,
   ResponseHandlerResponse,
   ResponseHandlerRequest,
 } from "./types";
