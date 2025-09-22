@@ -63,4 +63,3 @@ function _findBlogInPosts(
 ): PostArticleRo | undefined {
   return posts?.find((post) => post.slug === slug);
 }
-
