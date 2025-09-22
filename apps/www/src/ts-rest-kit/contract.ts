@@ -7,7 +7,7 @@ import type { initContract } from "@ts-rest/core";
  *
  * Usage:
  *   import { initContract } from "@ts-rest/core";
- *   import { createContract } from "@ashgw/ts-rest";
+ *   import { createContract } from "ts-rest-kit";
  *
  *   const c = initContract();
  *   export const contract = createContract(c)({

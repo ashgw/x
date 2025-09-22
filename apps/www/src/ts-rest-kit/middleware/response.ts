@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import type { MaybeUndefined } from "ts-roids";
 import type { BaseError } from "../schemas";
+import { TsRestResponse } from "@ts-rest/serverless/next";
 
 /**
  * Middleware response helpers for Next.js route handlers.
@@ -39,8 +39,8 @@ type ErrorCode = keyof typeof HTTP_STATUS_BY_CODE;
 function generic(x: MwUnion): Response | void {
   const { status, body, headers } = x;
   return typeof body === "undefined"
-    ? new NextResponse(null, { status, headers })
-    : NextResponse.json(body as unknown, { status, headers });
+    ? new TsRestResponse(null, { status, headers })
+    : new TsRestResponse(JSON.stringify(body), { status, headers });
 }
 
 /**

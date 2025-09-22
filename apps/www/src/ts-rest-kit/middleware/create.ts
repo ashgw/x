@@ -1,5 +1,4 @@
 import { tsr } from "@ts-rest/serverless/next";
-import type { GlobalContext } from "~/ts-rest/context";
 
 import type { AppRoute } from "@ts-rest/core";
 import type { MiddlewareFn, MergeTsrContextWith } from "./types";
@@ -26,7 +25,7 @@ export function createRouteMiddleware<
   middlewareFn: MiddlewareFn<Gtx, LocalCtx>;
 }) {
   const build = tsr.routeWithMiddleware(route)<
-    GlobalContext,
+    Gtx,
     MergeTsrContextWith<Gtx, LocalCtx>
   >;
 

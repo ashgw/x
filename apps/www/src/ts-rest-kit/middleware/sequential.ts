@@ -15,7 +15,7 @@ function mergeCtx<A extends object, B extends object>(a: A, b: B): A & B {
   return Object.assign({}, a, b);
 }
 
-type SequentialMiddlewares = SequentialItem<unknown>[];
+type AnySequentialMiddlewares = SequentialItem<GlobalTsrContext, unknown>[];
 
 /**
  * Immutable builder. Each `.use(...)` returns a fresh builder that accumulates:
@@ -54,17 +54,18 @@ type SequentialMiddlewares = SequentialItem<unknown>[];
 export function middleware<
   Gtx extends GlobalTsrContext,
   AccCtx extends object = EmptyObject,
->(initial?: SequentialMiddlewares) {
+>(initial?: AnySequentialMiddlewares) {
   // keep an immutable chain so every .use returns a fresh builder
-  const chain: SequentialMiddlewares = initial ? initial.slice() : [];
+  const chain: AnySequentialMiddlewares = initial ? initial.slice() : [];
 
   return {
     /** Add one middleware that contributes LocalCtx and may short-circuit with a Response. */
-    use<C extends object>(m: SequentialItem<C>) {
-      const nextChain: SequentialMiddlewares = chain.concat(
-        m as unknown as SequentialItem<unknown>,
+    use<G extends GlobalTsrContext, C extends object>(m: SequentialItem<G, C>) {
+      const nextChain: AnySequentialMiddlewares = chain.concat(
+        m as unknown as SequentialItem<GlobalTsrContext, unknown>,
       );
-      return middleware<Gtx, AccCtx & C>(nextChain);
+      // widen global context requirements as middlewares are added
+      return middleware<Gtx & G, AccCtx & C>(nextChain);
     },
 
     // bind the accumulated chain to a specific contract route.
@@ -73,8 +74,12 @@ export function middleware<
       const finalCtx = chain.reduce<Record<string, unknown>>(
         (acc, item) => {
           if (typeof item === "function") return acc;
-          const local = (item as SequentialMiddleware<Record<string, unknown>>)
-            .ctx;
+          const local = (
+            item as SequentialMiddleware<
+              GlobalTsrContext,
+              Record<string, unknown>
+            >
+          ).ctx;
           return mergeCtx(acc, local);
         },
         {} as Record<string, unknown>,
@@ -84,18 +89,22 @@ export function middleware<
         route,
         middlewareFn: middlewareFn<Gtx, AccCtx>((req, res) => {
           // augment existing ctx with our merged locals
-          Object.assign(req.ctx as object, finalCtx as object);
+          Object.assign(req.ctx, finalCtx);
 
           // run in FIFO. If any returns a Response, bubble it up immediately.
           for (const item of chain) {
             type AnyFn = (
-              rq: MiddlewareRequest<Gtx, AccCtx>,
+              rq: MiddlewareRequest<Gtx, unknown>,
               rs: MiddlewareRespone,
             ) => unknown;
             const fn: AnyFn =
               typeof item === "function"
                 ? (item as AnyFn)
-                : ((item as SequentialMiddleware<unknown>).mw as AnyFn);
+                : (
+                    item as unknown as {
+                      mw: AnyFn;
+                    }
+                  ).mw;
             const out = fn(req, res);
             if (out instanceof Response) return out;
             if (typeof out === "object" && out && "ctx" in out) {
