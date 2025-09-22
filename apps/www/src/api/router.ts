@@ -26,7 +26,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     .use(authed())
     .route(contract.purgeViewWindow)(
     async (
-      { body, headers },
+      { headers },
       {
         request: {
           ctx: {
@@ -39,7 +39,6 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     ) => {
       logger.info("HELOOOOOOOWW");
       logger.info("reminder body", {
-        body,
         headers,
         email,
         rateLimitWindow,
