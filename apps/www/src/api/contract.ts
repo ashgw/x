@@ -1,5 +1,5 @@
 import { c } from "../ts-rest/root";
-import { createContract } from "~/@ashgw/ts-rest";
+import { createContract } from "~/ts-rest-kit";
 import {
   healthCheckSchemaResponses,
   fetchGpgFromUpstreamSchemaResponses,
