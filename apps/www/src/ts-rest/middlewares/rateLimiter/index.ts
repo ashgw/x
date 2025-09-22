@@ -1,8 +1,7 @@
 import { middlewareResponse, middlewareFn } from "~/@ashgw/ts-rest";
-import type { GlobalContext } from "~/ts-rest/context";
 import { RateLimiterService } from "@ashgw/rate-limiter";
 import type { RlWindow } from "@ashgw/rate-limiter";
-
+import type { GlobalContext } from "~/ts-rest/context";
 interface RateLimiterCtx {
   rateLimitWindow: RlWindow;
 }
@@ -19,5 +18,10 @@ export function rateLimiter({ limit }: { limit: { every: RlWindow } }) {
         retryAfterSeconds: rl.windowToSeconds(limit.every),
       });
     }
+    return {
+      ctx: {
+        rateLimitWindow: limit.every,
+      },
+    };
   });
 }
