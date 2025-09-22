@@ -28,7 +28,7 @@ export interface MiddlewareResponse {
 }
 
 /** Request shape for Global response handlers. */
-export type ResponseHandlerResquest<Gtx extends GlobalTsrContext> =
+export type ResponseHandlerRequest<Gtx extends GlobalTsrContext> =
   TsRestRequest & Gtx;
 
 /** Response wrapper from ts-rest serverless adapter. */
@@ -54,7 +54,7 @@ export type MiddlewareFn<Gtx extends GlobalTsrContext, LocalCtx> = (
 /** Post-response hook signature. */
 export type ResponseHandlersFn<FnReturntype, Gtx extends GlobalTsrContext> = (
   res: ResponseHandlerResponse,
-  req: ResponseHandlerResquest<Gtx>,
+  req: ResponseHandlerRequest<Gtx>,
 ) => FnReturntype;
 
 /**
