@@ -8,7 +8,7 @@ export type {
   MiddlewareRequest,
   MiddlewareRespone,
   ResponseHandlerResponse,
-  ResponseHandlerResquest,
+  ResponseHandlerRequest,
 } from "./types";
 export { middlewareResponse } from "./response";
 export { middleware } from "./sequential";

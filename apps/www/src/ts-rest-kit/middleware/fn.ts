@@ -4,7 +4,7 @@ import type {
   MiddlewareFn,
   MiddlewareRequest,
   ResponseHandlerResponse,
-  ResponseHandlerResquest,
+  ResponseHandlerRequest,
   ResponseHandlersFn,
 } from "./types";
 import type { GlobalTsrContext } from "../ctx";
@@ -44,7 +44,7 @@ export function middlewareFn<
 export function responseHandlersFn<Rtype, Gtx extends GlobalTsrContext>(
   fn: ResponseHandlersFn<Rtype, Gtx>,
 ) {
-  return (res: ResponseHandlerResponse, req: ResponseHandlerResquest<Gtx>) => {
+  return (res: ResponseHandlerResponse, req: ResponseHandlerRequest<Gtx>) => {
     return fn(res, req);
   };
 }

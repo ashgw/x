@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { middlewareFn, responseHandlersFn } from "~/ts-rest-kit";
-import type { MiddlewareRequest, ResponseHandlerResquest } from "~/ts-rest-kit";
+import type { MiddlewareRequest, ResponseHandlerRequest } from "~/ts-rest-kit";
 import { TsRestResponse } from "@ts-rest/serverless/next";
 
 describe("middlewareFn and responseHandlersFn", () => {
@@ -31,7 +31,7 @@ describe("middlewareFn and responseHandlersFn", () => {
     // minimal request shape with url
     // pass a TsRestResponse-compatible shape and a minimal request with url
     const res = new TsRestResponse(null, { status: 200 });
-    const req = { url: "https://a/x" } as unknown as ResponseHandlerResquest<{
+    const req = { url: "https://a/x" } as unknown as ResponseHandlerRequest<{
       ctx: Record<string, unknown>;
     }>;
     fn(res, req);
