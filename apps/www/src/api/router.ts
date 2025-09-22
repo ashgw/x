@@ -2,7 +2,7 @@ import { contract } from "~/api/contract";
 import { gpg } from "@ashgw/constants";
 import { rateLimiter, authed } from "~/ts-rest/middlewares";
 import type { GlobalContext } from "~/ts-rest/context";
-import { createRouterWithContext, middleware } from "~/@ashgw/ts-rest";
+import { createRouterWithContext, middleware } from "ts-rest-kit";
 import {
   purgeTrashPosts,
   purgeViewWindow,

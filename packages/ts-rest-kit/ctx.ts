@@ -4,7 +4,7 @@
  *
  * You can extend it in your app:
  *
- *   import type { GlobalTsrContext } from "@ashgw/ts-rest";
+ *   import type { GlobalTsrContext } from "ts-rest-kit";
  *
  *   export interface GlobalContext extends GlobalTsrContext {
  *     ctx: {

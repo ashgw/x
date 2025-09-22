@@ -1,5 +1,5 @@
-import type { InferResponses } from "~/@ashgw/ts-rest";
-import { createSchemaResponses } from "~/@ashgw/ts-rest";
+import type { InferResponses } from "ts-rest-kit";
+import { createSchemaResponses } from "ts-rest-kit";
 import {
   authedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,

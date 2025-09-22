@@ -1,4 +1,4 @@
-import { middlewareResponse, middlewareFn } from "~/@ashgw/ts-rest";
+import { middlewareResponse, middlewareFn } from "ts-rest-kit";
 import { RateLimiterService } from "@ashgw/rate-limiter";
 import type { RlWindow } from "@ashgw/rate-limiter";
 import type { GlobalContext } from "~/ts-rest/context";

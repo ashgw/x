@@ -20,7 +20,7 @@
     "typescript": "catalog:"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./index.ts"
   },
   "type": "module"
 }

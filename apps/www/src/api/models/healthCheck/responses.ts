@@ -1,5 +1,5 @@
-import { createSchemaResponses } from "~/@ashgw/ts-rest";
-import type { InferResponses } from "~/@ashgw/ts-rest";
+import { createSchemaResponses } from "ts-rest-kit";
+import type { InferResponses } from "ts-rest-kit";
 import { okSchemaResponse } from "../shared";
 
 export const healthCheckSchemaResponses = createSchemaResponses({

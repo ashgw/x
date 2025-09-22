@@ -1,5 +1,5 @@
 import { c } from "~/ts-rest/root";
-import { createSchemaResponses, httpErrorSchema } from "~/@ashgw/ts-rest";
+import { createSchemaResponses, httpErrorSchema } from "ts-rest-kit";
 
 export const okSchemaResponse = createSchemaResponses({
   200: c.noBody(),
