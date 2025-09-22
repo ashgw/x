@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
+import type { TestType } from "ts-roids";
 import { httpErrorSchema, createSchemaResponses } from "~/ts-rest-kit";
 import { initContract } from "@ts-rest/core";
 const c = initContract();
@@ -25,11 +26,20 @@ describe("ts-rest-kit schemas", () => {
     expect(Object.keys(resp)).toEqual(["200", "401"]);
   });
 
+  // Type-level checks for error body
+  type _assertUnauthorizedBody = TestType<
+    z.infer<ReturnType<typeof httpErrorSchema.unauthorized>>,
+    {
+      code: "UNAUTHORIZED";
+      message: string;
+      details?: Record<string, unknown>;
+    },
+    true
+  >;
+
   it("accepts zod schemas and that they validate", () => {
     const schema = z.object({ a: z.number().int().positive() });
     const parsed = schema.parse({ a: 1 });
     expect(parsed.a).toBe(1);
   });
 });
-
-

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
+import type { TestType } from "ts-roids";
 import type { InferRequest, InferResponses } from "~/ts-rest-kit";
 import { initContract } from "@ts-rest/core";
 
@@ -25,6 +26,29 @@ describe("ts-rest-kit inference", () => {
     expect(typeof sample.name).toBe("string");
     expect(typeof sample.age).toBe("number");
   });
+
+  // Type-level checks (no runtime effect)
+  type _checkBody = TestType<Body, { name: string; age: number }, true>;
+  type _check200Body = TestType<
+    Extract<R, { status: 200 }>["body"],
+    { ok: true },
+    true
+  >;
+  type _check204Body = TestType<
+    Extract<R, { status: 204 }>["body"],
+    undefined,
+    true
+  >;
+  type _check400Body = TestType<
+    Extract<R, { status: 400 }>["body"],
+    { code: "BAD_REQUEST"; message: string },
+    true
+  >;
+  type _check500Body = TestType<
+    Extract<R, { status: 500 }>["body"],
+    null,
+    true
+  >;
 
   it("InferResponses yields discriminated union by status with proper bodies", () => {
     const ok = { status: 200, body: { ok: true } } as Extract<
