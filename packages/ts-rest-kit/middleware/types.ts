@@ -23,7 +23,7 @@ export type MiddlewareRequest<
 > = TsRestRequest & Gtx & MergeTsrContextWith<Gtx, LocalCtx>;
 
 /** Minimal wrapper to expose the raw NextRequest when you need it. */
-export interface MiddlewareRespone {
+export interface MiddlewareResponse {
   nextRequest: NextRequest;
 }
 
@@ -48,7 +48,7 @@ export type MiddlewareReturn<LocalCtx> =
 
 export type MiddlewareFn<Gtx extends GlobalTsrContext, LocalCtx> = (
   req: MiddlewareRequest<Gtx, LocalCtx>,
-  res: MiddlewareRespone,
+  res: MiddlewareResponse,
 ) => MiddlewareReturn<LocalCtx>;
 
 /** Post-response hook signature. */
