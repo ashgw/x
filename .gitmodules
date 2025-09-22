@@ -2,3 +2,6 @@
     path = apps/www/src/ts-rest-kit 
   	url = https://github.com/ashgw/ts-rest-kit.git
 
+[submodule "apps/www/src/ts-rest-kit"]
+	path = apps/www/src/ts-rest-kit
+	url = https://github.com/ashgw/ts-rest-kit.git
