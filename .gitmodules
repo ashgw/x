@@ -1,4 +1,4 @@
 [submodule "ts-rest-kit"]
-    path = packages/ts-rest-kit 
+    path = packages/apps/www/src/ts-rest-kit 
   	url = https://github.com/ashgw/ts-rest-kit.git
 
