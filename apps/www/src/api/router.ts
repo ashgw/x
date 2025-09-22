@@ -18,6 +18,13 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     .use(authed())
     .use(rateLimiter({ limit: { every: "1s" } }))
     .route(contract.reminder)(
+    async ({ body, headers }) => await reminder({ body, headers }),
+  ),
+
+  purgeViewWindow: middleware()
+    .use(rateLimiter({ limit: { every: "5s" } }))
+    .use(authed())
+    .route(contract.purgeViewWindow)(
     async (
       { body, headers },
       {
@@ -30,6 +37,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         },
       },
     ) => {
+      logger.info("HELOOOOOOOWW");
       logger.info("reminder body", {
         body,
         headers,
@@ -37,14 +45,9 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         rateLimitWindow,
         requestedAt,
       });
-      return await reminder({ body, headers });
+      return await purgeViewWindow();
     },
   ),
-
-  purgeViewWindow: middleware()
-    .use(rateLimiter({ limit: { every: "5s" } }))
-    .use(authed())
-    .route(contract.purgeViewWindow)(async () => await purgeViewWindow()),
 
   purgeTrashPosts: middleware()
     .use(rateLimiter({ limit: { every: "5s" } }))
