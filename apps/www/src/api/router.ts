@@ -11,6 +11,7 @@ import {
   healthCheck,
   reminder,
 } from "./functions";
+import { logger } from "@ashgw/logger";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   reminder: middleware()
@@ -21,10 +22,16 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
       { body, headers },
       {
         request: {
-          ctx: {},
+          ctx: {
+            rateLimitWindow,
+            user: { email },
+          },
         },
       },
-    ) => await reminder({ body, headers }),
+    ) => {
+      logger.info("reminder body", { body, headers, email, rateLimitWindow });
+      return await reminder({ body, headers });
+    },
   ),
 
   purgeViewWindow: middleware()
