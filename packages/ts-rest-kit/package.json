@@ -6,18 +6,18 @@
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint ."
   },
-  "devDependencies": {
-    "@ashgw/eslint-config": "workspace:*",
-    "@ashgw/tsconfig": "workspace:*",
-    "typescript": "catalog:"
-  },
-  "peerDependencies": {
+  "dependencies": {
     "@ts-rest/core": "catalog:ts-rest3",
-    "@ts-rest/open-api": "catalog:ts-rest3",
     "@ts-rest/react-query": "catalog:ts-rest3",
     "@ts-rest/serverless": "catalog:ts-rest3",
     "next": "catalog:",
     "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "ts-roids": "catalog:",
+    "typescript": "catalog:"
   },
   "exports": {
     ".": "./src/index.ts"

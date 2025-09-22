@@ -73,6 +73,7 @@
     "superjson": "catalog:",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7",
+    "ts-rest-kit": "workspace:*",
     "typed.js": "2.1.0",
     "zod": "catalog:"
   },
