@@ -7,8 +7,8 @@ interface RateLimiterCtx {
 }
 
 export function rateLimiter({ limit }: { limit: { every: RlWindow } }) {
+  const rl = new RateLimiterService(limit.every);
   return middlewareFn<GlobalContext, RateLimiterCtx>((req, _res) => {
-    const rl = new RateLimiterService(limit.every);
     if (!rl.canPass(rl.fp({ req }))) {
       return middlewareResponse.errors.tooManyRequests({
         body: {

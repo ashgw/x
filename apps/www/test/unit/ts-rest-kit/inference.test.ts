@@ -22,7 +22,7 @@ type Body = InferRequest<typeof _bodySchema>;
 
 describe("ts-rest-kit inference", () => {
   it("InferRequest infers zod schema shape", () => {
-    const sample: Body = { name: "ash", age: 22 };
+    const sample: Body = { name: "john", age: 22 };
     expect(typeof sample.name).toBe("string");
     expect(typeof sample.age).toBe("number");
   });
