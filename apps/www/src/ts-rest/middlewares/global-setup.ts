@@ -1,7 +1,10 @@
 import { db } from "@ashgw/db";
 import type { GlobalContext } from "../context";
 import { logger } from "@ashgw/logger";
-import { createGlobalRequestMiddleware, responseHandlersFn } from "ts-rest-kit";
+import {
+  createGlobalRequestMiddleware,
+  responseHandlersFn,
+} from "~/ts-rest-kit";
 
 const createGlobalContext = createGlobalRequestMiddleware<GlobalContext>(
   (request) => {
