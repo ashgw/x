@@ -51,19 +51,16 @@ describe("ts-rest-kit inference", () => {
   >;
 
   it("InferResponses yields discriminated union by status with proper bodies", () => {
-    const ok = { status: 200, body: { ok: true } } as Extract<
-      R,
-      { status: 200 }
-    >;
-    const noBody = { status: 204, body: undefined } as Extract<
-      R,
-      { status: 204 }
-    >;
-    const bad = {
+    const ok: Extract<R, { status: 200 }> = { status: 200, body: { ok: true } };
+    const noBody: Extract<R, { status: 204 }> = {
+      status: 204,
+      body: undefined,
+    };
+    const bad: Extract<R, { status: 400 }> = {
       status: 400,
       body: { code: "BAD_REQUEST", message: "x" },
-    } as Extract<R, { status: 400 }>;
-    const internal = { status: 500, body: null } as Extract<R, { status: 500 }>;
+    };
+    const internal: Extract<R, { status: 500 }> = { status: 500, body: null };
 
     expect(ok.body.ok).toBe(true);
     expect(noBody.body).toBeUndefined();
