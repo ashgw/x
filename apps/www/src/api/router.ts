@@ -23,13 +23,20 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
       {
         request: {
           ctx: {
+            requestedAt,
             rateLimitWindow,
             user: { email },
           },
         },
       },
     ) => {
-      logger.info("reminder body", { body, headers, email, rateLimitWindow });
+      logger.info("reminder body", {
+        body,
+        headers,
+        email,
+        rateLimitWindow,
+        requestedAt,
+      });
       return await reminder({ body, headers });
     },
   ),
