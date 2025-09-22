@@ -11,7 +11,7 @@
  *       db: DatabaseClient;
  *     };
  *   }
-x */
+ */
 export interface GlobalTsrContext {
   ctx: object;
 }
