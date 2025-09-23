@@ -27,9 +27,8 @@
     --accent: 282 22% 22%; /* deep muted purple (~#2a1f2d), accent surfaces */
     --accent-foreground: 0 0% 98%; /* white, text on accent */
 
-    /* ===== Glow purples (for shadows, neon effects) ===== */
-    --deeper-purple: hsl(282 65% 45% / 0.5);
-    --deeper-purple-dimmed: hsl(282 65% 45% / 0.25);
+    --deeper-purple: rgba(255, 46, 200, 0.5);
+    --deeper-purple-dimmed: rgba(255, 46, 200, 0.2);
 
     /* ===== Destructive (error states) ===== */
     --destructive: 0 84.2% 60.2%; /* bright red (~#ef4444) */
