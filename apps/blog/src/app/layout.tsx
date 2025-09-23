@@ -13,7 +13,7 @@ import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
 import { DesignProvider } from "@ashgw/design";
 import { PurpleTheme } from "@ashgw/design/themes";
-import { fonts } from "@ashgw/ui";
+import { fonts } from "@ashgw/design/fonts";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";

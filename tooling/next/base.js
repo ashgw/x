@@ -5,7 +5,7 @@ const baseConfig = {
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@ashgw/ui",
-    "@ashgw/css",
+    "@ashgw/design",
     "@ashgw/env",
     "@ashgw/components",
     "@ashgw/hooks",

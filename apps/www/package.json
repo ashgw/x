@@ -30,7 +30,6 @@
     "@ashgw/components": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/cross-runtime": "workspace:*",
-    "@ashgw/css": "workspace:*",
     "@ashgw/db": "workspace:*",
     "@ashgw/design": "workspace:*",
     "@ashgw/email": "workspace:*",

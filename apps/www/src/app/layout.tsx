@@ -14,7 +14,7 @@ import { AnalyticsProvider } from "@ashgw/analytics/client";
 
 import { DesignProvider } from "@ashgw/design/provider";
 import { PurpleTheme } from "@ashgw/design/themes";
-import { fonts } from "@ashgw/ui";
+import { fonts } from "@ashgw/design/fonts";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";

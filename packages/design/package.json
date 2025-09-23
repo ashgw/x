@@ -12,7 +12,8 @@
     "./tailwind": "./src/tailwind/index.ts",
     "./themes": "./src/themes/index.ts",
     "./tokens": "./src/tokens/base.tokens.ts",
-    "./provider": "./src/provider/DesignProvider.tsx"
+    "./provider": "./src/provider/DesignProvider.tsx",
+    "./fonts": "./src/fonts/fonts.ts"
   },
   "peerDependencies": {
     "react": "catalog:react18"
@@ -29,6 +30,7 @@
   "type": "module",
   "dependencies": {
     "@tailwindcss/typography": "0.5.18",
+    "next": "catalog:",
     "tailwindcss-animate": "1.0.7"
   }
 }
