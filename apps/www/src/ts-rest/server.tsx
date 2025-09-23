@@ -35,6 +35,7 @@ export function HydrateClient(
     children: React.ReactNode;
   }>,
 ) {
+  // Keep consistent with how @ts-rest/react-query expects dehydration
   const dehydratedState = dehydrate(tsrQueryServerSideClient);
 
   return (
