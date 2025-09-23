@@ -11,6 +11,9 @@ import {
 
 export const runtime = "nodejs";
 
+// Next.js App Router handler for ts-rest v3 contract
+// - requestMiddleware/responseHandlers wired via local ts-rest-kit wrappers
+// - responseValidation enabled to align with strictStatusCodes
 const handler = createNextHandler(contract, router, {
   basePath: apiV1endpoint,
   handlerType: "app-router",
