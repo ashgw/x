@@ -3,12 +3,10 @@
 import * as React from "react";
 import { useEffect } from "react";
 import type { PropsWithChildren } from "react";
-import { ThemeProvider } from "next-themes";
 import type { ThemeSpec } from "../tokens/types";
 
 export interface DesignProviderProps {
   theme: ThemeSpec;
-  mode?: "light" | "dark" | "system";
 }
 
 function applyThemeToDocument(theme: ThemeSpec): void {
@@ -65,15 +63,10 @@ function applyThemeToDocument(theme: ThemeSpec): void {
 export function DesignProvider({
   children,
   theme,
-  mode = "system",
 }: PropsWithChildren<DesignProviderProps>) {
   useEffect(() => {
     applyThemeToDocument(theme);
   }, [theme]);
 
-  return (
-    <ThemeProvider attribute="class" enableSystem defaultTheme={mode}>
-      {children}
-    </ThemeProvider>
-  );
+  return <>{children}</>;
 }

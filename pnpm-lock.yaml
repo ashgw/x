@@ -292,9 +292,6 @@ importers:
       next-mdx-remote:
         specifier: 5.0.0
         version: 5.0.0(@types/react@18.3.18)(acorn@8.14.0)(react@18.3.1)
-      next-themes:
-        specifier: 0.3.0
-        version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: catalog:react18
         version: 18.3.1
@@ -524,9 +521,6 @@ importers:
       next:
         specifier: 'catalog:'
         version: 14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7)
-      next-themes:
-        specifier: 0.3.0
-        version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: catalog:react18
         version: 18.3.1
@@ -1181,9 +1175,6 @@ importers:
       cmdk:
         specifier: 1.1.1
         version: 1.1.1(@types/react-dom@19.0.4(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
-      next-themes:
-        specifier: 0.3.0
-        version: 0.3.0(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
       react-hook-form:
         specifier: 'catalog:'
         version: 7.53.0(react@18.3.1)
@@ -8370,12 +8361,6 @@ packages:
     peerDependencies:
       react: '>=16'
 
-  next-themes@0.3.0:
-    resolution: {integrity: sha512-/QHIrsYpd6Kfk7xakK4svpDI5mmXP0gfvCoJdGpZQ2TOrQZmsW0QxjaiLn8wbIKjtm4BTSqLoix4lxYYOnLJ/w==}
-    peerDependencies:
-      react: ^16.8 || ^17 || ^18
-      react-dom: ^16.8 || ^17 || ^18
-
   next@14.2.3:
     resolution: {integrity: sha512-dowFkFTR8v79NPJO4QsBUtxv0g9BrS/phluVpMAt2ku7H+cbcBJlopXjkWlwxrk/xGqMemr7JkGPGemPrLLX7A==}
     engines: {node: '>=18.17.0'}
@@ -15519,7 +15504,7 @@ snapshots:
       sirv: 3.0.0
       tinyglobby: 0.2.10
       tinyrainbow: 1.2.0
-      vitest: 2.1.8(@edge-runtime/vm@3.1.7)(@types/node@22.14.1)(@vitest/ui@2.1.8)(sass@1.69.7)(terser@5.36.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.1.7)(@types/node@20.16.15)(@vitest/ui@2.1.8)(sass@1.69.7)(terser@5.36.0)
 
   '@vitest/utils@2.1.8':
     dependencies:
@@ -19030,16 +19015,6 @@ snapshots:
       - '@types/react'
       - acorn
       - supports-color
-
-  next-themes@0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  next-themes@0.3.0(react-dom@19.0.0(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 19.0.0(react@18.3.1)
 
   next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7):
     dependencies:

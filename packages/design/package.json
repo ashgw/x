@@ -15,7 +15,6 @@
     "./provider": "./src/provider/DesignProvider.tsx"
   },
   "peerDependencies": {
-    "next-themes": "^0.3.0",
     "react": "catalog:react18"
   },
   "devDependencies": {
