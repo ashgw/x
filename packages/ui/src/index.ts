@@ -18,3 +18,4 @@ export * from "./table";
 export * from "./dialog";
 export * from "./popover";
 export * from "./command";
+export * from "./cva";
