@@ -20,19 +20,19 @@
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
 
-    /* FIXED accent colors → now purple instead of grey */
-    --accent: 300 75% 55%; /* bright purple */
-    --accent-foreground: 0 0% 100%; /* white text */
+    /* >>> Deep muted purple accent <<< */
+    --accent: 282 22% 22%; /* dark plum-like */
+    --accent-foreground: 0 0% 98%;
 
-    --deeper-purple: hsl(300 75% 55% / 0.5);
-    --deeper-purple-dimmed: hsl(300 75% 55% / 0.2);
+    --deeper-purple: hsl(282 65% 45% / 0.5);
+    --deeper-purple-dimmed: hsl(282 65% 45% / 0.25);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 300 75% 55%;
+    --ring: 282 65% 45%;
 
     --radius: 0.5rem;
 
@@ -41,8 +41,8 @@
     --bg-linear-b: rgba(255, 215, 111, 0.018);
     --bg-linear-c: rgba(150, 0, 100, 0.06);
 
-    --aurora-1: 120, 30, 120; /* deep purple */
-    --aurora-2: 90, 20, 100; /* deeper violet */
+    --aurora-1: 120, 30, 120;
+    --aurora-2: 90, 20, 100;
     --aurora-opacity-1: 0.1;
     --aurora-opacity-2: 0.14;
     --aurora-speed: 32s;
@@ -64,8 +64,7 @@
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
 
-    /* Purple accent for dark mode too */
-    --accent: 300 80% 60%;
+    --accent: 282 10% 10%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
@@ -73,7 +72,7 @@
 
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 300 80% 60%;
+    --ring: 282 65% 55%;
   }
 
   * {
