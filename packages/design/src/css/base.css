@@ -63,6 +63,30 @@
     --aurora-opacity-1: 0.1;
     --aurora-opacity-2: 0.14;
     --aurora-speed: 32s;
+
+    /* Back-compat: map legacy app variables to design tokens */
+    --background: var(--ds-background);
+    --foreground: var(--ds-text);
+    --card: var(--ds-card);
+    --card-foreground: var(--ds-card-foreground);
+    --popover: var(--ds-popover);
+    --popover-foreground: var(--ds-popover-foreground);
+    --primary: var(--ds-primary);
+    --primary-foreground: var(--ds-primary-foreground);
+    --secondary: var(--ds-secondary);
+    --secondary-foreground: var(--ds-secondary-foreground);
+    --muted: var(--ds-muted);
+    --muted-foreground: var(--ds-muted-foreground);
+    --accent: var(--ds-accent);
+    --accent-foreground: var(--ds-accent-foreground);
+    --destructive: var(--ds-danger);
+    --destructive-foreground: var(--ds-text);
+    --border: var(--ds-border);
+    --input: var(--ds-border);
+    --ring: var(--ds-ring);
+    /* Legacy glow variables used by older components */
+    --deeper-purple: rgba(255, 46, 200, 0.5);
+    --deeper-purple-dimmed: rgba(255, 46, 200, 0.2);
   }
 
   .dark {
@@ -153,6 +177,71 @@
 }
 
 @layer utilities {
+  /* Legacy utilities kept for backwards compatibility */
+  .average-translate {
+    @apply -translate-y-1;
+  }
+  .slower-transition {
+    transition: ease-in-out 0.2s;
+  }
+  .average-transition {
+    transition: ease-in-out 0.15s;
+  }
+
+  .dimmed-0 {
+    color: hsl(0 0% 48%);
+  }
+  .dimmed-1 {
+    color: hsl(0 0% 65%);
+  }
+  .dimmed-3 {
+    color: hsl(0 0% 75%);
+  }
+  .dimmed-4 {
+    color: hsl(0 0% 90%);
+  }
+  .dimmed-5 {
+    color: hsl(0 0% 95%);
+  }
+
+  .glowsup:hover {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
+  .glows {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
+  .glows-dimmed {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
+  }
+  .glowsup-dimmed:hover {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
+  }
+
+  .nav-link-shadow {
+    position: relative;
+  }
+  @media (min-width: 1024px) {
+    .nav-link-shadow::before {
+      content: "";
+      position: absolute;
+      height: 33px;
+      width: 70px;
+      z-index: -1;
+      background: var(--deeper-purple);
+      filter: blur(25px);
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+    }
+    .nav-link-shadow:hover::before {
+      opacity: 0.8;
+    }
+  }
+
+  .gradient-text-purple {
+    @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
+    -webkit-background-clip: text;
+  }
+
   .u-glow {
     filter: drop-shadow(0 0 0.75rem rgb(var(--ds-glow-primary)));
   }
