@@ -75,7 +75,6 @@
     "superjson": "catalog:",
     "tailwind-merge": "2.5.4",
     "tailwind-variants": "0.1.20",
-    "tailwindcss-animate": "1.0.7",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -87,7 +86,6 @@
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@playwright/test": "catalog:",
-    "@tailwindcss/typography": "catalog:",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/eslint": "^8.56.1",
     "@types/mdx": "^2.0.10",

@@ -29,7 +29,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@tailwindcss/typography": "0.5.18",
+    "@tailwindcss/typography": "0.5.10",
     "next": "catalog:",
     "tailwindcss-animate": "1.0.7"
   }

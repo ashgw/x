@@ -70,7 +70,6 @@
     "sonner": "1.5.0",
     "superjson": "catalog:",
     "tailwind-merge": "2.5.4",
-    "tailwindcss-animate": "1.0.7",
     "typed.js": "2.1.0",
     "zod": "catalog:"
   },
@@ -82,7 +81,6 @@
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@playwright/test": "catalog:",
-    "@tailwindcss/typography": "catalog:",
     "@types/eslint": "^8.56.1",
     "@types/mdx": "^2.0.10",
     "@types/node": "catalog:",
