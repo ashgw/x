@@ -1,8 +1,17 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
+import animate from "tailwindcss-animate";
 
 export const designPreset: Config = {
   content: [],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
         border: "hsl(var(--ds-border))",
@@ -40,9 +49,10 @@ export const designPreset: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--ds-radius-lg)",
-        md: "var(--ds-radius-md)",
-        sm: "var(--ds-radius-sm)",
+        // Exact legacy mapping using --radius var
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
         xl: "var(--ds-radius-xl)",
         "2xl": "var(--ds-radius-2xl)",
       },
@@ -72,5 +82,5 @@ export const designPreset: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [animate, typography],
 } satisfies Config;
