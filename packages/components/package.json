@@ -20,7 +20,6 @@
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",
-    "@ashgw/tailwind-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@types/react": "catalog:react18",
     "eslint": "catalog:",

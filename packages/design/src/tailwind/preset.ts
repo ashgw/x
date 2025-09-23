@@ -74,5 +74,3 @@ export const designPreset: Config = {
   },
   plugins: [],
 } satisfies Config;
-
-

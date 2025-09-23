@@ -30,7 +30,13 @@ export const DarkTheme: ThemeSpec = {
     muted: "0 0% 14.9%",
     mutedForeground: "0 0% 63.9%",
   },
-  radius: { sm: "0.375rem", md: "0.5rem", lg: "1rem", xl: "1.5rem", "2xl": "2rem" },
+  radius: {
+    sm: "0.375rem",
+    md: "0.5rem",
+    lg: "1rem",
+    xl: "1.5rem",
+    "2xl": "2rem",
+  },
   motion: { fast: "120ms", normal: "200ms", slow: "320ms" },
   shadow: {
     1: "0 1px 2px 0 rgb(0 0 0 / 0.08)",
@@ -38,4 +44,3 @@ export const DarkTheme: ThemeSpec = {
     3: "0 8px 32px 0 rgb(0 0 0 / 0.24)",
   },
 };
-

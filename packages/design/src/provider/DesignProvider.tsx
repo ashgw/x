@@ -14,7 +14,8 @@ export interface DesignProviderProps {
 function applyThemeToDocument(theme: ThemeSpec): void {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  const setVar = (name: string, value: string) => root.style.setProperty(name, value);
+  const setVar = (name: string, value: string) =>
+    root.style.setProperty(name, value);
 
   // Colors
   setVar("--ds-background", theme.colors.background);
@@ -61,7 +62,11 @@ function applyThemeToDocument(theme: ThemeSpec): void {
   setVar("--ds-shadow-3", theme.shadow[3]);
 }
 
-export function DesignProvider({ children, theme, mode = "system" }: PropsWithChildren<DesignProviderProps>) {
+export function DesignProvider({
+  children,
+  theme,
+  mode = "system",
+}: PropsWithChildren<DesignProviderProps>) {
   useEffect(() => {
     applyThemeToDocument(theme);
   }, [theme]);
@@ -72,5 +77,3 @@ export function DesignProvider({ children, theme, mode = "system" }: PropsWithCh
     </ThemeProvider>
   );
 }
-
-

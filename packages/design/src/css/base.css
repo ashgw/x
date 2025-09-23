@@ -84,6 +84,7 @@
     --border: var(--ds-border);
     --input: var(--ds-border);
     --ring: var(--ds-ring);
+    --radius: var(--ds-radius-md);
     /* Legacy glow variables used by older components */
     --deeper-purple: rgba(255, 46, 200, 0.5);
     --deeper-purple-dimmed: rgba(255, 46, 200, 0.2);

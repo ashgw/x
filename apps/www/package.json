@@ -81,7 +81,6 @@
     "@ashgw/next-config": "workspace:*",
     "@ashgw/playwright-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",
-    "@ashgw/tailwind-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@ashgw/vitest-config": "workspace:*",
     "@playwright/test": "catalog:",
