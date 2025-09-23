@@ -1,5 +1,3 @@
-import http from "http";
-import https from "https";
 import { setDefaultResultOrder } from "node:dns";
 import { setTimeout as sleep } from "timers/promises";
 import {
@@ -30,18 +28,6 @@ try {
 }
 
 const MAX_RETRIES = 3;
-
-const httpsAgent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 128,
-  keepAliveMsecs: 10_000,
-});
-
-const httpAgent = new http.Agent({
-  keepAlive: true,
-  maxSockets: 128,
-  keepAliveMsecs: 10_000,
-});
 
 export class S3Service extends BaseStorageService {
   /**
