@@ -19,3 +19,4 @@ export * from "./dialog";
 export * from "./popover";
 export * from "./command";
 export * from "./cva";
+export * from "./surface-card";
