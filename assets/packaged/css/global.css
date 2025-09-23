@@ -5,12 +5,17 @@
 
 @layer base {
   .gradient-bg {
-    background: linear-gradient(
-      84.16deg,
-      rgba(120, 30, 180, 0.28),
-      rgba(255, 215, 111, 0.02),
-      rgba(60, 0, 80, 0.24)
-    );
+    background: radial-gradient(
+        60% 60% at 50% 45%,
+        rgba(120, 30, 180, 0.08) 0%,
+        rgba(0, 0, 0, 0) 60%
+      ),
+      radial-gradient(
+        80% 80% at 85% 15%,
+        rgba(160, 40, 200, 0.05) 0%,
+        rgba(0, 0, 0, 0) 70%
+      ),
+      linear-gradient(180deg, #060008 0%, #000000 60%);
   }
 
   :root {
@@ -27,8 +32,8 @@
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
-    --deeper-purple: rgba(255, 46, 200, 0.5);
-    --deeper-purple-dimmed: rgba(255, 46, 200, 0.2);
+    --deeper-purple: rgba(120, 30, 180, 0.22);
+    --deeper-purple-dimmed: rgba(120, 30, 180, 0.12);
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
