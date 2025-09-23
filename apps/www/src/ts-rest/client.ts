@@ -1,17 +1,23 @@
+// TS-REST v3 client + React Query v5 hooks initializer
+// - initClient: runtime-safe client (supports throwOnUnknownStatus, validateResponse)
+// - initTsrReactQuery: generates typed hooks + providers for React Query v5
 import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 import { initClient } from "@ts-rest/core";
 import { contract } from "~/api/contract";
 import { apiV1endpoint } from "~/ts-rest/endpoint";
 import type { InitClientArgs } from "@ts-rest/core";
 
+// Centralized client options per latest docs
+// Prefer passing credentials via fetchOptions when needed; keep baseHeaders pure
 const args = {
   baseUrl: apiV1endpoint,
-  baseHeaders: {}, // can be used for auth, for exmaple, extract a CSRF token with a session cookie & send
-  validateResponse: true, // If true, validates responses against your schemas at runtime.
-  throwOnUnknownStatus: true, //  If true, throws if server returns a status not declared in your contract.
-  jsonQuery: false, //  If true, encodes query params as JSON instead of standard URL encoding.
+  baseHeaders: {},
+  validateResponse: true, // runtime response validation against contract
+  throwOnUnknownStatus: true, // enforce declared status codes only
+  jsonQuery: false,
 } satisfies InitClientArgs;
 
+// Low-level SDK for imperative calls (without React Query)
 export const sdk = initClient(contract, args);
 
 /**
@@ -23,4 +29,5 @@ export const sdk = initClient(contract, args);
  * ```
  *
  */
+// Hook container + Provider + initQueryClient/useQueryClient helpers
 export const tsrQueryClientSideClient = initTsrReactQuery(contract, args);
