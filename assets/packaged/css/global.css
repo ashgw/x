@@ -5,74 +5,92 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100% / 0;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100% / 0;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --background: 0 0% 100%; /* pure white, app background */
+    --foreground: 0 0% 3.9%; /* almost black (~#0a0a0a), main text */
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --card: 0 0% 100% / 0; /* transparent white, card bg */
+    --card-foreground: 0 0% 3.9%; /* near black, card text */
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --popover: 0 0% 100% / 0; /* transparent white, popover bg */
+    --popover-foreground: 0 0% 3.9%; /* near black, popover text */
 
-    /* >>> Deep muted purple accent <<< */
-    --accent: 282 22% 22%; /* dark plum-like */
-    --accent-foreground: 0 0% 98%;
+    --primary: 0 0% 9%; /* very dark grey (~#181818), primary surfaces */
+    --primary-foreground: 0 0% 98%; /* almost white, text on primary */
 
-    --deeper-purple: hsl(282 65% 45% / 0.5);
-    --deeper-purple-dimmed: hsl(282 65% 45% / 0.25);
+    --secondary: 0 0% 96.1%; /* light grey (~#f5f5f5), neutral surfaces */
+    --secondary-foreground: 0 0% 9%; /* near black, text on secondary */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --muted: 0 0% 96.1%; /* same light grey as secondary */
+    --muted-foreground: 0 0% 45.1%; /* mid grey (~#737373), muted text */
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 282 65% 45%;
+    /* ===== Accent (brand) ===== */
+    --accent: 282 22% 22%; /* deep muted purple (~#2a1f2d), accent surfaces */
+    --accent-foreground: 0 0% 98%; /* white, text on accent */
 
-    --radius: 0.5rem;
+    /* ===== Glow purples (for shadows, neon effects) ===== */
+    --deeper-purple: hsl(
+      282 65% 45% / 0.5
+    ); /* rich semi-transparent purple (~#9c4bcc @50%) */
+    --deeper-purple-dimmed: hsl(
+      282 65% 45% / 0.25
+    ); /* dimmer purple for subtle glows */
 
-    --bg-base: #0f090e;
-    --bg-linear-a: rgba(150, 46, 200, 0.08);
-    --bg-linear-b: rgba(255, 215, 111, 0.018);
-    --bg-linear-c: rgba(150, 0, 100, 0.06);
+    /* ===== Destructive (error states) ===== */
+    --destructive: 0 84.2% 60.2%; /* bright red (~#ef4444) */
+    --destructive-foreground: 0 0% 98%; /* white text on destructive */
 
-    --aurora-1: 120, 30, 120;
-    --aurora-2: 90, 20, 100;
-    --aurora-opacity-1: 0.1;
-    --aurora-opacity-2: 0.14;
-    --aurora-speed: 32s;
+    /* ===== Borders & inputs ===== */
+    --border: 0 0% 89.8%; /* light grey (~#e4e4e4), dividers */
+    --input: 0 0% 89.8%; /* same as border, input bg */
+    --ring: 282 65% 45%; /* strong purple (~#9c4bcc), focus rings */
+
+    /* ===== Shape ===== */
+    --radius: 0.5rem; /* 8px rounded corners */
+
+    /* ===== Background gradient base ===== */
+    --bg-base: #0f090e; /* deep purple-black base */
+    --bg-linear-a: rgba(150, 46, 200, 0.08); /* faint violet tint */
+    --bg-linear-b: rgba(255, 215, 111, 0.018); /* faint golden tint */
+    --bg-linear-c: rgba(150, 0, 100, 0.06); /* faint magenta tint */
+
+    /* ===== Aurora floating gradient blobs ===== */
+    --aurora-1: 120, 30, 120; /* deep purple blob */
+    --aurora-2: 90, 20, 100; /* violet blob */
+    --aurora-opacity-1: 0.1; /* opacity for aurora-1 */
+    --aurora-opacity-2: 0.14; /* opacity for aurora-2 */
+    --aurora-speed: 32s; /* animation duration */
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9% / 0;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9% / 0;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    /* ===== Core surface colors (dark mode) ===== */
+    --background: 0 0% 3.9%; /* almost black (~#0a0a0a) */
+    --foreground: 0 0% 98%; /* near white, text */
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --card: 0 0% 3.9% / 0; /* transparent black, card bg */
+    --card-foreground: 0 0% 98%; /* white, card text */
 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --popover: 0 0% 3.9% / 0; /* transparent black, popover bg */
+    --popover-foreground: 0 0% 98%; /* white, popover text */
 
-    --accent: 282 10% 10%;
-    --accent-foreground: 0 0% 100%;
+    --primary: 0 0% 98%; /* white, primary surfaces */
+    --primary-foreground: 0 0% 9%; /* dark text on white */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --secondary: 0 0% 14.9%; /* dark grey (~#262626), neutral surfaces */
+    --secondary-foreground: 0 0% 98%; /* white, text on secondary */
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 282 65% 55%;
+    --muted: 0 0% 14.9%; /* dark grey (~#262626), muted bg */
+    --muted-foreground: 0 0% 63.9%; /* light grey (~#a3a3a3), muted text */
+
+    /* Accent darker in dark mode so it doesn't glow too much */
+    --accent: 282 10% 10%; /* very deep muted purple (~#1a131a) */
+    --accent-foreground: 0 0% 100%; /* white text */
+
+    --destructive: 0 62.8% 30.6%; /* deep red (~#7f1d1d) */
+    --destructive-foreground: 0 0% 98%; /* white text */
+
+    --border: 0 0% 14.9%; /* dark grey (~#262626), dividers */
+    --input: 0 0% 14.9%; /* same, input bg */
+    --ring: 282 65% 55%; /* brighter purple (~#b86ee0), focus ring */
   }
 
   * {
@@ -105,6 +123,7 @@
     isolation: isolate;
   }
 
+  /* ===== Aurora floating gradient animation ===== */
   body::before {
     content: "";
     position: fixed;
