@@ -38,9 +38,10 @@
     /* ===== Borders & inputs ===== */
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 0 0% 95% / 0.35; /* subtle translucent off-white */
-    --ring-offset-width: 1px;
-    --ring-offset-color: hsl(var(--background));
+    /* --ring: 0 0% 95% / 0.35; /* subtle translucent off-white */
+    --ring: 0 0% 0% / 0; /* fully transparent */
+    --ring-offset-width: 1px; /* slim down thickness */
+    --ring-offset-color: hsl(var(--background)); /* blend with bg */
 
     /* ===== Shape ===== */
     --radius: 0.5rem;
@@ -88,7 +89,8 @@
 
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 0 0% 80% / 0.25; /* subtle dimmed halo */
+    /* --ring: 0 0% 80% / 0.25; /* subtle dimmed halo */
+    --ring: 0 0% 0% / 0; /* fully transparent */
     --ring-offset-width: 1px;
     --ring-offset-color: hsl(var(--background));
   }
@@ -174,13 +176,5 @@
     body::before {
       animation: none;
     }
-  }
-
-  /* ===== Fix double-border effect on focus ===== */
-  input:focus,
-  textarea:focus,
-  select:focus,
-  button:focus {
-    border-color: transparent !important;
   }
 }
