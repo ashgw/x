@@ -27,6 +27,7 @@
   },
   "author": "",
   "dependencies": {
+    "@ashgw/analytics": "workspace:*",
     "@ashgw/components": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/cross-runtime": "workspace:*",
