@@ -42,7 +42,7 @@
     /* ===== Borders & inputs ===== */
     --border: 0 0% 89.8%; /* light grey (~#e4e4e4), dividers */
     --input: 0 0% 89.8%; /* same as border, input bg */
-    --ring: 282 65% 45%; /* strong purple (~#9c4bcc), focus rings */
+    --ring: 0 0% 90%; /* soft off-white, around #e5e5e5 */
 
     /* ===== Shape ===== */
     --radius: 0.5rem; /* 8px rounded corners */
@@ -90,7 +90,7 @@
 
     --border: 0 0% 14.9%; /* dark grey (~#262626), dividers */
     --input: 0 0% 14.9%; /* same, input bg */
-    --ring: 282 65% 55%; /* brighter purple (~#b86ee0), focus ring */
+    --ring: 0 0% 80%; /* lighter gray for dark mode */
   }
 
   * {
