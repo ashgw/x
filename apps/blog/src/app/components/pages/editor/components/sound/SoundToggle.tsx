@@ -13,40 +13,29 @@ export function SoundToggle() {
       }
       aria-pressed={isPlaying}
       onClick={toggleSound}
-      className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full px-5 py-3 text-white glass"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.97 }}
+      className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full px-5 py-3 text-white border bg-transparent"
+      style={{ borderColor: "rgba(255,255,255,0.18)" }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.2 }}
       disabled={isLoading}
     >
-      {/* Border layer */}
-      <motion.div
-        className="absolute inset-0 rounded-full border"
-        initial={{ opacity: 0.8 }}
-        animate={{
-          borderColor: isPlaying
-            ? "var(--deeper-purple)" // ON = purple border
-            : "var(--deeper-purple-dimmed)", // OFF = dimmed purple
-          opacity: isLoading ? 0.4 : 1,
-        }}
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Sound wave icon */}
+      {/* icon */}
       <motion.div
         className="relative h-5 w-5"
-        initial={{ opacity: 0.8 }}
-        animate={{ opacity: isLoading ? 0.5 : isPlaying ? 1 : 0.7 }}
+        initial={{ opacity: 0.9 }}
+        animate={{ opacity: isLoading ? 0.55 : isPlaying ? 1 : 0.75 }}
+        transition={{ duration: 0.15 }}
       >
         <svg
           width="20"
           height="20"
           viewBox="0 0 24 24"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
           className="absolute inset-0"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M3 11V13M6 8V16M9 10V14M12 7V17M15 4V20M18 9V15M21 11V13"
@@ -54,7 +43,7 @@ export function SoundToggle() {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={isPlaying ? "opacity-100" : "opacity-50"}
+            className={isPlaying ? "opacity-100" : "opacity-60"}
           />
         </svg>
 
@@ -70,13 +59,12 @@ export function SoundToggle() {
         ) : null}
       </motion.div>
 
-      {/* Sound on/off text */}
+      {/* label */}
       <div className="flex flex-col justify-center">
         <motion.span
           className="text-xs font-medium uppercase tracking-wider"
-          animate={{
-            opacity: isLoading ? 0.5 : isPlaying ? 1 : 0.7,
-          }}
+          animate={{ opacity: isLoading ? 0.5 : isPlaying ? 1 : 0.8 }}
+          transition={{ duration: 0.15 }}
         >
           {isLoading ? "LOADING..." : `SOUND ${isPlaying ? "ON" : "OFF"}`}
         </motion.span>
