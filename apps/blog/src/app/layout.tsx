@@ -35,7 +35,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
-        <DesignProvider theme={PurpleTheme} mode="system">
+        <DesignProvider theme={PurpleTheme}>
           <AnalyticsProvider>
             <TRPCProvider siteBaseUrl={siteUrl}>
               <StoreProvider>{children}</StoreProvider>

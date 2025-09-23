@@ -35,7 +35,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body className={fonts.atkinsonHyperlegible.className}>
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
-        <DesignProvider theme={PurpleTheme} mode="system">
+        <DesignProvider theme={PurpleTheme}>
           <AnalyticsProvider>
             <TsrProvider>{children}</TsrProvider>
           </AnalyticsProvider>
