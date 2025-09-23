@@ -3,13 +3,14 @@ import "@ashgw/design/css/base.css";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { site_name } from "@ashgw/constants";
-import { Providers } from "@ashgw/components";
 import {
   createMetadata,
   JsonLd,
   organizationJsonLd,
   websiteJsonLd,
 } from "@ashgw/seo";
+
+import { AnalyticsProvider } from "@ashgw/analytics/client";
 
 import { DesignProvider } from "@ashgw/design/provider";
 import { PurpleTheme } from "@ashgw/design/themes";
@@ -35,9 +36,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <DesignProvider theme={PurpleTheme} mode="system">
-          <Providers>
+          <AnalyticsProvider>
             <TsrProvider>{children}</TsrProvider>
-          </Providers>
+          </AnalyticsProvider>
         </DesignProvider>
       </body>
     </html>

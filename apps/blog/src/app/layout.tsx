@@ -9,7 +9,7 @@ import {
   websiteJsonLd,
 } from "@ashgw/seo";
 
-import { Providers as GlobalProviders } from "@ashgw/components";
+import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
 import { DesignProvider } from "@ashgw/design";
 import { PurpleTheme } from "@ashgw/design/themes";
@@ -36,11 +36,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
         <DesignProvider theme={PurpleTheme} mode="system">
-          <GlobalProviders>
+          <AnalyticsProvider>
             <TRPCProvider siteBaseUrl={siteUrl}>
               <StoreProvider>{children}</StoreProvider>
             </TRPCProvider>
-          </GlobalProviders>
+          </AnalyticsProvider>
         </DesignProvider>
       </body>
     </html>
