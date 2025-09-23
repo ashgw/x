@@ -4,7 +4,7 @@ import "@ashgw/design/css/base.css";
 
 import type { GlobalErrorProperties } from "@ashgw/components";
 import { ErrorBoundary, Footer } from "@ashgw/components";
-import { fonts } from "@ashgw/ui";
+import { fonts } from "@ashgw/design/fonts";
 
 export default function GlobalError({ ...props }: GlobalErrorProperties) {
   return (

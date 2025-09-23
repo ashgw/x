@@ -4,7 +4,7 @@ import "@ashgw/design/css/base.css";
 
 import type { GlobalErrorProperties } from "@ashgw/components";
 import { ErrorBoundary, Footer } from "@ashgw/components";
-import { fonts } from "@ashgw/ui";
+import { fonts } from "@ashgw/design/fonts";
 
 import { GoBackHome } from "./components/pages/root";
 
