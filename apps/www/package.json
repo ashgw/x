@@ -44,7 +44,6 @@
     "@calcom/embed-react": "1.5.2",
     "@gsap/react": "2.1.0",
     "@next/third-parties": "15.0.2",
-    "@nextui-org/react": "catalog:",
     "@radix-ui/react-label": "2.1.0",
     "@radix-ui/react-separator": "1.0.3",
     "@radix-ui/react-slot": "1.1.0",
@@ -73,7 +72,6 @@
     "superjson": "catalog:",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7",
-    "ts-rest-kit": "workspace:*",
     "typed.js": "2.1.0",
     "zod": "catalog:"
   },
