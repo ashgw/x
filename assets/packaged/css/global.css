@@ -28,69 +28,69 @@
     --accent-foreground: 0 0% 98%; /* white, text on accent */
 
     /* ===== Glow purples (for shadows, neon effects) ===== */
-    --deeper-purple: hsl(
-      282 65% 45% / 0.5
-    ); /* rich semi-transparent purple (~#9c4bcc @50%) */
-    --deeper-purple-dimmed: hsl(
-      282 65% 45% / 0.25
-    ); /* dimmer purple for subtle glows */
+    --deeper-purple: hsl(282 65% 45% / 0.5);
+    --deeper-purple-dimmed: hsl(282 65% 45% / 0.25);
 
     /* ===== Destructive (error states) ===== */
     --destructive: 0 84.2% 60.2%; /* bright red (~#ef4444) */
     --destructive-foreground: 0 0% 98%; /* white text on destructive */
 
     /* ===== Borders & inputs ===== */
-    --border: 0 0% 89.8%; /* light grey (~#e4e4e4), dividers */
-    --input: 0 0% 89.8%; /* same as border, input bg */
-    --ring: 0 0% 90%; /* soft off-white, around #e5e5e5 */
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 95% / 0.35; /* subtle translucent off-white */
+    --ring-offset-width: 1px;
+    --ring-offset-color: hsl(var(--background));
 
     /* ===== Shape ===== */
-    --radius: 0.5rem; /* 8px rounded corners */
+    --radius: 0.5rem;
 
     /* ===== Background gradient base ===== */
-    --bg-base: #0f090e; /* deep purple-black base */
-    --bg-linear-a: rgba(150, 46, 200, 0.08); /* faint violet tint */
-    --bg-linear-b: rgba(255, 215, 111, 0.018); /* faint golden tint */
-    --bg-linear-c: rgba(150, 0, 100, 0.06); /* faint magenta tint */
+    --bg-base: #0f090e;
+    --bg-linear-a: rgba(150, 46, 200, 0.08);
+    --bg-linear-b: rgba(255, 215, 111, 0.018);
+    --bg-linear-c: rgba(150, 0, 100, 0.06);
 
     /* ===== Aurora floating gradient blobs ===== */
-    --aurora-1: 120, 30, 120; /* deep purple blob */
-    --aurora-2: 90, 20, 100; /* violet blob */
-    --aurora-opacity-1: 0.1; /* opacity for aurora-1 */
-    --aurora-opacity-2: 0.14; /* opacity for aurora-2 */
-    --aurora-speed: 32s; /* animation duration */
+    --aurora-1: 120, 30, 120;
+    --aurora-2: 90, 20, 100;
+    --aurora-opacity-1: 0.1;
+    --aurora-opacity-2: 0.14;
+    --aurora-speed: 32s;
   }
 
   .dark {
     /* ===== Core surface colors (dark mode) ===== */
-    --background: 0 0% 3.9%; /* almost black (~#0a0a0a) */
-    --foreground: 0 0% 98%; /* near white, text */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 3.9% / 0; /* transparent black, card bg */
-    --card-foreground: 0 0% 98%; /* white, card text */
+    --card: 0 0% 3.9% / 0;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 3.9% / 0; /* transparent black, popover bg */
-    --popover-foreground: 0 0% 98%; /* white, popover text */
+    --popover: 0 0% 3.9% / 0;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%; /* white, primary surfaces */
-    --primary-foreground: 0 0% 9%; /* dark text on white */
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
 
-    --secondary: 0 0% 14.9%; /* dark grey (~#262626), neutral surfaces */
-    --secondary-foreground: 0 0% 98%; /* white, text on secondary */
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 14.9%; /* dark grey (~#262626), muted bg */
-    --muted-foreground: 0 0% 63.9%; /* light grey (~#a3a3a3), muted text */
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
 
-    /* Accent darker in dark mode so it doesn't glow too much */
-    --accent: 282 10% 10%; /* very deep muted purple (~#1a131a) */
-    --accent-foreground: 0 0% 100%; /* white text */
+    /* Accent darker in dark mode */
+    --accent: 282 10% 10%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%; /* deep red (~#7f1d1d) */
-    --destructive-foreground: 0 0% 98%; /* white text */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%; /* dark grey (~#262626), dividers */
-    --input: 0 0% 14.9%; /* same, input bg */
-    --ring: 0 0% 80%; /* lighter gray for dark mode */
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 80% / 0.25; /* subtle dimmed halo */
+    --ring-offset-width: 1px;
+    --ring-offset-color: hsl(var(--background));
   }
 
   * {
@@ -174,5 +174,13 @@
     body::before {
       animation: none;
     }
+  }
+
+  /* ===== Fix double-border effect on focus ===== */
+  input:focus,
+  textarea:focus,
+  select:focus,
+  button:focus {
+    border-color: transparent !important;
   }
 }
