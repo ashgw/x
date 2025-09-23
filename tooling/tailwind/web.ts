@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { nextui } from "@nextui-org/react";
 import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
@@ -73,13 +72,5 @@ export const webConfig = {
       },
     },
   },
-  plugins: [
-    animate,
-    typography,
-    nextui({
-      layout: {
-        disabledOpacity: "0.3",
-      },
-    }),
-  ],
+  plugins: [animate, typography],
 } satisfies Config;

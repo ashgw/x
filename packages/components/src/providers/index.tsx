@@ -1,6 +1,5 @@
 "use client";
 
-import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
@@ -17,7 +16,7 @@ export function Providers({
         enableSystem
         disableTransitionOnChange
       >
-        <NextUIProvider>{children}</NextUIProvider>
+        {children}
       </NextThemesProvider>
     </AnalyticsProvider>
   );

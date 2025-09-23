@@ -1,7 +1,6 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
-import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function Providers({ children }: PropsWithChildren) {
@@ -12,7 +11,7 @@ export function Providers({ children }: PropsWithChildren) {
       enableSystem
       disableTransitionOnChange
     >
-      <NextUIProvider>{children}</NextUIProvider>
+      {children}
     </NextThemesProvider>
   );
 }
