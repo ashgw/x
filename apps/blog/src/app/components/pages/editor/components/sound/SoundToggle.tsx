@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import { useSound } from "./SoundContext";
 
 export function SoundToggle() {
@@ -14,14 +13,27 @@ export function SoundToggle() {
       }
       aria-pressed={isPlaying}
       onClick={toggleSound}
-      className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-lg bg-black/90 px-4 py-3 text-white shadow-lg backdrop-blur-md"
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full px-5 py-3 text-white glass"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.97 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       disabled={isLoading}
     >
+      {/* Border layer */}
+      <motion.div
+        className="absolute inset-0 rounded-full border"
+        initial={{ opacity: 0.8 }}
+        animate={{
+          borderColor: isPlaying
+            ? "var(--deeper-purple)" // ON = purple border
+            : "var(--deeper-purple-dimmed)", // OFF = dimmed purple
+          opacity: isLoading ? 0.4 : 1,
+        }}
+        transition={{ duration: 0.3 }}
+      />
+
       {/* Sound wave icon */}
       <motion.div
         className="relative h-5 w-5"
