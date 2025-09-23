@@ -1,4 +1,3 @@
-/* global.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,19 +13,27 @@
     --popover-foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
+
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
+
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --deeper-purple: rgba(255, 46, 200, 0.5);
-    --deeper-purple-dimmed: rgba(255, 46, 200, 0.2);
+
+    /* FIXED accent colors → now purple instead of grey */
+    --accent: 300 75% 55%; /* bright purple */
+    --accent-foreground: 0 0% 100%; /* white text */
+
+    --deeper-purple: hsl(300 75% 55% / 0.5);
+    --deeper-purple-dimmed: hsl(300 75% 55% / 0.2);
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --ring: 300 75% 55%;
+
     --radius: 0.5rem;
 
     --bg-base: #0f090e;
@@ -36,9 +43,9 @@
 
     --aurora-1: 120, 30, 120; /* deep purple */
     --aurora-2: 90, 20, 100; /* deeper violet */
-    --aurora-opacity-1: 0.1; /* lower = darker */
-    --aurora-opacity-2: 0.14; /* lower = darker */
-    --aurora-speed: 32s; /* higher = slower */
+    --aurora-opacity-1: 0.1;
+    --aurora-opacity-2: 0.14;
+    --aurora-speed: 32s;
   }
 
   .dark {
@@ -50,17 +57,23 @@
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
+
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
+
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+
+    /* Purple accent for dark mode too */
+    --accent: 300 80% 60%;
+    --accent-foreground: 0 0% 100%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --ring: 300 80% 60%;
   }
 
   * {
@@ -96,7 +109,7 @@
   body::before {
     content: "";
     position: fixed;
-    inset: -40vh; /* overscan so edges never show */
+    inset: -40vh;
     z-index: -2;
     pointer-events: none;
 
@@ -143,116 +156,5 @@
     body::before {
       animation: none;
     }
-  }
-}
-
-/* =========================================================
-   Premium Glass components (apply classes where you want)
-   ========================================================= */
-@layer components {
-  :root {
-    --glass-bg: rgba(12, 10, 16, 0.5);
-    --glass-bg-strong: rgba(12, 10, 16, 0.62);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-highlight: rgba(255, 255, 255, 0.1);
-    --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-    --glass-radius: 16px;
-    --glass-transition: 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .glass,
-  .glass-strong,
-  .glass-nav {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--glass-radius);
-    box-shadow: var(--glass-shadow);
-    position: relative;
-    overflow: hidden;
-    transition:
-      transform var(--glass-transition),
-      box-shadow var(--glass-transition),
-      background var(--glass-transition);
-    -webkit-backdrop-filter: saturate(160%) blur(16px);
-    backdrop-filter: saturate(160%) blur(16px);
-  }
-
-  .glass-strong {
-    background: var(--glass-bg-strong);
-    -webkit-backdrop-filter: saturate(160%) blur(22px);
-    backdrop-filter: saturate(160%) blur(22px);
-  }
-
-  .glass-nav {
-    border-radius: 12px;
-    background: rgba(12, 10, 16, 0.44);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    backdrop-filter: saturate(180%) blur(14px);
-  }
-
-  /* 1px inner top highlight */
-  .glass::before,
-  .glass-strong::before,
-  .glass-nav::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      var(--glass-highlight),
-      transparent 30%
-    );
-    opacity: 0.6;
-  }
-
-  @media (hover: hover) {
-    .glass:hover,
-    .glass-strong:hover,
-    .glass-nav:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
-    }
-  }
-
-  /* Hairline divider + focus ring + ghost button for glass surfaces */
-  .hairline {
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .focus-ring:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(140, 70, 200, 0.35);
-    transition: box-shadow var(--glass-transition);
-  }
-
-  .btn-ghost {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    padding: 8px 12px;
-    transition:
-      background var(--glass-transition),
-      border-color var(--glass-transition),
-      transform var(--glass-transition);
-  }
-  @media (hover: hover) {
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.1);
-      transform: translateY(-0.5px);
-    }
-  }
-
-  /* Subtle typographic polish */
-  .typography-premium h1 {
-    letter-spacing: -0.02em;
-  }
-  .typography-premium h2 {
-    letter-spacing: -0.015em;
-  }
-  .typography-premium p {
-    letter-spacing: 0.002em;
-    line-height: 1.65;
   }
 }
