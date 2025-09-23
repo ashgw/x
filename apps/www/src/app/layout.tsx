@@ -1,4 +1,4 @@
-import "@ashgw/css/global";
+import "@ashgw/design/css/base.css";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
@@ -10,7 +10,9 @@ import {
   organizationJsonLd,
   websiteJsonLd,
 } from "@ashgw/seo";
-import { fonts } from "@ashgw/ui";
+
+import { DesignProvider } from "@ashgw/design/provider";
+import { PurpleTheme } from "@ashgw/design/themes";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -28,12 +30,14 @@ export const metadata: Metadata = createMetadata({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={fonts.atkinsonHyperlegible.className}>
+      <body>
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
-        <Providers>
-          <TsrProvider>{children}</TsrProvider>
-        </Providers>
+        <DesignProvider theme={PurpleTheme} mode="system">
+          <Providers>
+            <TsrProvider>{children}</TsrProvider>
+          </Providers>
+        </DesignProvider>
       </body>
     </html>
   );

@@ -30,6 +30,7 @@
     "@ashgw/cross-runtime": "workspace:*",
     "@ashgw/css": "workspace:*",
     "@ashgw/db": "workspace:*",
+    "@ashgw/design": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
     "@ashgw/monitor": "workspace:*",

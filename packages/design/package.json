@@ -1,0 +1,31 @@
+{
+  "name": "@ashgw/design",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "tsc --noEmit; eslint ."
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./css/base.css": "./src/css/base.css",
+    "./tailwind": "./src/tailwind/index.ts",
+    "./themes": "./src/themes/index.ts",
+    "./tokens": "./src/tokens/base.tokens.ts",
+    "./provider": "./src/provider/DesignProvider.tsx"
+  },
+  "peerDependencies": {
+    "next-themes": "^0.3.0",
+    "react": "catalog:react18"
+  },
+  "devDependencies": {
+    "@ashgw/eslint-config": "workspace:*",
+    "@ashgw/prettier-config": "workspace:*",
+    "@ashgw/tsconfig": "workspace:*",
+    "@types/react": "catalog:react18",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  },
+  "type": "module"
+}

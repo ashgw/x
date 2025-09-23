@@ -1,6 +1,6 @@
 "use client";
 
-import "@ashgw/css/global";
+import "@ashgw/design/css/base.css";
 
 import type { GlobalErrorProperties } from "@ashgw/components";
 import { ErrorBoundary, Footer } from "@ashgw/components";

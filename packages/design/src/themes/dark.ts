@@ -1,0 +1,41 @@
+import type { ThemeSpec } from "../tokens/types";
+
+export const DarkTheme: ThemeSpec = {
+  name: "dark",
+  dark: true,
+  colors: {
+    background: "0 0% 3.9%",
+    surface: "0 0% 3.9% / 0",
+    surfaceMuted: "0 0% 14.9%",
+    text: "0 0% 98%",
+    textMuted: "0 0% 63.9%",
+    textStrong: "0 0% 98%",
+    accent: "222 84% 56%",
+    accentForeground: "0 0% 100%",
+    accentMuted: "222 84% 45%",
+    success: "142 70% 45%",
+    warning: "38 92% 50%",
+    danger: "0 62.8% 30.6%",
+    border: "0 0% 14.9%",
+    ring: "0 0% 0% / 0",
+    glowPrimary: "30 144 255 / 0.35",
+    card: "0 0% 3.9% / 0",
+    cardForeground: "0 0% 98%",
+    popover: "0 0% 3.9% / 0",
+    popoverForeground: "0 0% 98%",
+    primary: "0 0% 98%",
+    primaryForeground: "0 0% 9%",
+    secondary: "0 0% 14.9%",
+    secondaryForeground: "0 0% 98%",
+    muted: "0 0% 14.9%",
+    mutedForeground: "0 0% 63.9%",
+  },
+  radius: { sm: "0.375rem", md: "0.5rem", lg: "1rem", xl: "1.5rem", "2xl": "2rem" },
+  motion: { fast: "120ms", normal: "200ms", slow: "320ms" },
+  shadow: {
+    1: "0 1px 2px 0 rgb(0 0 0 / 0.08)",
+    2: "0 4px 16px 0 rgb(0 0 0 / 0.16)",
+    3: "0 8px 32px 0 rgb(0 0 0 / 0.24)",
+  },
+};
+

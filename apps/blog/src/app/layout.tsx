@@ -1,4 +1,4 @@
-import "@ashgw/css/global";
+import "@ashgw/design/css/base.css";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
@@ -11,7 +11,8 @@ import {
 
 import { Providers as GlobalProviders } from "@ashgw/components";
 import { env } from "@ashgw/env";
-import { fonts } from "@ashgw/ui";
+import { DesignProvider } from "@ashgw/design";
+import { PurpleTheme } from "@ashgw/design/themes";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
@@ -29,15 +30,17 @@ export const metadata: Metadata = createMetadata({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={fonts.atkinsonHyperlegible.className}>
+      <body>
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
-        <GlobalProviders>
-          <TRPCProvider siteBaseUrl={siteUrl}>
-            <StoreProvider>{children}</StoreProvider>
-          </TRPCProvider>
-        </GlobalProviders>
+        <DesignProvider theme={PurpleTheme} mode="system">
+          <GlobalProviders>
+            <TRPCProvider siteBaseUrl={siteUrl}>
+              <StoreProvider>{children}</StoreProvider>
+            </TRPCProvider>
+          </GlobalProviders>
+        </DesignProvider>
       </body>
     </html>
   );
