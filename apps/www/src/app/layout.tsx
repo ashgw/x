@@ -13,6 +13,7 @@ import {
 
 import { DesignProvider } from "@ashgw/design/provider";
 import { PurpleTheme } from "@ashgw/design/themes";
+import { fonts } from "@ashgw/ui";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -30,7 +31,7 @@ export const metadata: Metadata = createMetadata({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body>
+      <body className={fonts.atkinsonHyperlegible.className}>
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <DesignProvider theme={PurpleTheme} mode="system">

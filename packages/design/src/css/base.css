@@ -50,6 +50,19 @@
     --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
       Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji",
       "Segoe UI Emoji";
+
+    /* Background gradient base (adopted from legacy global.css) */
+    --bg-base: #0f090e;
+    --bg-linear-a: rgba(150, 46, 200, 0.08);
+    --bg-linear-b: rgba(255, 215, 111, 0.018);
+    --bg-linear-c: rgba(150, 0, 100, 0.06);
+
+    /* Aurora floating gradient blobs */
+    --aurora-1: 120, 30, 120;
+    --aurora-2: 90, 20, 100;
+    --aurora-opacity-1: 0.1;
+    --aurora-opacity-2: 0.14;
+    --aurora-speed: 32s;
   }
 
   .dark {
@@ -58,6 +71,84 @@
 
   * {
     @apply border-border;
+  }
+
+  html,
+  body {
+    scroll-behavior: smooth;
+    min-height: 100vh;
+  }
+
+  .gradient-bg {
+    background-color: var(--bg-base);
+    background-image: linear-gradient(
+      84.16deg,
+      var(--bg-linear-a),
+      var(--bg-linear-b),
+      var(--bg-linear-c)
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  body {
+    @apply gradient-bg text-foreground text-xl;
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+  }
+
+  /* Aurora floating gradient animation */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -40vh;
+    z-index: -2;
+    pointer-events: none;
+
+    background: radial-gradient(
+        64vw 64vw at 18% 28%,
+        rgba(var(--aurora-1), var(--aurora-opacity-1)) 0%,
+        rgba(var(--aurora-1), 0.05) 36%,
+        rgba(var(--aurora-1), 0) 66%
+      ),
+      radial-gradient(
+        76vw 76vw at 84% 64%,
+        rgba(var(--aurora-2), var(--aurora-opacity-2)) 0%,
+        rgba(var(--aurora-2), 0.06) 44%,
+        rgba(var(--aurora-2), 0) 72%
+      );
+
+    background-repeat: no-repeat;
+    transform: translate3d(0, 0, 0) scale(1.03);
+    will-change: transform;
+
+    animation: aurora-float var(--aurora-speed) cubic-bezier(0.37, 0.01, 0.2, 1)
+      infinite alternate;
+  }
+
+  @keyframes aurora-float {
+    0% {
+      transform: translate3d(-18%, -14%, 0) scale(1.02);
+    }
+    25% {
+      transform: translate3d(10%, -6%, 0) scale(1.04);
+    }
+    50% {
+      transform: translate3d(16%, 16%, 0) scale(1.06);
+    }
+    75% {
+      transform: translate3d(-8%, 8%, 0) scale(1.05);
+    }
+    100% {
+      transform: translate3d(14%, -12%, 0) scale(1.03);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body::before {
+      animation: none;
+    }
   }
 }
 

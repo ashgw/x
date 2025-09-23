@@ -13,6 +13,7 @@ import { Providers as GlobalProviders } from "@ashgw/components";
 import { env } from "@ashgw/env";
 import { DesignProvider } from "@ashgw/design";
 import { PurpleTheme } from "@ashgw/design/themes";
+import { fonts } from "@ashgw/ui";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
@@ -30,7 +31,7 @@ export const metadata: Metadata = createMetadata({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body>
+      <body className={fonts.atkinsonHyperlegible.className}>
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
