@@ -17,7 +17,7 @@ export function BlogLink({
 
   const LINK_CLASS_NAME = cn(
     "transition-200",
-    "gradient-text-purple",
+    "gradient-text-accent",
     "hover:text-white",
   );
   if (href.startsWith("#")) {
