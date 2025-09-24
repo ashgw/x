@@ -20,6 +20,9 @@ const badgeVariants = cva(
         outlineArchive: "border-2 border-amber-400 text-amber-400",
         success:
           "text-secondary border-transparent bg-green-400 font-bold hover:bg-green-300",
+        info: "text-blue-100 border-transparent bg-blue-500 font-bold hover:bg-blue-400",
+        outlineInfo:
+          "border-2 border-blue-400 text-blue-400 font-bold hover:border-blue-300 hover:text-blue-300",
       },
     },
     defaultVariants: {

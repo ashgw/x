@@ -57,7 +57,7 @@ export function BlogPreview({
             <div>{formattedDate}</div>
             <div>
               <div className="average-transition">
-                <Badge variant="outlineUpdated">Preview</Badge>
+                <Badge variant="outlineInfo">Preview</Badge>
               </div>
             </div>
           </div>
