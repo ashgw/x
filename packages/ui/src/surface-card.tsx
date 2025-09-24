@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { VariantProps } from "@ashgw/ui";
-import { cva, cn } from "@ashgw/ui";
+import { cva } from "./cva";
+import { cn } from "./cn";
 
 const surfaceCardVariants = cva(
   "group flex flex-col border border-white/10 shadow transition-all", // base
