@@ -11,8 +11,6 @@ import {
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
-import { DesignProvider } from "@ashgw/design";
-import { PurpleTheme } from "@ashgw/design/themes";
 import { fonts } from "@ashgw/design/fonts";
 
 import { TRPCProvider } from "~/trpc/provider";
@@ -35,13 +33,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
         <GoBackHome />
-        <DesignProvider theme={PurpleTheme}>
-          <AnalyticsProvider>
-            <TRPCProvider siteBaseUrl={siteUrl}>
-              <StoreProvider>{children}</StoreProvider>
-            </TRPCProvider>
-          </AnalyticsProvider>
-        </DesignProvider>
+        <AnalyticsProvider>
+          <TRPCProvider siteBaseUrl={siteUrl}>
+            <StoreProvider>{children}</StoreProvider>
+          </TRPCProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );

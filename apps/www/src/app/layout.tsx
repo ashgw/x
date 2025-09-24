@@ -11,9 +11,6 @@ import {
 } from "@ashgw/seo";
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
-
-import { DesignProvider } from "@ashgw/design/provider";
-import { PurpleTheme } from "@ashgw/design/themes";
 import { fonts } from "@ashgw/design/fonts";
 
 import { env } from "@ashgw/env";
@@ -35,11 +32,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body className={fonts.atkinsonHyperlegible.className}>
         <JsonLd code={organizationJsonLd(siteUrl)} />
         <JsonLd code={websiteJsonLd(siteUrl)} />
-        <DesignProvider theme={PurpleTheme}>
-          <AnalyticsProvider>
-            <TsrProvider>{children}</TsrProvider>
-          </AnalyticsProvider>
-        </DesignProvider>
+        <AnalyticsProvider>
+          <TsrProvider>{children}</TsrProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );

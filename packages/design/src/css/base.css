@@ -6,38 +6,38 @@
 
 @layer base {
   :root {
-    /* Design token variables populated by provider */
-    --ds-background: 0 0% 100%;
-    --ds-surface: 0 0% 100% / 0;
-    --ds-surface-muted: 0 0% 96.1%;
-    --ds-text: 0 0% 3.9%;
-    --ds-text-muted: 0 0% 45.1%;
-    --ds-text-strong: 0 0% 3.9%;
-    --ds-accent: 240 5% 64%;
-    --ds-accent-foreground: 0 0% 100%;
-    --ds-accent-muted: 240 5% 40%;
+    /* Design token variables - hardcoded Purple theme to prevent FOUC */
+    --ds-background: 0 0% 3.9%;
+    --ds-surface: 0 0% 3.9% / 0;
+    --ds-surface-muted: 0 0% 14.9%;
+    --ds-text: 0 0% 98%;
+    --ds-text-muted: 0 0% 63.9%;
+    --ds-text-strong: 0 0% 98%;
+    --ds-accent: 282 22% 22%;
+    --ds-accent-foreground: 0 0% 98%;
+    --ds-accent-muted: 282 20% 16%;
     --ds-success: 142 70% 45%;
     --ds-warning: 38 92% 50%;
-    --ds-danger: 0 84.2% 60.2%;
-    --ds-border: 0 0% 89.8%;
+    --ds-danger: 0 62.8% 30.6%;
+    --ds-border: 0 0% 14.9%;
     --ds-ring: 0 0% 0% / 0;
     --ds-glow-primary: 255 46 200 / 0.5;
-    --ds-card: 0 0% 100% / 0;
-    --ds-card-foreground: 0 0% 3.9%;
-    --ds-popover: 0 0% 100% / 0;
-    --ds-popover-foreground: 0 0% 3.9%;
-    --ds-primary: 0 0% 9%;
-    --ds-primary-foreground: 0 0% 98%;
-    --ds-secondary: 0 0% 96.1%;
-    --ds-secondary-foreground: 0 0% 9%;
-    --ds-muted: 0 0% 96.1%;
-    --ds-muted-foreground: 0 0% 45.1%;
+    --ds-card: 0 0% 3.9% / 0;
+    --ds-card-foreground: 0 0% 98%;
+    --ds-popover: 0 0% 3.9% / 0;
+    --ds-popover-foreground: 0 0% 98%;
+    --ds-primary: 0 0% 98%;
+    --ds-primary-foreground: 0 0% 9%;
+    --ds-secondary: 0 0% 14.9%;
+    --ds-secondary-foreground: 0 0% 98%;
+    --ds-muted: 0 0% 14.9%;
+    --ds-muted-foreground: 0 0% 63.9%;
 
     --ds-radius-sm: 0.375rem;
     --ds-radius-md: 0.5rem;
-    --ds-radius-lg: 1rem;
-    --ds-radius-xl: 1.5rem;
-    --ds-radius-2xl: 2rem;
+    --ds-radius-lg: 0.75rem;
+    --ds-radius-xl: 1rem;
+    --ds-radius-2xl: 1.5rem;
 
     --ds-motion-fast: 120ms;
     --ds-motion-normal: 200ms;
