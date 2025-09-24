@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge, Button } from "@ashgw/ui";
+import { Badge } from "@ashgw/ui";
 import { Views } from "~/app/components/shared/views";
 
 import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";
@@ -25,15 +25,12 @@ export function BlogPostData({ postData }: BlogPostProps) {
       <ViewTracker postSlug={postData.slug} />
       <div className="flex items-center justify-between">
         <H1 id={postData.title}>{postData.title}</H1>
-        <Link href={`/editor?blog=${postData.slug}`} className="ml-4">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-9 w-9 rounded-full"
-            aria-label={`Edit blog post: ${postData.title}`}
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
+        <Link
+          href={`/editor?blog=${postData.slug}`}
+          aria-label={`Edit blog post: ${postData.title}`}
+          className="ml-2 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Edit className="h-4 w-4" />
         </Link>
       </div>
 
