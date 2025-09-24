@@ -13,7 +13,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         navbar:
-          "glowsup hover:average-translate bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 transition-all hover:opacity-100",
+          "glowsup hover:translate-up-1 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 transition-all hover:opacity-100",
         navbarMin:
           "glowsup transition-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 hover:opacity-100",
 

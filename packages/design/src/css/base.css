@@ -180,7 +180,7 @@
 
 @layer utilities {
   /* Legacy utilities kept for backwards compatibility */
-  .average-translate {
+  .translate-up-1 {
     @apply -translate-y-1;
   }
 
