@@ -80,7 +80,7 @@ export function Newsletter() {
                         className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-transparent px-3 text-sm font-medium text-[#B0B0B0] outline-none transition-all duration-300 ease-in-out selection:bg-white/10 hover:border-white/20 focus:border-white/30 focus:ring-0 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-[#B0B0B0] [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] focus:[&:-webkit-autofill]:bg-transparent"
                       />
                       <Button
-                        className="glowsup shrink-0"
+                        className="glow-500 shrink-0"
                         variant="navbar"
                         type="submit"
                         disabled={subscribeMutation.isPending}

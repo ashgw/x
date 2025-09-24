@@ -17,7 +17,7 @@ export const CopyButton: FC<CopyButtonProps> = ({ code, className }) => {
   return (
     <button
       className={cn(
-        "transition-200 hover:translate-up-1 glowsup rounded-xl border-2 border-[#191919] p-2 px-3 py-2 hover:border-[#340929]",
+        "transition-200 hover:translate-up-1 glow-500 rounded-xl border-2 border-[#191919] p-2 px-3 py-2 hover:border-[#340929]",
         className,
       )}
       onClick={() => {

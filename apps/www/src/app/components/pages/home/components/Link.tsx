@@ -16,7 +16,7 @@ const Link = ({ href, name, inNewTab = false }: LinkProps) => {
       rel={inNewTab ? "noopener noreferrer" : undefined}
     >
       <span> </span>
-      <strong className="glows text-white">{name}</strong>
+      <strong className="glow-500 text-white">{name}</strong>
       <span> </span>
     </NextLink>
   );
