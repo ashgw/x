@@ -11,7 +11,8 @@
     "./tailwind": "./src/tailwind/index.ts",
     "./themes": "./src/themes/index.ts",
     "./tokens": "./src/tokens/base.tokens.ts",
-    "./fonts": "./src/fonts/fonts.ts"
+    "./fonts": "./src/fonts/fonts.ts",
+    "./utils": "./src/utils/themeToCssVars.ts"
   },
   "peerDependencies": {
     "react": "catalog:react18"

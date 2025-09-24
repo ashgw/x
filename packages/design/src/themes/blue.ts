@@ -1,4 +1,7 @@
 import type { ThemeSpec } from "../tokens/types";
+import { DefaultRadii } from "../tokens/radii";
+import { DefaultMotion } from "../tokens/motion";
+import { DefaultShadow } from "../tokens/shadow";
 
 export const BlueTheme: ThemeSpec = {
   name: "blue",
@@ -30,17 +33,7 @@ export const BlueTheme: ThemeSpec = {
     muted: "222 31% 15%",
     mutedForeground: "215 20% 65%",
   },
-  radius: {
-    sm: "0.375rem",
-    md: "0.5rem",
-    lg: "1rem",
-    xl: "1.5rem",
-    "2xl": "2rem",
-  },
-  motion: { fast: "120ms", normal: "200ms", slow: "320ms" },
-  shadow: {
-    1: "0 1px 2px 0 rgb(0 0 0 / 0.08)",
-    2: "0 4px 16px 0 rgb(0 0 0 / 0.16)",
-    3: "0 8px 32px 0 rgb(0 0 0 / 0.24)",
-  },
+  radius: DefaultRadii,
+  motion: DefaultMotion,
+  shadow: DefaultShadow,
 };
