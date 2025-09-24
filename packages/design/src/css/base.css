@@ -184,11 +184,11 @@
     @apply -translate-y-1;
   }
 
-  .slower-transition {
+  .transition-300 {
     transition: ease-in-out 0.2s;
   }
 
-  .average-transition {
+  .transition-200 {
     transition: ease-in-out 0.15s;
   }
 

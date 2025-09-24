@@ -56,7 +56,7 @@ export function BlogPreview({
           <div className="mb-8 flex items-center justify-between text-sm">
             <div>{formattedDate}</div>
             <div>
-              <div className="average-transition">
+              <div className="transition-200">
                 <Badge variant="outlineInfo">Preview</Badge>
               </div>
             </div>

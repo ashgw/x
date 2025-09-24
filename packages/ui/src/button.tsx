@@ -15,10 +15,10 @@ const buttonVariants = cva(
         navbar:
           "glowsup hover:average-translate bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 transition-all hover:opacity-100",
         navbarMin:
-          "glowsup average-transition bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 hover:opacity-100",
+          "glowsup transition-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 hover:opacity-100",
 
         default:
-          "average-transition bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] opacity-95 hover:opacity-100",
+          "transition-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] opacity-95 hover:opacity-100",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:

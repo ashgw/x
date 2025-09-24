@@ -16,7 +16,7 @@ export function BlogLink({
     origin === "www" ? env.NEXT_PUBLIC_WWW_URL : env.NEXT_PUBLIC_BLOG_URL;
 
   const LINK_CLASS_NAME = cn(
-    "average-transition",
+    "transition-200",
     "gradient-text-purple",
     "hover:text-white",
   );

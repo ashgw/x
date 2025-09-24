@@ -20,8 +20,8 @@ const surfaceCardVariants = cva(
       },
       animate: {
         none: "",
-        scale: "hover:scale-105 slower-transition",
-        pop: "hover:scale-110 slower-transition",
+        scale: "hover:scale-105 transition-300",
+        pop: "hover:scale-110 transition-300",
       },
     },
     defaultVariants: {
