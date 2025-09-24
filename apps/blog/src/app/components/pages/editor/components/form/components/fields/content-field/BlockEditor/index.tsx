@@ -550,7 +550,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   const compactView = (
     <div className="bg-card relative rounded-lg border p-4">
       <div className="bg-card flex items-center justify-between py-2">
-        <h3 className="text-lg font-semibold">Content</h3>
+        <h3 className="text-lg font-semibold">Block Editor</h3>
         <div className="flex gap-2">
           <Button
             variant="outline"
