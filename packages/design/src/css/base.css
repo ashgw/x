@@ -228,28 +228,6 @@
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
 
-  .nav-link-shadow {
-    position: relative;
-  }
-
-  @media (width >= 1024px) {
-    .nav-link-shadow::before {
-      content: "";
-      position: absolute;
-      height: 33px;
-      width: 70px;
-      z-index: -1;
-      background: var(--deeper-purple);
-      filter: blur(25px);
-      opacity: 0;
-      transition: opacity 0.3s ease-out;
-    }
-
-    .nav-link-shadow:hover::before {
-      opacity: 0.8;
-    }
-  }
-
   .gradient-text-purple {
     @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
 
