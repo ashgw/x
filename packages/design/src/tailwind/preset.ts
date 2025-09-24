@@ -49,7 +49,6 @@ export const designPreset: Config = {
         },
       },
       borderRadius: {
-        // Exact legacy mapping using --radius var
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
