@@ -98,7 +98,7 @@ export function Newsletter() {
             />
           </form>
         </Form>
-        <p className="dimmed-3 mt-4 text-center text-sm">
+        <p className="text-dim-300 mt-4 text-center text-sm">
           Subscribe to my newsletter. No gimmicks, just food for thought &
           sauce.
         </p>

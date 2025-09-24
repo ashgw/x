@@ -71,7 +71,7 @@ export function PostCards({ posts }: PostsProps) {
         className={`rounded-xl px-4 py-2 transition-all duration-200 ${
           selectedCategory === category
             ? "border border-white/30 bg-white/5 text-white"
-            : "dimmed-3 hover:dimmed-4 border border-white/10 hover:border-white/40"
+            : "text-dim-300 hover:text-dim-400 border border-white/10 hover:border-white/40"
         }`}
       >
         {capitalizeFirst(category.toLowerCase())}
@@ -125,7 +125,7 @@ export function PostCards({ posts }: PostsProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="dimmed-3 mt-32 text-center"
+          className="text-dim-300 mt-32 text-center"
         >
           No matches found
         </motion.div>

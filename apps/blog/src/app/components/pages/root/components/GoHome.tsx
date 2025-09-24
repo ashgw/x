@@ -23,7 +23,7 @@ function GoHomeContent() {
       type="button"
       onClick={handleClick}
       className={`mb-4 ml-5 mt-5 inline-flex items-center hover:text-foreground ${
-        pathname === "/" ? "invisible dimmed-4" : ""
+        pathname === "/" ? "invisible text-dim-400" : ""
       }`}
     >
       <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-white/10 px-3 py-2 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:pr-5 md:scale-125">

@@ -30,7 +30,7 @@ export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
 
   return (
     <div
-      className="dimmed-3 flex h-screen w-full scale-150 flex-col items-center justify-center text-center"
+      className="text-dim-300 flex h-screen w-full scale-150 flex-col items-center justify-center text-center"
       style={{
         padding: "40px 20px",
         gap: "20px",

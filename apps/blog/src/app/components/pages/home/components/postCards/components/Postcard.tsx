@@ -26,13 +26,13 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
           </div>
 
           <Link href={`/${postData.slug}`}>
-            <h2 className="dimmed-4 text-2xl font-bold lg:text-[2.5rem]">
+            <h2 className="text-dim-400 text-2xl font-bold lg:text-[2.5rem]">
               {postData.title}
             </h2>
-            <p className="dimmed-3 mt-3 lg:text-xl">{postData.summary}</p>
+            <p className="text-dim-300 mt-3 lg:text-xl">{postData.summary}</p>
           </Link>
 
-          <div className="dimmed-4 flex flex-wrap items-center gap-[0.625rem] text-sm">
+          <div className="text-dim-400 flex flex-wrap items-center gap-[0.625rem] text-sm">
             {postData.tags.map((tag) => (
               <Link
                 href={`/tag/${tag}`}
@@ -42,7 +42,7 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
                 {tag}
               </Link>
             ))}
-            <div className="dimmed-1 flex items-center gap-2">
+            <div className="text-dim-200 flex items-center gap-2">
               <span>
                 {postData.minutesToRead
                   ? `${postData.minutesToRead} minutes`

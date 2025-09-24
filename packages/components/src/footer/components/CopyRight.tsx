@@ -12,7 +12,7 @@ export function CopyRight() {
       initial={{ opacity: 0 }}
       transition={{ duration: 1, ease: "easeInOut" }}
     >
-      <p className="text-secondary-center dimmed-3 flex items-center justify-center text-sm">
+      <p className="text-secondary-center text-dim-300 flex items-center justify-center text-sm">
         &copy; {new Date().getFullYear()} {creator}. All rights reserved
       </p>
     </motion.div>

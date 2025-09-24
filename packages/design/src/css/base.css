@@ -192,23 +192,23 @@
     transition: ease-in-out 0.15s;
   }
 
-  .dimmed-0 {
+  .text-dim-100 {
     color: hsl(0deg 0% 48%);
   }
 
-  .dimmed-1 {
+  .text-dim-200 {
     color: hsl(0deg 0% 65%);
   }
 
-  .dimmed-3 {
+  .text-dim-300 {
     color: hsl(0deg 0% 75%);
   }
 
-  .dimmed-4 {
+  .text-dim-400 {
     color: hsl(0deg 0% 90%);
   }
 
-  .dimmed-5 {
+  .text-dim-500 {
     color: hsl(0deg 0% 95%);
   }
 
@@ -254,19 +254,5 @@
     @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
 
     background-clip: text;
-  }
-
-  .u-glow {
-    filter: drop-shadow(0 0 0.75rem rgb(var(--ds-glow-primary)));
-  }
-
-  .u-gradient-text-accent {
-    @apply bg-clip-text text-transparent;
-
-    background-image: linear-gradient(
-      90deg,
-      hsl(var(--ds-accent)),
-      hsl(var(--ds-accent) / 60%)
-    );
   }
 }

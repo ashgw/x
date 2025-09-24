@@ -48,7 +48,7 @@ export function HomePage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="dimmed-3 mx-2 my-1 p-2 font-normal"
+                    className="text-dim-300 mx-2 my-1 p-2 font-normal"
                   >
                     I just pushed some new content to my{" "}
                     <Link href={links.gitHub.link} name="Onlyfans" />
