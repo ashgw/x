@@ -44,7 +44,7 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
           />
           <button
             className={cn(
-              "nav-link-shadow relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
+              "relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
               {
                 "text-white": !isToggled,
                 "text-gray-300": isToggled,
@@ -56,7 +56,7 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
           </button>
           <button
             className={cn(
-              "nav-link-shadow relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
+              "relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
               {
                 "text-white": isToggled,
                 "text-gray-300": !isToggled,
