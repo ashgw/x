@@ -31,7 +31,6 @@ export const PurpleTheme: ThemeSpec = {
     mutedForeground: "0 0% 63.9%",
   },
   radius: {
-    // Align with legacy feel: base corners a bit sharper
     sm: "0.375rem",
     md: "0.5rem",
     lg: "0.75rem",

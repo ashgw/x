@@ -7,12 +7,10 @@
     "lint": "tsc --noEmit; eslint ."
   },
   "exports": {
-    ".": "./src/index.ts",
     "./css/base.css": "./src/css/base.css",
     "./tailwind": "./src/tailwind/index.ts",
     "./themes": "./src/themes/index.ts",
     "./tokens": "./src/tokens/base.tokens.ts",
-    "./provider": "./src/provider/DesignProvider.tsx",
     "./fonts": "./src/fonts/fonts.ts"
   },
   "peerDependencies": {
