@@ -10,7 +10,6 @@
   "exports": {
     "./css/base.css": "./src/css/base.css",
     "./tailwind": "./src/tailwind/index.ts",
-    "./themes": "./src/themes/index.ts",
     "./tokens": "./src/tokens/base.tokens.ts",
     "./fonts": "./src/fonts/fonts.ts"
   },
