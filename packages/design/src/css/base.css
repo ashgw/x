@@ -179,7 +179,6 @@
 }
 
 @layer utilities {
-  /* Legacy utilities kept for backwards compatibility */
   .translate-up-1 {
     @apply -translate-y-1;
   }
@@ -212,10 +211,6 @@
     color: hsl(0deg 0% 95%);
   }
 
-  .glow-300:hover {
-    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
-  }
-
   .glow-300 {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
   }
@@ -223,12 +218,7 @@
   .glow-500 {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
-
-  .glow-500:hover {
-    filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
-  }
-
-  .gradient-text-purple {
+  s .gradient-text-purple {
     @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
 
     background-clip: text;
