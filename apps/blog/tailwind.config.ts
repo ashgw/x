@@ -1,16 +1,8 @@
 import type { Config } from "tailwindcss";
 
-import { designPreset } from "@ashgw/design/tailwind";
+import { designContent, designPreset } from "@ashgw/design/tailwind";
 
-const config = {
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
-    "../../packages/components/src/**/*.{ts,tsx}",
-    "../../packages/design/src/**/*.{ts,tsx}",
-  ],
+export default {
+  content: [...designContent],
   presets: [designPreset],
 } satisfies Config;
-
-export default config;
