@@ -64,7 +64,7 @@ export function HomePage() {
                       }}
                       aria-label="Copy email address"
                     >
-                      <strong className="glow-500 text-white">email</strong>
+                      <strong className="glow-300 text-white">email</strong>
                     </button>{" "}
                     or{" "}
                     <button
@@ -75,7 +75,7 @@ export function HomePage() {
                       }}
                       aria-label="Copy X handle"
                     >
-                      <strong className="glow-500 text-white">x</strong>
+                      <strong className="glow-300 text-white">x</strong>
                     </button>
                   </motion.p>
                 </div>

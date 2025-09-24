@@ -212,19 +212,19 @@
     color: hsl(0deg 0% 95%);
   }
 
-  .glow-500:hover {
+  .glow-300:hover {
+    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
+  }
+
+  .glow-300 {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
   }
 
   .glow-500 {
-    filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
-  }
-
-  .glow-500-dimmed {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
 
-  .glow-500-dimmed:hover {
+  .glow-500:hover {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
 

@@ -9,7 +9,7 @@ const surfaceCardVariants = cva(
     variants: {
       variant: {
         default: "bg-background/50",
-        glow: "glow-500-dimmed hover:slower-translate hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]",
+        glow: "glow-500 hover:slower-translate hover:shadow-[0px_4px_88px_0px_var(--deeper-purple)]",
         subtle: "hover:shadow-md hover:border-white/20",
         flat: "border-none shadow-none bg-transparent",
       },
