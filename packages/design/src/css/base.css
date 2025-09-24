@@ -32,30 +32,26 @@
     --ds-secondary-foreground: 0 0% 98%;
     --ds-muted: 0 0% 14.9%;
     --ds-muted-foreground: 0 0% 63.9%;
-
     --ds-radius-sm: 0.375rem;
     --ds-radius-md: 0.5rem;
     --ds-radius-lg: 0.75rem;
     --ds-radius-xl: 1rem;
     --ds-radius-2xl: 1.5rem;
-
     --ds-motion-fast: 120ms;
     --ds-motion-normal: 200ms;
     --ds-motion-slow: 320ms;
-
-    --ds-shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.08);
-    --ds-shadow-2: 0 4px 16px 0 rgb(0 0 0 / 0.16);
-    --ds-shadow-3: 0 8px 32px 0 rgb(0 0 0 / 0.24);
-
-    --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-      Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji",
+    --ds-shadow-1: 0 1px 2px 0 rgb(0 0 0 / 8%);
+    --ds-shadow-2: 0 4px 16px 0 rgb(0 0 0 / 16%);
+    --ds-shadow-3: 0 8px 32px 0 rgb(0 0 0 / 24%);
+    --font-sans: ui-sans-serif, system-ui, -apple-system, segoe ui, roboto,
+      noto sans, ubuntu, cantarell, helvetica neue, arial, "Apple Color Emoji",
       "Segoe UI Emoji";
 
     /* Background gradient base (adopted from legacy global.css) */
     --bg-base: #0f090e;
-    --bg-linear-a: rgba(150, 46, 200, 0.08);
-    --bg-linear-b: rgba(255, 215, 111, 0.018);
-    --bg-linear-c: rgba(150, 0, 100, 0.06);
+    --bg-linear-a: rgb(150 46 200 / 8%);
+    --bg-linear-b: rgb(255 215 111 / 1.8%);
+    --bg-linear-c: rgb(150 0 100 / 6%);
 
     /* Aurora floating gradient blobs */
     --aurora-1: 120, 30, 120;
@@ -84,11 +80,13 @@
     --border: var(--ds-border);
     --input: var(--ds-border);
     --ring: var(--ds-ring);
+
     /* Legacy radius base used by old setup */
     --radius: var(--ds-radius-md);
+
     /* Legacy glow variables used by older components */
-    --deeper-purple: rgba(255, 46, 200, 0.5);
-    --deeper-purple-dimmed: rgba(255, 46, 200, 0.2);
+    --deeper-purple: rgb(255 46 200 / 50%);
+    --deeper-purple-dimmed: rgb(255 46 200 / 20%);
   }
 
   .dark {
@@ -119,6 +117,7 @@
 
   body {
     @apply gradient-bg text-foreground text-xl;
+
     position: relative;
     z-index: 0;
     isolation: isolate;
@@ -131,24 +130,21 @@
     inset: -40vh;
     z-index: -2;
     pointer-events: none;
-
     background: radial-gradient(
         64vw 64vw at 18% 28%,
-        rgba(var(--aurora-1), var(--aurora-opacity-1)) 0%,
-        rgba(var(--aurora-1), 0.05) 36%,
-        rgba(var(--aurora-1), 0) 66%
+        rgb(var(--aurora-1), var(--aurora-opacity-1)) 0%,
+        rgb(var(--aurora-1), 0.05) 36%,
+        rgb(var(--aurora-1), 0) 66%
       ),
       radial-gradient(
         76vw 76vw at 84% 64%,
-        rgba(var(--aurora-2), var(--aurora-opacity-2)) 0%,
-        rgba(var(--aurora-2), 0.06) 44%,
-        rgba(var(--aurora-2), 0) 72%
+        rgb(var(--aurora-2), var(--aurora-opacity-2)) 0%,
+        rgb(var(--aurora-2), 0.06) 44%,
+        rgb(var(--aurora-2), 0) 72%
       );
-
     background-repeat: no-repeat;
     transform: translate3d(0, 0, 0) scale(1.03);
     will-change: transform;
-
     animation: aurora-float var(--aurora-speed) cubic-bezier(0.37, 0.01, 0.2, 1)
       infinite alternate;
   }
@@ -157,15 +153,19 @@
     0% {
       transform: translate3d(-18%, -14%, 0) scale(1.02);
     }
+
     25% {
       transform: translate3d(10%, -6%, 0) scale(1.04);
     }
+
     50% {
       transform: translate3d(16%, 16%, 0) scale(1.06);
     }
+
     75% {
       transform: translate3d(-8%, 8%, 0) scale(1.05);
     }
+
     100% {
       transform: translate3d(14%, -12%, 0) scale(1.03);
     }
@@ -183,38 +183,47 @@
   .average-translate {
     @apply -translate-y-1;
   }
+
   .slower-transition {
     transition: ease-in-out 0.2s;
   }
+
   .average-transition {
     transition: ease-in-out 0.15s;
   }
 
   .dimmed-0 {
-    color: hsl(0 0% 48%);
+    color: hsl(0deg 0% 48%);
   }
+
   .dimmed-1 {
-    color: hsl(0 0% 65%);
+    color: hsl(0deg 0% 65%);
   }
+
   .dimmed-3 {
-    color: hsl(0 0% 75%);
+    color: hsl(0deg 0% 75%);
   }
+
   .dimmed-4 {
-    color: hsl(0 0% 90%);
+    color: hsl(0deg 0% 90%);
   }
+
   .dimmed-5 {
-    color: hsl(0 0% 95%);
+    color: hsl(0deg 0% 95%);
   }
 
   .glowsup:hover {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
   }
+
   .glows {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple));
   }
+
   .glows-dimmed {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
+
   .glowsup-dimmed:hover {
     filter: drop-shadow(0 0 0.75rem var(--deeper-purple-dimmed));
   }
@@ -222,7 +231,8 @@
   .nav-link-shadow {
     position: relative;
   }
-  @media (min-width: 1024px) {
+
+  @media (width >= 1024px) {
     .nav-link-shadow::before {
       content: "";
       position: absolute;
@@ -234,6 +244,7 @@
       opacity: 0;
       transition: opacity 0.3s ease-out;
     }
+
     .nav-link-shadow:hover::before {
       opacity: 0.8;
     }
@@ -241,18 +252,21 @@
 
   .gradient-text-purple {
     @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
-    -webkit-background-clip: text;
+
+    background-clip: text;
   }
 
   .u-glow {
     filter: drop-shadow(0 0 0.75rem rgb(var(--ds-glow-primary)));
   }
+
   .u-gradient-text-accent {
     @apply bg-clip-text text-transparent;
+
     background-image: linear-gradient(
       90deg,
       hsl(var(--ds-accent)),
-      hsl(var(--ds-accent) / 0.6)
+      hsl(var(--ds-accent) / 60%)
     );
   }
 }

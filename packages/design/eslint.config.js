@@ -3,7 +3,7 @@ import baseConfig from "@ashgw/eslint-config/base";
 /** @type {import('typescript-eslint').Config} */
 export default [
   {
-    ignores: ["dist/**"],
+    ignores: ["dist/**", ".stylelintrc.js", ".stylelintrc.cjs"],
   },
   ...baseConfig,
 ];

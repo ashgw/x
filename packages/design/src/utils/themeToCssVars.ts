@@ -12,27 +12,39 @@ export function themeToCssVars(theme: ThemeSpec): Record<string, string> {
   const vars: Record<string, string> = {};
 
   // Colors
-  for (const [key, value] of Object.entries(theme.colors)) {
+  for (const [key, value] of Object.entries(theme.colors) as [
+    keyof typeof theme.colors,
+    string,
+  ][]) {
     const varName = `--ds-${toKebabCase(key)}`;
     vars[varName] = value;
   }
 
   // Radii
-  for (const [key, value] of Object.entries(theme.radius)) {
+  for (const [key, value] of Object.entries(theme.radius) as [
+    keyof typeof theme.radius,
+    string,
+  ][]) {
     const varName = `--ds-radius-${toKebabCase(key)}`;
     vars[varName] = value;
   }
 
   // Motion
-  for (const [key, value] of Object.entries(theme.motion)) {
+  for (const [key, value] of Object.entries(theme.motion) as [
+    keyof typeof theme.motion,
+    string,
+  ][]) {
     const varName = `--ds-motion-${toKebabCase(key)}`;
     vars[varName] = value;
   }
 
   // Shadow
-  for (const [key, value] of Object.entries(theme.shadow)) {
-    const varName = `--ds-shadow-${toKebabCase(key)}`;
-    vars[varName] = value as string;
+  for (const [key, value] of Object.entries(theme.shadow) as [
+    string,
+    string,
+  ][]) {
+    const varName = `--ds-shadow-${key}`;
+    vars[varName] = value;
   }
 
   // Legacy mappings kept for back-compat (point legacy to design tokens)
