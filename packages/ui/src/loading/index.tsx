@@ -28,7 +28,7 @@ export function LoadingPoints({
     size ?? (circleSize === "4px" ? "sm" : circleSize === "8px" ? "md" : "lg");
 
   const resolvedColor: LPColor =
-    color ?? (glowColor === "currentColor" ? "current" : (color ?? "accent"));
+    color ?? (glowColor === "currentColor" ? "current" : "accent");
 
   return (
     <LP
