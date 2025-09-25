@@ -42,4 +42,8 @@
   /* Muted state colors */
   --ds-muted: 0 0% 14.9%;
   --ds-muted-foreground: 0 0% 63.9%;
+
+  /* Accent gradient */
+  --ds-accent-gradient-start: 330 75% 60%; /* pink side */
+  --ds-accent-gradient-end: 282 62% 60%; /* purple side */
 }
