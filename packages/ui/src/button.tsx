@@ -6,12 +6,17 @@ import { cva } from "class-variance-authority";
 import { cn } from "@ashgw/ui";
 import { LoadingPoints } from "./loading";
 
-// buttonEffects.ts
-export const outlineInteractive =
+const outlineInteractive =
   "border text-dim-300 border-white/10 " +
   "hover:text-dim-400 hover:border-white/40 hover:bg-white/[0.03] " + // subtle hover fill
   "data-[state=on]:text-white data-[state=on]:border-white/30 " +
   "data-[state=on]:bg-white/5"; // faint inside fill on active/focus
+
+const outlineDestructiveInteractive =
+  "border text-[hsl(var(--ds-danger))] border-[hsl(var(--ds-danger))]/40 " +
+  "hover:text-[hsl(var(--ds-danger))]/80 hover:border-[hsl(var(--ds-danger))]/70 hover:bg-[hsl(var(--ds-danger))]/[0.08] " +
+  "data-[state=on]:text-[hsl(var(--ds-danger))] data-[state=on]:border-[hsl(var(--ds-danger))]/70 " +
+  "data-[state=on]:bg-[hsl(var(--ds-danger))]/20";
 
 const defaultInteractive =
   "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
@@ -21,9 +26,9 @@ const defaultInteractive =
   // active: push it a bit darker for click feedback
   "active:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-strong))]";
 
-const destructiveInteractive =
+export const destructiveInteractive =
   "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
-  "bg-[hsl(var(--ds-danger))] text-dim-300 " + // match outline text style
+  "bg-[hsl(var(--ds-danger))] text-dim-300 " +
   // hover: dip danger color + lighten text a bit
   "hover:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-medium))] " +
   "hover:text-dim-400 " +
@@ -43,7 +48,13 @@ const buttonVariants = cva(
         default: defaultInteractive,
         "default:rounded": defaultInteractive + " rounded-full",
 
-        destructive: destructiveInteractive,
+        destructive:
+          "rounded-md text-sm font-semibold bg-transparent " +
+          destructiveInteractive,
+
+        "destructive:outline":
+          "rounded-md text-sm font-semibold bg-transparent " +
+          outlineDestructiveInteractive,
 
         outline:
           "rounded-md text-sm font-semibold bg-transparent " +
