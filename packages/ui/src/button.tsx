@@ -6,6 +6,13 @@ import { cva } from "class-variance-authority";
 import { cn } from "@ashgw/ui";
 import { LoadingPoints } from "./loading";
 
+// buttonEffects.ts
+export const outlineInteractive =
+  "border text-dim-300 border-white/10 " +
+  "hover:text-dim-400 hover:border-white/40 hover:bg-white/[0.03] " + // subtle hover fill
+  "data-[state=on]:text-white data-[state=on]:border-white/30 " +
+  "data-[state=on]:bg-white/5"; // faint inside fill on active/focus
+
 const buttonVariants = cva(
   "py-2 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap " +
     "transition-colors focus-visible:outline-none focus-visible:ring-2 " +
@@ -26,10 +33,7 @@ const buttonVariants = cva(
           "hover:bg-[hsl(var(--ds-danger))]/var(--ds-opacity-strong)",
 
         outline:
-          "rounded-md text-sm font-medium border border-[hsl(var(--ds-border))] " +
-          "bg-transparent text-[hsl(var(--ds-text))] " +
-          "hover:text-[hsl(var(--ds-accent-foreground))] " +
-          "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong)",
+          "rounded-md text-sm font-medium bg-transparent " + outlineInteractive,
 
         secondary:
           "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
@@ -59,8 +63,7 @@ const buttonVariants = cva(
 
         toggle:
           "rounded-xl px-4 py-2 font-semibold transition-all duration-200 " +
-          "border text-dim-300 border-white/10 hover:text-dim-400 hover:border-white/40 " +
-          "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
+          outlineInteractive,
       },
 
       tone: {
