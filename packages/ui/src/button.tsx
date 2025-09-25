@@ -23,7 +23,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
+          "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
           "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
           "hover:bg-[hsl(var(--ds-primary))]/var(--ds-opacity-strong)",
 
@@ -33,7 +33,8 @@ const buttonVariants = cva(
           "hover:bg-[hsl(var(--ds-danger))]/var(--ds-opacity-strong)",
 
         outline:
-          "rounded-md text-sm font-medium bg-transparent " + outlineInteractive,
+          "rounded-md text-sm font-semibold bg-transparent " +
+          outlineInteractive,
 
         secondary:
           "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
