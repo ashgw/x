@@ -6,11 +6,13 @@
   * {
     @apply border-border;
   }
+
   html,
   body {
     scroll-behavior: smooth;
     min-height: 100vh;
   }
+
   @media (prefers-reduced-motion: reduce) {
     body::before {
       animation: none;

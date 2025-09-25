@@ -19,6 +19,7 @@ const loadingDot = cva("loading-dot rounded-full inline-block", {
         "bg-[hsl(var(--ds-energy))] shadow-[0_0_20px_hsl(var(--ds-energy))]",
       accent:
         "bg-[hsl(var(--ds-accent))] shadow-[0_0_20px_hsl(var(--ds-accent))]",
+      current: "bg-[currentColor] shadow-[0_0_20px_currentColor]",
     },
   },
   defaultVariants: {

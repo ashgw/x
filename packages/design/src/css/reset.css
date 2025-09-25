@@ -16,7 +16,7 @@ html:focus-within {
 
 body {
   min-height: 100vh;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
