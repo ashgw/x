@@ -7,7 +7,7 @@ export const designPreset: Config = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--ds-border))",
+        default: "hsl(var(--ds-border))",
         input: "hsl(var(--ds-border))",
         ring: "hsl(var(--ds-ring))",
         background: "hsl(var(--ds-background))",
