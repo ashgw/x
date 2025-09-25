@@ -1,17 +1,30 @@
-/* Reset styles from reset.css (neutralizes browser defaults) */
+/* src/css/base.css */
 @import url("./reset.css");
 
-/* Tailwind base layer (preflight reset + base styles) */
 @tailwind base;
 
-/* Tailwind components layer (prebuilt classes like forms, buttons) */
-@tailwind components;
+@import url("./tokens/index.css");
 
-/* Tailwind utilities layer (single-purpose classes like flex, p-4, etc.) */
+@layer base {
+  .dark {
+  }
+  * {
+    @apply border-border;
+  }
+  html,
+  body {
+    scroll-behavior: smooth;
+    min-height: 100vh;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::before {
+      animation: none;
+    }
+  }
+}
+
+@tailwind components;
 @tailwind utilities;
 
-/* Split layers: tokens, base rules, animations, background, utilities */
-@import url("./tokens/index.css");
-@import url("./globals/document.css");
 @import url("./background/index.css");
 @import url("./utilities/index.css");
