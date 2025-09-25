@@ -49,15 +49,11 @@ const buttonVariants = cva(
           "hover:text-[hsl(var(--ds-text))] " +
           "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong) " +
           "hover:bg-[hsl(var(--ds-surface-muted))]",
-
         toggle:
-          "rounded-xl font-semibold transition-all duration-[var(--ds-motion-normal)] " +
-          "text-[hsl(var(--ds-text-muted))] border border-[hsl(var(--ds-border))] " +
-          "hover:text-[hsl(var(--ds-text))] " +
-          "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-medium) " +
-          "data-[state=on]:text-[hsl(var(--ds-text))] " +
-          "data-[state=on]:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong) " +
-          "data-[state=on]:bg-[hsl(var(--ds-surface-muted))]",
+          "rounded-xl transition-all duration-200 font-semibold " +
+          "text-dim-300 border border-white/10 " +
+          "hover:text-dim-400 hover:border-white/40 " +
+          "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
       },
 
       tone: {
