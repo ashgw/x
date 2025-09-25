@@ -106,7 +106,7 @@ export function SortOptions({
       animate="visible"
     >
       {/* Sort Field and Order */}
-      <motion.div variants={itemVariants} whileHover={{ scale: 1.05 }}>
+      <motion.div variants={itemVariants}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -196,7 +196,7 @@ export function SortOptions({
       </motion.div>
 
       {/* Status Filter */}
-      <motion.div variants={itemVariants} whileHover={{ scale: 1.05 }}>
+      <motion.div variants={itemVariants}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -271,7 +271,7 @@ export function SortOptions({
       </motion.div>
 
       {/* Category Filter */}
-      <motion.div variants={itemVariants} whileHover={{ scale: 1.05 }}>
+      <motion.div variants={itemVariants}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -326,7 +326,7 @@ export function SortOptions({
 
       {/* Tag Filter */}
       {allTags.length > 0 ? (
-        <motion.div variants={itemVariants} whileHover={{ scale: 1.05 }}>
+        <motion.div variants={itemVariants}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
