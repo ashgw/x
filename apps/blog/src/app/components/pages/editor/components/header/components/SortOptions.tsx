@@ -170,11 +170,7 @@ export function SortOptions({
       <motion.div variants={itemVariants}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex h-8 items-center gap-1"
-            >
+            <Button variant="outline" className="flex h-8 items-center gap-1">
               <span>Status</span>
               <ListChecks className="h-4 w-4" />
               {options.statusFilter !== "all" && (

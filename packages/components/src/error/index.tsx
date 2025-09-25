@@ -1,17 +1,17 @@
 "use client";
 
 import type NextError from "next/error";
-import { useEffect } from "react";
+import {useEffect} from "react";
 
-import { monitor } from "@ashgw/monitor";
-import { Button, toast } from "@ashgw/ui";
+import {monitor} from "@ashgw/monitor";
+import {Button, toast} from "@ashgw/ui";
 
 export interface GlobalErrorProperties {
-  readonly error: NextError & { digest?: string };
+  readonly error: NextError & {digest?: string};
   readonly reset?: () => void;
 }
 
-export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
+export const ErrorBoundary = ({error, reset}: GlobalErrorProperties) => {
   useEffect(() => {
     toast.message(
       monitor.next.captureException({
@@ -47,9 +47,10 @@ export const ErrorBoundary = ({ error, reset }: GlobalErrorProperties) => {
           I've logged this error and will look into it as soon as possible.
         </p>
       </div>
-      <Button variant="navbar" onClick={handleReset}>
+      <Button variant="default" onClick={handleReset}>
         Try again
       </Button>
     </div>
   );
 };
+

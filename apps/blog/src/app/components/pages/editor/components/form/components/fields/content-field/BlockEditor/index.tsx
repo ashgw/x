@@ -554,7 +554,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
         <div className="flex gap-2">
           <Button
             variant="outline"
-            size="sm"
             className="relative"
             onClick={() => setIsExpanded(true)}
             type="button"
@@ -564,7 +563,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
           </Button>
           <Button
             variant="outline"
-            size="sm"
             className="relative"
             onClick={() => setShowAddCommand(true)}
             type="button"
@@ -635,7 +633,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => {
                   setIsExpanded(false);
                   // Reset user interaction flag when closing
@@ -650,7 +647,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
               </Button>
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => setShowAddCommand(true)}
                 type="button"
               >
