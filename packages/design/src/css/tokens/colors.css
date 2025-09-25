@@ -26,7 +26,7 @@
 
   /* Border + focus ring */
   --ds-border: 0 0% 14.9%; /* Border color */
-  --ds-ring: 0 0% 0% / 0; /* Focus ring (disabled by default) */
+  --ds-ring: 282 62% 60% / var(--ds-opacity-subtle); /* thin & light */
 
   /* Cards & popovers */
   --ds-card: 0 0% 3.9% / 0;

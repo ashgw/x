@@ -13,6 +13,15 @@
     min-height: 100vh;
   }
 
+  /* 
+  Remove focus ring from all elements
+  */
+  :focus {
+    --tw-ring-offset-width: 0 !important;
+    --tw-ring-color: transparent !important;
+    box-shadow: none !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     body::before {
       animation: none;

@@ -185,7 +185,6 @@ export function SessionsList({ sessions, setSessions }: SessionsListProps) {
                     <TableCell className="text-right">
                       <Button
                         variant="destructive"
-                        size="sm"
                         onClick={() =>
                           terminateSpecificSessionMutation.mutate({
                             sessionId: session.id,
