@@ -20,6 +20,7 @@
 
   /* Status colors */
   --ds-success: 142 70% 45%; /* Success (green) */
+  --ds-info: 210 90% 60%; /* Info (blue) */
   --ds-warning: 38 92% 50%; /* Warning (yellow) */
   --ds-danger: 0 62.8% 30.6%; /* Danger/error (red) */
 
