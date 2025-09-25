@@ -4,13 +4,13 @@ import { cva } from "./cva";
 import { cn } from "./cn";
 
 const surfaceCardVariants = cva(
-  "group flex flex-col border border-white/10 shadow transition-all", // base
+  "group flex flex-col border shadow transition-all", // base
   {
     variants: {
       variant: {
         default: "bg-background/50",
         glow: "glow-500 hover:slower-translate hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)]",
-        subtle: "hover:shadow-md hover:border-white/20",
+        subtle: "hover:shadow-md",
         flat: "border-none shadow-none bg-transparent",
       },
       size: {

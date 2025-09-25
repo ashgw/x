@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { cn } from "./cn";
 
 interface SkeletonProps {
   className?: string;
@@ -14,10 +15,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
   width = "100%",
 }) => {
   return (
-    <div
-      className={`animate-pulse rounded bg-gray-300 ${className}`}
-      style={{ height, width }}
-    />
+    <div className={cn("skeleton", className)} style={{ height, width }} />
   );
 };
 

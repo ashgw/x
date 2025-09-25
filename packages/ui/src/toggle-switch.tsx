@@ -27,7 +27,7 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
       <div
         ref={ref}
         className={cn(
-          "turn-bg-gradient relative flex h-11 min-w-[200px] max-w-xl rounded-full border border-white/20 p-1 font-medium backdrop-blur-md", // Use your gradient class
+          "turn-bg-gradient relative flex h-11 min-w-[200px] max-w-xl rounded-full border p-1 font-medium blur-medium",
           className,
         )}
         {...rest}
@@ -35,7 +35,7 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
         <div className="relative flex h-full w-full">
           <div
             className={cn(
-              "absolute inset-0 m-[1px] w-1/2 rounded-full bg-white/20 transition-transform duration-300 ease-in-out",
+              "absolute inset-0 m-[1px] w-1/2 rounded-full bg-foreground/20 transition-transform duration-300 ease-in-out",
               {
                 "translate-x-0": !isToggled,
                 "translate-x-full": isToggled,
@@ -46,8 +46,8 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
             className={cn(
               "relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
               {
-                "text-white": !isToggled,
-                "text-gray-300": isToggled,
+                "text-foreground": !isToggled,
+                "text-muted-foreground": isToggled,
               },
             )}
             onClick={() => onToggle(false)}
@@ -58,8 +58,8 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
             className={cn(
               "relative z-10 w-1/2 flex-1 px-4 text-center transition-colors duration-300",
               {
-                "text-white": isToggled,
-                "text-gray-300": !isToggled,
+                "text-foreground": isToggled,
+                "text-muted-foreground": !isToggled,
               },
             )}
             onClick={() => onToggle(true)}

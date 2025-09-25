@@ -42,9 +42,10 @@ export const designPreset: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        DEFAULT: "var(--ds-radius)",
+        sm: "var(--ds-radius-sm)",
+        md: "var(--ds-radius-md)",
+        lg: "var(--ds-radius-lg)",
         xl: "var(--ds-radius-xl)",
         "2xl": "var(--ds-radius-2xl)",
       },

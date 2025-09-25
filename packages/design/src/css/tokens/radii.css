@@ -9,4 +9,5 @@
   --ds-radius-lg: 0.75rem;
   --ds-radius-xl: 1rem;
   --ds-radius-2xl: 1.5rem;
+  --radius: var(--ds-radius-md); /* the default radius */
 }
