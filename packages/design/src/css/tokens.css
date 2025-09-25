@@ -1,0 +1,109 @@
+:root {
+  /* ------------------------------
+       DESIGN TOKENS (global variables)
+    ------------------------------ */
+
+  /* Background + surface tones */
+  --ds-background: 0 0% 3.9%; /* Main page background (dark gray/black) */
+  --ds-surface: 0 0% 3.9% / 0; /* Transparent surface layer */
+  --ds-surface-muted: 0 0% 14.9%; /* Muted surface (panels, cards) */
+
+  /* Text colors */
+  --ds-text: 0 0% 98%; /* Default text (near white) */
+  --ds-text-muted: 0 0% 63.9%; /* Subtle/dimmed text */
+  --ds-text-strong: 0 0% 98%; /* Strong/primary text */
+
+  /* Accent colors (purple theme) */
+  --ds-accent: 282 22% 22%; /* Accent background */
+  --ds-accent-foreground: 0 0% 98%; /* Text over accent */
+  --ds-accent-muted: 282 20% 16%; /* Darker muted accent */
+
+  /* Status colors */
+  --ds-success: 142 70% 45%; /* Success (green) */
+  --ds-warning: 38 92% 50%; /* Warning (yellow) */
+  --ds-danger: 0 62.8% 30.6%; /* Danger/error (red) */
+
+  /* Border + focus ring */
+  --ds-border: 0 0% 14.9%; /* Border color */
+  --ds-ring: 0 0% 0% / 0; /* Focus ring (disabled by default) */
+
+  /* Glow / highlight effects */
+  --ds-glow-primary: 255 46 200 / 0.5; /* Neon glow effect */
+
+  /* Cards & popovers */
+  --ds-card: 0 0% 3.9% / 0;
+  --ds-card-foreground: 0 0% 98%;
+  --ds-popover: 0 0% 3.9% / 0;
+  --ds-popover-foreground: 0 0% 98%;
+
+  /* Primary / secondary brand layers */
+  --ds-primary: 0 0% 98%; /* Primary bg (usually white) */
+  --ds-primary-foreground: 0 0% 9%; /* Text on primary */
+  --ds-secondary: 0 0% 14.9%; /* Secondary background */
+  --ds-secondary-foreground: 0 0% 98%; /* Text on secondary */
+
+  /* Muted state colors */
+  --ds-muted: 0 0% 14.9%;
+  --ds-muted-foreground: 0 0% 63.9%;
+
+  /* Radii (corner rounding) */
+  --ds-radius-sm: 0.375rem; /* small buttons */
+  --ds-radius-md: 0.5rem; /* inputs/cards */
+  --ds-radius-lg: 0.75rem;
+  --ds-radius-xl: 1rem;
+  --ds-radius-2xl: 1.5rem;
+
+  /* Motion speeds (animations) */
+  --ds-motion-fast: 120ms;
+  --ds-motion-normal: 200ms;
+  --ds-motion-slow: 320ms;
+
+  /* Shadows (elevation levels) */
+  --ds-shadow-1: 0 1px 2px 0 rgb(0 0 0 / 8%);
+  --ds-shadow-2: 0 4px 16px 0 rgb(0 0 0 / 16%);
+  --ds-shadow-3: 0 8px 32px 0 rgb(0 0 0 / 24%);
+
+  /* Font family stack */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, segoe ui, roboto,
+    noto sans, ubuntu, cantarell, helvetica neue, arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+
+  /* Background gradient tokens */
+  --bg-base: #0f090e; /* Fallback base color */
+  --bg-gradient-start: rgb(150 46 200 / 8%);
+  --bg-gradient-mid: rgb(255 215 111 / 1.8%);
+  --bg-gradient-end: rgb(150 0 100 / 6%);
+
+  /* Aurora floating gradient blobs */
+  --aurora-1: 120, 30, 120; /* Blob 1 color */
+  --aurora-2: 90, 20, 100; /* Blob 2 color */
+  --aurora-opacity-1: 0.1;
+  --aurora-opacity-2: 0.14;
+  --aurora-speed: 32s; /* Animation duration */
+
+  /* glow effects */
+  --glow-accent-strong: rgb(255 46 200 / 50%);
+  --glow-accent-subtle: rgb(255 46 200 / 20%);
+
+  /* shadcn/ui aliases */
+  --background: var(--ds-background);
+  --foreground: var(--ds-text);
+  --card: var(--ds-card);
+  --card-foreground: var(--ds-card-foreground);
+  --popover: var(--ds-popover);
+  --popover-foreground: var(--ds-popover-foreground);
+  --primary: var(--ds-primary);
+  --primary-foreground: var(--ds-primary-foreground);
+  --secondary: var(--ds-secondary);
+  --secondary-foreground: var(--ds-secondary-foreground);
+  --muted: var(--ds-muted);
+  --muted-foreground: var(--ds-muted-foreground);
+  --accent: var(--ds-accent);
+  --accent-foreground: var(--ds-accent-foreground);
+  --destructive: var(--ds-danger);
+  --destructive-foreground: var(--ds-text);
+  --border: var(--ds-border);
+  --input: var(--ds-border);
+  --ring: var(--ds-ring);
+  --radius: var(--ds-radius-md);
+}
