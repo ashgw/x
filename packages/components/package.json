@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "format": "prettier . --write",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
@@ -46,6 +46,5 @@
     "react": "catalog:react18",
     "zod": "3.23.8"
   },
-  "prettier": "@ashgw/prettier-config",
   "type": "module"
 }
