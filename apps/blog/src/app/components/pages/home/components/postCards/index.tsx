@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { CheckCheck, ChevronDown } from "lucide-react";
 
 import { Footer } from "@ashgw/components";
+import { Button } from "@ashgw/ui";
 
 import type { PostCardRo } from "~/api/models";
 import { PostCategoryEnum } from "~/api/models";
@@ -66,16 +67,15 @@ export function PostCards({ posts }: PostsProps) {
 
   function CategoryButton({ category }: { category: Category }) {
     return (
-      <button
+      <Button
+        variant="toggle"
+        border="md"
+        active={selectedCategory === category}
         onClick={() => setSelectedCategory(category)}
-        className={`rounded-xl px-4 py-2 transition-all duration-200 ${
-          selectedCategory === category
-            ? "border border-white/30 bg-white/5 text-white"
-            : "text-dim-300 hover:text-dim-400 border border-white/10 hover:border-white/40"
-        }`}
+        className="px-4 py-2"
       >
         {capitalizeFirst(category.toLowerCase())}
-      </button>
+      </Button>
     );
   }
 

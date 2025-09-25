@@ -27,10 +27,22 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+
+        // Legacy squared variants (kept for compatibility)
         "squared:default":
           "border-input text-secondary hover:bg-accent hover:text-foreground rounded-md border bg-background font-bold",
         "squared:outline":
           "border-input text-foreground hover:bg-accent hover:text-foreground rounded-md border bg-transparent font-bold",
+
+        // New variants
+        squareSolid:
+          "border-input text-secondary hover:bg-accent hover:text-foreground rounded-md border bg-background font-bold",
+        squareOutline:
+          "border-input text-foreground hover:bg-accent hover:text-foreground rounded-md border bg-transparent font-bold",
+        glowOutline:
+          "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
+        toggle:
+          "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] data-[state=on]:text-[hsl(var(--ds-text))] data-[state=on]:border-white/30 data-[state=on]:bg-white/5 hover:border-white/40 hover:bg-white/5",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -38,19 +50,45 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
       },
+      tone: {
+        default: "",
+        info: "bg-[hsl(var(--ds-info))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-info))]/90",
+        warning:
+          "bg-[hsl(var(--ds-warning))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-warning))]/90",
+        success:
+          "bg-[hsl(var(--ds-success))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-success))]/90",
+        danger:
+          "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-danger))]/90",
+      },
+      radius: {
+        sm: "rounded-sm",
+        md: "rounded-md",
+        full: "rounded-full",
+      },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      tone: "default",
+      radius: "md",
     },
   },
 );
 
+export type ButtonTone = "default" | "info" | "warning" | "success" | "danger";
+
+export interface ButtonStyle {
+  border?: "sm" | "md" | "full";
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants>,
+    ButtonStyle {
   asChild?: boolean;
   loading?: boolean;
+  active?: boolean;
+  tone?: ButtonTone;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -61,6 +99,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       asChild = false,
       loading = false,
+      active = false,
+      tone,
+      border,
       children,
       ...props
     },
@@ -69,9 +110,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({
+            variant,
+            size,
+            tone,
+            radius: border,
+            className,
+          }),
+        )}
         ref={ref}
         disabled={loading || props.disabled}
+        data-state={active ? "on" : "off"}
+        aria-pressed={active ? true : undefined}
         {...props}
       >
         {loading ? (
