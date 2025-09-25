@@ -13,7 +13,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-md text-sm font-medium duration-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-2xl opacity-95 hover:opacity-100",
+          "rounded-md text-sm font-medium duration-200 bg-primary/95 text-primary-foreground hover:bg-primary opacity-95 hover:opacity-100",
         destructive:
           "rounded-md text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -23,6 +23,9 @@ const buttonVariants = cva(
         ghost:
           "rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground",
         link: "text-sm font-medium text-primary underline-offset-4 hover:underline",
+
+        glowOutline:
+          "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
 
         toggle:
           "rounded-xl transition-all duration-200 font-semibold " +
