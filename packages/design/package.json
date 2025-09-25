@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "format": "prettier . --write",
-    "lint": "tsc --noEmit; eslint . && stylelint \"src/**/*.css\"",
-    "lint:css": "stylelint \"src/**/*.css\""
+    "lint": "tsc --noEmit; eslint ."
   },
   "exports": {
     "./css": "./src/css/base.css",

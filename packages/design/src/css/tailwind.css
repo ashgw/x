@@ -19,6 +19,7 @@
   :focus {
     --tw-ring-offset-width: 0 !important;
     --tw-ring-color: transparent !important;
+
     box-shadow: none !important;
   }
 
