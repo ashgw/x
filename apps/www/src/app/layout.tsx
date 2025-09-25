@@ -9,6 +9,7 @@ import {
   organizationJsonLd,
   websiteJsonLd,
 } from "@ashgw/seo";
+import { ThemeProvider } from "@ashgw/design/theme";
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { fonts } from "@ashgw/design/fonts";
@@ -30,11 +31,13 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
-        <JsonLd code={organizationJsonLd(siteUrl)} />
-        <JsonLd code={websiteJsonLd(siteUrl)} />
-        <AnalyticsProvider>
-          <TsrProvider>{children}</TsrProvider>
-        </AnalyticsProvider>
+        <ThemeProvider>
+          <JsonLd code={organizationJsonLd(siteUrl)} />
+          <JsonLd code={websiteJsonLd(siteUrl)} />
+          <AnalyticsProvider>
+            <TsrProvider>{children}</TsrProvider>
+          </AnalyticsProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
