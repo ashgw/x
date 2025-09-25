@@ -12,6 +12,7 @@ import {
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
 import { fonts } from "@ashgw/design/fonts";
+import { ThemeProvider } from "@ashgw/design/theme";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
@@ -28,16 +29,18 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={fonts.atkinsonHyperlegible.className}>
-        <JsonLd code={organizationJsonLd(siteUrl)} />
-        <JsonLd code={websiteJsonLd(siteUrl)} />
-        <GoBackHome />
-        <AnalyticsProvider>
-          <TRPCProvider siteBaseUrl={siteUrl}>
-            <StoreProvider>{children}</StoreProvider>
-          </TRPCProvider>
-        </AnalyticsProvider>
+        <ThemeProvider defaultTheme="system">
+          <JsonLd code={organizationJsonLd(siteUrl)} />
+          <JsonLd code={websiteJsonLd(siteUrl)} />
+          <GoBackHome />
+          <AnalyticsProvider>
+            <TRPCProvider siteBaseUrl={siteUrl}>
+              <StoreProvider>{children}</StoreProvider>
+            </TRPCProvider>
+          </AnalyticsProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
