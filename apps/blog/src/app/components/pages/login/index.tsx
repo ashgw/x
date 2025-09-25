@@ -76,7 +76,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-md px-4 py-16">
+    <div className="layout mx-auto max-w-md px-4 py-16">
       <motion.div
         className="bg-card rounded-lg border p-6 shadow-xl"
         initial={{ opacity: 0, y: 20 }}

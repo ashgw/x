@@ -93,7 +93,7 @@ export function ProfilePage() {
 
   return (
     <AnimatePresence mode="wait">
-      <div className="container mx-auto max-w-4xl px-4 py-8">
+      <div className="layout mx-auto max-w-4xl px-4 py-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"

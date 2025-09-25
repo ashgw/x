@@ -54,7 +54,7 @@ function GoHomeSkeleton() {
 
 export function GoBackHome() {
   return (
-    <div className="container pt-6">
+    <div className="layout pt-6">
       <Suspense fallback={<GoHomeSkeleton />}>
         <GoHomeContent />
       </Suspense>

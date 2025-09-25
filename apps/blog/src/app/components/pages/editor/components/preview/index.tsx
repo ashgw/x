@@ -49,7 +49,7 @@ export function BlogPreview({
           stiffness: 100,
         }}
       >
-        <section className="container mx-auto">
+        <section className="layout mx-auto">
           <div className="flex items-center justify-between">
             <H1 id={titleValue || title}>{titleValue || title}</H1>
           </div>

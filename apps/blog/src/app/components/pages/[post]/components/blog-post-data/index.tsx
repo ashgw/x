@@ -20,7 +20,7 @@ interface BlogPostProps {
 
 export function BlogPostData({ postData }: BlogPostProps) {
   return (
-    <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
+    <section className="layout mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       {/* client child */}
       <ViewTracker postSlug={postData.slug} />
       <div className="flex items-center justify-between">

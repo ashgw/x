@@ -21,7 +21,7 @@ export function EditorLayout({ editor }: EditorLayoutProps) {
   const showDeleteModalOverlay: boolean = editor.modals.delete.visible;
 
   return (
-    <div className="container mx-auto p-8">
+    <div className="layout mx-auto p-8">
       <Header
         onClick={editor.actions.startNewBlog}
         sortOptions={editor.sorting.options}
