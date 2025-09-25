@@ -4,7 +4,7 @@ import { Views } from "~/app/components/shared/views";
 import { DateService } from "@ashgw/cross-runtime";
 
 import type { PostCardRo } from "~/api/models";
-import { SurfaceCard } from "@ashgw/ui";
+import { Button, SurfaceCard } from "@ashgw/ui";
 
 export function PostCard({ postData }: { postData: PostCardRo }) {
   return (
@@ -34,13 +34,11 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
 
           <div className="text-dim-400 flex flex-wrap items-center gap-[0.625rem] text-sm">
             {postData.tags.map((tag) => (
-              <Link
-                href={`/tag/${tag}`}
-                key={tag}
-                className="relative rounded-full border border-white/10 px-4 py-2 text-sm transition-all duration-200 ease-in-out hover:border-white/20"
-              >
-                {tag}
-              </Link>
+              <Button variant="outline:rounded" key={tag}>
+                <Link href={`/tag/${tag}`} key={tag}>
+                  {tag}
+                </Link>
+              </Button>
             ))}
             <div className="text-dim-200 flex items-center gap-2">
               <span>
