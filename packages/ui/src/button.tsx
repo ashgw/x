@@ -39,6 +39,11 @@ const buttonVariants = cva(
           "rounded-md text-sm font-semibold bg-transparent " +
           outlineInteractive,
 
+        "outline:rounded":
+          "rounded-md text-sm font-semibold bg-transparent " +
+          outlineInteractive +
+          " rounded-full",
+
         secondary:
           "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
           "bg-[hsl(var(--ds-secondary))] text-[hsl(var(--ds-secondary-foreground))] " +
