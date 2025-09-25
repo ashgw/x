@@ -1,51 +1,69 @@
 "use client";
 
-import type { FC } from "react";
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { useCopyToClipboard } from "react-use";
-
 import { cn } from "@ashgw/ui";
 
 interface CopyButtonProps {
   code: string;
   className?: string;
+  timeoutMs?: number; // how long the green check stays
+  size?: number; // icon size in px
 }
 
-export const CopyButton: FC<CopyButtonProps> = ({ code, className }) => {
+export function CopyButton({
+  code,
+  className,
+  timeoutMs = 1200,
+  size = 18,
+}: CopyButtonProps) {
   const [, copyToClipboard] = useCopyToClipboard();
-  return (
-    <button
-      className={cn(
-        "transition-duration-200 hover:translate-y-1 glow-300 rounded-xl border-2 border-[#191919] p-2 px-3 py-2 hover:border-[#340929]",
-        className,
-      )}
-      onClick={() => {
-        copyToClipboard(code);
-      }}
-    >
-      <AnimatedCopyButton />
-    </button>
-  );
-};
-
-const AnimatedCopyButton: React.FC = () => {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<number | null>(null);
 
-  const handleClick = () => {
-    setCopied((prev) => !prev);
+  useEffect(
+    () => () => {
+      if (timer.current) window.clearTimeout(timer.current);
+    },
+    [],
+  );
 
-    setTimeout(() => {
-      setCopied((prev) => !prev);
-    }, 300);
+  const onClick = () => {
+    copyToClipboard(code);
+    setCopied(true);
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), timeoutMs);
   };
 
   return (
     <button
-      onClick={handleClick}
-      className={`transition-duration-200 ${copied ? "scale-0" : "scale-100"}`}
+      type="button"
+      onClick={onClick}
+      aria-label={copied ? "Copied" : "Copy code"}
+      className={cn(
+        "relative inline-flex items-center justify-center p-2",
+        "focus:outline-none",
+        className,
+      )}
     >
-      {copied ? <Check color="#4ade80" /> : <Copy />}
+      {/* copy icon */}
+      <Copy
+        size={size}
+        className={cn(
+          "transition-opacity duration-250 ease-out text-dim-300",
+          copied && "opacity-0",
+        )}
+      />
+      {/* green check on top */}
+      <Check
+        size={size}
+        className={cn(
+          "absolute text-green-400 transition-opacity duration-250 ease-out",
+          copied ? "opacity-100" : "opacity-0",
+        )}
+      />
+      <span className="sr-only">{copied ? "Copied" : "Copy"}</span>
     </button>
   );
-};
+}
