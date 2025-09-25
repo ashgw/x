@@ -3,6 +3,8 @@
   ------------------------------ */
 
 @import url("./layout.css");
+@import url("./blur.css"); /* Blur shoud be before opacity */
+@import url("./opacity.css");
 @import url("./colors.css");
 @import url("./radii.css");
 @import url("./motion.css");
