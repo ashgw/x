@@ -4,7 +4,7 @@
 
 :root {
   /* Shadows (elevation levels) */
-  --ds-shadow-1: 0 1px 2px 0 rgb(0 0 0 / 8%);
-  --ds-shadow-2: 0 4px 16px 0 rgb(0 0 0 / 16%);
-  --ds-shadow-3: 0 8px 32px 0 rgb(0 0 0 / 24%);
+  --ds-shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 8%);
+  --ds-shadow-medium: 0 4px 16px 0 rgb(0 0 0 / 16%);
+  --ds-shadow-strong: 0 8px 32px 0 rgb(0 0 0 / 24%);
 }

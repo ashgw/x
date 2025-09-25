@@ -9,19 +9,19 @@ const surfaceCardVariants = cva(
     variants: {
       variant: {
         default: "bg-background/50",
-        glow: "glow-500 hover:slower-translate hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)]",
+        glow: "glow-500 hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)]",
         subtle: "hover:shadow-md",
         flat: "border-none shadow-none bg-transparent",
       },
       size: {
-        default: "p-5 rounded-[2rem]",
+        default: "p-5 rounded-2xl",
         sm: "p-3 rounded-xl",
-        lg: "p-8 rounded-[2.5rem]",
+        lg: "p-8 rounded-2xl",
       },
       animate: {
         none: "",
-        scale: "hover:scale-105 transition-duration-200",
-        pop: "hover:scale-110 transition-duration-200",
+        scale: "hover:scale-105 duration-200",
+        pop: "hover:scale-110 duration-200",
       },
     },
     defaultVariants: {

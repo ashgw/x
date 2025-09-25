@@ -27,7 +27,7 @@ export const ToggleSwitch = React.forwardRef<HTMLDivElement, ToggleSwitchProps>(
       <div
         ref={ref}
         className={cn(
-          "turn-bg-gradient relative flex h-11 min-w-[200px] max-w-xl rounded-full border p-1 font-medium blur-medium",
+          "relative flex h-11 min-w-[200px] max-w-xl rounded-full border p-1 font-medium blur-medium",
           className,
         )}
         {...rest}

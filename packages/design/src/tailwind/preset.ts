@@ -24,6 +24,18 @@ export const designPreset: Config = {
           DEFAULT: "hsl(var(--ds-danger))",
           foreground: "hsl(var(--ds-text))",
         },
+        success: {
+          DEFAULT: "hsl(var(--ds-success))",
+          foreground: "hsl(var(--ds-text))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--ds-info))",
+          foreground: "hsl(var(--ds-text))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--ds-warning))",
+          foreground: "hsl(var(--ds-text))",
+        },
         muted: {
           DEFAULT: "hsl(var(--ds-muted))",
           foreground: "hsl(var(--ds-muted-foreground))",
@@ -50,9 +62,9 @@ export const designPreset: Config = {
         "2xl": "var(--ds-radius-2xl)",
       },
       boxShadow: {
-        "ds-1": "var(--ds-shadow-1)",
-        "ds-2": "var(--ds-shadow-2)",
-        "ds-3": "var(--ds-shadow-3)",
+        subtle: "var(--ds-shadow-subtle)",
+        medium: "var(--ds-shadow-medium)",
+        strong: "var(--ds-shadow-strong)",
       },
       transitionDuration: {
         fast: "var(--ds-motion-fast)",
