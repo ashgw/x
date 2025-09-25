@@ -16,10 +16,18 @@ export const outlineInteractive =
 const defaultInteractive =
   "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
   "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
-  // on hover: darken the primary a little using opacity var
+  // hover: darken the primary a little using opacity var
   "hover:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-medium))] " +
-  // on active: push it a bit darker for click feedback
+  // active: push it a bit darker for click feedback
   "active:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-strong))]";
+
+const destructiveInteractive =
+  "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
+  "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-primary-foreground))] " +
+  // hover: dip danger color
+  "hover:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-medium))] " +
+  // active: push darker
+  "active:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-strong))]";
 
 const buttonVariants = cva(
   "py-2 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap " +
@@ -32,10 +40,8 @@ const buttonVariants = cva(
       variant: {
         default: defaultInteractive,
         "default:rounded": defaultInteractive + " rounded-full",
-        destructive:
-          "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
-          "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-text))] " +
-          "hover:bg-[hsl(var(--ds-danger))]/var(--ds-opacity-strong)",
+
+        destructive: destructiveInteractive,
 
         outline:
           "rounded-md text-sm font-semibold bg-transparent " +
@@ -49,7 +55,7 @@ const buttonVariants = cva(
         secondary:
           "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
           "bg-[hsl(var(--ds-secondary))] text-[hsl(var(--ds-secondary-foreground))] " +
-          "hover:bg-[hsl(var(--ds-secondary))]/var(--ds-opacity-strong)",
+          "hover:bg-[hsl(var(--ds-secondary))]/[calc(1-var(--ds-opacity-strong))]",
 
         ghost:
           "rounded-md text-sm font-medium bg-transparent " +
