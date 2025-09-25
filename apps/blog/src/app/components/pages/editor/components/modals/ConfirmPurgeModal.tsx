@@ -45,7 +45,7 @@ export function ConfirmPurgeModal(props: {
           Cancel
         </Button>
         <Button
-          variant="destructive:outilne"
+          variant="destructive:outline"
           onClick={props.onConfirm}
           disabled={props.isPurging}
           loading={props.isPurging}

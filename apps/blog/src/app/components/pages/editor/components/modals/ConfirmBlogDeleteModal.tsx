@@ -61,7 +61,7 @@ export function ConfirmBlogDeleteModal(props: {
           Cancel
         </Button>
         <Button
-          variant="destructive:outilne"
+          variant="destructive:outline"
           onClick={props.onConfirm}
           disabled={!isMatch || props.isDeleting}
           loading={props.isDeleting}

@@ -53,7 +53,7 @@ export const BlogItem = memo(
           <Button variant="outline" onClick={() => onEdit(blog)}>
             Edit
           </Button>
-          <Button variant="destructive:outilne" onClick={() => onDelete(blog)}>
+          <Button variant="destructive:outline" onClick={() => onDelete(blog)}>
             Delete
           </Button>
         </motion.div>

@@ -41,7 +41,7 @@ const buttonVariants = cva(
     "transition-colors focus-visible:outline-none focus-visible:ring-2 " +
     "focus-visible:ring-[hsl(var(--ds-ring))] focus-visible:ring-offset-2 " +
     "focus-visible:ring-offset-[hsl(var(--ds-background))] " +
-    "disabled:pointer-events-none disabled:opacity-[var(--ds-opacity-medium)]",
+    "disabled:pointer-events-none disabled:opacity-[var(--ds-opacity-extra-strong)]",
   {
     variants: {
       variant: {
