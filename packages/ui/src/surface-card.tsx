@@ -14,9 +14,9 @@ const surfaceCardVariants = cva(
         flat: "border-none shadow-none bg-transparent",
       },
       size: {
-        default: "p-5 rounded-3xl",
+        default: "p-5 rounded-[2rem]", // against the preset but it's needed here
         sm: "p-3 rounded-xl",
-        lg: "p-8 rounded-3xl",
+        lg: "p-8 rounded-[2.5rem]", // same
       },
       animate: {
         none: "",
