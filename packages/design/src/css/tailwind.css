@@ -3,8 +3,6 @@
 @tailwind base;
 
 @layer base {
-  .dark {
-  }
   * {
     @apply border-border;
   }
