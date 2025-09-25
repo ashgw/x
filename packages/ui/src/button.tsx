@@ -28,7 +28,6 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
 
-        // Legacy squared variants (kept for compatibility)
         "squared:default":
           "border-input text-secondary hover:bg-accent hover:text-foreground rounded-md border bg-background font-bold",
         "squared:outline":
