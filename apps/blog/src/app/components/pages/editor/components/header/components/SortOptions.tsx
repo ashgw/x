@@ -100,11 +100,7 @@ export function SortOptions({
       <motion.div variants={itemVariants}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex h-8 items-center gap-1"
-            >
+            <Button variant="outline" className="flex h-8 items-center gap-1">
               <span>Sort</span>
               {options.sortOrder === "asc" ? (
                 <SortAsc className="h-4 w-4" />
@@ -235,11 +231,7 @@ export function SortOptions({
       <motion.div variants={itemVariants}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex h-8 items-center gap-1"
-            >
+            <Button variant="outline" className="flex h-8 items-center gap-1">
               <span>Category</span>
               <FolderTree className="h-4 w-4" />
               {options.categoryFilter !== "all" && (
@@ -282,11 +274,7 @@ export function SortOptions({
         <motion.div variants={itemVariants}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex h-8 items-center gap-1"
-              >
+              <Button variant="outline" className="flex h-8 items-center gap-1">
                 <span>Tag</span>
                 <Tag className="h-4 w-4" />
                 {options.tagFilter && (

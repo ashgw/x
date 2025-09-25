@@ -69,7 +69,6 @@ export function PostCards({ posts }: PostsProps) {
     return (
       <Button
         variant="toggle"
-        className="rounded-xl" /* rare override to look good with the cards */
         active={selectedCategory === category}
         onClick={() => setSelectedCategory(category)}
       >
