@@ -50,10 +50,13 @@ const buttonVariants = cva(
           "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong) " +
           "hover:bg-[hsl(var(--ds-surface-muted))]",
         toggle:
-          "rounded-xl transition-all duration-200 font-semibold " +
-          "text-dim-300 border border-white/10 " +
-          "hover:text-dim-400 hover:border-white/40 " +
-          "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
+          "rounded-xl font-semibold transition-all duration-200 " +
+          // default (dark mode)
+          "text-dim-300 border-white/10 hover:text-dim-400 hover:border-white/40 " +
+          "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5 " +
+          // light mode override
+          "light:text-dim-300 light:border-black/10 light:hover:text-dim-400 light:hover:border-black/40 " +
+          "light:data-[state=on]:text-black light:data-[state=on]:border-black/30 light:data-[state=on]:bg-black/5",
       },
 
       tone: {
