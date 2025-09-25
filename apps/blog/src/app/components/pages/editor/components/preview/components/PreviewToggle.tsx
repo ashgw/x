@@ -12,7 +12,7 @@ export function PreviewToggle({
   onToggle,
 }: PreviewToggleProps) {
   return (
-    <Button variant="squared:outline" onClick={onToggle}>
+    <Button variant="outline" onClick={onToggle}>
       {isPreviewEnabled ? (
         <>
           <EyeOff className="mr-2 h-4 w-4" />

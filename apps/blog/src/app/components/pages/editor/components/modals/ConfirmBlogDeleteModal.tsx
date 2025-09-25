@@ -54,7 +54,7 @@ export function ConfirmBlogDeleteModal(props: {
         transition={{ delay: 0.3 }}
       >
         <Button
-          variant="squared:outline"
+          variant="outline"
           onClick={props.onCancel}
           disabled={props.isDeleting}
         >

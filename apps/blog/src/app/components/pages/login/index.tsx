@@ -159,7 +159,7 @@ export function LoginPage() {
                 transition={{ delay: 0.4 }}
               >
                 <Button
-                  variant="squared:outline"
+                  variant="outline"
                   type="button"
                   onClick={() => router.push("/editor")}
                   disabled={loginMutation.isPending}

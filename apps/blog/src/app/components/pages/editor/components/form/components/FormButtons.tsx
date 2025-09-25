@@ -18,7 +18,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
   return (
     <div className="flex justify-end gap-2">
       <Button
-        variant="squared:outline"
+        variant="outline"
         type="button"
         onClick={onReset}
         disabled={isSubmitting}

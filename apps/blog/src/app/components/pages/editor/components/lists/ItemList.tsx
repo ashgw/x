@@ -9,7 +9,7 @@ import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 
 interface BaseAction {
   label: string;
-  variant?: "destructive" | "squared:outline" | "default";
+  variant?: "destructive" | "outline" | "default";
   onClick: () => void;
 }
 
@@ -206,7 +206,7 @@ export const createBlogListConfig = (
   getActions: (blog) => [
     {
       label: "Edit",
-      variant: "squared:outline",
+      variant: "outline",
       onClick: () => onEdit(blog),
     },
     {
@@ -234,7 +234,7 @@ export const createTrashListConfig = (
   getActions: (item) => [
     {
       label: "Restore",
-      variant: "squared:outline",
+      variant: "outline",
       onClick: () => onRestore(item),
     },
     {
