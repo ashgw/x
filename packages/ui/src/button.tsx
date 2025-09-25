@@ -7,42 +7,76 @@ import { cn } from "@ashgw/ui";
 import { LoadingPoints } from "./loading";
 
 const buttonVariants = cva(
-  // base styles: only neutral stuff that should *always* apply
-  "py-2 px-4 ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "py-2 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap " +
+    "transition-colors focus-visible:outline-none focus-visible:ring-2 " +
+    "focus-visible:ring-[hsl(var(--ds-ring))] focus-visible:ring-offset-2 " +
+    "focus-visible:ring-offset-[hsl(var(--ds-background))] " +
+    "disabled:pointer-events-none disabled:opacity-[var(--ds-opacity-medium)]",
   {
     variants: {
       variant: {
         default:
-          "rounded-md text-sm font-medium duration-200 bg-primary/95 text-primary-foreground hover:bg-primary opacity-95 hover:opacity-100",
+          "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
+          "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
+          "hover:bg-[hsl(var(--ds-primary))]/var(--ds-opacity-strong)",
+
         destructive:
-          "rounded-md text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
+          "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-text))] " +
+          "hover:bg-[hsl(var(--ds-danger))]/var(--ds-opacity-strong)",
+
         outline:
-          "rounded-md text-sm font-medium border-input hover:text-accent-foreground border bg-transparent",
+          "rounded-md text-sm font-medium border border-[hsl(var(--ds-border))] " +
+          "bg-transparent text-[hsl(var(--ds-text))] " +
+          "hover:text-[hsl(var(--ds-accent-foreground))] " +
+          "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong)",
+
         secondary:
-          "rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
+          "bg-[hsl(var(--ds-secondary))] text-[hsl(var(--ds-secondary-foreground))] " +
+          "hover:bg-[hsl(var(--ds-secondary))]/var(--ds-opacity-strong)",
+
         ghost:
-          "rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-        link: "text-sm font-medium text-primary underline-offset-4 hover:underline",
+          "rounded-md text-sm font-medium bg-transparent " +
+          "hover:bg-[hsl(var(--ds-accent))]/var(--ds-opacity-subtle) " +
+          "hover:text-[hsl(var(--ds-accent-foreground))]",
+
+        link: "text-sm font-medium text-[hsl(var(--ds-primary))] underline-offset-4 hover:underline",
 
         glowOutline:
-          "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
+          "rounded-md text-sm font-medium border border-[hsl(var(--ds-border))] " +
+          "bg-transparent text-[hsl(var(--ds-text-muted))] transition-all " +
+          "hover:text-[hsl(var(--ds-text))] " +
+          "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong) " +
+          "hover:bg-[hsl(var(--ds-surface-muted))]",
 
         toggle:
-          "rounded-xl transition-all duration-200 font-semibold " +
-          "text-dim-300 border border-white/10 " +
-          "hover:text-dim-400 hover:border-white/40 " +
-          "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
+          "rounded-xl font-semibold transition-all duration-[var(--ds-motion-normal)] " +
+          "text-[hsl(var(--ds-text-muted))] border border-[hsl(var(--ds-border))] " +
+          "hover:text-[hsl(var(--ds-text))] " +
+          "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-medium) " +
+          "data-[state=on]:text-[hsl(var(--ds-text))] " +
+          "data-[state=on]:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong) " +
+          "data-[state=on]:bg-[hsl(var(--ds-surface-muted))]",
       },
 
       tone: {
         default: "",
-        info: "bg-[hsl(var(--ds-info))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-info))]/90",
+        info:
+          "bg-[hsl(var(--ds-info))] text-[hsl(var(--ds-text))] " +
+          "hover:bg-[hsl(var(--ds-info))]/var(--ds-opacity-strong)",
+
         warning:
-          "bg-[hsl(var(--ds-warning))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-warning))]/90",
+          "bg-[hsl(var(--ds-warning))] text-[hsl(var(--ds-text))] " +
+          "hover:bg-[hsl(var(--ds-warning))]/var(--ds-opacity-strong)",
+
         success:
-          "bg-[hsl(var(--ds-success))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-success))]/90",
+          "bg-[hsl(var(--ds-success))] text-[hsl(var(--ds-text))] " +
+          "hover:bg-[hsl(var(--ds-success))]/var(--ds-opacity-strong)",
+
         danger:
-          "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-danger))]/90",
+          "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-text))] " +
+          "hover:bg-[hsl(var(--ds-danger))]/var(--ds-opacity-strong)",
       },
     },
     defaultVariants: {
