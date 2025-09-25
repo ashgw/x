@@ -1,5 +1,5 @@
 /* ------------------------------
-   Skeleton Utility — lighter grey
+   Skeleton Utility — extra light grey
 ------------------------------ */
 
 .skeleton {
@@ -7,8 +7,8 @@
   overflow: hidden;
   border-radius: var(--ds-radius-md);
 
-  /* lighter neutral grey base */
-  background-color: hsl(0 0% 28%);
+  /* brighter neutral grey base */
+  background-color: hsl(0 0% 40%);
 }
 
 /* shimmer sweep */
@@ -20,9 +20,9 @@
   background-image: linear-gradient(
     90deg,
     transparent 0%,
-    hsl(0 0% 60% / 0.25) 45%,
-    hsl(0 0% 70% / 0.35) 50%,
-    hsl(0 0% 60% / 0.25) 55%,
+    hsl(0 0% 75% / 0.4) 45%,
+    hsl(0 0% 85% / 0.6) 50%,
+    hsl(0 0% 75% / 0.4) 55%,
     transparent 100%
   );
   animation: skeleton-shimmer 1.2s ease-in-out infinite;

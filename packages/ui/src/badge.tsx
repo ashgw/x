@@ -5,7 +5,7 @@ import { cva } from "class-variance-authority";
 import { cn } from "@ashgw/ui";
 
 const badgeVariants = cva(
-  "pointer-events-none inline-flex items-center rounded-full border px-2.5 py-0.5 text-[1.1rem] font-semibold",
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[1.1rem] font-semibold",
   {
     variants: {
       variant: {
