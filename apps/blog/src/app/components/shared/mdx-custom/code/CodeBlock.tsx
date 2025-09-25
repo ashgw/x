@@ -58,7 +58,7 @@ export function CodeBlock({
     <Suspense fallback={<Skeleton height="14rem" />}>
       <motion.div
         id={id}
-        animate={{ scale: 1, opacity: 1 }}
+        animate={{ scale: 1, opacity: 0.9 }}
         initial={{ scale: 0.98, opacity: 0 }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
         className={cn(
@@ -84,7 +84,7 @@ export function CodeBlock({
             style: { background: "transparent" },
           }}
           className="!m-0 overflow-auto !p-0 text-sm"
-          showLineNumbers={showLineNumbers}
+          showLineNumbers={false}
           lineNumberStyle={{
             width: "3.25em",
             position: "sticky",
