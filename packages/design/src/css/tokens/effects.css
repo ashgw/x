@@ -1,0 +1,19 @@
+/* ------------------------------
+     DESIGN TOKENS · Effects
+  ------------------------------ */
+
+:root {
+  /* Glow / highlight effects */
+  --ds-glow-primary: 255 46 200 / 0.5; /* Neon glow effect */
+
+  /* Aurora floating gradient blobs */
+  --aurora-1: 120, 30, 120; /* Blob 1 color */
+  --aurora-2: 90, 20, 100; /* Blob 2 color */
+  --aurora-opacity-1: 0.1;
+  --aurora-opacity-2: 0.14;
+  --aurora-speed: 32s; /* Animation duration */
+
+  /* glow effects */
+  --glow-accent-strong: rgb(255 46 200 / 50%);
+  --glow-accent-subtle: rgb(255 46 200 / 20%);
+}

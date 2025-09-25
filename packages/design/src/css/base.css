@@ -11,7 +11,9 @@
 @tailwind utilities;
 
 /* Split layers: tokens, globals, background, utilities */
-@import url("./tokens.css");
+@import url("./tokens/index.css");
 @import url("./base-globals.css");
+@import url("./animations.css");
 @import url("./background.css");
+@import url("./aurora.css");
 @import url("./utilities.css");

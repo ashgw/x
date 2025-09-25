@@ -1,0 +1,10 @@
+/* ------------------------------
+     DESIGN TOKENS · Motion
+  ------------------------------ */
+
+:root {
+  /* Motion speeds (animations) */
+  --ds-motion-fast: 120ms;
+  --ds-motion-normal: 200ms;
+  --ds-motion-slow: 320ms;
+}

@@ -1,0 +1,45 @@
+/* ------------------------------
+     DESIGN TOKENS · Colors
+  ------------------------------ */
+
+:root {
+  /* Background + surface tones */
+  --ds-background: 0 0% 3.9%; /* Main page background (dark gray/black) */
+  --ds-surface: 0 0% 3.9% / 0; /* Transparent surface layer */
+  --ds-surface-muted: 0 0% 14.9%; /* Muted surface (panels, cards) */
+
+  /* Text colors */
+  --ds-text: 0 0% 98%; /* Default text (near white) */
+  --ds-text-muted: 0 0% 63.9%; /* Subtle/dimmed text */
+  --ds-text-strong: 0 0% 98%; /* Strong/primary text */
+
+  /* Accent colors (purple theme) */
+  --ds-accent: 282 22% 22%; /* Accent background */
+  --ds-accent-foreground: 0 0% 98%; /* Text over accent */
+  --ds-accent-muted: 282 20% 16%; /* Darker muted accent */
+
+  /* Status colors */
+  --ds-success: 142 70% 45%; /* Success (green) */
+  --ds-warning: 38 92% 50%; /* Warning (yellow) */
+  --ds-danger: 0 62.8% 30.6%; /* Danger/error (red) */
+
+  /* Border + focus ring */
+  --ds-border: 0 0% 14.9%; /* Border color */
+  --ds-ring: 0 0% 0% / 0; /* Focus ring (disabled by default) */
+
+  /* Cards & popovers */
+  --ds-card: 0 0% 3.9% / 0;
+  --ds-card-foreground: 0 0% 98%;
+  --ds-popover: 0 0% 3.9% / 0;
+  --ds-popover-foreground: 0 0% 98%;
+
+  /* Primary / secondary brand layers */
+  --ds-primary: 0 0% 98%; /* Primary bg (usually white) */
+  --ds-primary-foreground: 0 0% 9%; /* Text on primary */
+  --ds-secondary: 0 0% 14.9%; /* Secondary background */
+  --ds-secondary-foreground: 0 0% 98%; /* Text on secondary */
+
+  /* Muted state colors */
+  --ds-muted: 0 0% 14.9%;
+  --ds-muted-foreground: 0 0% 63.9%;
+}

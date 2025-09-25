@@ -1,0 +1,27 @@
+/* ------------------------------
+     DESIGN TOKENS · Aliases (shadcn/ui)
+  ------------------------------ */
+
+:root {
+  /* shadcn/ui aliases */
+  --background: var(--ds-background);
+  --foreground: var(--ds-text);
+  --card: var(--ds-card);
+  --card-foreground: var(--ds-card-foreground);
+  --popover: var(--ds-popover);
+  --popover-foreground: var(--ds-popover-foreground);
+  --primary: var(--ds-primary);
+  --primary-foreground: var(--ds-primary-foreground);
+  --secondary: var(--ds-secondary);
+  --secondary-foreground: var(--ds-secondary-foreground);
+  --muted: var(--ds-muted);
+  --muted-foreground: var(--ds-muted-foreground);
+  --accent: var(--ds-accent);
+  --accent-foreground: var(--ds-accent-foreground);
+  --destructive: var(--ds-danger);
+  --destructive-foreground: var(--ds-text);
+  --border: var(--ds-border);
+  --input: var(--ds-border);
+  --ring: var(--ds-ring);
+  --radius: var(--ds-radius-md);
+}
