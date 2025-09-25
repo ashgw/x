@@ -1,4 +1,4 @@
-import "@ashgw/design/css/base.css";
+import "@ashgw/design/css";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";

@@ -8,9 +8,8 @@
     "lint:css": "stylelint \"src/**/*.css\""
   },
   "exports": {
-    "./css/base.css": "./src/css/base.css",
+    "./css": "./src/css/base.css",
     "./tailwind": "./src/tailwind/index.ts",
-    "./tokens": "./src/tokens/base.tokens.ts",
     "./fonts": "./src/fonts/fonts.ts"
   },
   "peerDependencies": {
