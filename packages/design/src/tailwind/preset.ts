@@ -55,11 +55,15 @@ export const designPreset: Config = {
       },
       borderRadius: {
         DEFAULT: "var(--ds-radius)",
+        xs: "var(--ds-radius-xs)",
         sm: "var(--ds-radius-sm)",
         md: "var(--ds-radius-md)",
         lg: "var(--ds-radius-lg)",
         xl: "var(--ds-radius-xl)",
         "2xl": "var(--ds-radius-2xl)",
+        "3xl": "var(--ds-radius-3xl)",
+        "4xl": "var(--ds-radius-4xl)",
+        full: "var(--ds-radius-full)",
       },
       boxShadow: {
         subtle: "var(--ds-shadow-subtle)",
