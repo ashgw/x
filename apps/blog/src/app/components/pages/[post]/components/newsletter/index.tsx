@@ -75,6 +75,7 @@ export function Newsletter() {
                   <FormControl>
                     <div className="flex w-full items-center gap-3">
                       <Input
+                        variant="rounded"
                         type="email"
                         {...field}
                         placeholder="your@email.com"
