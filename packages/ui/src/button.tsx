@@ -23,11 +23,13 @@ const defaultInteractive =
 
 const destructiveInteractive =
   "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
-  "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-primary-foreground))] " +
-  // hover: dip danger color
+  "bg-[hsl(var(--ds-danger))] text-dim-300 " + // match outline text style
+  // hover: dip danger color + lighten text a bit
   "hover:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-medium))] " +
-  // active: push darker
-  "active:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-strong))]";
+  "hover:text-dim-400 " +
+  // active: push darker + force white text for contrast
+  "active:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-strong))] " +
+  "active:text-white";
 
 const buttonVariants = cva(
   "py-2 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap " +
