@@ -15,7 +15,6 @@ export function SoundToggle() {
         aria-pressed={isPlaying}
         onClick={toggleSound}
         variant="toggle"
-        radius="full"
         disabled={isLoading}
         active={isPlaying}
         loading={isLoading}

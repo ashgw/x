@@ -38,17 +38,12 @@ const buttonVariants = cva(
           "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
 
         toggle:
-          "rounded-xl transition-all duration-200 font-semibold " +
+          "rounded-2xl py-2 px-4 transition-all duration-200 font-semibold " +
           "text-dim-300 border border-white/10 " +
           "hover:text-dim-400 hover:border-white/40 " +
           "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
       },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 px-3 py-1 rounded-md",
-        lg: "h-11 px-8 py-3 rounded-lg",
-        icon: "h-10 w-10 p-0",
-      },
+
       tone: {
         default: "",
         info: "bg-[hsl(var(--ds-info))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-info))]/90",
@@ -59,17 +54,10 @@ const buttonVariants = cva(
         danger:
           "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-primary-foreground))] hover:bg-[hsl(var(--ds-danger))]/90",
       },
-      radius: {
-        sm: "rounded-sm",
-        md: "rounded-md",
-        full: "rounded-full",
-      },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
       tone: "default",
-      radius: "md",
     },
   },
 );
@@ -95,12 +83,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       className,
       variant,
-      size,
       asChild = false,
       loading = false,
       active = false,
       tone,
-      border,
       children,
       ...props
     },
@@ -108,17 +94,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
 
-    // special case: toggle ignores size/radius so nothing overrides it
-    const resolvedSize = variant === "toggle" ? undefined : size;
-    const resolvedRadius = variant === "toggle" ? undefined : border;
-
     return (
       <Comp
         className={cn(
           buttonVariants({
             variant,
-            size: resolvedSize,
-            radius: resolvedRadius,
             tone,
             className,
           }),
