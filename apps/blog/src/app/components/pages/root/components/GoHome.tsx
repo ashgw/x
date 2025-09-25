@@ -22,7 +22,7 @@ function GoHomeContent() {
     <button
       type="button"
       onClick={handleClick}
-      className={`mb-4 ml-5 mt-5 inline-flex items-center hover:text-foreground ${
+      className={`mb-4 ml-2 mt-5 inline-flex items-center hover:text-foreground ${
         pathname === "/" ? "invisible text-dim-400" : ""
       }`}
     >
