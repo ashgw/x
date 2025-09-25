@@ -71,7 +71,6 @@ export function BlockItem({
       <div className="absolute right-2 top-2 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <Button
           variant={isPreview ? "secondary" : "ghost"}
-          size="icon"
           className="h-8 w-8"
           onClick={() => setIsPreview(!isPreview)}
           title={isPreview ? "Edit" : "Preview"}
@@ -85,7 +84,6 @@ export function BlockItem({
         </Button>
         <Button
           variant="ghost"
-          size="icon"
           className="text-destructive hover:text-destructive/90 h-8 w-8"
           onClick={onDelete}
           title="Delete block"
@@ -95,7 +93,6 @@ export function BlockItem({
         </Button>
         <Button
           variant="ghost"
-          size="icon"
           className="h-8 w-8 cursor-grab active:cursor-grabbing"
           {...attributes}
           {...listeners}
