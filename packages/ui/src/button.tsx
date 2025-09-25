@@ -38,7 +38,7 @@ const buttonVariants = cva(
           "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
 
         toggle:
-          "rounded-2xl transition-all duration-200 font-semibold " +
+          "rounded-xl transition-all duration-200 font-semibold " +
           "text-dim-300 border border-white/10 " +
           "hover:text-dim-400 hover:border-white/40 " +
           "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
