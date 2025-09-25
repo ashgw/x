@@ -50,6 +50,13 @@ const buttonVariants = cva(
           "hover:border-[hsl(var(--ds-border))]/var(--ds-opacity-strong) " +
           "hover:bg-[hsl(var(--ds-surface-muted))]",
 
+        "outline:glow:accent":
+          "rounded-md text-sm font-medium border border-[hsl(var(--ds-accent))]/40 " +
+          "bg-transparent text-[hsl(var(--ds-accent-foreground))] transition-all " +
+          "hover:border-[hsl(var(--ds-accent))]/70 " +
+          "hover:shadow-[0_0_8px_hsl(var(--ds-accent)/0.6)] " +
+          "hover:text-[hsl(var(--ds-accent-foreground))]",
+
         toggle:
           "rounded-xl px-4 py-2 font-semibold transition-all duration-200 " +
           "border text-dim-300 border-white/10 hover:text-dim-400 hover:border-white/40 " +

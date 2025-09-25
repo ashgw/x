@@ -3,7 +3,6 @@
 import { Suspense } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-import { Button } from "@ashgw/ui";
 
 function GoHomeContent() {
   const router = useRouter();
@@ -20,30 +19,28 @@ function GoHomeContent() {
   const strokeWidth = 2;
 
   return (
-    <div className={`mb-4 ml-5 mt-5 ${pathname === "/" ? "invisible" : ""}`}>
-      <Button
-        type="button"
-        onClick={handleClick}
-        variant="outline"
-        border="full"
-        className="group inline-flex items-center px-3 py-2 transition-all duration-300 md:scale-125"
-      >
-        <div className="hover:-pl-2 flex items-center gap-0.5 hover:pr-5">
-          <ChevronLeft
-            className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1 group-hover:brightness-125"
-            strokeWidth={strokeWidth}
-          />
-          <ChevronLeft
-            className="-ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:brightness-125"
-            strokeWidth={strokeWidth}
-          />
-          <ChevronLeft
-            className="-ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-3 group-hover:brightness-125"
-            strokeWidth={strokeWidth}
-          />
-        </div>
-      </Button>
-    </div>
+    <button
+      type="button"
+      onClick={handleClick}
+      className={`mb-4 ml-5 mt-5 inline-flex items-center hover:text-foreground ${
+        pathname === "/" ? "invisible text-dim-400" : ""
+      }`}
+    >
+      <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-white/10 px-3 py-2 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:pr-5 md:scale-125">
+        <ChevronLeft
+          className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1 group-hover:brightness-125"
+          strokeWidth={strokeWidth}
+        />
+        <ChevronLeft
+          className="-ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:brightness-125"
+          strokeWidth={strokeWidth}
+        />
+        <ChevronLeft
+          className="-ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-3 group-hover:brightness-125"
+          strokeWidth={strokeWidth}
+        />
+      </div>
+    </button>
   );
 }
 
