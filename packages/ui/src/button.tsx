@@ -25,7 +25,10 @@ const buttonVariants = cva(
         default:
           "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
           "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
-          "hover:bg-[hsl(var(--ds-primary))]/var(--ds-opacity-strong)",
+          // on hover: darken the primary a little using opacity var
+          "hover:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-medium))] " +
+          // on active: push it a bit darker for click feedback
+          "active:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-strong))]",
 
         destructive:
           "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
