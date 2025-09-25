@@ -36,7 +36,7 @@ const buttonVariants = cva(
           "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
 
         toggle:
-          "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] data-[state=on]:text-[hsl(var(--ds-text))] data-[state=on]:border-white/30 data-[state=on]:bg-white/5 hover:border-white/40 hover:bg-white/5",
+          "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] font-semibold data-[state=on]:text-[hsl(var(--ds-text))] data-[state=on]:border-white/30 data-[state=on]:bg-white/5 hover:border-white/40 hover:bg-white/5",
       },
       size: {
         default: "h-10 px-4 py-2",
