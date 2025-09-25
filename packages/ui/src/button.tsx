@@ -7,42 +7,48 @@ import { cn } from "@ashgw/ui";
 import { LoadingPoints } from "./loading";
 
 const buttonVariants = cva(
-  "ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  // base styles: only neutral stuff that should *always* apply
+  "ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "duration-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-2xl opacity-95 hover:opacity-100",
+          "rounded-md text-sm font-medium duration-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-2xl opacity-95 hover:opacity-100",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "rounded-md text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border-input hover:text-accent-foreground rounded-2xl border bg-transparent",
+          "rounded-2xl text-sm font-medium border-input hover:text-accent-foreground border bg-transparent",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost:
+          "rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+        link: "text-sm font-medium text-primary underline-offset-4 hover:underline",
 
         "squared:default":
-          "border-input text-secondary hover:bg-accent hover:text-foreground rounded-md border bg-background font-bold",
+          "rounded-md border bg-background border-input text-secondary font-bold text-sm hover:bg-accent hover:text-foreground",
         "squared:outline":
-          "border-input text-foreground hover:bg-accent hover:text-foreground rounded-md border bg-transparent font-bold",
+          "rounded-md border bg-transparent border-input text-foreground font-bold text-sm hover:bg-accent hover:text-foreground",
 
         squareSolid:
-          "border-input text-secondary hover:bg-accent hover:text-foreground rounded-md border bg-background font-bold",
+          "rounded-md border bg-background border-input text-secondary font-bold text-sm hover:bg-accent hover:text-foreground",
         squareOutline:
-          "border-input text-foreground hover:bg-accent hover:text-foreground rounded-md border bg-transparent font-bold",
+          "rounded-md border bg-transparent border-input text-foreground font-bold text-sm hover:bg-accent hover:text-foreground",
 
         glowOutline:
-          "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
+          "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
 
         toggle:
-          "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] font-semibold data-[state=on]:text-[hsl(var(--ds-text))] data-[state=on]:border-white/30 data-[state=on]:bg-white/5 hover:border-white/40 hover:bg-white/5",
+          "px-4 py-2" +
+          "rounded-xl transition-all duration-200 font-semibold " +
+          "text-dim-300 border border-white/10 " +
+          "hover:text-dim-400 hover:border-white/40 " +
+          "data-[state=on]:text-white data-[state=on]:border-white/30 data-[state=on]:bg-white/5",
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10 p-0", // square, good for circle buttons
+        sm: "h-9 px-3 py-1 rounded-md",
+        lg: "h-11 px-8 py-3 rounded-lg",
+        icon: "h-10 w-10 p-0",
       },
       tone: {
         default: "",
@@ -102,14 +108,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const Comp = asChild ? Slot : "button";
+
+    // special case: toggle ignores size/radius so nothing overrides it
+    const resolvedSize = variant === "toggle" ? undefined : size;
+    const resolvedRadius = variant === "toggle" ? undefined : border;
+
     return (
       <Comp
         className={cn(
           buttonVariants({
             variant,
-            size,
+            size: resolvedSize,
+            radius: resolvedRadius,
             tone,
-            radius: border,
             className,
           }),
         )}

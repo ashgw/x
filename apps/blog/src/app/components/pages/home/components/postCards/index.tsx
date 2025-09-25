@@ -69,10 +69,8 @@ export function PostCards({ posts }: PostsProps) {
     return (
       <Button
         variant="toggle"
-        border="md"
         active={selectedCategory === category}
         onClick={() => setSelectedCategory(category)}
-        className="px-4 py-2"
       >
         {capitalizeFirst(category.toLowerCase())}
       </Button>
