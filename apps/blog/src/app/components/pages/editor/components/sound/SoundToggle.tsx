@@ -16,7 +16,6 @@ export function SoundToggle() {
         onClick={toggleSound}
         variant="toggle"
         radius="full"
-        size="default"
         disabled={isLoading}
         active={isPlaying}
         loading={isLoading}

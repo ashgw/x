@@ -38,7 +38,6 @@ const buttonVariants = cva(
           "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
 
         toggle:
-          "px-4 py-2" +
           "rounded-xl transition-all duration-200 font-semibold " +
           "text-dim-300 border border-white/10 " +
           "hover:text-dim-400 hover:border-white/40 " +
