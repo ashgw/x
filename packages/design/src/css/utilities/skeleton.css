@@ -3,7 +3,7 @@
 ------------------------------ */
 
 .skeleton {
-  background-color: hsl(var(--ds-muted) / 0.3);
+  background-color: hsl(var(--ds-muted) / 30%);
   border-radius: var(--ds-radius-md);
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
@@ -11,9 +11,10 @@
 @keyframes skeleton-pulse {
   0%,
   100% {
-    opacity: 0.4;
+    opacity: 40%;
   }
+
   50% {
-    opacity: 0.7;
+    opacity: 70%;
   }
 }

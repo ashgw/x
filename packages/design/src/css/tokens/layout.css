@@ -1,3 +1,7 @@
+/* ------------------------------
+     DESIGN TOKENS · Layout
+  ------------------------------ */
+
 :root {
   --layout-px-default: 1rem; /* 16px gutters on mobile */
   --layout-px-sm: 1.5rem; /* 24px gutters on sm */

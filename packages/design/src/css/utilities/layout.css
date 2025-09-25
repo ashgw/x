@@ -11,8 +11,8 @@
   max-width: 100%; /* grow until capped by breakpoints */
 }
 
-/* Responsive caps using tokens */
-@media (min-width: 640px) {
+/* Responsive caps */
+@media (width >= 640px) {
   .layout {
     max-width: var(--layout-w-sm);
     padding-left: var(--layout-px-sm, var(--layout-px-default));
@@ -20,13 +20,13 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .layout {
     max-width: var(--layout-w-md);
   }
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   .layout {
     max-width: var(--layout-w-lg);
     padding-left: var(--layout-px-lg, var(--layout-px-default));
@@ -34,13 +34,13 @@
   }
 }
 
-@media (min-width: 1280px) {
+@media (width >= 1280px) {
   .layout {
     max-width: var(--layout-w-xl);
   }
 }
 
-@media (min-width: 1400px) {
+@media (width >= 1400px) {
   .layout {
     max-width: var(--layout-w-2xl);
   }

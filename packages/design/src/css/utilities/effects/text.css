@@ -1,3 +1,7 @@
+/* ------------------------------
+   Text Effects
+------------------------------ */
+
 /* Dimmed text levels (gray scale variants) */
 .text-dim-100 {
   color: hsl(0deg 0% 48%);
@@ -25,7 +29,6 @@
     hsl(var(--ds-accent-gradient-start)),
     hsl(var(--ds-accent-gradient-end))
   );
-  -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
