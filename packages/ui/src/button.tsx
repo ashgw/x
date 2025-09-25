@@ -4,11 +4,10 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
 import { cn } from "@ashgw/ui";
-
 import { LoadingPoints } from "./loading";
 
 const buttonVariants = cva(
-  "ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -33,13 +32,14 @@ const buttonVariants = cva(
         "squared:outline":
           "border-input text-foreground hover:bg-accent hover:text-foreground rounded-md border bg-transparent font-bold",
 
-        // New variants
         squareSolid:
           "border-input text-secondary hover:bg-accent hover:text-foreground rounded-md border bg-background font-bold",
         squareOutline:
           "border-input text-foreground hover:bg-accent hover:text-foreground rounded-md border bg-transparent font-bold",
+
         glowOutline:
           "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
+
         toggle:
           "border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] data-[state=on]:text-[hsl(var(--ds-text))] data-[state=on]:border-white/30 data-[state=on]:bg-white/5 hover:border-white/40 hover:bg-white/5",
       },
@@ -47,7 +47,7 @@ const buttonVariants = cva(
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        icon: "h-10 w-10 p-0", // square, good for circle buttons
       },
       tone: {
         default: "",
