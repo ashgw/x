@@ -23,3 +23,30 @@ body::before {
   animation: aurora-float var(--aurora-speed) cubic-bezier(0.37, 0.01, 0.2, 1)
     infinite alternate;
 }
+
+/* ------------------------------
+     Animations (keyframes only)
+  ------------------------------ */
+
+/* Keyframes for aurora movement */
+@keyframes aurora-float {
+  0% {
+    transform: translate3d(-18%, -14%, 0) scale(1.02);
+  }
+
+  25% {
+    transform: translate3d(10%, -6%, 0) scale(1.04);
+  }
+
+  50% {
+    transform: translate3d(16%, 16%, 0) scale(1.06);
+  }
+
+  75% {
+    transform: translate3d(-8%, 8%, 0) scale(1.05);
+  }
+
+  100% {
+    transform: translate3d(14%, -12%, 0) scale(1.03);
+  }
+}
