@@ -15,7 +15,7 @@ export function ProfileButton() {
       }}
       whileHover={{ scale: 1.05 }}
     >
-      <Button variant="squared:outline" size="icon" className="h-9 w-9" asChild>
+      <Button variant="outline" className="h-9 w-9" asChild>
         <Link href="/profile">
           <User className="h-4 w-4" />
           <span className="sr-only">Go to profile</span>

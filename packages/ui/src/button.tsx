@@ -17,7 +17,7 @@ const buttonVariants = cva(
         destructive:
           "rounded-md text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "rounded-2xl text-sm font-medium border-input hover:text-accent-foreground border bg-transparent",
+          "rounded-md text-sm font-medium border-input hover:text-accent-foreground border bg-transparent",
         secondary:
           "rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
@@ -27,11 +27,6 @@ const buttonVariants = cva(
         "squared:default":
           "rounded-md border bg-background border-input text-secondary font-bold text-sm hover:bg-accent hover:text-foreground",
         "squared:outline":
-          "rounded-md border bg-transparent border-input text-foreground font-bold text-sm hover:bg-accent hover:text-foreground",
-
-        squareSolid:
-          "rounded-md border bg-background border-input text-secondary font-bold text-sm hover:bg-accent hover:text-foreground",
-        squareOutline:
           "rounded-md border bg-transparent border-input text-foreground font-bold text-sm hover:bg-accent hover:text-foreground",
 
         glowOutline:

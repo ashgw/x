@@ -84,12 +84,7 @@ export function TagsField({ form }: TagsFieldProps) {
                     }
                   }}
                 />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  type="button"
-                  onClick={_handleAddTag}
-                >
+                <Button variant="outline" type="button" onClick={_handleAddTag}>
                   Add
                 </Button>
               </div>

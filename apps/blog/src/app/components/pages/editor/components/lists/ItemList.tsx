@@ -83,7 +83,6 @@ const ListItem = memo(function ListItemComponent<T>({
             <Button
               key={actionIndex}
               variant={action.variant ?? "default"}
-              size="sm"
               onClick={action.onClick}
             >
               {action.label}
