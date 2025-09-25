@@ -1,8 +1,3 @@
-import type { Config } from "tailwindcss";
+import { config } from "@ashgw/design/tailwind";
 
-import { designContent, designPreset } from "@ashgw/design/tailwind";
-
-export default {
-  content: [...designContent],
-  presets: [designPreset],
-} satisfies Config;
+export default config;

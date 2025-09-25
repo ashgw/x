@@ -1,3 +1,8 @@
-export { designPreset } from "./preset";
-export { designContent } from "./content";
-export type { Config as TailwindConfig } from "tailwindcss";
+import type { Config } from "tailwindcss";
+import { designContent } from "./content";
+import { designPreset } from "./preset";
+
+export const config = {
+  content: [...designContent],
+  presets: [designPreset],
+} satisfies Config;
