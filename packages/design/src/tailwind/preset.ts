@@ -14,8 +14,8 @@ export const designPreset: Config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--ds-border) / 0.18)",
-        input: "hsl(var(--ds-border) / 0.18)",
+        border: "hsl(var(--ds-border))",
+        input: "hsl(var(--ds-border))",
         ring: "hsl(var(--ds-ring))",
         background: "hsl(var(--ds-background))",
         foreground: "hsl(var(--ds-text))",

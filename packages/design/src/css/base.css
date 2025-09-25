@@ -1,30 +1,5 @@
-/* src/css/base.css */
 @import url("./reset.css");
-
-@tailwind base;
-
 @import url("./tokens/index.css");
-
-@layer base {
-  .dark {
-  }
-  * {
-    @apply border-border;
-  }
-  html,
-  body {
-    scroll-behavior: smooth;
-    min-height: 100vh;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    body::before {
-      animation: none;
-    }
-  }
-}
-
-@tailwind components;
-@tailwind utilities;
-
 @import url("./background/index.css");
 @import url("./utilities/index.css");
+@import url("./tailwind.css");
