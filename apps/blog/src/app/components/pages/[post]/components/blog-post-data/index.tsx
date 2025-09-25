@@ -28,7 +28,7 @@ export function BlogPostData({ postData }: BlogPostProps) {
         <Link
           href={`/editor?blog=${postData.slug}`}
           aria-label={`Edit blog post: ${postData.title}`}
-          className="ml-2 text-muted-foreground hover:text-foreground transition-colors"
+          className="ml-2 transition-duration-100 text-muted-foreground hover:text-foreground transition-colors"
         >
           <Edit className="h-4 w-4" />
         </Link>
@@ -49,11 +49,11 @@ export function BlogPostData({ postData }: BlogPostProps) {
           {DateService.isSameMonthAndYear({
             stringDate: postData.firstModDate.toISOString(),
           }) ? (
-            <div className="transition-200 opacity-0 hover:opacity-100">
+            <div className="transition-duration-200 opacity-0 hover:opacity-100">
               <Badge variant="outlineUpdated">Recent</Badge>
             </div>
           ) : (
-            <div className="transition-200 opacity-0 hover:opacity-100">
+            <div className="transition-duration-200 opacity-0 hover:opacity-100">
               <Badge variant="outlineArchive">Archive</Badge>
             </div>
           )}

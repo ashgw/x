@@ -17,7 +17,7 @@ export const CopyButton: FC<CopyButtonProps> = ({ code, className }) => {
   return (
     <button
       className={cn(
-        "transition-200 hover:translate-up-1 glow-300 rounded-xl border-2 border-[#191919] p-2 px-3 py-2 hover:border-[#340929]",
+        "transition-duration-200 hover:translate-y-1 glow-300 rounded-xl border-2 border-[#191919] p-2 px-3 py-2 hover:border-[#340929]",
         className,
       )}
       onClick={() => {
@@ -43,7 +43,7 @@ const AnimatedCopyButton: React.FC = () => {
   return (
     <button
       onClick={handleClick}
-      className={`transition-200 ${copied ? "scale-0" : "scale-100"}`}
+      className={`transition-duration-200 ${copied ? "scale-0" : "scale-100"}`}
     >
       {copied ? <Check color="#4ade80" /> : <Copy />}
     </button>

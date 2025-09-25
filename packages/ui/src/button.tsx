@@ -13,12 +13,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         navbar:
-          "glow-300 hover:translate-up-1 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 transition-all hover:opacity-100",
+          "glow-300 hover:translate-y-1 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 transition-all hover:opacity-100",
         navbarMin:
-          "glow-300 transition-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 hover:opacity-100",
+          "glow-300 transition-duration-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] font-semibold opacity-95 hover:opacity-100",
 
         default:
-          "transition-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] opacity-95 hover:opacity-100",
+          "transition-duration-200 bg-primary/95 text-primary-foreground hover:bg-primary rounded-[1.1rem] opacity-95 hover:opacity-100",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
