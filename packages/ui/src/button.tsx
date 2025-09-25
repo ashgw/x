@@ -13,6 +13,14 @@ export const outlineInteractive =
   "data-[state=on]:text-white data-[state=on]:border-white/30 " +
   "data-[state=on]:bg-white/5"; // faint inside fill on active/focus
 
+const defaultInteractive =
+  "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
+  "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
+  // on hover: darken the primary a little using opacity var
+  "hover:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-medium))] " +
+  // on active: push it a bit darker for click feedback
+  "active:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-strong))]";
+
 const buttonVariants = cva(
   "py-2 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap " +
     "transition-colors focus-visible:outline-none focus-visible:ring-2 " +
@@ -22,14 +30,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
-          "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
-          // on hover: darken the primary a little using opacity var
-          "hover:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-medium))] " +
-          // on active: push it a bit darker for click feedback
-          "active:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-strong))]",
-
+        default: defaultInteractive,
+        "default:rounded": defaultInteractive + " rounded-full",
         destructive:
           "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
           "bg-[hsl(var(--ds-danger))] text-[hsl(var(--ds-text))] " +

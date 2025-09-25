@@ -14,6 +14,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  Input,
 } from "@ashgw/ui";
 
 import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
@@ -73,15 +74,13 @@ export function Newsletter() {
                 <FormItem className="w-full">
                   <FormControl>
                     <div className="flex w-full items-center gap-3">
-                      <input
+                      <Input
                         type="email"
                         {...field}
                         placeholder="your@email.com"
-                        className="h-12 flex-1 rounded-[2rem] border border-white/15 bg-transparent px-3 text-sm font-medium text-[#B0B0B0] outline-none transition-all duration-300 ease-in-out selection:bg-white/10 hover:border-white/20 focus:border-white/30 focus:ring-0 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-[#B0B0B0] [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] focus:[&:-webkit-autofill]:bg-transparent"
                       />
                       <Button
-                        className="glow-300 shrink-0"
-                        variant="navbar"
+                        variant="default:rounded"
                         type="submit"
                         disabled={subscribeMutation.isPending}
                         loading={subscribeMutation.isPending}
