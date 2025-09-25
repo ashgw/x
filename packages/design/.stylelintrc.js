@@ -30,5 +30,8 @@ export default {
     "declaration-block-no-duplicate-custom-properties": true,
     "selector-class-pattern": null,
     "no-descending-specificity": null,
+
+    // Force %
+    "alpha-value-notation": "percentage",
   },
 };
