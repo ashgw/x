@@ -23,7 +23,7 @@ export const ViewToggle = observer(() => {
       className="flex items-center gap-2"
     >
       <Button
-        variant={viewMode === "active" ? "squared:default" : "outline"}
+        variant={viewMode === "active" ? "default" : "outline"}
         onClick={toggleView}
         className="relative min-w-[120px]"
       >

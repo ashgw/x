@@ -167,7 +167,7 @@ export function LoginPage() {
                   Cancel
                 </Button>
                 <Button
-                  variant="squared:default"
+                  variant="default"
                   type="submit"
                   disabled={loginMutation.isPending}
                   loading={loginMutation.isPending}

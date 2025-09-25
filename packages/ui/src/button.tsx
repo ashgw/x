@@ -24,12 +24,6 @@ const buttonVariants = cva(
           "rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground",
         link: "text-sm font-medium text-primary underline-offset-4 hover:underline",
 
-        "squared:default":
-          "rounded-md border bg-background border-input text-secondary font-bold text-sm hover:bg-accent hover:text-foreground",
-
-        glowOutline:
-          "rounded-md border bg-transparent text-[hsl(var(--ds-text-muted))] border-[hsl(var(--ds-border))] text-sm font-medium hover:text-[hsl(var(--ds-text))] hover:border-white/40 hover:bg-white/5 transition-all",
-
         toggle:
           "rounded-xl transition-all duration-200 font-semibold " +
           "text-dim-300 border border-white/10 " +

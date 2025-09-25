@@ -24,7 +24,7 @@ function GoHomeContent() {
       <Button
         type="button"
         onClick={handleClick}
-        variant="glowOutline"
+        variant="outline"
         border="full"
         className="group inline-flex items-center px-3 py-2 transition-all duration-300 md:scale-125"
       >

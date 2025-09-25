@@ -110,7 +110,7 @@ export function ChangePasswordForm() {
 
         <Button
           type="submit"
-          variant="squared:default"
+          variant="default"
           className="w-full"
           loading={changePasswordMutation.isPending}
         >

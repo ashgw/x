@@ -27,7 +27,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
       </Button>
 
       {!user ? (
-        <Button variant="squared:default" type="button" asChild>
+        <Button variant="default" type="button" asChild>
           <Link href="/login">
             <LogIn className="mr-2 h-4 w-4" />
             Login to save
@@ -35,7 +35,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
         </Button>
       ) : (
         <Button
-          variant="squared:default"
+          variant="default"
           type="submit"
           disabled={!isAdmin || isSubmitting}
           loading={isAdmin && isSubmitting}
