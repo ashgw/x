@@ -13,8 +13,7 @@ export function SoundToggle() {
       }
       aria-pressed={isPlaying}
       onClick={toggleSound}
-      className="fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full px-5 py-3 text-white border bg-transparent"
-      style={{ borderColor: "rgba(255,255,255,0.18)" }}
+      className="border fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full px-5 py-3 "
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, y: 20 }}
