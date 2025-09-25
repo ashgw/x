@@ -16,4 +16,13 @@
   /* glow effects */
   --glow-accent-strong: rgb(255 46 200 / 50%);
   --glow-accent-subtle: rgb(255 46 200 / 20%);
+  --ds-energy: 282 62% 60%; /* bright vivid purple for default (dark) */
+}
+
+.light {
+  --ds-energy: 282 50% 40%; /* tuned purple for light backgrounds */
+}
+
+.dark {
+  --ds-energy: 282 70% 70%; /* neon purple so it pops on dark */
 }
