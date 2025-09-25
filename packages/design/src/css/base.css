@@ -10,10 +10,32 @@
 /* Tailwind utilities layer (single-purpose classes like flex, p-4, etc.) */
 @tailwind utilities;
 
-/* Split layers: tokens, globals, background, utilities */
+/* Split layers: tokens, base rules, animations, background, utilities */
 @import url("./tokens/index.css");
-@import url("./base-globals.css");
+/* merged from base-globals.css */
+.dark {
+  /* Placeholder for dark mode overrides (can redefine tokens here) */
+
+  /* But no theme switching is needed */
+}
+
+* {
+  /* Applies Tailwind border color consistently across all elements */
+  @apply border-border;
+}
+
+html,
+body {
+  /* Smooth scrolling and full height */
+  scroll-behavior: smooth;
+  min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
 @import url("./animations.css");
-@import url("./background.css");
-@import url("./aurora.css");
-@import url("./utilities.css");
+@import url("./background/index.css");
+@import url("./utilities/index.css");

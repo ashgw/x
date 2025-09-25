@@ -1,0 +1,10 @@
+/* Effects-related utilities */
+
+/* Glow effects for emphasis */
+.glow-300 {
+  filter: drop-shadow(0 0 0.75rem var(--glow-accent-strong));
+}
+
+.glow-500 {
+  filter: drop-shadow(0 0 0.75rem var(--glow-accent-subtle));
+}

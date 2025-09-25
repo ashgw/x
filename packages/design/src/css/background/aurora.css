@@ -1,7 +1,3 @@
-/* ------------------------------
-     Aurora overlay (visual layer)
-  ------------------------------ */
-
 /* Aurora floating gradient overlay */
 body::before {
   content: "";

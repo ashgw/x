@@ -1,0 +1,28 @@
+/* Text-related utilities */
+
+/* Dimmed text levels (gray scale variants) */
+.text-dim-100 {
+  color: hsl(0deg 0% 48%);
+}
+
+.text-dim-200 {
+  color: hsl(0deg 0% 65%);
+}
+
+.text-dim-300 {
+  color: hsl(0deg 0% 75%);
+}
+
+.text-dim-400 {
+  color: hsl(0deg 0% 90%);
+}
+
+.text-dim-500 {
+  color: hsl(0deg 0% 95%);
+}
+
+.gradient-text-accent {
+  @apply bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent;
+
+  background-clip: text; /* Ensures gradient fills text */
+}
