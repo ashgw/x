@@ -8,8 +8,8 @@ import { LoadingPoints } from "./loading";
 
 const outlineInteractive =
   "border text-dim-300 border-white/10 " +
-  "hover:text-dim-400 hover:border-white/40 hover:bg-white/[0.03] " + // subtle hover fill
-  "data-[state=on]:text-white data-[state=on]:border-white/30 " +
+  "hover:text-dim-400 hover:border-[hsl(var(--ds-border))]/70 hover:bg-white/[0.03] " + // subtle hover fill
+  "data-[state=on]:text-white data-[state=on]:border-[hsl(var(--ds-border))]/90 " +
   "data-[state=on]:bg-white/5"; // faint inside fill on active/focus
 
 const outlineDestructiveInteractive =

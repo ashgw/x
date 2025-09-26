@@ -124,7 +124,7 @@
   --ds-danger: 0 62.8% 30.6%;
   --ds-danger-foreground: 0 0% 100%;
 
-  --ds-border: 0 0% 14.9%;
+  --ds-border: 215 40% 30%; /* softer navy blue border */
   --ds-ring: 215 90% 60% / var(--ds-opacity-subtle);
 
   --ds-card: 0 0% 3.9% / 0;
