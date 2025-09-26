@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme as useNextTheme } from "next-themes";
+
 /**
  * #### Example use case
  * ```tsx
@@ -13,7 +14,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(theme === "red" ? "purple" : "red")}
       className="rounded-md border px-4 py-2"
     >
       Toggle theme (current: {theme})
@@ -23,6 +24,17 @@ export function ThemeToggle() {
 *```
 */
 export function useTheme() {
-  const { theme, setTheme, systemTheme, resolvedTheme } = useNextTheme();
-  return { theme, setTheme, systemTheme, resolvedTheme };
+  const { theme, setTheme, resolvedTheme } = useNextTheme();
+
+  const toggleTheme = () => {
+    const currentTheme = resolvedTheme ?? theme ?? "purple";
+    setTheme(currentTheme === "red" ? "purple" : "red");
+  };
+
+  return {
+    theme: theme as "purple" | "red" | undefined,
+    setTheme: setTheme as (theme: "purple" | "red") => void,
+    resolvedTheme: resolvedTheme as "purple" | "red" | undefined,
+    toggleTheme,
+  };
 }
