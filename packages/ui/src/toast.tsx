@@ -67,7 +67,7 @@ const positionVariants = cva("fixed z-50 flex flex-col space-y-3", {
     },
   },
   defaultVariants: {
-    position: "bottom-right",
+    position: "top-right",
   },
 });
 
@@ -156,7 +156,7 @@ interface ToastProviderProps {
 
 export function ToastProvider({
   children,
-  position = "bottom-right",
+  position = "top-right",
 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
