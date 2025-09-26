@@ -2,9 +2,11 @@
 body::before {
   content: "";
   position: fixed;
-  inset: -40vh;
-  z-index: -2;
-  pointer-events: none; /* Prevents interaction */
+  inset: 0; /* full viewport, no negative inset */
+  z-index: -1; /* behind content, above html/background */
+  pointer-events: none;
+
+  /* two large blobs */
   background: radial-gradient(
       64vw 64vw at 18% 28%,
       rgb(var(--aurora-1), var(--aurora-opacity-1)) 0%,
@@ -18,35 +20,31 @@ body::before {
       rgb(var(--aurora-2), 0) 72%
     );
   background-repeat: no-repeat;
-  transform: translate3d(0, 0, 0) scale(1.03);
-  will-change: transform; /* Hint for GPU optimization */
-  animation: aurora-float var(--aurora-speed) cubic-bezier(0.37, 0.01, 0.2, 1)
-    infinite alternate;
+
+  /* overscan so panning never exposes edges */
+  background-size: 160% 160%;
+  background-position: 50% 50%;
+
+  will-change: background-position;
+  animation: aurora-pan var(--aurora-speed) cubic-bezier(0.37, 0.01, 0.2, 1)
+    infinite alternate both; /* both applies first frame on first paint */
 }
 
-/* ------------------------------
-     Animations (keyframes only)
-  ------------------------------ */
-
-/* Keyframes for aurora movement */
-@keyframes aurora-float {
+/* Pan the background instead of transforming the layer */
+@keyframes aurora-pan {
   0% {
-    transform: translate3d(-18%, -14%, 0) scale(1.02);
+    background-position: 48% 48%;
   }
-
   25% {
-    transform: translate3d(10%, -6%, 0) scale(1.04);
+    background-position: 58% 42%;
   }
-
   50% {
-    transform: translate3d(16%, 16%, 0) scale(1.06);
+    background-position: 62% 64%;
   }
-
   75% {
-    transform: translate3d(-8%, 8%, 0) scale(1.05);
+    background-position: 44% 60%;
   }
-
   100% {
-    transform: translate3d(14%, -12%, 0) scale(1.03);
+    background-position: 58% 44%;
   }
 }

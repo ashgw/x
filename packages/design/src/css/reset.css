@@ -14,8 +14,15 @@ html:focus-within {
   scroll-behavior: smooth;
 }
 
+/* important: match base color and clip any transient horizontal overflow */
+html,
 body {
+  background-color: var(--bg-base);
   min-height: 100vh;
+  overflow-x: clip; /* use 'hidden' if you need wider browser support */
+}
+
+body {
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
