@@ -21,7 +21,6 @@ catalog:
   "@playwright/test": ^1.40.1
   # used to load env TS files, like @ashgw/env since next 14 only supoorts js files
   "jiti": "^2.3.3"
-  framer-motion: ^10.17.4
   "@types/node": ^20.11.17
   "@ashgw/ts-env": 1.5.3
   react-hook-form: "7.53.0"
