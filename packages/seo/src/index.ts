@@ -4,6 +4,6 @@ export {
   websiteJsonLd,
   blogPostingJsonLd,
   breadcrumbsJsonLd,
-  JsonLdScriptProvider,
+  JsonLdScript,
 } from "./json-ld";
 export type { PostLike } from "./json-ld";

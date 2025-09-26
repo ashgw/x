@@ -7,13 +7,14 @@ import type {
   BreadcrumbList,
 } from "schema-dts";
 import { site_name, creator } from "@ashgw/constants";
+import Script from "next/script";
 
 interface JsonLdProps {
   code: WithContext<Thing>;
 }
 
-export const JsonLd = ({ code }: JsonLdProps) => (
-  <script
+export const JsonLdScript = ({ code }: JsonLdProps) => (
+  <Script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: JSON.stringify(code) }}
   />

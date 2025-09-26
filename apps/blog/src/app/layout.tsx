@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { createMetadata } from "@ashgw/seo";
+import {
+  createMetadata,
+  JsonLdScript,
+  organizationJsonLd,
+  websiteJsonLd,
+} from "@ashgw/seo";
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
-import { DesignSystemHtmlProvider } from "@ashgw/design/provider";
+import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBack } from "./components/pages/root";
@@ -22,14 +27,22 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <DesignSystemHtmlProvider>
-      <GoBack />
-      <AnalyticsProvider>
-        <TRPCProvider siteBaseUrl={siteUrl}>
-          <StoreProvider>{children}</StoreProvider>
-        </TRPCProvider>
-      </AnalyticsProvider>
-      <FirstTimeVisitorBanner />
-    </DesignSystemHtmlProvider>
+    <>
+      <JsonLdScript code={organizationJsonLd(siteUrl)} />
+      <JsonLdScript code={websiteJsonLd(siteUrl)} />
+      <html lang="en">
+        <body>
+          <DesignSystemProvider>
+            <GoBack />
+            <AnalyticsProvider>
+              <TRPCProvider siteBaseUrl={siteUrl}>
+                <StoreProvider>{children}</StoreProvider>
+              </TRPCProvider>
+            </AnalyticsProvider>
+            <FirstTimeVisitorBanner />
+          </DesignSystemProvider>
+        </body>
+      </html>
+    </>
   );
 }

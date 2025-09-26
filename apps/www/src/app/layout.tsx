@@ -5,10 +5,10 @@ import {
   createMetadata,
   organizationJsonLd,
   websiteJsonLd,
-  JsonLdScriptProvider,
+  JsonLdScript,
 } from "@ashgw/seo";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
-import { DesignSystemHtmlProvider } from "@ashgw/design/provider";
+import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -25,17 +25,18 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <JsonLdScriptProvider
-      entries={[
-        () => organizationJsonLd(siteUrl),
-        () => websiteJsonLd(siteUrl),
-      ]}
-    >
-      <DesignSystemHtmlProvider>
-        <AnalyticsProvider>
-          <TsrProvider>{children}</TsrProvider>
-        </AnalyticsProvider>
-      </DesignSystemHtmlProvider>
-    </JsonLdScriptProvider>
+    <>
+      <JsonLdScript code={organizationJsonLd(siteUrl)} />
+      <JsonLdScript code={websiteJsonLd(siteUrl)} />
+      <html lang="en">
+        <body>
+          <DesignSystemProvider>
+            <AnalyticsProvider>
+              <TsrProvider>{children}</TsrProvider>
+            </AnalyticsProvider>
+          </DesignSystemProvider>
+        </body>
+      </html>
+    </>
   );
 }

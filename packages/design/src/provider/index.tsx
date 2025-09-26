@@ -3,20 +3,16 @@ import { ThemeProvider } from "../theme/provider";
 import { ToastProvider } from "../ui";
 import "./../css/index.css";
 
-export const DesignSystemHtmlProvider = ({
+export const DesignSystemProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
   return (
-    <html lang="en">
-      <ThemeProvider>
-        <ToastProvider>
-          <body className={fonts.atkinsonHyperlegible.className}>
-            {children}
-          </body>
-        </ToastProvider>
-      </ThemeProvider>
-    </html>
+    <ThemeProvider>
+      <ToastProvider>
+        <main className={fonts.atkinsonHyperlegible.className}>{children}</main>
+      </ToastProvider>
+    </ThemeProvider>
   );
 };
