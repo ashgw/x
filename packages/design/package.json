@@ -17,12 +17,6 @@
     "./ui": "./src/ui/index.ts"
   },
   "dependencies": {
-    "@tailwindcss/typography": "0.5.10",
-    "framer-motion": "^10.17.4",
-    "lucide-react": "0.309.0",
-    "next": "catalog:",
-    "next-themes": "0.4.6",
-    "tailwindcss-animate": "1.0.7",
     "@hookform/resolvers": "3.9.0",
     "@radix-ui/react-dialog": "1.1.14",
     "@radix-ui/react-dropdown-menu": "2.1.2",
@@ -31,10 +25,16 @@
     "@radix-ui/react-popover": "1.1.14",
     "@radix-ui/react-scroll-area": "1.2.9",
     "@radix-ui/react-slot": "1.1.0",
+    "@tailwindcss/typography": "0.5.10",
     "class-variance-authority": "0.7.0",
     "cmdk": "1.1.1",
+    "framer-motion": "10.17.4",
+    "lucide-react": "0.309.0",
+    "next": "catalog:",
+    "next-themes": "0.4.6",
     "react-hook-form": "7.53.0",
     "tailwind-merge": "2.5.4",
+    "tailwindcss-animate": "1.0.7",
     "zod": "catalog:"
   },
   "peerDependencies": {
@@ -49,13 +49,13 @@
     "postcss": "^8.5.6",
     "postcss-scss": "^4.0.9",
     "prettier": "catalog:",
+    "react": "catalog:react18",
     "stylelint": "^16.24.0",
     "stylelint-config-recommended": "^17.0.0",
     "stylelint-config-standard": "^39.0.0",
     "stylelint-config-tailwindcss": "^1.0.0",
-    "typescript": "catalog:",
-    "react": "catalog:react18",
-    "ts-roids": "catalog:"
+    "ts-roids": "catalog:",
+    "typescript": "catalog:"
   },
   "type": "module"
 }

@@ -41,7 +41,6 @@
     "@ashgw/rate-limiter": "workspace:*",
     "@ashgw/scheduler": "workspace:*",
     "@ashgw/seo": "workspace:*",
-    "@ashgw/ui": "workspace:*",
     "@calcom/embed-react": "1.5.2",
     "@gsap/react": "2.1.0",
     "@next/third-parties": "15.0.2",

@@ -4,7 +4,6 @@ const baseConfig = {
   productionBrowserSourceMaps: true,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@ashgw/ui",
     "@ashgw/design",
     "@ashgw/env",
     "@ashgw/components",
