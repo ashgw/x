@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatePresence } from "framer-motion";
-import { Skeleton } from "@ashgw/ui";
+import { AnimatePresence } from "@ashgw/design/motion";
+import { Skeleton } from "@ashgw/design/ui";
 
 import { Header } from "../header";
 import { BlogList } from "../list";
@@ -21,7 +21,7 @@ export function EditorLayout({ editor }: EditorLayoutProps) {
   const showDeleteModalOverlay: boolean = editor.modals.delete.visible;
 
   return (
-    <div className="container mx-auto p-8">
+    <div className="layout mx-auto p-8">
       <Header
         onClick={editor.actions.startNewBlog}
         sortOptions={editor.sorting.options}

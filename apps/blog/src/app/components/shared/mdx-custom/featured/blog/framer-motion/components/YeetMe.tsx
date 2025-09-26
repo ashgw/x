@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 
 export function YeetMe() {
   const initial = {

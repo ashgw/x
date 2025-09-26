@@ -1,17 +1,9 @@
 import { cache } from "react";
 import type { Metadata } from "next";
 import { NotFound } from "@ashgw/components";
-import {
-  createMetadata,
-  JsonLd,
-  blogPostingJsonLd,
-  breadcrumbsJsonLd,
-} from "@ashgw/seo";
-import { env } from "@ashgw/env";
+import { createMetadata } from "@ashgw/seo";
 import { BlogPostPage } from "~/app/components/pages/[post]";
 import { trpcHttpServerSideClient, HydrateClient } from "~/trpc/callers/server";
-
-const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
 const getPostCached = cache((slug: string) =>
   trpcHttpServerSideClient.post.getDetailedPublicPost.query({ slug }),
@@ -56,25 +48,6 @@ export default async function Page({ params }: { params: { post: string } }) {
 
   return (
     <HydrateClient>
-      <JsonLd
-        code={blogPostingJsonLd({
-          post: {
-            slug: postData.slug,
-            title: postData.title,
-            description: postData.summary,
-            tags: postData.tags,
-            publishedAt: postData.firstModDate.toISOString(),
-            updatedAt: postData.lastModDate.toISOString(),
-          },
-          siteUrl,
-        })}
-      />
-      <JsonLd
-        code={breadcrumbsJsonLd([
-          { name: "Blog", url: `${siteUrl}` },
-          { name: postData.title, url: `${siteUrl}/${postData.slug}` },
-        ])}
-      />
       <BlogPostPage postData={postData} />
     </HydrateClient>
   );

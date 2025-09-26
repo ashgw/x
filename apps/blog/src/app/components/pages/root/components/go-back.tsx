@@ -2,9 +2,9 @@
 
 import { Suspense } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "@ashgw/design/icons";
 
-function GoHomeContent() {
+function BackContent() {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -22,8 +22,8 @@ function GoHomeContent() {
     <button
       type="button"
       onClick={handleClick}
-      className={`mb-4 ml-5 mt-5 inline-flex items-center hover:text-foreground ${
-        pathname === "/" ? "invisible dimmed-4" : ""
+      className={`mb-4 ml-2 mt-5 inline-flex items-center hover:text-foreground ${
+        pathname === "/" ? "invisible text-dim-400" : ""
       }`}
     >
       <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-white/10 px-3 py-2 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:pr-5 md:scale-125">
@@ -44,7 +44,7 @@ function GoHomeContent() {
   );
 }
 
-function GoHomeSkeleton() {
+function BackSkeleton() {
   return (
     <div className="inline-flex animate-pulse items-center">
       <div className="bg-muted h-8 w-20 rounded-full" />
@@ -52,11 +52,11 @@ function GoHomeSkeleton() {
   );
 }
 
-export function GoBackHome() {
+export function GoBack() {
   return (
-    <div className="container pt-6">
-      <Suspense fallback={<GoHomeSkeleton />}>
-        <GoHomeContent />
+    <div className="layout pt-6">
+      <Suspense fallback={<BackSkeleton />}>
+        <BackContent />
       </Suspense>
     </div>
   );

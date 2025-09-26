@@ -1,4 +1,4 @@
-import { Input } from "@ashgw/ui";
+import { Input } from "@ashgw/design/ui";
 
 import type { BlockEditorProps } from "../types";
 

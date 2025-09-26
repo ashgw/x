@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Lock, LogIn } from "lucide-react";
+import { Lock, LogIn } from "@ashgw/design/icons";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import { UserRoleEnum } from "~/api/models";
 import { useAuth } from "~/app/hooks";
@@ -18,7 +18,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
   return (
     <div className="flex justify-end gap-2">
       <Button
-        variant="squared:outline"
+        variant="outline"
         type="button"
         onClick={onReset}
         disabled={isSubmitting}
@@ -27,7 +27,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
       </Button>
 
       {!user ? (
-        <Button variant="squared:default" type="button" asChild>
+        <Button variant="default" type="button" asChild>
           <Link href="/login">
             <LogIn className="mr-2 h-4 w-4" />
             Login to save
@@ -35,7 +35,7 @@ export function FormButtons({ onReset, isSubmitting }: FormButtonsProps) {
         </Button>
       ) : (
         <Button
-          variant="squared:default"
+          variant="default"
           type="submit"
           disabled={!isAdmin || isSubmitting}
           loading={isAdmin && isSubmitting}

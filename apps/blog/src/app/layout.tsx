@@ -1,22 +1,21 @@
-import "@ashgw/css/global";
-
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import {
-  JsonLd,
   createMetadata,
+  JsonLdScript,
   organizationJsonLd,
   websiteJsonLd,
 } from "@ashgw/seo";
 
-import { Providers as GlobalProviders } from "@ashgw/components";
+import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
-import { fonts } from "@ashgw/ui";
+import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { TRPCProvider } from "~/trpc/provider";
-import { GoBackHome } from "./components/pages/root";
+import { GoBack } from "./components/pages/root";
 import { StoreProvider } from "./stores";
 import { site_name } from "@ashgw/constants";
+import { FirstTimeVisitorBanner } from "@ashgw/components";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
@@ -28,17 +27,18 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={fonts.atkinsonHyperlegible.className}>
-        <JsonLd code={organizationJsonLd(siteUrl)} />
-        <JsonLd code={websiteJsonLd(siteUrl)} />
-        <GoBackHome />
-        <GlobalProviders>
+    <>
+      <JsonLdScript code={organizationJsonLd(siteUrl)} />
+      <JsonLdScript code={websiteJsonLd(siteUrl)} />
+      <DesignSystemProvider>
+        <GoBack />
+        <AnalyticsProvider>
           <TRPCProvider siteBaseUrl={siteUrl}>
             <StoreProvider>{children}</StoreProvider>
           </TRPCProvider>
-        </GlobalProviders>
-      </body>
-    </html>
+        </AnalyticsProvider>
+        <FirstTimeVisitorBanner />
+      </DesignSystemProvider>
+    </>
   );
 }

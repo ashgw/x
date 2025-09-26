@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 
-import { cn } from "@ashgw/ui";
+import { cn } from "@ashgw/design/ui";
 
 import type { HProps } from "./types";
 

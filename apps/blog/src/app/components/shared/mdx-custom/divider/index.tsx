@@ -1,5 +1,3 @@
-import { Divider as NextDivider } from "@nextui-org/react";
-
 export function Divider() {
-  return <NextDivider orientation="horizontal" />;
+  return <div className="my-8 h-px w-full bg-white/10" />;
 }

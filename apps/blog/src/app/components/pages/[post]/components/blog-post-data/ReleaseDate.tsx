@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 
 import { DateService } from "@ashgw/cross-runtime";
 
@@ -19,7 +19,7 @@ export function ReleaseDate({ date }: { date: string }) {
         duration: 0.5,
         ease: "easeOut",
       }}
-      className="dimmed-0 text-sm"
+      className="text-dim-100 text-sm"
     >
       {DateService.formatDate({ stringDate: date })}
     </motion.p>

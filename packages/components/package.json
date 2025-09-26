@@ -4,24 +4,21 @@
   "private": true,
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "format": "prettier . --write",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
     "@ashgw/analytics": "workspace:*",
     "@ashgw/constants": "workspace:*",
+    "@ashgw/design": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/logger": "workspace:*",
-    "@ashgw/monitor": "workspace:*",
-    "@ashgw/ui": "workspace:*",
-    "@nextui-org/react": "catalog:",
-    "framer-motion": "catalog:"
+    "@ashgw/monitor": "workspace:*"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/prettier-config": "workspace:*",
-    "@ashgw/tailwind-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@types/react": "catalog:react18",
     "eslint": "catalog:",
@@ -48,6 +45,5 @@
     "react": "catalog:react18",
     "zod": "3.23.8"
   },
-  "prettier": "@ashgw/prettier-config",
   "type": "module"
 }

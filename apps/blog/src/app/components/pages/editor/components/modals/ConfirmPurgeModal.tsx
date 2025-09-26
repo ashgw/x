@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Button } from "@ashgw/ui";
+import { motion } from "@ashgw/design/motion";
+import { Button } from "@ashgw/design/ui";
 import { ModalShell } from "./ModalShell";
 
 export function ConfirmPurgeModal(props: {
@@ -38,14 +38,14 @@ export function ConfirmPurgeModal(props: {
         transition={{ delay: 0.3 }}
       >
         <Button
-          variant="squared:outline"
+          variant="outline"
           onClick={props.onCancel}
           disabled={props.isPurging}
         >
           Cancel
         </Button>
         <Button
-          variant="destructive"
+          variant="destructive:outline"
           onClick={props.onConfirm}
           disabled={props.isPurging}
           loading={props.isPurging}

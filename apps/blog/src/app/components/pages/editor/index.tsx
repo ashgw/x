@@ -1,7 +1,6 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-import { Toaster } from "sonner";
 
 import { SoundProvider, SoundToggle } from "./components/sound";
 import { EditorLayout } from "./components/layout";
@@ -14,7 +13,6 @@ export const EditorPage = observer(() => {
     <SoundProvider>
       <EditorLayout editor={editor} />
       <SoundToggle />
-      <Toaster position="bottom-right" />
     </SoundProvider>
   );
 });

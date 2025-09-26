@@ -4,9 +4,9 @@ import type { SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
 import {
@@ -18,8 +18,8 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  LoadingPoints as Loading,
-} from "@ashgw/ui";
+  Loading,
+} from "@ashgw/design/ui";
 
 import type { UserLoginDto } from "~/api/models";
 import { userLoginSchemaDto } from "~/api/models";
@@ -76,7 +76,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-md px-4 py-16">
+    <div className="layout mx-auto max-w-md px-4 py-16">
       <motion.div
         className="bg-card rounded-lg border p-6 shadow-xl"
         initial={{ opacity: 0, y: 20 }}
@@ -159,7 +159,7 @@ export function LoginPage() {
                 transition={{ delay: 0.4 }}
               >
                 <Button
-                  variant="squared:outline"
+                  variant="outline"
                   type="button"
                   onClick={() => router.push("/editor")}
                   disabled={loginMutation.isPending}
@@ -167,7 +167,7 @@ export function LoginPage() {
                   Cancel
                 </Button>
                 <Button
-                  variant="squared:default"
+                  variant="default"
                   type="submit"
                   disabled={loginMutation.isPending}
                   loading={loginMutation.isPending}

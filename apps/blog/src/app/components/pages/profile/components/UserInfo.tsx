@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Crown, User } from "lucide-react";
+import { motion } from "@ashgw/design/motion";
+import { Crown, User } from "@ashgw/design/icons";
 
-import { Badge } from "@ashgw/ui";
+import { Badge } from "@ashgw/design/ui";
 
 import type { UserRo } from "~/api/models";
 import { UserRoleEnum } from "~/api/models";

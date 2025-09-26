@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 
 import type { HProps } from "./types";
 
@@ -21,7 +21,7 @@ export function H2({ children, id }: HProps) {
         ease: "easeInOut",
       }}
       id={id}
-      className="dimmed-4 text-3xl font-bold"
+      className="text-dim-400 text-3xl font-bold"
     >
       {children}
     </motion.h2>

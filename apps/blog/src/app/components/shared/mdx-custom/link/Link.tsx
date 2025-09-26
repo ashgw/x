@@ -1,7 +1,7 @@
 import NextLink from "next/link";
 
 import { env } from "@ashgw/env";
-import { cn } from "@ashgw/ui";
+import { cn } from "@ashgw/design/ui";
 
 export function BlogLink({
   href,
@@ -16,8 +16,8 @@ export function BlogLink({
     origin === "www" ? env.NEXT_PUBLIC_WWW_URL : env.NEXT_PUBLIC_BLOG_URL;
 
   const LINK_CLASS_NAME = cn(
-    "average-transition",
-    "gradient-text-purple",
+    "transition-duration-200",
+    "gradient-text-accent",
     "hover:text-white",
   );
   if (href.startsWith("#")) {

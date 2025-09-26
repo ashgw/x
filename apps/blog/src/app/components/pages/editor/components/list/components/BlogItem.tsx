@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import type { PostArticleRo } from "~/api/models/post";
 
@@ -50,18 +50,10 @@ export const BlogItem = memo(
             delay: shouldReduceMotion ? 0 : 0.1 + index * 0.05,
           }}
         >
-          <Button
-            variant="squared:outline"
-            size="sm"
-            onClick={() => onEdit(blog)}
-          >
+          <Button variant="outline" onClick={() => onEdit(blog)}>
             Edit
           </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => onDelete(blog)}
-          >
+          <Button variant="destructive:outline" onClick={() => onDelete(blog)}>
             Delete
           </Button>
         </motion.div>

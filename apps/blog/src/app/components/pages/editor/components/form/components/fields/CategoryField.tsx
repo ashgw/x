@@ -1,5 +1,5 @@
 import type { Control } from "react-hook-form";
-import { Check } from "lucide-react";
+import { Check } from "@ashgw/design/icons";
 
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum } from "~/api/models/post";
@@ -34,7 +34,11 @@ export function CategoryField({ control }: CategoryFieldProps) {
           <FormControl>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button type="button" variant="outline" className="w-full">
+                <Button
+                  type="button"
+                  variant="outline:rounded"
+                  className="w-full"
+                >
                   {field.value.charAt(0) + field.value.slice(1).toLowerCase()}
                 </Button>
               </DropdownMenuTrigger>

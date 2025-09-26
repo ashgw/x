@@ -3,7 +3,7 @@
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "@ashgw/design/ui";
 
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { UserChangePasswordDto } from "~/api/models";
 import { userChangePasswordSchemaDto } from "~/api/models";
@@ -110,7 +110,7 @@ export function ChangePasswordForm() {
 
         <Button
           type="submit"
-          variant="squared:default"
+          variant="default"
           className="w-full"
           loading={changePasswordMutation.isPending}
         >
