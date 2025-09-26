@@ -1,110 +1,7 @@
 /* ------------------------------
-     DESIGN TOKENS · Default Purple
-  ------------------------------ */
-
-:root {
-  /* Background + surface tones */
-  --ds-background: 0 0% 3.9%; /* Main page background (dark gray/black) */
-  --ds-surface: 0 0% 3.9% / 0; /* Transparent surface layer */
-  --ds-surface-muted: 0 0% 14.9%; /* Muted surface (panels, cards) */
-
-  /* Text colors */
-  --ds-text: 0 0% 98%; /* Default text (near white) */
-  --ds-text-muted: 0 0% 63.9%; /* Subtle/dimmed text */
-  --ds-text-strong: 0 0% 98%; /* Strong/primary text */
-
-  /* Accent colors (purple theme) */
-  --ds-accent: 282 22% 22%; /* Accent background */
-  --ds-accent-foreground: 0 0% 98%; /* Text over accent */
-  --ds-accent-muted: 282 20% 16%; /* Darker muted accent */
-
-  /* Status colors */
-  --ds-success: 142 70% 45%; /* Success (green) */
-  --ds-info: 210 90% 60%; /* Info (blue) */
-  --ds-warning: 38 92% 50%; /* Warning (yellow) */
-  --ds-danger: 0 62.8% 30.6%; /* Danger/error (red) */
-  --ds-danger-foreground: 0 0% 100%; /* white text on danger */
-
-  /* Border + focus ring */
-  --ds-border: 0 0% 14.9%; /* Border color */
-  --ds-ring: 282 62% 60% / var(--ds-opacity-subtle); /* thin & light */
-
-  /* Cards & popovers */
-  --ds-card: 0 0% 3.9% / 0;
-  --ds-card-foreground: 0 0% 98%;
-  --ds-popover: 0 0% 3.9% / 0;
-  --ds-popover-foreground: 0 0% 98%;
-
-  /* Primary / secondary brand layers */
-  --ds-primary: 0 0% 98%; /* Primary bg (usually white) */
-  --ds-primary-foreground: 0 0% 9%; /* Text on primary */
-  --ds-secondary: 0 0% 14.9%; /* Secondary background */
-  --ds-secondary-foreground: 0 0% 98%; /* Text on secondary */
-
-  /* Muted state colors */
-  --ds-muted: 0 0% 14.9%;
-  --ds-muted-foreground: 0 0% 63.9%;
-
-  /* Accent gradient */
-  --ds-accent-gradient-start: 330 75% 60%; /* pink side */
-  --ds-accent-gradient-end: 282 62% 60%; /* purple side */
-}
-
-/* ------------------------------
-  Red 
-------------------------------- */
-.red {
-  /* Background + surface tones */
-  --ds-background: 0 0% 3.9%; /* Main page background (dark gray/black) */
-  --ds-surface: 0 0% 3.9% / 0; /* Transparent surface layer */
-  --ds-surface-muted: 0 0% 14.9%; /* Muted surface (panels, cards) */
-
-  /* Text colors */
-  --ds-text: 0 0% 98%; /* Default text (near white) */
-  --ds-text-muted: 0 0% 63.9%; /* Subtle/dimmed text */
-  --ds-text-strong: 0 0% 98%; /* Strong/primary text */
-
-  /* Accent colors (red theme) */
-  --ds-accent: 0 55% 20%;
-  --ds-accent-foreground: 0 0% 98%;
-  --ds-accent-muted: 0 48% 14%;
-
-  /* Status colors */
-  --ds-success: 142 70% 45%; /* Success (green) */
-  --ds-info: 210 90% 60%; /* Info (blue) */
-  --ds-warning: 38 92% 50%; /* Warning (yellow) */
-  --ds-danger: 0 62.8% 30.6%; /* Danger/error (red) */
-  --ds-danger-foreground: 0 0% 100%; /* white text on danger */
-
-  /* Border + focus ring */
-  --ds-border: 0 0% 14.9%; /* Border color */
-  --ds-ring: 0 70% 50% / var(--ds-opacity-subtle); /* thin & light red */
-
-  /* Cards & popovers */
-  --ds-card: 0 0% 3.9% / 0;
-  --ds-card-foreground: 0 0% 98%;
-  --ds-popover: 0 0% 3.9% / 0;
-  --ds-popover-foreground: 0 0% 98%;
-
-  /* Primary / secondary brand layers */
-  --ds-primary: 0 0% 98%; /* Primary bg (usually white) */
-  --ds-primary-foreground: 0 0% 9%; /* Text on primary */
-  --ds-secondary: 0 0% 14.9%; /* Secondary background */
-  --ds-secondary-foreground: 0 0% 98%; /* Text on secondary */
-
-  /* Muted state colors */
-  --ds-muted: 0 0% 14.9%;
-  --ds-muted-foreground: 0 0% 63.9%;
-
-  /* Accent gradient (red) */
-  --ds-accent-gradient-start: 358 85% 62%;
-  --ds-accent-gradient-end: 0 82% 56%;
-}
-
-/* ------------------------------
-  Blue
+   DESIGN TOKENS · Default Purple
 ------------------------------ */
-.blue {
+:root {
   --ds-background: 0 0% 3.9%;
   --ds-surface: 0 0% 3.9% / 0;
   --ds-surface-muted: 0 0% 14.9%;
@@ -113,10 +10,9 @@
   --ds-text-muted: 0 0% 63.9%;
   --ds-text-strong: 0 0% 98%;
 
-  /* Accent colors (blue) */
-  --ds-accent: 220 55% 20%;
+  --ds-accent: 282 22% 22%;
   --ds-accent-foreground: 0 0% 98%;
-  --ds-accent-muted: 220 45% 14%;
+  --ds-accent-muted: 282 20% 16%;
 
   --ds-success: 142 70% 45%;
   --ds-info: 210 90% 60%;
@@ -124,8 +20,8 @@
   --ds-danger: 0 62.8% 30.6%;
   --ds-danger-foreground: 0 0% 100%;
 
-  --ds-border: 215 40% 30%; /* softer navy blue border */
-  --ds-ring: 215 90% 60% / var(--ds-opacity-subtle);
+  --ds-border: 0 0% 14.9%;
+  --ds-ring: 282 62% 60% / var(--ds-opacity-subtle);
 
   --ds-card: 0 0% 3.9% / 0;
   --ds-card-foreground: 0 0% 98%;
@@ -140,58 +36,64 @@
   --ds-muted: 0 0% 14.9%;
   --ds-muted-foreground: 0 0% 63.9%;
 
-  /* Accent gradient (blue) */
+  --ds-accent-gradient-start: 330 75% 60%;
+  --ds-accent-gradient-end: 282 62% 60%;
+}
+
+/* ------------------------------
+   Red overrides
+------------------------------ */
+.red {
+  --ds-accent: 0 55% 20%;
+  --ds-accent-muted: 0 48% 14%;
+  --ds-ring: 0 70% 50% / var(--ds-opacity-subtle);
+  --ds-accent-gradient-start: 358 85% 62%;
+  --ds-accent-gradient-end: 0 82% 56%;
+}
+
+/* ------------------------------
+   Blue overrides
+------------------------------ */
+.blue {
+  --ds-accent: 220 55% 20%;
+  --ds-accent-muted: 220 45% 14%;
+  --ds-border: 215 40% 30%;
+  --ds-ring: 215 90% 60% / var(--ds-opacity-subtle);
   --ds-accent-gradient-start: 205 85% 62%;
   --ds-accent-gradient-end: 225 82% 56%;
 }
 
 /* ------------------------------
-  Gray
+   Gray overrides
 ------------------------------ */
 .gray {
-  /* Background + surface tones */
-  --ds-background: 0 0% 6%; /* deep charcoal, not pure black */
+  --ds-background: 0 0% 6%;
   --ds-surface: 0 0% 6% / 0;
-  --ds-surface-muted: 0 0% 14%; /* soft panel gray */
+  --ds-surface-muted: 0 0% 14%;
 
-  /* Text colors */
-  --ds-text: 0 0% 95%; /* near-white text */
-  --ds-text-muted: 0 0% 65%; /* softened text */
-  --ds-text-strong: 0 0% 98%; /* strong headings */
+  --ds-text: 0 0% 95%;
+  --ds-text-muted: 0 0% 65%;
 
-  /* Accent colors (gray-neutral) */
-  --ds-accent: 0 0% 20%; /* mid-gray accent surfaces */
-  --ds-accent-foreground: 0 0% 95%; /* text over gray accent */
-  --ds-accent-muted: 0 0% 14%; /* darker muted panels */
+  --ds-accent: 0 0% 20%;
+  --ds-accent-foreground: 0 0% 95%;
+  --ds-accent-muted: 0 0% 14%;
 
-  /* Status colors (keep brand neutrals, but still show statuses) */
-  --ds-success: 142 70% 45%;
-  --ds-info: 210 90% 60%;
-  --ds-warning: 38 92% 50%;
-  --ds-danger: 0 62.8% 30.6%;
-  --ds-danger-foreground: 0 0% 100%;
-
-  /* Border + focus ring */
-  --ds-border: 0 0% 26%; /* softer sleek gray border */
+  --ds-border: 0 0% 26%;
   --ds-ring: 0 0% 70% / var(--ds-opacity-subtle);
 
-  /* Cards & popovers */
   --ds-card: 0 0% 6% / 0;
   --ds-card-foreground: 0 0% 95%;
   --ds-popover: 0 0% 6% / 0;
   --ds-popover-foreground: 0 0% 95%;
 
-  /* Primary / secondary brand layers */
-  --ds-primary: 0 0% 95%; /* white-ish buttons */
-  --ds-primary-foreground: 0 0% 8%; /* black text */
-  --ds-secondary: 0 0% 14%; /* muted gray panels */
+  --ds-primary: 0 0% 95%;
+  --ds-primary-foreground: 0 0% 8%;
+  --ds-secondary: 0 0% 14%;
   --ds-secondary-foreground: 0 0% 95%;
 
-  /* Muted state colors */
   --ds-muted: 0 0% 14%;
   --ds-muted-foreground: 0 0% 65%;
 
-  /* Accent gradient (neutral steel) */
   --ds-accent-gradient-start: 0 0% 26%;
   --ds-accent-gradient-end: 0 0% 40%;
 }
