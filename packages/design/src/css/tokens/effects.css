@@ -11,7 +11,8 @@
   --aurora-2: 90, 20, 100; /* Blob 2 color */
   --aurora-opacity-1: 0.1;
   --aurora-opacity-2: 0.14;
-  --aurora-speed: 32s; /* Animation duration */
+
+  --aurora-speed: 32s; /* Animation duration Same as other themes */
 
   /* glow effects */
   --glow-accent-strong: rgb(255 46 200 / 50%);
@@ -28,7 +29,6 @@
   --aurora-2: 200, 32, 32; /* deeper red blob 2 */
   --aurora-opacity-1: 0.12; /* slightly stronger */
   --aurora-opacity-2: 0.18; /* slightly stronger */
-  --aurora-speed: 32s; /* Animation duration */
 
   /* glow effects */
   --glow-accent-strong: rgb(255 60 60 / 50%);
@@ -44,7 +44,6 @@
   --aurora-2: 20, 90, 200;
   --aurora-opacity-1: 0.12;
   --aurora-opacity-2: 0.18;
-  --aurora-speed: 32s;
 
   --glow-accent-strong: rgb(60 130 255 / 50%);
   --glow-accent-subtle: rgb(60 130 255 / 20%);
@@ -62,7 +61,6 @@
   --aurora-2: 40, 40, 40;
   --aurora-opacity-1: 0.08;
   --aurora-opacity-2: 0.12;
-  --aurora-speed: 32s;
 
   /* Glow accents */
   --glow-accent-strong: rgb(200 200 200 / 35%);
