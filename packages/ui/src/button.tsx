@@ -4,7 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
 import { cn } from "@ashgw/ui";
-import { LoadingPoints } from "./loading";
+import { Loading } from "./loading";
 
 const outlineInteractive =
   "border text-dim-300 border-border " +
@@ -170,7 +170,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <div className="flex items-center gap-1">
-            <LoadingPoints circleSize="4px" />
+            <Loading circleSize="4px" />
           </div>
         ) : (
           children

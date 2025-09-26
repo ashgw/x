@@ -12,7 +12,7 @@ interface LoadingPointsProps {
   circleSize?: string;
 }
 
-export function LoadingPoints({
+export function Loading({
   count,
   step,
   className,
@@ -24,13 +24,5 @@ export function LoadingPoints({
 
   return (
     <LP count={count} step={step} className={className} size={resolvedSize} />
-  );
-}
-
-export function LoadingScreen() {
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <LoadingPoints />
-    </div>
   );
 }

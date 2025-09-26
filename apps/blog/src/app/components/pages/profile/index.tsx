@@ -14,7 +14,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  LoadingPoints,
+  Loading,
 } from "@ashgw/ui";
 
 import type { SessionRo } from "~/api/models";
@@ -86,7 +86,7 @@ export function ProfilePage() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <LoadingPoints />
+        <Loading />
       </motion.div>
     );
   }

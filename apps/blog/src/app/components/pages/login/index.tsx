@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  LoadingPoints,
+  Loading,
 } from "@ashgw/ui";
 
 import type { UserLoginDto } from "~/api/models";
@@ -70,7 +70,7 @@ export function LoginPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <LoadingPoints />
+        <Loading />
       </div>
     );
   }
