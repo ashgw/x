@@ -1,5 +1,3 @@
-import "@ashgw/design/css";
-
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { site_name } from "@ashgw/constants";

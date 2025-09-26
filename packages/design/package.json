@@ -7,7 +7,6 @@
     "lint": "tsc --noEmit; eslint ."
   },
   "exports": {
-    "./css": "./src/css/base.css",
     "./tailwind": "./src/tailwind/index.ts",
     "./fonts": "./src/fonts/fonts.ts",
     "./theme": "./src/theme/index.ts",

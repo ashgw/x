@@ -1,5 +1,6 @@
 import { ThemeProvider } from "../theme/provider";
 import { ToastProvider } from "../ui";
+import "./../css/index.css";
 
 export const DesignSystemProvider = ({
   children,
