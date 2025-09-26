@@ -16,8 +16,7 @@ interface Props {
 export function CookieBanner({
   className,
   storageKey = "privacy:cookie-consent",
-  title = "Cookies",
-  body = "We use cookies to improve your experience.",
+  body = "I use cookies btw. So by being here, you accept cookies.",
   acceptLabel = "Accept",
   rejectLabel = "Reject",
 }: Props) {
@@ -43,11 +42,11 @@ export function CookieBanner({
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 12 }}
-          transition={{ duration: 0.18 }}
-          className={cn("fixed bottom-6 right-6 z-50", className)}
+          initial={{ opacity: 0, y: 12, scale: 0.7 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 12, scale: 0.7 }}
+          transition={{ duration: 0.18, ease: "easeInOut" }}
+          className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
         >
           <SurfaceCard
             animation="none"
@@ -55,17 +54,14 @@ export function CookieBanner({
             aria-live="polite"
             aria-label="Cookie consent"
           >
-            <div className="flex flex-col gap-3">
-              <div className="text-sm font-semibold">{title}</div>
-              <div className="text-sm text-muted-foreground">{body}</div>
-              <div className="flex items-center justify-end gap-2">
-                <Button variant="outline" onClick={reject} className="text-xs">
-                  {rejectLabel}
-                </Button>
-                <Button onClick={accept} className="text-xs">
-                  {acceptLabel}
-                </Button>
-              </div>
+            <div className="text-semibold text-muted-foreground">{body}</div>
+            <div className="flex items-center justify-end gap-2">
+              <Button variant="outline" onClick={reject} className="text-xs">
+                {rejectLabel}
+              </Button>
+              <Button onClick={accept} className="text-xs">
+                {acceptLabel}
+              </Button>
             </div>
           </SurfaceCard>
         </motion.div>
