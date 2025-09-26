@@ -14,17 +14,9 @@ const loadingDot = cva("loading-dot rounded-full inline-block", {
       md: "w-3 h-3",
       lg: "w-4 h-4",
     },
-    color: {
-      energy:
-        "bg-[hsl(var(--ds-energy))] shadow-[0_0_20px_hsl(var(--ds-energy))]",
-      accent:
-        "bg-[hsl(var(--ds-accent))] shadow-[0_0_20px_hsl(var(--ds-accent))]",
-      current: "bg-[currentColor] shadow-[0_0_20px_currentColor]",
-    },
   },
   defaultVariants: {
     size: "md",
-    color: "energy",
   },
 });
 
@@ -37,12 +29,12 @@ type LoadingPointsProps = VariantProps<typeof loadingDot> & {
 export const LoadingPoints = React.forwardRef<
   HTMLDivElement,
   LoadingPointsProps
->(({ count = 3, step = 0.2, size, color, className, ...props }, ref) => (
+>(({ count = 3, step = 0.2, size, className, ...props }, ref) => (
   <div ref={ref} className={cn("flex items-center", className)} {...props}>
     {Array.from({ length: count }).map((_, i) => (
       <div
         key={i}
-        className={cn(loadingDot({ size, color }))}
+        className={cn(loadingDot({ size }))}
         style={{ "--animation-delay": `${i * step}s` } as React.CSSProperties}
       />
     ))}

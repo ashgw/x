@@ -1,12 +1,5 @@
-import { createMetadata } from "@ashgw/seo";
+import { LoadingScreen } from "@ashgw/components";
 
-import { EditorPage } from "~/app/components/pages/editor";
-
-export const metadata = createMetadata({
-  title: "Editor",
-  description: "Editor",
-});
-
-export default function Page() {
-  return <EditorPage />;
+export default function Screen() {
+  return <LoadingScreen />;
 }
