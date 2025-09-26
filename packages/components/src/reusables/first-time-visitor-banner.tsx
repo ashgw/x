@@ -49,7 +49,6 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     setStage("done");
   }, []);
 
-  // --- Content ---
   let body = "";
   let buttons: React.ReactNode = null;
 
@@ -66,7 +65,7 @@ export function FirstTimeVisitorBanner({ className }: Props) {
       </>
     );
   } else if (stage === "themeInfo") {
-    body = "Press K anytime to change the theme.";
+    body = "One more thing though, we need to set up your theme, press K";
     buttons = (
       <>
         <Button onClick={completeThemeInfo} className="text-xs">
