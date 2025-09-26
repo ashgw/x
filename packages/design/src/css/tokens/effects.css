@@ -50,3 +50,22 @@
   --glow-accent-subtle: rgb(60 130 255 / 20%);
   --ds-energy: 215 85% 60%;
 }
+
+/* ------------------------------
+  Gray Effects
+------------------------------ */
+.gray {
+  --ds-glow-primary: 160 160 160 / 0.35; /* soft neutral glow */
+
+  /* Aurora blobs */
+  --aurora-1: 80, 80, 80;
+  --aurora-2: 40, 40, 40;
+  --aurora-opacity-1: 0.08;
+  --aurora-opacity-2: 0.12;
+  --aurora-speed: 32s;
+
+  /* Glow accents */
+  --glow-accent-strong: rgb(200 200 200 / 35%);
+  --glow-accent-subtle: rgb(200 200 200 / 15%);
+  --ds-energy: 0 0% 40%;
+}

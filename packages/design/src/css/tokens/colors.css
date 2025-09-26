@@ -144,3 +144,54 @@
   --ds-accent-gradient-start: 205 85% 62%;
   --ds-accent-gradient-end: 225 82% 56%;
 }
+
+/* ------------------------------
+  Gray
+------------------------------ */
+.gray {
+  /* Background + surface tones */
+  --ds-background: 0 0% 6%; /* deep charcoal, not pure black */
+  --ds-surface: 0 0% 6% / 0;
+  --ds-surface-muted: 0 0% 14%; /* soft panel gray */
+
+  /* Text colors */
+  --ds-text: 0 0% 95%; /* near-white text */
+  --ds-text-muted: 0 0% 65%; /* softened text */
+  --ds-text-strong: 0 0% 98%; /* strong headings */
+
+  /* Accent colors (gray-neutral) */
+  --ds-accent: 0 0% 20%; /* mid-gray accent surfaces */
+  --ds-accent-foreground: 0 0% 95%; /* text over gray accent */
+  --ds-accent-muted: 0 0% 14%; /* darker muted panels */
+
+  /* Status colors (keep brand neutrals, but still show statuses) */
+  --ds-success: 142 70% 45%;
+  --ds-info: 210 90% 60%;
+  --ds-warning: 38 92% 50%;
+  --ds-danger: 0 62.8% 30.6%;
+  --ds-danger-foreground: 0 0% 100%;
+
+  /* Border + focus ring */
+  --ds-border: 0 0% 26%; /* softer sleek gray border */
+  --ds-ring: 0 0% 70% / var(--ds-opacity-subtle);
+
+  /* Cards & popovers */
+  --ds-card: 0 0% 6% / 0;
+  --ds-card-foreground: 0 0% 95%;
+  --ds-popover: 0 0% 6% / 0;
+  --ds-popover-foreground: 0 0% 95%;
+
+  /* Primary / secondary brand layers */
+  --ds-primary: 0 0% 95%; /* white-ish buttons */
+  --ds-primary-foreground: 0 0% 8%; /* black text */
+  --ds-secondary: 0 0% 14%; /* muted gray panels */
+  --ds-secondary-foreground: 0 0% 95%;
+
+  /* Muted state colors */
+  --ds-muted: 0 0% 14%;
+  --ds-muted-foreground: 0 0% 65%;
+
+  /* Accent gradient (neutral steel) */
+  --ds-accent-gradient-start: 0 0% 26%;
+  --ds-accent-gradient-end: 0 0% 40%;
+}

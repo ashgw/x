@@ -29,3 +29,11 @@
   --bg-gradient-mid: rgb(140 210 255 / 2.2%);
   --bg-gradient-end: rgb(20 60 180 / 6%);
 }
+
+/* Gray */
+.gray {
+  --bg-base: #0a0a0a; /* sleek dark base */
+  --bg-gradient-start: rgb(60 60 60 / 8%);
+  --bg-gradient-mid: rgb(160 160 160 / 2%);
+  --bg-gradient-end: rgb(40 40 40 / 6%);
+}

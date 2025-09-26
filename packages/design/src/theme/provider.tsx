@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { Theme } from "./types";
+import { THEMES_TUPLE } from "./consts";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export function ThemeProvider({
       attribute="class"
       defaultTheme={defaultTheme}
       storageKey={storageKey}
-      themes={["purple", "red", "blue"]}
+      themes={THEMES_TUPLE}
       enableSystem={false}
       disableTransitionOnChange
     >

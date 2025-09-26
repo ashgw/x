@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { useTheme } from "./use";
-import type { UnionToTuple } from "ts-roids";
-import type { Theme } from "./types";
+import { THEMES_TUPLE } from "./consts";
 
 export function KeyboardThemeToggle(): null {
   const { setTheme, theme, resolvedTheme } = useTheme();
@@ -12,7 +11,7 @@ export function KeyboardThemeToggle(): null {
     function handleKeydown(event: KeyboardEvent) {
       if (event.key.toLowerCase() !== "k") return;
       const current = resolvedTheme ?? theme ?? "purple";
-      const order = ["purple", "red", "blue"] satisfies UnionToTuple<Theme>;
+      const order = THEMES_TUPLE;
       const currentIndex = order.findIndex((theme) => theme === current);
       const nextIndex =
         currentIndex === -1 ? 0 : (currentIndex + 1) % order.length;
