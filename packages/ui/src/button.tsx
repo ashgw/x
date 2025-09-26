@@ -170,7 +170,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <div className="flex items-center gap-1">
-            <Loading circleSize="4px" />
+            <Loading circleSize="4px" inverted />
           </div>
         ) : (
           children

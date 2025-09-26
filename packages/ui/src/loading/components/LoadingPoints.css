@@ -5,8 +5,8 @@
   display: inline-block;
   margin: 0.5rem;
 
-  background-color: hsl(var(--ds-energy));
-  box-shadow: 0 0 20px hsl(var(--ds-energy));
+  background-color: var(--loading-color, hsl(var(--ds-primary)));
+  box-shadow: 0 0 20px var(--loading-color, hsl(var(--ds-primary)));
 
   animation: loading 1.5s ease-in-out infinite;
   animation-delay: var(--animation-delay, 0s);
@@ -16,16 +16,16 @@
   0%,
   100% {
     transform: scale(0.2);
-    box-shadow: 0 0 10px hsl(var(--ds-energy) / 0.5);
+    box-shadow: 0 0 10px var(--loading-color, hsl(var(--ds-primary)) / 0.5);
   }
   42% {
-    box-shadow: 0 0 10px hsl(var(--ds-energy) / 0.7);
+    box-shadow: 0 0 10px var(--loading-color, hsl(var(--ds-primary)) / 0.7);
   }
   50% {
     transform: scale(1);
     box-shadow:
-      0 0 20px hsl(var(--ds-energy)),
-      0 0 30px hsl(var(--ds-energy)),
-      0 0 40px hsl(var(--ds-energy));
+      0 0 20px var(--loading-color, hsl(var(--ds-primary))),
+      0 0 30px var(--loading-color, hsl(var(--ds-primary))),
+      0 0 40px var(--loading-color, hsl(var(--ds-primary)));
   }
 }

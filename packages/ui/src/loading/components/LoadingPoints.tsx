@@ -24,21 +24,38 @@ type LoadingPointsProps = VariantProps<typeof loadingDot> & {
   count?: number;
   step?: number;
   className?: string;
+  inverted?: boolean;
 };
 
 export const LoadingPoints = React.forwardRef<
   HTMLDivElement,
   LoadingPointsProps
->(({ count = 3, step = 0.2, size, className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex items-center", className)} {...props}>
-    {Array.from({ length: count }).map((_, i) => (
-      <div
-        key={i}
-        className={cn(loadingDot({ size }))}
-        style={{ "--animation-delay": `${i * step}s` } as React.CSSProperties}
-      />
-    ))}
-  </div>
-));
+>(
+  (
+    { count = 3, step = 0.2, size, className, inverted = false, ...props },
+    ref,
+  ) => {
+    const loadingColor = inverted
+      ? "hsl(var(--ds-primary-foreground))"
+      : "hsl(var(--ds-primary))";
+
+    return (
+      <div ref={ref} className={cn("flex items-center", className)} {...props}>
+        {Array.from({ length: count }).map((_, i) => (
+          <div
+            key={i}
+            className={cn(loadingDot({ size }))}
+            style={
+              {
+                "--animation-delay": `${i * step}s`,
+                "--loading-color": loadingColor,
+              } as React.CSSProperties
+            }
+          />
+        ))}
+      </div>
+    );
+  },
+);
 
 LoadingPoints.displayName = "LoadingPoints";

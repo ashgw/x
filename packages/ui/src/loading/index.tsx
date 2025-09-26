@@ -4,25 +4,15 @@ import { LoadingPoints as LP } from "./components/LoadingPoints";
 
 type LPSize = "sm" | "md" | "lg";
 
-interface LoadingPointsProps {
-  count?: number;
-  step?: number;
+interface LoadingProps {
   className?: string;
-  size?: LPSize;
-  circleSize?: string;
+  circleSize?: string; // e.g. "4px" | "8px" | "16px"
+  inverted?: boolean;
 }
 
-export function Loading({
-  count,
-  step,
-  className,
-  size,
-  circleSize,
-}: LoadingPointsProps) {
+export function Loading({ className, circleSize, inverted }: LoadingProps) {
   const resolvedSize: LPSize =
-    size ?? (circleSize === "4px" ? "sm" : circleSize === "8px" ? "md" : "lg");
+    circleSize === "4px" ? "sm" : circleSize === "8px" ? "md" : "lg";
 
-  return (
-    <LP count={count} step={step} className={className} size={resolvedSize} />
-  );
+  return <LP className={className} size={resolvedSize} inverted={inverted} />;
 }
