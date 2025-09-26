@@ -13,7 +13,8 @@
     "./theme": "./src/theme/index.ts",
     "./icons": "./src/icons/index.ts",
     "./motion": "./src/motion/index.ts",
-    "./ui": "./src/ui/index.ts"
+    "./ui": "./src/ui/index.ts",
+    "./provider": "./src/provider/index.tsx"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.1.14",

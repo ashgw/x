@@ -9,10 +9,10 @@ import {
   organizationJsonLd,
   websiteJsonLd,
 } from "@ashgw/seo";
-import { KeyboardThemeToggle, ThemeProvider } from "@ashgw/design/theme";
+import { KeyboardThemeToggle } from "@ashgw/design/theme";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { fonts } from "@ashgw/design/fonts";
-import { ToastProvider } from "@ashgw/design/ui";
+import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -31,16 +31,14 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
-        <ThemeProvider>
-          <ToastProvider>
-            <JsonLd code={organizationJsonLd(siteUrl)} />
-            <JsonLd code={websiteJsonLd(siteUrl)} />
-            <KeyboardThemeToggle />
-            <AnalyticsProvider>
-              <TsrProvider>{children}</TsrProvider>
-            </AnalyticsProvider>
-          </ToastProvider>
-        </ThemeProvider>
+        <DesignSystemProvider>
+          <JsonLd code={organizationJsonLd(siteUrl)} />
+          <JsonLd code={websiteJsonLd(siteUrl)} />
+          <KeyboardThemeToggle />
+          <AnalyticsProvider>
+            <TsrProvider>{children}</TsrProvider>
+          </AnalyticsProvider>
+        </DesignSystemProvider>
       </body>
     </html>
   );

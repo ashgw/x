@@ -12,8 +12,8 @@ import {
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
 import { fonts } from "@ashgw/design/fonts";
-import { ThemeProvider, KeyboardThemeToggle } from "@ashgw/design/theme";
-import { ToastProvider } from "@ashgw/design/ui";
+import { KeyboardThemeToggle } from "@ashgw/design/theme";
+import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
@@ -33,20 +33,18 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={fonts.atkinsonHyperlegible.className}>
-        <ThemeProvider>
-          <ToastProvider>
-            <JsonLd code={organizationJsonLd(siteUrl)} />
-            <JsonLd code={websiteJsonLd(siteUrl)} />
-            <KeyboardThemeToggle />
-            <GoBackHome />
-            <AnalyticsProvider>
-              <TRPCProvider siteBaseUrl={siteUrl}>
-                <StoreProvider>{children}</StoreProvider>
-              </TRPCProvider>
-            </AnalyticsProvider>
-            <FirstTimeVisitorBanner />
-          </ToastProvider>
-        </ThemeProvider>
+        <DesignSystemProvider>
+          <JsonLd code={organizationJsonLd(siteUrl)} />
+          <JsonLd code={websiteJsonLd(siteUrl)} />
+          <KeyboardThemeToggle />
+          <GoBackHome />
+          <AnalyticsProvider>
+            <TRPCProvider siteBaseUrl={siteUrl}>
+              <StoreProvider>{children}</StoreProvider>
+            </TRPCProvider>
+          </AnalyticsProvider>
+          <FirstTimeVisitorBanner />
+        </DesignSystemProvider>
       </body>
     </html>
   );
