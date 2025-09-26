@@ -4,30 +4,26 @@ import { cva } from "./cva";
 import { cn } from "./cn";
 
 const surfaceCardVariants = cva(
-  "group flex flex-col border shadow transition-all", // base
+  "group flex flex-col border shadow transition-all select-none",
   {
     variants: {
-      variant: {
-        default: "bg-background/50",
-        glow: "glow-500 hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)]",
-        subtle: "hover:shadow-md",
-        flat: "border-none shadow-none bg-transparent",
-      },
       size: {
-        default: "p-5 rounded-[2rem]", // against the preset but it's needed here
+        default: "p-5 rounded-[2rem]",
         sm: "p-3 rounded-xl",
-        lg: "p-8 rounded-[2.5rem]", // same
+        lg: "p-8 rounded-[2.5rem]",
       },
-      animate: {
+      animation: {
         none: "",
         scale: "hover:scale-105 duration-200",
         pop: "hover:scale-110 duration-200",
+        glow: "glow-500 hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)]",
+        glowScale:
+          "glow-500 hover:scale-105 hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)] duration-200",
       },
     },
     defaultVariants: {
-      variant: "default",
       size: "default",
-      animate: "scale",
+      animation: "glowScale",
     },
   },
 );
@@ -39,14 +35,12 @@ export interface CardProps
 }
 
 export const SurfaceCard = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, size, animate, asChild = false, ...props }, ref) => {
+  ({ className, size, animation, asChild = false, ...props }, ref) => {
     const Comp = asChild ? "section" : "div";
     return (
       <Comp
         ref={ref}
-        className={cn(
-          surfaceCardVariants({ variant, size, animate, className }),
-        )}
+        className={cn(surfaceCardVariants({ size, animation }), className)}
         {...props}
       />
     );
