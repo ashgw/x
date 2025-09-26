@@ -1,6 +1,6 @@
 /* Effects-related utilities */
 
-/* Glow effects for emphasis */
+/* Glow effects for emphasis (usually text) */
 .glow-300 {
   filter: drop-shadow(0 0 0.75rem var(--glow-accent-strong));
 }
@@ -11,4 +11,27 @@
 
 .glow-energy {
   filter: drop-shadow(0 0 1rem hsl(var(--ds-energy)));
+}
+
+/* Ring glow pulse */
+
+@keyframes ring-glow-pulse {
+  0% {
+    border-color: hsl(var(--ds-border) / 0.4);
+    box-shadow: 0 0 0px hsl(var(--ds-border) / 0);
+  }
+  50% {
+    border-color: hsl(var(--ds-border) / 1);
+    box-shadow: 0 0 12px hsl(var(--ds-border) / 0.6);
+  }
+  100% {
+    border-color: hsl(var(--ds-border) / 0.4);
+    box-shadow: 0 0 0px hsl(var(--ds-border) / 0);
+  }
+}
+
+.ring-glow-pulse {
+  border: 1px solid hsl(var(--ds-border));
+  animation: ring-glow-pulse 1.8s ease-in-out infinite;
+  border-radius: inherit;
 }
