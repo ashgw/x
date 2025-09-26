@@ -1,7 +1,7 @@
-@keyframes ring-glow {
+@keyframes ring-glow-pulse {
   0% {
     border-color: hsl(var(--ds-border) / 0.4);
-    box-shadow: 0 0 0px hsl(var(--ds-border) / 0.0);
+    box-shadow: 0 0 0px hsl(var(--ds-border) / 0);
   }
   50% {
     border-color: hsl(var(--ds-border) / 1);
@@ -9,13 +9,12 @@
   }
   100% {
     border-color: hsl(var(--ds-border) / 0.4);
-    box-shadow: 0 0 0px hsl(var(--ds-border) / 0.0);
+    box-shadow: 0 0 0px hsl(var(--ds-border) / 0);
   }
 }
 
-.ring-glow {
+.ring-glow-pulse {
   border: 1px solid hsl(var(--ds-border));
-  animation: ring-glow 1.8s ease-in-out infinite;
+  animation: ring-glow-pulse 1.8s ease-in-out infinite;
   border-radius: inherit;
 }
-
