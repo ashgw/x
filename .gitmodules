@@ -2,6 +2,7 @@
 	path = apps/www/src/ts-rest-kit
 	url = git@github.com:ashgw/ts-rest-kit.git
 
-[submodule "apps/www/src/ts-rest-kit"]
-	path = apps/www/src/ts-rest-kit
-	url = https://github.com/ashgw/ts-rest-kit.git
+[submodule "design"]
+	path = packages/design
+	url = git@github.com:ashgw/design.git
+
