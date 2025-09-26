@@ -244,25 +244,3 @@ export const toast = {
     window.dispatchEvent(event);
   },
 };
-
-// Toaster component (for easy replacement of Sonner's Toaster)
-interface ToasterProps {
-  position?: ToastPosition;
-}
-
-export function Toaster({ position = "bottom-right" }: ToasterProps) {
-  const { addToast } = useToast();
-
-  React.useEffect(() => {
-    const handleToast = (event: CustomEvent) => {
-      addToast(event.detail);
-    };
-
-    window.addEventListener("toast", handleToast as EventListener);
-    return () => {
-      window.removeEventListener("toast", handleToast as EventListener);
-    };
-  }, [addToast]);
-
-  return null;
-}
