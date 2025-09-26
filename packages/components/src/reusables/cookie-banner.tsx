@@ -3,11 +3,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button, SurfaceCard, cn } from "@ashgw/ui";
+import { useAnalytics } from "@ashgw/analytics/client";
 
 interface Props {
   className?: string;
   storageKey?: string;
-  title?: string;
   body?: string;
   acceptLabel?: string;
   rejectLabel?: string;
@@ -16,27 +16,37 @@ interface Props {
 export function CookieBanner({
   className,
   storageKey = "privacy:cookie-consent",
-  body = "I use cookies btw. So by being here, you accept cookies.",
+  body = "I use cookies here. Just the usual stuff you already know",
   acceptLabel = "Accept",
   rejectLabel = "Reject",
 }: Props) {
   const [open, setOpen] = useState(false);
+  const analytics = useAnalytics();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const v = localStorage.getItem(storageKey);
-    setOpen(v !== "accepted" && v !== "rejected");
-  }, [storageKey]);
+
+    if (v === "accepted") {
+      analytics.opt_in_capturing();
+    } else if (v === "rejected") {
+      analytics.opt_out_capturing();
+    } else {
+      setOpen(true);
+    }
+  }, [analytics, storageKey]);
 
   const accept = useCallback(() => {
     localStorage.setItem(storageKey, "accepted");
+    analytics.opt_in_capturing();
     setOpen(false);
-  }, [storageKey]);
+  }, [analytics, storageKey]);
 
   const reject = useCallback(() => {
     localStorage.setItem(storageKey, "rejected");
+    analytics.opt_out_capturing();
     setOpen(false);
-  }, [storageKey]);
+  }, [analytics, storageKey]);
 
   return (
     <AnimatePresence>
