@@ -8,7 +8,7 @@ import {
   JsonLdScriptProvider,
 } from "@ashgw/seo";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
-import { DesignSystemProvider } from "@ashgw/design/provider";
+import { DesignSystemHtmlProvider } from "@ashgw/design/provider";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -31,11 +31,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
         () => websiteJsonLd(siteUrl),
       ]}
     >
-      <DesignSystemProvider>
+      <DesignSystemHtmlProvider>
         <AnalyticsProvider>
           <TsrProvider>{children}</TsrProvider>
         </AnalyticsProvider>
-      </DesignSystemProvider>
+      </DesignSystemHtmlProvider>
     </JsonLdScriptProvider>
   );
 }

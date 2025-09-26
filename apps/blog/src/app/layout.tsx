@@ -4,7 +4,7 @@ import { createMetadata } from "@ashgw/seo";
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
-import { DesignSystemProvider } from "@ashgw/design/provider";
+import { DesignSystemHtmlProvider } from "@ashgw/design/provider";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBack } from "./components/pages/root";
@@ -22,7 +22,7 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <DesignSystemProvider>
+    <DesignSystemHtmlProvider>
       <GoBack />
       <AnalyticsProvider>
         <TRPCProvider siteBaseUrl={siteUrl}>
@@ -30,6 +30,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
         </TRPCProvider>
       </AnalyticsProvider>
       <FirstTimeVisitorBanner />
-    </DesignSystemProvider>
+    </DesignSystemHtmlProvider>
   );
 }
