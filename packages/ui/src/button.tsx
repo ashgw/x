@@ -170,7 +170,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <div className="flex items-center gap-1">
-            <LoadingPoints circleSize="4px" glowColor="currentColor" />
+            <LoadingPoints circleSize="4px" />
           </div>
         ) : (
           children
