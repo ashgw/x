@@ -10,12 +10,6 @@ const outlineInteractive =
   "border text-dim-300 border-[hsl(var(--ds-border))] " +
   "hover:text-dim-400 hover:border-[hsl(var(--ds-border))]/70 hover:bg-white/[0.03] " +
   "data-[state=on]:text-white data-[state=on]:border-[hsl(var(--ds-border))]/90 " +
-  "data-[state=on]:[hsl(var(--ds-accent))]/5";
-
-export const outlineInteractiveOld =
-  "border text-dim-300 border-white/10 " +
-  "hover:text-dim-400 hover:border-white/40 hover:bg-white/[0.03] " +
-  "data-[state=on]:text-white data-[state=on]:border-white/30 " +
   "data-[state=on]:bg-white/5";
 
 const outlineDestructiveInteractive =
