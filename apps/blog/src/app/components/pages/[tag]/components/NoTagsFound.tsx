@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 
 import { H2 } from "~/app/components/shared/mdx-custom/headers";
 

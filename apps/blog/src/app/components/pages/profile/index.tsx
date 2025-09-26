@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "@ashgw/ui";
+import { AnimatePresence, motion } from "@ashgw/ui/motion";
+import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
 import {
@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
   Loading,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";

@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import type { SubmitHandler } from "react-hook-form";
-import { toast } from "@ashgw/ui";
+import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
 import type { PostArticleRo, PostEditorDto } from "~/api/models/post";

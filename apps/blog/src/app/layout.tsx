@@ -13,7 +13,7 @@ import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
 import { fonts } from "@ashgw/design/fonts";
 import { ThemeProvider, KeyboardThemeToggle } from "@ashgw/design/theme";
-import { ToastProvider } from "@ashgw/ui";
+import { ToastProvider } from "@ashgw/design/ui";
 
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";

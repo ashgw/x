@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import type { PostArticleRo } from "~/api/models/post";
 

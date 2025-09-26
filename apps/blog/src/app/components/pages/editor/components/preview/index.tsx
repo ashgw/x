@@ -1,10 +1,10 @@
 "use client";
 
 import type { UseFormReturn } from "react-hook-form";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge, Skeleton } from "@ashgw/ui";
+import { Badge, Skeleton } from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";

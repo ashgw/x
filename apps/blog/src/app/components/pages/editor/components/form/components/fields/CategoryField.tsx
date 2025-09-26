@@ -1,5 +1,5 @@
 import type { Control } from "react-hook-form";
-import { Check } from "lucide-react";
+import { Check } from "@ashgw/ui/icons";
 
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { PostCategoryEnum } from "~/api/models/post";

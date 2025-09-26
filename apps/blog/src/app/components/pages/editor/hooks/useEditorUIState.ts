@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 import type { Optional } from "ts-roids";
-import type { EntityViewState } from "@ashgw/ui";
+import type { EntityViewState } from "@ashgw/design/ui";
 import type { PostArticleRo } from "~/api/models/post";
 import type { SortOptions } from "../components/header/components/SortOptions";
 

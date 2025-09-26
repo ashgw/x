@@ -1,9 +1,9 @@
 "use client";
 
 import React, { memo } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@ashgw/ui/motion";
 
-import { Button, ScrollArea, Skeleton } from "@ashgw/ui";
+import { Button, ScrollArea, Skeleton } from "@ashgw/design/ui";
 
 import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 

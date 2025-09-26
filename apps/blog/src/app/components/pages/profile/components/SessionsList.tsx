@@ -2,9 +2,9 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Shield, XCircle } from "lucide-react";
-import { toast } from "@ashgw/ui";
+import { AnimatePresence, motion } from "@ashgw/ui/motion";
+import { Loader2, Shield, XCircle } from "@ashgw/ui/icons";
+import { toast } from "@ashgw/design/ui";
 
 import {
   Badge,
@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { SessionRo } from "~/api/models";
 import { trpcClientSide } from "~/trpc/callers/client";

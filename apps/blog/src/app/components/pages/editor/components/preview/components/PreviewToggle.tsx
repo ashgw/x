@@ -1,6 +1,6 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "@ashgw/ui/icons";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 interface PreviewToggleProps {
   isPreviewEnabled: boolean;

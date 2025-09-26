@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Button, Input } from "@ashgw/ui";
+import { motion } from "@ashgw/ui/motion";
+import { Button, Input } from "@ashgw/design/ui";
 import { ModalShell } from "./ModalShell";
 
 import type { PostArticleRo } from "~/api/models/post";

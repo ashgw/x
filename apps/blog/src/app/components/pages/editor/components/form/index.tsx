@@ -1,9 +1,9 @@
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 
 import { WordCounterService } from "@ashgw/cross-runtime";
-import { Form } from "@ashgw/ui";
+import { Form } from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { CategoryField } from "./components/fields/CategoryField";

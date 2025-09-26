@@ -17,7 +17,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Maximize2, Minimize2, Plus } from "lucide-react";
+import { Maximize2, Minimize2, Plus } from "@ashgw/ui/icons";
 import { nanoid } from "nanoid";
 
 import { logger } from "@ashgw/logger";
@@ -30,7 +30,7 @@ import {
   CommandItem,
   Dialog,
   DialogContent,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { Block, BlockProps, BlockType } from "./types";
 import { BlockItem } from "./BlockItem";

@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 

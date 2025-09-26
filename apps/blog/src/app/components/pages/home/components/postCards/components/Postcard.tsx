@@ -4,7 +4,7 @@ import { Views } from "~/app/components/shared/views";
 import { DateService } from "@ashgw/cross-runtime";
 
 import type { PostCardRo } from "~/api/models";
-import { Button, SurfaceCard } from "@ashgw/ui";
+import { Button, SurfaceCard } from "@ashgw/design/ui";
 
 export function PostCard({ postData }: { postData: PostCardRo }) {
   return (

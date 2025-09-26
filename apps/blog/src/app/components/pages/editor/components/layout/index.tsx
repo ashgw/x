@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatePresence } from "framer-motion";
-import { Skeleton } from "@ashgw/ui";
+import { AnimatePresence } from "@ashgw/ui/motion";
+import { Skeleton } from "@ashgw/design/ui";
 
 import { Header } from "../header";
 import { BlogList } from "../list";

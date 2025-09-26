@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { User } from "lucide-react";
+import { User } from "@ashgw/ui/icons";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 export function ProfileButton() {
   return (

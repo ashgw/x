@@ -2,9 +2,9 @@
 
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 import { useForm } from "react-hook-form";
-import { toast } from "@ashgw/ui";
+import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
 import {
@@ -15,7 +15,7 @@ import {
   FormItem,
   FormMessage,
   Input,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { NewsletterSubscribeDto } from "~/api/models/newsletter";
 import { newsletterSubscribeDtoSchema } from "~/api/models/newsletter";

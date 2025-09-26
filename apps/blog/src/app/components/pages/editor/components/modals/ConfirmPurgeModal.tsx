@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Button } from "@ashgw/ui";
+import { motion } from "@ashgw/ui/motion";
+import { Button } from "@ashgw/design/ui";
 import { ModalShell } from "./ModalShell";
 
 export function ConfirmPurgeModal(props: {

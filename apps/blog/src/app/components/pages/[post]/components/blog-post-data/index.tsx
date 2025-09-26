@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { Edit } from "lucide-react";
+import { Edit } from "@ashgw/ui/icons";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge } from "@ashgw/ui";
+import { Badge } from "@ashgw/design/ui";
 import { Views } from "~/app/components/shared/views";
 
 import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";

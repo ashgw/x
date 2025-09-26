@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp } from "@ashgw/ui/icons";
 
 export function ScrollUp() {
   const [isVisible, setIsVisible] = useState(false);

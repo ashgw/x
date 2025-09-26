@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 import {
   Check,
   SortAsc,
@@ -14,7 +14,7 @@ import {
   ListChecks,
   FolderTree,
   Tag,
-} from "lucide-react";
+} from "@ashgw/ui/icons";
 
 import {
   Badge,
@@ -25,7 +25,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { PostArticleRo } from "~/api/models/post";
 import { PostCategoryEnum } from "~/api/models/post";

@@ -1,6 +1,6 @@
 import type { UseFormReturn } from "react-hook-form";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 
 import {
   Button,
@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 

@@ -9,7 +9,7 @@ import {
   LinkIcon,
   Minus,
   Text,
-} from "lucide-react";
+} from "@ashgw/ui/icons";
 
 import type { BlockProps, BlockRegistry, BlockType } from "./types";
 import {

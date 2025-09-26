@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 import { observer } from "mobx-react-lite";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import { useStore } from "~/app/stores";
 

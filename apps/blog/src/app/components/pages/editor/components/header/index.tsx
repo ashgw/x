@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { motion } from "@ashgw/ui/motion";
+import { Plus } from "@ashgw/ui/icons";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostArticleRo } from "~/api/models/post";

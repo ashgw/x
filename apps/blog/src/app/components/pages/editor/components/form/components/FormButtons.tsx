@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Lock, LogIn } from "lucide-react";
+import { Lock, LogIn } from "@ashgw/ui/icons";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import { UserRoleEnum } from "~/api/models";
 import { useAuth } from "~/app/hooks";

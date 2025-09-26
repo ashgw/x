@@ -1,4 +1,4 @@
-import { Loading } from "@ashgw/ui";
+import { Loading } from "@ashgw/design/ui";
 
 export function LoadingScreen() {
   return (

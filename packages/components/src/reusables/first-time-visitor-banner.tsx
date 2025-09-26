@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Button, SurfaceCard, cn } from "@ashgw/ui";
+import { AnimatePresence, motion } from "@ashgw/ui/motion";
+import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
 type Stage = "cookie" | "themeInfo" | "done";

@@ -13,7 +13,7 @@ import { KeyboardThemeToggle, ThemeProvider } from "@ashgw/design/theme";
 import { FirstTimeVisitorBanner } from "@ashgw/components";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { fonts } from "@ashgw/design/fonts";
-import { ToastProvider } from "@ashgw/ui";
+import { ToastProvider } from "@ashgw/design/ui";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";

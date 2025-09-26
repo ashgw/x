@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 import { useCopyToClipboard } from "react-use";
-import { toast } from "@ashgw/ui";
+import { toast } from "@ashgw/design/ui";
 
 import { ossEmail, links } from "@ashgw/constants";
 

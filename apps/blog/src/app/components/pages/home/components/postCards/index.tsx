@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { CheckCheck, ChevronDown } from "lucide-react";
+import { motion } from "@ashgw/ui/motion";
+import { CheckCheck, ChevronDown } from "@ashgw/ui/icons";
 
 import { Footer } from "@ashgw/components";
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import type { PostCardRo } from "~/api/models";
 import { PostCategoryEnum } from "~/api/models";

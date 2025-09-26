@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "@ashgw/ui/icons";
 
 function GoHomeContent() {
   const router = useRouter();

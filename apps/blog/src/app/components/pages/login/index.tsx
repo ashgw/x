@@ -4,9 +4,9 @@ import type { SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/ui/motion";
 import { useForm } from "react-hook-form";
-import { toast } from "@ashgw/ui";
+import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
 import {
@@ -19,7 +19,7 @@ import {
   FormMessage,
   Input,
   Loading,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { UserLoginDto } from "~/api/models";
 import { userLoginSchemaDto } from "~/api/models";
