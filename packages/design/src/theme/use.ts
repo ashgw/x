@@ -27,14 +27,17 @@ export function useTheme() {
   const { theme, setTheme, resolvedTheme } = useNextTheme();
 
   const toggleTheme = () => {
-    const currentTheme = resolvedTheme ?? theme ?? "purple";
+    const currentTheme = (resolvedTheme ?? theme ?? "purple") as
+      | "purple"
+      | "red"
+      | "blue";
     setTheme(currentTheme === "red" ? "purple" : "red");
   };
 
   return {
-    theme: theme as "purple" | "red" | undefined,
-    setTheme: setTheme as (theme: "purple" | "red") => void,
-    resolvedTheme: resolvedTheme as "purple" | "red" | undefined,
+    theme: theme as "purple" | "red" | "blue" | undefined,
+    setTheme: (newTheme: "purple" | "red" | "blue") => setTheme(newTheme),
+    resolvedTheme: resolvedTheme as "purple" | "red" | "blue" | undefined,
     toggleTheme,
   };
 }

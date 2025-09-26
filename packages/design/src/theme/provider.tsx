@@ -5,7 +5,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  defaultTheme?: "purple" | "red";
+  defaultTheme?: "purple" | "red" | "blue";
   storageKey?: string;
 }
 
@@ -19,7 +19,7 @@ export function ThemeProvider({
       attribute="class"
       defaultTheme={defaultTheme}
       storageKey={storageKey}
-      themes={["purple", "red"]}
+      themes={["purple", "red", "blue"]}
       enableSystem={false}
       disableTransitionOnChange
     >

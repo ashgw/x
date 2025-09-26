@@ -2,6 +2,7 @@
      DESIGN TOKENS · Background
   ------------------------------ */
 
+/* Default (Purple) */
 :root {
   /* Background gradient tokens */
   --bg-base: #0f090e; /* Fallback base color */
@@ -10,6 +11,7 @@
   --bg-gradient-end: rgb(150 0 100 / 6%);
 }
 
+/* Red */
 .red {
   /* Background gradient tokens — red theme */
   --bg-base: #0c0708; /* subtle red-tinted base */
@@ -18,4 +20,12 @@
   --bg-gradient-start: rgb(255 60 60 / 8%);
   --bg-gradient-mid: rgb(255 120 120 / 2.2%);
   --bg-gradient-end: rgb(140 10 10 / 6%);
+}
+
+/* Blue */
+.blue {
+  --bg-base: #070a0f; /* subtle blue-tinted base */
+  --bg-gradient-start: rgb(64 140 255 / 8%);
+  --bg-gradient-mid: rgb(140 210 255 / 2.2%);
+  --bg-gradient-end: rgb(20 60 180 / 6%);
 }

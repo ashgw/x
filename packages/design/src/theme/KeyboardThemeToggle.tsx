@@ -3,22 +3,20 @@
 import * as React from "react";
 import { useTheme } from "./use";
 
-/**
- * KeyboardThemeToggle
- * Hidden helper that toggles between purple/red themes when the user presses "k".
- * Uses the theme provider for persistence and FOUC prevention.
- * Returns null; no UI is rendered.
- */
 export function KeyboardThemeToggle(): null {
   const { setTheme, theme, resolvedTheme } = useTheme();
 
   React.useEffect(() => {
     function handleKeydown(event: KeyboardEvent) {
       if (event.key.toLowerCase() !== "k") return;
-      const currentTheme = resolvedTheme ?? theme ?? "purple";
-      setTheme(currentTheme === "red" ? "purple" : "red");
+      const current = resolvedTheme ?? theme ?? "purple";
+      const order = ["purple", "red", "blue"] as const;
+      const currentIndex = order.findIndex((theme) => theme === current);
+      const nextIndex =
+        currentIndex === -1 ? 0 : (currentIndex + 1) % order.length;
+      const next = order[nextIndex];
+      if (next) setTheme(next);
     }
-
     window.addEventListener("keydown", handleKeydown);
     return () => window.removeEventListener("keydown", handleKeydown);
   }, [setTheme, theme, resolvedTheme]);

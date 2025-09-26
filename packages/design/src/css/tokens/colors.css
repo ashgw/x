@@ -100,3 +100,47 @@
   --ds-accent-gradient-start: 358 85% 62%;
   --ds-accent-gradient-end: 0 82% 56%;
 }
+
+/* ------------------------------
+  Blue
+------------------------------ */
+.blue {
+  --ds-background: 0 0% 3.9%;
+  --ds-surface: 0 0% 3.9% / 0;
+  --ds-surface-muted: 0 0% 14.9%;
+
+  --ds-text: 0 0% 98%;
+  --ds-text-muted: 0 0% 63.9%;
+  --ds-text-strong: 0 0% 98%;
+
+  /* Accent colors (blue) */
+  --ds-accent: 220 55% 20%;
+  --ds-accent-foreground: 0 0% 98%;
+  --ds-accent-muted: 220 45% 14%;
+
+  --ds-success: 142 70% 45%;
+  --ds-info: 210 90% 60%;
+  --ds-warning: 38 92% 50%;
+  --ds-danger: 0 62.8% 30.6%;
+  --ds-danger-foreground: 0 0% 100%;
+
+  --ds-border: 0 0% 14.9%;
+  --ds-ring: 215 90% 60% / var(--ds-opacity-subtle);
+
+  --ds-card: 0 0% 3.9% / 0;
+  --ds-card-foreground: 0 0% 98%;
+  --ds-popover: 0 0% 3.9% / 0;
+  --ds-popover-foreground: 0 0% 98%;
+
+  --ds-primary: 0 0% 98%;
+  --ds-primary-foreground: 0 0% 9%;
+  --ds-secondary: 0 0% 14.9%;
+  --ds-secondary-foreground: 0 0% 98%;
+
+  --ds-muted: 0 0% 14.9%;
+  --ds-muted-foreground: 0 0% 63.9%;
+
+  /* Accent gradient (blue) */
+  --ds-accent-gradient-start: 205 85% 62%;
+  --ds-accent-gradient-end: 225 82% 56%;
+}

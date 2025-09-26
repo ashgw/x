@@ -35,3 +35,18 @@
   --glow-accent-subtle: rgb(255 60 60 / 20%);
   --ds-energy: 0 82% 56%; /* vivid red for default (dark) */
 }
+
+.blue {
+  --ds-glow-primary: 60 130 255 / 0.5;
+
+  /* crisp electric blue with deep navy partner */
+  --aurora-1: 64, 140, 255;
+  --aurora-2: 20, 90, 200;
+  --aurora-opacity-1: 0.12;
+  --aurora-opacity-2: 0.18;
+  --aurora-speed: 32s;
+
+  --glow-accent-strong: rgb(60 130 255 / 50%);
+  --glow-accent-subtle: rgb(60 130 255 / 20%);
+  --ds-energy: 215 85% 60%;
+}
