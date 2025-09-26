@@ -52,10 +52,14 @@ export function CookieBanner({
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{ opacity: 0, y: 12, scale: 0.7 }}
+          initial={{ opacity: 0, y: 120, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 12, scale: 0.7 }}
-          transition={{ duration: 0.18, ease: "easeInOut" }}
+          exit={{ opacity: 0, y: 120, scale: 0.95 }}
+          transition={{
+            type: "tween",
+            duration: 0.45,
+            ease: "easeOut", // built-in, no need for custom bezier
+          }}
           className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
         >
           <SurfaceCard
