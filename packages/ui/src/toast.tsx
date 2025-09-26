@@ -148,7 +148,6 @@ function ToastComponent({ toast, position, onRemove }: ToastComponentProps) {
   );
 }
 
-// Provider component
 interface ToastProviderProps {
   children: React.ReactNode;
   position?: ToastPosition;
