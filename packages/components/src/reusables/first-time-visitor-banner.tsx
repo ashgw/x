@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
-type Stage = "cookie" | "themeInfo" | "done";
+type Stage = "cookie" | "kWait" | "done";
 
 interface Props {
   className?: string;
@@ -21,7 +21,7 @@ function Kbd({
   return (
     <kbd
       className={cn(
-        "inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs font-mono font-medium text-foreground shadow-sm relative -top-0.5",
+        "inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs font-mono font-medium shadow-sm relative -top-0.5",
         className,
       )}
     >
@@ -33,8 +33,8 @@ function Kbd({
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
   const [stage, setStage] = useState<Stage>("cookie");
+  const [consent, setConsent] = useState<"accepted" | "rejected" | null>(null);
 
-  // Decide which stage to show on mount
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -43,74 +43,66 @@ export function FirstTimeVisitorBanner({ className }: Props) {
 
     if (!cookie) {
       setStage("cookie");
-    } else if (!themeInfo) {
-      setStage("themeInfo");
+      setConsent(null);
+    } else if (themeInfo !== "done") {
+      setStage("kWait");
+      setConsent(cookie === "accepted" ? "accepted" : "rejected");
     } else {
       setStage("done");
+      setConsent(cookie === "accepted" ? "accepted" : "rejected");
     }
   }, []);
 
-  // --- Handlers ---
+  useEffect(() => {
+    if (stage !== "kWait") return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "k") {
+        localStorage.setItem("onboard:theme-info", "done");
+        setStage("done");
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [stage]);
+
   const acceptCookies = useCallback(() => {
     localStorage.setItem("privacy:cookie-consent", "accepted");
     analytics.opt_in_capturing();
-    setStage("themeInfo");
+    setConsent("accepted");
+    setStage("kWait");
   }, [analytics]);
 
   const rejectCookies = useCallback(() => {
     localStorage.setItem("privacy:cookie-consent", "rejected");
     analytics.opt_out_capturing();
-    setStage("themeInfo");
+    setConsent("rejected");
+    setStage("kWait");
   }, [analytics]);
 
-  const completeThemeInfo = useCallback(() => {
-    localStorage.setItem("onboard:theme-info", "done");
-    setStage("done");
-  }, []);
+  const cookieBody = "Hmm, looks like you’re new here. I use cookies JTLYK";
 
-  let body: React.ReactNode = null;
-  let buttons: React.ReactNode = null;
+  const kWaitBody =
+    consent === "accepted" ? (
+      <>
+        Cool, press <Kbd>K</Kbd> to set your theme.
+      </>
+    ) : (
+      <>
+        Ok, anyways, press <Kbd>K</Kbd> to set your theme.
+      </>
+    );
 
-  if (stage === "cookie") {
-    body = "I use cookies here. Just the usual stuff you already know.";
-    buttons = (
-      <>
-        <Button variant="outline" onClick={rejectCookies} className="text-xs">
-          Reject
-        </Button>
-        <Button onClick={acceptCookies} className="text-xs">
-          Accept
-        </Button>
-      </>
-    );
-  } else if (stage === "themeInfo") {
-    body = (
-      <>
-        One more thing though, we need to set up your theme. Press <Kbd>K</Kbd>
-      </>
-    );
-    buttons = (
-      <>
-        <Button onClick={completeThemeInfo} className="text-xs">
-          OK
-        </Button>
-      </>
-    );
-  }
+  const show = stage === "cookie" || stage === "kWait";
 
   return (
     <AnimatePresence>
-      {stage === "cookie" || stage === "themeInfo" ? (
+      {show ? (
         <motion.div
-          key={stage} // makes it animate per stage
-          initial={{ opacity: 0, y: 120, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 120, scale: 0.95 }}
-          transition={{
-            type: "tween",
-            duration: 0.45,
-            ease: "easeOut",
-          }}
+          key={stage}
+          initial={{ opacity: 0, y: 120, scale: 0.7 }}
+          animate={{ opacity: 1, y: 0, scale: 0.95 }}
+          exit={{ opacity: 0, y: 120, scale: 0.7 }}
+          transition={{ type: "tween", duration: 0.45, ease: "easeOut" }}
           className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
         >
           <SurfaceCard
@@ -118,10 +110,28 @@ export function FirstTimeVisitorBanner({ className }: Props) {
             isBlur
             role="dialog"
             aria-live="polite"
-            aria-label="First time visitor banner"
+            aria-label="First-time visitor banner"
           >
-            <div className="text-semibold text-dim-500">{body}</div>
-            <div className="flex items-center justify-end gap-2">{buttons}</div>
+            <div className="text-semibold text-dim-400">
+              {stage === "cookie" ? cookieBody : kWaitBody}
+            </div>
+
+            <div className="flex items-center justify-end gap-2">
+              {stage === "cookie" ? (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={rejectCookies}
+                    className="text-xs"
+                  >
+                    Reject
+                  </Button>
+                  <Button onClick={acceptCookies} className="text-xs">
+                    Accept
+                  </Button>
+                </>
+              ) : null}
+            </div>
           </SurfaceCard>
         </motion.div>
       ) : null}
