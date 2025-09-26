@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "@ashgw/ui";
 
 import { logger } from "@ashgw/logger";
 import {

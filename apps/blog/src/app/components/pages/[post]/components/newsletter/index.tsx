@@ -4,7 +4,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { toast, Toaster } from "sonner";
+import { toast } from "@ashgw/ui";
 
 import { logger } from "@ashgw/logger";
 import {
@@ -103,7 +103,6 @@ export function Newsletter() {
           sauce.
         </p>
       </div>
-      <Toaster position="bottom-right" />
     </motion.div>
   );
 }

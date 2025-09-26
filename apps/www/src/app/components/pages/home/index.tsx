@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useCopyToClipboard } from "react-use";
-import { toast, Toaster } from "sonner";
+import { toast } from "@ashgw/ui";
 
 import { ossEmail, links } from "@ashgw/constants";
 
@@ -84,7 +84,6 @@ export function HomePage() {
           </div>
         </section>
       </main>
-      <Toaster />
     </div>
   );
 }

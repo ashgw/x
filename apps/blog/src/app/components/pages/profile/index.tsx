@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "sonner";
+import { toast } from "@ashgw/ui";
 
 import { logger } from "@ashgw/logger";
 import {

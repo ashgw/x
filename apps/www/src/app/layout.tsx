@@ -13,6 +13,7 @@ import { KeyboardThemeToggle, ThemeProvider } from "@ashgw/design/theme";
 import { FirstTimeVisitorBanner } from "@ashgw/components";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { fonts } from "@ashgw/design/fonts";
+import { ToastProvider } from "@ashgw/ui";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -32,13 +33,15 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body className={fonts.atkinsonHyperlegible.className}>
         <ThemeProvider>
-          <JsonLd code={organizationJsonLd(siteUrl)} />
-          <JsonLd code={websiteJsonLd(siteUrl)} />
-          <KeyboardThemeToggle />
-          <AnalyticsProvider>
-            <TsrProvider>{children}</TsrProvider>
-          </AnalyticsProvider>
-          <FirstTimeVisitorBanner />
+          <ToastProvider>
+            <JsonLd code={organizationJsonLd(siteUrl)} />
+            <JsonLd code={websiteJsonLd(siteUrl)} />
+            <KeyboardThemeToggle />
+            <AnalyticsProvider>
+              <TsrProvider>{children}</TsrProvider>
+            </AnalyticsProvider>
+            <FirstTimeVisitorBanner />
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

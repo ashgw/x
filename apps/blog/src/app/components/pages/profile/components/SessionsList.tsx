@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Shield, XCircle } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@ashgw/ui";
 
 import {
   Badge,
