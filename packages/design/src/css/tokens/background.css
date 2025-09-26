@@ -9,3 +9,13 @@
   --bg-gradient-mid: rgb(255 215 111 / 1.8%);
   --bg-gradient-end: rgb(150 0 100 / 6%);
 }
+
+.red {
+  /* Background gradient tokens — red theme */
+  --bg-base: #0c0708; /* subtle red-tinted base */
+
+  /* keep same opacities, bump mid a bit for extra glow */
+  --bg-gradient-start: rgb(255 60 60 / 8%);
+  --bg-gradient-mid: rgb(255 120 120 / 2.2%);
+  --bg-gradient-end: rgb(140 10 10 / 6%);
+}

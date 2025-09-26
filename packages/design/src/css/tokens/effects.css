@@ -18,3 +18,20 @@
   --glow-accent-subtle: rgb(255 46 200 / 20%);
   --ds-energy: 282 62% 60%; /* bright vivid purple for default (dark) */
 }
+
+.red {
+  /* Glow / highlight effects */
+  --ds-glow-primary: 255 60 60 / 0.5; /* soft red glow */
+
+  /* Aurora floating gradient blobs */
+  --aurora-1: 255, 64, 64; /* red blob 1 */
+  --aurora-2: 200, 32, 32; /* deeper red blob 2 */
+  --aurora-opacity-1: 0.12; /* slightly stronger */
+  --aurora-opacity-2: 0.18; /* slightly stronger */
+  --aurora-speed: 32s; /* Animation duration */
+
+  /* glow effects */
+  --glow-accent-strong: rgb(255 60 60 / 50%);
+  --glow-accent-subtle: rgb(255 60 60 / 20%);
+  --ds-energy: 0 82% 56%; /* vivid red for default (dark) */
+}
