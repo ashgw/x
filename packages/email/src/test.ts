@@ -1,6 +1,6 @@
 import { env } from "@ashgw/env";
 import { NotificationType } from "./types";
-import { email } from ".";
+import { email } from "./index";
 
 await email.sendNotification({
   subject: "Deployment Complete",

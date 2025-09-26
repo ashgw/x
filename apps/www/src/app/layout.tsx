@@ -1,16 +1,14 @@
-import "@ashgw/css/global";
-
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { site_name } from "@ashgw/constants";
-import { Providers } from "@ashgw/components";
 import {
   createMetadata,
-  JsonLd,
   organizationJsonLd,
   websiteJsonLd,
+  JsonLdScript,
 } from "@ashgw/seo";
-import { fonts } from "@ashgw/ui";
+import { AnalyticsProvider } from "@ashgw/analytics/client";
+import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { env } from "@ashgw/env";
 import { TsrProvider } from "~/ts-rest/provider";
@@ -27,14 +25,14 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={fonts.atkinsonHyperlegible.className}>
-        <JsonLd code={organizationJsonLd(siteUrl)} />
-        <JsonLd code={websiteJsonLd(siteUrl)} />
-        <Providers>
+    <>
+      <JsonLdScript code={organizationJsonLd(siteUrl)} />
+      <JsonLdScript code={websiteJsonLd(siteUrl)} />
+      <DesignSystemProvider>
+        <AnalyticsProvider>
           <TsrProvider>{children}</TsrProvider>
-        </Providers>
-      </body>
-    </html>
+        </AnalyticsProvider>
+      </DesignSystemProvider>
+    </>
   );
 }

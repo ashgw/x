@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { Edit } from "lucide-react";
+import { Edit } from "@ashgw/design/icons";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge, Button } from "@ashgw/ui";
+import { Badge } from "@ashgw/design/ui";
 import { Views } from "~/app/components/shared/views";
 
 import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";
@@ -20,20 +20,17 @@ interface BlogPostProps {
 
 export function BlogPostData({ postData }: BlogPostProps) {
   return (
-    <section className="container mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
+    <section className="layout mx-auto sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
       {/* client child */}
       <ViewTracker postSlug={postData.slug} />
       <div className="flex items-center justify-between">
         <H1 id={postData.title}>{postData.title}</H1>
-        <Link href={`/editor?blog=${postData.slug}`} className="ml-4">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-9 w-9 rounded-full"
-            aria-label={`Edit blog post: ${postData.title}`}
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
+        <Link
+          href={`/editor?blog=${postData.slug}`}
+          aria-label={`Edit blog post: ${postData.title}`}
+          className="ml-2 transition-duration-100 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Edit className="h-4 w-4" />
         </Link>
       </div>
 
@@ -52,11 +49,11 @@ export function BlogPostData({ postData }: BlogPostProps) {
           {DateService.isSameMonthAndYear({
             stringDate: postData.firstModDate.toISOString(),
           }) ? (
-            <div className="average-transition opacity-0 hover:opacity-100">
+            <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-duration-normal)] ease-in-out">
               <Badge variant="outlineUpdated">Recent</Badge>
             </div>
           ) : (
-            <div className="average-transition opacity-0 hover:opacity-100">
+            <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-duration-normal)] ease-in-out">
               <Badge variant="outlineArchive">Archive</Badge>
             </div>
           )}

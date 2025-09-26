@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 import { observer } from "mobx-react-lite";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import { useStore } from "~/app/stores";
 
@@ -23,7 +23,7 @@ export const ViewToggle = observer(() => {
       className="flex items-center gap-2"
     >
       <Button
-        variant={viewMode === "active" ? "squared:default" : "squared:outline"}
+        variant={viewMode === "active" ? "default" : "outline"}
         onClick={toggleView}
         className="relative min-w-[120px]"
       >

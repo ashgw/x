@@ -1,1 +1,1 @@
-export { GoBackHome } from "./GoHome";
+export { GoBack } from "./go-back";

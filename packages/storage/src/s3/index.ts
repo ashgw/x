@@ -1,5 +1,3 @@
-import http from "http";
-import https from "https";
 import { setDefaultResultOrder } from "node:dns";
 import { setTimeout as sleep } from "timers/promises";
 import {
@@ -15,7 +13,6 @@ import {
   PutObjectCommand,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
-import { NodeHttpHandler } from "@smithy/node-http-handler";
 import { AppError } from "@ashgw/error";
 import { env } from "@ashgw/env";
 
@@ -31,18 +28,6 @@ try {
 }
 
 const MAX_RETRIES = 3;
-
-const httpsAgent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 128,
-  keepAliveMsecs: 10_000,
-});
-
-const httpAgent = new http.Agent({
-  keepAlive: true,
-  maxSockets: 128,
-  keepAliveMsecs: 10_000,
-});
 
 export class S3Service extends BaseStorageService {
   /**
@@ -77,12 +62,8 @@ export class S3Service extends BaseStorageService {
         accessKeyId: env.S3_BUCKET_ACCESS_KEY_ID,
         secretAccessKey: env.S3_BUCKET_SECRET_KEY,
       },
-      requestHandler: new NodeHttpHandler({
-        httpAgent,
-        httpsAgent,
-        connectionTimeout: 800, // fail fast on bad paths
-        socketTimeout: 5_000, // don't hang forever
-      }),
+      // Use SDK's default Node handler. Node's global http/https agents will still
+      // provide keep-alive behavior as configured at the process level.
       maxAttempts: 2,
     });
     this.bucket = env.S3_BUCKET_NAME;

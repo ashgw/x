@@ -1,7 +1,7 @@
 "use client";
 
-import type { Variants } from "framer-motion";
-import { motion } from "framer-motion";
+import type { Variants } from "@ashgw/design/motion";
+import { motion } from "@ashgw/design/motion";
 import type { PropsWithChildren, MouseEvent } from "react";
 
 interface ModalShellProps {

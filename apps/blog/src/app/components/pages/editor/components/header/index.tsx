@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { motion } from "@ashgw/design/motion";
+import { Plus } from "@ashgw/design/icons";
 
-import { Button } from "@ashgw/ui";
+import { Button } from "@ashgw/design/ui";
 
 import type { SortOptions as SortOptionsType } from "./components/SortOptions";
 import type { PostArticleRo } from "~/api/models/post";
@@ -57,20 +57,10 @@ export function Header({
             isPreviewEnabled={isPreviewEnabled}
             onToggle={onTogglePreview}
           />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.4,
-              delay: 0.2,
-            }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <Button variant="squared:default" onClick={onClick}>
-              <Plus className="mr-2 h-4 w-4" />
-              New Blog
-            </Button>
-          </motion.div>
+          <Button variant="default" onClick={onClick}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Blog
+          </Button>
         </div>
       </div>
       <motion.div

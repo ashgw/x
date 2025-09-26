@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "sonner";
+import { AnimatePresence, motion } from "@ashgw/design/motion";
+import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
 import {
@@ -14,8 +14,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  LoadingPoints as Loading,
-} from "@ashgw/ui";
+  Loading,
+} from "@ashgw/design/ui";
 
 import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
@@ -93,7 +93,7 @@ export function ProfilePage() {
 
   return (
     <AnimatePresence mode="wait">
-      <div className="container mx-auto max-w-4xl px-4 py-8">
+      <div className="layout mx-auto max-w-4xl px-4 py-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"

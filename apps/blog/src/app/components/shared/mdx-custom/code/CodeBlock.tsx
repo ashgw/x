@@ -1,9 +1,9 @@
-/* eslint-disable */ // since react-syntax-highlighter has no types
+/* eslint-disable */ // react-syntax-highlighter has no types
 // @ts-nocheck
 "use client";
 
 import { Suspense } from "react";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash";
 import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";
@@ -20,8 +20,7 @@ import typescript from "react-syntax-highlighter/dist/cjs/languages/prism/typesc
 import yaml from "react-syntax-highlighter/dist/cjs/languages/prism/yaml";
 import oneDark from "react-syntax-highlighter/dist/cjs/styles/prism/one-dark";
 
-import { cn, Skeleton } from "@ashgw/ui";
-
+import { cn, Skeleton } from "@ashgw/design/ui";
 import { CopyButton } from "./CopyCode";
 
 SyntaxHighlighter.registerLanguage("rust", rust);
@@ -56,42 +55,43 @@ export function CodeBlock({
   copy = true,
 }: CodeBlockProps) {
   return (
-    <Suspense fallback={<Skeleton />}>
+    <Suspense fallback={<Skeleton height="14rem" />}>
       <motion.div
         id={id}
-        animate={{
-          scale: 1,
-          opacity: 1,
-        }}
-        initial={{
-          scale: 0.8,
-          opacity: 0,
-        }}
-        transition={{
-          duration: 0.2,
-          ease: "easeInOut",
-        }}
+        animate={{ scale: 1, opacity: 0.9 }}
+        initial={{ scale: 0.98, opacity: 0 }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
         className={cn(
-          "relative mx-2 my-2 rounded-2xl !bg-black p-4 shadow-lg",
+          // not-prose stops Tailwind Typography from overriding pre/code
+          "relative not-prose mx-2 my-2 rounded-2xl bg-black p-4 shadow-lg",
           className,
         )}
       >
         {copy && (
-          <CopyButton
-            code={code}
-            className="absolute right-2 top-2 inline-flex items-center"
-          />
+          <CopyButton code={code} className="absolute right-2 top-2 z-10" />
         )}
+
         <SyntaxHighlighter
-          className="!m-0 overflow-auto !p-0 text-sm dark:!bg-black dark:[&>*]:!bg-black"
           language={language}
-          style={oneDark}
-          showLineNumbers={showLineNumbers}
+          style={oneDark} // keep token colors
+          // override the theme background inline so it is pure black
+          customStyle={{
+            background: "#000",
+            margin: 0,
+            padding: 0,
+          }}
+          codeTagProps={{
+            style: { background: "transparent" },
+          }}
+          className="!m-0 overflow-auto !p-0 text-sm"
+          showLineNumbers={false}
           lineNumberStyle={{
             width: "3.25em",
             position: "sticky",
             left: 0,
-            background: "black",
+            background: "#000",
+            color: "rgba(255,255,255,0.35)",
+            marginRight: "0.75rem",
           }}
         >
           {code}

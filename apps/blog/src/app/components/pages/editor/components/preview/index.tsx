@@ -1,10 +1,10 @@
 "use client";
 
 import type { UseFormReturn } from "react-hook-form";
-import { motion } from "framer-motion";
+import { motion } from "@ashgw/design/motion";
 
 import { DateService } from "@ashgw/cross-runtime";
-import { Badge, Skeleton } from "@ashgw/ui";
+import { Badge, Skeleton } from "@ashgw/design/ui";
 
 import type { PostEditorDto } from "~/api/models/post";
 import { featuredComponents } from "~/app/components/shared/mdx-custom/featured/blog";
@@ -49,15 +49,15 @@ export function BlogPreview({
           stiffness: 100,
         }}
       >
-        <section className="container mx-auto">
+        <section className="layout mx-auto">
           <div className="flex items-center justify-between">
             <H1 id={titleValue || title}>{titleValue || title}</H1>
           </div>
           <div className="mb-8 flex items-center justify-between text-sm">
             <div>{formattedDate}</div>
             <div>
-              <div className="average-transition">
-                <Badge variant="outlineUpdated">Preview</Badge>
+              <div className="transition-duration-200">
+                <Badge variant="outline">Preview</Badge>
               </div>
             </div>
           </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Button, Input } from "@ashgw/ui";
+import { motion } from "@ashgw/design/motion";
+import { Button, Input } from "@ashgw/design/ui";
 import { ModalShell } from "./ModalShell";
 
 import type { PostArticleRo } from "~/api/models/post";
@@ -54,14 +54,14 @@ export function ConfirmBlogDeleteModal(props: {
         transition={{ delay: 0.3 }}
       >
         <Button
-          variant="squared:outline"
+          variant="outline"
           onClick={props.onCancel}
           disabled={props.isDeleting}
         >
           Cancel
         </Button>
         <Button
-          variant="destructive"
+          variant="destructive:outline"
           onClick={props.onConfirm}
           disabled={!isMatch || props.isDeleting}
           loading={props.isDeleting}

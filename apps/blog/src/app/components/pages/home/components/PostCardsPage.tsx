@@ -5,7 +5,7 @@ import { PostsProvider } from "~/app/components/pages/home/components/postCards/
 export function PostCardsPage({ posts }: { posts: PostCardRo[] }) {
   return (
     <>
-      <section className="container mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
+      <section className="layout mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl">
         <PostsProvider>
           <PostCards posts={posts} />
         </PostsProvider>

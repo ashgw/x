@@ -1,15 +1,15 @@
 "use client";
 
 import React, { memo } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@ashgw/design/motion";
 
-import { Button, ScrollArea, Skeleton } from "@ashgw/ui";
+import { Button, ScrollArea, Skeleton } from "@ashgw/design/ui";
 
 import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 
 interface BaseAction {
   label: string;
-  variant?: "destructive" | "squared:outline" | "default";
+  variant?: "destructive" | "outline" | "default";
   onClick: () => void;
 }
 
@@ -83,7 +83,6 @@ const ListItem = memo(function ListItemComponent<T>({
             <Button
               key={actionIndex}
               variant={action.variant ?? "default"}
-              size="sm"
               onClick={action.onClick}
             >
               {action.label}
@@ -207,7 +206,7 @@ export const createBlogListConfig = (
   getActions: (blog) => [
     {
       label: "Edit",
-      variant: "squared:outline",
+      variant: "outline",
       onClick: () => onEdit(blog),
     },
     {
@@ -235,7 +234,7 @@ export const createTrashListConfig = (
   getActions: (item) => [
     {
       label: "Restore",
-      variant: "squared:outline",
+      variant: "outline",
       onClick: () => onRestore(item),
     },
     {

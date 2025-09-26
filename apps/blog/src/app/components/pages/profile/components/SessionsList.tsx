@@ -2,9 +2,9 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Shield, XCircle } from "lucide-react";
-import { toast } from "sonner";
+import { AnimatePresence, motion } from "@ashgw/design/motion";
+import { Loader2, Shield, XCircle } from "@ashgw/design/icons";
+import { toast } from "@ashgw/design/ui";
 
 import {
   Badge,
@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { SessionRo } from "~/api/models";
 import { trpcClientSide } from "~/trpc/callers/client";
@@ -185,7 +185,6 @@ export function SessionsList({ sessions, setSessions }: SessionsListProps) {
                     <TableCell className="text-right">
                       <Button
                         variant="destructive"
-                        size="sm"
                         onClick={() =>
                           terminateSpecificSessionMutation.mutate({
                             sessionId: session.id,

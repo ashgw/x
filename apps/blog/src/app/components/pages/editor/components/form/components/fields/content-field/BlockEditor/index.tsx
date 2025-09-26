@@ -17,7 +17,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Maximize2, Minimize2, Plus } from "lucide-react";
+import { Maximize2, Minimize2, Plus } from "@ashgw/design/icons";
 import { nanoid } from "nanoid";
 
 import { logger } from "@ashgw/logger";
@@ -30,7 +30,7 @@ import {
   CommandItem,
   Dialog,
   DialogContent,
-} from "@ashgw/ui";
+} from "@ashgw/design/ui";
 
 import type { Block, BlockProps, BlockType } from "./types";
 import { BlockItem } from "./BlockItem";
@@ -550,11 +550,10 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
   const compactView = (
     <div className="bg-card relative rounded-lg border p-4">
       <div className="bg-card flex items-center justify-between py-2">
-        <h3 className="text-lg font-semibold">Content</h3>
+        <h3 className="text-lg font-semibold">Block Editor</h3>
         <div className="flex gap-2">
           <Button
             variant="outline"
-            size="sm"
             className="relative"
             onClick={() => setIsExpanded(true)}
             type="button"
@@ -564,7 +563,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
           </Button>
           <Button
             variant="outline"
-            size="sm"
             className="relative"
             onClick={() => setShowAddCommand(true)}
             type="button"
@@ -635,7 +633,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => {
                   setIsExpanded(false);
                   // Reset user interaction flag when closing
@@ -650,7 +647,6 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
               </Button>
               <Button
                 variant="outline"
-                size="sm"
                 onClick={() => setShowAddCommand(true)}
                 type="button"
               >
