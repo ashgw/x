@@ -1,2 +1,2 @@
 export { LoadingScreen } from "./loading-screen";
-export { CookieBanner } from "./cookie-banner";
+export { FirstTimeVisitorBanner } from "./first-time-visitor-banner";

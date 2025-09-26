@@ -10,7 +10,7 @@ import {
   websiteJsonLd,
 } from "@ashgw/seo";
 import { KeyboardThemeToggle, ThemeProvider } from "@ashgw/design/theme";
-
+import { FirstTimeVisitorBanner } from "@ashgw/components";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { fonts } from "@ashgw/design/fonts";
 
@@ -38,6 +38,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <AnalyticsProvider>
             <TsrProvider>{children}</TsrProvider>
           </AnalyticsProvider>
+          <FirstTimeVisitorBanner />
         </ThemeProvider>
       </body>
     </html>

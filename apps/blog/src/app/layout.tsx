@@ -18,7 +18,7 @@ import { TRPCProvider } from "~/trpc/provider";
 import { GoBackHome } from "./components/pages/root";
 import { StoreProvider } from "./stores";
 import { site_name } from "@ashgw/constants";
-import { CookieBanner } from "@ashgw/components";
+import { FirstTimeVisitorBanner } from "@ashgw/components";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               <StoreProvider>{children}</StoreProvider>
             </TRPCProvider>
           </AnalyticsProvider>
-          <CookieBanner />
+          <FirstTimeVisitorBanner />
         </ThemeProvider>
       </body>
     </html>
