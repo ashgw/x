@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User } from "@ashgw/ui/icons";
+import { User } from "@ashgw/design/icons";
 
 import { Button } from "@ashgw/design/ui";
 

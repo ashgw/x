@@ -17,7 +17,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Maximize2, Minimize2, Plus } from "@ashgw/ui/icons";
+import { Maximize2, Minimize2, Plus } from "@ashgw/design/icons";
 import { nanoid } from "nanoid";
 
 import { logger } from "@ashgw/logger";

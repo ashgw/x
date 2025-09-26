@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "@ashgw/ui/motion";
+import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";

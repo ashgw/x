@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "@ashgw/ui/motion";
-import { Crown, User } from "@ashgw/ui/icons";
+import { motion } from "@ashgw/design/motion";
+import { Crown, User } from "@ashgw/design/icons";
 
 import { Badge } from "@ashgw/design/ui";
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Lock, LogIn } from "@ashgw/ui/icons";
+import { Lock, LogIn } from "@ashgw/design/icons";
 
 import { Button } from "@ashgw/design/ui";
 

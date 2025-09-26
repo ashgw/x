@@ -4,7 +4,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 import { useForm } from "react-hook-form";
 import { toast } from "@ashgw/design/ui";
 

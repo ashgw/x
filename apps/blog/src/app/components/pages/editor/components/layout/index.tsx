@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence } from "@ashgw/ui/motion";
+import { AnimatePresence } from "@ashgw/design/motion";
 import { Skeleton } from "@ashgw/design/ui";
 
 import { Header } from "../header";

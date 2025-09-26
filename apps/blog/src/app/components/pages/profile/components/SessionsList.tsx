@@ -2,8 +2,8 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
-import { AnimatePresence, motion } from "@ashgw/ui/motion";
-import { Loader2, Shield, XCircle } from "@ashgw/ui/icons";
+import { AnimatePresence, motion } from "@ashgw/design/motion";
+import { Loader2, Shield, XCircle } from "@ashgw/design/icons";
 import { toast } from "@ashgw/design/ui";
 
 import {

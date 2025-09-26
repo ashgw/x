@@ -1,7 +1,7 @@
 "use client";
 
 import type { UseFormReturn } from "react-hook-form";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge, Skeleton } from "@ashgw/design/ui";

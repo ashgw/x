@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 import { observer } from "mobx-react-lite";
 
 import { Button } from "@ashgw/design/ui";

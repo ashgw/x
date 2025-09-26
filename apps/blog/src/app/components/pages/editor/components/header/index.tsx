@@ -1,5 +1,5 @@
-import { motion } from "@ashgw/ui/motion";
-import { Plus } from "@ashgw/ui/icons";
+import { motion } from "@ashgw/design/motion";
+import { Plus } from "@ashgw/design/icons";
 
 import { Button } from "@ashgw/design/ui";
 

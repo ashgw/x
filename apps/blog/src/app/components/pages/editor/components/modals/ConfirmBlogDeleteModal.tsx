@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 import { Button, Input } from "@ashgw/design/ui";
 import { ModalShell } from "./ModalShell";
 

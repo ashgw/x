@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "@ashgw/ui/motion";
-import { CheckCheck, ChevronDown } from "@ashgw/ui/icons";
+import { motion } from "@ashgw/design/motion";
+import { CheckCheck, ChevronDown } from "@ashgw/design/icons";
 
 import { Footer } from "@ashgw/components";
 import { Button } from "@ashgw/design/ui";

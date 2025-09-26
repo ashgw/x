@@ -1,6 +1,6 @@
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useMemo } from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 
 import { WordCounterService } from "@ashgw/cross-runtime";
 import { Form } from "@ashgw/design/ui";

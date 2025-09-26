@@ -11,13 +11,11 @@
     "./tailwind": "./src/tailwind/index.ts",
     "./fonts": "./src/fonts/fonts.ts",
     "./theme": "./src/theme/index.ts",
-    "./rhf": "./src/rhf/index.ts",
     "./icons": "./src/icons/index.ts",
     "./motion": "./src/motion/index.ts",
     "./ui": "./src/ui/index.ts"
   },
   "dependencies": {
-    "@hookform/resolvers": "3.9.0",
     "@radix-ui/react-dialog": "1.1.14",
     "@radix-ui/react-dropdown-menu": "2.1.2",
     "@radix-ui/react-icons": "1.3.0",
@@ -32,7 +30,7 @@
     "lucide-react": "0.309.0",
     "next": "catalog:",
     "next-themes": "0.4.6",
-    "react-hook-form": "7.53.0",
+    "react-hook-form": "catalog:rhf",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7",
     "zod": "catalog:"

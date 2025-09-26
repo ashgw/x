@@ -1,9 +1,9 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-import { animate } from "@ashgw/ui/motion";
+import { animate } from "@ashgw/design/motion";
 import { useEffect, useRef, useState } from "react";
-import { Eye } from "@ashgw/ui/icons";
+import { Eye } from "@ashgw/design/icons";
 import { useStore } from "~/app/stores";
 import { formatViews } from "~/utils/formatViews";
 import type { Optional } from "ts-roids";

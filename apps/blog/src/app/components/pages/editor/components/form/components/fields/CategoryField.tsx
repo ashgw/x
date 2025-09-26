@@ -1,5 +1,5 @@
 import type { Control } from "react-hook-form";
-import { Check } from "@ashgw/ui/icons";
+import { Check } from "@ashgw/design/icons";
 
 import {
   Button,

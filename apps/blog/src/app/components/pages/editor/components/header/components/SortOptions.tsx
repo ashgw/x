@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 import {
   Check,
   SortAsc,
@@ -14,7 +14,7 @@ import {
   ListChecks,
   FolderTree,
   Tag,
-} from "@ashgw/ui/icons";
+} from "@ashgw/design/icons";
 
 import {
   Badge,

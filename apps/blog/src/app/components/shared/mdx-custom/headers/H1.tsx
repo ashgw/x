@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 
 import { cn } from "@ashgw/design/ui";
 

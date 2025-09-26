@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "@ashgw/ui/icons";
+import { Eye, EyeOff } from "@ashgw/design/icons";
 
 import { Button } from "@ashgw/design/ui";
 

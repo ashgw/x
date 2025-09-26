@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import { motion, useReducedMotion } from "@ashgw/ui/motion";
+import { motion, useReducedMotion } from "@ashgw/design/motion";
 
 import { Button, ScrollArea, Skeleton } from "@ashgw/design/ui";
 

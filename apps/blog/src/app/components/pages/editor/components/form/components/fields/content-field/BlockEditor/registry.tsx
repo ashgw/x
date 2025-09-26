@@ -9,7 +9,7 @@ import {
   LinkIcon,
   Minus,
   Text,
-} from "@ashgw/ui/icons";
+} from "@ashgw/design/icons";
 
 import type { BlockProps, BlockRegistry, BlockType } from "./types";
 import {

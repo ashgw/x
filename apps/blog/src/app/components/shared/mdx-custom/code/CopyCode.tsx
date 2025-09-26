@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy } from "@ashgw/ui/icons";
+import { Check, Copy } from "@ashgw/design/icons";
 import { useCopyToClipboard } from "react-use";
 import { cn } from "@ashgw/design/ui";
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Eye, EyeOff, GripVertical, Trash2 } from "@ashgw/ui/icons";
+import { Eye, EyeOff, GripVertical, Trash2 } from "@ashgw/design/icons";
 
 import { Button, cn } from "@ashgw/design/ui";
 

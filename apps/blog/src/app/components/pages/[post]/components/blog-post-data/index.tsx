@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Edit } from "@ashgw/ui/icons";
+import { Edit } from "@ashgw/design/icons";
 
 import { DateService } from "@ashgw/cross-runtime";
 import { Badge } from "@ashgw/design/ui";

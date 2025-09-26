@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 import { useCopyToClipboard } from "react-use";
 import { toast } from "@ashgw/design/ui";
 

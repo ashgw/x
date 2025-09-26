@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ChevronDown, ChevronUp } from "@ashgw/ui/icons";
+import { ChevronDown, ChevronUp } from "@ashgw/design/icons";
 
 import { Button, Textarea } from "@ashgw/design/ui";
 

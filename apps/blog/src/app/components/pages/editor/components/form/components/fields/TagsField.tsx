@@ -1,6 +1,6 @@
 import type { UseFormReturn } from "react-hook-form";
 import { useState } from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 
 import {
   Button,

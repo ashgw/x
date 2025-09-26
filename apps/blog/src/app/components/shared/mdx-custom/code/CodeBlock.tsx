@@ -3,7 +3,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { motion } from "@ashgw/ui/motion";
+import { motion } from "@ashgw/design/motion";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash";
 import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";

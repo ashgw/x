@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "@ashgw/ui/motion";
+import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 

@@ -9,7 +9,7 @@ import { Button, SurfaceCard } from "@ashgw/design/ui";
 export function PostCard({ postData }: { postData: PostCardRo }) {
   return (
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
-      <SurfaceCard variant="glow" size="default" animate="pop">
+      <SurfaceCard animation={"glowScale"} size="default">
         <div className="flex flex-col gap-4 lg:gap-6">
           <div className="text-muted-foreground flex items-center gap-2 px-1 text-sm">
             <span>

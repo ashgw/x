@@ -78,6 +78,13 @@ catalogs:
     react-dom:
       specifier: 18.3.1
       version: 18.3.1
+  rhf:
+    '@hookform/resolvers':
+      specifier: 3.9.0
+      version: 3.9.0
+    react-hook-form:
+      specifier: 7.53.0
+      version: 7.53.0
   trpc11:
     '@trpc/client':
       specifier: 11.0.2
@@ -211,6 +218,9 @@ importers:
       '@gsap/react':
         specifier: 2.1.0
         version: 2.1.0
+      '@hookform/resolvers':
+        specifier: catalog:rhf
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       '@next/third-parties':
         specifier: 15.0.2
         version: 15.0.2(next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7))(react@18.3.1)
@@ -277,6 +287,9 @@ importers:
       react-dom:
         specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: catalog:rhf
+        version: 7.53.0(react@18.3.1)
       react-syntax-highlighter:
         specifier: 15.5.0
         version: 15.5.0(react@18.3.1)
@@ -431,6 +444,9 @@ importers:
       '@gsap/react':
         specifier: 2.1.0
         version: 2.1.0
+      '@hookform/resolvers':
+        specifier: catalog:rhf
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       '@next/third-parties':
         specifier: 15.0.2
         version: 15.0.2(next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.69.7))(react@18.3.1)
@@ -485,6 +501,9 @@ importers:
       react-dom:
         specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: catalog:rhf
+        version: 7.53.0(react@18.3.1)
       react-syntax-highlighter:
         specifier: 15.5.0
         version: 15.5.0(react@18.3.1)
@@ -764,9 +783,6 @@ importers:
 
   packages/design:
     dependencies:
-      '@hookform/resolvers':
-        specifier: 3.9.0
-        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       '@radix-ui/react-dialog':
         specifier: 1.1.14
         version: 1.1.14(@types/react-dom@19.0.4(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
@@ -810,7 +826,7 @@ importers:
         specifier: 0.4.6
         version: 0.4.6(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
       react-hook-form:
-        specifier: 7.53.0
+        specifier: catalog:rhf
         version: 7.53.0(react@18.3.1)
       tailwind-merge:
         specifier: 2.5.4
