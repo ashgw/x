@@ -91,7 +91,7 @@ function ToastComponent({ toast, position, onRemove }: ToastComponentProps) {
   const { initial, animate, exit } = getAnimationVariants(position);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => onRemove(toast.id), toast.duration || 4000);
+    const timer = setTimeout(() => onRemove(toast.id), toast.duration ?? 4000);
     return () => clearTimeout(timer);
   }, [toast.id, toast.duration, onRemove]);
 
