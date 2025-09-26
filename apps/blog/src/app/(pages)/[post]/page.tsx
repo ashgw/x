@@ -1,17 +1,9 @@
 import { cache } from "react";
 import type { Metadata } from "next";
 import { NotFound } from "@ashgw/components";
-import {
-  createMetadata,
-  blogPostingJsonLd,
-  breadcrumbsJsonLd,
-  JsonLdScriptProvider,
-} from "@ashgw/seo";
-import { env } from "@ashgw/env";
+import { createMetadata } from "@ashgw/seo";
 import { BlogPostPage } from "~/app/components/pages/[post]";
 import { trpcHttpServerSideClient, HydrateClient } from "~/trpc/callers/server";
-
-const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
 const getPostCached = cache((slug: string) =>
   trpcHttpServerSideClient.post.getDetailedPublicPost.query({ slug }),
@@ -55,30 +47,8 @@ export default async function Page({ params }: { params: { post: string } }) {
     return <NotFound message={`No post found that matches /${params.post}`} />;
 
   return (
-    <JsonLdScriptProvider
-      entries={[
-        () =>
-          blogPostingJsonLd({
-            post: {
-              slug: postData.slug,
-              title: postData.title,
-              description: postData.summary,
-              tags: postData.tags,
-              publishedAt: postData.firstModDate.toISOString(),
-              updatedAt: postData.lastModDate.toISOString(),
-            },
-            siteUrl,
-          }),
-        () =>
-          breadcrumbsJsonLd([
-            { name: "Blog", url: `${siteUrl}` },
-            { name: postData.title, url: `${siteUrl}/${postData.slug}` },
-          ]),
-      ]}
-    >
-      <HydrateClient>
-        <BlogPostPage postData={postData} />
-      </HydrateClient>
-    </JsonLdScriptProvider>
+    <HydrateClient>
+      <BlogPostPage postData={postData} />
+    </HydrateClient>
   );
 }
