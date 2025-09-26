@@ -49,12 +49,12 @@ export function CookieBanner({
           className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
         >
           <SurfaceCard
-            animation="none"
+            animation="ringGlow"
             role="dialog"
             aria-live="polite"
             aria-label="Cookie consent"
           >
-            <div className="text-semibold text-muted-foreground">{body}</div>
+            <div className="text-semibold text-dim-500">{body}</div>
             <div className="flex items-center justify-end gap-2">
               <Button variant="outline" onClick={reject} className="text-xs">
                 {rejectLabel}

@@ -1,0 +1,21 @@
+@keyframes ring-glow {
+  0% {
+    border-color: hsl(var(--ds-border) / 0.4);
+    box-shadow: 0 0 0px hsl(var(--ds-border) / 0.0);
+  }
+  50% {
+    border-color: hsl(var(--ds-border) / 1);
+    box-shadow: 0 0 12px hsl(var(--ds-border) / 0.6);
+  }
+  100% {
+    border-color: hsl(var(--ds-border) / 0.4);
+    box-shadow: 0 0 0px hsl(var(--ds-border) / 0.0);
+  }
+}
+
+.ring-glow {
+  border: 1px solid hsl(var(--ds-border));
+  animation: ring-glow 1.8s ease-in-out infinite;
+  border-radius: inherit;
+}
+
