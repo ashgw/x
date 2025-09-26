@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { NotFound } from "@ashgw/components";
 import {
   createMetadata,
-  JsonLd,
   blogPostingJsonLd,
   breadcrumbsJsonLd,
+  JsonLdScriptProvider,
 } from "@ashgw/seo";
 import { env } from "@ashgw/env";
 import { BlogPostPage } from "~/app/components/pages/[post]";
@@ -55,27 +55,30 @@ export default async function Page({ params }: { params: { post: string } }) {
     return <NotFound message={`No post found that matches /${params.post}`} />;
 
   return (
-    <HydrateClient>
-      <JsonLd
-        code={blogPostingJsonLd({
-          post: {
-            slug: postData.slug,
-            title: postData.title,
-            description: postData.summary,
-            tags: postData.tags,
-            publishedAt: postData.firstModDate.toISOString(),
-            updatedAt: postData.lastModDate.toISOString(),
-          },
-          siteUrl,
-        })}
-      />
-      <JsonLd
-        code={breadcrumbsJsonLd([
-          { name: "Blog", url: `${siteUrl}` },
-          { name: postData.title, url: `${siteUrl}/${postData.slug}` },
-        ])}
-      />
-      <BlogPostPage postData={postData} />
-    </HydrateClient>
+    <JsonLdScriptProvider
+      entries={[
+        () =>
+          blogPostingJsonLd({
+            post: {
+              slug: postData.slug,
+              title: postData.title,
+              description: postData.summary,
+              tags: postData.tags,
+              publishedAt: postData.firstModDate.toISOString(),
+              updatedAt: postData.lastModDate.toISOString(),
+            },
+            siteUrl,
+          }),
+        () =>
+          breadcrumbsJsonLd([
+            { name: "Blog", url: `${siteUrl}` },
+            { name: postData.title, url: `${siteUrl}/${postData.slug}` },
+          ]),
+      ]}
+    >
+      <HydrateClient>
+        <BlogPostPage postData={postData} />
+      </HydrateClient>
+    </JsonLdScriptProvider>
   );
 }

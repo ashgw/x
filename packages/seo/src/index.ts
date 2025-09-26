@@ -1,9 +1,9 @@
 export { createMetadata } from "./metadata";
 export {
-  JsonLd,
   organizationJsonLd,
   websiteJsonLd,
   blogPostingJsonLd,
   breadcrumbsJsonLd,
+  JsonLdScriptProvider,
 } from "./json-ld";
 export type { PostLike } from "./json-ld";

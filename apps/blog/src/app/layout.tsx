@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import {
-  JsonLd,
-  createMetadata,
-  organizationJsonLd,
-  websiteJsonLd,
-} from "@ashgw/seo";
+import { createMetadata } from "@ashgw/seo";
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
@@ -28,8 +23,6 @@ export const metadata: Metadata = createMetadata({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <DesignSystemProvider>
-      <JsonLd code={organizationJsonLd(siteUrl)} />
-      <JsonLd code={websiteJsonLd(siteUrl)} />
       <GoBack />
       <AnalyticsProvider>
         <TRPCProvider siteBaseUrl={siteUrl}>
