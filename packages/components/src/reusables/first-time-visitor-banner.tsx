@@ -79,16 +79,16 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     setStage("kWait");
   }, [analytics]);
 
-  const cookieBody = "Hmm, looks like you’re new here. I use cookies";
+  const cookieBody = "Hmm new here? Got to let you know, I use cookies";
 
   const kWaitBody =
     consent === "accepted" ? (
       <>
-        Cool, press <Kbd>K</Kbd> to set your theme.
+        Great, press <Kbd>K</Kbd> to switch themes
       </>
     ) : (
       <>
-        Ok, anyways, press <Kbd>K</Kbd> to set your theme.
+        Anyways, press <Kbd>K</Kbd> to switch themes
       </>
     );
 
