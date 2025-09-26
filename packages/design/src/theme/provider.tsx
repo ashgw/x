@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { Theme } from "./types";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  defaultTheme?: "purple" | "red" | "blue";
+  defaultTheme?: Theme;
   storageKey?: string;
 }
 
