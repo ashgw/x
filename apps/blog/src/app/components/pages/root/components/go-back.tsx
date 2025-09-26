@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeft } from "@ashgw/design/icons";
 
-function GoHomeContent() {
+function BackContent() {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -44,7 +44,7 @@ function GoHomeContent() {
   );
 }
 
-function GoHomeSkeleton() {
+function BackSkeleton() {
   return (
     <div className="inline-flex animate-pulse items-center">
       <div className="bg-muted h-8 w-20 rounded-full" />
@@ -52,11 +52,11 @@ function GoHomeSkeleton() {
   );
 }
 
-export function GoBackHome() {
+export function GoBack() {
   return (
     <div className="layout pt-6">
-      <Suspense fallback={<GoHomeSkeleton />}>
-        <GoHomeContent />
+      <Suspense fallback={<BackSkeleton />}>
+        <BackContent />
       </Suspense>
     </div>
   );

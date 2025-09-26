@@ -1,3 +1,4 @@
+import { fonts } from "../fonts/fonts";
 import { ThemeProvider } from "../theme/provider";
 import { ToastProvider } from "../ui";
 import "./../css/index.css";
@@ -8,8 +9,14 @@ export const DesignSystemProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <ThemeProvider>
-      <ToastProvider>{children}</ToastProvider>
-    </ThemeProvider>
+    <html lang="en">
+      <ThemeProvider>
+        <ToastProvider>
+          <body className={fonts.atkinsonHyperlegible.className}>
+            {children}
+          </body>
+        </ToastProvider>
+      </ThemeProvider>
+    </html>
   );
 };

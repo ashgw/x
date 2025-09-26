@@ -9,12 +9,10 @@ import {
 
 import { AnalyticsProvider } from "@ashgw/analytics/client";
 import { env } from "@ashgw/env";
-import { fonts } from "@ashgw/design/fonts";
-import { KeyboardThemeToggle } from "@ashgw/design/theme";
 import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { TRPCProvider } from "~/trpc/provider";
-import { GoBackHome } from "./components/pages/root";
+import { GoBack } from "./components/pages/root";
 import { StoreProvider } from "./stores";
 import { site_name } from "@ashgw/constants";
 import { FirstTimeVisitorBanner } from "@ashgw/components";
@@ -29,21 +27,16 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={fonts.atkinsonHyperlegible.className}>
-        <DesignSystemProvider>
-          <JsonLd code={organizationJsonLd(siteUrl)} />
-          <JsonLd code={websiteJsonLd(siteUrl)} />
-          <KeyboardThemeToggle />
-          <GoBackHome />
-          <AnalyticsProvider>
-            <TRPCProvider siteBaseUrl={siteUrl}>
-              <StoreProvider>{children}</StoreProvider>
-            </TRPCProvider>
-          </AnalyticsProvider>
-          <FirstTimeVisitorBanner />
-        </DesignSystemProvider>
-      </body>
-    </html>
+    <DesignSystemProvider>
+      <JsonLd code={organizationJsonLd(siteUrl)} />
+      <JsonLd code={websiteJsonLd(siteUrl)} />
+      <GoBack />
+      <AnalyticsProvider>
+        <TRPCProvider siteBaseUrl={siteUrl}>
+          <StoreProvider>{children}</StoreProvider>
+        </TRPCProvider>
+      </AnalyticsProvider>
+      <FirstTimeVisitorBanner />
+    </DesignSystemProvider>
   );
 }

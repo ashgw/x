@@ -8,8 +8,7 @@
   },
   "exports": {
     "./tailwind": "./src/tailwind/index.ts",
-    "./fonts": "./src/fonts/fonts.ts",
-    "./theme": "./src/theme/index.ts",
+    "./hooks": "./src/hooks/index.ts",
     "./icons": "./src/icons/index.ts",
     "./motion": "./src/motion/index.ts",
     "./ui": "./src/ui/index.ts",

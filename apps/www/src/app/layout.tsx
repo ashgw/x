@@ -7,9 +7,7 @@ import {
   organizationJsonLd,
   websiteJsonLd,
 } from "@ashgw/seo";
-import { KeyboardThemeToggle } from "@ashgw/design/theme";
 import { AnalyticsProvider } from "@ashgw/analytics/client";
-import { fonts } from "@ashgw/design/fonts";
 import { DesignSystemProvider } from "@ashgw/design/provider";
 
 import { env } from "@ashgw/env";
@@ -27,17 +25,12 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={fonts.atkinsonHyperlegible.className}>
-        <DesignSystemProvider>
-          <JsonLd code={organizationJsonLd(siteUrl)} />
-          <JsonLd code={websiteJsonLd(siteUrl)} />
-          <KeyboardThemeToggle />
-          <AnalyticsProvider>
-            <TsrProvider>{children}</TsrProvider>
-          </AnalyticsProvider>
-        </DesignSystemProvider>
-      </body>
-    </html>
+    <DesignSystemProvider>
+      <JsonLd code={organizationJsonLd(siteUrl)} />
+      <JsonLd code={websiteJsonLd(siteUrl)} />
+      <AnalyticsProvider>
+        <TsrProvider>{children}</TsrProvider>
+      </AnalyticsProvider>
+    </DesignSystemProvider>
   );
 }

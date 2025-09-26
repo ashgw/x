@@ -4,6 +4,7 @@ import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { Theme } from "./types";
 import { THEMES_TUPLE } from "./consts";
+import { KeyboardThemeToggle } from "./keyboard-theme-toggle";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ export function ThemeProvider({
       enableSystem={false}
       disableTransitionOnChange
     >
+      <KeyboardThemeToggle />
       {children}
     </NextThemesProvider>
   );
