@@ -20,9 +20,9 @@ const surfaceCardVariants = cva(
         none: "",
         scale: "hover:scale-105 duration-200",
         pop: "hover:scale-110 duration-200",
-        glow: "glow-500 hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)]",
+        glow: "glow-500 hover:shadow-glow-accent-strong",
         glowScale:
-          "glow-500 hover:scale-105 hover:shadow-[0px_4px_88px_0px_var(--glow-accent-strong)] duration-200",
+          "glow-500 hover:scale-105 hover:shadow-glow-accent-strong duration-200",
         ringGlowPulse: "ring-glow-pulse",
       },
     },

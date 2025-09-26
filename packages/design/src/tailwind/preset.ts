@@ -31,6 +31,7 @@ export const designPreset: Config = {
         success: "hsl(var(--ds-success))",
         info: "hsl(var(--ds-info))",
         warning: "hsl(var(--ds-warning))",
+        energy: "hsl(var(--ds-energy))",
         danger: {
           DEFAULT: "hsl(var(--ds-danger))",
           foreground: "hsl(var(--ds-danger-foreground))",
@@ -109,6 +110,8 @@ export const designPreset: Config = {
         subtle: "var(--ds-shadow-subtle)",
         medium: "var(--ds-shadow-medium)",
         strong: "var(--ds-shadow-strong)",
+        "glow-accent-strong": "0px 4px 88px 0px var(--glow-accent-strong)",
+        "glow-accent-sm": "0 0 8px hsl(var(--ds-accent)/0.6)",
       },
 
       // Motion tokens
@@ -120,7 +123,7 @@ export const designPreset: Config = {
       },
 
       transitionTimingFunction: {
-        // Design system easing curves
+        // Easing curves
         "ease-spring": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
         "ease-smooth": "cubic-bezier(0.4, 0, 0.2, 1)",
         "ease-snappy": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",

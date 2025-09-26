@@ -5,8 +5,10 @@
   display: inline-block;
   margin: 0.5rem;
 
-  background-color: hsl(var(--ds-energy));
-  box-shadow: 0 0 20px hsl(var(--ds-energy));
+  /* Use currentColor so React variants control color via Tailwind tokens */
+  color: currentColor;
+  background-color: currentColor;
+  box-shadow: 0 0 20px currentColor;
 
   animation: loading 1.5s ease-in-out infinite;
   animation-delay: var(--animation-delay, 0s);
@@ -16,16 +18,16 @@
   0%,
   100% {
     transform: scale(0.2);
-    box-shadow: 0 0 10px hsl(var(--ds-energy) / 0.5);
+    box-shadow: 0 0 10px currentColor;
   }
   42% {
-    box-shadow: 0 0 10px hsl(var(--ds-energy) / 0.7);
+    box-shadow: 0 0 10px currentColor;
   }
   50% {
     transform: scale(1);
     box-shadow:
-      0 0 20px hsl(var(--ds-energy)),
-      0 0 30px hsl(var(--ds-energy)),
-      0 0 40px hsl(var(--ds-energy));
+      0 0 20px currentColor,
+      0 0 30px currentColor,
+      0 0 40px currentColor;
   }
 }
