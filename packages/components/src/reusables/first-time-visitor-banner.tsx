@@ -11,6 +11,25 @@ interface Props {
   className?: string;
 }
 
+function Kbd({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <kbd
+      className={cn(
+        "inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs font-mono font-medium text-foreground shadow-sm relative -top-0.5",
+        className,
+      )}
+    >
+      {children}
+    </kbd>
+  );
+}
+
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
   const [stage, setStage] = useState<Stage>("cookie");
@@ -49,7 +68,7 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     setStage("done");
   }, []);
 
-  let body = "";
+  let body: React.ReactNode = null;
   let buttons: React.ReactNode = null;
 
   if (stage === "cookie") {
@@ -65,7 +84,11 @@ export function FirstTimeVisitorBanner({ className }: Props) {
       </>
     );
   } else if (stage === "themeInfo") {
-    body = "One more thing though, we need to set up your theme, press K";
+    body = (
+      <>
+        One more thing though, we need to set up your theme. Press <Kbd>K</Kbd>
+      </>
+    );
     buttons = (
       <>
         <Button onClick={completeThemeInfo} className="text-xs">
