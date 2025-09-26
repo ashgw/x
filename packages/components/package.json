@@ -14,8 +14,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/logger": "workspace:*",
     "@ashgw/monitor": "workspace:*",
-    "@ashgw/ui": "workspace:*",
-    "framer-motion": "catalog:"
+    "@ashgw/ui": "workspace:*"
   },
   "devDependencies": {
     "@ashgw/eslint-config": "workspace:*",

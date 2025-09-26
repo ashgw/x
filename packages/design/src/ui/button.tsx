@@ -3,7 +3,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
-import { cn } from "@ashgw/ui";
+import { cn } from ".";
 import { Loading } from "./loading";
 
 const outlineInteractive =

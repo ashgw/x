@@ -3,7 +3,7 @@
 import * as React from "react";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import { cn } from "@ashgw/ui";
+import { cn } from "../..";
 
 import "./LoadingPoints.css";
 
