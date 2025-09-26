@@ -19,7 +19,7 @@ const outlineDestructiveInteractive =
   "data-[state=on]:bg-[hsl(var(--ds-danger))]/20";
 
 const defaultInteractive =
-  "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
+  "rounded-md text-sm font-semibold duration-[var(--ds-duration-normal)] " +
   "bg-[hsl(var(--ds-primary))] text-[hsl(var(--ds-primary-foreground))] " +
   // hover: darken the primary a little using opacity var
   "hover:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-medium))] " +
@@ -27,7 +27,7 @@ const defaultInteractive =
   "active:bg-[hsl(var(--ds-primary))]/[calc(1-var(--ds-opacity-strong))]";
 
 export const destructiveInteractive =
-  "rounded-md text-sm font-semibold duration-[var(--ds-motion-normal)] " +
+  "rounded-md text-sm font-semibold duration-[var(--ds-duration-normal)] " +
   "bg-[hsl(var(--ds-danger))] text-dim-300 " +
   // hover: dip danger color + lighten text a bit
   "hover:bg-[hsl(var(--ds-danger))]/[calc(1-var(--ds-opacity-medium))] " +
@@ -66,7 +66,7 @@ const buttonVariants = cva(
           " rounded-full",
 
         secondary:
-          "rounded-md text-sm font-medium duration-[var(--ds-motion-normal)] " +
+          "rounded-md text-sm font-medium duration-[var(--ds-duration-normal)] " +
           "bg-[hsl(var(--ds-secondary))] text-[hsl(var(--ds-secondary-foreground))] " +
           "hover:bg-[hsl(var(--ds-secondary))]/[calc(1-var(--ds-opacity-strong))]",
 

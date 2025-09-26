@@ -71,9 +71,9 @@ export const designPreset: Config = {
         strong: "var(--ds-shadow-strong)",
       },
       transitionDuration: {
-        fast: "var(--ds-motion-fast)",
-        DEFAULT: "var(--ds-motion-normal)",
-        slow: "var(--ds-motion-slow)",
+        fast: "var(--ds-duration-fast)",
+        DEFAULT: "var(--ds-duration-normal)",
+        slow: "var(--ds-duration-slow)",
       },
       keyframes: {
         "accordion-down": {
@@ -86,8 +86,8 @@ export const designPreset: Config = {
         },
       },
       animation: {
-        "accordion-down": "accordion-down var(--ds-motion-normal) ease-out",
-        "accordion-up": "accordion-up var(--ds-motion-normal) ease-out",
+        "accordion-down": "accordion-down var(--ds-duration-normal) ease-out",
+        "accordion-up": "accordion-up var(--ds-duration-normal) ease-out",
       },
     },
   },

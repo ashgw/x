@@ -49,11 +49,11 @@ export function BlogPostData({ postData }: BlogPostProps) {
           {DateService.isSameMonthAndYear({
             stringDate: postData.firstModDate.toISOString(),
           }) ? (
-            <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-motion-normal)] ease-in-out">
+            <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-duration-normal)] ease-in-out">
               <Badge variant="outlineUpdated">Recent</Badge>
             </div>
           ) : (
-            <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-motion-normal)] ease-in-out">
+            <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-duration-normal)] ease-in-out">
               <Badge variant="outlineArchive">Archive</Badge>
             </div>
           )}

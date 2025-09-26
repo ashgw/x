@@ -4,7 +4,7 @@
 
 :root {
   /* Motion speeds (animations) */
-  --ds-motion-fast: 120ms;
-  --ds-motion-normal: 200ms;
-  --ds-motion-slow: 320ms;
+  --ds-duration-fast: 120ms;
+  --ds-duration-normal: 200ms;
+  --ds-duration-slow: 320ms;
 }
