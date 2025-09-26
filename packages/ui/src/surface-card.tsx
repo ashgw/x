@@ -7,6 +7,10 @@ const surfaceCardVariants = cva(
   "group flex flex-col border shadow transition-all select-none",
   {
     variants: {
+      isBlur: {
+        true: "blur-subtle",
+        false: "",
+      },
       size: {
         default: "p-5 rounded-[2rem]",
         sm: "p-3 rounded-xl",
@@ -25,6 +29,7 @@ const surfaceCardVariants = cva(
     defaultVariants: {
       size: "default",
       animation: "glowScale",
+      isBlur: false,
     },
   },
 );
@@ -36,15 +41,19 @@ export interface CardProps
 }
 
 export const SurfaceCard = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, size, animation, asChild = false, ...props }, ref) => {
+  ({ className, size, animation, isBlur, asChild = false, ...props }, ref) => {
     const Comp = asChild ? "section" : "div";
     return (
       <Comp
         ref={ref}
-        className={cn(surfaceCardVariants({ size, animation }), className)}
+        className={cn(
+          surfaceCardVariants({ size, animation, isBlur }),
+          className,
+        )}
         {...props}
       />
     );
   },
 );
+
 SurfaceCard.displayName = "SurfaceCard";

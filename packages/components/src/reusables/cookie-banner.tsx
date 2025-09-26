@@ -50,6 +50,7 @@ export function CookieBanner({
         >
           <SurfaceCard
             animation="ringGlowPulse"
+            isBlur
             role="dialog"
             aria-live="polite"
             aria-label="Cookie consent"
