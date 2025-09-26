@@ -7,16 +7,12 @@ import { GoBack } from "./components/pages/root";
 
 export default function GlobalError({ ...props }: GlobalErrorProperties) {
   return (
-    <html lang="en">
-      <body>
-        <DesignSystemProvider>
-          <GoBack />
-          <main className="flex h-screen items-start justify-center pt-20">
-            <ErrorBoundary {...props} />
-          </main>
-          <Footer />
-        </DesignSystemProvider>
-      </body>
-    </html>
+    <DesignSystemProvider>
+      <GoBack />
+      <main className="flex h-screen items-start justify-center pt-20">
+        <ErrorBoundary {...props} />
+      </main>
+      <Footer />
+    </DesignSystemProvider>
   );
 }

@@ -6,15 +6,11 @@ import { DesignSystemProvider } from "@ashgw/design/provider";
 
 export default function GlobalError({ ...props }: GlobalErrorProperties) {
   return (
-    <html lang="en">
-      <body>
-        <DesignSystemProvider>
-          <div className="flex h-screen items-start justify-center pt-20">
-            <ErrorBoundary {...props} />
-          </div>
-          <Footer />
-        </DesignSystemProvider>
-      </body>
-    </html>
+    <DesignSystemProvider>
+      <div className="flex h-screen items-start justify-center pt-20">
+        <ErrorBoundary {...props} />
+      </div>
+      <Footer />
+    </DesignSystemProvider>
   );
 }

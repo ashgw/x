@@ -9,10 +9,12 @@ export const DesignSystemProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <main className={fonts.atkinsonHyperlegible.className}>{children}</main>
-      </ToastProvider>
-    </ThemeProvider>
+    <html lang="en">
+      <body className={fonts.atkinsonHyperlegible.className}>
+        <ThemeProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 };

@@ -28,15 +28,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <>
       <JsonLdScript code={organizationJsonLd(siteUrl)} />
       <JsonLdScript code={websiteJsonLd(siteUrl)} />
-      <html lang="en">
-        <body>
-          <DesignSystemProvider>
-            <AnalyticsProvider>
-              <TsrProvider>{children}</TsrProvider>
-            </AnalyticsProvider>
-          </DesignSystemProvider>
-        </body>
-      </html>
+      <DesignSystemProvider>
+        <AnalyticsProvider>
+          <TsrProvider>{children}</TsrProvider>
+        </AnalyticsProvider>
+      </DesignSystemProvider>
     </>
   );
 }
