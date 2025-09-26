@@ -31,16 +31,21 @@ interface ToastContextType {
 // Context
 const ToastContext = createContext<ToastContextType | null>(null);
 
-// Toast variants
+// Toast variants - using outline styles like buttons
 const toastVariants = cva(
-  "relative flex w-full flex-col space-y-1 overflow-hidden rounded-2xl border p-4 shadow-lg transition-all group select-none backdrop-blur-md",
+  "relative flex w-full flex-col space-y-1 overflow-hidden rounded-2xl p-4 shadow-lg transition-all group select-none backdrop-blur-md bg-transparent",
   {
     variants: {
       type: {
-        success: "bg-primary/95 text-primary-foreground border-primary/20",
+        success:
+          "border text-dim-300 border-border " +
+          "hover:text-dim-400 hover:border-border/70 hover:bg-white/[0.03]",
         error:
-          "bg-destructive/95 text-destructive-foreground border-destructive/20",
-        message: "bg-primary/95 text-primary-foreground border-primary/20",
+          "border text-destructive border-destructive/40 " +
+          "hover:text-destructive/80 hover:border-destructive/70 hover:bg-destructive/[0.08]",
+        message:
+          "border text-dim-300 border-border " +
+          "hover:text-dim-400 hover:border-border/70 hover:bg-white/[0.03]",
       },
     },
     defaultVariants: {
