@@ -34,6 +34,11 @@ export const auth = betterAuth({
       logger.debug(`Sending email verification to user: ${user.id}`);
       // TODO : send email here & remove logger
     },
+    sendVerificationEmail: async ({ token, user, url }) => {
+      await Promise.resolve();
+      logger.debug(`Verify email for user: ${user.id}, ${url}${token}`);
+      // TODO : send email here & remove logger
+    },
     afterEmailVerification: async (user) => {
       logger.debug(`Email verified for user: ${user.id}`);
       await Promise.resolve();
