@@ -35,7 +35,9 @@ export const auth = betterAuth({
       hash: argon2.hash,
       verify: ({ hash, password }) => argon2.verify(hash, password),
     },
-    modelName: "user",
+    requireEmailVerification: true,
+    revokeSessionsOnPasswordReset: true,
+    resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
   },
   socialProviders: {
     google: {
