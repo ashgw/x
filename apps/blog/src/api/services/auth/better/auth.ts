@@ -27,9 +27,9 @@ export const auth = betterAuth({
     autoSignIn: true,
     disableSignUp: true,
     onPasswordReset: async ({ user }) => {
-      logger.info(`Password reset for user: ${user.id}`);
+      logger.debug(`Password reset for user: ${user.id}`);
       await Promise.resolve();
-      // TODO: send email here
+      // TODO: send email here & remove logger
     },
     password: {
       hash: argon2.hash,
@@ -38,6 +38,12 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
+    sendResetPassword: async ({ token, url, user }) => {
+      logger.debug(`Reset password for user: ${user.id}, ${url}` + token);
+      await Promise.resolve();
+    },
+    maxPasswordLength: 128,
+    minPasswordLength: 8,
   },
   socialProviders: {
     google: {
