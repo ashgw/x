@@ -5,7 +5,7 @@ import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
 import argon2 from "argon2";
 import { authEndpoints } from "./endpoints";
-import {AppError} from '@ashgw/error'
+import { monitor } from "@ashgw/monitor";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -42,7 +42,7 @@ export const auth = betterAuth({
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
     sendResetPassword: async ({ token, url, user }) => {
-      logger.debug(`Reset password for user: ${user.id}, ${url}` + token);
+      logger.debug(`Reset password for user: ${user.id}, ${url}${token}`);
       await Promise.resolve();
     },
     maxPasswordLength: 128,
@@ -59,14 +59,18 @@ export const auth = betterAuth({
     },
   },
   onAPIError: {
-    errorURL: authEndpoints.error,
-    throw: false, // I'll handle it so it comes typed
-    onError: async (error, _authCtx) => {
-      const err = AppError.fromUnknown(error)                                       
-      logger.error(
-        `Error in auth API route: ${err.message}`,
-      );
-      await Promise.resolve();
+    errorURL: authEndpoints.error /* 
+    When errorURL is provided, the error will be added to the URL as a query parameter
+    and the user will be redirected to the errorURL.
+    TODO: creaet the login in the app so it tells the user what's up
+    */,
+    throw: false, // I'll handle it
+    onError: (error, _authCtx) => {
+      logger.error(`Error in auth API route: `, error);
+      monitor.next.captureException({
+        error,
+      });
+    },
   },
   socialProviders: {
     google: {
