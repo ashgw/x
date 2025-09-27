@@ -48,6 +48,20 @@ export const auth = betterAuth({
       // TODO: send email here & remove logger
     },
   },
+  onAPIError: {
+    errorURL: authEndpoints.error /* 
+    When errorURL is provided, the error will be added to the URL as a query parameter
+    and the user will be redirected to the errorURL.
+    TODO: creaet the login in the app so it tells the user what's up
+    */,
+    throw: false, // I'll handle it
+    onError: (error, _authCtx) => {
+      logger.error(`Error in auth API route: `, error);
+      monitor.next.captureException({
+        error,
+      });
+    },
+  },
   advanced: {
     crossSubDomainCookies: {
       enabled: false, // subdomain takeover attacks can wait
@@ -60,6 +74,22 @@ export const auth = betterAuth({
       // but better-auth handles CSRF with only the origin header, which is cool too.
       // partitioned: env.NEXT_PUBLIC_CURRENT_ENV === "production", // not needed
       maxAge: sessionExpiry,
+    },
+  },
+  logger: {
+    level: "info",
+    log(level, message) {
+      return level === "info"
+        ? logger.info(message)
+        : level === "warn"
+          ? logger.warn(message)
+          : logger.error(message);
+    },
+  },
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
   emailAndPassword: {
@@ -84,36 +114,5 @@ export const auth = betterAuth({
     },
     maxPasswordLength: 128,
     minPasswordLength: 8,
-  },
-  logger: {
-    level: "info",
-    log(level, message) {
-      return level === "info"
-        ? logger.info(message)
-        : level === "warn"
-          ? logger.warn(message)
-          : logger.error(message);
-    },
-  },
-  onAPIError: {
-    errorURL: authEndpoints.error /* 
-    When errorURL is provided, the error will be added to the URL as a query parameter
-    and the user will be redirected to the errorURL.
-    TODO: creaet the login in the app so it tells the user what's up
-    */,
-    throw: false, // I'll handle it
-    onError: (error, _authCtx) => {
-      logger.error(`Error in auth API route: `, error);
-      monitor.next.captureException({
-        error,
-      });
-    },
-  },
-
-  socialProviders: {
-    google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    },
   },
 });
