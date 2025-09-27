@@ -66,6 +66,8 @@ const serverVars = {
   RESEND_API_KEY: z.string().min(20).startsWith("re_").max(255),
   PERSONAL_EMAIL: z.string().email().max(255),
   QSTASH_TOKEN: z.string().endsWith("=").min(20).max(255),
+  GOOGLE_CLIENT_ID: z.string().min(20).max(255),
+  GOOGLE_CLIENT_SECRET: z.string().min(20).max(255),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -95,6 +97,8 @@ export const env = createEnv({
     SENTRY_ORG: process.env.SENTRY_ORG,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
       process.env.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,
