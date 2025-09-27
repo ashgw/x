@@ -13,6 +13,8 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
+  secret: env.AUTH_ENCRYPTON_KEY,
+  appName: siteName,
   basePath: authEndpoints.basePath,
   baseURL: env.NEXT_PUBLIC_BLOG_URL,
   session: {
@@ -39,8 +41,6 @@ export const auth = betterAuth({
   verification: {
     modelName: "verification",
   },
-  secret: env.AUTH_ENCRYPTON_KEY,
-  appName: siteName,
   emailVerification: {
     autoSignInAfterVerification: true,
     expiresIn: 30 * 60, // 30 minutes,
