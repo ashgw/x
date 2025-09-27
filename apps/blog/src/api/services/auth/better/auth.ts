@@ -1,8 +1,9 @@
 import { db } from "@ashgw/db";
-import { betterAuth } from "better-auth";
+import { betterAuth, logger } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
+import argon2 from "argon2";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -21,7 +22,21 @@ export const auth = betterAuth({
   },
   secret: env.AUTH_ENCRYPTON_KEY,
   appName: siteName,
-
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: true,
+    disableSignUp: true,
+    onPasswordReset: async ({ user }) => {
+      logger.info(`Password reset for user: ${user.id}`);
+      await Promise.resolve();
+      // TODO: send email here
+    },
+    password: {
+      hash: argon2.hash,
+      verify: ({ hash, password }) => argon2.verify(hash, password),
+    },
+    modelName: "user",
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
