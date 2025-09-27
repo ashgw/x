@@ -4,7 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
 import argon2 from "argon2";
-import { authEndpoints } from "./endpoints";
+import { authEndpoints } from "./consts";
 import { monitor } from "@ashgw/monitor";
 
 const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
