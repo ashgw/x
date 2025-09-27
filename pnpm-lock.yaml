@@ -173,6 +173,9 @@ importers:
       '@ashgw/analytics':
         specifier: workspace:*
         version: link:../../packages/analytics
+      '@ashgw/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@ashgw/components':
         specifier: workspace:*
         version: link:../../packages/components
