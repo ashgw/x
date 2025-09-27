@@ -1,1 +1,2 @@
-export const auth = "";
+export { nextJsHandler } from "./next-handler";
+export { authClient } from "./client";
