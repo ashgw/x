@@ -6,7 +6,7 @@ import type {
   BlogPosting,
   BreadcrumbList,
 } from "schema-dts";
-import { site_name, creator } from "@ashgw/constants";
+import { siteName, creator } from "@ashgw/constants";
 import Script from "next/script";
 
 interface JsonLdProps {
@@ -26,7 +26,7 @@ export const organizationJsonLd = (
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${siteUrl}/#organization`,
-  name: site_name,
+  name: siteName,
   url: siteUrl,
 });
 
@@ -35,7 +35,7 @@ export const websiteJsonLd = (siteUrl: string): WithContext<WebSite> => ({
   "@type": "WebSite",
   "@id": `${siteUrl}/#website`,
   url: siteUrl,
-  name: site_name,
+  name: siteName,
   publisher: { "@id": `${siteUrl}/#organization` },
 });
 
