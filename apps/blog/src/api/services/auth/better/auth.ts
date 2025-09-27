@@ -7,6 +7,8 @@ import argon2 from "argon2";
 import { authEndpoints } from "./endpoints";
 import { monitor } from "@ashgw/monitor";
 
+const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
+
 export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "postgresql",
@@ -14,7 +16,7 @@ export const auth = betterAuth({
   basePath: authEndpoints.basePath,
   baseURL: env.NEXT_PUBLIC_BLOG_URL,
   session: {
-    expiresIn: 60 * 60 * 24 * 14, // 14 days (default is 7)
+    expiresIn: sessionExpiry,
   },
   account: {
     encryptOAuthTokens: true,
@@ -44,6 +46,20 @@ export const auth = betterAuth({
       logger.debug(`Email verified for user: ${user.id}`);
       await Promise.resolve();
       // TODO: send email here & remove logger
+    },
+  },
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: false, // subdomain takeover attacks can wait
+    },
+    defaultCookieAttributes: {
+      sameSite: "lax",
+      secure: env.NEXT_PUBLIC_CURRENT_ENV === "production",
+      httpOnly: true,
+      // In my old setup I had to send & read a CSRF cookie manually & also check the origin header, (read my blog why)
+      // but better-auth handles CSRF with only the origin header, which is cool too.
+      // partitioned: env.NEXT_PUBLIC_CURRENT_ENV === "production", // not needed
+      maxAge: sessionExpiry,
     },
   },
   emailAndPassword: {
