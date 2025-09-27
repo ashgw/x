@@ -100,6 +100,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  role          UserRole @default(VISITOR)
 
   @@unique([email])
 }
