@@ -20,14 +20,14 @@ export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_BLOG_URL,
   session: {
     expiresIn: sessionExpiry,
-    modelName: "session",
+    modelName: "Session",
   },
   account: {
     encryptOAuthTokens: true,
-    modelName: "account",
+    modelName: "Account",
   },
   user: {
-    modelName: "user",
+    modelName: "User",
     deleteUser: {
       afterDelete: async (user) => {
         logger.info(`User deleted: ${user.id}`);
@@ -40,7 +40,7 @@ export const auth = betterAuth({
     },
   },
   verification: {
-    modelName: "verification",
+    modelName: "Verification",
   },
   emailVerification: {
     autoSignInAfterVerification: true,
