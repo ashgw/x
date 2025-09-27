@@ -49,7 +49,6 @@ model TrashPost {
   @@index([deletedAt])
 }
 
-
 model PostViewWindow {
   id           String   @id @default(cuid())
   postSlug     String   @db.VarChar(255)
@@ -68,27 +67,6 @@ model Upload {
   entityType  ResourceType @default(POST)
   contentType String       @db.VarChar(100)
   uploadedAt  DateTime     @default(now())
-}
-
-model User {
-  id           String    @id @default(cuid())
-  email        String    @unique @db.VarChar(255)
-  name         String    @db.VarChar(30)
-  passwordHash String    @db.VarChar(1024)
-  role         UserRole  @default(VISITOR)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  sessions     Session[]
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  userId    String   @db.VarChar(255)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@index([userId])
 }
 
 
