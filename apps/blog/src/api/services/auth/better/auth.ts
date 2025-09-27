@@ -29,14 +29,15 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     expiresIn: 30 * 60, // 30 minutes,
     sendOnSignIn: true,
-    onEmailVerification: async (user) => {
-      await Promise.resolve();
-      logger.debug(`Sending email verification to user: ${user.id}`);
-      // TODO : send email here & remove logger
-    },
+    sendOnSignUp: true,
     sendVerificationEmail: async ({ token, user, url }) => {
       await Promise.resolve();
       logger.debug(`Verify email for user: ${user.id}, ${url}${token}`);
+      // TODO : send email here & remove logger
+    },
+    onEmailVerification: async (user) => {
+      await Promise.resolve();
+      logger.debug(`Sending email verification to user: ${user.id}`);
       // TODO : send email here & remove logger
     },
     afterEmailVerification: async (user) => {
