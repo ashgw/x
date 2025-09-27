@@ -8,6 +8,7 @@ import { authEndpoints } from "./endpoints";
 import { monitor } from "@ashgw/monitor";
 
 const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
+const canSignUp = false;
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -104,12 +105,13 @@ export const auth = betterAuth({
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      disableSignUp: canSignUp,
     },
   },
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    disableSignUp: true,
+    disableSignUp: canSignUp,
     onPasswordReset: async ({ user }) => {
       logger.debug(`Password reset for user: ${user.id}`);
       await Promise.resolve();
