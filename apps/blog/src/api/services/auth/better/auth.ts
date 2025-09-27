@@ -18,6 +18,7 @@ export const auth = betterAuth({
   verification: {
     modelName: "verification",
   },
+  secret: env.AUTH_ENCRYPTON_KEY,
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,

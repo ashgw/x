@@ -68,6 +68,9 @@ const serverVars = {
   QSTASH_TOKEN: z.string().endsWith("=").min(20).max(255),
   GOOGLE_CLIENT_ID: z.string().min(20).max(255),
   GOOGLE_CLIENT_SECRET: z.string().min(20).max(255),
+  AUTH_ENCRYPTON_KEY: z
+    .string()
+    .length(32, "Auth encryption key must be 32 characters long"),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -99,6 +102,7 @@ export const env = createEnv({
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    AUTH_ENCRYPTON_KEY: process.env.AUTH_ENCRYPTON_KEY,
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
     NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
       process.env.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,
