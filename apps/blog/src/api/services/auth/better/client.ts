@@ -1,4 +1,4 @@
-import { createAuthClient } from "better-auth/react";
+import { createAuthClient } from "better-auth/client";
 import { env } from "@ashgw/env";
 import { authEndpoints } from "./endpoints";
 
