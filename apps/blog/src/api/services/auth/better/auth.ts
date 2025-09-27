@@ -8,6 +8,16 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   baseURL: env.NEXT_PUBLIC_BLOG_URL,
+  session: {
+    expiresIn: 60 * 60 * 24 * 14, // 14 days (default is 7)
+  },
+  account: {
+    encryptOAuthTokens: true,
+    modelName: "account",
+  },
+  verification: {
+    modelName: "verification",
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
