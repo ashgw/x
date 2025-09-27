@@ -45,6 +45,16 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
     minPasswordLength: 8,
   },
+  logger: {
+    level: "info",
+    log(level, message) {
+      return level === "info"
+        ? logger.info(message)
+        : level === "warn"
+          ? logger.warn(message)
+          : logger.error(message);
+    },
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
