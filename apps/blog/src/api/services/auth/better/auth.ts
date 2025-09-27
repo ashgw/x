@@ -2,6 +2,7 @@ import { db } from "@ashgw/db";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { env } from "@ashgw/env";
+import { siteName } from "@ashgw/constants";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -19,6 +20,8 @@ export const auth = betterAuth({
     modelName: "verification",
   },
   secret: env.AUTH_ENCRYPTON_KEY,
+  appName: siteName,
+
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
