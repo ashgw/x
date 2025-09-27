@@ -25,6 +25,21 @@ export const auth = betterAuth({
   },
   secret: env.AUTH_ENCRYPTON_KEY,
   appName: siteName,
+  emailVerification: {
+    autoSignInAfterVerification: true,
+    expiresIn: 30 * 60, // 30 minutes,
+    sendOnSignIn: true,
+    onEmailVerification: async (user) => {
+      await Promise.resolve();
+      logger.debug(`Sending email verification to user: ${user.id}`);
+      // TODO : send email here & remove logger
+    },
+    afterEmailVerification: async (user) => {
+      logger.debug(`Email verified for user: ${user.id}`);
+      await Promise.resolve();
+      // TODO: send email here & remove logger
+    },
+  },
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
@@ -72,6 +87,7 @@ export const auth = betterAuth({
       });
     },
   },
+
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
