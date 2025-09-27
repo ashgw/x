@@ -10,7 +10,7 @@ import { monitor } from "@ashgw/monitor";
 const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
 const canSignUp = false;
 
-export const config = betterAuth({
+export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
