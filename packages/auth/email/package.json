@@ -12,6 +12,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
     "@ashgw/logger": "workspace:*",
+    "@ashgw/monitor": "workspace:*",
     "better-auth": "1.3.18"
   },
   "devDependencies": {

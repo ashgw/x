@@ -12,7 +12,6 @@ import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
 import { CookieService } from "./cookie.service";
-import { authClient } from "./better/client";
 
 export class AuthService {
   private readonly db: DatabaseClient;
@@ -49,23 +48,6 @@ export class AuthService {
 
   public async login({ email, password }: UserLoginDto): Promise<UserRo> {
     logger.info("Logging in user", { email });
-    const u = await authClient.signIn.email({
-      email,
-      password,
-    });
-    if (u.error) {
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        cause: u.error,
-        message: u.error.message,
-        meta: {
-          internal: {
-            op: "sign-in",
-            service: "auth",
-          },
-        },
-      });
-    }
 
     const user = await this.db.user.findUnique({
       where: { email },
