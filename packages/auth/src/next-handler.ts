@@ -1,4 +1,4 @@
 import { toNextJsHandler } from "better-auth/next-js";
-import { config } from "./config";
+import { auth } from "./auth";
 
-export const nextJsHandler = toNextJsHandler(config);
+export const nextJsHandler = toNextJsHandler(auth);
