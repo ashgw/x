@@ -17,10 +17,24 @@ export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_BLOG_URL,
   session: {
     expiresIn: sessionExpiry,
+    modelName: "session",
   },
   account: {
     encryptOAuthTokens: true,
     modelName: "account",
+  },
+  user: {
+    modelName: "user",
+    deleteUser: {
+      afterDelete: async (user) => {
+        logger.info(`User deleted: ${user.id}`);
+        await Promise.resolve();
+        // TODO: send email here & remove logger
+      },
+    },
+    changeEmail: {
+      enabled: false,
+    },
   },
   verification: {
     modelName: "verification",
