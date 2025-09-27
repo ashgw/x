@@ -24,8 +24,8 @@
     "test:unit-integration": "vitest run --config=vitest.config.ts"
   },
   "dependencies": {
-    "@ashgw/auth": "workspace:*",
     "@ashgw/analytics": "workspace:*",
+    "@ashgw/auth": "workspace:*",
     "@ashgw/components": "workspace:*",
     "@ashgw/constants": "workspace:*",
     "@ashgw/cross-runtime": "workspace:*",
