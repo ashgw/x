@@ -5,7 +5,7 @@ export class SessionMapper {
   public static toRo({ session }: { session: SessionAuthQuery }): SessionRo {
     return {
       createdAt: session.createdAt,
-      expiresAt: session.expiresAt,
+      isExpired: new Date(session.expiresAt) < new Date(),
       updatedAt: session.updatedAt,
       token: session.token,
       userAgent: session.userAgent ? session.userAgent : undefined,
