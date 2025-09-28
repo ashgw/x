@@ -7,13 +7,11 @@ import { logger } from "@ashgw/logger";
 import type { UserRo } from "~/api/models";
 import { trpcClientSide } from "~/trpc/callers/client";
 
-interface UseAuthReturn {
+export function useAuth(): {
   user: Optional<UserRo>;
   isLoading: boolean;
   logout: () => Promise<void>;
-}
-
-export function useAuth(): UseAuthReturn {
+} {
   const router = useRouter();
   const { data: user, isLoading } = trpcClientSide.user.me.useQuery();
   const utils = trpcClientSide.useUtils();
