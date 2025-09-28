@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "@ashgw/design/motion";
-import { Loader2, Shield, XCircle } from "@ashgw/design/icons";
+import { Shield, XCircle } from "@ashgw/design/icons";
 import { toast } from "@ashgw/design/ui";
 import {
   Badge,
@@ -13,6 +13,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  Loading,
   TableRow,
 } from "@ashgw/design/ui";
 
@@ -99,7 +100,7 @@ export function SessionsList() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <Loading />
       </div>
     );
   }
@@ -184,7 +185,7 @@ export function SessionsList() {
                         className="opacity-70 transition-opacity group-hover:opacity-100"
                       >
                         {isLoading ? (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loading />
                         ) : (
                           <XCircle className="mr-2 h-4 w-4" />
                         )}
@@ -211,7 +212,7 @@ export function SessionsList() {
           className="relative"
         >
           {terminatingAllSessions ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loading />
           ) : (
             <XCircle className="mr-2 h-4 w-4" />
           )}
