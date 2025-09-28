@@ -1,16 +1,13 @@
-import argon2 from "argon2";
-import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
-import { env } from "@ashgw/env";
 import { AppError } from "@ashgw/error";
-import { logger } from "@ashgw/logger";
 import { auth } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
-import { UserQueryHelper } from "~/api/query-helpers";
 import { headers } from "next/headers";
+import { logger } from "@ashgw/logger";
+import { error } from "console";
 
 export class BetterAuthService {
   private readonly db: DatabaseClient;
@@ -72,6 +69,7 @@ export class BetterAuthService {
   public async me(): Promise<Optional<UserRo>> {
     try {
       return await this._getSession();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return null;
     }
@@ -86,6 +84,6 @@ export class BetterAuthService {
         code: "UNAUTHORIZED",
       });
     }
-    UserMapper.toUserRo({ user: response.user });
+    return UserMapper.toUserRo({ user: response.user });
   }
 }
