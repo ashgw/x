@@ -4,12 +4,9 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
 import argon2 from "argon2";
-import { authEndpoints } from "./consts";
+import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
-
-const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
-const canSignUp = true;
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -116,13 +113,13 @@ export const auth = betterAuth({
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-      disableSignUp: !canSignUp,
+      disableSignUp,
     },
   },
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    disableSignUp: !canSignUp,
+    disableSignUp,
     onPasswordReset: async ({ user }) => {
       logger.debug(`Password reset for user: ${user.id}`);
       await Promise.resolve();
