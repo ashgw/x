@@ -4,8 +4,6 @@ import { env } from "@ashgw/env";
 import { PrismaClient as FullPrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
-
 export type DatabaseClient = Omit<
   FullPrismaClient,
   | "$connect"
@@ -35,6 +33,8 @@ const transactionOptions = {
   timeout: 30_000,
   isolationLevel: "ReadCommitted",
 } as const;
+
+const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
 
 // engineType = "client" is released in sep/'25
 const db =
