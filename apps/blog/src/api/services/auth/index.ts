@@ -9,8 +9,6 @@ import { authClient } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
-import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
-import { error } from "console";
 
 export class AuthService {
   private readonly db: DatabaseClient;
@@ -35,7 +33,6 @@ export class AuthService {
 
   public async login({ email, password }: UserLoginDto): Promise<UserRo> {
     logger.info("Logging in user", { email });
-
     const user = await authClient.signIn.email({
       email,
       password,

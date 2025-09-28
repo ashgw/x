@@ -7,9 +7,10 @@ import { logger } from "@ashgw/logger";
 import NotificationTemplate from "./templates/Notify";
 import { env } from "@ashgw/env";
 import type { SendParams, SendResult, SendNotificationParams } from "./types";
+import { notifyEmail } from "@ashgw/constants";
 
 class EmailService {
-  private _notifyEmail = "no-reply@notify.ashgw.me";
+  private _notifyEmail = notifyEmail;
   private _cached?: Resend;
   public get notifyEmail(): string {
     return this._notifyEmail;
