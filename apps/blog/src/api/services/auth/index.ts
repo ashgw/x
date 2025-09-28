@@ -1,15 +1,14 @@
-import type { DatabaseClient } from "@ashgw/db";
 import { AppError } from "@ashgw/error";
 import { auth } from "@ashgw/auth";
 import type { SessionRo, UserLoginDto, UserRo } from "~/api/models";
 import { SessionMapper, UserMapper } from "~/api/mappers";
-import { headers } from "next/headers";
 import type { Optional } from "ts-roids";
+import type { NextRequest } from "next/server";
 
 export class AuthService {
-  private readonly db: DatabaseClient;
-  constructor({ db }: { db: DatabaseClient }) {
-    this.db = db;
+  private readonly req: NextRequest;
+  constructor({ req }: { req: NextRequest }) {
+    this.req = req;
   }
   public async login({ email, password }: UserLoginDto): Promise<void> {
     await auth.signInEmail({
@@ -17,25 +16,25 @@ export class AuthService {
         email,
         password,
       },
-      headers: headers(),
+      headers: this.req.headers,
     });
   }
 
   public async logout(): Promise<void> {
     await auth.signOut({
-      headers: headers(), // TODO: make sure headers work with tRPC
+      headers: this.req.headers,
     });
   }
 
   public async terminateAllActiveSessions(): Promise<void> {
     await auth.revokeSessions({
-      headers: headers(),
+      headers: this.req.headers,
     });
   }
 
   public async listSessions(): Promise<SessionRo[]> {
     const sessions = await auth.listSessions({
-      headers: headers(),
+      headers: this.req.headers,
     });
     return sessions.map((s) => SessionMapper.toRo({ session: s }));
   }
@@ -49,7 +48,7 @@ export class AuthService {
       body: {
         token,
       },
-      headers: headers(),
+      headers: this.req.headers,
     });
   }
 
@@ -66,7 +65,7 @@ export class AuthService {
         newPassword,
         revokeOtherSessions: true,
       },
-      headers: headers(),
+      headers: this.req.headers,
     });
   }
 
@@ -81,7 +80,7 @@ export class AuthService {
 
   private async _getUserWithSession(): Promise<UserRo> {
     const response = await auth.getSession({
-      headers: headers(),
+      headers: this.req.headers,
     });
     if (!response?.user) {
       throw new AppError({
