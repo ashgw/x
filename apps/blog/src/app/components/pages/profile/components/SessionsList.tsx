@@ -161,8 +161,7 @@ export function SessionsList() {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    className="group"
-                    whileHover={{ backgroundColor: "rgba(255,255,255,0.03)" }}
+                    className="group hover:bg-background/60"
                   >
                     <TableCell className="font-medium">
                       {formatDate(session.createdAt)}
