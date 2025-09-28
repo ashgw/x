@@ -23,9 +23,7 @@ const tableVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
@@ -34,20 +32,12 @@ const rowVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
   exit: {
     opacity: 0,
     x: -20,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
 };
 
@@ -57,28 +47,31 @@ export function SessionsList() {
   );
   const [terminatingAllSessions, setTerminatingAllSessions] = useState(false);
 
+  // fetch sessions
+  const {
+    data: sessions = [],
+    isLoading,
+    refetch,
+  } = trpcClientSide.user.listAllSessions.useQuery();
+
+  const utils = trpcClientSide.useUtils();
+
   const setSessionLoading = (sessionId: string, isLoading: boolean) => {
     setLoadingSessionIds((prev) => {
       const next = new Set(prev);
-      if (isLoading) {
-        next.add(sessionId);
-      } else {
-        next.delete(sessionId);
-      }
+      if (isLoading) next.add(sessionId);
+      else next.delete(sessionId);
       return next;
     });
   };
 
   const terminateAllSessionsMutation =
     trpcClientSide.user.terminateAllActiveSessions.useMutation({
-      onMutate: () => {
-        setTerminatingAllSessions(true);
-      },
-      onSuccess: () => {
-        // Keep loading for a moment for better UX
-        setTimeout(() => {
+      onMutate: () => setTerminatingAllSessions(true),
+      onSuccess: async () => {
+        setTimeout(async () => {
           setTerminatingAllSessions(false);
-          setSessions([]);
+          await utils.user.listAllSessions.invalidate();
           toast.success("All sessions terminated successfully");
         }, 500);
       },
@@ -90,22 +83,27 @@ export function SessionsList() {
 
   const terminateSpecificSessionMutation =
     trpcClientSide.user.terminateSpecificSession.useMutation({
-      onMutate: ({ sessionId }) => {
-        setSessionLoading(sessionId, true);
-      },
-      onSuccess: (_, { sessionId }) => {
-        // Keep loading for a moment for better UX
-        setTimeout(() => {
-          setSessionLoading(sessionId, false);
-          setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+      onMutate: ({ token }) => setSessionLoading(token, true),
+      onSuccess: (_, { token }) => {
+        setTimeout(async () => {
+          setSessionLoading(token, false);
+          await utils.user.listAllSessions.invalidate();
           toast.success("Session terminated successfully");
         }, 500);
       },
-      onError: (error, { sessionId }) => {
-        setSessionLoading(sessionId, false);
+      onError: (error, { token }) => {
+        setSessionLoading(token, false);
         toast.error(error.message);
       },
     });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   if (!sessions.length) {
     return (
@@ -120,15 +118,14 @@ export function SessionsList() {
     );
   }
 
-  const formatDate = (date: Date | string) => {
-    return new Date(date).toLocaleDateString("en-US", {
+  const formatDate = (date: Date | string) =>
+    new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
 
   return (
     <motion.div
@@ -150,13 +147,14 @@ export function SessionsList() {
           <TableBody>
             <AnimatePresence mode="popLayout">
               {sessions.map((session) => {
-                const isExpired = new Date(session.expiresAt) < new Date();
+                const isExpired = new Date(session.updatedAt) < new Date();
                 const isLoading =
-                  loadingSessionIds.has(session.id) || terminatingAllSessions;
+                  loadingSessionIds.has(session.token) ||
+                  terminatingAllSessions;
 
                 return (
                   <motion.tr
-                    key={session.id}
+                    key={session.token}
                     variants={rowVariants}
                     initial="hidden"
                     animate="visible"
@@ -166,7 +164,7 @@ export function SessionsList() {
                     <TableCell className="font-medium">
                       {formatDate(session.createdAt)}
                     </TableCell>
-                    <TableCell>{formatDate(session.expiresAt)}</TableCell>
+                    <TableCell>{formatDate(session.updatedAt)}</TableCell>
                     <TableCell>
                       <Badge
                         variant={isExpired ? "destructive" : "success"}
@@ -180,7 +178,7 @@ export function SessionsList() {
                         variant="destructive"
                         onClick={() =>
                           terminateSpecificSessionMutation.mutate({
-                            token: ...
+                            token: session.token,
                           })
                         }
                         disabled={isLoading}
