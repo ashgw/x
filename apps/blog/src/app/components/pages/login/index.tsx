@@ -160,14 +160,6 @@ export function LoginPage() {
                 transition={{ delay: 0.4 }}
               >
                 <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => router.push("/sign-up")}
-                  disabled={loginMutation.isPending}
-                >
-                  Sign Up
-                </Button>
-                <Button
                   variant="default"
                   type="submit"
                   disabled={loginMutation.isPending}
