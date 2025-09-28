@@ -31,7 +31,7 @@ export function SoundToggle() {
           >
             <path
               d="M3 11V13M6 8V16M9 10V14M12 7V17M15 4V20M18 9V15M21 11V13"
-              stroke="white"
+              stroke="currentColor"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -41,7 +41,10 @@ export function SoundToggle() {
 
           {!isPlaying && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="h-[1.5px] w-full rotate-45 transform rounded-full bg-white/90" />
+              <div
+                className="h-[1.5px] w-full rotate-45 transform rounded-full"
+                style={{ backgroundColor: "currentColor", opacity: 0.9 }}
+              />
             </div>
           )}
         </div>
