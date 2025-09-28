@@ -6,8 +6,6 @@ import { auth } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { headers } from "next/headers";
-import { logger } from "@ashgw/logger";
-import { error } from "console";
 
 export class BetterAuthService {
   private readonly db: DatabaseClient;
