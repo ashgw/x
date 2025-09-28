@@ -12,12 +12,16 @@ export class UserMapper {
       createdAt: user.createdAt,
       emailVerified: user.emailVerified,
       updatedAt: user.updatedAt,
-      image: user.image,
-      role: this._mapRole({ role: user.role }),
+      image: user.image ? user.image : undefined,
+      role: this._mapRoleFromAuthQuery({ role: user.role }),
     };
   }
 
-  private static _mapRole({ role }: { role: string }): UserRoleEnum {
+  private static _mapRoleFromAuthQuery({
+    role,
+  }: {
+    role: string;
+  }): UserRoleEnum {
     const normalized = role.toLowerCase().trim();
 
     switch (normalized) {
