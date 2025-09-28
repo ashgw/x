@@ -155,7 +155,7 @@ export function SessionsList() {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    className="group hover:bg-background/60"
+                    className="group hover:bg-accent/55"
                   >
                     <TableCell className="font-medium">
                       {formatDate(session.createdAt)}
