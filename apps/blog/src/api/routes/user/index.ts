@@ -4,6 +4,7 @@ import type { TrpcContext } from "~/trpc/context";
 import { authenticatedProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
+  sessionSchemaRo,
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
   userSchemaRo,
@@ -19,7 +20,14 @@ const authService = (ctx: TrpcContext) =>
 export const userRouter = router({
   me: publicProcedure()
     .input(z.void())
-    .output(userSchemaRo.nullable())
+    .output(
+      z
+        .object({
+          user: userSchemaRo,
+          session: sessionSchemaRo,
+        })
+        .nullable(),
+    )
     .query(async ({ ctx }) => {
       return await authService(ctx).me();
     }),
