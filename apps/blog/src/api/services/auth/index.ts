@@ -1,20 +1,33 @@
 import argon2 from "argon2";
+import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { AppError } from "@ashgw/error";
 import { logger } from "@ashgw/logger";
-import { authClient } from "@ashgw/auth";
+import { auth } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 
 export class AuthService {
   private readonly db: DatabaseClient;
+  private readonly req: NextRequest;
+  private res: NextResponse;
 
-  constructor({ db }: { db: DatabaseClient }) {
+  constructor({
+    db,
+    req,
+    res,
+  }: {
+    db: DatabaseClient;
+    req: NextRequest;
+    res: NextResponse;
+  }) {
     this.db = db;
+    this.req = req;
+    this.res = res;
   }
 
   // safe me, doesn't error when the user is not authenticated
@@ -30,53 +43,157 @@ export class AuthService {
       throw error;
     }
   }
-  // TODO: add google support & lets see how it looks like
-  public async login({ email, password }: UserLoginDto): Promise<void> {
-    logger.info("Logging in user", { email });
-    const { data } = await authClient.signIn.email({
+
+  public async login({ email, password }: UserLoginDto): Promise<UserRo> {
+    logger.info("Logging in user");
+    const { headers, response } = await auth.signInEmail({
+      body: {
+        email,
+        password,
+        rememberMe: true,
+      },
+      method: "POST",
+      asResponse: true,
+      returnHeaders: true, // TODO: need to use teh headers here
+      headers: this.req.headers,
+    });
+    const u = await authClient.signIn.email({
       email,
       password,
-      rememberMe: true,
+    });
+    if (u.error) {
+      throw new AppError({
+        code: "UNAUTHORIZED",
+        cause: u.error,
+        message: u.error.message,
+        meta: {
+          internal: {
+            op: "sign-in",
+            service: "auth",
+          },
+        },
+      });
+    }
+
+    const user = await this.db.user.findUnique({
+      where: { email },
+      include: {
+        ...UserQueryHelper.withSessionsInclude(),
+      },
     });
 
-    if (!data) {
+    if (!user) {
+      // fake work to reduce user enumeration timing
+      try {
+        await argon2.hash("dummy_password", {
+          type: argon2.argon2id,
+          memoryCost: 64 * 1024,
+          timeCost: 2,
+          parallelism: 1,
+        });
+      } catch {
+        // ignore
+      }
+      logger.warn("User not found for:", { email });
+      throw new AppError({
+        code: "NOT_FOUND",
+        message: "User not found",
+      });
+    }
+
+    logger.info("User found for:", { userId: user.id });
+    logger.info("Checking user password");
+
+    const ok = await this._verifyPassword({
+      plainPassword: password,
+      storedHash: user.passwordHash,
+    });
+
+    if (!ok) {
+      logger.warn("Invalid password for:", { email });
       throw new AppError({
         code: "UNAUTHORIZED",
         message: "Invalid credentials",
       });
     }
+
+    await this._createSession({ userId: user.id });
+    return UserMapper.toUserRo({ user });
   }
 
-  public async logout(): Promise<void> {
-    const { data } = await authClient.signOut();
-    if (data?.success) {
-      logger.info("User logged out");
-    }
-    logger.error("Could not log the user out");
-    throw new AppError({
-      code: "INTERNAL",
+  public async logout() {
+    logger.info("Logging out user");
+    const sessionId = CookieService.session.get({
+      req: this.req,
     });
+    if (!sessionId) {
+      logger.info("No session cookie found, user is not logged in");
+      CookieService.csrf.clear({
+        res: this.res,
+      });
+      return;
+    }
+    logger.info("Session cookie found, logging out user", { sessionId });
+    logger.info("Clearing sessions..", { sessionId });
+    await this.db.session.delete({
+      where: { id: sessionId },
+    });
+    CookieService.csrf.clear({
+      res: this.res,
+    });
+    CookieService.session.clear({
+      res: this.res,
+    });
+    logger.info("User logged out", { sessionId });
   }
 
   public async changePassword({
+    userId,
     currentPassword,
     newPassword,
   }: {
+    userId: string;
     currentPassword: string;
     newPassword: string;
   }): Promise<void> {
-    logger.info("Changing user password");
-    const { data } = await authClient.changePassword({
-      currentPassword,
-      newPassword,
-      revokeOtherSessions: true,
+    logger.info("Changing user password", { userId });
+    const user = await this.db.user.findUnique({
+      where: { id: userId },
+      select: { passwordHash: true },
     });
-    if (!data) {
+
+    if (!user) {
+      logger.warn("User not found when changing password", { userId });
       throw new AppError({
-        code: "INTERNAL",
+        code: "NOT_FOUND",
+        message: "User not found",
       });
     }
-    logger.info("Password changed successfully");
+
+    logger.info("Validating user provided password", { userId });
+    const ok = await this._verifyPassword({
+      plainPassword: currentPassword,
+      storedHash: user.passwordHash,
+    });
+
+    if (!ok) {
+      logger.warn("Provided password does not match the user password", {
+        userId,
+      });
+      throw new AppError({
+        code: "UNAUTHORIZED",
+        message: "Incorrect password",
+      });
+    }
+
+    const newPasswordHash = await this._hashPassword(newPassword);
+
+    await this.db.user.update({
+      where: { id: userId },
+      data: { passwordHash: newPasswordHash },
+    });
+    await this.terminateAllActiveSessions({ userId });
+    logger.info("Password changed successfully", { userId });
   }
 
   // aside from the current one the user is on
