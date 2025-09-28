@@ -1,437 +1,87 @@
-import argon2 from "argon2";
-import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
-import { env } from "@ashgw/env";
 import { AppError } from "@ashgw/error";
-import { logger } from "@ashgw/logger";
 import { auth } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
-import { UserQueryHelper } from "~/api/query-helpers";
 import { headers } from "next/headers";
+
 export class AuthService {
   private readonly db: DatabaseClient;
-  private readonly req: NextRequest;
-  private res: NextResponse;
-
-  constructor({
-    db,
-    req,
-    res,
-  }: {
-    db: DatabaseClient;
-    req: NextRequest;
-    res: NextResponse;
-  }) {
+  constructor({ db }: { db: DatabaseClient }) {
     this.db = db;
-    this.req = req;
-    this.res = res;
   }
-
-  // safe me, doesn't error when the user is not authenticated
-  public async me(): Promise<Optional<UserRo>> {
-    try {
-      return await this._getUserWithSession();
-    } catch (error) {
-      if (error instanceof AppError) {
-        if (error.code === "UNAUTHORIZED") {
-          return null;
-        }
-      }
-      throw error;
-    }
-  }
-
-  public async login({ email, password }: UserLoginDto): Promise<UserRo> {
-    logger.info("Logging in user");
-    const { headers, response } = await auth.signInEmail({
+  public async login({ email, password }: UserLoginDto): Promise<void> {
+    await auth.signInEmail({
       body: {
         email,
         password,
-        rememberMe: true,
       },
-      method: "POST",
-      asResponse: true,
-      returnHeaders: true, // TODO: need to use teh headers here
-      headers: this.req.headers,
+      headers: headers(),
     });
-    const u = await authClient.signIn.email({
-      email,
-      password,
-    });
-    if (u.error) {
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        cause: u.error,
-        message: u.error.message,
-        meta: {
-          internal: {
-            op: "sign-in",
-            service: "auth",
-          },
-        },
-      });
-    }
-
-    const user = await this.db.user.findUnique({
-      where: { email },
-      include: {
-        ...UserQueryHelper.withSessionsInclude(),
-      },
-    });
-
-    if (!user) {
-      // fake work to reduce user enumeration timing
-      try {
-        await argon2.hash("dummy_password", {
-          type: argon2.argon2id,
-          memoryCost: 64 * 1024,
-          timeCost: 2,
-          parallelism: 1,
-        });
-      } catch {
-        // ignore
-      }
-      logger.warn("User not found for:", { email });
-      throw new AppError({
-        code: "NOT_FOUND",
-        message: "User not found",
-      });
-    }
-
-    logger.info("User found for:", { userId: user.id });
-    logger.info("Checking user password");
-
-    const ok = await this._verifyPassword({
-      plainPassword: password,
-      storedHash: user.passwordHash,
-    });
-
-    if (!ok) {
-      logger.warn("Invalid password for:", { email });
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: "Invalid credentials",
-      });
-    }
-
-    await this._createSession({ userId: user.id });
-    return UserMapper.toUserRo({ user });
   }
 
-  public async logout() {
-    logger.info("Logging out user");
-    const sessionId = CookieService.session.get({
-      req: this.req,
+  public async logout(): Promise<void> {
+    await auth.signOut({
+      headers: headers(), // TODO: make sure headers work with tRPC
     });
-    if (!sessionId) {
-      logger.info("No session cookie found, user is not logged in");
-      CookieService.csrf.clear({
-        res: this.res,
-      });
-      return;
-    }
-    logger.info("Session cookie found, logging out user", { sessionId });
-    logger.info("Clearing sessions..", { sessionId });
-    await this.db.session.delete({
-      where: { id: sessionId },
-    });
-    CookieService.csrf.clear({
-      res: this.res,
-    });
-    CookieService.session.clear({
-      res: this.res,
-    });
-    logger.info("User logged out", { sessionId });
   }
 
-  public async changePassword({
-    userId,
-    currentPassword,
-    newPassword,
-  }: {
-    userId: string;
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<void> {
-    logger.info("Changing user password", { userId });
-    const user = await this.db.user.findUnique({
-      where: { id: userId },
-      select: { passwordHash: true },
-    });
-
-    if (!user) {
-      logger.warn("User not found when changing password", { userId });
-      throw new AppError({
-        code: "NOT_FOUND",
-        message: "User not found",
-      });
-    }
-
-    logger.info("Validating user provided password", { userId });
-    const ok = await this._verifyPassword({
-      plainPassword: currentPassword,
-      storedHash: user.passwordHash,
-    });
-
-    if (!ok) {
-      logger.warn("Provided password does not match the user password", {
-        userId,
-      });
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: "Incorrect password",
-      });
-    }
-
-    const newPasswordHash = await this._hashPassword(newPassword);
-
-    await this.db.user.update({
-      where: { id: userId },
-      data: { passwordHash: newPasswordHash },
-    });
-    await this.terminateAllActiveSessions({ userId });
-    logger.info("Password changed successfully", { userId });
-  }
-
-  // aside from the current one the user is on
-  public async terminateAllActiveSessions({
-    userId,
-  }: {
-    userId: string;
-  }): Promise<void> {
-    const currentSessionId = CookieService.session.get({
-      req: this.req,
-    });
-
-    if (!currentSessionId) {
-      logger.warn("No session cookie found, user is not logged in");
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: "No session cookie found",
-      });
-    }
-
-    logger.info("Attempting to terminate sessions except current one", {
-      userId,
-      currentSessionId,
-    });
-    const user = await this.db.user.findUnique({
-      where: { id: userId },
-      select: { id: true },
-    });
-    if (!user) {
-      logger.warn("User not found when terminating sessions", { userId });
-      throw new AppError({
-        code: "NOT_FOUND",
-        message: "User not found",
-      });
-    }
-    logger.warn("Deleting all active user sessions", { userId });
-    const result = await this.db.session.deleteMany({
-      where: {
-        userId,
-        id: { not: currentSessionId },
-      },
-    });
-
-    logger.info(`Terminated ${result.count} session(s) successfully`, {
-      userId,
+  public async terminateAllActiveSessions(): Promise<void> {
+    await auth.revokeSessions({
+      headers: headers(),
     });
   }
 
   public async terminateSpecificSession({
-    sessionId,
-    userId,
+    token,
   }: {
-    sessionId: string;
-    userId: string;
+    token: string;
   }): Promise<void> {
-    logger.info("Terminating specific user session", { userId, sessionId });
-    const session = await this.db.session.findUnique({
-      where: { id: sessionId },
-      select: { userId: true },
-    });
-
-    if (!session) {
-      logger.warn(
-        "Could not find an associated session with the provided session for the user",
-        { userId, sessionId },
-      );
-      throw new AppError({
-        code: "NOT_FOUND",
-        message: "Session not found",
-      });
-    }
-
-    if (session.userId !== userId) {
-      logger.warn(
-        "TEMPERING: provided user ID does not match the actual session associated user ID",
-        {
-          sessionId,
-          requestingUserId: userId,
-          sessionOwnerId: session.userId,
-        },
-      );
-
-      throw new AppError({
-        code: "FORBIDDEN",
-        message: "You are not allowed to terminate this session",
-      });
-    }
-    logger.info("Terminating user session", { sessionId });
-    await this.db.session.delete({
-      where: { id: sessionId },
-    });
-  }
-
-  private _validateCsrfToken({
-    requestCsrfHeaderValue,
-  }: {
-    requestCsrfHeaderValue: string;
-  }): boolean {
-    // origin checks only enforced in prod
-    if (
-      env.NEXT_PUBLIC_CURRENT_ENV === "production" &&
-      this.req.headers.get("host") === new URL(env.NEXT_PUBLIC_BLOG_URL).host
-    ) {
-      const origin =
-        this.req.headers.get("origin") ?? this.req.headers.get("referer");
-      if (!origin) {
-        throw new AppError({
-          code: "FORBIDDEN",
-          message: "Missing Origin/Referer",
-        });
-      }
-
-      const expectedOrigin = env.NEXT_PUBLIC_BLOG_URL;
-      if (!origin.startsWith(expectedOrigin)) {
-        throw new AppError({
-          code: "FORBIDDEN",
-          message: "CSRF origin mismatch",
-        });
-      }
-    }
-
-    // if the token in the cookie and the header do not match, block
-    const csrfCookieToken = CookieService.csrf.get({
-      req: this.req,
-    });
-
-    if (!csrfCookieToken || csrfCookieToken !== requestCsrfHeaderValue) {
-      logger.warn("CSRF validation failed");
-      throw new AppError({
-        code: "FORBIDDEN",
-        message: "Invalid CSRF token",
-      });
-    }
-    CookieService.csrf.set({ res: this.res }); // rotate the token now for a fresh login
-    return true;
-  }
-
-  private async _createSession(input: { userId: string }) {
-    const expiresAt = new Date(Date.now() + AUTH_COOKIES_MAX_AGE);
-    const session = await this.db.session.create({
-      data: {
-        userId: input.userId,
-        expiresAt,
+    await auth.revokeSession({
+      body: {
+        token,
       },
-      select: {
-        id: true,
-      },
-    });
-
-    CookieService.csrf.set({
-      res: this.res,
-    });
-    CookieService.session.set({
-      res: this.res,
-      value: session.id,
+      headers: headers(),
     });
   }
 
-  private async _hashPassword(password: string): Promise<string> {
-    return argon2.hash(password, {
-      type: argon2.argon2id,
-      memoryCost: 64 * 1024, // 64 MB
-      timeCost: 2,
-      parallelism: 1,
-    });
-  }
-
-  private async _verifyPassword({
-    plainPassword,
-    storedHash,
+  public async changePassword({
+    currentPassword,
+    newPassword,
   }: {
-    plainPassword: string;
-    storedHash: string;
-  }): Promise<boolean> {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void> {
+    await auth.changePassword({
+      body: {
+        currentPassword,
+        newPassword,
+        revokeOtherSessions: true,
+      },
+      headers: headers(),
+    });
+  }
+
+  public async me(): Promise<Optional<UserRo>> {
     try {
-      return await argon2.verify(storedHash, plainPassword);
+      return await this._getSession();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      logger.error("Password verification error", { error });
-      return false;
+      return null;
     }
   }
 
-  private async _getUserWithSession(): Promise<UserRo> {
-    const sessionId = CookieService.session.get({ req: this.req });
-    if (!sessionId) {
-      logger.info("No session cookie found");
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: `No session cookie found`,
-      });
-    }
-
-    const csrfCookieToken = CookieService.csrf.get({
-      req: this.req,
+  private async _getSession() {
+    const response = await auth.getSession({
+      headers: headers(),
     });
-
-    const csrfHeaderToken = this.req.headers.get(HEADER_NAMES.CSRF_TOKEN);
-
-    if (!csrfCookieToken || !csrfHeaderToken) {
-      const message = `No CSRF token found, login again`;
-      logger.info(message);
+    if (!response?.user) {
       throw new AppError({
         code: "UNAUTHORIZED",
-        message,
       });
     }
-
-    this._validateCsrfToken({
-      requestCsrfHeaderValue: csrfHeaderToken,
-    });
-
-    const session = await this.db.session.findUnique({
-      where: { id: sessionId },
-      include: {
-        user: {
-          include: {
-            ...UserQueryHelper.withSessionsInclude(),
-          },
-        },
-      },
-    });
-
-    if (!session) {
-      logger.info("Session not found", { sessionId });
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: `No session found for this user`,
-      });
-    }
-
-    if (session.expiresAt < new Date()) {
-      logger.info("Session expired", { sessionId });
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: `Session expired`,
-      });
-    }
-
-    return UserMapper.toUserRo({ user: session.user });
+    return UserMapper.toUserRo({ user: response.user });
   }
 }
