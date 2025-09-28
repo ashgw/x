@@ -79,7 +79,7 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     setStage("kWait");
   }, [analytics]);
 
-  const cookieBody = "Hmm new here? Got to let you know, I use cookies";
+  const cookieBody = "New here? Got to let you know, I use cookies";
 
   const kWaitBody =
     consent === "accepted" ? (
