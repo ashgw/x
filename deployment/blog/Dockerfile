@@ -36,8 +36,6 @@ RUN --mount=type=secret,id=DATABASE_URL \
     --mount=type=secret,id=NEXT_PUBLIC_CURRENT_ENV \
     --mount=type=secret,id=NEXT_PUBLIC_WWW_URL \
     --mount=type=secret,id=NEXT_PUBLIC_BLOG_URL \
-    --mount=type=secret,id=NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID \
-    --mount=type=secret,id=NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID \
     --mount=type=secret,id=NEXT_PUBLIC_SENTRY_DSN \
     --mount=type=secret,id=NEXT_PUBLIC_POSTHOG_KEY \
     --mount=type=secret,id=NEXT_PUBLIC_POSTHOG_HOST <<EOSH
@@ -61,8 +59,6 @@ exp SENTRY_AUTH_TOKEN
 exp NEXT_PUBLIC_CURRENT_ENV 
 exp NEXT_PUBLIC_WWW_URL 
 exp NEXT_PUBLIC_BLOG_URL 
-exp NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID 
-exp NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID 
 exp NEXT_PUBLIC_SENTRY_DSN 
 exp NEXT_PUBLIC_POSTHOG_KEY 
 exp NEXT_PUBLIC_POSTHOG_HOST 
