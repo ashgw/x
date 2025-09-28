@@ -3,8 +3,8 @@ import type { Optional } from "ts-roids";
 import type { DatabaseClient } from "@ashgw/db";
 import { AppError } from "@ashgw/error";
 import { auth } from "@ashgw/auth";
-import type { UserLoginDto, UserRo } from "~/api/models";
-import { UserMapper } from "~/api/mappers";
+import type { SessionRo, UserLoginDto, UserRo } from "~/api/models";
+import { SessionMapper, UserMapper } from "~/api/mappers";
 import { headers } from "next/headers";
 
 export class AuthService {
@@ -34,11 +34,11 @@ export class AuthService {
     });
   }
 
-  public async listSessions(): unknown {
+  public async listSessions(): Promise<SessionRo[]> {
     const sessions = await auth.listSessions({
       headers: headers(),
     });
-    sessions.map((s) => s.)
+    return sessions.map((s) => SessionMapper.toRo({ session: s }));
   }
 
   public async terminateSpecificSession({
@@ -73,14 +73,14 @@ export class AuthService {
 
   public async me(): Promise<Optional<UserRo>> {
     try {
-      return await this._getSession();
+      return await this._getUser();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return null;
     }
   }
 
-  private async _getSession() {
+  private async _getUser() {
     const response = await auth.getSession({
       headers: headers(),
     });
