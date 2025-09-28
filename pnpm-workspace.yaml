@@ -49,6 +49,8 @@ catalogs:
   prisma6:
     "@prisma/client": "6.16.2"
     prisma: "6.16.2"
+    "@prisma/adapter-pg": "6.16.2"
+    "@prisma/adapter-neon": "6.4.1"
 
   rhf:
     "@hookform/resolvers": "3.9.0"

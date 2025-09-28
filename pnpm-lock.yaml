@@ -55,6 +55,12 @@ catalogs:
       specifier: 3.23.8
       version: 3.23.8
   prisma6:
+    '@prisma/adapter-neon':
+      specifier: 6.4.1
+      version: 6.4.1
+    '@prisma/adapter-pg':
+      specifier: 6.16.2
+      version: 6.16.2
     '@prisma/client':
       specifier: 6.16.2
       version: 6.16.2
@@ -784,10 +790,10 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@prisma/adapter-neon':
-        specifier: 6.4.1
+        specifier: catalog:prisma6
         version: 6.4.1(@neondatabase/serverless@1.0.0)
       '@prisma/adapter-pg':
-        specifier: 6.16.2
+        specifier: catalog:prisma6
         version: 6.16.2
       '@prisma/client':
         specifier: catalog:prisma6
@@ -980,7 +986,7 @@ importers:
         version: link:../../tooling/typescript
       '@react-email/preview-server':
         specifier: ^4.2.11
-        version: 4.2.11(@emotion/is-prop-valid@1.2.2)(@opentelemetry/api@1.9.0)(bufferutil@4.0.9)(postcss@8.5.6)(sass@1.69.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))
+        version: 4.2.12(@emotion/is-prop-valid@1.2.2)(@opentelemetry/api@1.9.0)(bufferutil@4.0.9)(postcss@8.5.6)(sass@1.69.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))
       '@types/react':
         specifier: catalog:react18
         version: 18.3.18
@@ -4626,8 +4632,8 @@ packages:
     peerDependencies:
       react: ^18.0 || ^19.0 || ^19.0.0-rc
 
-  '@react-email/preview-server@4.2.11':
-    resolution: {integrity: sha512-0eoBZt/AXEuymYCgnPBaovipFbKT58gbREVsVpIT5HNmr9t84w7vFT+2b18w9Bi4eBy5dyoewnX5Oc4N61Jzww==}
+  '@react-email/preview-server@4.2.12':
+    resolution: {integrity: sha512-FVM3h6vJQdjk5E3P8ts8zAPeZSyefcIDWGmy/Tnwl9zVlwiGcQSjGVPmAHlw1DdJnkK79OeC/VYisMlq0w6W8Q==}
 
   '@react-email/preview@0.0.13':
     resolution: {integrity: sha512-F7j9FJ0JN/A4d7yr+aw28p4uX7VLWs7hTHtLo7WRyw4G+Lit6Zucq4UWKRxJC8lpsUdzVmG7aBJnKOT+urqs/w==}
@@ -11538,13 +11544,13 @@ snapshots:
     dependencies:
       '@aws-crypto/util': 5.2.0
       '@aws-sdk/types': 3.775.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-crypto/crc32c@5.2.0':
     dependencies:
       '@aws-crypto/util': 5.2.0
       '@aws-sdk/types': 3.775.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-crypto/sha1-browser@5.2.0':
     dependencies:
@@ -11573,13 +11579,13 @@ snapshots:
 
   '@aws-crypto/supports-web-crypto@5.2.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-crypto/util@5.2.0':
     dependencies:
       '@aws-sdk/types': 3.775.0
       '@smithy/util-utf8': 2.3.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-sdk/client-s3@3.803.0':
     dependencies:
@@ -11681,7 +11687,7 @@ snapshots:
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-retry': 4.0.3
       '@smithy/util-utf8': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -11705,7 +11711,7 @@ snapshots:
       '@aws-sdk/types': 3.775.0
       '@smithy/property-provider': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-sdk/credential-provider-http@3.799.0':
     dependencies:
@@ -11718,7 +11724,7 @@ snapshots:
       '@smithy/smithy-client': 4.2.2
       '@smithy/types': 4.2.0
       '@smithy/util-stream': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-sdk/credential-provider-ini@3.803.0':
     dependencies:
@@ -11734,7 +11740,7 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -11762,7 +11768,7 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-sdk/credential-provider-sso@3.803.0':
     dependencies:
@@ -11773,7 +11779,7 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -11784,7 +11790,7 @@ snapshots:
       '@aws-sdk/types': 3.775.0
       '@smithy/property-provider': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -11919,7 +11925,7 @@ snapshots:
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-retry': 4.0.3
       '@smithy/util-utf8': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -11948,7 +11954,7 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -11959,7 +11965,7 @@ snapshots:
 
   '@aws-sdk/util-arn-parser@3.723.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-sdk/util-endpoints@3.787.0':
     dependencies:
@@ -11970,7 +11976,7 @@ snapshots:
 
   '@aws-sdk/util-locate-window@3.723.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@aws-sdk/util-user-agent-browser@3.775.0':
     dependencies:
@@ -12123,18 +12129,18 @@ snapshots:
 
   '@babel/helper-environment-visitor@7.24.7':
     dependencies:
-      '@babel/types': 7.25.9
+      '@babel/types': 7.28.4
 
   '@babel/helper-function-name@7.24.7':
     dependencies:
-      '@babel/template': 7.25.9
-      '@babel/types': 7.25.9
+      '@babel/template': 7.27.2
+      '@babel/types': 7.28.4
 
   '@babel/helper-globals@7.28.0': {}
 
   '@babel/helper-hoist-variables@7.24.7':
     dependencies:
-      '@babel/types': 7.25.9
+      '@babel/types': 7.28.4
 
   '@babel/helper-member-expression-to-functions@7.27.1':
     dependencies:
@@ -12216,7 +12222,7 @@ snapshots:
 
   '@babel/helper-split-export-declaration@7.24.7':
     dependencies:
-      '@babel/types': 7.25.9
+      '@babel/types': 7.28.4
 
   '@babel/helper-string-parser@7.25.9': {}
 
@@ -12369,7 +12375,7 @@ snapshots:
       '@babel/helper-function-name': 7.24.7
       '@babel/helper-hoist-variables': 7.24.7
       '@babel/helper-split-export-declaration': 7.24.7
-      '@babel/parser': 7.25.9
+      '@babel/parser': 7.28.4
       '@babel/types': 7.25.9
       debug: 4.4.1
       globals: 11.12.0
@@ -13047,12 +13053,12 @@ snapshots:
 
   '@emnapi/runtime@0.45.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
     optional: true
 
   '@emnapi/runtime@1.5.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
     optional: true
 
   '@emotion/is-prop-valid@0.8.8':
@@ -15314,7 +15320,7 @@ snapshots:
       md-to-react-email: 5.0.5(react@18.3.1)
       react: 18.3.1
 
-  '@react-email/preview-server@4.2.11(@emotion/is-prop-valid@1.2.2)(@opentelemetry/api@1.9.0)(bufferutil@4.0.9)(postcss@8.5.6)(sass@1.69.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))':
+  '@react-email/preview-server@4.2.12(@emotion/is-prop-valid@1.2.2)(@opentelemetry/api@1.9.0)(bufferutil@4.0.9)(postcss@8.5.6)(sass@1.69.7)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.6.3))':
     dependencies:
       '@babel/core': 7.26.10
       '@babel/parser': 7.27.0
@@ -15520,7 +15526,7 @@ snapshots:
 
   '@sentry/bundler-plugin-core@3.2.2':
     dependencies:
-      '@babel/core': 7.26.10
+      '@babel/core': 7.28.4
       '@sentry/babel-plugin-component-annotate': 3.2.2
       '@sentry/cli': 2.42.2
       dotenv: 16.4.5
@@ -15692,21 +15698,21 @@ snapshots:
   '@smithy/abort-controller@4.0.2':
     dependencies:
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/abort-controller@4.0.5':
     dependencies:
       '@smithy/types': 4.3.2
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/chunked-blob-reader-native@4.0.0':
     dependencies:
       '@smithy/util-base64': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/chunked-blob-reader@5.0.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/config-resolver@4.1.0':
     dependencies:
@@ -15733,14 +15739,14 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/types': 4.2.0
       '@smithy/url-parser': 4.0.2
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/eventstream-codec@4.0.2':
     dependencies:
       '@aws-crypto/crc32': 5.2.0
       '@smithy/types': 4.2.0
       '@smithy/util-hex-encoding': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/eventstream-serde-browser@4.0.2':
     dependencies:
@@ -15763,7 +15769,7 @@ snapshots:
     dependencies:
       '@smithy/eventstream-codec': 4.0.2
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/fetch-http-handler@5.0.2':
     dependencies:
@@ -15800,11 +15806,11 @@ snapshots:
 
   '@smithy/is-array-buffer@2.2.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/is-array-buffer@4.0.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/md5-js@4.0.2':
     dependencies:
@@ -15869,7 +15875,7 @@ snapshots:
   '@smithy/property-provider@4.0.2':
     dependencies:
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/protocol-http@5.1.0':
     dependencies:
@@ -15879,24 +15885,24 @@ snapshots:
   '@smithy/protocol-http@5.1.3':
     dependencies:
       '@smithy/types': 4.3.2
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/querystring-builder@4.0.2':
     dependencies:
       '@smithy/types': 4.2.0
       '@smithy/util-uri-escape': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/querystring-builder@4.0.5':
     dependencies:
       '@smithy/types': 4.3.2
       '@smithy/util-uri-escape': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/querystring-parser@4.0.2':
     dependencies:
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/service-error-classification@4.0.3':
     dependencies:
@@ -15905,7 +15911,7 @@ snapshots:
   '@smithy/shared-ini-file-loader@4.0.2':
     dependencies:
       '@smithy/types': 4.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/signature-v4@5.1.0':
     dependencies:
@@ -15916,7 +15922,7 @@ snapshots:
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-uri-escape': 4.0.0
       '@smithy/util-utf8': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/smithy-client@4.2.2':
     dependencies:
@@ -15934,7 +15940,7 @@ snapshots:
 
   '@smithy/types@4.3.2':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/url-parser@4.0.2':
     dependencies:
@@ -15959,16 +15965,16 @@ snapshots:
   '@smithy/util-buffer-from@2.2.0':
     dependencies:
       '@smithy/is-array-buffer': 2.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/util-buffer-from@4.0.0':
     dependencies:
       '@smithy/is-array-buffer': 4.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/util-config-provider@4.0.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/util-defaults-mode-browser@4.0.10':
     dependencies:
@@ -15996,7 +16002,7 @@ snapshots:
 
   '@smithy/util-hex-encoding@4.0.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/util-middleware@4.0.2':
     dependencies:
@@ -16022,12 +16028,12 @@ snapshots:
 
   '@smithy/util-uri-escape@4.0.0':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/util-utf8@2.3.0':
     dependencies:
       '@smithy/util-buffer-from': 2.2.0
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@smithy/util-utf8@4.0.0':
     dependencies:
@@ -16054,7 +16060,7 @@ snapshots:
 
   '@swc/helpers@0.5.15':
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   '@swc/helpers@0.5.5':
     dependencies:
@@ -16316,7 +16322,7 @@ snapshots:
   '@types/pg@8.6.1':
     dependencies:
       '@types/node': 22.14.1
-      pg-protocol: 1.8.0
+      pg-protocol: 1.10.3
       pg-types: 2.2.0
 
   '@types/prismjs@1.26.5': {}
@@ -16495,7 +16501,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
-      semver: 7.6.3
+      semver: 7.7.2
       ts-api-utils: 1.3.0(typescript@5.6.3)
     optionalDependencies:
       typescript: 5.6.3
@@ -16770,7 +16776,7 @@ snapshots:
       sirv: 3.0.0
       tinyglobby: 0.2.10
       tinyrainbow: 1.2.0
-      vitest: 2.1.8(@edge-runtime/vm@3.1.7)(@types/node@22.14.1)(@vitest/ui@2.1.8)(sass@1.69.7)(terser@5.36.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.1.7)(@types/node@20.16.15)(@vitest/ui@2.1.8)(sass@1.69.7)(terser@5.36.0)
 
   '@vitest/utils@2.1.8':
     dependencies:
@@ -17074,7 +17080,7 @@ snapshots:
 
   ast-types@0.13.4:
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   astral-regex@2.0.0: {}
 
@@ -18913,7 +18919,7 @@ snapshots:
     dependencies:
       motion-dom: 12.23.12
       motion-utils: 12.23.6
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@emotion/is-prop-valid': 1.2.2
       react: 19.0.0
@@ -21563,7 +21569,7 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-style-singleton: 2.2.3(@types/react@18.3.18)(react@18.3.1)
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.18
 
@@ -21571,7 +21577,7 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-style-singleton: 2.2.3(@types/react@19.0.10)(react@19.0.0)
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.0.10
 
@@ -21580,7 +21586,7 @@ snapshots:
       react: 18.3.1
       react-remove-scroll-bar: 2.3.8(@types/react@18.3.18)(react@18.3.1)
       react-style-singleton: 2.2.3(@types/react@18.3.18)(react@18.3.1)
-      tslib: 2.8.0
+      tslib: 2.8.1
       use-callback-ref: 1.3.3(@types/react@18.3.18)(react@18.3.1)
       use-sidecar: 1.1.3(@types/react@18.3.18)(react@18.3.1)
     optionalDependencies:
@@ -21612,7 +21618,7 @@ snapshots:
     dependencies:
       get-nonce: 1.0.1
       react: 18.3.1
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.18
 
@@ -21620,7 +21626,7 @@ snapshots:
     dependencies:
       get-nonce: 1.0.1
       react: 19.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.0.10
 
@@ -21930,7 +21936,7 @@ snapshots:
 
   rxjs@7.8.1:
     dependencies:
-      tslib: 2.8.0
+      tslib: 2.8.1
 
   safe-array-concat@1.1.2:
     dependencies:
@@ -22660,7 +22666,7 @@ snapshots:
       chokidar: 3.6.0
       didyoumean: 1.2.2
       dlv: 1.1.3
-      fast-glob: 3.3.2
+      fast-glob: 3.3.3
       glob-parent: 6.0.2
       is-glob: 4.0.3
       jiti: 1.21.6
@@ -23196,14 +23202,14 @@ snapshots:
   use-callback-ref@1.3.3(@types/react@18.3.18)(react@18.3.1):
     dependencies:
       react: 18.3.1
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.18
 
   use-callback-ref@1.3.3(@types/react@19.0.10)(react@19.0.0):
     dependencies:
       react: 19.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.0.10
 
@@ -23220,7 +23226,7 @@ snapshots:
     dependencies:
       detect-node-es: 1.1.0
       react: 18.3.1
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 18.3.18
 
@@ -23228,7 +23234,7 @@ snapshots:
     dependencies:
       detect-node-es: 1.1.0
       react: 19.0.0
-      tslib: 2.8.0
+      tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.0.10
 
