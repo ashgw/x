@@ -84,13 +84,13 @@ export function FirstTimeVisitorBanner({ className }: Props) {
       }
 
       if (stage === "lWait" && key === "l") {
-        // User went light; now nudge back to dark
+        // User went light, now nudge back to dark
         setStage("dWait");
         return;
       }
 
       if (stage === "dWait" && key === "d") {
-        // Back to comfy dark; show final message
+        // Back to comfy dark, show final message
         setStage("final");
         return;
       }
@@ -127,27 +127,24 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     setStage("kWait");
   }, [analytics]);
 
-  // Copy for each stage (short, playful, and clear)
   const body =
     stage === "cookie" ? (
-      <>New here? We use cookies for analytics. Your data stays chill.</>
+      <>New here? I use cookies for analytics. Your data stays private.</>
     ) : stage === "kWait" ? (
       <>
         {consent === "accepted" ? "Nice." : "Cool."} Press <Kbd>K</Kbd> to flip
-        through the comfy dark themes — your eyes will thank you. Keep tapping{" "}
-        <Kbd>K</Kbd> to cycle.
+        through the dark themes. Your eyes will thank you.
       </>
     ) : stage === "lWait" ? (
       <>
-        If you’re a <em>light-mode enjoyer</em> (aka a tiny bit psycho 😜),
-        press <Kbd>L</Kbd> to go white.
+        If you prefer light mode, press <Kbd>L</Kbd> to switch.
       </>
     ) : stage === "dWait" ? (
       <>
-        Knew it. Now press <Kbd>D</Kbd> to slide back to the cozy dark.
+        Press <Kbd>D</Kbd> to return to dark.
       </>
     ) : (
-      <>All set. Enjoy the read — banners are gone for good.</>
+      <>All set. Enjoy!</>
     );
 
   const show =
