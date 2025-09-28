@@ -7,7 +7,7 @@ export const sessionSchemaRo = z.object({
   userId: id,
   token,
   updatedAt: z.date(),
-  expiresAt: z.date(),
+  isExpired: z.boolean(),
   userAgent: z.string().min(1).max(2048).optional(),
 });
 
