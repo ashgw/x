@@ -10,7 +10,7 @@ import { auth } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
-
+import { headers } from "next/headers";
 export class AuthService {
   private readonly db: DatabaseClient;
   private readonly req: NextRequest;
