@@ -6,6 +6,7 @@ const baseConfig = {
   transpilePackages: [
     "@ashgw/design",
     "@ashgw/env",
+    "@ashgw/auth",
     "@ashgw/components",
     "@ashgw/hooks",
     "@ashgw/models",
