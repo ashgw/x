@@ -6,7 +6,8 @@ import { siteName } from "@ashgw/constants";
 import argon2 from "argon2";
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
-import { nextCookies } from "better-auth/next-js"; //  needed for server side
+import { nextCookies } from "better-auth/next-js";
+import { email } from "@ashgw/email";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -15,7 +16,7 @@ export const auth = betterAuth({
   secret: env.AUTH_ENCRYPTON_KEY,
   appName: siteName,
   basePath: authEndpoints.basePath,
-  baseURL: env.NEXT_PUBLIC_BLOG_URL, // TODO: this should be the API or "app"
+  baseURL: env.NEXT_PUBLIC_BLOG_URL,
   session: {
     expiresIn: sessionExpiry,
     modelName: "Session",
@@ -39,8 +40,12 @@ export const auth = betterAuth({
     deleteUser: {
       afterDelete: async (user) => {
         logger.info(`User deleted: ${user.id}`);
-        await Promise.resolve();
-        // TODO: send email here & remove logger
+        await email.sendNotification({
+          to: env.PERSONAL_EMAIL,
+          title: "User deleted",
+          type: "SERVICE",
+          message: `User ${user.id} was deleted.`,
+        });
       },
     },
     changeEmail: {
@@ -52,50 +57,45 @@ export const auth = betterAuth({
   },
   emailVerification: {
     autoSignInAfterVerification: true,
-    expiresIn: 30 * 60, // 30 minutes,
+    expiresIn: 30 * 60, // 30 minutes
     sendOnSignIn: true,
     sendOnSignUp: true,
     sendVerificationEmail: async ({ token, user, url }) => {
-      await Promise.resolve();
-      logger.debug(`Verify email for user: ${user.id}, ${url}${token}`);
-      // TODO : send email here & remove logger
+      await email.sendVerificationEmail({
+        to: user.email,
+        verifyUrl: `${url}${token}`,
+        userName: user.name ?? undefined,
+      });
     },
     onEmailVerification: async (user) => {
-      await Promise.resolve();
-      logger.debug(`Sending email verification to user: ${user.id}`);
-      // TODO : send email here & remove logger
+      await email.sendNotification({
+        to: user.email,
+        title: "Email verification started",
+        type: "SERVICE",
+        message: "Please check your inbox for the verification link.",
+      });
     },
     afterEmailVerification: async (user) => {
-      logger.debug(`Email verified for user: ${user.id}`);
-      await Promise.resolve();
-      // TODO: send email here & remove logger
-    },
-  },
-  onAPIError: {
-    errorURL: authEndpoints.error /* 
-    When errorURL is provided, the error will be added to the URL as a query parameter
-    and the user will be redirected to the errorURL.
-    TODO: creaet the login in the app so it tells the user what's up
-    */,
-    throw: false, // I'll handle it
-    onError: (error, _authCtx) => {
-      logger.error(`Error in auth API route: `, error);
-      monitor.next.captureException({
-        error,
+      await email.sendWelcome({
+        to: user.email,
+        userName: user.name ?? undefined,
       });
     },
   },
-  advanced: {
-    crossSubDomainCookies: {
-      enabled: false, // subdomain takeover attacks can wait
+  onAPIError: {
+    errorURL: authEndpoints.error,
+    throw: false,
+    onError: (error, _authCtx) => {
+      logger.error(`Error in auth API route: `, error);
+      monitor.next.captureException({ error });
     },
+  },
+  advanced: {
+    crossSubDomainCookies: { enabled: false },
     defaultCookieAttributes: {
       sameSite: "lax",
       secure: env.NEXT_PUBLIC_CURRENT_ENV === "production",
       httpOnly: true,
-      // In my old setup I had to send & read a CSRF cookie manually & also check the origin header, (read my blog why)
-      // but better-auth handles CSRF with only the origin header, which is cool too.
-      // partitioned: env.NEXT_PUBLIC_CURRENT_ENV === "production", // not needed
       maxAge: sessionExpiry,
     },
   },
@@ -109,33 +109,32 @@ export const auth = betterAuth({
           : logger.error(message);
     },
   },
-  socialProviders: {
-    // uncomment if needed
-    // google: {
-    //   clientId: env.GOOGLE_CLIENT_ID,
-    //   clientSecret: env.GOOGLE_CLIENT_SECRET,
-    //   disableSignUp,
-    // },
-  },
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
     disableSignUp,
     onPasswordReset: async ({ user }) => {
-      logger.debug(`Password reset for user: ${user.id}`);
-      await Promise.resolve();
-      // TODO: send email here & remove logger
+      await email.sendNotification({
+        to: user.email,
+        title: "Password reset triggered",
+        type: "SERVICE",
+        message:
+          "You initiated a password reset. If this wasn’t you, contact support.",
+      });
     },
     password: {
       hash: argon2.hash,
       verify: ({ hash, password }) => argon2.verify(hash, password),
     },
-    requireEmailVerification: false, // TODO: set it back to true
+    requireEmailVerification: false,
     revokeSessionsOnPasswordReset: true,
-    resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
+    resetPasswordTokenExpiresIn: 15 * 60,
     sendResetPassword: async ({ token, url, user }) => {
-      logger.debug(`Reset password for user: ${user.id}, ${url}${token}`);
-      await Promise.resolve();
+      await email.sendPasswordReset({
+        to: user.email,
+        resetUrl: `${url}${token}`,
+        userName: user.name ?? undefined,
+      });
     },
     maxPasswordLength: 128,
     minPasswordLength: 8,
@@ -144,5 +143,5 @@ export const auth = betterAuth({
     env.NEXT_PUBLIC_CURRENT_ENV === "production"
       ? [env.NEXT_PUBLIC_BLOG_URL, env.NEXT_PUBLIC_WWW_URL]
       : undefined,
-  plugins: [nextCookies()], // make sure this is the last plugin in the array
+  plugins: [nextCookies()],
 });

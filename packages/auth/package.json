@@ -10,6 +10,7 @@
   "dependencies": {
     "@ashgw/constants": "workspace:*",
     "@ashgw/db": "workspace:*",
+    "@ashgw/email": "workspace:*",
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
     "@ashgw/logger": "workspace:*",
