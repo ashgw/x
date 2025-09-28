@@ -9,7 +9,7 @@ import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
 
 const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
-const canSignUp = false;
+const canSignUp = true;
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -116,13 +116,13 @@ export const auth = betterAuth({
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-      disableSignUp: canSignUp,
+      disableSignUp: !canSignUp,
     },
   },
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    disableSignUp: canSignUp,
+    disableSignUp: !canSignUp,
     onPasswordReset: async ({ user }) => {
       logger.debug(`Password reset for user: ${user.id}`);
       await Promise.resolve();
@@ -132,7 +132,7 @@ export const auth = betterAuth({
       hash: argon2.hash,
       verify: ({ hash, password }) => argon2.verify(hash, password),
     },
-    requireEmailVerification: true,
+    requireEmailVerification: false, // TODO: set it back to true
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
     sendResetPassword: async ({ token, url, user }) => {

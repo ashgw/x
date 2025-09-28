@@ -21,12 +21,12 @@ import {
   Loading,
 } from "@ashgw/design/ui";
 
-import type { UserLoginDto } from "~/api/models";
-import { userLoginSchemaDto } from "~/api/models";
+import type { UserRegisterDto } from "~/api/models";
+import { userRegisterSchemaDto } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
 import { trpcClientSide } from "~/trpc/callers/client";
 
-export function LoginPage() {
+export function SignUpPage() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
   const utils = trpcClientSide.useUtils();
@@ -38,33 +38,34 @@ export function LoginPage() {
     }
   }, [isLoading, user, router]);
 
-  const form = useForm<UserLoginDto>({
-    resolver: zodResolver(userLoginSchemaDto),
+  const form = useForm<UserRegisterDto>({
+    resolver: zodResolver(userRegisterSchemaDto),
     mode: "onChange",
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const loginMutation = trpcClientSide.user.login.useMutation({
+  const signUpMutation = trpcClientSide.user.signUp.useMutation({
     onSuccess: () => {
       void utils.user.me.invalidate();
-      toast.success("Successfully logged in", {
-        description: "You can now create and edit blog posts.",
+      toast.success("Account created successfully!", {
+        description: "Please check your email to verify your account.",
       });
-      router.push("/editor");
+      router.push("/login");
     },
     onError: (error) => {
-      logger.error("Login failed", { error });
+      logger.error("Sign up failed", { error });
       form.setError("root", {
         message: error.message,
       });
     },
   });
 
-  const onSubmit: SubmitHandler<UserLoginDto> = (data) => {
-    loginMutation.mutate(data);
+  const onSubmit: SubmitHandler<UserRegisterDto> = (data) => {
+    signUpMutation.mutate(data);
   };
 
   if (isLoading) {
@@ -89,7 +90,7 @@ export function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          Login
+          Sign Up
         </motion.h1>
 
         <motion.p
@@ -98,7 +99,7 @@ export function LoginPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Enter your credentials to access the blog editor
+          Create your account to get started with the blog
         </motion.p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
@@ -108,6 +109,25 @@ export function LoginPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="John Doe"
+                        type="text"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="email"
@@ -161,18 +181,18 @@ export function LoginPage() {
                 <Button
                   variant="outline"
                   type="button"
-                  onClick={() => router.push("/sign-up")}
-                  disabled={loginMutation.isPending}
+                  onClick={() => router.push("/login")}
+                  disabled={signUpMutation.isPending}
                 >
-                  Sign Up
+                  Already have an account?
                 </Button>
                 <Button
                   variant="default"
                   type="submit"
-                  disabled={loginMutation.isPending}
-                  loading={loginMutation.isPending}
+                  disabled={signUpMutation.isPending}
+                  loading={signUpMutation.isPending}
                 >
-                  {loginMutation.isPending ? "Logging in..." : "Login"}
+                  {signUpMutation.isPending ? "Creating account..." : "Sign Up"}
                 </Button>
               </motion.div>
             </motion.div>

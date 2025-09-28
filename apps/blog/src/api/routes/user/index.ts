@@ -7,6 +7,7 @@ import {
   sessionSchemaRo,
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
+  userRegisterSchemaDto,
   userTerminateSpecificSessionSchemaDto,
   userSchemaRo,
 } from "~/api/models";
@@ -34,6 +35,17 @@ export const userRouter = router({
     .output(z.void())
     .mutation(async ({ input, ctx }) => {
       return await authService(ctx).login(input);
+    }),
+
+  signUp: publicProcedure({
+    limit: {
+      every: "5s",
+    },
+  })
+    .input(userRegisterSchemaDto)
+    .output(z.void())
+    .mutation(async ({ input, ctx }) => {
+      return await authService(ctx).signUp(input);
     }),
 
   logout: publicProcedure({
