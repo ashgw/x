@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { toast } from "@ashgw/design/ui";
@@ -17,7 +16,6 @@ import {
   Loading,
 } from "@ashgw/design/ui";
 
-import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
 import { trpcClientSide } from "~/trpc/callers/client";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
@@ -51,32 +49,12 @@ const cardVariants = {
 export function ProfilePage() {
   const router = useRouter();
   const { user, isLoading, logout } = useAuth();
-  const [sessions, setSessions] = useState<SessionRo[]>([]);
   const utils = trpcClientSide.useUtils();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/login");
-    }
-  }, [isLoading, user, router]);
-
-  useEffect(() => {
-    if (user?.sessions) {
-      setSessions(user.sessions);
-    }
-  }, [user?.sessions]);
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      await utils.user.me.invalidate();
-      toast.success("Successfully logged out");
-      router.push("/login");
-    } catch (error) {
-      logger.error("Logout failed", { error });
-      toast.error("Failed to logout, please try again later");
-    }
-  };
+  if (!isLoading && !user) {
+    router.push("/login");
+    return null;
+  }
 
   if (isLoading || !user) {
     return (
@@ -91,6 +69,18 @@ export function ProfilePage() {
     );
   }
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      await utils.user.me.invalidate();
+      toast.success("Successfully logged out");
+      router.push("/login");
+    } catch (error) {
+      logger.error("Logout failed", { error });
+      toast.error("Failed to logout, please try again later");
+    }
+  };
+
   return (
     <AnimatePresence mode="wait">
       <div className="layout mx-auto max-w-4xl px-4 py-8">
@@ -100,7 +90,7 @@ export function ProfilePage() {
           animate="visible"
           className="space-y-6"
         >
-          {/* Header Section */}
+          {/* Header */}
           <motion.div variants={cardVariants} className="mb-8">
             <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
             <div className="flex items-center gap-2">
@@ -113,16 +103,14 @@ export function ProfilePage() {
             </div>
           </motion.div>
 
-          {/* Main Grid Layout */}
+          {/* Grid */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Profile Info Card */}
+            {/* Profile Info */}
             <motion.div variants={cardVariants}>
               <Card className="h-full">
-                <CardHeader className="flex flex-row items-center gap-2">
-                  <div>
-                    <CardTitle>Profile</CardTitle>
-                    <CardDescription>Your account information</CardDescription>
-                  </div>
+                <CardHeader>
+                  <CardTitle>Profile</CardTitle>
+                  <CardDescription>Your account information</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <UserInfo user={user} />
@@ -130,14 +118,12 @@ export function ProfilePage() {
               </Card>
             </motion.div>
 
-            {/* Password Change Card */}
+            {/* Password */}
             <motion.div variants={cardVariants}>
               <Card className="h-full">
-                <CardHeader className="flex flex-row items-center gap-2">
-                  <div>
-                    <CardTitle>Security</CardTitle>
-                    <CardDescription>Update your password</CardDescription>
-                  </div>
+                <CardHeader>
+                  <CardTitle>Security</CardTitle>
+                  <CardDescription>Update your password</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChangePasswordForm />
@@ -145,25 +131,21 @@ export function ProfilePage() {
               </Card>
             </motion.div>
 
-            {/* Sessions Card - Full Width */}
+            {/* Sessions */}
             <motion.div variants={cardVariants} className="md:col-span-2">
               <Card>
-                <CardHeader className="flex flex-row items-center gap-2">
-                  <div>
-                    <CardTitle>Sessions</CardTitle>
-                    <CardDescription>
-                      Manage your device sessions
-                    </CardDescription>
-                  </div>
+                <CardHeader>
+                  <CardTitle>Sessions</CardTitle>
+                  <CardDescription>Manage your device sessions</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <SessionsList sessions={sessions} setSessions={setSessions} />
+                  <SessionsList />
                 </CardContent>
               </Card>
             </motion.div>
           </div>
 
-          {/* Logout Button */}
+          {/* Logout */}
           <motion.div
             variants={cardVariants}
             className="flex justify-end pt-4"

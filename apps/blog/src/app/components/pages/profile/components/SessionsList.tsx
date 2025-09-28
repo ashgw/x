@@ -1,6 +1,5 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { Loader2, Shield, XCircle } from "@ashgw/design/icons";
@@ -52,12 +51,7 @@ const rowVariants = {
   },
 };
 
-interface SessionsListProps {
-  sessions: SessionRo[];
-  setSessions: Dispatch<SetStateAction<SessionRo[]>>;
-}
-
-export function SessionsList({ sessions, setSessions }: SessionsListProps) {
+export function SessionsList() {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
     new Set(),
   );
