@@ -10,7 +10,7 @@ export const userSchemaRo = z.object({
   updatedAt: z.date(),
   emailVerified: z.boolean().default(false),
   name: z.string().min(1).max(30).nullable(),
-  image: z.string().min(1).max(2024).optional(),
+  image: z.string().min(1).max(4096).optional().nullable(),
   role: z.nativeEnum(UserRoleEnum),
 });
 
