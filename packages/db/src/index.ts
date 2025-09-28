@@ -17,7 +17,6 @@ export type DatabaseClient = Omit<
   | "$queryRawUnsafe"
 >;
 
-// Cache for hot-reloads in Next.js dev
 const globalForDb = globalThis as unknown as {
   prisma: MaybeUndefined<DatabaseClient>;
 };
@@ -36,20 +35,15 @@ const transactionOptions = {
 
 const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
 
-// engineType = "client" is released in sep/'25
 const db =
   globalForDb.prisma ??
   (new FullPrismaClient({
-    datasourceUrl: env.DATABASE_URL,
     errorFormat,
     adapter,
     log,
     transactionOptions,
   }) satisfies DatabaseClient);
 
-// Store the singleton during dev to avoid multiple instances
-if (env.NODE_ENV === "development") {
-  globalForDb.prisma = db;
-}
+if (env.NODE_ENV === "development") globalForDb.prisma = db;
 
 export { db };
