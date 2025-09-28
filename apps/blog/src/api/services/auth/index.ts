@@ -1,35 +1,22 @@
 import argon2 from "argon2";
-import type { NextRequest, NextResponse } from "next/server";
 import type { Optional } from "ts-roids";
 
 import type { DatabaseClient } from "@ashgw/db";
 import { env } from "@ashgw/env";
 import { AppError } from "@ashgw/error";
 import { logger } from "@ashgw/logger";
-
+import { authClient } from "@ashgw/auth";
 import type { UserLoginDto, UserRo } from "~/api/models";
 import { UserMapper } from "~/api/mappers";
 import { UserQueryHelper } from "~/api/query-helpers";
 import { AUTH_COOKIES_MAX_AGE, HEADER_NAMES } from "./consts";
-import { CookieService } from "./cookie.service";
+import { error } from "console";
 
 export class AuthService {
   private readonly db: DatabaseClient;
-  private readonly req: NextRequest;
-  private readonly res: NextResponse;
 
-  constructor({
-    db,
-    req,
-    res,
-  }: {
-    db: DatabaseClient;
-    req: NextRequest;
-    res: NextResponse;
-  }) {
+  constructor({ db }: { db: DatabaseClient }) {
     this.db = db;
-    this.req = req;
-    this.res = res;
   }
 
   // safe me, doesn't error when the user is not authenticated
@@ -49,49 +36,19 @@ export class AuthService {
   public async login({ email, password }: UserLoginDto): Promise<UserRo> {
     logger.info("Logging in user", { email });
 
-    const user = await this.db.user.findUnique({
-      where: { email },
-      include: {
-        ...UserQueryHelper.withSessionsInclude(),
-      },
+    const user = await authClient.signIn.email({
+      email,
+      password,
+      rememberMe: true,
     });
 
-    if (!user) {
-      // fake work to reduce user enumeration timing
-      try {
-        await argon2.hash("dummy_password", {
-          type: argon2.argon2id,
-          memoryCost: 64 * 1024,
-          timeCost: 2,
-          parallelism: 1,
-        });
-      } catch {
-        // ignore
-      }
-      logger.warn("User not found for:", { email });
-      throw new AppError({
-        code: "NOT_FOUND",
-        message: "User not found",
-      });
-    }
-
-    logger.info("User found for:", { userId: user.id });
-    logger.info("Checking user password");
-
-    const ok = await this._verifyPassword({
-      plainPassword: password,
-      storedHash: user.passwordHash,
-    });
-
-    if (!ok) {
-      logger.warn("Invalid password for:", { email });
+    if (!user.data) {
       throw new AppError({
         code: "UNAUTHORIZED",
-        message: "Invalid credentials",
+        message: "Invalid email or password",
       });
     }
 
-    await this._createSession({ userId: user.id });
     return UserMapper.toUserRo({ user });
   }
 
