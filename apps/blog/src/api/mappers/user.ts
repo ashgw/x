@@ -1,44 +1,39 @@
-import type { SessionRo, UserRo } from "../models";
-import type { UserWithSessionsQuery } from "../query-helpers/user";
+import type { UserRo } from "../models";
+import type { UserWithAuthSessionsQuery } from "../query-helpers/user";
 import { UserRoleEnum } from "../models";
+import { AppError } from "@ashgw/error";
 
 export class UserMapper {
   public static toUserRo({
-    user: { email, sessions, role, id, name, createdAt },
+    user,
   }: {
-    user: UserWithSessionsQuery;
+    user: UserWithAuthSessionsQuery;
   }): UserRo {
     return {
-      id,
-      email,
-      name,
-      createdAt,
-      role: this._mapRole({ role }),
-      sessions: this._mapSessions({
-        sessions,
-      }),
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      createdAt: user.createdAt,
+      emailVerified: user.emailVerified,
+      updatedAt: user.updatedAt,
+      image: user.image,
+      role: this._mapRole({ role: user.role }),
     };
   }
 
-  private static _mapSessions({
-    sessions,
-  }: {
-    sessions: UserWithSessionsQuery["sessions"];
-  }): SessionRo[] {
-    return sessions.map((session) => ({
-      id: session.id,
-      expiresAt: session.expiresAt,
-      createdAt: session.createdAt,
-    }));
-  }
-
   private static _mapRole({ role }: { role: string }): UserRoleEnum {
-    switch (role) {
-      case "ADMIN":
+    const normalized = role.toLowerCase().trim();
+
+    switch (normalized) {
+      case "admin":
         return UserRoleEnum.ADMIN;
-      case "VISITOR":
-      default:
+      case "visitor":
         return UserRoleEnum.VISITOR;
+      default:
+        throw new AppError({
+          code: "INTERNAL",
+          message: "Invalid role type, got: " + role,
+        });
     }
   }
 }

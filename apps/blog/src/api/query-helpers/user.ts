@@ -1,19 +1,6 @@
-import type { Prisma } from "@ashgw/db/raw";
+import type { UserRo } from "../models";
 
-export type UserWithSessionsQuery = Prisma.UserGetPayload<{
-  include: ReturnType<typeof UserQueryHelper.withSessionsInclude>;
-}>;
-
-export class UserQueryHelper {
-  public static withSessionsInclude() {
-    return {
-      sessions: {
-        select: {
-          id: true,
-          expiresAt: true,
-          createdAt: true,
-        },
-      },
-    } satisfies Prisma.UserInclude;
-  }
+// role comes in as a string
+export interface UserWithAuthSessionsQuery extends Omit<UserRo, "role"> {
+  role: string;
 }

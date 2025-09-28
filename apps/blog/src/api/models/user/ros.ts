@@ -3,22 +3,16 @@ import { z } from "zod";
 import { UserRoleEnum } from "./shared";
 import { email, id } from "../shared";
 
-// ========== Schemas ==========
-export const sessionSchemaRo = z.object({
-  id,
-  expiresAt: z.date(),
-  createdAt: z.date(),
-});
-
 export const userSchemaRo = z.object({
   id,
   email,
   createdAt: z.date(),
+  updatedAt: z.date(),
+  emailVerified: z.boolean().default(false),
   name: z.string().min(1).max(30).nullable(),
+  image: z.string().min(1).max(2024).optional(),
   role: z.nativeEnum(UserRoleEnum),
-  sessions: z.array(sessionSchemaRo),
 });
 
 // ========== Types ==========
 export type UserRo = z.infer<typeof userSchemaRo>;
-export type SessionRo = z.infer<typeof sessionSchemaRo>;
