@@ -11,8 +11,6 @@ import {
 } from "./callers/client";
 import { transformer } from "./transformer";
 
-const isBrowser = typeof window !== "undefined";
-
 // // we need to send the CSRF token cookie with every request
 // const getCsrfTokenCookie = (): string => {
 //   if (isBrowser)
