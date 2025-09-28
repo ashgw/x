@@ -32,7 +32,7 @@ export const userRouter = router({
     },
   })
     .input(userLoginSchemaDto)
-    .output(userSchemaRo)
+    .output(z.void())
     .mutation(async ({ input, ctx }) => {
       return await userAuthService(ctx).login(input);
     }),
@@ -57,7 +57,6 @@ export const userRouter = router({
     .output(z.void())
     .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
       await userAuthService(ctx).changePassword({
-        userId: ctx.user.id,
         currentPassword,
         newPassword,
       });
@@ -81,9 +80,9 @@ export const userRouter = router({
   })
     .input(userTerminateSpecificSessionSchemaDto)
     .output(z.void())
-    .mutation(async ({ ctx, input: { sessionId } }) => {
+    .mutation(async ({ ctx, input: { token } }) => {
       await userAuthService(ctx).terminateSpecificSession({
-        userId: ctx.user.id,
+        token,
       });
     }),
 });
