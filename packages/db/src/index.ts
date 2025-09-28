@@ -7,7 +7,6 @@ import { PrismaPg } from "@prisma/adapter-pg";
 export type DatabaseClient = Omit<
   FullPrismaClient,
   | "$connect"
-  | "$disconnect"
   | "$on"
   | "$use"
   | "$extends"
