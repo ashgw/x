@@ -16,7 +16,6 @@ import {
   TableRow,
 } from "@ashgw/design/ui";
 
-import type { SessionRo } from "~/api/models";
 import { trpcClientSide } from "~/trpc/callers/client";
 
 const tableVariants = {
@@ -48,11 +47,8 @@ export function SessionsList() {
   const [terminatingAllSessions, setTerminatingAllSessions] = useState(false);
 
   // fetch sessions
-  const {
-    data: sessions = [],
-    isLoading,
-    refetch,
-  } = trpcClientSide.user.listAllSessions.useQuery();
+  const { data: sessions = [], isLoading } =
+    trpcClientSide.user.listAllSessions.useQuery();
 
   const utils = trpcClientSide.useUtils();
 
@@ -68,10 +64,10 @@ export function SessionsList() {
   const terminateAllSessionsMutation =
     trpcClientSide.user.terminateAllActiveSessions.useMutation({
       onMutate: () => setTerminatingAllSessions(true),
-      onSuccess: async () => {
-        setTimeout(async () => {
+      onSuccess: () => {
+        setTimeout(() => {
           setTerminatingAllSessions(false);
-          await utils.user.listAllSessions.invalidate();
+          void utils.user.listAllSessions.invalidate();
           toast.success("All sessions terminated successfully");
         }, 500);
       },
@@ -85,9 +81,9 @@ export function SessionsList() {
     trpcClientSide.user.terminateSpecificSession.useMutation({
       onMutate: ({ token }) => setSessionLoading(token, true),
       onSuccess: (_, { token }) => {
-        setTimeout(async () => {
+        setTimeout(() => {
           setSessionLoading(token, false);
-          await utils.user.listAllSessions.invalidate();
+          void utils.user.listAllSessions.invalidate();
           toast.success("Session terminated successfully");
         }, 500);
       },
