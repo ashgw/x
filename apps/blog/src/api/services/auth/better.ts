@@ -86,5 +86,7 @@ export class BetterAuthService {
         code: "UNAUTHORIZED",
       });
     }
+
+    response.user.
   }
 }
