@@ -11,7 +11,7 @@ import {
 } from "~/api/models";
 import { AuthService } from "~/api/services";
 
-const userAuthService = (ctx: TrpcContext) =>
+const authService = (ctx: TrpcContext) =>
   new AuthService({
     db: ctx.db,
     req: ctx.req,
@@ -23,7 +23,7 @@ export const userRouter = router({
     .input(z.void())
     .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
-      return await userAuthService(ctx).me();
+      return await authService(ctx).me();
     }),
 
   login: publicProcedure({
@@ -34,7 +34,7 @@ export const userRouter = router({
     .input(userLoginSchemaDto)
     .output(z.void())
     .mutation(async ({ input, ctx }) => {
-      return await userAuthService(ctx).login(input);
+      return await authService(ctx).login(input);
     }),
 
   logout: publicProcedure({
@@ -45,7 +45,7 @@ export const userRouter = router({
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      return await userAuthService(ctx).logout();
+      return await authService(ctx).logout();
     }),
 
   changePassword: authenticatedProcedure({
@@ -56,7 +56,7 @@ export const userRouter = router({
     .input(userChangePasswordSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
-      await userAuthService(ctx).changePassword({
+      await authService(ctx).changePassword({
         currentPassword,
         newPassword,
       });
@@ -70,7 +70,7 @@ export const userRouter = router({
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      await userAuthService(ctx).terminateAllActiveSessions();
+      await authService(ctx).terminateAllActiveSessions();
     }),
 
   terminateSpecificSession: authenticatedProcedure({
@@ -81,7 +81,7 @@ export const userRouter = router({
     .input(userTerminateSpecificSessionSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { token } }) => {
-      await userAuthService(ctx).terminateSpecificSession({
+      await authService(ctx).terminateSpecificSession({
         token,
       });
     }),
