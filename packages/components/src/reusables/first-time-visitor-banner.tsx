@@ -5,11 +5,16 @@ import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
-type Stage = "cookie" | "kWait" | "done";
+type Stage = "cookie" | "kWait" | "lWait" | "dWait" | "final" | "done";
+type Consent = "accepted" | "rejected" | null;
 
 interface Props {
   className?: string;
 }
+
+const LS_COOKIE = "privacy:cookie-consent";
+const LS_FLOW = "onboard:theme-flow"; // "completed" when fully done
+const LS_THEME_INFO = "onboard:theme-info"; // keep writing "done" for back-compat
 
 function Kbd({
   children,
@@ -33,66 +38,124 @@ function Kbd({
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
   const [stage, setStage] = useState<Stage>("cookie");
-  const [consent, setConsent] = useState<"accepted" | "rejected" | null>(null);
+  const [consent, setConsent] = useState<Consent>(null);
 
+  // Initialize from storage (and respect old key)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const cookie = localStorage.getItem("privacy:cookie-consent");
-    const themeInfo = localStorage.getItem("onboard:theme-info");
+    const cookie = localStorage.getItem(LS_COOKIE) as Consent | null;
+    const flow = localStorage.getItem(LS_FLOW);
+    const legacy = localStorage.getItem(LS_THEME_INFO);
+
+    if (flow === "completed" || legacy === "done") {
+      setConsent(
+        cookie === "accepted"
+          ? "accepted"
+          : cookie === "rejected"
+            ? "rejected"
+            : null,
+      );
+      setStage("done");
+      return;
+    }
 
     if (!cookie) {
-      setStage("cookie");
       setConsent(null);
-    } else if (themeInfo !== "done") {
-      setStage("kWait");
-      setConsent(cookie === "accepted" ? "accepted" : "rejected");
+      setStage("cookie");
     } else {
-      setStage("done");
-      setConsent(cookie === "accepted" ? "accepted" : "rejected");
+      setConsent(cookie);
+      setStage("kWait");
     }
   }, []);
 
+  // Handle key presses per stage
   useEffect(() => {
-    if (stage !== "kWait") return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "k") {
-        localStorage.setItem("onboard:theme-info", "done");
-        setStage("done");
+    if (stage === "cookie" || stage === "done") return;
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      const key = e.key.toLowerCase();
+
+      if (stage === "kWait" && key === "k") {
+        // User cycled dark themes; now tease light mode
+        setStage("lWait");
+        return;
       }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+      if (stage === "lWait" && key === "l") {
+        // User went light; now nudge back to dark
+        setStage("dWait");
+        return;
+      }
+
+      if (stage === "dWait" && key === "d") {
+        // Back to comfy dark; show final message
+        setStage("final");
+        return;
+      }
+    }
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [stage]);
+
+  // Final auto-dismiss + persist completion
+  useEffect(() => {
+    if (stage !== "final") return;
+    // Mark flow complete (and legacy key for older checks)
+    localStorage.setItem(LS_FLOW, "completed");
+    localStorage.setItem(LS_THEME_INFO, "done");
+
+    const t = setTimeout(() => {
+      setStage("done");
+    }, 3000);
+    return () => clearTimeout(t);
   }, [stage]);
 
   const acceptCookies = useCallback(() => {
-    localStorage.setItem("privacy:cookie-consent", "accepted");
+    localStorage.setItem(LS_COOKIE, "accepted");
     analytics.opt_in_capturing();
     setConsent("accepted");
     setStage("kWait");
   }, [analytics]);
 
   const rejectCookies = useCallback(() => {
-    localStorage.setItem("privacy:cookie-consent", "rejected");
+    localStorage.setItem(LS_COOKIE, "rejected");
     analytics.opt_out_capturing();
     setConsent("rejected");
     setStage("kWait");
   }, [analytics]);
 
-  const cookieBody = "New here? Got to let you know, I use cookies";
-
-  const kWaitBody =
-    consent === "accepted" ? (
+  // Copy for each stage (short, playful, and clear)
+  const body =
+    stage === "cookie" ? (
+      <>New here? We use cookies for analytics. Your data stays chill.</>
+    ) : stage === "kWait" ? (
       <>
-        Great, press <Kbd>K</Kbd> to switch themes
+        {consent === "accepted" ? "Nice." : "Cool."} Press <Kbd>K</Kbd> to flip
+        through the comfy dark themes — your eyes will thank you. Keep tapping{" "}
+        <Kbd>K</Kbd> to cycle.
+      </>
+    ) : stage === "lWait" ? (
+      <>
+        If you’re a <em>light-mode enjoyer</em> (aka a tiny bit psycho 😜),
+        press <Kbd>L</Kbd> to go white.
+      </>
+    ) : stage === "dWait" ? (
+      <>
+        Knew it. Now press <Kbd>D</Kbd> to slide back to the cozy dark.
       </>
     ) : (
-      <>
-        Anyways, press <Kbd>K</Kbd> to switch themes
-      </>
+      <>All set. Enjoy the read — banners are gone for good.</>
     );
 
-  const show = stage === "cookie" || stage === "kWait";
+  const show =
+    stage === "cookie" ||
+    stage === "kWait" ||
+    stage === "lWait" ||
+    stage === "dWait" ||
+    stage === "final";
 
   return (
     <AnimatePresence>
@@ -103,7 +166,7 @@ export function FirstTimeVisitorBanner({ className }: Props) {
           animate={{ opacity: 1, y: 0, scale: 0.95 }}
           exit={{ opacity: 0, y: 120, scale: 0.7 }}
           transition={{ type: "tween", duration: 0.45, ease: "easeOut" }}
-          className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
+          className={cn("fixed bottom-6 right-6 z-50 max-w-[420px]", className)}
         >
           <SurfaceCard
             animation="ringGlowPulse"
@@ -112,11 +175,9 @@ export function FirstTimeVisitorBanner({ className }: Props) {
             aria-live="polite"
             aria-label="First-time visitor banner"
           >
-            <div className="text-semibold text-dim-400">
-              {stage === "cookie" ? cookieBody : kWaitBody}
-            </div>
+            <div className="text-semibold text-dim-400">{body}</div>
 
-            <div className="flex items-center justify-end gap-2">
+            <div className="mt-3 flex items-center justify-end gap-2">
               {stage === "cookie" ? (
                 <>
                   <Button
