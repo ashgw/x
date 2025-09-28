@@ -1,54 +1,47 @@
-import * as React from "react";
 import { Resend } from "resend";
 import type { CreateEmailOptions } from "resend";
-import { render } from "@react-email/render";
 import { AppError } from "@ashgw/error";
-import { logger } from "@ashgw/logger";
-import NotificationTemplate from "./templates/Notify";
+import { logger as Lager } from "@ashgw/logger";
 import { env } from "@ashgw/env";
-import type { SendParams, SendResult, SendNotificationParams } from "./types";
 import { notifyEmail } from "@ashgw/constants";
+import type { SendParams, SendResult } from "./types";
 
-class EmailService {
-  private _notifyEmail = notifyEmail;
+export class EmailService {
+  private _notifyEmail: string = notifyEmail;
   private _cached?: Resend;
+
   public get notifyEmail(): string {
     return this._notifyEmail;
   }
-
   public set notifyEmail(value: string) {
     this._notifyEmail = value;
   }
-
-  private get from(): string {
+  public get defaultFrom(): string {
     return `ashgw[bot] <${this._notifyEmail}>`;
   }
 
-  public async send({
-    from,
-    to,
-    subject,
-    html,
-    cc,
-    bcc,
-  }: SendParams): Promise<SendResult> {
+  public async sendHtml(params: SendParams): Promise<SendResult> {
     const client = this._client();
 
-    const toList = Array.isArray(to) ? to : [to];
+    const to = typeof params.to === "string" ? [params.to] : params.to;
     const options: CreateEmailOptions = {
-      from,
-      to: toList,
-      subject,
-      html,
+      from: params.from ?? this.defaultFrom,
+      to,
+      subject: params.subject,
+      html: params.html,
     };
 
-    if (cc) options.cc = Array.isArray(cc) ? cc : [cc];
-    if (bcc) options.bcc = Array.isArray(bcc) ? bcc : [bcc];
+    if (params.cc) {
+      options.cc = typeof params.cc === "string" ? [params.cc] : params.cc;
+    }
+    if (params.bcc) {
+      options.bcc = typeof params.bcc === "string" ? [params.bcc] : params.bcc;
+    }
 
     const { data, error } = await client.emails.send(options);
 
     if (error) {
-      logger.error("Failed to send email", error);
+      Lager.error("Failed to send email", error);
       throw new AppError({
         code: "INTERNAL",
         message: "Failed to send email",
@@ -56,29 +49,13 @@ class EmailService {
       });
     }
 
+    if (!data.id) {
+      throw new AppError({
+        code: "INTERNAL",
+        message: "Missing response from email provider",
+      });
+    }
     return { id: data.id };
-  }
-
-  async sendNotification({
-    to,
-    title,
-    message,
-    type,
-    subject,
-  }: SendNotificationParams): Promise<SendResult> {
-    const element = React.createElement(NotificationTemplate, {
-      type,
-      message,
-    });
-
-    const html = await render(element, { pretty: true });
-
-    return this.send({
-      from: this.from,
-      to,
-      subject: subject ?? title,
-      html,
-    });
   }
 
   private _client(): Resend {

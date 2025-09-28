@@ -1,12 +1,14 @@
 import { env } from "@ashgw/env";
-import { NotificationType } from "./types";
-import { email } from "./index";
+import { EmailSenders } from "./index";
+import { logger as Lager } from "@ashgw/logger";
 
-await email.sendNotification({
-  subject: "Deployment Complete",
-  title: "All Systems Go",
-  type: NotificationType.SERVICE,
-  message:
-    "Your latest build was deployed successfully at 2025-09-15 01:00 UTC. No errors were detected and the service is healthy.",
-  to: env.PERSONAL_EMAIL,
-});
+async function main(): Promise<void> {
+  await EmailSenders.sendVerifyEmail({
+    to: env.PERSONAL_EMAIL,
+    verifyUrl: `${env.NEXT_PUBLIC_BLOG_URL}/verify?token=example`,
+    userName: "AG",
+  });
+  Lager.info("Sent verify email");
+}
+
+void main();
