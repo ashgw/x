@@ -1,6 +1,11 @@
 import { AppError } from "@ashgw/error";
 import { auth } from "@ashgw/auth";
-import type { SessionRo, UserLoginDto, UserRo } from "~/api/models";
+import type {
+  SessionRo,
+  UserLoginDto,
+  UserRegisterDto,
+  UserRo,
+} from "~/api/models";
 import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
 import type { TrpcContext } from "~/trpc/context";
@@ -15,6 +20,21 @@ export class AuthService {
       body: {
         email,
         password,
+      },
+      headers: this.ctx.req.headers,
+    });
+  }
+
+  public async signUp({
+    email,
+    password,
+    name,
+  }: UserRegisterDto): Promise<void> {
+    await auth.signUpEmail({
+      body: {
+        email,
+        password,
+        name,
       },
       headers: this.ctx.req.headers,
     });
