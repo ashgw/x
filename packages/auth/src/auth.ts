@@ -32,9 +32,11 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        required: false,
+        required: true,
+        fieldName: "role",
         defaultValue: "VISITOR",
         input: false,
+        returned: true,
       },
     },
     deleteUser: {
