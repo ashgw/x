@@ -6,6 +6,7 @@ import { router } from "~/trpc/root";
 import {
   sessionSchemaRo,
   userChangePasswordSchemaDto,
+  userGoogleSignInSchemaDto,
   userLoginSchemaDto,
   userRegisterSchemaDto,
   userTerminateSpecificSessionSchemaDto,
@@ -46,6 +47,17 @@ export const userRouter = router({
     .output(z.void())
     .mutation(async ({ input, ctx }) => {
       return await authService(ctx).signUp(input);
+    }),
+
+  signInWithGoogle: publicProcedure({
+    limit: {
+      every: "3s",
+    },
+  })
+    .input(userGoogleSignInSchemaDto)
+    .output(z.object({ url: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      return await authService(ctx).signInWithGoogle(input);
     }),
 
   logout: publicProcedure({
