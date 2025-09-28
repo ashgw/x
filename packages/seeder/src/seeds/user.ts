@@ -9,10 +9,10 @@ export async function seedUser() {
   const now = new Date();
 
   // =========================
-  // Create Admin User
+  // Admin User
   // =========================
   const adminEmail = "admin@example.com";
-  const adminPlainPassword = "Admin123"; // change locally
+  const adminPlainPassword = "Admin123";
 
   const adminUser = await db.user.upsert({
     where: { email: adminEmail },
@@ -29,14 +29,15 @@ export async function seedUser() {
 
   await db.account.upsert({
     where: {
-      // Prisma needs a unique. You can also @@unique([accountId, providerId])
-      id: `${adminUser.id}-password`,
+      providerId_accountId: {
+        providerId: "password",
+        accountId: adminEmail,
+      },
     },
     update: { password: adminHash, updatedAt: now },
     create: {
-      id: `${adminUser.id}-password`,
       accountId: adminEmail,
-      providerId: "password", // keep consistent with better-auth
+      providerId: "password",
       userId: adminUser.id,
       password: adminHash,
       createdAt: now,
@@ -62,7 +63,7 @@ export async function seedUser() {
   });
 
   // =========================
-  // Create Visitor User
+  // Visitor User
   // =========================
   const visitorEmail = "visitor@example.com";
 
