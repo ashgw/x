@@ -4,7 +4,6 @@ import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 
-import { COOKIE_NAMES, HEADER_NAMES } from "~/api/services/auth/consts";
 import {
   getOptimizedQueryClient,
   getTrpcUrl,
@@ -14,17 +13,17 @@ import { transformer } from "./transformer";
 
 const isBrowser = typeof window !== "undefined";
 
-// we need to send the CSRF token cookie with every request
-const getCsrfTokenCookie = (): string => {
-  if (isBrowser)
-    return (
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith(COOKIE_NAMES.CSRF_TOKEN))
-        ?.split("=")[1] ?? ""
-    );
-  return "";
-};
+// // we need to send the CSRF token cookie with every request
+// const getCsrfTokenCookie = (): string => {
+//   if (isBrowser)
+//     return (
+//       document.cookie
+//         .split("; ")
+//         .find((row) => row.startsWith(COOKIE_NAMES.CSRF_TOKEN))
+//         ?.split("=")[1] ?? ""
+//     );
+//   return "";
+// };
 
 export function TRPCProvider(
   props: Readonly<{
@@ -50,7 +49,7 @@ export function TRPCProvider(
               credentials: "include",
               headers: {
                 ...options?.headers,
-                [HEADER_NAMES.CSRF_TOKEN]: getCsrfTokenCookie(),
+                // [HEADER_NAMES.CSRF_TOKEN]: getCsrfTokenCookie(),
               },
             });
           },
