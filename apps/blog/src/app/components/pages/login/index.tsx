@@ -58,7 +58,7 @@ export function LoginPage() {
     onError: (error) => {
       logger.error("Login failed", { error });
       form.setError("root", {
-        message: "Invalid email or password",
+        message: error.message,
       });
     },
   });
