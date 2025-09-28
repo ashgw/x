@@ -9,7 +9,6 @@ export class SessionMapper {
       updatedAt: session.updatedAt,
       token: session.token,
       userAgent: session.userAgent ? session.userAgent : undefined,
-      userId: session.userId,
     };
   }
 }
