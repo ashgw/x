@@ -8,7 +8,7 @@ import {
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
   userTerminateSpecificSessionSchemaDto,
-  userWithSessionRo,
+  userSchemaRo,
 } from "~/api/models";
 import { AuthService } from "~/api/services";
 
@@ -20,7 +20,7 @@ const authService = (ctx: TrpcContext) =>
 export const userRouter = router({
   me: publicProcedure()
     .input(z.void())
-    .output(userWithSessionRo.nullable())
+    .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
       return await authService(ctx).me();
     }),

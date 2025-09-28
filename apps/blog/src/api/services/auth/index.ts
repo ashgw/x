@@ -1,7 +1,7 @@
 import type { DatabaseClient } from "@ashgw/db";
 import { AppError } from "@ashgw/error";
 import { auth } from "@ashgw/auth";
-import type { SessionRo, UserLoginDto, UserWithSessionRo } from "~/api/models";
+import type { SessionRo, UserLoginDto, UserRo } from "~/api/models";
 import { SessionMapper, UserMapper } from "~/api/mappers";
 import { headers } from "next/headers";
 import type { Optional } from "ts-roids";
@@ -70,7 +70,7 @@ export class AuthService {
     });
   }
 
-  public async me(): Promise<Optional<UserWithSessionRo>> {
+  public async me(): Promise<Optional<UserRo>> {
     try {
       return await this._getUserWithSession();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -79,7 +79,7 @@ export class AuthService {
     }
   }
 
-  private async _getUserWithSession(): Promise<UserWithSessionRo> {
+  private async _getUserWithSession(): Promise<UserRo> {
     const response = await auth.getSession({
       headers: headers(),
     });
@@ -88,12 +88,9 @@ export class AuthService {
         code: "UNAUTHORIZED",
       });
     }
-    const user = UserMapper.toUserRo({ user: response.user });
-    const session = SessionMapper.toRo({ session: response.session });
-    const userWithSessions = {
-      ...user,
-      session: session,
-    };
-    return userWithSessions;
+    return UserMapper.toUserRo({
+      user: response.user,
+      session: response.session,
+    });
   }
 }
