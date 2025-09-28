@@ -31,48 +31,31 @@ export class AuthService {
     }
   }
 
-  public async login({ email, password }: UserLoginDto): Promise<UserRo> {
+  public async login({ email, password }: UserLoginDto): Promise<void> {
     logger.info("Logging in user", { email });
-    const user = await authClient.signIn.email({
+    const { data } = await authClient.signIn.email({
       email,
       password,
       rememberMe: true,
     });
 
-    if (!user.data) {
+    if (!data) {
       throw new AppError({
         code: "UNAUTHORIZED",
-        message: "Invalid email or password",
+        message: "Invalid credentials",
       });
     }
-
-    return UserMapper.toUserRo({ user });
   }
 
   public async logout() {
-    logger.info("Logging out user");
-    const sessionId = CookieService.session.get({
-      req: this.req,
-    });
-    if (!sessionId) {
-      logger.info("No session cookie found, user is not logged in");
-      CookieService.csrf.clear({
-        res: this.res,
-      });
-      return;
+    const { data } = await authClient.signOut();
+    if (data?.success) {
+      logger.info("User logged out");
     }
-    logger.info("Session cookie found, logging out user", { sessionId });
-    logger.info("Clearing sessions..", { sessionId });
-    await this.db.session.delete({
-      where: { id: sessionId },
+    logger.error("Could not log the user out");
+    throw new AppError({
+      code: "INTERNAL",
     });
-    CookieService.csrf.clear({
-      res: this.res,
-    });
-    CookieService.session.clear({
-      res: this.res,
-    });
-    logger.info("User logged out", { sessionId });
   }
 
   public async changePassword({
