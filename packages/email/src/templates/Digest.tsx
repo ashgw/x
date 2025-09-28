@@ -2,11 +2,11 @@ import * as React from "react";
 import { Section } from "@react-email/components";
 import Layout from "./Layout";
 
-export type DigestItem = {
+export interface DigestItem {
   title: string;
   url?: string;
   body?: string;
-};
+}
 
 export default function DigestTemplate({
   title,
@@ -26,7 +26,9 @@ export default function DigestTemplate({
             <li key={i} style={styles.li}>
               <div style={styles.itemTitle}>
                 {it.url ? (
-                  <a href={it.url} style={styles.link}>{it.title}</a>
+                  <a href={it.url} style={styles.link}>
+                    {it.title}
+                  </a>
                 ) : (
                   it.title
                 )}
