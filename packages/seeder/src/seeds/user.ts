@@ -9,7 +9,7 @@ export async function seedUser() {
   const now = new Date();
 
   // Admin
-  const adminEmail = "admin@example.com";
+  const adminEmail = "a@a.com";
   const adminPlainPassword = "Admin123";
 
   const adminUser = await db.user.upsert({
