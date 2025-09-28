@@ -7,8 +7,8 @@ import {
   sessionSchemaRo,
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
-  userSchemaRo,
   userTerminateSpecificSessionSchemaDto,
+  userWithSessionRo,
 } from "~/api/models";
 import { AuthService } from "~/api/services";
 
@@ -20,14 +20,7 @@ const authService = (ctx: TrpcContext) =>
 export const userRouter = router({
   me: publicProcedure()
     .input(z.void())
-    .output(
-      z
-        .object({
-          user: userSchemaRo,
-          session: sessionSchemaRo,
-        })
-        .nullable(),
-    )
+    .output(userWithSessionRo.nullable())
     .query(async ({ ctx }) => {
       return await authService(ctx).me();
     }),
@@ -66,6 +59,17 @@ export const userRouter = router({
         currentPassword,
         newPassword,
       });
+    }),
+
+  listAllSessions: authenticatedProcedure({
+    limit: {
+      every: "2s",
+    },
+  })
+    .input(z.void())
+    .output(z.array(sessionSchemaRo))
+    .query(async ({ ctx }) => {
+      return await authService(ctx).listSessions();
     }),
 
   terminateAllActiveSessions: authenticatedProcedure({

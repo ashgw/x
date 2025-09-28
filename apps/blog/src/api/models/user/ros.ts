@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { UserRoleEnum } from "./shared";
 import { email, id } from "../shared";
+import { sessionSchemaRo } from "../session";
 
 export const userSchemaRo = z.object({
   id,
@@ -13,6 +14,11 @@ export const userSchemaRo = z.object({
   image: z.string().min(1).max(4096).optional(),
   role: z.nativeEnum(UserRoleEnum),
 });
+export const userWithSessionRo = userSchemaRo.extend({
+  session: sessionSchemaRo,
+});
 
 // ========== Types ==========
 export type UserRo = z.infer<typeof userSchemaRo>;
+
+export type UserWithSessionRo = z.infer<typeof userWithSessionRo>;
