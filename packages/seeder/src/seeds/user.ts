@@ -8,9 +8,7 @@ const SESSION_EXPIRY_SECONDS = 60 * 60 * 24 * 14; // 14 days
 export async function seedUser() {
   const now = new Date();
 
-  // =========================
-  // Admin User
-  // =========================
+  // Admin
   const adminEmail = "admin@example.com";
   const adminPlainPassword = "Admin123";
 
@@ -27,29 +25,30 @@ export async function seedUser() {
 
   const adminHash = await argon2.hash(adminPlainPassword);
 
+  // IMPORTANT: providerId = "credential", accountId = user.id
   await db.account.upsert({
     where: {
       providerId_accountId: {
-        providerId: "password",
-        accountId: adminEmail,
+        providerId: "credential",
+        accountId: adminUser.id,
       },
     },
     update: { password: adminHash, updatedAt: now },
     create: {
-      accountId: adminEmail,
-      providerId: "password",
       userId: adminUser.id,
+      providerId: "credential",
+      accountId: adminUser.id,
       password: adminHash,
       createdAt: now,
       updatedAt: now,
     },
   });
 
+  // Optional: seed a session for quick testing
   const adminSessionToken = crypto.randomBytes(48).toString("hex");
   const adminSessionExpires = new Date(
     Date.now() + SESSION_EXPIRY_SECONDS * 1000,
   );
-
   await db.session.create({
     data: {
       token: adminSessionToken,
@@ -62,11 +61,8 @@ export async function seedUser() {
     },
   });
 
-  // =========================
-  // Visitor User
-  // =========================
   const visitorEmail = "visitor@example.com";
-
+  const visitorPassword = "Visitor123";
   const visitorUser = await db.user.upsert({
     where: { email: visitorEmail },
     update: {},
@@ -77,13 +73,32 @@ export async function seedUser() {
       role: "VISITOR",
     },
   });
+  const visitorHash = await argon2.hash(visitorPassword);
+  await db.account.upsert({
+    where: {
+      providerId_accountId: {
+        providerId: "credential",
+        accountId: visitorUser.id,
+      },
+    },
+    update: { password: visitorHash, updatedAt: now },
+    create: {
+      userId: visitorUser.id,
+      providerId: "credential",
+      accountId: visitorUser.id,
+      password: visitorHash,
+      createdAt: now,
+      updatedAt: now,
+    },
+  });
 
   logger.info("Seed complete!");
-  logger.info("Admin:", {
-    email: adminUser.email,
+  logger.info("Admin creds", {
+    email: adminEmail,
     password: adminPlainPassword,
   });
-  logger.info("Visitor:", { email: visitorUser.email });
-  logger.info("Admin session token (for testing): " + adminSessionToken);
-  logger.info("Session expires at: " + adminSessionExpires.toISOString());
+  logger.info("Visitor creds", {
+    email: visitorEmail,
+    password: visitorPassword,
+  });
 }
