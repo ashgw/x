@@ -30,7 +30,7 @@ export class AuthService {
       throw error;
     }
   }
-
+  // TODO: add google support & lets see how it looks like
   public async login({ email, password }: UserLoginDto): Promise<void> {
     logger.info("Logging in user", { email });
     const { data } = await authClient.signIn.email({
@@ -47,7 +47,7 @@ export class AuthService {
     }
   }
 
-  public async logout() {
+  public async logout(): Promise<void> {
     const { data } = await authClient.signOut();
     if (data?.success) {
       logger.info("User logged out");
@@ -59,52 +59,24 @@ export class AuthService {
   }
 
   public async changePassword({
-    userId,
     currentPassword,
     newPassword,
   }: {
-    userId: string;
     currentPassword: string;
     newPassword: string;
   }): Promise<void> {
-    logger.info("Changing user password", { userId });
-    const user = await this.db.user.findUnique({
-      where: { id: userId },
-      select: { passwordHash: true },
+    logger.info("Changing user password");
+    const { data } = await authClient.changePassword({
+      currentPassword,
+      newPassword,
+      revokeOtherSessions: true,
     });
-
-    if (!user) {
-      logger.warn("User not found when changing password", { userId });
+    if (!data) {
       throw new AppError({
-        code: "NOT_FOUND",
-        message: "User not found",
+        code: "INTERNAL",
       });
     }
-
-    logger.info("Validating user provided password", { userId });
-    const ok = await this._verifyPassword({
-      plainPassword: currentPassword,
-      storedHash: user.passwordHash,
-    });
-
-    if (!ok) {
-      logger.warn("Provided password does not match the user password", {
-        userId,
-      });
-      throw new AppError({
-        code: "UNAUTHORIZED",
-        message: "Incorrect password",
-      });
-    }
-
-    const newPasswordHash = await this._hashPassword(newPassword);
-
-    await this.db.user.update({
-      where: { id: userId },
-      data: { passwordHash: newPasswordHash },
-    });
-    await this.terminateAllActiveSessions({ userId });
-    logger.info("Password changed successfully", { userId });
+    logger.info("Password changed successfully");
   }
 
   // aside from the current one the user is on
