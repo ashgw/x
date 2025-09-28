@@ -129,19 +129,19 @@ export function FirstTimeVisitorBanner({ className }: Props) {
 
   const body =
     stage === "cookie" ? (
-      <>New here? I use cookies for analytics. Your data stays private.</>
+      <>New here? I use cookies for analytics. Your data stays private</>
     ) : stage === "kWait" ? (
       <>
         {consent === "accepted" ? "Nice." : "Cool."} Press <Kbd>K</Kbd> to flip
-        through the dark themes. Your eyes will thank you.
+        through the dark themes
       </>
     ) : stage === "lWait" ? (
       <>
-        If you prefer light mode, press <Kbd>L</Kbd> to switch.
+        If you prefer light mode (psycho), press <Kbd>L</Kbd> to switch
       </>
     ) : stage === "dWait" ? (
       <>
-        Press <Kbd>D</Kbd> to return to dark.
+        Press <Kbd>D</Kbd> to return to dark
       </>
     ) : (
       <>All set. Enjoy!</>
