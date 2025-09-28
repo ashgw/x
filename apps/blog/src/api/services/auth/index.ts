@@ -40,29 +40,6 @@ export class AuthService {
     });
   }
 
-  public async signInWithGoogle({
-    callbackURL,
-  }: {
-    callbackURL?: string;
-  }): Promise<{ url: string }> {
-    const response = await auth.signInSocial({
-      body: {
-        provider: "google",
-        callbackURL: callbackURL ?? "/editor",
-      },
-      headers: this.ctx.req.headers,
-    });
-
-    if (!response.url) {
-      throw new AppError({
-        code: "INTERNAL",
-        message: "Failed to get Google OAuth URL",
-      });
-    }
-
-    return { url: response.url };
-  }
-
   public async logout(): Promise<void> {
     await auth.signOut({
       headers: this.ctx.req.headers,

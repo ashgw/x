@@ -41,10 +41,6 @@ export const userTerminateSpecificSessionSchemaDto = z.object({
   token,
 });
 
-export const userGoogleSignInSchemaDto = z.object({
-  callbackURL: z.string().optional(),
-});
-
 // ========== Types ==========
 export type UserLoginDto = z.infer<typeof userLoginSchemaDto>;
 export type UserRegisterDto = z.infer<typeof userRegisterSchemaDto>;
@@ -52,4 +48,3 @@ export type UserChangePasswordDto = z.infer<typeof userChangePasswordSchemaDto>;
 export type UserTerminateSpecificSessionDto = z.infer<
   typeof userTerminateSpecificSessionSchemaDto
 >;
-export type UserGoogleSignInDto = z.infer<typeof userGoogleSignInSchemaDto>;
