@@ -15,7 +15,7 @@ export default function DigestTemplate({
 }: {
   title: string;
   intro?: string;
-  items: DigestItem[];
+  items: readonly DigestItem[];
 }) {
   return (
     <Layout title={title}>
@@ -49,4 +49,4 @@ const styles = {
   itemTitle: { fontWeight: 600, marginBottom: "4px" },
   body: { color: "#333", fontSize: "14px", lineHeight: "1.5" },
   link: { color: "#58a6ff", textDecoration: "none" },
-};
+} as const;

@@ -1,4 +1,4 @@
-type OneOrMany<T> = T | T[];
+export type OneOrMany<T> = T | T[];
 
 export enum NotificationType {
   PERSONAL = "PERSONAL",
@@ -7,7 +7,7 @@ export enum NotificationType {
 }
 
 export interface SendParams {
-  from: string;
+  from?: string;
   to: OneOrMany<string>;
   subject: string;
   html: string;
@@ -26,3 +26,5 @@ export interface SendNotificationParams {
   type: NotificationType;
   subject?: string;
 }
+
+export type Recipient = OneOrMany<string>;

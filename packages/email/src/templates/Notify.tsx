@@ -9,46 +9,9 @@ import {
 import { Markdown } from "@react-email/markdown";
 import * as React from "react";
 import type { NotificationType } from "../types";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkStringify from "remark-stringify";
-import { visit } from "unist-util-visit";
-import type { Root, Parent } from "mdast";
+import { sanitizeMarkdown, capitalize } from "../utils/markdown";
 
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// lightweight guard: strip raw HTML tags and images; keep links/text
-function sanitizeMarkdown(input: string): string {
-  const removeHtmlAndImages = () => {
-    return (tree: Root) => {
-      visit(tree, "html", (_node, index, parent) => {
-        if (parent && typeof index === "number") {
-          (parent as Parent).children.splice(index, 1);
-        }
-      });
-      visit(tree, "image", (_node, index, parent) => {
-        if (parent && typeof index === "number") {
-          (parent as Parent).children.splice(index, 1);
-        }
-      });
-      visit(tree, "imageReference", (_node, index, parent) => {
-        if (parent && typeof index === "number") {
-          (parent as Parent).children.splice(index, 1);
-        }
-      });
-    };
-  };
-
-  const file = unified()
-    .use(remarkParse)
-    .use(removeHtmlAndImages)
-    .use(remarkStringify)
-    .processSync(input);
-
-  return String(file);
-}
+// use shared sanitizeMarkdown and capitalize utils
 
 export const NotificationTemplate = ({
   message,

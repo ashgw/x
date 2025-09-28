@@ -1,11 +1,18 @@
 import * as React from "react";
 import { Section, Text } from "@react-email/components";
 import Layout from "./Layout";
+const styles = {
+  p: { color: "#333", fontSize: "15px", lineHeight: "1.5" },
+} as const;
 import { siteName } from "@ashgw/constants";
 
-export default function WelcomeTemplate({ userName }: { userName?: string }) {
+export interface WelcomeProps {
+  readonly userName?: string;
+}
+
+export default function WelcomeTemplate({ userName }: WelcomeProps) {
   return (
-    <Layout title={`Welcome to ${siteName}`}>
+    <Layout title={`Welcome to ${siteName}`} previewText="You are all set">
       <Section>
         <Text style={styles.p}>
           {userName ? `Hi ${userName},` : "Hi,"} your email is verified. You are
@@ -16,7 +23,3 @@ export default function WelcomeTemplate({ userName }: { userName?: string }) {
     </Layout>
   );
 }
-
-const styles = {
-  p: { color: "#333", fontSize: "15px", lineHeight: "1.5" },
-};

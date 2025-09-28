@@ -14,15 +14,22 @@ interface LayoutProps {
   title?: string;
   children: React.ReactNode;
   footerNote?: string;
+  previewText?: string;
 }
 
-export default function Layout({ title, children, footerNote }: LayoutProps) {
+export default function Layout({
+  title,
+  children,
+  footerNote,
+  previewText,
+}: LayoutProps) {
   const heading = title ?? siteName;
 
   return (
     <Html>
       <Head />
       <Body style={styles.body}>
+        {previewText ? <div style={styles.preheader}>{previewText}</div> : null}
         <table
           role="presentation"
           width="100%"
@@ -80,4 +87,13 @@ const styles = {
   footer: { padding: "16px 20px", textAlign: "center" as const },
   footerText: { fontSize: "12px", color: "#666666", margin: "0 0 4px 0" },
   footerSub: { fontSize: "12px", color: "#999999", margin: 0 },
+  preheader: {
+    display: "none",
+    visibility: "hidden" as const,
+    overflow: "hidden",
+    opacity: 0,
+    color: "transparent",
+    height: 0,
+    width: 0,
+  },
 };

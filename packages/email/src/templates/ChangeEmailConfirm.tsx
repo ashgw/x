@@ -37,4 +37,4 @@ const styles = {
     fontWeight: 600,
   },
   ctaWrap: { margin: "16px 0" },
-};
+} as const;
