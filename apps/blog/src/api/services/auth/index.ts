@@ -34,6 +34,12 @@ export class AuthService {
     });
   }
 
+  public async listSessions(): unknown {
+    const sessions = await auth.listSessions({
+      headers: headers(),
+    });
+  }
+
   public async terminateSpecificSession({
     token,
   }: {
