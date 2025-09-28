@@ -1,6 +1,11 @@
-import type { UserRo } from "../models";
+import type { auth } from "@ashgw/auth";
 
-// role comes in as a string (better auth discrepancy, didnt allow enums)
-export interface UserWithAuthSessionsQuery extends Omit<UserRo, "role"> {
-  role: string;
-}
+type ExtractUser<T> = T extends { response: { user: infer U } }
+  ? U
+  : T extends { user: infer U }
+    ? U
+    : never;
+
+export type UserAuthQuery = ExtractUser<
+  Awaited<ReturnType<typeof auth.getSession>>
+>;

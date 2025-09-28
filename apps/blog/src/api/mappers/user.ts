@@ -1,14 +1,10 @@
 import type { UserRo } from "../models";
-import type { UserWithAuthSessionsQuery } from "../query-helpers/user";
+import type { UserAuthQuery } from "../query-helpers/user";
 import { UserRoleEnum } from "../models";
 import { AppError } from "@ashgw/error";
 
 export class UserMapper {
-  public static toUserRo({
-    user,
-  }: {
-    user: UserWithAuthSessionsQuery;
-  }): UserRo {
+  public static toUserRo({ user }: { user: UserAuthQuery }): UserRo {
     return {
       id: user.id,
       email: user.email,

@@ -38,6 +38,7 @@ export class AuthService {
     const sessions = await auth.listSessions({
       headers: headers(),
     });
+    sessions.map((s) => s.)
   }
 
   public async terminateSpecificSession({
