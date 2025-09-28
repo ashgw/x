@@ -1,10 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { Loader2, Shield, XCircle } from "@ashgw/design/icons";
 import { toast } from "@ashgw/design/ui";
-
 import {
   Badge,
   Button,
@@ -46,6 +46,7 @@ export function SessionsList() {
   );
   const [terminatingAllSessions, setTerminatingAllSessions] = useState(false);
 
+  const router = useRouter();
   // fetch sessions
   const { data: sessions = [], isLoading } =
     trpcClientSide.user.listAllSessions.useQuery();
@@ -70,6 +71,7 @@ export function SessionsList() {
           void utils.user.listAllSessions.invalidate();
           toast.success("All sessions terminated successfully");
         }, 500);
+        router.refresh();
       },
       onError: (error) => {
         setTerminatingAllSessions(false);
@@ -86,6 +88,7 @@ export function SessionsList() {
           void utils.user.listAllSessions.invalidate();
           toast.success("Session terminated successfully");
         }, 500);
+        router.refresh();
       },
       onError: (error, { token }) => {
         setSessionLoading(token, false);

@@ -74,7 +74,7 @@ export function ProfilePage() {
       await logout();
       await utils.user.me.invalidate();
       toast.success("Successfully logged out");
-      router.push("/login");
+      router.refresh();
     } catch (error) {
       logger.error("Logout failed", { error });
       toast.error("Failed to logout, please try again later");
