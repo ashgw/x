@@ -180,7 +180,7 @@ export function SessionsList() {
                         variant="destructive"
                         onClick={() =>
                           terminateSpecificSessionMutation.mutate({
-                            sessionId: session.id,
+                            token: ...
                           })
                         }
                         disabled={isLoading}
