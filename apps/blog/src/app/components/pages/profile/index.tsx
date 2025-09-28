@@ -138,7 +138,7 @@ export function ProfilePage() {
                   <CardDescription>Manage your device sessions</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <SessionsList />
+                  <SessionsList currentSessionToken={user.session.token} />
                 </CardContent>
               </Card>
             </motion.div>

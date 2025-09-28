@@ -1,3 +1,4 @@
+// components/SessionsList.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -21,10 +22,7 @@ import { trpcClientSide } from "~/trpc/callers/client";
 
 const tableVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const rowVariants = {
@@ -41,23 +39,42 @@ const rowVariants = {
   },
 };
 
-export function SessionsList() {
+interface SessionsListProps {
+  currentSessionToken: string;
+}
+
+export function SessionsList({ currentSessionToken }: SessionsListProps) {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
     new Set(),
   );
   const [terminatingAllSessions, setTerminatingAllSessions] = useState(false);
 
   const router = useRouter();
-  // fetch sessions
+  const utils = trpcClientSide.useUtils();
+
+  // fetch sessions for table
   const { data: sessions = [], isLoading } =
     trpcClientSide.user.listAllSessions.useQuery();
 
-  const utils = trpcClientSide.useUtils();
+  // logout mutation to clear cookie server-side
+  const logoutMutation = trpcClientSide.user.logout.useMutation();
 
-  const setSessionLoading = (sessionId: string, isLoading: boolean) => {
+  const hardLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+    } finally {
+      await Promise.allSettled([
+        utils.user.me.invalidate(),
+        utils.user.listAllSessions.invalidate(),
+      ]);
+      router.replace("/login");
+    }
+  };
+
+  const setSessionLoading = (sessionId: string, state: boolean) => {
     setLoadingSessionIds((prev) => {
       const next = new Set(prev);
-      if (isLoading) next.add(sessionId);
+      if (state) next.add(sessionId);
       else next.delete(sessionId);
       return next;
     });
@@ -66,34 +83,39 @@ export function SessionsList() {
   const terminateAllSessionsMutation =
     trpcClientSide.user.terminateAllActiveSessions.useMutation({
       onMutate: () => setTerminatingAllSessions(true),
-      onSuccess: () => {
-        setTimeout(() => {
-          setTerminatingAllSessions(false);
-          void utils.user.listAllSessions.invalidate();
-          toast.success("All sessions terminated successfully");
-        }, 500);
-        router.refresh();
+      onSuccess: async () => {
+        toast.success("All sessions terminated");
+        // includes current session, force immediate logout
+        await hardLogout();
       },
       onError: (error) => {
         setTerminatingAllSessions(false);
         toast.error(error.message);
+      },
+      onSettled: () => {
+        setTerminatingAllSessions(false);
       },
     });
 
   const terminateSpecificSessionMutation =
     trpcClientSide.user.terminateSpecificSession.useMutation({
       onMutate: ({ token }) => setSessionLoading(token, true),
-      onSuccess: (_, { token }) => {
-        setTimeout(() => {
-          setSessionLoading(token, false);
-          void utils.user.listAllSessions.invalidate();
-          toast.success("Session terminated successfully");
-        }, 500);
+      onSuccess: async (_data, { token }) => {
+        toast.success("Session terminated");
+        if (currentSessionToken && token === currentSessionToken) {
+          // killed the active device session
+          await hardLogout();
+          return;
+        }
+        await utils.user.listAllSessions.invalidate();
         router.refresh();
       },
       onError: (error, { token }) => {
         setSessionLoading(token, false);
         toast.error(error.message);
+      },
+      onSettled: (_data, _err, vars) => {
+        if (vars.token) setSessionLoading(vars.token, false);
       },
     });
 
@@ -147,9 +169,10 @@ export function SessionsList() {
           <TableBody>
             <AnimatePresence mode="popLayout">
               {sessions.map((session) => {
-                const isLoading =
+                const isRowLoading =
                   loadingSessionIds.has(session.token) ||
                   terminatingAllSessions;
+                const isCurrent = currentSessionToken === session.token;
 
                 return (
                   <motion.tr
@@ -159,6 +182,7 @@ export function SessionsList() {
                     animate="visible"
                     exit="exit"
                     className="group hover:bg-accent/55"
+                    aria-current={isCurrent ? "true" : "false"}
                   >
                     <TableCell className="font-medium">
                       {formatDate(session.createdAt)}
@@ -169,7 +193,11 @@ export function SessionsList() {
                         variant={session.isExpired ? "destructive" : "success"}
                         className="rounded-sm px-2 py-0.5 text-xs font-medium"
                       >
-                        {session.isExpired ? "Expired" : "Active"}
+                        {session.isExpired
+                          ? "Expired"
+                          : isCurrent
+                            ? "Active • This device"
+                            : "Active"}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -180,10 +208,15 @@ export function SessionsList() {
                             token: session.token,
                           })
                         }
-                        disabled={isLoading}
-                        className="opacity-70 transition-opacity group-hover:opacity-100"
+                        disabled={isRowLoading}
+                        className="opacity:70 transition-opacity group-hover:opacity-100"
+                        title={
+                          isCurrent
+                            ? "Terminate current device session"
+                            : "Terminate session"
+                        }
                       >
-                        {isLoading ? (
+                        {isRowLoading ? (
                           <Loading />
                         ) : (
                           <XCircle className="mr-2 h-4 w-4" />
