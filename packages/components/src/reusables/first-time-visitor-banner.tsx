@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "@ashgw/design/motion";
-import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
+import { Banner, Button, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
 type Stage = "cookie" | "kWait" | "lWait" | "dWait" | "final" | "done";
@@ -13,8 +12,8 @@ interface Props {
 }
 
 const LS_COOKIE = "privacy:cookie-consent";
-const LS_FLOW = "onboard:theme-flow"; // "completed" when fully done
-const LS_THEME_INFO = "onboard:theme-info"; // keep writing "done" for back-compat
+const LS_FLOW = "onboard:theme-flow";
+const LS_THEME_INFO = "onboard:theme-info";
 
 function Kbd({
   children,
@@ -26,7 +25,7 @@ function Kbd({
   return (
     <kbd
       className={cn(
-        "inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs font-mono font-medium shadow-sm relative -top-0.5",
+        "relative -top-0.5 inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 font-mono text-xs font-medium shadow-sm",
         className,
       )}
     >
@@ -40,7 +39,7 @@ export function FirstTimeVisitorBanner({ className }: Props) {
   const [stage, setStage] = useState<Stage>("cookie");
   const [consent, setConsent] = useState<Consent>(null);
 
-  // Initialize from storage (and respect old key)
+  // Initialize from storage (and respect legacy key)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -78,19 +77,14 @@ export function FirstTimeVisitorBanner({ className }: Props) {
       const key = e.key.toLowerCase();
 
       if (stage === "kWait" && key === "k") {
-        // User cycled dark themes; now tease light mode
         setStage("lWait");
         return;
       }
-
       if (stage === "lWait" && key === "l") {
-        // User went light, now nudge back to dark
         setStage("dWait");
         return;
       }
-
       if (stage === "dWait" && key === "d") {
-        // Back to comfy dark, show final message
         setStage("final");
         return;
       }
@@ -103,13 +97,10 @@ export function FirstTimeVisitorBanner({ className }: Props) {
   // Final auto-dismiss + persist completion
   useEffect(() => {
     if (stage !== "final") return;
-    // Mark flow complete (and legacy key for older checks)
     localStorage.setItem(LS_FLOW, "completed");
     localStorage.setItem(LS_THEME_INFO, "done");
 
-    const t = setTimeout(() => {
-      setStage("done");
-    }, 3000);
+    const t = setTimeout(() => setStage("done"), 3000);
     return () => clearTimeout(t);
   }, [stage]);
 
@@ -127,26 +118,6 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     setStage("kWait");
   }, [analytics]);
 
-  const body =
-    stage === "cookie" ? (
-      <>New here? I use cookies for analytics. Your data stays private</>
-    ) : stage === "kWait" ? (
-      <>
-        {consent === "accepted" ? "Nice." : "Cool."} Press <Kbd>K</Kbd> to flip
-        through the dark themes
-      </>
-    ) : stage === "lWait" ? (
-      <>
-        If you prefer light mode (psycho), press <Kbd>L</Kbd> to switch
-      </>
-    ) : stage === "dWait" ? (
-      <>
-        Press <Kbd>D</Kbd> to return to dark
-      </>
-    ) : (
-      <>All set. Enjoy!</>
-    );
-
   const show =
     stage === "cookie" ||
     stage === "kWait" ||
@@ -155,44 +126,52 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     stage === "final";
 
   return (
-    <AnimatePresence>
-      {show ? (
-        <motion.div
-          key={stage}
-          initial={{ opacity: 0, y: 120, scale: 0.7 }}
-          animate={{ opacity: 1, y: 0, scale: 0.95 }}
-          exit={{ opacity: 0, y: 120, scale: 0.7 }}
-          transition={{ type: "tween", duration: 0.45, ease: "easeOut" }}
-          className={cn("fixed bottom-6 right-6 z-50 max-w-[420px]", className)}
-        >
-          <SurfaceCard
-            animation="ringGlowPulse"
-            isBlur
-            role="dialog"
-            aria-live="polite"
-            aria-label="First-time visitor banner"
-          >
-            <div className="text-semibold text-dim-400">{body}</div>
+    <Banner
+      open={show}
+      position="bottom-right"
+      instanceKey={stage} // forces full exit → enter between steps
+      className={className}
+      durationMs={320}
+      role="dialog"
+      ariaLabel="First-time visitor banner"
+    >
+      <div className="text-semibold text-dim-400">
+        {stage === "cookie" ? (
+          <>New here? I use cookies for analytics. Your data stays private.</>
+        ) : stage === "kWait" ? (
+          <>
+            {consent === "accepted" ? "Noted." : "Understood."} Press{" "}
+            <Kbd>K</Kbd> to cycle through dark themes.
+          </>
+        ) : stage === "lWait" ? (
+          <>
+            Prefer light? Press <Kbd>L</Kbd> to switch.
+          </>
+        ) : stage === "dWait" ? (
+          <>
+            Press <Kbd>D</Kbd> to return to dark.
+          </>
+        ) : (
+          <>All set. Enjoy!</>
+        )}
+      </div>
 
-            <div className="mt-3 flex items-center justify-end gap-2">
-              {stage === "cookie" ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={rejectCookies}
-                    className="text-xs"
-                  >
-                    Reject
-                  </Button>
-                  <Button onClick={acceptCookies} className="text-xs">
-                    Accept
-                  </Button>
-                </>
-              ) : null}
-            </div>
-          </SurfaceCard>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+      <div className="mt-3 flex items-center justify-end gap-2">
+        {stage === "cookie" ? (
+          <>
+            <Button
+              variant="outline"
+              onClick={rejectCookies}
+              className="text-xs"
+            >
+              Reject
+            </Button>
+            <Button onClick={acceptCookies} className="text-xs">
+              Accept
+            </Button>
+          </>
+        ) : null}
+      </div>
+    </Banner>
   );
 }
