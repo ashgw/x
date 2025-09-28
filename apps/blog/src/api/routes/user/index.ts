@@ -71,9 +71,7 @@ export const userRouter = router({
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      await userAuthService(ctx).terminateAllActiveSessions({
-        userId: ctx.user.id,
-      });
+      await userAuthService(ctx).terminateAllActiveSessions();
     }),
 
   terminateSpecificSession: authenticatedProcedure({
@@ -85,7 +83,6 @@ export const userRouter = router({
     .output(z.void())
     .mutation(async ({ ctx, input: { sessionId } }) => {
       await userAuthService(ctx).terminateSpecificSession({
-        sessionId,
         userId: ctx.user.id,
       });
     }),
