@@ -653,6 +653,9 @@ importers:
       '@ashgw/db':
         specifier: workspace:*
         version: link:../db
+      '@ashgw/email':
+        specifier: workspace:*
+        version: link:../email
       '@ashgw/env':
         specifier: workspace:*
         version: link:../env
