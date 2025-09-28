@@ -13,12 +13,8 @@ export const userSchemaRo = z.object({
   name: z.string().min(1).max(30).nullable(),
   image: z.string().min(1).max(4096).optional(),
   role: z.nativeEnum(UserRoleEnum),
-});
-export const userWithSessionRo = userSchemaRo.extend({
   session: sessionSchemaRo,
 });
 
 // ========== Types ==========
 export type UserRo = z.infer<typeof userSchemaRo>;
-
-export type UserWithSessionRo = z.infer<typeof userWithSessionRo>;

@@ -2,9 +2,17 @@ import type { UserRo } from "../models";
 import type { UserAuthQuery } from "../query-helpers/user";
 import { UserRoleEnum } from "../models";
 import { AppError } from "@ashgw/error";
+import type { SessionAuthQuery } from "../query-helpers/session";
+import { SessionMapper } from "./session";
 
 export class UserMapper {
-  public static toUserRo({ user }: { user: UserAuthQuery }): UserRo {
+  public static toUserRo({
+    user,
+    session,
+  }: {
+    user: UserAuthQuery;
+    session: SessionAuthQuery;
+  }): UserRo {
     return {
       id: user.id,
       email: user.email,
@@ -14,6 +22,7 @@ export class UserMapper {
       updatedAt: user.updatedAt,
       image: user.image ? user.image : undefined,
       role: this._mapRoleFromAuthQuery({ role: user.role }),
+      session: SessionMapper.toRo({ session }),
     };
   }
 
