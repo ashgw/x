@@ -1,4 +1,3 @@
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
@@ -6,9 +5,9 @@ generator client {
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  directUrl    = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum PostCategory {
@@ -33,16 +32,16 @@ enum UserRole {
 }
 
 model Post {
-  slug          String       @id @db.VarChar(255)
-  title         String       @db.VarChar(30)
-  summary       String       @db.VarChar(100)
+  slug          String       @id 
+  title         String
+  summary       String
   firstModDate  DateTime     @default(now())
   lastModDate   DateTime     @updatedAt
-  isReleased    Boolean
-  minutesToRead Int          @db.SmallInt
-  tags          String[]     @db.VarChar(255)
+  isReleased    Boolean      @default(false)
+  minutesToRead Int
+  tags          String[]
   category      PostCategory
-  mdxText       String       @db.Text
+  mdxText       String
   viewsCount    Int          @default(0)
 
   viewWindows PostViewWindow[]
@@ -52,18 +51,18 @@ model Post {
 }
 
 model TrashPost {
-  id            String       @id @default(cuid())
-  originalSlug  String       @db.VarChar(255)
-  title         String       @db.VarChar(30)
-  summary       String       @db.VarChar(100)
+  id            String   @id @default(cuid())
+  originalSlug  String
+  title         String
+  summary       String
   firstModDate  DateTime
   lastModDate   DateTime
   wasReleased   Boolean
-  minutesToRead Int          @db.SmallInt
-  tags          String[]     @db.VarChar(255)
+  minutesToRead Int
+  tags          String[]
   category      PostCategory
-  mdxText       String       @db.Text
-  deletedAt     DateTime     @default(now())
+  mdxText       String
+  deletedAt     DateTime @default(now())
 
   @@index([originalSlug])
   @@index([deletedAt])
@@ -71,76 +70,88 @@ model TrashPost {
 
 model PostViewWindow {
   id          String   @id @default(cuid())
-  postSlug    String   @db.VarChar(255)
-  fingerprint String   @db.VarChar(64) // hash(slug:ip:ua)
+  postSlug    String
+  fingerprint String   @db.VarChar(64)    // hash(slug:ip:ua) → real fixed length
   bucketStart DateTime @db.Timestamptz(6) // start of 24h bucket (UTC midnight)
   post        Post     @relation(fields: [postSlug], references: [slug], onDelete: Cascade)
 
   @@unique([postSlug, fingerprint, bucketStart])
   @@index([bucketStart])
+  @@index([postSlug])
   @@index([postSlug, bucketStart])
 }
 
 model Upload {
-  key         String       @id @db.VarChar(512)
+  key         String   @id 
   type        UploadType
   entityType  ResourceType @default(POST)
-  contentType String       @db.VarChar(100)
-  uploadedAt  DateTime     @default(now())
+  contentType String
+  uploadedAt  DateTime @default(now())
+
+  @@index([uploadedAt])
 }
 
-
 model User {
-  id            String       @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String
-  email         String
+  email         String    
   emailVerified Boolean   @default(false)
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
+  role          UserRole  @default(VISITOR)
+
   sessions      Session[]
   accounts      Account[]
-  role          UserRole @default(VISITOR)
 
   @@unique([email])
 }
 
 model Session {
-  id            String       @id @default(cuid())
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  expiresAt  DateTime
+  token      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  ipAddress  String?
+  userAgent  String?
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
+  @@index([userId])
 }
 
 model Account {
-  id            String       @id @default(cuid())
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  id                     String   @id @default(cuid())
+  accountId              String
+  providerId             String
+  userId                 String
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken            String?
+  refreshToken           String?
+  idToken                String?
+  accessTokenExpiresAt   DateTime?
+  refreshTokenExpiresAt  DateTime?
+  scope                  String?
+  password               String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @default(now()) @updatedAt
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@index([providerId, accountId])
 }
 
 model Verification {
-  id            String       @id @default(cuid())
+  id         String   @id @default(cuid())
   identifier String
   value      String
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
+
+  @@index([identifier])
+  @@index([expiresAt])
+  @@unique([identifier, value])
 }
