@@ -2,6 +2,9 @@ import type { PrismaClientOptions } from "@prisma/client/runtime/library";
 import type { MaybeUndefined } from "ts-roids";
 import { env } from "@ashgw/env";
 import { PrismaClient as FullPrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
 
 export type DatabaseClient = Omit<
   FullPrismaClient,
@@ -39,6 +42,7 @@ const db =
   (new FullPrismaClient({
     datasourceUrl: env.DATABASE_URL,
     errorFormat,
+    adapter,
     log,
     transactionOptions,
   }) satisfies DatabaseClient);
