@@ -6,6 +6,7 @@ import { siteName } from "@ashgw/constants";
 import argon2 from "argon2";
 import { authEndpoints } from "./consts";
 import { monitor } from "@ashgw/monitor";
+import { nextCookies } from "better-auth/next-js"; //  needed for server side
 
 const sessionExpiry = 60 * 60 * 24 * 14; // 14 days
 const canSignUp = false;
@@ -131,4 +132,5 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
     minPasswordLength: 8,
   },
+  plugins: [nextCookies()], // make sure this is the last plugin in the array
 });
