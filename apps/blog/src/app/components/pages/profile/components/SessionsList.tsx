@@ -147,7 +147,6 @@ export function SessionsList() {
           <TableBody>
             <AnimatePresence mode="popLayout">
               {sessions.map((session) => {
-                const isExpired = new Date(session.updatedAt) < new Date();
                 const isLoading =
                   loadingSessionIds.has(session.token) ||
                   terminatingAllSessions;
@@ -167,10 +166,10 @@ export function SessionsList() {
                     <TableCell>{formatDate(session.updatedAt)}</TableCell>
                     <TableCell>
                       <Badge
-                        variant={isExpired ? "destructive" : "success"}
+                        variant={session.isExpired ? "destructive" : "success"}
                         className="rounded-sm px-2 py-0.5 text-xs font-medium"
                       >
-                        {isExpired ? "Expired" : "Active"}
+                        {session.isExpired ? "Expired" : "Active"}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
