@@ -29,6 +29,14 @@ export const auth = betterAuth({
   },
   user: {
     modelName: "User",
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "VISITOR",
+        input: false,
+      },
+    },
     deleteUser: {
       afterDelete: async (user) => {
         logger.info(`User deleted: ${user.id}`);

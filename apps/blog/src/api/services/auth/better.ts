@@ -68,4 +68,23 @@ export class BetterAuthService {
       headers: headers(),
     });
   }
+
+  public async me(): Promise<Optional<UserRo>> {
+    try {
+      return await this._getSession();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  private async _getSession() {
+    const response = await auth.getSession({
+      headers: headers(),
+    });
+    if (!response?.user) {
+      throw new AppError({
+        code: "UNAUTHORIZED",
+      });
+    }
+  }
 }
