@@ -15,7 +15,7 @@ export const auth = betterAuth({
   secret: env.AUTH_ENCRYPTON_KEY,
   appName: siteName,
   basePath: authEndpoints.basePath,
-  baseURL: env.NEXT_PUBLIC_BLOG_URL,
+  baseURL: env.NEXT_PUBLIC_BLOG_URL, // TODO: this should be the API or "app"
   session: {
     expiresIn: sessionExpiry,
     modelName: "Session",
@@ -110,11 +110,12 @@ export const auth = betterAuth({
     },
   },
   socialProviders: {
-    google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-      disableSignUp,
-    },
+    // TODO: uncomment if needed
+    // google: {
+    //   clientId: env.GOOGLE_CLIENT_ID,
+    //   clientSecret: env.GOOGLE_CLIENT_SECRET,
+    //   disableSignUp,
+    // },
   },
   emailAndPassword: {
     enabled: true,
