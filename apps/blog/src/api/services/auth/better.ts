@@ -86,7 +86,6 @@ export class BetterAuthService {
         code: "UNAUTHORIZED",
       });
     }
-
-    response.user.
+    UserMapper.toUserRo({ user: response.user });
   }
 }
