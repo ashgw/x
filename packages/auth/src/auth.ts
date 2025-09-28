@@ -132,5 +132,9 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
     minPasswordLength: 8,
   },
+  trustedOrigins:
+    env.NEXT_PUBLIC_CURRENT_ENV === "production"
+      ? [env.NEXT_PUBLIC_BLOG_URL, env.NEXT_PUBLIC_WWW_URL]
+      : undefined,
   plugins: [nextCookies()], // make sure this is the last plugin in the array
 });
