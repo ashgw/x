@@ -10,9 +10,13 @@ export default function ChangeEmailConfirmTemplate({
   return (
     <Layout title="Confirm email change">
       <Section>
-        <Text style={styles.p}>Confirm your email change by clicking below.</Text>
+        <Text style={styles.p}>
+          Confirm your email change by clicking below.
+        </Text>
         <p style={styles.ctaWrap}>
-          <a href={confirmUrl} style={styles.btn}>Confirm Email Change</a>
+          <a href={confirmUrl} style={styles.btn}>
+            Confirm Email Change
+          </a>
         </p>
         <Text style={styles.link}>{confirmUrl}</Text>
       </Section>
