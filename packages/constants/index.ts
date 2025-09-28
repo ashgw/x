@@ -1,3 +1,4 @@
+export const notifyEmail = "no-reply@notify.ashgw.me";
 export const ossEmail = "oss@ashgw.me";
 export const repoSource = "https://github.com/ashgw/x";
 export const creator = "@rccyx";
