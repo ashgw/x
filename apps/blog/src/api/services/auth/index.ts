@@ -3,12 +3,12 @@ import { auth } from "@ashgw/auth";
 import type { SessionRo, UserLoginDto, UserRo } from "~/api/models";
 import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
-import type { NextRequest } from "next/server";
+import type { TrpcContext } from "~/trpc/context";
 
 export class AuthService {
-  private readonly req: NextRequest;
-  constructor({ req }: { req: NextRequest }) {
-    this.req = req;
+  private readonly ctx: TrpcContext;
+  constructor({ ctx }: { ctx: TrpcContext }) {
+    this.ctx = ctx;
   }
   public async login({ email, password }: UserLoginDto): Promise<void> {
     await auth.signInEmail({
@@ -16,25 +16,25 @@ export class AuthService {
         email,
         password,
       },
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
   }
 
   public async logout(): Promise<void> {
     await auth.signOut({
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
   }
 
   public async terminateAllActiveSessions(): Promise<void> {
     await auth.revokeSessions({
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
   }
 
   public async listSessions(): Promise<SessionRo[]> {
     const sessions = await auth.listSessions({
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
     return sessions.map((s) => SessionMapper.toRo({ session: s }));
   }
@@ -48,7 +48,7 @@ export class AuthService {
       body: {
         token,
       },
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
         newPassword,
         revokeOtherSessions: true,
       },
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
   }
 
@@ -80,7 +80,7 @@ export class AuthService {
 
   private async _getUserWithSession(): Promise<UserRo> {
     const response = await auth.getSession({
-      headers: this.req.headers,
+      headers: this.ctx.req.headers,
     });
     if (!response?.user) {
       throw new AppError({

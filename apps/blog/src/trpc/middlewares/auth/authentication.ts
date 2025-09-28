@@ -7,11 +7,7 @@ import { AuthService } from "~/api/services";
 export async function isAuthenticated(input: {
   ctx: TrpcContext;
 }): Promise<UserRo> {
-  const user = await new AuthService({
-    db: input.ctx.db,
-    req: input.ctx.req,
-    res: input.ctx.res,
-  }).me();
+  const user = await new AuthService({ ctx: input.ctx }).me();
 
   if (!user) {
     throw new TRPCError({

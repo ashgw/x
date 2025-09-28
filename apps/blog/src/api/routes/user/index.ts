@@ -14,7 +14,7 @@ import { AuthService } from "~/api/services";
 
 const authService = (ctx: TrpcContext) =>
   new AuthService({
-    db: ctx.db,
+    ctx,
   });
 
 export const userRouter = router({
