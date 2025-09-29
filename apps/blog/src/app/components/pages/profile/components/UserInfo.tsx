@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "@ashgw/design/motion";
 import { Crown, User } from "@ashgw/design/icons";
 
 import { Badge } from "@ashgw/design/ui";
@@ -12,55 +11,23 @@ interface UserInfoProps {
   user: UserRo;
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
-  },
-};
-
 export function UserInfo({ user }: UserInfoProps) {
   const isAdmin = user.role === UserRoleEnum.ADMIN;
 
   return (
-    <motion.div
-      className="space-y-4"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.1,
-          },
-        },
-      }}
-    >
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
-          Email
-        </label>
+    <div className="space-y-4">
+      <div>
+        <label className="text-muted-foreground font-medium">Email</label>
         <p className="mt-1">{user.email}</p>
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
-          Name
-        </label>
+      <div>
+        <label className="text-muted-foreground font-medium">Name</label>
         <p className="mt-1">{user.name}</p>
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
-          Role
-        </label>
+      <div>
+        <label className="text-muted-foreground font-medium">Role</label>
         <div className="mt-2 flex items-center gap-2">
           <Badge
             appearance={"outline"}
@@ -80,10 +47,10 @@ export function UserInfo({ user }: UserInfoProps) {
             </span>
           ) : null}
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
+      <div>
+        <label className="text-muted-foreground font-medium">
           Member Since
         </label>
         <p className="mt-1">
@@ -93,7 +60,7 @@ export function UserInfo({ user }: UserInfoProps) {
             day: "numeric",
           })}
         </p>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
