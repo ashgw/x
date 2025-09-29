@@ -149,7 +149,7 @@ export function ProfilePage() {
         {/* Logout */}
         <div className="flex justify-end pt-4">
           <Button
-            variant="destructive"
+            variant="destructive:outline"
             onClick={handleLogout}
             className="flex items-center gap-2"
           >
