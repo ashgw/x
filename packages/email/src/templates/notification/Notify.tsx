@@ -14,17 +14,17 @@ import { sanitizeMarkdown, capitalize } from "../utils/markdown";
 // use shared sanitizeMarkdown and capitalize utils
 
 export const NotificationTemplate = ({
-  message,
+  messageMd,
   type,
 }: {
-  message: string; // Markdown string
+  messageMd: string; // Markdown string
   type: NotificationType;
 }) => {
   const typeLabel =
     typeof type === "string"
       ? capitalize(type.toLowerCase()) + " Notification"
       : "Notification";
-  const safeMessage = sanitizeMarkdown(message);
+  const safeMessage = sanitizeMarkdown(messageMd);
 
   return (
     <Html>

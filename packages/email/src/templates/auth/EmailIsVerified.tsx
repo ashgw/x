@@ -6,11 +6,11 @@ const styles = {
 } as const;
 import { siteName } from "@ashgw/constants";
 
-export interface WelcomeProps {
+export interface EmailIsVerifiedProps {
   readonly userName?: string;
 }
 
-export default function WelcomeTemplate({ userName }: WelcomeProps) {
+export default function EmailIsVerified({ userName }: EmailIsVerifiedProps) {
   return (
     <Layout title={`Welcome to ${siteName}`} previewText="You are all set">
       <Section>
