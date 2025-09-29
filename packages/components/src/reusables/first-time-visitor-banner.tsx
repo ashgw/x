@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Banner, Button, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
-type Stage = "cookie" | "kWait" | "lWait" | "dWait" | "final" | "done";
+type Stage = "init" | "cookie" | "kWait" | "lWait" | "dWait" | "final" | "done";
 type Consent = "accepted" | "rejected" | null;
 
 interface Props {
@@ -36,58 +36,34 @@ function Kbd({
 
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
-  const [stage, setStage] = useState<Stage>("cookie");
-  const [consent, setConsent] = useState<Consent>(null);
 
-  // Initialize from storage (and respect legacy key)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // Synchronous initial read, avoids first-frame "cookie" render
+  const [consent, setConsent] = useState<Consent>(() => {
+    if (typeof window === "undefined") return null;
+    const c = localStorage.getItem(LS_COOKIE) as Consent | null;
+    return c === "accepted" ? "accepted" : c === "rejected" ? "rejected" : null;
+  });
 
-    const cookie = localStorage.getItem(LS_COOKIE) as Consent | null;
+  const [stage, setStage] = useState<Stage>(() => {
+    if (typeof window === "undefined") return "init";
     const flow = localStorage.getItem(LS_FLOW);
     const legacy = localStorage.getItem(LS_THEME_INFO);
+    if (flow === "completed" || legacy === "done") return "done";
+    const c = localStorage.getItem(LS_COOKIE) as Consent | null;
+    return c ? "kWait" : "cookie";
+  });
 
-    if (flow === "completed" || legacy === "done") {
-      setConsent(
-        cookie === "accepted"
-          ? "accepted"
-          : cookie === "rejected"
-            ? "rejected"
-            : null,
-      );
-      setStage("done");
-      return;
-    }
-
-    if (!cookie) {
-      setConsent(null);
-      setStage("cookie");
-    } else {
-      setConsent(cookie);
-      setStage("kWait");
-    }
-  }, []);
-
-  // Handle key presses per stage
+  // Key handling
   useEffect(() => {
-    if (stage === "cookie" || stage === "done") return;
+    if (stage === "cookie" || stage === "done" || stage === "init") return;
 
     function handleKey(e: KeyboardEvent) {
       if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
       const key = e.key.toLowerCase();
 
-      if (stage === "kWait" && key === "k") {
-        setStage("lWait");
-        return;
-      }
-      if (stage === "lWait" && key === "l") {
-        setStage("dWait");
-        return;
-      }
-      if (stage === "dWait" && key === "d") {
-        setStage("final");
-        return;
-      }
+      if (stage === "kWait" && key === "k") setStage("lWait");
+      else if (stage === "lWait" && key === "l") setStage("dWait");
+      else if (stage === "dWait" && key === "d") setStage("final");
     }
 
     window.addEventListener("keydown", handleKey);
@@ -99,7 +75,6 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     if (stage !== "final") return;
     localStorage.setItem(LS_FLOW, "completed");
     localStorage.setItem(LS_THEME_INFO, "done");
-
     const t = setTimeout(() => setStage("done"), 3000);
     return () => clearTimeout(t);
   }, [stage]);
@@ -125,11 +100,14 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     stage === "dWait" ||
     stage === "final";
 
+  // Do not mount the Banner at all unless we intend to show it
+  if (!show) return null;
+
   return (
     <Banner
-      open={show}
+      open
       position="bottom-right"
-      instanceKey={stage} // forces full exit → enter between steps
+      instanceKey={stage}
       className={className}
       durationMs={320}
       role="dialog"
