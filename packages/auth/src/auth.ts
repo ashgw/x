@@ -182,7 +182,6 @@ export const auth = betterAuth({
     }),
     nextCookies(),
   ],
-
   rateLimit: {
     enabled: env.NEXT_PUBLIC_CURRENT_ENV === "production",
     storage: "secondary-storage",
@@ -192,15 +191,10 @@ export const auth = betterAuth({
       get: async (key) => {
         const rec = await rl.inspect(key);
         return rec
-          ? {
-              key,
-              lastRequest: rec.updatedAt,
-              count: Math.floor(rec.tokens),
-            }
-          : null;
+          ? { key, lastRequest: rec.updatedAt, count: Math.floor(rec.tokens) }
+          : undefined;
       },
       set: async (key, value) => {
-        await Promise.resolve();
         await rl.setRecord(key, value.count, value.lastRequest);
       },
     },

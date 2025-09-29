@@ -447,6 +447,9 @@ importers:
       '@ashgw/scheduler':
         specifier: workspace:*
         version: link:../../packages/scheduler
+      '@ashgw/security':
+        specifier: workspace:*
+        version: link:../../packages/security
       '@ashgw/seo':
         specifier: workspace:*
         version: link:../../packages/seo
