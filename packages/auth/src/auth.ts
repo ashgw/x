@@ -12,7 +12,7 @@ import { send, NotificationType } from "@ashgw/email";
 import { createLimiter } from "limico";
 
 /* -----------------------------------------------------------------------------
- * Rate limiter: 20 requests / 1 minute
+ * Rate limiter: 10 requests / 1 minute
  * -------------------------------------------------------------------------- */
 
 const rl = createLimiter({
@@ -183,9 +183,9 @@ export const auth = betterAuth({
     nextCookies(),
   ],
   rateLimit: {
-    enabled: env.NEXT_PUBLIC_CURRENT_ENV === "production",
+    enabled: true,
     storage: "secondary-storage",
-    max: 20,
+    max: 10,
     window: 60,
     customStorage: {
       get: async (key) => {
@@ -199,7 +199,6 @@ export const auth = betterAuth({
       },
     },
   },
-
   socialProviders: {
     // google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, disableSignUp },
   },

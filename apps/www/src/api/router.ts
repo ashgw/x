@@ -21,7 +21,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
           kind: "quota",
           limit: {
             every: "10s",
-            hits: 40,
+            hits: 2,
           },
         },
       }),
@@ -36,8 +36,8 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         limiter: {
           kind: "quota",
           limit: {
-            every: "60s",
-            hits: 4,
+            every: "10s",
+            hits: 10,
           },
         },
       }),
