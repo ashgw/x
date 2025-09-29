@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Section, Text } from "@react-email/components";
-import Layout from "./Layout";
-import Button from "../components/Button";
+import Layout from "./../Layout";
+import Button from "../../components/Button";
 const styles = {
   p: { color: "#333", fontSize: "15px", lineHeight: "1.5" },
   small: { color: "#666", fontSize: "12px" },
