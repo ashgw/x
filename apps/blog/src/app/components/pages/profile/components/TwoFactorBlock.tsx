@@ -97,7 +97,7 @@ export function TwoFactorEnableCard({ issuer }: { issuer?: string }) {
         animate={{ opacity: 1, y: 0 }}
       >
         <h2 className="mb-2 text-xl font-semibold">Enable 2FA (TOTP)</h2>
-        <p className="text-dim-300 mb-6 text-sm">
+        <p className="text-dim-300 mb-6 text-sm font-semibold">
           We won’t render a QR. You’ll see the raw secret. Add it to any
           authenticator or keep it offline.
         </p>
@@ -231,7 +231,7 @@ export function TwoFactorRevealSecretCard() {
   return (
     <SurfaceCard className="w-full">
       <h2 className="mb-2 text-xl font-semibold">Reveal TOTP Secret</h2>
-      <p className="text-dim-300 mb-6 text-sm">
+      <p className="text-dim-300 mb-6 text-sm font-semibold">
         If 2FA is already enabled, re-enter your password to view the secret
         again.
       </p>
@@ -291,7 +291,7 @@ export function TwoFactorVerifyTotpCard() {
   return (
     <SurfaceCard className="w-full">
       <h2 className="mb-2 text-xl font-semibold">Verify TOTP</h2>
-      <p className="text-dim-300 mb-6 text-sm">
+      <p className="text-dim-300 mb-6 text-sm font-semibold">
         Enter a current code from your authenticator. Optionally trust this
         device.
       </p>
@@ -379,7 +379,7 @@ export function TwoFactorBackupCodesCard() {
   return (
     <SurfaceCard className="w-full">
       <h2 className="mb-2 text-xl font-semibold">Backup Codes</h2>
-      <p className="text-dim-300 mb-6 text-sm">
+      <p className="text-dim-300 mb-6 text-sm font-semibold">
         Generate one‑time codes you can use if you lose access to your
         authenticator.
       </p>
@@ -546,7 +546,7 @@ export function TwoFactorDisableCard() {
   return (
     <SurfaceCard className="w-full">
       <h2 className="mb-2 text-xl font-semibold">Disable 2FA</h2>
-      <p className="text-dim-300 mb-6 text-sm">
+      <p className="text-dim-300 mb-6 text-sm font-semibold">
         Requires your password. This removes TOTP and invalidates existing
         backup codes.
       </p>

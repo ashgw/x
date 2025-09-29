@@ -93,7 +93,7 @@ export function LoginPage() {
         </motion.h1>
 
         <motion.p
-          className="text-muted-foreground mb-6 text-sm"
+          className="text-muted-foreground mb-6 text-sm font-semibold"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -148,7 +148,7 @@ export function LoginPage() {
               />
 
               {form.formState.errors.root && (
-                <div className="text-sm text-destructive">
+                <div className="text-sm font-semibold text-destructive">
                   {form.formState.errors.root.message}
                 </div>
               )}

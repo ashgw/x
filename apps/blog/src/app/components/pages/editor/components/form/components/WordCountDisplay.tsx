@@ -8,7 +8,7 @@ export function WordCountDisplay({
   minutesToRead,
 }: WordCountDisplayProps) {
   return (
-    <span className="text-muted-foreground text-sm">
+    <span className="text-muted-foreground text-sm font-semibold">
       {`${minutesToRead} min read`} ({wordCount} words)
     </span>
   );

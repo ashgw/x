@@ -51,7 +51,7 @@ function LanguageSelect({
             {LANGUAGES.map((lang) => (
               <div
                 key={lang}
-                className={`cursor-pointer rounded px-2 py-1.5 text-sm ${
+                className={`cursor-pointer rounded px-2 py-1.5 text-sm font-semibold ${
                   value === lang
                     ? "bg-accent text-accent-foreground"
                     : "hover:bg-accent/50"
@@ -92,7 +92,7 @@ export function CodeBlockEditor({
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <label className="text-sm font-medium">Language:</label>
+        <label className="text-sm font-semibold font-medium">Language:</label>
         <LanguageSelect
           value={selectedLanguage}
           onValueChange={(language: string) => onChange({ ...value, language })}

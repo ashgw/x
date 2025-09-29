@@ -107,7 +107,7 @@ export function BlockItem({
         {isPreview ? (
           <div
             className={cn("rounded-md p-4", {
-              "bg-muted font-mono text-sm": isCodeBlock,
+              "bg-muted font-mono text-sm font-semibold": isCodeBlock,
               "bg-muted/50": !isCodeBlock,
               "text-primary underline": isLinkBlock,
             })}

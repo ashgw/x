@@ -19,7 +19,7 @@ export function ReleaseDate({ date }: { date: string }) {
         duration: 0.5,
         ease: "easeOut",
       }}
-      className="text-dim-100 text-sm"
+      className="text-dim-100 text-sm font-semibold"
     >
       {DateService.formatDate({ stringDate: date })}
     </motion.p>
