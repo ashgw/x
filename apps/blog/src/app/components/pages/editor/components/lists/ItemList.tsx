@@ -9,7 +9,7 @@ import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 
 interface BaseAction {
   label: string;
-  variant?: "destructive" | "outline" | "default";
+  variant?: "destructive:outline" | "outline" | "default";
   onClick: () => void;
 }
 
@@ -211,7 +211,7 @@ export const createBlogListConfig = (
     },
     {
       label: "Delete",
-      variant: "destructive",
+      variant: "destructive:outline",
       onClick: () => onDelete(blog),
     },
   ],
@@ -239,7 +239,7 @@ export const createTrashListConfig = (
     },
     {
       label: "Purge",
-      variant: "destructive",
+      variant: "destructive:outline",
       onClick: () => onPurge(item),
     },
   ],

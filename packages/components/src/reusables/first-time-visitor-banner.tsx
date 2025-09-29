@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { Banner, Button, cn } from "@ashgw/design/ui";
+import { useEffect, useState } from "react";
+import { Banner, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
-type Stage = "init" | "cookie" | "kWait" | "lWait" | "dWait" | "final" | "done";
-type Consent = "accepted" | "rejected" | null;
+type Stage = "init" | "kWait" | "lWait" | "dWait" | "final" | "done";
 
 interface Props {
   className?: string;
 }
 
-const LS_COOKIE = "privacy:cookie-consent";
 const LS_FLOW = "onboard:theme-flow";
 const LS_THEME_INFO = "onboard:theme-info";
 
@@ -37,25 +35,23 @@ function Kbd({
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
 
-  // Synchronous initial read, avoids first-frame "cookie" render
-  const [consent, setConsent] = useState<Consent>(() => {
-    if (typeof window === "undefined") return null;
-    const c = localStorage.getItem(LS_COOKIE) as Consent | null;
-    return c === "accepted" ? "accepted" : c === "rejected" ? "rejected" : null;
-  });
+  // Always enable analytics
+  useEffect(() => {
+    // If your SDK persists this flag, calling once is fine
+    analytics.opt_in_capturing();
+  }, [analytics]);
 
   const [stage, setStage] = useState<Stage>(() => {
     if (typeof window === "undefined") return "init";
     const flow = localStorage.getItem(LS_FLOW);
     const legacy = localStorage.getItem(LS_THEME_INFO);
     if (flow === "completed" || legacy === "done") return "done";
-    const c = localStorage.getItem(LS_COOKIE) as Consent | null;
-    return c ? "kWait" : "cookie";
+    return "kWait";
   });
 
   // Key handling
   useEffect(() => {
-    if (stage === "cookie" || stage === "done" || stage === "init") return;
+    if (stage === "done" || stage === "init") return;
 
     function handleKey(e: KeyboardEvent) {
       if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
@@ -79,28 +75,11 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     return () => clearTimeout(t);
   }, [stage]);
 
-  const acceptCookies = useCallback(() => {
-    localStorage.setItem(LS_COOKIE, "accepted");
-    analytics.opt_in_capturing();
-    setConsent("accepted");
-    setStage("kWait");
-  }, [analytics]);
-
-  const rejectCookies = useCallback(() => {
-    localStorage.setItem(LS_COOKIE, "rejected");
-    analytics.opt_out_capturing();
-    setConsent("rejected");
-    setStage("kWait");
-  }, [analytics]);
-
   const show =
-    stage === "cookie" ||
     stage === "kWait" ||
     stage === "lWait" ||
     stage === "dWait" ||
     stage === "final";
-
-  // Do not mount the Banner at all unless we intend to show it
   if (!show) return null;
 
   return (
@@ -111,15 +90,12 @@ export function FirstTimeVisitorBanner({ className }: Props) {
       className={className}
       durationMs={320}
       role="dialog"
-      ariaLabel="First-time visitor banner"
+      ariaLabel="Theme onboarding"
     >
-      <div className="text-dim-400">
-        {stage === "cookie" ? (
-          <>New here? I'm using cookies for analytics.</>
-        ) : stage === "kWait" ? (
+      <div className="text-semibold text-dim-400">
+        {stage === "kWait" ? (
           <>
-            {consent === "accepted" ? "Noted." : "Understood."} Press{" "}
-            <Kbd>K</Kbd> to cycle through dark themes.
+            Press <Kbd>K</Kbd> to cycle through dark themes.
           </>
         ) : stage === "lWait" ? (
           <>
@@ -134,22 +110,7 @@ export function FirstTimeVisitorBanner({ className }: Props) {
         )}
       </div>
 
-      <div className="mt-3 flex items-center justify-end gap-2">
-        {stage === "cookie" ? (
-          <>
-            <Button
-              variant="outline"
-              onClick={rejectCookies}
-              className="text-xs"
-            >
-              Reject
-            </Button>
-            <Button onClick={acceptCookies} className="text-xs">
-              Accept
-            </Button>
-          </>
-        ) : null}
-      </div>
+      <div className="mt-3 flex items-center justify-end gap-2" />
     </Banner>
   );
 }
