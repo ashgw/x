@@ -60,7 +60,6 @@ export function TagsField({ form }: TagsFieldProps) {
                 className={[
                   "flex min-h-11 w-full flex-wrap items-center gap-2 rounded-md border px-2.5 py-2",
                   "bg-transparent text-foreground",
-                  "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
                 ].join(" ")}
               >
                 <AnimatePresence initial={false}>
@@ -90,7 +89,6 @@ export function TagsField({ form }: TagsFieldProps) {
                           "inline-grid size-5 place-items-center rounded-full",
                           "text-dim-300 hover:text-foreground",
                           "hover:bg-foreground/10 focus-visible:outline-none",
-                          "focus-visible:ring-2 focus-visible:ring-ring",
                         ].join(" ")}
                       >
                         <X className="size-3.5" />
