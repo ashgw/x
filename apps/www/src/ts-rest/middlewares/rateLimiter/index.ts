@@ -4,8 +4,12 @@ import type { RlWindow } from "limico";
 import type { GlobalContext } from "~/ts-rest/context";
 import { getFingerprint } from "@ashgw/security";
 
+type RlKind = "interval" | "quota";
 interface RateLimiterCtx {
-  rateLimitWindow: RlWindow;
+  rl: {
+    every: RlWindow;
+    kind: RlKind;
+  };
 }
 
 export type RateLimitOptions =
@@ -19,11 +23,11 @@ export type RateLimitOptions =
       kind: "quota";
       limit: {
         every: RlWindow;
-        allowedHits: number;
+        hits: number;
       };
     };
 
-export async function rateLimiter({ limiter }: { limiter: RateLimitOptions }) {
+export function rateLimiter({ limiter }: { limiter: RateLimitOptions }) {
   const rl =
     limiter.kind === "interval"
       ? createLimiter({
@@ -32,25 +36,28 @@ export async function rateLimiter({ limiter }: { limiter: RateLimitOptions }) {
         })
       : createLimiter({
           kind: "quota",
-          limit: limiter.limit.allowedHits,
+          limit: limiter.limit.hits,
           window: limiter.limit.every,
           burst: "20",
           lockRetries: false,
         });
 
   return middlewareFn<GlobalContext, RateLimiterCtx>(async (req, _res) => {
-    const canPass = await rl.allow(getFingerprint({ req }));
-    if (!canPass) {
+    const pass = await rl.allow(getFingerprint({ req }));
+    if (!pass.allowed) {
       return middlewareResponse.errors.tooManyRequests({
         body: {
-          message: `You're limited for the next ${limit.every}`,
+          message: `You're limited for the next ${limiter.limit.every}`,
         },
-        retryAfterSeconds: rl.windowToSeconds(limit.every),
+        retryAfterSeconds: pass.retryAfterMs / 1000,
       });
     }
     return {
       ctx: {
-        rateLimitWindow: limit.every,
+        rl: {
+          every: limiter.limit.every,
+          kind: limiter.kind,
+        },
       },
     };
   });
