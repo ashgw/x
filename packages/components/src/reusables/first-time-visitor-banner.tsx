@@ -113,9 +113,9 @@ export function FirstTimeVisitorBanner({ className }: Props) {
       role="dialog"
       ariaLabel="First-time visitor banner"
     >
-      <div className="text-semibold text-dim-400">
+      <div className="text-dim-400">
         {stage === "cookie" ? (
-          <>New here? I use cookies for analytics. Your data stays private.</>
+          <>New here? I'm using cookies for analytics.</>
         ) : stage === "kWait" ? (
           <>
             {consent === "accepted" ? "Noted." : "Understood."} Press{" "}

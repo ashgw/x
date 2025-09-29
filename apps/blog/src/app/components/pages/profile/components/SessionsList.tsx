@@ -3,7 +3,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { Shield, XCircle } from "@ashgw/design/icons";
 import { toast } from "@ashgw/design/ui";
 import {
@@ -19,25 +18,6 @@ import {
 } from "@ashgw/design/ui";
 
 import { trpcClientSide } from "~/trpc/callers/client";
-
-const tableVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
-
-const rowVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { type: "spring", stiffness: 100, damping: 15 },
-  },
-  exit: {
-    opacity: 0,
-    x: -20,
-    transition: { type: "spring", stiffness: 100, damping: 15 },
-  },
-};
 
 interface SessionsListProps {
   currentSessionToken: string;
@@ -129,14 +109,10 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
 
   if (!sessions.length) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-muted-foreground flex flex-col items-center justify-center py-8"
-      >
+      <div className="text-muted-foreground flex flex-col items-center justify-center py-8">
         <Shield className="mb-2 h-12 w-12 opacity-50" />
         <p>No active sessions found.</p>
-      </motion.div>
+      </div>
     );
   }
 
@@ -150,12 +126,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
     });
 
   return (
-    <motion.div
-      className="space-y-6"
-      variants={tableVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <div className="space-y-6">
       <div className="rounded-lg border">
         <Table>
           <TableHeader>
@@ -167,68 +138,61 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <AnimatePresence mode="popLayout">
-              {sessions.map((session) => {
-                const isRowLoading =
-                  loadingSessionIds.has(session.token) ||
-                  terminatingAllSessions;
-                const isCurrent = currentSessionToken === session.token;
+            {sessions.map((session) => {
+              const isRowLoading =
+                loadingSessionIds.has(session.token) || terminatingAllSessions;
+              const isCurrent = currentSessionToken === session.token;
 
-                return (
-                  <motion.tr
-                    key={session.token}
-                    variants={rowVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="group hover:bg-accent/55"
-                    aria-current={isCurrent ? "true" : "false"}
-                  >
-                    <TableCell className="font-medium">
-                      {formatDate(session.createdAt)}
-                    </TableCell>
-                    <TableCell>{formatDate(session.updatedAt)}</TableCell>
-                    <TableCell>
-                      <Badge
-                        size={"sm"}
-                        appearance={"outline"}
-                        tone={session.isExpired ? "destructive" : "success"}
-                      >
-                        {session.isExpired
-                          ? "Expired"
-                          : isCurrent
-                            ? "Active • This device"
-                            : "Active"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="destructive"
-                        onClick={() =>
-                          terminateSpecificSessionMutation.mutate({
-                            token: session.token,
-                          })
-                        }
-                        disabled={isRowLoading}
-                        className="opacity:70 transition-opacity group-hover:opacity-100"
-                        title={
-                          isCurrent
-                            ? "Terminate current device session"
-                            : "Terminate session"
-                        }
-                      >
-                        {isRowLoading ? (
-                          <Loading />
-                        ) : (
-                          <XCircle className="mr-2 h-4 w-4" />
-                        )}
-                        Terminate
-                      </Button>
-                    </TableCell>
-                  </motion.tr>
-                );
-              })}
-            </AnimatePresence>
+              return (
+                <TableRow
+                  key={session.token}
+                  className="group hover:bg-accent/55"
+                  aria-current={isCurrent ? "true" : "false"}
+                >
+                  <TableCell className="font-medium">
+                    {formatDate(session.createdAt)}
+                  </TableCell>
+                  <TableCell>{formatDate(session.updatedAt)}</TableCell>
+                  <TableCell>
+                    <Badge
+                      size={"sm"}
+                      appearance={"outline"}
+                      tone={session.isExpired ? "destructive" : "success"}
+                    >
+                      {session.isExpired
+                        ? "Expired"
+                        : isCurrent
+                          ? "Active • This device"
+                          : "Active"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="destructive"
+                      onClick={() =>
+                        terminateSpecificSessionMutation.mutate({
+                          token: session.token,
+                        })
+                      }
+                      disabled={isRowLoading}
+                      className="opacity:70 transition-opacity group-hover:opacity-100"
+                      title={
+                        isCurrent
+                          ? "Terminate current device session"
+                          : "Terminate session"
+                      }
+                    >
+                      {isRowLoading ? (
+                        <Loading />
+                      ) : (
+                        <XCircle className="mr-2 h-4 w-4" />
+                      )}
+                      Terminate
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
@@ -252,6 +216,6 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
           Terminate All Sessions
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 }

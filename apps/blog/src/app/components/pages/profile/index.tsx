@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
@@ -30,23 +29,6 @@ import {
   TwoFactorDisableCard,
 } from "./components/TwoFactorBlock";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 20 },
-  },
-};
-
 export function ProfilePage() {
   const router = useRouter();
   const { user, isLoading, logout } = useAuth();
@@ -59,14 +41,9 @@ export function ProfilePage() {
 
   if (isLoading || !user) {
     return (
-      <motion.div
-        className="flex h-[50vh] items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
+      <div className="flex h-[50vh] items-center justify-center">
         <Loading />
-      </motion.div>
+      </div>
     );
   }
 
@@ -82,111 +59,104 @@ export function ProfilePage() {
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <div className="layout mx-auto max-w-4xl px-4 py-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-6"
-        >
-          {/* Header */}
-          <motion.div variants={cardVariants} className="mb-8">
-            <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
-            <div className="flex items-center gap-2">
-              <Badge appearance="outline" className="text-sm">
-                {user.role}
-              </Badge>
-              <Badge appearance="soft" className="text-sm">
-                Member since {new Date(user.createdAt).toLocaleDateString()}
-              </Badge>
-            </div>
-          </motion.div>
+    <div className="layout mx-auto max-w-4xl px-4 py-8">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
+          <div className="flex items-center gap-2">
+            <Badge appearance="outline" className="text-sm">
+              {user.role}
+            </Badge>
+            <Badge appearance="soft" className="text-sm">
+              Member since {new Date(user.createdAt).toLocaleDateString()}
+            </Badge>
+          </div>
+        </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Profile Info */}
-            <motion.div variants={cardVariants}>
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle>Profile</CardTitle>
-                  <CardDescription>Your account information</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <UserInfo user={user} />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Password */}
-            <motion.div variants={cardVariants}>
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle>Security</CardTitle>
-                  <CardDescription>Update your password</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ChangePasswordForm />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Sessions */}
-            <motion.div variants={cardVariants} className="md:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Sessions</CardTitle>
-                  <CardDescription>Manage your device sessions</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <SessionsList currentSessionToken={user.session.token} />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Two-Factor Authentication */}
-            <motion.div variants={cardVariants} className="md:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Two-Factor Authentication</CardTitle>
-                  <CardDescription>
-                    Enable TOTP, reveal your secret, verify codes, manage backup
-                    codes, or disable.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {/* Enable first (shows raw secret + backup codes) */}
-                  <div className="mb-6">
-                    {/* Pass an issuer if you want it embedded in otpauth URIs */}
-                    <TwoFactorEnableCard />
-                  </div>
-
-                  {/* Management grid */}
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <TwoFactorRevealSecretCard />
-                    <TwoFactorVerifyTotpCard />
-                    <div className="md:col-span-2">
-                      <TwoFactorBackupCodesCard />
-                    </div>
-                    <TwoFactorDisableCard />
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* Profile Info */}
+          <div>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Profile</CardTitle>
+                <CardDescription>Your account information</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <UserInfo user={user} />
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Logout */}
-          <div className="flex justify-end pt-4">
-            <Button
-              variant="destructive"
-              onClick={handleLogout}
-              className="flex items-center gap-2"
-            >
-              Logout
-            </Button>
+          {/* Password */}
+          <div>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Security</CardTitle>
+                <CardDescription>Update your password</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChangePasswordForm />
+              </CardContent>
+            </Card>
           </div>
-        </motion.div>
+
+          {/* Sessions */}
+          <div className="md:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Sessions</CardTitle>
+                <CardDescription>Manage your device sessions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <SessionsList currentSessionToken={user.session.token} />
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Two-Factor Authentication */}
+          <div className="md:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Two-Factor Authentication</CardTitle>
+                <CardDescription>
+                  Enable TOTP, reveal your secret, verify codes, manage backup
+                  codes, or disable.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Enable first (shows raw secret + backup codes) */}
+                <div className="mb-6">
+                  {/* Pass an issuer if you want it embedded in otpauth URIs */}
+                  <TwoFactorEnableCard />
+                </div>
+
+                {/* Management grid */}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <TwoFactorRevealSecretCard />
+                  <TwoFactorVerifyTotpCard />
+                  <div className="md:col-span-2">
+                    <TwoFactorBackupCodesCard />
+                  </div>
+                  <TwoFactorDisableCard />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Logout */}
+        <div className="flex justify-end pt-4">
+          <Button
+            variant="destructive"
+            onClick={handleLogout}
+            className="flex items-center gap-2"
+          >
+            Logout
+          </Button>
+        </div>
       </div>
-    </AnimatePresence>
+    </div>
   );
 }

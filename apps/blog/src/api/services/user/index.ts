@@ -25,6 +25,7 @@ export class UserService {
   constructor({ ctx }: { ctx: TrpcContext }) {
     this.ctx = ctx;
   }
+  // ======================= Login =======================
   public async login({ email, password }: UserLoginDto): Promise<void> {
     await auth.signInEmail({
       body: {
@@ -122,6 +123,9 @@ export class UserService {
       session: response.session,
     });
   }
+
+  // ======================= Two Factor =======================
+
   public async enableTwoFactor(
     input: TwoFactorEnableDto,
   ): Promise<TwoFactorEnableRo> {
@@ -141,12 +145,12 @@ export class UserService {
   public async verifyTwoFactorTotp(
     input: TwoFactorVerifyTotpDto,
   ): Promise<void> {
-    return await auth.verifyTOTP({
+    await auth.verifyTOTP({
       body: input,
     });
   }
   public async disableTwoFactor(input: TwoFactorDisableDto): Promise<void> {
-    return await auth.disableTwoFactor({
+    await auth.disableTwoFactor({
       body: input,
     });
   }
@@ -161,7 +165,7 @@ export class UserService {
   public async verifyTwoFactorBackupCode(
     input: TwoFactorVerifyBackupCodeDto,
   ): Promise<void> {
-    return await auth.verifyBackupCode({
+    await auth.verifyBackupCode({
       body: input,
     });
   }
