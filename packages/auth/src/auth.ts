@@ -4,7 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { twoFactor } from "better-auth/plugins";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
-import argon2 from "argon2"; // TODO: add a security package
+import {hash, verify} from "@ashgw/security";
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
@@ -12,8 +12,9 @@ import { send, NotificationType } from "@ashgw/email";
 import {RateLimiterService} from '@ashgw/rate-limiter'
 
 const rl = new RateLimiterService({
-  every: '10s'
+
 })
+
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -81,8 +82,8 @@ export const auth = betterAuth({
     autoSignIn: true,
     disableSignUp,
     password: {
-      hash: argon2.hash,
-      verify: ({ hash, password }) => argon2.verify(hash, password),
+      hash,
+      verify: ({ hash, password }) => verify(hash, password),
     },
     requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
@@ -180,12 +181,8 @@ export const auth = betterAuth({
       get: async (key) => {
         return await rl.getAsync(key)
       },
-      set: async (key, {
-        count,
-        key,
-        lastRequest,
-      }) => {
-        return await rl.setAsync(key, value),
+      set: async (key, value) => {
+        return await rl.setAsync(value),
       },
     },
   },

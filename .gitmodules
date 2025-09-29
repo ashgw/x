@@ -6,3 +6,7 @@
 	path = packages/design
 	url = git@github.com:ashgw/design.git
 
+[submodule "security"]
+	path = packages/security
+	url = git@github.com:ashgw/security.git
+
