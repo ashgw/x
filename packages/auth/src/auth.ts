@@ -9,6 +9,11 @@ import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
 import { send, NotificationType } from "@ashgw/email";
+import {RateLimiterService} from '@ashgw/rate-limiter'
+
+const rl = new RateLimiterService({
+  every: '10s'
+})
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -166,6 +171,24 @@ export const auth = betterAuth({
     // !! IMPORTANT: keep last
     nextCookies(),
   ],
+  rateLimit: {
+    enabled: env.NEXT_PUBLIC_CURRENT_ENV === "production",
+    storage: "secondary-storage",
+    max: 10, // allow 10 requests -> 
+    window: 20, // every 20 seconds // these are harsh limits as they only apply to the client which we don't use, but abusers might REST us
+    customStorage: {
+      get: async (key) => {
+        return await rl.getAsync(key)
+      },
+      set: async (key, {
+        count,
+        key,
+        lastRequest,
+      }) => {
+        return await rl.setAsync(key, value),
+      },
+    },
+  },
   socialProviders: {
     // google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, disableSignUp },
   },
