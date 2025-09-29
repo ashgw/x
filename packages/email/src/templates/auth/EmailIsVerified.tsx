@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Section, Text } from "@react-email/components";
-import Layout from "./Layout";
+import Layout from "./../Layout";
 const styles = {
   p: { color: "#333", fontSize: "15px", lineHeight: "1.5" },
 } as const;

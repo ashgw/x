@@ -39,7 +39,7 @@ export const auth = betterAuth({
     },
     deleteUser: {
       afterDelete: async (user) => {
-        await email.sendDeleteAccount({
+        await email.sendAccountDeleted({
           to: user.email,
           userName: user.name,
         });

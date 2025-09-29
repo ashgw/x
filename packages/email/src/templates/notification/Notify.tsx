@@ -8,8 +8,8 @@ import {
 } from "@react-email/components";
 import { Markdown } from "@react-email/markdown";
 import * as React from "react";
-import type { NotificationType } from "../types";
-import { sanitizeMarkdown, capitalize } from "../utils/markdown";
+import type { NotificationType } from "../../types";
+import { sanitizeMarkdown, capitalize } from "../../utils/markdown";
 
 // use shared sanitizeMarkdown and capitalize utils
 
