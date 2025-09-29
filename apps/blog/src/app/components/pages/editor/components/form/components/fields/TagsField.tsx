@@ -72,7 +72,7 @@ export function TagsField({ form }: TagsFieldProps) {
                       transition={{ duration: 0.18 }}
                       className={[
                         "inline-flex duration-normal items-center gap-1.5 rounded-full border px-2.5 py-1",
-                        "text-sm font-semibold text-dim-300",
+                        "text-sm font-semibold font-semibold text-dim-300",
                         "bg-foreground/5 hover:bg-foreground/7",
                         "border-border/60 hover:border-border/70",
                         "backdrop-blur-subtle shadow-subtle hover:shadow-glow-accent-sm",
@@ -103,7 +103,7 @@ export function TagsField({ form }: TagsFieldProps) {
                   onChange={(e) => setTagInput(e.target.value)}
                   placeholder={tags.length ? "" : "Add tag"}
                   className={[
-                    "flex-1 bg-transparent py-1 text-sm outline-none",
+                    "flex-1 bg-transparent py-1 text-sm font-semibold outline-none",
                     "placeholder:text-muted-foreground",
                   ].join(" ")}
                   onKeyDown={(e) => {

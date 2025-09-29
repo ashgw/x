@@ -578,11 +578,13 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
           <div className="flex h-[200px] items-center justify-center rounded-lg border-2 border-dashed">
             <div className="text-muted-foreground text-center">
               <p>No content blocks yet</p>
-              <p className="text-sm">Click "Add Block" to start writing</p>
+              <p className="text-sm font-semibold">
+                Click "Add Block" to start writing
+              </p>
             </div>
           </div>
         ) : (
-          <div className="text-muted-foreground space-y-1 text-sm">
+          <div className="text-muted-foreground space-y-1 text-sm font-semibold">
             {blocks.map((block) => {
               const blockDef = blockRegistry[block.type];
               return (
@@ -694,7 +696,7 @@ export function BlockEditor({ value, onChange }: BlockEditorProps) {
                       <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed">
                         <div className="text-muted-foreground text-center">
                           <p>No content blocks yet</p>
-                          <p className="text-sm">
+                          <p className="text-sm font-semibold">
                             Click "Add Block" to start writing
                           </p>
                         </div>

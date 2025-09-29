@@ -34,14 +34,14 @@ export function BlogPostData({ postData }: BlogPostProps) {
         </Link>
       </div>
 
-      <div className="mb-8 flex items-center justify-between text-sm sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
+      <div className="mb-8 flex items-center justify-between text-sm font-semibold sm:max-w-[450px] md:max-w-[550px] lg:max-w-[650px] xl:max-w-[750px]">
         <div className="text-muted-foreground flex items-center gap-2">
           <ReleaseDate date={postData.firstModDate.toISOString()} />
           <span className="scale-150 select-none text-white/40">·</span>
           <Views
             slug={postData.slug}
             initial={postData.views}
-            className="text-sm opacity-70"
+            className="text-sm font-semibold opacity-70"
             titlePrefix=""
           />
         </div>

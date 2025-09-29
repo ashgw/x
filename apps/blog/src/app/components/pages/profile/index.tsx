@@ -65,10 +65,10 @@ export function ProfilePage() {
         <div className="mb-8">
           <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
           <div className="flex items-center gap-2">
-            <Badge appearance="outline" className="text-sm">
+            <Badge appearance="outline" className="text-sm font-semibold">
               {user.role}
             </Badge>
-            <Badge appearance="soft" className="text-sm">
+            <Badge appearance="soft" className="text-sm font-semibold">
               Member since {new Date(user.createdAt).toLocaleDateString()}
             </Badge>
           </div>

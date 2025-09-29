@@ -44,7 +44,7 @@ export function NoTagsFound({ validTags }: NoTagsFoundProps) {
               >
                 <Link
                   href={`/tag/${tag}`}
-                  className="relative scale-125 rounded-full border border-white/10 px-4 py-2 text-sm transition-all duration-200 ease-in-out hover:border-white/20"
+                  className="relative scale-125 rounded-full border border-white/10 px-4 py-2 text-sm font-semibold transition-all duration-200 ease-in-out hover:border-white/20"
                 >
                   {tag}
                 </Link>

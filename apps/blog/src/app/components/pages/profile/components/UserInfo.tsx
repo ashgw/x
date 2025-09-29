@@ -17,21 +17,21 @@ export function UserInfo({ user }: UserInfoProps) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="text-muted-foreground text-sm font-medium">
+        <label className="text-muted-foreground text-sm font-semibold font-medium">
           Email
         </label>
         <p className="mt-1">{user.email}</p>
       </div>
 
       <div>
-        <label className="text-muted-foreground text-sm font-medium">
+        <label className="text-muted-foreground text-sm font-semibold font-medium">
           Name
         </label>
         <p className="mt-1">{user.name}</p>
       </div>
 
       <div>
-        <label className="text-muted-foreground text-sm font-medium">
+        <label className="text-muted-foreground text-sm font-semibold font-medium">
           Role
         </label>
         <div className="mt-2 flex items-center gap-2">
@@ -56,7 +56,7 @@ export function UserInfo({ user }: UserInfoProps) {
       </div>
 
       <div>
-        <label className="text-muted-foreground text-sm font-medium">
+        <label className="text-muted-foreground text-sm font-semibold font-medium">
           Member Since
         </label>
         <p className="mt-1">
