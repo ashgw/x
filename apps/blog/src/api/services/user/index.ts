@@ -4,6 +4,8 @@ import type {
   SessionRo,
   TwoFactorEnableDto,
   TwoFactorEnableRo,
+  TwoFactorGetTotpUriDto,
+  TwoFactorGetTotpUriRo,
   UserLoginDto,
   UserRegisterDto,
   UserRo,
@@ -12,6 +14,7 @@ import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
 import type { TrpcContext } from "~/trpc/context";
 
+// TODO: add logging to the unlogged
 export class UserService {
   private readonly ctx: TrpcContext;
   constructor({ ctx }: { ctx: TrpcContext }) {
@@ -114,13 +117,20 @@ export class UserService {
       session: response.session,
     });
   }
-  private async enableTwoFactor(
+  public async enableTwoFactor(
     input: TwoFactorEnableDto,
   ): Promise<TwoFactorEnableRo> {
     return await auth.enableTwoFactor({
       body: {
         ...input,
       },
+    });
+  }
+  public async getTwoFactorTotpUri(
+    input: TwoFactorGetTotpUriDto,
+  ): Promise<TwoFactorGetTotpUriRo> {
+    return await auth.getTOTPURI({
+      body: input,
     });
   }
 }
