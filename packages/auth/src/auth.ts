@@ -190,8 +190,7 @@ export const auth = betterAuth({
     window: 60,
     customStorage: {
       get: async (key) => {
-        await Promise.resolve();
-        const rec = rl.inspect(key);
+        const rec = await rl.inspect(key);
         return rec
           ? {
               key,
