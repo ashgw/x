@@ -19,7 +19,7 @@ function BackContent() {
     <button
       type="button"
       onClick={handleClick}
-      className={`mb-4 ml-2 mt-5 inline-flex items-center text-dim-300 transition-colors hover:text-foreground ${
+      className={`mb-4 ml-2 mt-5 inline-flex items-center text-dim-300 transition-colors hover:text-foreground focus:outline-none focus-visible:ring-0 ${
         pathname === "/" ? "invisible" : ""
       }`}
     >
