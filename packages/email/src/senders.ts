@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "@react-email/render";
-import { email } from "./email.service";
+import { emailService } from "./email.service";
 import type { Recipient, NotificationType } from "./types";
 
 import VerifyEmailTemplate from "./templates/VerifyEmail";
@@ -20,7 +20,11 @@ export async function sendVerifyEmail(params: {
   const html = await render(React.createElement(VerifyEmailTemplate, params), {
     pretty: true,
   });
-  return email.sendHtml({ to: params.to, subject: "Verify your email", html });
+  return emailService.sendHtml({
+    to: params.to,
+    subject: "Verify your email",
+    html,
+  });
 }
 
 export async function sendAfterVerification(params: {
@@ -30,7 +34,7 @@ export async function sendAfterVerification(params: {
   const html = await render(React.createElement(WelcomeTemplate, params), {
     pretty: true,
   });
-  return email.sendHtml({ to: params.to, subject: "Welcome", html });
+  return emailService.sendHtml({ to: params.to, subject: "Welcome", html });
 }
 
 export async function sendResetPassword(params: {
@@ -42,7 +46,7 @@ export async function sendResetPassword(params: {
     React.createElement(ResetPasswordTemplate, params),
     { pretty: true },
   );
-  return email.sendHtml({
+  return emailService.sendHtml({
     to: params.to,
     subject: "Reset your password",
     html,
@@ -57,7 +61,11 @@ export async function sendMagicLink(params: {
   const html = await render(React.createElement(MagicLinkTemplate, params), {
     pretty: true,
   });
-  return email.sendHtml({ to: params.to, subject: "Sign in link", html });
+  return emailService.sendHtml({
+    to: params.to,
+    subject: "Sign in link",
+    html,
+  });
 }
 
 export async function sendChangeEmailConfirm(params: {
@@ -68,7 +76,7 @@ export async function sendChangeEmailConfirm(params: {
     React.createElement(ChangeEmailConfirmTemplate, params),
     { pretty: true },
   );
-  return email.sendHtml({
+  return emailService.sendHtml({
     to: params.to,
     subject: "Confirm email change",
     html,
@@ -85,7 +93,7 @@ export async function sendSignInAlert(params: {
   const html = await render(React.createElement(SignInAlertTemplate, params), {
     pretty: true,
   });
-  return email.sendHtml({ to: params.to, subject: "New sign in", html });
+  return emailService.sendHtml({ to: params.to, subject: "New sign in", html });
 }
 
 export async function sendDigest(params: {
@@ -106,7 +114,7 @@ export async function sendDigest(params: {
   const html = await render(React.createElement(DigestTemplate, tmplProps), {
     pretty: true,
   });
-  return email.sendHtml({ to: params.to, subject: params.title, html });
+  return emailService.sendHtml({ to: params.to, subject: params.title, html });
 }
 
 export async function sendNotification(params: {
@@ -123,7 +131,7 @@ export async function sendNotification(params: {
     }),
     { pretty: true },
   );
-  return email.sendHtml({
+  return emailService.sendHtml({
     to: params.to,
     subject: params.subject ?? params.title,
     html,

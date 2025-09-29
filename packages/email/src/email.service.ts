@@ -62,4 +62,4 @@ export class EmailService {
   }
 }
 
-export const email = new EmailService();
+export const emailService = new EmailService();
