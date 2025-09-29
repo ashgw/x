@@ -572,7 +572,7 @@ export function TwoFactorDisableCard() {
           <div className="flex justify-end gap-2">
             <Button
               type="submit"
-              variant="destructive"
+              variant="destructive:outline"
               loading={disable.isPending}
             >
               {disable.isPending ? "Disabling…" : "Disable 2FA"}

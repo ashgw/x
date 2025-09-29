@@ -168,7 +168,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <Button
-                      variant="destructive"
+                      variant="destructive:outline"
                       onClick={() =>
                         terminateSpecificSessionMutation.mutate({
                           token: session.token,
@@ -203,7 +203,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
           {sessions.length === 1 ? "session" : "sessions"}
         </p>
         <Button
-          variant="destructive"
+          variant="destructive:outline"
           onClick={() => terminateAllSessionsMutation.mutate()}
           disabled={terminatingAllSessions}
           className="relative"

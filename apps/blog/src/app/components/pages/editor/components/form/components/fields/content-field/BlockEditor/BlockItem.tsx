@@ -83,8 +83,7 @@ export function BlockItem({
           )}
         </Button>
         <Button
-          variant="ghost"
-          className="text-destructive hover:text-destructive/90 h-8 w-8"
+          variant="destructive:outline"
           onClick={onDelete}
           title="Delete block"
           type="button"
