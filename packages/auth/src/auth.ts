@@ -39,7 +39,7 @@ export const auth = betterAuth({
     },
     deleteUser: {
       afterDelete: async (user) => {
-        await email.sendAccountDeleted({
+        await send.auth.accountDeleted({
           to: user.email,
           userName: user.name,
         });
@@ -57,19 +57,11 @@ export const auth = betterAuth({
     expiresIn: 30 * 60, // 30 minutes,
     sendOnSignIn: true,
     sendOnSignUp: true,
-    sendVerificationEmail: async ({ token, user, url }) => {
-      logger.debug("sendVerificationEmail with URL & token" + url + token);
-      await email.sendVerifyEmail({
+    sendVerificationEmail: async ({ user, url }) => {
+      await send.auth.verifyEmail({
         to: user.email,
         userName: user.name,
         verifyUrl: `${url}`,
-      });
-    },
-
-    afterEmailVerification: async (user) => {
-      await email.sendEmailIsVerified({
-        to: user.email,
-        userName: user.name,
       });
     },
   },
@@ -123,9 +115,6 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
     disableSignUp,
-    onPasswordReset: ({ user }) => {
-      logger.debug(`Password reset for user: ${user.id}`);
-    },
     password: {
       hash: argon2.hash,
       verify: ({ hash, password }) => argon2.verify(hash, password),
@@ -133,10 +122,10 @@ export const auth = betterAuth({
     requireEmailVerification: false, // TODO: set it back to true
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
-    sendResetPassword: async ({ token, url, user }) => {
-      await email.sendResetPassword({
+    sendResetPassword: async ({ url, user }) => {
+      await send.auth.resetPassword({
         to: user.email,
-        resetUrl: `${url}${token}`,
+        resetUrl: url,
         userName: user.name,
       });
     },
