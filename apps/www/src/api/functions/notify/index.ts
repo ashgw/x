@@ -1,7 +1,7 @@
 import { logger } from "@ashgw/logger";
 import { monitor } from "@ashgw/monitor";
 import type { NotifyResponses } from "~/api/models";
-import { email } from "@ashgw/email";
+import { send } from "@ashgw/email";
 import type { NotifyBodyDto } from "~/api/models/notify";
 import { env } from "@ashgw/env";
 
@@ -11,7 +11,7 @@ export async function notify(input: {
   logger.info("Sending email notification...");
 
   try {
-    await email.sendNotification({
+    await send.notification.notify({
       to: input.body.to ?? env.PERSONAL_EMAIL,
       title: input.body.title,
       subject: input.body.subject,
