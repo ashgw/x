@@ -1,23 +1,21 @@
 import { Resend } from "resend";
 import type { CreateEmailOptions } from "resend";
 import { AppError } from "@ashgw/error";
-import { logger as Lager } from "@ashgw/logger";
+import { logger } from "@ashgw/logger";
 import { env } from "@ashgw/env";
-import { notifyEmail } from "@ashgw/constants";
+import { defaultEmail, defaultEmailFrom } from "@ashgw/constants";
 import type { SendParams, SendResult } from "./types";
 
 export class EmailService {
-  private _notifyEmail: string = notifyEmail;
+  private _defaultEmail: string = defaultEmail;
   private _cached?: Resend;
 
-  public get notifyEmail(): string {
-    return this._notifyEmail;
+  public get defaultEmail(): string {
+    return this._defaultEmail;
   }
-  public set notifyEmail(value: string) {
-    this._notifyEmail = value;
-  }
+
   public get defaultFrom(): string {
-    return `ashgw[bot] <${this._notifyEmail}>`;
+    return defaultEmailFrom;
   }
 
   public async sendHtml(params: SendParams): Promise<SendResult> {
@@ -41,7 +39,7 @@ export class EmailService {
     const { data, error } = await client.emails.send(options);
 
     if (error) {
-      Lager.error("Failed to send email", error);
+      logger.error("Failed to send email", error);
       throw new AppError({
         code: "INTERNAL",
         message: "Failed to send email",
