@@ -60,13 +60,14 @@ export function TagsField({ form }: TagsFieldProps) {
                     className="bg-muted mb-1 mr-1 inline-flex items-center rounded px-2 py-1 text-xs"
                   >
                     {tag}
-                    <button
+                    <Button
                       type="button"
-                      className="ml-1 text-red-500 hover:text-red-700"
+                      className="size-4"
+                      variant="destructive:outline"
                       onClick={() => _handleRemoveTag(tag)}
                     >
                       ×
-                    </button>
+                    </Button>
                   </motion.span>
                 ))}
               </div>
