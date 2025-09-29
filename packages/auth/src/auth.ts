@@ -7,6 +7,7 @@ import argon2 from "argon2";
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
+import { email } from "@ashgw/email";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -38,9 +39,10 @@ export const auth = betterAuth({
     },
     deleteUser: {
       afterDelete: async (user) => {
-        logger.info(`User deleted: ${user.id}`);
-        await Promise.resolve();
-        // TODO: send email here & remove logger
+        await email.sendDeleteAccount({
+          to: user.email,
+          userName: user.name,
+        });
       },
     },
     changeEmail: {
@@ -56,19 +58,19 @@ export const auth = betterAuth({
     sendOnSignIn: true,
     sendOnSignUp: true,
     sendVerificationEmail: async ({ token, user, url }) => {
-      await Promise.resolve();
-      logger.debug(`Verify email for user: ${user.id}, ${url}${token}`);
-      // TODO : send email here & remove logger
+      logger.debug("sendVerificationEmail with URL & token" + url + token);
+      await email.sendVerifyEmail({
+        to: user.email,
+        userName: user.name,
+        verifyUrl: `${url}`,
+      });
     },
-    onEmailVerification: async (user) => {
-      await Promise.resolve();
-      logger.debug(`Sending email verification to user: ${user.id}`);
-      // TODO : send email here & remove logger
-    },
+
     afterEmailVerification: async (user) => {
-      logger.debug(`Email verified for user: ${user.id}`);
-      await Promise.resolve();
-      // TODO: send email here & remove logger
+      await email.sendEmailIsVerified({
+        to: user.email,
+        userName: user.name,
+      });
     },
   },
   onAPIError: {
@@ -121,10 +123,8 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
     disableSignUp,
-    onPasswordReset: async ({ user }) => {
+    onPasswordReset: ({ user }) => {
       logger.debug(`Password reset for user: ${user.id}`);
-      await Promise.resolve();
-      // TODO: send email here & remove logger
     },
     password: {
       hash: argon2.hash,
@@ -134,8 +134,11 @@ export const auth = betterAuth({
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
     sendResetPassword: async ({ token, url, user }) => {
-      logger.debug(`Reset password for user: ${user.id}, ${url}${token}`);
-      await Promise.resolve();
+      await email.sendResetPassword({
+        to: user.email,
+        resetUrl: `${url}${token}`,
+        userName: user.name,
+      });
     },
     maxPasswordLength: 128,
     minPasswordLength: 8,

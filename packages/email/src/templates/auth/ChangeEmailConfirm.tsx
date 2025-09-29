@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Section, Text } from "@react-email/components";
-import Layout from "./Layout";
+import Layout from "../Layout";
 
 export default function ChangeEmailConfirmTemplate({
   confirmUrl,

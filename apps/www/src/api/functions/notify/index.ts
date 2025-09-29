@@ -16,7 +16,7 @@ export async function notify(input: {
       title: input.body.title,
       subject: input.body.subject,
       type: input.body.type,
-      message: input.body.message,
+      messageMd: input.body.message,
     });
 
     logger.info("Email notification sent successfully");

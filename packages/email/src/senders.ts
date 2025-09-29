@@ -3,14 +3,11 @@ import { render } from "@react-email/render";
 import { emailService } from "./email.service";
 import type { Recipient, NotificationType } from "./types";
 
-import VerifyEmailTemplate from "./templates/VerifyEmail";
-import ResetPasswordTemplate from "./templates/ResetPassword";
-import WelcomeTemplate from "./templates/Welcome";
-import MagicLinkTemplate from "./templates/MagicLink";
-import ChangeEmailConfirmTemplate from "./templates/ChangeEmailConfirm";
-import SignInAlertTemplate from "./templates/SignInAlert";
-import DigestTemplate from "./templates/Digest";
-import type { DigestItem } from "./templates/Digest";
+import VerifyEmailTemplate from "./templates/auth/VerifyEmail";
+import ResetPasswordTemplate from "./templates/auth/ResetPassword";
+import WelcomeTemplate from "./templates/auth/EmailIsVerified";
+import ChangeEmailConfirmTemplate from "./templates/auth/ChangeEmailConfirm";
+import SignInAlertTemplate from "./templates/auth/SignInAlert";
 
 export async function sendVerifyEmail(params: {
   readonly to: Recipient;
@@ -53,21 +50,6 @@ export async function sendResetPassword(params: {
   });
 }
 
-export async function sendMagicLink(params: {
-  readonly to: Recipient;
-  readonly magicUrl: string;
-  readonly userName?: string;
-}) {
-  const html = await render(React.createElement(MagicLinkTemplate, params), {
-    pretty: true,
-  });
-  return emailService.sendHtml({
-    to: params.to,
-    subject: "Sign in link",
-    html,
-  });
-}
-
 export async function sendChangeEmailConfirm(params: {
   readonly to: Recipient;
   readonly confirmUrl: string;
@@ -96,39 +78,21 @@ export async function sendSignInAlert(params: {
   return emailService.sendHtml({ to: params.to, subject: "New sign in", html });
 }
 
-export async function sendDigest(params: {
-  readonly to: Recipient;
-  readonly title: string;
-  readonly intro?: string;
-  readonly items: readonly DigestItem[];
-}) {
-  const tmplProps: {
-    title: string;
-    intro?: string;
-    items: readonly DigestItem[];
-  } = {
-    title: params.title,
-    intro: params.intro,
-    items: params.items,
-  };
-  const html = await render(React.createElement(DigestTemplate, tmplProps), {
-    pretty: true,
-  });
-  return emailService.sendHtml({ to: params.to, subject: params.title, html });
-}
-
 export async function sendNotification(params: {
   readonly to: Recipient;
   readonly title: string;
-  readonly message: string;
+  readonly messageMd: string;
   readonly type: NotificationType;
   readonly subject?: string;
 }) {
   const html = await render(
-    React.createElement((await import("./templates/Notify")).default, {
-      message: params.message,
-      type: params.type,
-    }),
+    React.createElement(
+      (await import("./templates/notification/Notify")).default,
+      {
+        messageMd: params.messageMd,
+        type: params.type,
+      },
+    ),
     { pretty: true },
   );
   return emailService.sendHtml({
