@@ -2,6 +2,8 @@ import { AppError } from "@ashgw/error";
 import { auth } from "@ashgw/auth";
 import type {
   SessionRo,
+  TwoFactorEnableDto,
+  TwoFactorEnableRo,
   UserLoginDto,
   UserRegisterDto,
   UserRo,
@@ -110,6 +112,15 @@ export class UserService {
     return UserMapper.toUserRo({
       user: response.user,
       session: response.session,
+    });
+  }
+  private async enableTwoFactor(
+    input: TwoFactorEnableDto,
+  ): Promise<TwoFactorEnableRo> {
+    return await auth.enableTwoFactor({
+      body: {
+        ...input,
+      },
     });
   }
 }
