@@ -22,14 +22,19 @@ import { ChangePasswordForm } from "./components/ChangePasswordForm";
 import { SessionsList } from "./components/SessionsList";
 import { UserInfo } from "./components/UserInfo";
 
+import {
+  TwoFactorEnableCard,
+  TwoFactorRevealSecretCard,
+  TwoFactorVerifyTotpCard,
+  TwoFactorBackupCodesCard,
+  TwoFactorDisableCard,
+} from "./components/TwoFactorBlock";
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
   },
 };
 
@@ -38,11 +43,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 20,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 20 },
   },
 };
 
@@ -139,6 +140,36 @@ export function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                   <SessionsList currentSessionToken={user.session.token} />
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Two-Factor Authentication */}
+            <motion.div variants={cardVariants} className="md:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Two-Factor Authentication</CardTitle>
+                  <CardDescription>
+                    Enable TOTP, reveal your secret, verify codes, manage backup
+                    codes, or disable.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Enable first (shows raw secret + backup codes) */}
+                  <div className="mb-6">
+                    {/* Pass an issuer if you want it embedded in otpauth URIs */}
+                    <TwoFactorEnableCard />
+                  </div>
+
+                  {/* Management grid */}
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <TwoFactorRevealSecretCard />
+                    <TwoFactorVerifyTotpCard />
+                    <div className="md:col-span-2">
+                      <TwoFactorBackupCodesCard />
+                    </div>
+                    <TwoFactorDisableCard />
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
