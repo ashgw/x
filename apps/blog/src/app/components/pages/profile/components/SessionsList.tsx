@@ -156,7 +156,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
                   <TableCell>
                     <Badge
                       size={"sm"}
-                      appearance={"outline"}
+                      appearance={"outlineFilled"}
                       tone={session.isExpired ? "destructive" : "success"}
                     >
                       {session.isExpired
