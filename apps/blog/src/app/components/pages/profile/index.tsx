@@ -94,10 +94,10 @@ export function ProfilePage() {
           <motion.div variants={cardVariants} className="mb-8">
             <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-sm">
+              <Badge appearance="outline" className="text-sm">
                 {user.role}
               </Badge>
-              <Badge variant="secondary" className="text-sm">
+              <Badge appearance="soft" className="text-sm">
                 Member since {new Date(user.createdAt).toLocaleDateString()}
               </Badge>
             </div>
