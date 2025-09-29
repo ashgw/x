@@ -10,7 +10,17 @@ import {
   userRegisterSchemaDto,
   userTerminateSpecificSessionSchemaDto,
   userSchemaRo,
+  twoFactorEnableDtoSchema,
+  twoFactorGetTotpUriDtoSchema,
+  twoFactorVerifyTotpDtoSchema,
+  twoFactorDisableDtoSchema,
+  twoFactorGenerateBackupCodesDtoSchema,
+  twoFactorVerifyBackupCodeDtoSchema,
+  twoFactorEnableRoSchema,
+  twoFactorGetTotpUriRoSchema,
+  twoFactorGenerateBackupCodesRoSchema,
 } from "~/api/models";
+
 import { AuthService } from "~/api/services";
 
 const authService = (ctx: TrpcContext) =>
@@ -106,5 +116,58 @@ export const userRouter = router({
       await authService(ctx).terminateSpecificSession({
         token,
       });
+    }),
+  enableTwoFactor: authenticatedProcedure({
+    limit: { every: "2s" },
+  })
+    .input(twoFactorEnableDtoSchema)
+    .output(twoFactorEnableRoSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await authService(ctx).enableTwoFactor(input);
+    }),
+
+  getTwoFactorTotpUri: authenticatedProcedure({
+    limit: { every: "2s" },
+  })
+    .input(twoFactorGetTotpUriDtoSchema)
+    .output(twoFactorGetTotpUriRoSchema)
+    .query(async ({ ctx, input }) => {
+      return await authService(ctx).getTwoFactorTotpUri(input);
+    }),
+
+  verifyTwoFactorTotp: publicProcedure({
+    limit: { every: "2s" },
+  })
+    .input(twoFactorVerifyTotpDtoSchema)
+    .output(z.void())
+    .mutation(async ({ ctx, input }) => {
+      await authService(ctx).verifyTwoFactorTotp(input);
+    }),
+
+  disableTwoFactor: authenticatedProcedure({
+    limit: { every: "2s" },
+  })
+    .input(twoFactorDisableDtoSchema)
+    .output(z.void())
+    .mutation(async ({ ctx, input }) => {
+      await authService(ctx).disableTwoFactor(input);
+    }),
+
+  generateTwoFactorBackupCodes: authenticatedProcedure({
+    limit: { every: "2s" },
+  })
+    .input(twoFactorGenerateBackupCodesDtoSchema)
+    .output(twoFactorGenerateBackupCodesRoSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await authService(ctx).generateTwoFactorBackupCodes(input);
+    }),
+
+  verifyTwoFactorBackupCode: publicProcedure({
+    limit: { every: "2s" },
+  })
+    .input(twoFactorVerifyBackupCodeDtoSchema)
+    .output(z.void())
+    .mutation(async ({ ctx, input }) => {
+      await authService(ctx).verifyTwoFactorBackupCode(input);
     }),
 });
