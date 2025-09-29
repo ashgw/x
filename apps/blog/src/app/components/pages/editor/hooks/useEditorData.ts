@@ -84,12 +84,9 @@ export function useEditorData() {
     ? (_findBlogInPosts(activePosts.data, blogSlug) ?? specificPost.data)
     : null;
 
-  // Friendly error used by the active list pane
   const postsErrorMessage = !isLoggedIn
     ? "You must be logged in to view posts."
-    : !isAdmin
-      ? "You are not authorized to view posts."
-      : activePosts.error?.message;
+    : activePosts.error?.message;
 
   return {
     posts: store.editor.activePosts,
