@@ -20,7 +20,7 @@ describe("middlewareFn and responseHandlersFn", () => {
     expect((out as { ctx: { userId: string } }).ctx.userId).toBe("u1");
   });
 
-  it("responseHandlersFn wraps handler and forwards args", () => {
+  it("responseHandlersFn wraps handler and forwards args", async () => {
     const fn = responseHandlersFn<void, { ctx: Record<string, unknown> }>(
       (res, req) => {
         expect(res.status).toBe(200);
@@ -34,6 +34,6 @@ describe("middlewareFn and responseHandlersFn", () => {
     const req = { url: "https://a/x" } as unknown as ResponseHandlerRequest<{
       ctx: Record<string, unknown>;
     }>;
-    fn(res, req);
+    await fn(res, req);
   });
 });
