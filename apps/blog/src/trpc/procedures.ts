@@ -2,9 +2,10 @@ import { UserRoleEnum } from "~/api/models";
 import { authMiddleware } from "./middlewares/auth";
 import { timingMiddleware } from "./middlewares/timing";
 import { procedure } from "./root";
-import type { RlWindow } from "limico";
+import { createRatelimiter } from "limico";
 import { rateLimiterMiddleware } from "./middlewares/rl";
 
+const a = createRatelimiter({});
 const timedProcedure = procedure.use(timingMiddleware);
 
 interface RlOpts {

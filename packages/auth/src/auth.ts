@@ -9,7 +9,7 @@ import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
 import { send, NotificationType } from "@ashgw/email";
-import {RateLimiterService} from '@ashgw/rate-limiter'
+import {} from 'limico'
 
 const rl = new RateLimiterService({
 
