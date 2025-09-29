@@ -10,7 +10,7 @@ import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
 import type { TrpcContext } from "~/trpc/context";
 
-export class AuthService {
+export class UserService {
   private readonly ctx: TrpcContext;
   constructor({ ctx }: { ctx: TrpcContext }) {
     this.ctx = ctx;
