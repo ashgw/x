@@ -2,6 +2,7 @@ import { middlewareResponse, middlewareFn } from "~/ts-rest-kit";
 import { createLimiter } from "limico";
 import type { RlWindow } from "limico";
 import type { GlobalContext } from "~/ts-rest/context";
+
 import { getFingerprint } from "@ashgw/security";
 
 type RlKind = "interval" | "quota";
@@ -38,8 +39,6 @@ export function rateLimiter({ limiter }: { limiter: RateLimitOptions }) {
           kind: "quota",
           limit: limiter.limit.hits,
           window: limiter.limit.every,
-          burst: "20",
-          lockRetries: false,
         });
 
   return middlewareFn<GlobalContext, RateLimiterCtx>(async (req, _res) => {
