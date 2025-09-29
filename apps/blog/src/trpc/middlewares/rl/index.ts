@@ -1,27 +1,33 @@
 import { middleware } from "~/trpc/root";
-import { RateLimiterService } from "limico";
-import type { RlWindow } from "limico";
 import { TRPCError } from "@trpc/server";
+import type { RlWindow } from "limico";
+import { createLimiter } from "limico";
+import { getFingerprint } from "@ashgw/security";
 
-const rl = new RateLimiterService("1s");
+interface Ops {
+  hits: number;
+  every: RlWindow;
+}
 
-export const rateLimiterMiddleware = (input: {
-  limit: {
-    every: RlWindow;
-  };
-}) =>
+export const rateLimiterMiddleware = (input: Ops) =>
   middleware(async ({ ctx, next }) => {
-    rl.updateWindow(input.limit.every);
-    if (!rl.canPass(rl.fp({ req: ctx.req }))) {
+    const rl = createLimiter({
+      kind: "quota",
+      limit: input.hits,
+      window: input.every,
+    });
+
+    const pass = await rl.allow(getFingerprint({ req: ctx.req }));
+    if (!pass.allowed) {
       throw new TRPCError({
         code: "TOO_MANY_REQUESTS",
-        message: `Too many requests. Try again in ${rl.every}.`,
+        message: `Too many requests. Try again in ${input.every}.`,
       });
     }
     return next({
       ctx: {
         ...ctx,
-        rateLimitWindow: rl.every,
+        rateLimitWindow: input.every,
       },
     });
   });

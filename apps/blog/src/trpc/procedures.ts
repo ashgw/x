@@ -7,19 +7,32 @@ import { rateLimiterMiddleware } from "./middlewares/rl";
 
 const timedProcedure = procedure.use(timingMiddleware);
 
-interface RlOpts {
-  limit?: { every: RlWindow };
-}
+type RlKind = "interval" | "quota";
 
-export function publicProcedure(opts?: RlOpts) {
+export type RateLimitOptions =
+  | {
+      kind: "interval";
+      limit: {
+        every: RlWindow;
+      };
+    }
+  | {
+      kind: "quota";
+      limit: {
+        every: RlWindow;
+        hits: number;
+      };
+    };
+
+export function publicProcedure(opts?: RateLimitOptions) {
   let proc = timedProcedure;
-  if (opts?.limit?.every) {
+  if (opts) {
     proc = proc.use(rateLimiterMiddleware({ limit: opts.limit }));
   }
   return proc;
 }
 
-export function authenticatedProcedure(opts?: RlOpts) {
+export function authenticatedProcedure(opts?: RateLimitOptions) {
   return publicProcedure(opts).use(authMiddleware({}));
 }
 

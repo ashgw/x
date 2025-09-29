@@ -6,6 +6,7 @@ import type { GlobalContext } from "~/ts-rest/context";
 import { getFingerprint } from "@ashgw/security";
 
 type RlKind = "interval" | "quota";
+
 interface RateLimiterCtx {
   rl: {
     every: RlWindow;
