@@ -1,9 +1,6 @@
-// src/index.ts
-import { getFingerprint } from "./getFingerprint";
-
 /**
- * Window shorthand used by all limiters.
- * Examples: "100ms", "1s", "2h", "3d".
+ * Window shorthand. Examples: "100ms", "60s", "3h", "1d".
+ * Units supported: ms, s, h, d.
  */
 export type RlWindow =
   | `${number}ms`
@@ -12,210 +9,36 @@ export type RlWindow =
   | `${number}d`;
 
 /**
- * Simple pacing limiter. Enforces exactly 1 successful call per window per key.
- *
- * Use this when you want strict spacing between requests rather than bursts.
- *
- * Typical usage:
- * ```ts
- * const rl = new RateLimiterService("100ms");
- * if (!rl.canPass(userKey)) throw tooManyRequests();
- * ```
- *
- * Complexity: O(1) per call, in-memory by default.
+ * Result of an `allow` call.
  */
-export class RateLimiterService {
-  /** Window length, such as "100ms" or "1s" */
-  public every: RlWindow;
-
-  /** Last successful request timestamp per key (ms since epoch) */
-  private lastCalled = new Map<string, number>();
-
-  /** Optional counter per key for fixed-window style bookkeeping */
-  private counts = new Map<string, number>();
-
+export interface AllowResult {
+  /** True if permitted and state was updated. */
+  allowed: boolean;
   /**
-   * Create a pacing limiter that allows 1 call per `every` window per key.
-   * @param every String window like "100ms", "1s", "2h".
+   * Whole tokens remaining.
+   * For QuotaLimiter this is the integer token count left after the call.
+   * For IntervalLimiter this is 0 or 1 and is usually ignored.
    */
-  constructor(every: RlWindow) {
-    this.every = every;
-  }
-
-  /**
-   * Change the pacing window at runtime.
-   * Safe to call live. Takes effect on the next `canPass`.
-   */
-  public updateWindow(newWindow: RlWindow): void {
-    this.every = newWindow;
-  }
-
-  /**
-   * Consume a pacing slot for `key` if enough time has elapsed.
-   * @returns true if allowed and the timestamp was updated. false if blocked.
-   */
-  public canPass(key: string): boolean {
-    const now = Date.now();
-    const last = this.lastCalled.get(key) ?? 0;
-
-    if (now - last < this.parseWindow(this.every)) {
-      return false;
-    }
-
-    this.lastCalled.set(key, now);
-    return true;
-  }
-
-  /**
-   * Get the last successful request timestamp for `key` (ms since epoch).
-   * Undefined means the key has never been allowed.
-   */
-  public get(key: string): number | undefined {
-    return this.lastCalled.get(key);
-  }
-
-  /**
-   * Force-set the last successful request timestamp for `key`.
-   * Use for migrations, backfills, or syncing with an external store.
-   */
-  public set(key: string, value: number): void {
-    this.lastCalled.set(key, value);
-  }
-
-  /**
-   * Get the current fixed-window count for `key`.
-   * Only relevant if you are tracking counters via `setCount` or `setState`.
-   */
-  public getCount(key: string): number | undefined {
-    return this.counts.get(key);
-  }
-
-  /**
-   * Set the current fixed-window count for `key`.
-   * Useful when you implement a naive counter-based limiter externally but want a shared API surface.
-   */
-  public setCount(key: string, count: number): void {
-    this.counts.set(key, count);
-  }
-
-  /**
-   * Get combined state if you use counter-plus-timestamp semantics.
-   * Returns `{ count, lastRequest }` or `undefined` if never seen.
-   */
-  public getState(
-    key: string,
-  ): { count: number; lastRequest: number } | undefined {
-    const lastRequest = this.lastCalled.get(key);
-    if (lastRequest === undefined) return undefined;
-    return { count: this.counts.get(key) ?? 0, lastRequest };
-  }
-
-  /**
-   * Set combined state for a key. Use if you maintain a fixed-window counter outside
-   * and want to keep the pacer in sync.
-   */
-  public setState(key: string, count: number, lastRequest: number): void {
-    this.counts.set(key, count);
-    this.lastCalled.set(key, lastRequest);
-  }
-
-  /**
-   * Async getter for last timestamp. Mirrors `get` for future KV backends.
-   * In-memory version resolves immediately.
-   */
-  public async getAsync(key: string): Promise<number | undefined> {
-    await Promise.resolve();
-    return this.get(key);
-  }
-
-  /**
-   * Async setter overloads. Mirrors `set` and `setState` for future KV backends.
-   *
-   * Overload A: `setAsync(key, timestampMs)`
-   * Overload B: `setAsync(key, count, lastRequestMs)`
-   */
-  public async setAsync(key: string, value: number): Promise<void>;
-  public async setAsync(
-    key: string,
-    count: number,
-    lastRequest: number,
-  ): Promise<void>;
-  public async setAsync(key: string, a: number, b?: number): Promise<void> {
-    await Promise.resolve();
-    if (typeof b === "number") {
-      // setAsync(key, count, lastRequest)
-      this.setState(key, a, b);
-    } else {
-      // setAsync(key, timestamp)
-      this.set(key, a);
-    }
-  }
-
-  /**
-   * Stable fingerprint you can use as a rate limit key for anonymous callers.
-   * Includes salted IP hash, UA, and language.
-   */
-  public fp({ req }: { req: Request }): string {
-    return getFingerprint({ req });
-  }
-
-  /**
-   * Convert a window like "1500ms" or "2s" to seconds, rounding down.
-   * Useful for HTTP Retry-After headers when you only have seconds.
-   */
-  public windowToSeconds(window: RlWindow): number {
-    return Math.floor(this.parseWindow(window) / 1000);
-  }
-
-  /**
-   * Parse a window string into milliseconds.
-   * Throws on invalid input or non-positive values.
-   */
-  public parseWindow(window: RlWindow): number {
-    const m = /^(\d+)(ms|s|h|d)$/.exec(window);
-    if (!m) {
-      throw new Error(`Invalid RlWindow value: ${window}`);
-    }
-
-    const num = Number(m[1]);
-    const unit = m[2] as "ms" | "s" | "h" | "d";
-
-    if (num <= 0) {
-      throw new Error(`Invalid RlWindow value: ${window}`);
-    }
-
-    switch (unit) {
-      case "ms":
-        return num;
-      case "s":
-        return num * 1000;
-      case "h":
-        return num * 60 * 60 * 1000;
-      case "d":
-        return num * 24 * 60 * 60 * 1000;
-    }
-  }
+  remaining: number;
+  /** Milliseconds until you may try again. Zero if allowed. */
+  retryAfterMs: number;
 }
 
 /**
- * Minimal KV interface so you can swap Memory for Redis later.
- * Keep values as JSON strings for portability and atomic updates via Lua if using Redis.
+ * Minimal KV so you can swap Memory for Redis later.
+ * Store and return JSON strings. TTL is in milliseconds.
  */
 export interface KvStore {
-  /** Get a JSON string or null for a key. Can be sync or async. */
+  /** Get a JSON string or null. Can be sync or async. */
   get(key: string): string | null | Promise<string | null>;
-  /**
-   * Set a JSON string value. Optional TTL in milliseconds for cleanup.
-   * Implement TTL in the backend if possible. Memory store simulates TTL.
-   */
+  /** Set a JSON string. Optional TTL in ms. */
   set(key: string, value: string, ttlMs?: number): void | Promise<void>;
 }
 
 /**
- * Default in-memory KV with TTL. Good for single-instance apps and tests.
- * Not distributed. Replace with a Redis-backed KvStore for production clusters.
+ * Default in-memory KV with TTL. Good for single instance apps and tests.
  */
-export class MemoryKvStore implements KvStore {
+class MemoryKvStore implements KvStore {
   private map = new Map<string, { v: string; exp?: number }>();
 
   public get(key: string): string | null {
@@ -234,93 +57,139 @@ export class MemoryKvStore implements KvStore {
   }
 }
 
-/** Average rate shape for token bucket limiters. */
-export interface Rate {
-  /** Tokens added per window, for example 10 */
-  tokens: number;
-  /** Window length, for example "1s" */
-  per: RlWindow;
+/**
+ * Convert window string ("1500ms", "60s", "3h", "1d") to milliseconds.
+ * Throws on invalid input.
+ */
+function windowMs(window: RlWindow): number {
+  const m = /^(\d+)(ms|s|h|d)$/.exec(window);
+  if (!m) throw new Error(`Invalid RlWindow value: ${window}`);
+  const num = Number(m[1]);
+  const unit = m[2] as "ms" | "s" | "h" | "d";
+  if (num <= 0) throw new Error(`Invalid RlWindow value: ${window}`);
+  switch (unit) {
+    case "ms":
+      return num;
+    case "s":
+      return num * 1000;
+    case "h":
+      return num * 60 * 60 * 1000;
+    case "d":
+      return num * 24 * 60 * 60 * 1000;
+  }
 }
 
-/**
- * Options for the token bucket limiter.
- * - `burst` is the capacity. If unset, equals `rate.tokens`.
- * - `store` lets you plug in Redis for distributed enforcement.
- * - `keyPrefix` namespaces keys in the KV.
- */
-export interface TokenBucketOptions {
-  rate: Rate;
+/* --------------------------------------------------------------------------------
+ * Interval limiter: enforces a minimum gap per key.
+ * Use this for "at most once every X" semantics.
+ * -------------------------------------------------------------------------------- */
+
+interface IntervalLimiterApi {
+  /**
+   * Try to consume now.
+   * Cost is accepted to keep a symmetric signature but is treated as 1.
+   * For IntervalLimiter, `remaining` will be 0 or 1 and is usually ignored.
+   */
+  allow(id: string, cost?: number): Promise<AllowResult>;
+  /** Change the interval at runtime. */
+  update(interval: RlWindow): void;
+  /** Read last successful timestamp for a key (ms). */
+  getLast(id: string): number | undefined;
+  /** Force-set last successful timestamp for a key (ms). */
+  setLast(id: string, ts: number): void;
+}
+
+class IntervalLimiter implements IntervalLimiterApi {
+  private interval: RlWindow;
+  private last = new Map<string, number>(); // ms since epoch
+
+  constructor(interval: RlWindow) {
+    this.interval = interval;
+  }
+
+  public update(interval: RlWindow): void {
+    this.interval = interval;
+  }
+
+  public async allow(id: string, cost = 1): Promise<AllowResult> {
+    await Promise.resolve(); // keep async signature compatible with Quota
+    if (cost !== 1) {
+      // Interval limiter is binary. Cost is accepted but treated as 1.
+    }
+    const now = Date.now();
+    const gap = windowMs(this.interval);
+    const last = this.last.get(id) ?? 0;
+    const elapsed = now - last;
+
+    if (elapsed >= gap) {
+      this.last.set(id, now);
+      return { allowed: true, remaining: 0, retryAfterMs: 0 };
+    }
+
+    const retryAfterMs = gap - elapsed;
+    return { allowed: false, remaining: 0, retryAfterMs };
+  }
+
+  public getLast(id: string): number | undefined {
+    return this.last.get(id);
+  }
+
+  public setLast(id: string, ts: number): void {
+    this.last.set(id, ts);
+  }
+}
+
+/* --------------------------------------------------------------------------------
+ * Quota limiter: token bucket. "limit per window" with optional bursts.
+ * Tokens refill continuously based on elapsed time.
+ * -------------------------------------------------------------------------------- */
+
+interface QuotaLimiterApi {
+  /**
+   * Try to spend `cost` now.
+   * Returns remaining whole tokens and retryAfterMs if blocked.
+   */
+  allow(id: string, cost?: number): Promise<AllowResult>;
+  /** Inspect raw state for a key. */
+  inspect(id: string): Promise<{ tokens: number; updatedAt: number } | null>;
+  /** Force-set raw state for a key. */
+  setRecord(id: string, tokens: number, updatedAt?: number): Promise<void>;
+}
+
+interface QuotaOptions {
+  /** Average allowance: you can do up to `limit` per `window`. */
+  limit: number;
+  window: RlWindow;
+  /** Optional burst capacity. Defaults to `limit`. */
   burst?: number;
+  /** Optional KV backend for distributed enforcement. Defaults to in-memory. */
   store?: KvStore;
+  /** Optional namespace for keys in KV. */
   keyPrefix?: string;
 }
 
-/** Result of an `allow` call on the token bucket limiter. */
-export interface AllowResult {
-  /** True if allowed and tokens were consumed */
-  allowed: boolean;
-  /** Whole tokens remaining after this attempt (floored) */
-  remaining: number;
-  /** Milliseconds until enough tokens are available if blocked. Zero if allowed. */
-  retryAfterMs: number;
-}
-
-/**
- * Token bucket limiter. Implements "N requests per T" with configurable bursts.
- *
- * Use this when you want controlled throughput and short bursts.
- *
- * Typical usage:
- * ```ts
- * const rl = new TokenBucketLimiter({ rate: { tokens: 10, per: "1s" }, burst: 10 });
- * const res = await rl.allow(userKey);
- * if (!res.allowed) {
- *   setHeader("Retry-After", String(retryAfterSeconds(res.retryAfterMs)));
- *   throw tooManyRequests();
- * }
- * ```
- *
- * Behavior
- * - Refill is continuous based on elapsed time, not discrete windows.
- * - Capacity is the maximum tokens available at any time. It caps burst size.
- * - State is persisted in `store` as JSON, one record per key.
- */
-export class TokenBucketLimiter {
+class QuotaLimiter implements QuotaLimiterApi {
   private readonly perMs: number;
-  private readonly refillPerMs: number;
+  private readonly ratePerMs: number; // tokens added per ms
   private readonly capacity: number;
   private readonly store: KvStore;
   private readonly prefix: string;
 
-  /**
-   * Create a token bucket limiter.
-   * @param opts.rate Average fill rate, such as 10 per "1s".
-   * @param opts.burst Capacity. Default equals `rate.tokens`.
-   * @param opts.store KV backend. Defaults to in-memory.
-   * @param opts.keyPrefix Namespace for KV keys. Defaults to "rl:tb".
-   */
-  constructor(opts: TokenBucketOptions) {
-    // reuse parser without exposing internals
-    const parser = new RateLimiterService("1s");
-    this.perMs = parser.parseWindow(opts.rate.per);
-    this.refillPerMs = opts.rate.tokens / this.perMs; // tokens per ms
-    this.capacity = Math.max(1, opts.burst ?? opts.rate.tokens);
+  constructor(opts: QuotaOptions) {
+    const per = windowMs(opts.window);
+    this.perMs = per;
+    this.ratePerMs = opts.limit / per;
+    this.capacity = Math.max(1, opts.burst ?? opts.limit);
     this.store = opts.store ?? new MemoryKvStore();
-    this.prefix = opts.keyPrefix ?? "rl:tb";
+    this.prefix = opts.keyPrefix ?? "rl:quota";
   }
 
-  private key(id: string): string {
+  private k(id: string): string {
     return `${this.prefix}:${id}`;
   }
 
-  /**
-   * Try to spend `cost` tokens for `id`.
-   * @param id Rate limit key, for example user id or IP fingerprint.
-   * @param cost Tokens to spend. Defaults to 1.
-   * @returns AllowResult with `allowed`, `remaining`, and `retryAfterMs`.
-   */
   public async allow(id: string, cost = 1): Promise<AllowResult> {
-    const key = this.key(id);
+    const key = this.k(id);
     const raw = await Promise.resolve(this.store.get(key));
     const now = Date.now();
 
@@ -332,7 +201,7 @@ export class TokenBucketLimiter {
       const elapsed = Math.max(0, now - parsed.updatedAt);
       const refilled = Math.min(
         this.capacity,
-        parsed.tokens + elapsed * this.refillPerMs,
+        parsed.tokens + elapsed * this.ratePerMs,
       );
       tokens = refilled;
       updatedAt = now;
@@ -354,7 +223,7 @@ export class TokenBucketLimiter {
     }
 
     const deficit = cost - tokens;
-    const retryAfterMs = Math.ceil(deficit / this.refillPerMs);
+    const retryAfterMs = Math.ceil(deficit / this.ratePerMs);
     await Promise.resolve(
       this.store.set(
         key,
@@ -365,65 +234,262 @@ export class TokenBucketLimiter {
     return { allowed: false, remaining: Math.floor(tokens), retryAfterMs };
   }
 
-  /** Internal TTL helper. Keeps keys around until they refill, capped at 1 day. */
-  private ttl(currentTokens: number): number {
-    const toFull = Math.ceil(
-      (this.capacity - currentTokens) / this.refillPerMs,
+  public async inspect(
+    id: string,
+  ): Promise<{ tokens: number; updatedAt: number } | null> {
+    const raw = await Promise.resolve(this.store.get(this.k(id)));
+    return raw
+      ? (JSON.parse(raw) as { tokens: number; updatedAt: number })
+      : null;
+  }
+
+  public async setRecord(
+    id: string,
+    tokens: number,
+    updatedAt: number = Date.now(),
+  ): Promise<void> {
+    await Promise.resolve(
+      this.store.set(
+        this.k(id),
+        JSON.stringify({ tokens, updatedAt }),
+        this.ttl(tokens),
+      ),
     );
+  }
+
+  /** Internal TTL helper. Keep keys around until they refill, capped at 1 day. */
+  private ttl(currentTokens: number): number {
+    const toFull = Math.ceil((this.capacity - currentTokens) / this.ratePerMs);
     return Math.min(86_400_000, toFull + 5_000);
   }
 }
 
+/* --------------------------------------------------------------------------------
+ * Public factory: single function export
+ * -------------------------------------------------------------------------------- */
+
 /**
- * Overloaded factory that returns the right class based on `mode`.
- *
- * Mode "pace" returns `RateLimiterService`.
- * Mode "bucket" returns `TokenBucketLimiter`.
- *
- * Examples:
- * ```ts
- * const pace = createRateLimiter({ mode: "pace", every: "100ms" });
- * const bucket = createRateLimiter({ mode: "bucket", rate: { tokens: 10, per: "1s" }, burst: 10 });
- * ```
+ * Common configuration for any limiter.
  */
-export function createRateLimiter(opts: {
-  mode: "pace";
-  every: RlWindow;
-}): RateLimiterService;
-export function createRateLimiter(opts: {
-  mode: "bucket";
-  rate: Rate;
-  burst?: number;
+interface BaseCfg {
+  /** Optional KV backend for distributed enforcement such as Redis. Defaults to in-memory. */
   store?: KvStore;
+  /** Optional namespace for KV keys. Useful when sharing a single backend between multiple limiters. */
   keyPrefix?: string;
-}): TokenBucketLimiter;
-export function createRateLimiter(
-  opts:
-    | { mode: "pace"; every: RlWindow }
-    | {
-        mode: "bucket";
-        rate: Rate;
-        burst?: number;
-        store?: KvStore;
-        keyPrefix?: string;
-      },
-): RateLimiterService | TokenBucketLimiter {
-  return opts.mode === "pace"
-    ? new RateLimiterService((opts as { every: RlWindow }).every)
-    : new TokenBucketLimiter(
-        opts as {
-          rate: Rate;
-          burst?: number;
-          store?: KvStore;
-          keyPrefix?: string;
-        },
-      );
 }
 
 /**
- * Convert milliseconds to Retry-After seconds for HTTP responses.
- * Always rounds up to the next full second as required by the header spec.
+ * Interval limiter configuration.
+ * Enforces a minimum gap between calls per key.
+ *
+ * Example: { kind: "interval", interval: "500ms" }
  */
-export function retryAfterSeconds(ms: number): number {
-  return Math.ceil(ms / 1000);
+export interface IntervalCfg extends BaseCfg {
+  /** Selects the limiter type. */
+  kind: "interval";
+  /** Minimum time gap allowed between successful calls per key. */
+  interval: RlWindow;
 }
+
+/**
+ * Quota limiter configuration.
+ * Implements a token bucket: limit per window with optional bursts.
+ *
+ * Example: { kind: "quota", limit: 100, window: "60s", burst: 200 }
+ */
+export interface QuotaCfg extends BaseCfg {
+  /** Selects the limiter type. */
+  kind: "quota";
+  /** Maximum average allowance per window. Example: 100 requests per "60s". */
+  limit: number;
+  /** Time window string. Defines how often `limit` tokens are granted on average. */
+  window: RlWindow;
+  /** Optional burst capacity (bucket size). Defaults to `limit`. */
+  burst?: number;
+}
+
+/**
+ * Union of all supported limiter configurations.
+ * Pass one of these objects to `createLimiter`.
+ */
+export type LimiterConfig = IntervalCfg | QuotaCfg;
+
+export function createLimiter(config: QuotaCfg): QuotaLimiterApi;
+export function createLimiter(config: IntervalCfg): IntervalLimiterApi;
+/**
+ * Create a limiter from a single config object.
+ */
+export function createLimiter(
+  config: IntervalCfg | QuotaCfg,
+): IntervalLimiterApi | QuotaLimiterApi {
+  if (config.kind === "interval") {
+    return new IntervalLimiter(config.interval);
+  }
+  const c = config;
+  return new QuotaLimiter({
+    limit: c.limit,
+    window: c.window,
+    burst: c.burst,
+    store: c.store,
+    keyPrefix: c.keyPrefix,
+  });
+}
+
+/* --------------------------------------------------------------------------------
+ * Docs and examples
+ * -------------------------------------------------------------------------------- */
+
+/**
+ * WHAT IS "burst"?
+ * - Quota limiter uses a token bucket.
+ * - limit/window defines average rate. Example: limit 60 per "60s" means 1 token per second.
+ * - burst is the bucket capacity. If burst is 120, caller can do up to 120 instantly when full.
+ * - If burst is omitted, it defaults to limit which means no extra headroom beyond the average.
+ *
+ * WHAT IS "key" or "id"?
+ * - Any string that identifies the caller or resource. Examples:
+ *   - "ip:203.0.113.9"
+ *   - "user:123"
+ *   - "route:POST:/api/login:user:123"
+ * - You choose the granularity. One limiter instance can serve many keys.
+ *
+ * About fingerprints
+ * - You can derive a stable id for anonymous requests using your own `keyFromRequest(req)`.
+ * - This library does not export a fingerprint helper to avoid coupling.
+ */
+
+/**
+ * Example 1: Interval limiter for login attempts (one call per 500ms per user)
+ *
+ * ```ts
+ * import { createLimiter } from "@ashgw/rate-limiter";
+ *
+ * const loginInterval = createLimiter({ kind: "interval", interval: "500ms" });
+ *
+ * export async function loginHandler(req: Request) {
+ *   const userId = "user:" + getUserId(req); // your own resolver
+ *   const r = await loginInterval.allow(userId);
+ *   if (!r.allowed) {
+ *     return new Response("Too many attempts. Retry in " + r.retryAfterMs + "ms", {
+ *       status: 429,
+ *       headers: { "Retry-After": String(Math.ceil(r.retryAfterMs / 1000)) },
+ *     });
+ *   }
+ *   // proceed with login...
+ * }
+ * ```
+ */
+
+/**
+ * Example 2: Quota limiter for API requests 100 requests per minute per user
+ *
+ * ```ts
+ * import { createLimiter } from "@ashgw/rate-limiter";
+ *
+ * const apiQuota = createLimiter({
+ *   kind: "quota",
+ *   limit: 100,
+ *   window: "60s",
+ *   burst: 100, // allow short spikes up to 100 at once when bucket is full
+ * });
+ *
+ * export async function apiHandler(req: Request) {
+ *   const userId = req.user ? "user:" + req.user.id : "ip:" + req.ip;
+ *   const r = await apiQuota.allow(userId, 1);
+ *   if (!r.allowed) {
+ *     return new Response("Rate limit. Retry in " + r.retryAfterMs + "ms", {
+ *       status: 429,
+ *       headers: { "Retry-After": String(Math.ceil(r.retryAfterMs / 1000)) },
+ *     });
+ *   }
+ *   // handle request...
+ * }
+ * ```
+ */
+
+/**
+ * Example 3: Anonymous keys with your own fingerprint
+ *
+ * ```ts
+ * // derive a stable key for callers without auth
+ * const id = req.user ? "user:" + req.user.id : "ip:" + req.ip;
+ * // or your own `keyFromRequest(req)` implementation
+ * ```
+ */
+
+/**
+ * Example 4: Express style middleware with Quota limiter
+ *
+ * ```ts
+ * import type { Request, Response, NextFunction } from "express";
+ * import { createLimiter } from "@ashgw/rate-limiter";
+ *
+ * const quota = createLimiter({ kind: "quota", limit: 300, window: "60s", burst: 300 });
+ *
+ * export async function rl(req: Request, res: Response, next: NextFunction) {
+ *   const id = (req as any).user ? "user:" + (req as any).user.id : "ip:" + req.ip;
+ *   const r = await quota.allow(id);
+ *   if (!r.allowed) {
+ *     res.setHeader("Retry-After", String(Math.ceil(r.retryAfterMs / 1000)));
+ *     return res.status(429).send("Too many requests");
+ *   }
+ *   return next();
+ * }
+ * ```
+ */
+
+/**
+ * Example 5: Inspecting and overriding Quota state admin ops or tests
+ *
+ * ```ts
+ * const q = createLimiter({ kind: "quota", limit: 10, window: "10s" });
+ *
+ * // Inspect current bucket
+ * const s = await q.inspect("user:123"); // { tokens, updatedAt } | null
+ *
+ * // Refill or drain manually
+ * await q.setRecord("user:123", 10); // full bucket
+ * await q.setRecord("user:123", 0);  // empty bucket
+ * ```
+ */
+
+/**
+ * Example 6: Redis adapter KvStore sketch
+ *
+ * ```ts
+ * import { Redis } from "ioredis";
+ * const redis = new Redis(process.env.REDIS_URL!);
+ *
+ * class RedisKv implements KvStore {
+ *   async get(key: string): Promise<string | null> {
+ *     return await redis.get(key);
+ *   }
+ *   async set(key: string, value: string, ttlMs?: number): Promise<void> {
+ *     if (ttlMs && ttlMs > 0) {
+ *       await redis.set(key, value, "PX", ttlMs);
+ *     } else {
+ *       await redis.set(key, value);
+ *     }
+ *   }
+ * }
+ *
+ * const q = createLimiter({
+ *   kind: "quota",
+ *   limit: 1000,
+ *   window: "60s",
+ *   burst: 1000,
+ *   store: new RedisKv(),
+ *   keyPrefix: "rl:api",
+ * });
+ * ```
+ */
+
+/**
+ * ### TOFIX
+ * TTL: you cap TTL at 1 day. That’s fine, but edge case: if someone sets a huge window (30d), your keys might get evicted early. Maybe document that.
+ *
+ * Cost param in interval limiter: right now it’s ignored => drop it
+ *
+ * Concurrency race: in-memory is fine, but in Redis with multiple processes, you can get race conditions (two clients read same bucket before update). If you want bulletproof Redis use, you’d need atomic ops (like INCRBY with TTL). But I think you’re consciously not solving this right now, and that’s fine. -> so do it
+ *
+ */

@@ -25,7 +25,6 @@ catalog:
   "@ashgw/ts-env": 1.5.3
   zod: 3.23.8
   superjson: "2.2.1"
-  argon2: "0.44.0"
   react-hook-form: "7.53.0"
 
 catalogs:

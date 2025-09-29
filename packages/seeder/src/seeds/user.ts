@@ -1,5 +1,5 @@
 import { db } from "@ashgw/db";
-import * as argon2 from "argon2";
+import { hash } from "@ashgw/security";
 import crypto from "crypto";
 import { logger } from "@ashgw/logger";
 
@@ -23,7 +23,7 @@ export async function seedUser() {
     },
   });
 
-  const adminHash = await argon2.hash(adminPlainPassword);
+  const adminHash = await hash(adminPlainPassword);
 
   // IMPORTANT: providerId = "credential", accountId = user.id
   await db.account.upsert({
@@ -73,7 +73,7 @@ export async function seedUser() {
       role: "VISITOR",
     },
   });
-  const visitorHash = await argon2.hash(visitorPassword);
+  const visitorHash = await hash(visitorPassword);
   await db.account.upsert({
     where: {
       providerId_accountId: {

@@ -53,7 +53,6 @@
     "@ts-rest/open-api": "catalog:ts-rest3",
     "@ts-rest/react-query": "catalog:ts-rest3",
     "@ts-rest/serverless": "catalog:ts-rest3",
-    "argon2": "catalog:",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "front-matter": "4.0.2",

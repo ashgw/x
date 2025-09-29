@@ -36,6 +36,7 @@
     "@ashgw/monitor": "workspace:*",
     "@ashgw/rate-limiter": "workspace:*",
     "@ashgw/seo": "workspace:*",
+    "@ashgw/security": "workspace:*",
     "@ashgw/storage": "workspace:*",
     "@dinero.js/currencies": "2.0.0-alpha.14",
     "@dnd-kit/core": "6.3.1",
