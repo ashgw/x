@@ -4,17 +4,26 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { twoFactor } from "better-auth/plugins";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
-import {hash, verify} from "@ashgw/security";
+import { hash, verify } from "@ashgw/security";
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
-import { nextCookies } from "better-auth/next-js"; //  needed for server side
+import { nextCookies } from "better-auth/next-js";
 import { send, NotificationType } from "@ashgw/email";
-import {} from 'limico'
+import { createLimiter } from "limico";
 
-const rl = new RateLimiterService({
+/* -----------------------------------------------------------------------------
+ * Rate limiter: 20 requests / 1 minute
+ * -------------------------------------------------------------------------- */
 
-})
+const rl = createLimiter({
+  kind: "quota",
+  limit: 20,
+  window: "60s",
+});
 
+/* -----------------------------------------------------------------------------
+ * Auth config
+ * -------------------------------------------------------------------------- */
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -77,6 +86,7 @@ export const auth = betterAuth({
       });
     },
   },
+
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
@@ -87,7 +97,7 @@ export const auth = betterAuth({
     },
     requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
-    resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
+    resetPasswordTokenExpiresIn: 15 * 60,
     sendResetPassword: async ({ url, user }) => {
       await send.auth.resetPassword({
         to: user.email,
@@ -98,6 +108,7 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
     minPasswordLength: 8,
   },
+
   onAPIError: {
     errorURL: authEndpoints.error,
     throw: false,
@@ -142,7 +153,7 @@ export const auth = betterAuth({
       totpOptions: {
         digits: 6,
         disable: false,
-        period: 30, // 30 secs
+        period: 30,
         backupCodes: {
           length: 10,
           amount: 5,
@@ -169,23 +180,33 @@ export const auth = betterAuth({
         },
       },
     }),
-    // !! IMPORTANT: keep last
     nextCookies(),
   ],
+
   rateLimit: {
     enabled: env.NEXT_PUBLIC_CURRENT_ENV === "production",
     storage: "secondary-storage",
-    max: 10, // allow 10 requests -> 
-    window: 20, // every 20 seconds // these are harsh limits as they only apply to the client which we don't use, but abusers might REST us
+    max: 20,
+    window: 60,
     customStorage: {
       get: async (key) => {
-        return await rl.getAsync(key)
+        await Promise.resolve();
+        const rec = rl.inspect(key);
+        return rec
+          ? {
+              key,
+              lastRequest: rec.updatedAt,
+              count: Math.floor(rec.tokens),
+            }
+          : null;
       },
       set: async (key, value) => {
-        return await rl.setAsync(value),
+        await Promise.resolve();
+        await rl.setRecord(key, value.count, value.lastRequest);
       },
     },
   },
+
   socialProviders: {
     // google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, disableSignUp },
   },
