@@ -50,7 +50,7 @@ export function SoundToggle() {
         </div>
 
         {/* label */}
-        <span className="text-xs font-medium uppercase tracking-wider">
+        <span className="text-xs font-semibold uppercase tracking-wider">
           {isLoading ? "LOADING..." : `SOUND ${isPlaying ? "ON" : "OFF"}`}
         </span>
       </Button>
