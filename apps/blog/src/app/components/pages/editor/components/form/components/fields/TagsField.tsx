@@ -71,7 +71,7 @@ export function TagsField({ form }: TagsFieldProps) {
                       exit={{ opacity: 0, scale: 0.8, y: -2 }}
                       transition={{ duration: 0.18 }}
                       className={[
-                        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1",
+                        "inline-flex duration-normal items-center gap-1.5 rounded-full border px-2.5 py-1",
                         "text-sm font-semibold text-dim-300",
                         "bg-foreground/5 hover:bg-foreground/7",
                         "border-border/60 hover:border-border/70",
@@ -86,7 +86,7 @@ export function TagsField({ form }: TagsFieldProps) {
                         onClick={() => handleRemove(tag)}
                         aria-label={`Remove ${tag}`}
                         className={[
-                          "inline-grid size-5 place-items-center rounded-full",
+                          "inline-grid duration-normal size-5 place-items-center rounded-full",
                           "text-dim-300 hover:text-foreground",
                           "hover:bg-foreground/10 focus-visible:outline-none",
                         ].join(" ")}
