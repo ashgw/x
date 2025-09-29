@@ -1,13 +1,14 @@
 import { db } from "@ashgw/db";
 import { betterAuth, logger } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { twoFactor } from "better-auth/plugins";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
 import argon2 from "argon2"; // TODO: add a security package
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
-import { send } from "@ashgw/email";
+import { send, NotificationType } from "@ashgw/email";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -16,15 +17,18 @@ export const auth = betterAuth({
   secret: env.AUTH_ENCRYPTON_KEY,
   appName: siteName,
   basePath: authEndpoints.basePath,
-  baseURL: env.NEXT_PUBLIC_BLOG_URL, // TODO: this should be the API or "app"
+  baseURL: env.NEXT_PUBLIC_BLOG_URL,
+
   session: {
     expiresIn: sessionExpiry,
     modelName: "Session",
   },
+
   account: {
     encryptOAuthTokens: true,
     modelName: "Account",
   },
+
   user: {
     modelName: "User",
     additionalFields: {
@@ -49,12 +53,14 @@ export const auth = betterAuth({
       enabled: false,
     },
   },
+
   verification: {
     modelName: "Verification",
   },
+
   emailVerification: {
     autoSignInAfterVerification: true,
-    expiresIn: 30 * 60, // 30 minutes,
+    expiresIn: 30 * 60,
     sendOnSignIn: true,
     sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url }) => {
@@ -86,42 +92,28 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
     minPasswordLength: 8,
   },
-  socialProviders: {
-    // uncomment if needed
-    // google: {
-    //   clientId: env.GOOGLE_CLIENT_ID,
-    //   clientSecret: env.GOOGLE_CLIENT_SECRET,
-    //   disableSignUp,
-    // },
-  },
   onAPIError: {
-    errorURL: authEndpoints.error /* 
-    When errorURL is provided, the error will be added to the URL as a query parameter
-    and the user will be redirected to the errorURL.
-    */,
+    errorURL: authEndpoints.error,
     throw: false,
     onError: (error, _authCtx) => {
       logger.error(`Error in auth API route: `, error);
-      monitor.next.captureException({
-        error,
-      });
+      monitor.next.captureException({ error });
     },
   },
+
   advanced: {
     cookiePrefix: "ccksz",
     crossSubDomainCookies: {
-      enabled: false, // subdomain takeover attacks can wait
+      enabled: false,
     },
     defaultCookieAttributes: {
       sameSite: "lax",
       secure: env.NEXT_PUBLIC_CURRENT_ENV === "production",
       httpOnly: true,
-      // In my old setup I had to send & read a CSRF cookie manually & also check the origin header, (read my blog why)
-      // but better-auth handles CSRF with only the origin header, which is cool too.
-      // partitioned: env.NEXT_PUBLIC_CURRENT_ENV === "production", // not needed
       maxAge: sessionExpiry,
     },
   },
+
   logger: {
     level: "info",
     log(level, message) {
@@ -132,9 +124,49 @@ export const auth = betterAuth({
           : logger.error(message);
     },
   },
+
   trustedOrigins:
     env.NEXT_PUBLIC_CURRENT_ENV === "production"
       ? [env.NEXT_PUBLIC_BLOG_URL, env.NEXT_PUBLIC_WWW_URL]
       : undefined,
-  plugins: [nextCookies()], // make sure this is the last plugin in the array
+
+  plugins: [
+    twoFactor({
+      issuer: siteName,
+      totpOptions: {
+        digits: 6,
+        disable: false,
+        period: 30, // 30 secs
+        backupCodes: {
+          length: 10,
+          amount: 5,
+          storeBackupCodes: "encrypted",
+        },
+      },
+      skipVerificationOnEnable: false,
+      schema: {
+        twoFactor: {
+          modelName: "TwoFactor",
+        },
+      },
+      otpOptions: {
+        async sendOTP({ user, otp }) {
+          await send.notification.notify({
+            to: user.email,
+            title: "Your security code",
+            subject: "Your security code",
+            type: NotificationType.SERVICE,
+            messageMd:
+              `Use this code to finish signing in: **${otp}**\n\n` +
+              `If you didn’t request this, ignore this email.`,
+          });
+        },
+      },
+    }),
+    // !! IMPORTANT: keep last
+    nextCookies(),
+  ],
+  socialProviders: {
+    // google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, disableSignUp },
+  },
 });
