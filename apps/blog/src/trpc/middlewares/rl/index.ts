@@ -1,6 +1,6 @@
 import { middleware } from "~/trpc/root";
-import { RateLimiterService } from "@ashgw/rate-limiter";
-import type { RlWindow } from "@ashgw/rate-limiter";
+import { RateLimiterService } from "limico";
+import type { RlWindow } from "limico";
 import { TRPCError } from "@trpc/server";
 
 const rl = new RateLimiterService("1s");

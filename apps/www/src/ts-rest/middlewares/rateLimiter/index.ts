@@ -1,6 +1,6 @@
 import { middlewareResponse, middlewareFn } from "~/ts-rest-kit";
-import { RateLimiterService } from "@ashgw/rate-limiter";
-import type { RlWindow } from "@ashgw/rate-limiter";
+import { RateLimiterService } from "limico";
+import type { RlWindow } from "limico";
 import type { GlobalContext } from "~/ts-rest/context";
 interface RateLimiterCtx {
   rateLimitWindow: RlWindow;

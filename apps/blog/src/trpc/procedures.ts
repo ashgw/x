@@ -2,7 +2,7 @@ import { UserRoleEnum } from "~/api/models";
 import { authMiddleware } from "./middlewares/auth";
 import { timingMiddleware } from "./middlewares/timing";
 import { procedure } from "./root";
-import type { RlWindow } from "@ashgw/rate-limiter";
+import type { RlWindow } from "limico";
 import { rateLimiterMiddleware } from "./middlewares/rl";
 
 const timedProcedure = procedure.use(timingMiddleware);

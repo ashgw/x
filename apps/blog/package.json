@@ -34,7 +34,7 @@
     "@ashgw/env": "workspace:*",
     "@ashgw/error": "workspace:*",
     "@ashgw/monitor": "workspace:*",
-    "@ashgw/rate-limiter": "workspace:*",
+    "limico": "catalog:",
     "@ashgw/seo": "workspace:*",
     "@ashgw/security": "workspace:*",
     "@ashgw/storage": "workspace:*",

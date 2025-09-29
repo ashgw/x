@@ -38,7 +38,7 @@
     "@ashgw/error": "workspace:*",
     "@ashgw/logger": "workspace:*",
     "@ashgw/monitor": "workspace:*",
-    "@ashgw/rate-limiter": "workspace:*",
+    "limico": "catalog:",
     "@ashgw/scheduler": "workspace:*",
     "@ashgw/seo": "workspace:*",
     "@calcom/embed-react": "1.5.2",
