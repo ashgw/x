@@ -7,7 +7,7 @@ import argon2 from "argon2";
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
-import { email } from "@ashgw/email";
+import { send } from "@ashgw/email";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
