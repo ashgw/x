@@ -50,11 +50,11 @@ export function BlogPostData({ postData }: BlogPostProps) {
             stringDate: postData.firstModDate.toISOString(),
           }) ? (
             <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-duration-normal)] ease-in-out">
-              <Badge variant="outlineUpdated">Recent</Badge>
+              <Badge appearance="outline">Recent</Badge>
             </div>
           ) : (
             <div className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--ds-duration-normal)] ease-in-out">
-              <Badge variant="outlineArchive">Archive</Badge>
+              <Badge appearance="outline">Archive</Badge>
             </div>
           )}
         </div>
