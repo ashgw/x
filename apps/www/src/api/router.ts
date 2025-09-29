@@ -30,6 +30,21 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     async ({ body, headers }) => await reminder({ body, headers }),
   ),
 
+  notify: middleware()
+    .use(
+      rateLimiter({
+        limiter: {
+          kind: "quota",
+          limit: {
+            every: "1m",
+            hits: 4,
+          },
+        },
+      }),
+    )
+    .use(authed())
+    .route(contract.notify)(async ({ body }) => await notify({ body })),
+
   purgeViewWindow: middleware()
     .use(
       rateLimiter({
@@ -45,14 +60,18 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     .route(contract.purgeViewWindow)(async () => await purgeViewWindow()),
 
   purgeTrashPosts: middleware()
-    .use(rateLimiter({ limit: { every: "5s" } }))
+    .use(
+      rateLimiter({
+        limiter: {
+          kind: "interval",
+          limit: {
+            every: "4s",
+          },
+        },
+      }),
+    )
     .use(authed())
     .route(contract.purgeTrashPosts)(async () => await purgeTrashPosts()),
-
-  notify: middleware()
-    .use(rateLimiter({ limit: { every: "1s" } }))
-    .use(authed())
-    .route(contract.notify)(async ({ body }) => await notify({ body })),
 
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({
