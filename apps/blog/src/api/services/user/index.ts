@@ -4,8 +4,13 @@ import type {
   SessionRo,
   TwoFactorEnableDto,
   TwoFactorEnableRo,
+  TwoFactorGenerateBackupCodesRo,
   TwoFactorGetTotpUriDto,
   TwoFactorGetTotpUriRo,
+  TwoFactorGenerateBackupCodesDto,
+  TwoFactorVerifyBackupCodeDto,
+  TwoFactorDisableDto,
+  TwoFactorVerifyTotpDto,
   UserLoginDto,
   UserRegisterDto,
   UserRo,
@@ -130,6 +135,33 @@ export class UserService {
     input: TwoFactorGetTotpUriDto,
   ): Promise<TwoFactorGetTotpUriRo> {
     return await auth.getTOTPURI({
+      body: input,
+    });
+  }
+  public async verifyTwoFactorTotp(
+    input: TwoFactorVerifyTotpDto,
+  ): Promise<void> {
+    return await auth.verifyTOTP({
+      body: input,
+    });
+  }
+  public async disableTwoFactor(input: TwoFactorDisableDto): Promise<void> {
+    return await auth.disableTwoFactor({
+      body: input,
+    });
+  }
+  public async generateTwoFactorBackupCodes(
+    input: TwoFactorGenerateBackupCodesDto,
+  ): Promise<TwoFactorGenerateBackupCodesRo> {
+    return await auth.generateBackupCodes({
+      body: input,
+    });
+  }
+
+  public async verifyTwoFactorBackupCode(
+    input: TwoFactorVerifyBackupCodeDto,
+  ): Promise<void> {
+    return await auth.verifyBackupCode({
       body: input,
     });
   }
