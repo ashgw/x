@@ -47,6 +47,7 @@ export function BlockItem({
   // prefer hook state, fallback to prop if provided
   const isDragging = propIsDragging ?? hookIsDragging;
 
+  const onPreview = () => setIsPreview(!isPreview);
   return (
     <div
       ref={setNodeRef}
@@ -70,8 +71,7 @@ export function BlockItem({
       {/* action buttons */}
       <div className="absolute right-2 top-2 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <Button
-          variant={isPreview ? "secondary" : "ghost"}
-          className="h-8 w-8"
+          variant="outline"
           onClick={() => setIsPreview(!isPreview)}
           title={isPreview ? "Edit" : "Preview"}
           type="button"
@@ -91,8 +91,7 @@ export function BlockItem({
           <Trash2 className="h-4 w-4" />
         </Button>
         <Button
-          variant="ghost"
-          className="h-8 w-8 cursor-grab active:cursor-grabbing"
+          variant="outline"
           {...attributes}
           {...listeners}
           title="Drag to reorder"
