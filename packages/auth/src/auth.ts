@@ -3,7 +3,7 @@ import { betterAuth, logger } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { env } from "@ashgw/env";
 import { siteName } from "@ashgw/constants";
-import argon2 from "argon2";
+import argon2 from "argon2"; // TODO: add a security package
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js"; //  needed for server side
@@ -65,13 +65,41 @@ export const auth = betterAuth({
       });
     },
   },
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: true,
+    disableSignUp,
+    password: {
+      hash: argon2.hash,
+      verify: ({ hash, password }) => argon2.verify(hash, password),
+    },
+    requireEmailVerification: true,
+    revokeSessionsOnPasswordReset: true,
+    resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
+    sendResetPassword: async ({ url, user }) => {
+      await send.auth.resetPassword({
+        to: user.email,
+        resetUrl: url,
+        userName: user.name,
+      });
+    },
+    maxPasswordLength: 128,
+    minPasswordLength: 8,
+  },
+  socialProviders: {
+    // uncomment if needed
+    // google: {
+    //   clientId: env.GOOGLE_CLIENT_ID,
+    //   clientSecret: env.GOOGLE_CLIENT_SECRET,
+    //   disableSignUp,
+    // },
+  },
   onAPIError: {
     errorURL: authEndpoints.error /* 
     When errorURL is provided, the error will be added to the URL as a query parameter
     and the user will be redirected to the errorURL.
-    TODO: creaet the login in the app so it tells the user what's up
     */,
-    throw: false, // I'll handle it
+    throw: false,
     onError: (error, _authCtx) => {
       logger.error(`Error in auth API route: `, error);
       monitor.next.captureException({
@@ -80,6 +108,7 @@ export const auth = betterAuth({
     },
   },
   advanced: {
+    cookiePrefix: "ccksz",
     crossSubDomainCookies: {
       enabled: false, // subdomain takeover attacks can wait
     },
@@ -102,35 +131,6 @@ export const auth = betterAuth({
           ? logger.warn(message)
           : logger.error(message);
     },
-  },
-  socialProviders: {
-    // uncomment if needed
-    // google: {
-    //   clientId: env.GOOGLE_CLIENT_ID,
-    //   clientSecret: env.GOOGLE_CLIENT_SECRET,
-    //   disableSignUp,
-    // },
-  },
-  emailAndPassword: {
-    enabled: true,
-    autoSignIn: true,
-    disableSignUp,
-    password: {
-      hash: argon2.hash,
-      verify: ({ hash, password }) => argon2.verify(hash, password),
-    },
-    requireEmailVerification: false, // TODO: set it back to true
-    revokeSessionsOnPasswordReset: true,
-    resetPasswordTokenExpiresIn: 15 * 60, // 15 minutes
-    sendResetPassword: async ({ url, user }) => {
-      await send.auth.resetPassword({
-        to: user.email,
-        resetUrl: url,
-        userName: user.name,
-      });
-    },
-    maxPasswordLength: 128,
-    minPasswordLength: 8,
   },
   trustedOrigins:
     env.NEXT_PUBLIC_CURRENT_ENV === "production"
