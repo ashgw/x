@@ -1,2 +1,13 @@
 export { NotificationType } from "./types";
-export * as email from "./senders";
+export {
+  email,
+  EmailSenders,
+  sendVerifyEmail,
+  sendEmailIsVerified,
+  sendResetPassword,
+  sendAccountDeleted,
+  type VerifyEmailParams,
+  type EmailIsVerifiedParams,
+  type ResetPasswordParams,
+  type AccountDeletedParams,
+} from "./senders";
