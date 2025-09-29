@@ -4,7 +4,6 @@ const password = z.string().min(8).max(255);
 
 export const twoFactorEnableDtoSchema = z.object({
   password,
-  issuer: z.string().min(1).max(64).optional(),
 });
 
 export const twoFactorGetTotpUriDtoSchema = z.object({

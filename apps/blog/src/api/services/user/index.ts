@@ -133,6 +133,7 @@ export class UserService {
       body: {
         ...input,
       },
+      headers: this.ctx.req.headers,
     });
   }
   public async getTwoFactorTotpUri(
