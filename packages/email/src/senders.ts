@@ -2,11 +2,13 @@ import * as React from "react";
 import { render } from "@react-email/render";
 import { emailService } from "./email.service";
 import type { Recipient } from "./types";
+import type { NotificationType } from "./types";
 
 import VerifyEmailTemplate from "./templates/auth/VerifyEmail";
 import ResetPasswordTemplate from "./templates/auth/ResetPassword";
 import EmailIsVerifiedTemplate from "./templates/auth/EmailIsVerified";
 import AccountDeletedTemplate from "./templates/auth/AccountDeleted";
+import NotifyTemplate from "./templates/notification/Notify";
 
 export interface VerifyEmailParams {
   readonly to: Recipient;
@@ -28,8 +30,16 @@ export interface AccountDeletedParams {
   readonly time?: string;
 }
 
-/** Minimal senders for the exact flows you wired in BetterAuth */
-export class EmailSenders {
+/** Notification params */
+export interface NotificationParams {
+  readonly to: Recipient;
+  readonly title: string;
+  readonly messageMd: string;
+  readonly type: NotificationType;
+  readonly subject?: string;
+}
+
+class EmailSenders {
   public readonly auth = {
     verifyEmail: async (params: VerifyEmailParams) => {
       const html = await render(
@@ -80,23 +90,22 @@ export class EmailSenders {
     },
   };
 
-  // Flat methods that your BetterAuth config calls
-  public sendVerifyEmail = (p: VerifyEmailParams) => this.auth.verifyEmail(p);
-  public sendEmailIsVerified = (p: EmailIsVerifiedParams) =>
-    this.auth.afterVerification(p);
-  public sendResetPassword = (p: ResetPasswordParams) =>
-    this.auth.resetPassword(p);
-  public sendAccountDeleted = (p: AccountDeletedParams) =>
-    this.auth.accountDeleted(p);
+  public readonly notification = {
+    notify: async (params: NotificationParams) => {
+      const html = await render(
+        React.createElement(NotifyTemplate, {
+          messageMd: params.messageMd,
+          type: params.type,
+        }),
+        { pretty: true },
+      );
+      return emailService.sendHtml({
+        to: params.to,
+        subject: params.subject ?? params.title,
+        html,
+      });
+    },
+  };
 }
 
-export const email = new EmailSenders();
-
-export const sendVerifyEmail = (p: VerifyEmailParams) =>
-  email.sendVerifyEmail(p);
-export const sendEmailIsVerified = (p: EmailIsVerifiedParams) =>
-  email.sendEmailIsVerified(p);
-export const sendResetPassword = (p: ResetPasswordParams) =>
-  email.sendResetPassword(p);
-export const sendAccountDeleted = (p: AccountDeletedParams) =>
-  email.sendAccountDeleted(p);
+export const send = new EmailSenders();
