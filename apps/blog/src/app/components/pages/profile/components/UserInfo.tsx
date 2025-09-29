@@ -63,8 +63,9 @@ export function UserInfo({ user }: UserInfoProps) {
         </label>
         <div className="mt-2 flex items-center gap-2">
           <Badge
-            variant={isAdmin ? "outline" : "secondary"}
-            className={`flex items-center gap-1.5 px-3 py-1 ${isAdmin ? "border-yellow-500/70 text-yellow-500" : "text-blue-400"} `}
+            appearance={"outline"}
+            tone={isAdmin ? "warning" : "neutral"}
+            className={`flex items-center gap-1.5 px-3 py-1`}
           >
             {isAdmin ? (
               <Crown className="h-3.5 w-3.5" />

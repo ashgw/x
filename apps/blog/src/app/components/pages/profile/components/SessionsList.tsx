@@ -190,8 +190,9 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
                     <TableCell>{formatDate(session.updatedAt)}</TableCell>
                     <TableCell>
                       <Badge
-                        variant={session.isExpired ? "destructive" : "success"}
-                        className="rounded-sm px-2 py-0.5 text-xs font-medium"
+                        size={"sm"}
+                        appearance={"outline"}
+                        tone={session.isExpired ? "destructive" : "success"}
                       >
                         {session.isExpired
                           ? "Expired"
