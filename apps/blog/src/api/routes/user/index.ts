@@ -21,10 +21,10 @@ import {
   twoFactorGenerateBackupCodesRoSchema,
 } from "~/api/models";
 
-import { AuthService } from "~/api/services";
+import { UserService } from "~/api/services";
 
-const authService = (ctx: TrpcContext) =>
-  new AuthService({
+const userService = (ctx: TrpcContext) =>
+  new UserService({
     ctx,
   });
 
@@ -33,7 +33,7 @@ export const userRouter = router({
     .input(z.void())
     .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
-      return await authService(ctx).me();
+      return await userService(ctx).me();
     }),
 
   login: publicProcedure({
@@ -44,7 +44,7 @@ export const userRouter = router({
     .input(userLoginSchemaDto)
     .output(z.void())
     .mutation(async ({ input, ctx }) => {
-      return await authService(ctx).login(input);
+      return await userService(ctx).login(input);
     }),
 
   signUp: publicProcedure({
@@ -55,7 +55,7 @@ export const userRouter = router({
     .input(userRegisterSchemaDto)
     .output(z.void())
     .mutation(async ({ input, ctx }) => {
-      return await authService(ctx).signUp(input);
+      return await userService(ctx).signUp(input);
     }),
 
   logout: publicProcedure({
@@ -66,7 +66,7 @@ export const userRouter = router({
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      return await authService(ctx).logout();
+      return await userService(ctx).logout();
     }),
 
   changePassword: authenticatedProcedure({
@@ -77,7 +77,7 @@ export const userRouter = router({
     .input(userChangePasswordSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
-      await authService(ctx).changePassword({
+      await userService(ctx).changePassword({
         currentPassword,
         newPassword,
       });
@@ -91,7 +91,7 @@ export const userRouter = router({
     .input(z.void())
     .output(z.array(sessionSchemaRo))
     .query(async ({ ctx }) => {
-      return await authService(ctx).listSessions();
+      return await userService(ctx).listSessions();
     }),
 
   terminateAllActiveSessions: authenticatedProcedure({
@@ -102,7 +102,7 @@ export const userRouter = router({
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      await authService(ctx).terminateAllActiveSessions();
+      await userService(ctx).terminateAllActiveSessions();
     }),
 
   terminateSpecificSession: authenticatedProcedure({
@@ -113,7 +113,7 @@ export const userRouter = router({
     .input(userTerminateSpecificSessionSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { token } }) => {
-      await authService(ctx).terminateSpecificSession({
+      await userService(ctx).terminateSpecificSession({
         token,
       });
     }),
@@ -123,7 +123,7 @@ export const userRouter = router({
     .input(twoFactorEnableDtoSchema)
     .output(twoFactorEnableRoSchema)
     .mutation(async ({ ctx, input }) => {
-      return await authService(ctx).enableTwoFactor(input);
+      return await userService(ctx).enableTwoFactor(input);
     }),
 
   getTwoFactorTotpUri: authenticatedProcedure({
@@ -132,7 +132,7 @@ export const userRouter = router({
     .input(twoFactorGetTotpUriDtoSchema)
     .output(twoFactorGetTotpUriRoSchema)
     .query(async ({ ctx, input }) => {
-      return await authService(ctx).getTwoFactorTotpUri(input);
+      return await userService(ctx).getTwoFactorTotpUri(input);
     }),
 
   verifyTwoFactorTotp: publicProcedure({
@@ -141,7 +141,7 @@ export const userRouter = router({
     .input(twoFactorVerifyTotpDtoSchema)
     .output(z.void())
     .mutation(async ({ ctx, input }) => {
-      await authService(ctx).verifyTwoFactorTotp(input);
+      await userService(ctx).verifyTwoFactorTotp(input);
     }),
 
   disableTwoFactor: authenticatedProcedure({
@@ -150,7 +150,7 @@ export const userRouter = router({
     .input(twoFactorDisableDtoSchema)
     .output(z.void())
     .mutation(async ({ ctx, input }) => {
-      await authService(ctx).disableTwoFactor(input);
+      await userService(ctx).disableTwoFactor(input);
     }),
 
   generateTwoFactorBackupCodes: authenticatedProcedure({
@@ -159,7 +159,7 @@ export const userRouter = router({
     .input(twoFactorGenerateBackupCodesDtoSchema)
     .output(twoFactorGenerateBackupCodesRoSchema)
     .mutation(async ({ ctx, input }) => {
-      return await authService(ctx).generateTwoFactorBackupCodes(input);
+      return await userService(ctx).generateTwoFactorBackupCodes(input);
     }),
 
   verifyTwoFactorBackupCode: publicProcedure({
@@ -168,6 +168,6 @@ export const userRouter = router({
     .input(twoFactorVerifyBackupCodeDtoSchema)
     .output(z.void())
     .mutation(async ({ ctx, input }) => {
-      await authService(ctx).verifyTwoFactorBackupCode(input);
+      await userService(ctx).verifyTwoFactorBackupCode(input);
     }),
 });
