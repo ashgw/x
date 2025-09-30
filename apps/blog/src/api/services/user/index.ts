@@ -13,6 +13,7 @@ import type {
   UserLoginDto,
   UserRegisterDto,
   UserRo,
+  UserTerminateSpecificSessionDto,
 } from "~/api/models";
 import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
@@ -70,13 +71,21 @@ export class UserService {
   }
 
   public async terminateSpecificSession({
-    token,
-  }: {
-    token: string;
-  }): Promise<void> {
+    sessionId,
+  }: UserTerminateSpecificSessionDto): Promise<void> {
+    const sessions = await authApi.listSessions({
+      headers: this.ctx.req.headers,
+    });
+    const target = sessions.find((s) => s.id === sessionId);
+    if (!target) {
+      throw new AppError({
+        code: "BAD_REQUEST",
+        message: "Invalid session ID",
+      });
+    }
     await authApi.revokeSession({
       body: {
-        token,
+        token: target.token,
       },
       headers: this.ctx.req.headers,
     });

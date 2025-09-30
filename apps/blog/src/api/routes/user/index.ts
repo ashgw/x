@@ -119,9 +119,9 @@ export const userRouter = router({
   })
     .input(userTerminateSpecificSessionSchemaDto)
     .output(z.void())
-    .mutation(async ({ ctx, input: { token } }) => {
+    .mutation(async ({ ctx, input: { sessionId } }) => {
       await userService(ctx).terminateSpecificSession({
-        token,
+        sessionId,
       });
     }),
 
