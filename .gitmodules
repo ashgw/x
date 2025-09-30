@@ -10,10 +10,6 @@
 	path = packages/security
 	url = git@github.com:ashgw/security.git
 
-[submodule "rate-limiter"]
-	path = packages/rate-limiter
-	url = git@github.com:ashgw/limico.git
-
 [submodule "auth"]
 	path = packages/auth
 	url = git@github.com:ashgw/auth.git
