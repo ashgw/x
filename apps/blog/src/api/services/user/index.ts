@@ -140,6 +140,7 @@ export class UserService {
   ): Promise<TwoFactorGetTotpUriRo> {
     return await authApi.getTOTPURI({
       body: input,
+      headers: this.ctx.req.headers,
     });
   }
   public async verifyTwoFactorTotp(
@@ -147,11 +148,13 @@ export class UserService {
   ): Promise<void> {
     await authApi.verifyTOTP({
       body: input,
+      headers: this.ctx.req.headers,
     });
   }
   public async disableTwoFactor(input: TwoFactorDisableDto): Promise<void> {
     await authApi.disableTwoFactor({
       body: input,
+      headers: this.ctx.req.headers,
     });
   }
   public async generateTwoFactorBackupCodes(
@@ -159,6 +162,7 @@ export class UserService {
   ): Promise<TwoFactorGenerateBackupCodesRo> {
     return await authApi.generateBackupCodes({
       body: input,
+      headers: this.ctx.req.headers,
     });
   }
 
@@ -167,6 +171,7 @@ export class UserService {
   ): Promise<void> {
     await authApi.verifyBackupCode({
       body: input,
+      headers: this.ctx.req.headers,
     });
   }
 }
