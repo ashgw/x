@@ -137,9 +137,9 @@ model Account {
   providerId            String
   userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
+  accessToken           String? // Encrypted before storage
+  refreshToken          String? // Encrypted before storage
+  idToken               String? // Encrypted before storage
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
   scope                 String?
@@ -167,8 +167,8 @@ model Verification {
 
 model TwoFactor {
   id          String @id
-  secret      String
-  backupCodes String
+  secret      String // Encrypted before storage
+  backupCodes String // Encrypted before storage
   userId      String
   user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
