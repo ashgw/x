@@ -37,8 +37,9 @@ export const userRouter = router({
     }),
 
   login: publicProcedure({
-    limit: {
-      every: "3s",
+    limiter: {
+      every: "1m",
+      hits: 2,
     },
   })
     .input(userLoginSchemaDto)
@@ -48,8 +49,9 @@ export const userRouter = router({
     }),
 
   signUp: publicProcedure({
-    limit: {
-      every: "5s",
+    limiter: {
+      every: "1m",
+      hits: 2,
     },
   })
     .input(userRegisterSchemaDto)
@@ -59,8 +61,9 @@ export const userRouter = router({
     }),
 
   logout: publicProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 10,
     },
   })
     .input(z.void())
@@ -70,8 +73,9 @@ export const userRouter = router({
     }),
 
   changePassword: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "2h",
+      hits: 1,
     },
   })
     .input(userChangePasswordSchemaDto)
@@ -84,8 +88,9 @@ export const userRouter = router({
     }),
 
   listAllSessions: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 5,
     },
   })
     .input(z.void())
@@ -95,8 +100,9 @@ export const userRouter = router({
     }),
 
   terminateAllActiveSessions: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 5,
     },
   })
     .input(z.void())
@@ -106,8 +112,9 @@ export const userRouter = router({
     }),
 
   terminateSpecificSession: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 4,
     },
   })
     .input(userTerminateSpecificSessionSchemaDto)
@@ -118,7 +125,10 @@ export const userRouter = router({
       });
     }),
   enableTwoFactor: authenticatedProcedure({
-    limit: { every: "2s" },
+    limiter: {
+      every: "1m",
+      hits: 2,
+    },
   })
     .input(twoFactorEnableDtoSchema)
     .output(twoFactorEnableRoSchema)
@@ -127,7 +137,10 @@ export const userRouter = router({
     }),
 
   getTwoFactorTotpUri: authenticatedProcedure({
-    limit: { every: "2s" },
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
   })
     .input(twoFactorGetTotpUriDtoSchema)
     .output(twoFactorGetTotpUriRoSchema)
@@ -136,7 +149,10 @@ export const userRouter = router({
     }),
 
   verifyTwoFactorTotp: publicProcedure({
-    limit: { every: "2s" },
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
   })
     .input(twoFactorVerifyTotpDtoSchema)
     .output(z.void())
@@ -145,7 +161,10 @@ export const userRouter = router({
     }),
 
   disableTwoFactor: authenticatedProcedure({
-    limit: { every: "2s" },
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
   })
     .input(twoFactorDisableDtoSchema)
     .output(z.void())
@@ -154,7 +173,10 @@ export const userRouter = router({
     }),
 
   generateTwoFactorBackupCodes: authenticatedProcedure({
-    limit: { every: "2s" },
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
   })
     .input(twoFactorGenerateBackupCodesDtoSchema)
     .output(twoFactorGenerateBackupCodesRoSchema)
@@ -163,7 +185,10 @@ export const userRouter = router({
     }),
 
   verifyTwoFactorBackupCode: publicProcedure({
-    limit: { every: "2s" },
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
   })
     .input(twoFactorVerifyBackupCodeDtoSchema)
     .output(z.void())

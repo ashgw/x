@@ -47,7 +47,6 @@ export function BlockItem({
   // prefer hook state, fallback to prop if provided
   const isDragging = propIsDragging ?? hookIsDragging;
 
-  const onPreview = () => setIsPreview(!isPreview);
   return (
     <div
       ref={setNodeRef}
