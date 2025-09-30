@@ -22,7 +22,9 @@ interface SessionsListProps {
   currentSessionToken: string;
 }
 
-export function SessionsList({ currentSessionToken }: SessionsListProps) {
+export function SessionsList({
+  currentSessionToken: currentSessionId,
+}: SessionsListProps) {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
     new Set(),
   );
@@ -75,22 +77,22 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
 
   const terminateSpecificSessionMutation =
     trpcClientSide.user.terminateSpecificSession.useMutation({
-      onMutate: ({ token }) => setSessionLoading(token, true),
-      onSuccess: async (_data, { token }) => {
+      onMutate: ({ sessionId }) => setSessionLoading(sessionId, true),
+      onSuccess: async (_data, { sessionId }) => {
         toast.success("Session terminated");
-        if (token === currentSessionToken) {
+        if (sessionId === currentSessionId) {
           await hardLogout();
           return;
         }
         await utils.user.listAllSessions.invalidate();
         router.refresh();
       },
-      onError: (error, { token }) => {
-        setSessionLoading(token, false);
+      onError: (error, { sessionId }) => {
+        setSessionLoading(sessionId, false);
         toast.error(error.message);
       },
       onSettled: (_data, _err, vars) => {
-        if (vars.token) setSessionLoading(vars.token, false);
+        if (vars.sessionId) setSessionLoading(vars.sessionId, false);
       },
     });
 
@@ -135,12 +137,12 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
           <TableBody>
             {sessions.map((session) => {
               const isRowLoading =
-                loadingSessionIds.has(session.token) || terminatingAllSessions;
-              const isCurrent = currentSessionToken === session.token;
+                loadingSessionIds.has(session.id) || terminatingAllSessions;
+              const isCurrent = currentSessionId === session.id;
 
               return (
                 <TableRow
-                  key={session.token}
+                  key={session.id}
                   className="group hover:bg-accent/55"
                   aria-current={isCurrent ? "true" : "false"}
                 >
@@ -166,7 +168,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
                       variant="destructive:outline"
                       onClick={() =>
                         terminateSpecificSessionMutation.mutate({
-                          token: session.token,
+                          sessionId: session.id,
                         })
                       }
                       disabled={isRowLoading}
