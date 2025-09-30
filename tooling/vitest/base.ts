@@ -13,6 +13,7 @@ export const baseConfig = defineConfig({
       "**/coverage/**",
       "**/.cache/**",
       "**/*.d.ts",
+      "**/e2e/**", // playwright tests are not ran by vitest
       "scripts/**", // if you have raw scripts checked in
     ],
   },

@@ -8,7 +8,6 @@ export default mergeConfig(
   baseConfig,
   defineProject({
     test: {
-      globals: true,
       deps: {
         inline: [/server-only/], // the server-only package errors out when we're in a broswer env, mock it.
       },
