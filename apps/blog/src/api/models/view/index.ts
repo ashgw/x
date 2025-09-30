@@ -8,11 +8,11 @@ export const trackViewSchemaDto = z.object({
 });
 
 // ========== ROs ==========
-export const trackViewRoSchema = z.object({
+export const trackViewSchemaRo = z.object({
   total: z.number().int().nonnegative(),
 });
 
 // ========== Types ==========
 
 export type TrackViewDto = z.infer<typeof trackViewSchemaDto>;
-export type TrackViewRo = z.infer<typeof trackViewRoSchema>;
+export type TrackViewRo = z.infer<typeof trackViewSchemaRo>;

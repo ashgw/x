@@ -1,6 +1,6 @@
 import { publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
-import { trackViewRoSchema, trackViewSchemaDto } from "~/api/models/view";
+import { trackViewSchemaRo, trackViewSchemaDto } from "~/api/models/view";
 import { ViewService } from "~/api/services/view";
 
 export const viewRouter = router({
@@ -11,7 +11,7 @@ export const viewRouter = router({
     },
   })
     .input(trackViewSchemaDto)
-    .output(trackViewRoSchema)
+    .output(trackViewSchemaRo)
     .mutation(async ({ input: { slug }, ctx: { db, req } }) => {
       return await new ViewService({
         db,

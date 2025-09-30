@@ -2,22 +2,22 @@ import { z } from "zod";
 
 const totpURI = z.string().min(1).max(512);
 
-export const twoFactorEnableRoSchema = z.object({
+export const twoFactorEnableSchemaRo = z.object({
   totpURI,
   backupCodes: z.array(z.string().min(1).max(255)),
 });
 
-export const twoFactorGetTotpUriRoSchema = z.object({
+export const twoFactorGetTotpUriSchemaRo = z.object({
   totpURI,
 });
-export const twoFactorGenerateBackupCodesRoSchema = z.object({
+export const twoFactorGenerateBackupCodesSchemaRo = z.object({
   backupCodes: z.array(z.string().min(1).max(255)),
 });
 
-export type TwoFactorEnableRo = z.infer<typeof twoFactorEnableRoSchema>;
+export type TwoFactorEnableRo = z.infer<typeof twoFactorEnableSchemaRo>;
 
-export type TwoFactorGetTotpUriRo = z.infer<typeof twoFactorGetTotpUriRoSchema>;
+export type TwoFactorGetTotpUriRo = z.infer<typeof twoFactorGetTotpUriSchemaRo>;
 
 export type TwoFactorGenerateBackupCodesRo = z.infer<
-  typeof twoFactorGenerateBackupCodesRoSchema
+  typeof twoFactorGenerateBackupCodesSchemaRo
 >;

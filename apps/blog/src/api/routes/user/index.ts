@@ -16,9 +16,9 @@ import {
   twoFactorDisableSchemaDto,
   twoFactorGenerateBackupCodesSchemaDto,
   twoFactorVerifyBackupCodeSchemaDto,
-  twoFactorEnableRoSchema,
-  twoFactorGetTotpUriRoSchema,
-  twoFactorGenerateBackupCodesRoSchema,
+  twoFactorEnableSchemaRo,
+  twoFactorGetTotpUriSchemaRo,
+  twoFactorGenerateBackupCodesSchemaRo,
 } from "~/api/models";
 
 import { UserService } from "~/api/services";
@@ -132,7 +132,7 @@ export const userRouter = router({
     },
   })
     .input(twoFactorEnableSchemaDto)
-    .output(twoFactorEnableRoSchema)
+    .output(twoFactorEnableSchemaRo)
     .mutation(async ({ ctx, input }) => {
       return await userService(ctx).enableTwoFactor(input);
     }),
@@ -144,7 +144,7 @@ export const userRouter = router({
     },
   })
     .input(twoFactorGetTotpUriSchemaDto)
-    .output(twoFactorGetTotpUriRoSchema)
+    .output(twoFactorGetTotpUriSchemaRo)
     .query(async ({ ctx, input }) => {
       return await userService(ctx).getTwoFactorTotpUri(input);
     }),
@@ -180,7 +180,7 @@ export const userRouter = router({
     },
   })
     .input(twoFactorGenerateBackupCodesSchemaDto)
-    .output(twoFactorGenerateBackupCodesRoSchema)
+    .output(twoFactorGenerateBackupCodesSchemaRo)
     .mutation(async ({ ctx, input }) => {
       return await userService(ctx).generateTwoFactorBackupCodes(input);
     }),
