@@ -18,7 +18,7 @@ const rl = createLimiter({
   window: "60s",
 });
 
-export const setupAuth = ({
+export const createAuth = ({
   trustedProductionOrigins,
   baseURL,
   appName,
@@ -202,10 +202,7 @@ export const setupAuth = ({
     },
   });
   return {
-    handler: {
-      next: toNextJsHandler(auth),
-      // can add other if needed
-    },
+    handler: toNextJsHandler(auth),
     authApi: auth.api,
     auth: auth,
   };

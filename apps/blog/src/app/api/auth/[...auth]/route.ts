@@ -1,3 +1,3 @@
-import { nextJsHandler } from "@ashgw/auth";
+import { handler } from "~/lib/auth";
 
-export const { POST, GET } = nextJsHandler;
+export const { POST, GET } = handler;
