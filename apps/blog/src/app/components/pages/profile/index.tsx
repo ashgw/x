@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@ashgw/design/ui";
 
@@ -35,8 +36,15 @@ export function ProfilePage() {
   const { user, isLoading, logout } = useAuth();
   const utils = trpcClientSide.useUtils();
 
+  // Perform redirect as a side effect, not during render
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login");
+    }
+  }, [isLoading, router, user]);
+
+  // While waiting for auth state or redirecting, show nothing/spinner
   if (!isLoading && !user) {
-    router.push("/login");
     return null;
   }
 
