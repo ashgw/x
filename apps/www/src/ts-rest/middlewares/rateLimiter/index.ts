@@ -39,24 +39,24 @@ const rlI = createLimiter({
   interval: "1s",
 });
 
-export function rateLimiter({ limiter }: { limiter: RateLimitOptions }) {
-  if (limiter.kind === "interval") {
-    rlI.update(limiter.limit.every);
+export function rateLimiter(input: RateLimitOptions) {
+  if (input.kind === "interval") {
+    rlI.update(input.limit.every);
   } else {
     rlQ.update({
-      limit: limiter.limit.hits,
-      window: limiter.limit.every,
+      limit: input.limit.hits,
+      window: input.limit.every,
     });
   }
   const allow =
-    limiter.kind === "interval" ? rlI.allow.bind(rlI) : rlQ.allow.bind(rlQ);
+    input.kind === "interval" ? rlI.allow.bind(rlI) : rlQ.allow.bind(rlQ);
 
   return middlewareFn<GlobalContext, RateLimiterCtx>(async (req, _res) => {
     const pass = await allow(getFingerprint({ req }));
     if (!pass.allowed) {
       return middlewareResponse.errors.tooManyRequests({
         body: {
-          message: `You're limited for the next ${limiter.limit.every}`,
+          message: `You're limited for the next ${input.limit.every}`,
         },
         retryAfterSeconds: pass.retryAfterMs / 1000,
       });
@@ -64,8 +64,8 @@ export function rateLimiter({ limiter }: { limiter: RateLimitOptions }) {
     return {
       ctx: {
         rl: {
-          every: limiter.limit.every,
-          kind: limiter.kind,
+          every: input.limit.every,
+          kind: input.kind,
         },
       },
     };

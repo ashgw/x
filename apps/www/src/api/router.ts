@@ -17,12 +17,10 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
     .use(authed())
     .use(
       rateLimiter({
-        limiter: {
-          kind: "quota",
-          limit: {
-            every: "10s",
-            hits: 2,
-          },
+        kind: "quota",
+        limit: {
+          every: "10s",
+          hits: 2,
         },
       }),
     )
@@ -33,12 +31,10 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   notify: middleware()
     .use(
       rateLimiter({
-        limiter: {
-          kind: "quota",
-          limit: {
-            every: "10s",
-            hits: 10,
-          },
+        kind: "quota",
+        limit: {
+          every: "10s",
+          hits: 10,
         },
       }),
     )
@@ -48,11 +44,9 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeViewWindow: middleware()
     .use(
       rateLimiter({
-        limiter: {
-          kind: "interval",
-          limit: {
-            every: "4s",
-          },
+        kind: "interval",
+        limit: {
+          every: "4s",
         },
       }),
     )
@@ -62,11 +56,9 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
   purgeTrashPosts: middleware()
     .use(
       rateLimiter({
-        limiter: {
-          kind: "interval",
-          limit: {
-            every: "4s",
-          },
+        kind: "interval",
+        limit: {
+          every: "4s",
         },
       }),
     )
