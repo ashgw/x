@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { token } from "../shared";
+import { id } from "../shared";
 
 export const sessionSchemaRo = z.object({
-  token, // acts as the ID @unique
+  id,
   createdAt: z.date(),
   updatedAt: z.date(),
   isExpired: z.boolean(),
