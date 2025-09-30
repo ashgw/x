@@ -14,7 +14,6 @@ import {
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   reminder: middleware()
-    .use(authed())
     .use(
       rateLimiter({
         kind: "quota",
@@ -24,6 +23,7 @@ export const router = createRouterWithContext(contract)<GlobalContext>({
         },
       }),
     )
+    .use(authed())
     .route(contract.reminder)(
     async ({ body, headers }) => await reminder({ body, headers }),
   ),
