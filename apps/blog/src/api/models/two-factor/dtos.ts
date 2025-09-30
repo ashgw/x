@@ -1,45 +1,49 @@
 import { z } from "zod";
 
+// ========== Schemas ==========
+
 const password = z.string().min(8).max(255);
 
-export const twoFactorEnableDtoSchema = z.object({
+export const twoFactorEnableSchemaDto = z.object({
   password,
 });
 
-export const twoFactorGetTotpUriDtoSchema = z.object({
+export const twoFactorGetTotpUriSchemaDto = z.object({
   password,
 });
 
-export const twoFactorVerifyTotpDtoSchema = z.object({
+export const twoFactorVerifyTotpSchemaDto = z.object({
   code: z.string().min(6).max(10),
   trustDevice: z.boolean().optional(),
 });
 
-export const twoFactorDisableDtoSchema = z.object({
+export const twoFactorDisableSchemaDto = z.object({
   password,
 });
 
-export const twoFactorGenerateBackupCodesDtoSchema = z.object({
+export const twoFactorGenerateBackupCodesSchemaDto = z.object({
   password,
 });
 
-export const twoFactorVerifyBackupCodeDtoSchema = z.object({
+export const twoFactorVerifyBackupCodeSchemaDto = z.object({
   code: z.string().min(6).max(64),
   disableSession: z.boolean().optional(),
   trustDevice: z.boolean().optional(),
 });
 
-export type TwoFactorEnableDto = z.infer<typeof twoFactorEnableDtoSchema>;
+// ========== Types ==========
+
+export type TwoFactorEnableDto = z.infer<typeof twoFactorEnableSchemaDto>;
 export type TwoFactorGetTotpUriDto = z.infer<
-  typeof twoFactorGetTotpUriDtoSchema
+  typeof twoFactorGetTotpUriSchemaDto
 >;
 export type TwoFactorVerifyTotpDto = z.infer<
-  typeof twoFactorVerifyTotpDtoSchema
+  typeof twoFactorVerifyTotpSchemaDto
 >;
-export type TwoFactorDisableDto = z.infer<typeof twoFactorDisableDtoSchema>;
+export type TwoFactorDisableDto = z.infer<typeof twoFactorDisableSchemaDto>;
 export type TwoFactorGenerateBackupCodesDto = z.infer<
-  typeof twoFactorGenerateBackupCodesDtoSchema
+  typeof twoFactorGenerateBackupCodesSchemaDto
 >;
 export type TwoFactorVerifyBackupCodeDto = z.infer<
-  typeof twoFactorVerifyBackupCodeDtoSchema
+  typeof twoFactorVerifyBackupCodeSchemaDto
 >;

@@ -10,12 +10,12 @@ import {
   userRegisterSchemaDto,
   userTerminateSpecificSessionSchemaDto,
   userSchemaRo,
-  twoFactorEnableDtoSchema,
-  twoFactorGetTotpUriDtoSchema,
-  twoFactorVerifyTotpDtoSchema,
-  twoFactorDisableDtoSchema,
-  twoFactorGenerateBackupCodesDtoSchema,
-  twoFactorVerifyBackupCodeDtoSchema,
+  twoFactorEnableSchemaDto,
+  twoFactorGetTotpUriSchemaDto,
+  twoFactorVerifyTotpSchemaDto,
+  twoFactorDisableSchemaDto,
+  twoFactorGenerateBackupCodesSchemaDto,
+  twoFactorVerifyBackupCodeSchemaDto,
   twoFactorEnableRoSchema,
   twoFactorGetTotpUriRoSchema,
   twoFactorGenerateBackupCodesRoSchema,
@@ -124,13 +124,14 @@ export const userRouter = router({
         token,
       });
     }),
+
   enableTwoFactor: authenticatedProcedure({
     limiter: {
       every: "1m",
       hits: 2,
     },
   })
-    .input(twoFactorEnableDtoSchema)
+    .input(twoFactorEnableSchemaDto)
     .output(twoFactorEnableRoSchema)
     .mutation(async ({ ctx, input }) => {
       return await userService(ctx).enableTwoFactor(input);
@@ -142,7 +143,7 @@ export const userRouter = router({
       hits: 10,
     },
   })
-    .input(twoFactorGetTotpUriDtoSchema)
+    .input(twoFactorGetTotpUriSchemaDto)
     .output(twoFactorGetTotpUriRoSchema)
     .query(async ({ ctx, input }) => {
       return await userService(ctx).getTwoFactorTotpUri(input);
@@ -154,7 +155,7 @@ export const userRouter = router({
       hits: 10,
     },
   })
-    .input(twoFactorVerifyTotpDtoSchema)
+    .input(twoFactorVerifyTotpSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input }) => {
       await userService(ctx).verifyTwoFactorTotp(input);
@@ -166,7 +167,7 @@ export const userRouter = router({
       hits: 10,
     },
   })
-    .input(twoFactorDisableDtoSchema)
+    .input(twoFactorDisableSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input }) => {
       await userService(ctx).disableTwoFactor(input);
@@ -178,7 +179,7 @@ export const userRouter = router({
       hits: 10,
     },
   })
-    .input(twoFactorGenerateBackupCodesDtoSchema)
+    .input(twoFactorGenerateBackupCodesSchemaDto)
     .output(twoFactorGenerateBackupCodesRoSchema)
     .mutation(async ({ ctx, input }) => {
       return await userService(ctx).generateTwoFactorBackupCodes(input);
@@ -190,7 +191,7 @@ export const userRouter = router({
       hits: 10,
     },
   })
-    .input(twoFactorVerifyBackupCodeDtoSchema)
+    .input(twoFactorVerifyBackupCodeSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input }) => {
       await userService(ctx).verifyTwoFactorBackupCode(input);

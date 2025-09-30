@@ -1,5 +1,5 @@
 import { handler } from "~/lib/auth";
 
-export const runtime = "nodeJs";
+export const runtime = "nodejs";
 
 export const { POST, GET } = handler;

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { token } from "../shared";
 
 export const sessionSchemaRo = z.object({
-  token, // acts as the ID @unqiue
+  token, // acts as the ID @unique
   createdAt: z.date(),
   updatedAt: z.date(),
   isExpired: z.boolean(),
