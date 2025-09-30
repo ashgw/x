@@ -64,7 +64,7 @@ const serverVars = {
   RESEND_API_KEY: z.string().min(20).startsWith("re_").max(255),
   PERSONAL_EMAIL: z.string().email().max(255),
   QSTASH_TOKEN: z.string().endsWith("=").min(20).max(255),
-  AUTH_ENCRYPTON_KEY: z
+  AUTH_ENCRYPTION_KEY: z
     .string()
     .length(32, "Auth encryption key must be 32 characters long"),
 };
@@ -96,7 +96,7 @@ export const env = createEnv({
     SENTRY_ORG: process.env.SENTRY_ORG,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
-    AUTH_ENCRYPTON_KEY: process.env.AUTH_ENCRYPTON_KEY,
+    AUTH_ENCRYPTION_KEY: process.env.AUTH_ENCRYPTION_KEY,
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
     NEXT_PUBLIC_WWW_URL: process.env.NEXT_PUBLIC_WWW_URL,
     NEXT_PUBLIC_BLOG_URL: process.env.NEXT_PUBLIC_BLOG_URL,
