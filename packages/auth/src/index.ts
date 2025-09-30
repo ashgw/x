@@ -1,2 +1,1 @@
-export { nextJsHandler } from "./next-handler";
-export { auth } from "./server";
+export { setupAuth } from "./auth";
