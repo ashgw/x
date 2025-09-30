@@ -7,7 +7,7 @@ import {
   sessionSchemaRo,
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
-  userRegisterSchemaDto,
+  // userRegisterSchemaDto,
   userTerminateSpecificSessionSchemaDto,
   userSchemaRo,
   twoFactorEnableSchemaDto,
@@ -48,17 +48,18 @@ export const userRouter = router({
       return await userService(ctx).login(input);
     }),
 
-  signUp: publicProcedure({
-    limiter: {
-      every: "1m",
-      hits: 2,
-    },
-  })
-    .input(userRegisterSchemaDto)
-    .output(z.void())
-    .mutation(async ({ input, ctx }) => {
-      return await userService(ctx).signUp(input);
-    }),
+  // decativated for now
+  // signUp: publicProcedure({
+  //   limiter: {
+  //     every: "1m",
+  //     hits: 2,
+  //   },
+  // })
+  //   .input(userRegisterSchemaDto)
+  //   .output(z.void())
+  //   .mutation(async ({ input, ctx }) => {
+  //     return await userService(ctx).signUp(input);
+  //   }),
 
   logout: publicProcedure({
     limiter: {
@@ -80,10 +81,9 @@ export const userRouter = router({
   })
     .input(userChangePasswordSchemaDto)
     .output(z.void())
-    .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
+    .mutation(async ({ ctx, input }) => {
       await userService(ctx).changePassword({
-        currentPassword,
-        newPassword,
+        ...input,
       });
     }),
 

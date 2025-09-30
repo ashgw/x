@@ -14,6 +14,7 @@ import type {
   UserRegisterDto,
   UserRo,
   UserTerminateSpecificSessionDto,
+  UserChangePasswordDto,
 } from "~/api/models";
 import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
@@ -91,17 +92,10 @@ export class UserService {
     });
   }
 
-  public async changePassword({
-    currentPassword,
-    newPassword,
-  }: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<void> {
+  public async changePassword(input: UserChangePasswordDto): Promise<void> {
     await authApi.changePassword({
       body: {
-        currentPassword,
-        newPassword,
+        ...input,
         revokeOtherSessions: true,
       },
       headers: this.ctx.req.headers,
