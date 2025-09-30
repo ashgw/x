@@ -34,7 +34,7 @@ export function ChangePasswordForm() {
   const changePasswordMutation = trpcClientSide.user.changePassword.useMutation(
     {
       onSuccess: () => {
-        toast.success("Password changed successfully");
+        toast.success("Password changed");
         form.reset();
       },
       onError: (error) => {
@@ -53,16 +53,22 @@ export function ChangePasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid gap-4 sm:grid-cols-2"
+        autoComplete="off"
+      >
         <FormField
           control={form.control}
           name="currentPassword"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Current Password</FormLabel>
+            <FormItem className="sm:col-span-2">
+              <FormLabel>Current password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
+                  inputMode="text"
+                  autoComplete="current-password"
                   placeholder="Enter current password"
                   {...field}
                 />
@@ -77,11 +83,13 @@ export function ChangePasswordForm() {
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>New Password</FormLabel>
+              <FormLabel>New password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="Enter new password"
+                  inputMode="text"
+                  autoComplete="new-password"
+                  placeholder="At least 12 characters"
                   {...field}
                 />
               </FormControl>
@@ -95,11 +103,13 @@ export function ChangePasswordForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm New Password</FormLabel>
+              <FormLabel>Confirm new password</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="Confirm new password"
+                  inputMode="text"
+                  autoComplete="new-password"
+                  placeholder="Repeat new password"
                   {...field}
                 />
               </FormControl>
@@ -108,14 +118,16 @@ export function ChangePasswordForm() {
           )}
         />
 
-        <Button
-          type="submit"
-          variant="default"
-          className="w-full"
-          loading={changePasswordMutation.isPending}
-        >
-          Change Password
-        </Button>
+        <div className="sm:col-span-2 flex justify-end">
+          <Button
+            type="submit"
+            variant="default"
+            loading={changePasswordMutation.isPending}
+            className="min-w-36"
+          >
+            {changePasswordMutation.isPending ? "Saving…" : "Change password"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

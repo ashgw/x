@@ -1,4 +1,3 @@
-// components/SessionsList.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -32,11 +31,9 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
   const router = useRouter();
   const utils = trpcClientSide.useUtils();
 
-  // fetch sessions for table
   const { data: sessions = [], isLoading } =
     trpcClientSide.user.listAllSessions.useQuery();
 
-  // logout mutation to clear cookie server-side
   const logoutMutation = trpcClientSide.user.logout.useMutation();
 
   const hardLogout = async () => {
@@ -65,7 +62,6 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
       onMutate: () => setTerminatingAllSessions(true),
       onSuccess: async () => {
         toast.success("All sessions terminated");
-        // includes current session, force immediate logout
         await hardLogout();
       },
       onError: (error) => {
@@ -82,8 +78,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
       onMutate: ({ token }) => setSessionLoading(token, true),
       onSuccess: async (_data, { token }) => {
         toast.success("Session terminated");
-        if (currentSessionToken && token === currentSessionToken) {
-          // killed the active device session
+        if (token === currentSessionToken) {
           await hardLogout();
           return;
         }
@@ -111,16 +106,16 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
     return (
       <div className="text-muted-foreground flex flex-col items-center justify-center py-8">
         <Shield className="mb-2 h-12 w-12 opacity-50" />
-        <p>No active sessions found.</p>
+        <p>No active sessions</p>
       </div>
     );
   }
 
-  const formatDate = (date: Date | string) =>
-    new Date(date).toLocaleDateString("en-US", {
+  const formatDateTime = (date: Date | string) =>
+    new Date(date).toLocaleString("en-US", {
       year: "numeric",
       month: "short",
-      day: "numeric",
+      day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -129,10 +124,10 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
     <div className="space-y-6">
       <div className="rounded-lg border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted/40">
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-[200px]">Created At</TableHead>
-              <TableHead className="w-[200px]">Expires At</TableHead>
+              <TableHead className="w-[220px]">Created</TableHead>
+              <TableHead className="w-[220px]">Last activity</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -150,9 +145,9 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
                   aria-current={isCurrent ? "true" : "false"}
                 >
                   <TableCell className="font-medium">
-                    {formatDate(session.createdAt)}
+                    {formatDateTime(session.createdAt)}
                   </TableCell>
-                  <TableCell>{formatDate(session.updatedAt)}</TableCell>
+                  <TableCell>{formatDateTime(session.updatedAt)}</TableCell>
                   <TableCell>
                     <Badge
                       size={"sm"}
@@ -175,7 +170,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
                         })
                       }
                       disabled={isRowLoading}
-                      className="opacity:70 transition-opacity group-hover:opacity-100"
+                      className="opacity-70 transition-opacity group-hover:opacity-100"
                       title={
                         isCurrent
                           ? "Terminate current device session"
@@ -213,7 +208,7 @@ export function SessionsList({ currentSessionToken }: SessionsListProps) {
           ) : (
             <XCircle className="mr-2 h-4 w-4" />
           )}
-          Terminate All Sessions
+          Terminate all
         </Button>
       </div>
     </div>

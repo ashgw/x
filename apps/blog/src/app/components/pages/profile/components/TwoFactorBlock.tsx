@@ -3,7 +3,6 @@
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { motion } from "@ashgw/design/motion";
 import {
   Button,
   Form,
@@ -38,7 +37,7 @@ import type {
 
 import { trpcClientSide } from "~/trpc/callers/client";
 
-// ---------- utils ----------
+/* utils */
 function parseTotpSecret(totpURI: string): string | null {
   try {
     const qs = totpURI.split("?")[1];
@@ -68,11 +67,10 @@ function CopyableRow({ value }: { value: string }) {
   );
 }
 
-// ---------- Enable (returns secret + backup codes) ----------
-export function TwoFactorEnableCard({ issuer }: { issuer?: string }) {
+export function TwoFactorEnableCard() {
   const form = useForm<TwoFactorEnableDto>({
     resolver: zodResolver(twoFactorEnableDtoSchema),
-    defaultValues: { password: "", issuer },
+    defaultValues: { password: "" },
     mode: "onChange",
   });
 
@@ -84,121 +82,100 @@ export function TwoFactorEnableCard({ issuer }: { issuer?: string }) {
       const s = parseTotpSecret(data.totpURI);
       setSecret(s);
       setBackupCodes(data.backupCodes);
-      toast.success("Two‑factor enabled");
-      form.reset({ password: "", issuer: form.getValues("issuer") });
+      toast.success("Two factor enabled");
+      form.reset({ password: "" });
     },
     onError: (e) => toast.error(e.message),
   });
 
   return (
     <SurfaceCard className="w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h2 className="mb-2 text-xl font-semibold">Enable 2FA (TOTP)</h2>
-        <p className="text-dim-300 mb-6 text-sm font-semibold">
-          We won’t render a QR. You’ll see the raw secret. Add it to any
-          authenticator or keep it offline.
-        </p>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit((values) => enable.mutate(values))}
-            className="space-y-4"
-            autoComplete="off"
-          >
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Account password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="issuer"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Issuer (optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your App / Company" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex justify-end">
-              <Button type="submit" loading={enable.isPending}>
-                {enable.isPending ? "Enabling…" : "Enable 2FA"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-
-        {secret && (
-          <div className="mt-6 space-y-3">
-            <h3 className="text-lg font-semibold">Your TOTP Secret</h3>
-            <CopyableRow value={secret} />
-            <p className="text-dim-300 text-xs">
-              Store this somewhere safe. Anyone with this can generate valid
-              codes.
-            </p>
+      <h2 className="mb-2 text-xl font-semibold">Enable TOTP</h2>
+      <p className="text-dim-300 mb-6 text-sm font-semibold">
+        We will show the raw secret. Add it to your authenticator or store it
+        offline.
+      </p>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((values) => enable.mutate(values))}
+          className="space-y-4"
+          autoComplete="off"
+        >
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Account password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex justify-end">
+            <Button type="submit" loading={enable.isPending}>
+              {enable.isPending ? "Enabling…" : "Enable 2FA"}
+            </Button>
           </div>
-        )}
+        </form>
+      </Form>
 
-        {backupCodes && backupCodes.length > 0 && (
-          <div className="mt-6 space-y-3">
-            <h3 className="text-lg font-semibold">Backup Codes</h3>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {backupCodes.map((c) => (
-                <Input key={c} readOnly value={c} className="font-mono" />
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  void navigator.clipboard.writeText(backupCodes.join("\n"));
-                  toast.success("Backup codes copied");
-                }}
-              >
-                Copy all
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  const blob = new Blob([backupCodes.join("\n")], {
-                    type: "text/plain",
-                  });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = "backup-codes.txt";
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }}
-              >
-                Download .txt
-              </Button>
-            </div>
+      {secret && (
+        <div className="mt-6 space-y-3">
+          <h3 className="text-lg font-semibold">Your TOTP secret</h3>
+          <CopyableRow value={secret} />
+          <p className="text-dim-300 text-xs">
+            Keep this safe. Anyone with this can generate valid codes.
+          </p>
+        </div>
+      )}
+
+      {backupCodes && backupCodes.length > 0 && (
+        <div className="mt-6 space-y-3">
+          <h3 className="text-lg font-semibold">Backup codes</h3>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {backupCodes.map((c) => (
+              <Input key={c} readOnly value={c} className="font-mono" />
+            ))}
           </div>
-        )}
-      </motion.div>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                void navigator.clipboard.writeText(backupCodes.join("\n"));
+                toast.success("Backup codes copied");
+              }}
+            >
+              Copy all
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                const blob = new Blob([backupCodes.join("\n")], {
+                  type: "text/plain",
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "backup-codes.txt";
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              Download .txt
+            </Button>
+          </div>
+        </div>
+      )}
     </SurfaceCard>
   );
 }
 
-// ---------- Reveal Secret (for already-enabled) ----------
+/* Reveal secret (for already enabled) */
 export function TwoFactorRevealSecretCard() {
   const form = useForm<TwoFactorGetTotpUriDto>({
     resolver: zodResolver(twoFactorGetTotpUriDtoSchema),
@@ -209,15 +186,15 @@ export function TwoFactorRevealSecretCard() {
 
   const query = trpcClientSide.user.getTwoFactorTotpUri.useQuery(
     form.getValues(),
-    {
-      enabled: false,
-    },
+    { enabled: false },
   );
 
   const run = async () => {
     const { password } = form.getValues();
-    if (!password)
-      return form.setError("password", { message: "Password is required" });
+    if (!password) {
+      form.setError("password", { message: "Password is required" });
+      return;
+    }
     const res = await query.refetch();
     if (res.data) {
       setSecret(parseTotpSecret(res.data.totpURI));
@@ -230,9 +207,9 @@ export function TwoFactorRevealSecretCard() {
 
   return (
     <SurfaceCard className="w-full">
-      <h2 className="mb-2 text-xl font-semibold">Reveal TOTP Secret</h2>
+      <h2 className="mb-2 text-xl font-semibold">Reveal TOTP secret</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
-        If 2FA is already enabled, re-enter your password to view the secret
+        If 2FA is already enabled, re enter your password to view the secret
         again.
       </p>
       <Form {...form}>
@@ -272,7 +249,7 @@ export function TwoFactorRevealSecretCard() {
   );
 }
 
-// ---------- Verify TOTP code ----------
+/* Verify TOTP code */
 export function TwoFactorVerifyTotpCard() {
   const form = useForm<TwoFactorVerifyTotpDto>({
     resolver: zodResolver(twoFactorVerifyTotpDtoSchema),
@@ -343,7 +320,7 @@ export function TwoFactorVerifyTotpCard() {
   );
 }
 
-// ---------- Backup codes (generate + verify) ----------
+/* Backup codes (generate + verify) */
 export function TwoFactorBackupCodesCard() {
   const genForm = useForm<TwoFactorGenerateBackupCodesDto>({
     resolver: zodResolver(twoFactorGenerateBackupCodesDtoSchema),
@@ -378,9 +355,9 @@ export function TwoFactorBackupCodesCard() {
 
   return (
     <SurfaceCard className="w-full">
-      <h2 className="mb-2 text-xl font-semibold">Backup Codes</h2>
+      <h2 className="mb-2 text-xl font-semibold">Backup codes</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
-        Generate one‑time codes you can use if you lose access to your
+        Generate one time codes you can use if you lose access to your
         authenticator.
       </p>
 
@@ -527,7 +504,7 @@ export function TwoFactorBackupCodesCard() {
   );
 }
 
-// ---------- Disable 2FA ----------
+/* Disable 2FA */
 export function TwoFactorDisableCard() {
   const form = useForm<TwoFactorDisableDto>({
     resolver: zodResolver(twoFactorDisableDtoSchema),
@@ -537,7 +514,7 @@ export function TwoFactorDisableCard() {
 
   const disable = trpcClientSide.user.disableTwoFactor.useMutation({
     onSuccess: () => {
-      toast.success("Two‑factor disabled");
+      toast.success("Two factor disabled");
       form.reset({ password: "" });
     },
     onError: (e) => toast.error(e.message),
@@ -584,10 +561,10 @@ export function TwoFactorDisableCard() {
   );
 }
 
-// ---------- Aggregated section (drop‑in) ----------
+/* Aggregated section (optional drop in, kept for API parity) */
 export function TwoFactorSection() {
   return (
-    <div className="layout mx-auto max-w-2xl space-y-8">
+    <div className="mx-auto max-w-2xl space-y-8">
       <TwoFactorEnableCard />
       <TwoFactorRevealSecretCard />
       <TwoFactorVerifyTotpCard />

@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
   Loading,
+  Separator,
 } from "@ashgw/design/ui";
 
 import { useAuth } from "~/app/hooks/auth";
@@ -51,110 +52,103 @@ export function ProfilePage() {
     try {
       await logout();
       await utils.user.me.invalidate();
-      toast.success("Successfully logged out");
+      toast.success("Logged out");
     } catch (error) {
       logger.error("Logout failed", { error });
-      toast.error("Failed to logout, please try again later");
+      toast.error("Failed to logout");
     }
   };
 
   return (
-    <div className="layout mx-auto max-w-4xl px-4 py-8">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
-          <div className="flex items-center gap-2">
-            <Badge appearance="outline" className="text-sm font-semibold">
-              {user.role}
-            </Badge>
-            <Badge appearance="soft" className="text-sm font-semibold">
-              Member since {new Date(user.createdAt).toLocaleDateString()}
-            </Badge>
-          </div>
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      {/* Page header */}
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Account</h1>
+          <p className="text-muted-foreground text-sm">
+            Profile, security, sessions, and two factor settings
+          </p>
         </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Profile Info */}
-          <div>
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle>Profile</CardTitle>
-                <CardDescription>Your account information</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <UserInfo user={user} />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Password */}
-          <div>
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle>Security</CardTitle>
-                <CardDescription>Update your password</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChangePasswordForm />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sessions */}
-          <div className="md:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Sessions</CardTitle>
-                <CardDescription>Manage your device sessions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <SessionsList currentSessionToken={user.session.token} />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Two-Factor Authentication */}
-          <div className="md:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Two-Factor Authentication</CardTitle>
-                <CardDescription>
-                  Enable TOTP, reveal your secret, verify codes, manage backup
-                  codes, or disable.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {/* Enable first (shows raw secret + backup codes) */}
-                <div className="mb-6">
-                  {/* Pass an issuer if you want it embedded in otpauth URIs */}
-                  <TwoFactorEnableCard />
-                </div>
-
-                {/* Management grid */}
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <TwoFactorRevealSecretCard />
-                  <TwoFactorVerifyTotpCard />
-                  <div className="md:col-span-2">
-                    <TwoFactorBackupCodesCard />
-                  </div>
-                  <TwoFactorDisableCard />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Logout */}
-        <div className="flex justify-end pt-4">
+        <div className="flex items-center gap-2">
+          <Badge appearance="outline" className="text-sm font-semibold">
+            {user.role}
+          </Badge>
+          <Badge appearance="soft" className="text-sm font-semibold">
+            Member since {new Date(user.createdAt).toLocaleDateString()}
+          </Badge>
           <Button
             variant="destructive:outline"
             onClick={handleLogout}
-            className="flex items-center gap-2"
+            className="ml-2"
           >
             Logout
           </Button>
+        </div>
+      </div>
+
+      {/* Content grid */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px,1fr]">
+        {/* Sidebar like Supabase */}
+        <Card className="h-max sticky top-4">
+          <CardHeader>
+            <CardTitle className="text-base">Overview</CardTitle>
+            <CardDescription>Quick info</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <UserInfo user={user} />
+          </CardContent>
+        </Card>
+
+        {/* Main content */}
+        <div className="space-y-6">
+          {/* Security */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Security</CardTitle>
+              <CardDescription>Change your password</CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6">
+              <ChangePasswordForm />
+            </CardContent>
+          </Card>
+
+          {/* Sessions */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Sessions</CardTitle>
+              <CardDescription>Manage signed in devices</CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6">
+              <SessionsList currentSessionToken={user.session.token} />
+            </CardContent>
+          </Card>
+
+          {/* Two Factor */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Two Factor Authentication</CardTitle>
+              <CardDescription>
+                Enable TOTP, verify codes, manage backup codes, or disable
+              </CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6 space-y-6">
+              {/* Enable first */}
+              <TwoFactorEnableCard />
+
+              {/* Management */}
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <TwoFactorRevealSecretCard />
+                <TwoFactorVerifyTotpCard />
+                <div className="md:col-span-2">
+                  <TwoFactorBackupCodesCard />
+                </div>
+                <TwoFactorDisableCard />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

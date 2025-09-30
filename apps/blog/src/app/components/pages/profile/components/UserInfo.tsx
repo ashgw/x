@@ -1,7 +1,6 @@
 "use client";
 
 import { Crown, User } from "@ashgw/design/icons";
-
 import { Badge } from "@ashgw/design/ui";
 
 import type { UserRo } from "~/api/models";
@@ -17,28 +16,28 @@ export function UserInfo({ user }: UserInfoProps) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="text-muted-foreground text-sm font-semibold font-medium">
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
           Email
         </label>
-        <p className="mt-1">{user.email}</p>
+        <p className="mt-1 break-all">{user.email}</p>
       </div>
 
       <div>
-        <label className="text-muted-foreground text-sm font-semibold font-medium">
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
           Name
         </label>
         <p className="mt-1">{user.name}</p>
       </div>
 
       <div>
-        <label className="text-muted-foreground text-sm font-semibold font-medium">
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
           Role
         </label>
         <div className="mt-2 flex items-center gap-2">
           <Badge
             appearance={"outline"}
             tone={isAdmin ? "warning" : "neutral"}
-            className={`flex items-center gap-1.5 px-3 py-1`}
+            className="flex items-center gap-1.5 px-3 py-1"
           >
             {isAdmin ? (
               <Crown className="h-3.5 w-3.5" />
@@ -56,8 +55,8 @@ export function UserInfo({ user }: UserInfoProps) {
       </div>
 
       <div>
-        <label className="text-muted-foreground text-sm font-semibold font-medium">
-          Member Since
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+          Member since
         </label>
         <p className="mt-1">
           {new Date(user.createdAt).toLocaleDateString("en-US", {
