@@ -5,7 +5,7 @@ import { apiV1endpoint } from "~/ts-rest/endpoint";
 import { env } from "@ashgw/env";
 
 export const runtime = "edge";
-export const revalidate = 3600;
+export const revalidate = 3600; // doesn't change often
 
 export function GET() {
   const doc = generateOpenApi(
