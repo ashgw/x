@@ -5,8 +5,9 @@ import { ViewService } from "~/api/services/view";
 
 export const viewRouter = router({
   trackView: publicProcedure({
-    limit: {
-      every: "1s",
+    limiter: {
+      hits: 5,
+      every: "10s",
     },
   })
     .input(trackViewSchemaDto)
