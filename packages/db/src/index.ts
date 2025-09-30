@@ -22,7 +22,7 @@ const globalForDb = globalThis as unknown as {
 
 const errorFormat: PrismaClientOptions["errorFormat"] = "pretty";
 const log: PrismaClientOptions["log"] =
-  env.NODE_ENV === "development"
+  env.NEXT_PUBLIC_CURRENT_ENV === "development"
     ? ["query", "info", "warn", "error"]
     : ["error"];
 
@@ -43,6 +43,7 @@ const db =
     transactionOptions,
   }) satisfies DatabaseClient);
 
+// hot reloads when next refreshes
 if (env.NODE_ENV === "development") globalForDb.prisma = db;
 
 export { db };
