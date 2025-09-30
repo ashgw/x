@@ -36,7 +36,8 @@ export function CategoryField({ control }: CategoryFieldProps) {
               <DropdownMenuTrigger asChild>
                 <Button
                   type="button"
-                  variant="outline:rounded"
+                  shape="rounded"
+                  variant={"outline"}
                   className="w-full"
                 >
                   {field.value.charAt(0) + field.value.slice(1).toLowerCase()}
