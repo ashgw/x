@@ -1,19 +1,11 @@
-import type { Prisma } from "@ashgw/db/raw";
+import type { authApi } from "~/lib/auth";
 
-export type UserWithSessionsQuery = Prisma.UserGetPayload<{
-  include: ReturnType<typeof UserQueryHelper.withSessionsInclude>;
-}>;
+type ExtractUser<T> = T extends { response: { user: infer U } }
+  ? U
+  : T extends { user: infer U }
+    ? U
+    : never;
 
-export class UserQueryHelper {
-  public static withSessionsInclude() {
-    return {
-      sessions: {
-        select: {
-          id: true,
-          expiresAt: true,
-          createdAt: true,
-        },
-      },
-    } satisfies Prisma.UserInclude;
-  }
-}
+export type UserAuthQuery = ExtractUser<
+  Awaited<ReturnType<typeof authApi.getSession>>
+>;

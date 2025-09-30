@@ -29,7 +29,7 @@ export function ConfirmBlogDeleteModal(props: {
       </motion.h3>
 
       <motion.p
-        className="text-muted-foreground mb-4 text-sm"
+        className="text-muted-foreground mb-4 text-sm font-semibold"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}

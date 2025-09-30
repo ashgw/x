@@ -70,8 +70,7 @@ export function BlockItem({
       {/* action buttons */}
       <div className="absolute right-2 top-2 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <Button
-          variant={isPreview ? "secondary" : "ghost"}
-          className="h-8 w-8"
+          variant="outline"
           onClick={() => setIsPreview(!isPreview)}
           title={isPreview ? "Edit" : "Preview"}
           type="button"
@@ -83,8 +82,7 @@ export function BlockItem({
           )}
         </Button>
         <Button
-          variant="ghost"
-          className="text-destructive hover:text-destructive/90 h-8 w-8"
+          variant="destructive:outline"
           onClick={onDelete}
           title="Delete block"
           type="button"
@@ -92,8 +90,7 @@ export function BlockItem({
           <Trash2 className="h-4 w-4" />
         </Button>
         <Button
-          variant="ghost"
-          className="h-8 w-8 cursor-grab active:cursor-grabbing"
+          variant="outline"
           {...attributes}
           {...listeners}
           title="Drag to reorder"
@@ -108,7 +105,7 @@ export function BlockItem({
         {isPreview ? (
           <div
             className={cn("rounded-md p-4", {
-              "bg-muted font-mono text-sm": isCodeBlock,
+              "bg-muted font-mono text-sm font-semibold": isCodeBlock,
               "bg-muted/50": !isCodeBlock,
               "text-primary underline": isLinkBlock,
             })}

@@ -34,11 +34,7 @@ export function CategoryField({ control }: CategoryFieldProps) {
           <FormControl>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  type="button"
-                  variant="outline:rounded"
-                  className="w-full"
-                >
+                <Button variant={"outline:rounded"} className="w-full">
                   {field.value.charAt(0) + field.value.slice(1).toLowerCase()}
                 </Button>
               </DropdownMenuTrigger>

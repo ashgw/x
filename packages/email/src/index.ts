@@ -1,2 +1,2 @@
+export { send } from "./senders";
 export { NotificationType } from "./types";
-export { email } from "./email.service";

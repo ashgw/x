@@ -4,18 +4,28 @@ import type { TrpcContext } from "~/trpc/context";
 import { authenticatedProcedure, publicProcedure } from "~/trpc/procedures";
 import { router } from "~/trpc/root";
 import {
+  sessionSchemaRo,
   userChangePasswordSchemaDto,
   userLoginSchemaDto,
-  userSchemaRo,
+  userRegisterSchemaDto,
   userTerminateSpecificSessionSchemaDto,
+  userSchemaRo,
+  twoFactorEnableDtoSchema,
+  twoFactorGetTotpUriDtoSchema,
+  twoFactorVerifyTotpDtoSchema,
+  twoFactorDisableDtoSchema,
+  twoFactorGenerateBackupCodesDtoSchema,
+  twoFactorVerifyBackupCodeDtoSchema,
+  twoFactorEnableRoSchema,
+  twoFactorGetTotpUriRoSchema,
+  twoFactorGenerateBackupCodesRoSchema,
 } from "~/api/models";
-import { AuthService } from "~/api/services";
 
-const userAuthService = (ctx: TrpcContext) =>
-  new AuthService({
-    db: ctx.db,
-    req: ctx.req,
-    res: ctx.res,
+import { UserService } from "~/api/services";
+
+const userService = (ctx: TrpcContext) =>
+  new UserService({
+    ctx,
   });
 
 export const userRouter = router({
@@ -23,70 +33,166 @@ export const userRouter = router({
     .input(z.void())
     .output(userSchemaRo.nullable())
     .query(async ({ ctx }) => {
-      return await userAuthService(ctx).me();
+      return await userService(ctx).me();
     }),
 
   login: publicProcedure({
-    limit: {
-      every: "3s",
+    limiter: {
+      every: "1m",
+      hits: 2,
     },
   })
     .input(userLoginSchemaDto)
-    .output(userSchemaRo)
+    .output(z.void())
     .mutation(async ({ input, ctx }) => {
-      return await userAuthService(ctx).login(input);
+      return await userService(ctx).login(input);
+    }),
+
+  signUp: publicProcedure({
+    limiter: {
+      every: "1m",
+      hits: 2,
+    },
+  })
+    .input(userRegisterSchemaDto)
+    .output(z.void())
+    .mutation(async ({ input, ctx }) => {
+      return await userService(ctx).signUp(input);
     }),
 
   logout: publicProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 10,
     },
   })
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      return await userAuthService(ctx).logout();
+      return await userService(ctx).logout();
     }),
 
   changePassword: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "2h",
+      hits: 1,
     },
   })
     .input(userChangePasswordSchemaDto)
     .output(z.void())
     .mutation(async ({ ctx, input: { currentPassword, newPassword } }) => {
-      await userAuthService(ctx).changePassword({
-        userId: ctx.user.id,
+      await userService(ctx).changePassword({
         currentPassword,
         newPassword,
       });
     }),
 
+  listAllSessions: authenticatedProcedure({
+    limiter: {
+      every: "1m",
+      hits: 5,
+    },
+  })
+    .input(z.void())
+    .output(z.array(sessionSchemaRo))
+    .query(async ({ ctx }) => {
+      return await userService(ctx).listSessions();
+    }),
+
   terminateAllActiveSessions: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 5,
     },
   })
     .input(z.void())
     .output(z.void())
     .mutation(async ({ ctx }) => {
-      await userAuthService(ctx).terminateAllActiveSessions({
-        userId: ctx.user.id,
-      });
+      await userService(ctx).terminateAllActiveSessions();
     }),
 
   terminateSpecificSession: authenticatedProcedure({
-    limit: {
-      every: "2s",
+    limiter: {
+      every: "1m",
+      hits: 4,
     },
   })
     .input(userTerminateSpecificSessionSchemaDto)
     .output(z.void())
-    .mutation(async ({ ctx, input: { sessionId } }) => {
-      await userAuthService(ctx).terminateSpecificSession({
-        sessionId,
-        userId: ctx.user.id,
+    .mutation(async ({ ctx, input: { token } }) => {
+      await userService(ctx).terminateSpecificSession({
+        token,
       });
+    }),
+  enableTwoFactor: authenticatedProcedure({
+    limiter: {
+      every: "1m",
+      hits: 2,
+    },
+  })
+    .input(twoFactorEnableDtoSchema)
+    .output(twoFactorEnableRoSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await userService(ctx).enableTwoFactor(input);
+    }),
+
+  getTwoFactorTotpUri: authenticatedProcedure({
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
+  })
+    .input(twoFactorGetTotpUriDtoSchema)
+    .output(twoFactorGetTotpUriRoSchema)
+    .query(async ({ ctx, input }) => {
+      return await userService(ctx).getTwoFactorTotpUri(input);
+    }),
+
+  verifyTwoFactorTotp: publicProcedure({
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
+  })
+    .input(twoFactorVerifyTotpDtoSchema)
+    .output(z.void())
+    .mutation(async ({ ctx, input }) => {
+      await userService(ctx).verifyTwoFactorTotp(input);
+    }),
+
+  disableTwoFactor: authenticatedProcedure({
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
+  })
+    .input(twoFactorDisableDtoSchema)
+    .output(z.void())
+    .mutation(async ({ ctx, input }) => {
+      await userService(ctx).disableTwoFactor(input);
+    }),
+
+  generateTwoFactorBackupCodes: authenticatedProcedure({
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
+  })
+    .input(twoFactorGenerateBackupCodesDtoSchema)
+    .output(twoFactorGenerateBackupCodesRoSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await userService(ctx).generateTwoFactorBackupCodes(input);
+    }),
+
+  verifyTwoFactorBackupCode: publicProcedure({
+    limiter: {
+      every: "1m",
+      hits: 10,
+    },
+  })
+    .input(twoFactorVerifyBackupCodeDtoSchema)
+    .output(z.void())
+    .mutation(async ({ ctx, input }) => {
+      await userService(ctx).verifyTwoFactorBackupCode(input);
     }),
 });

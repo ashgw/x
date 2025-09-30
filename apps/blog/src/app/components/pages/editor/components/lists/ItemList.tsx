@@ -9,7 +9,7 @@ import type { PostArticleRo, TrashPostArticleRo } from "~/api/models/post";
 
 interface BaseAction {
   label: string;
-  variant?: "destructive" | "outline" | "default";
+  variant?: "destructive:outline" | "outline" | "default";
   onClick: () => void;
 }
 
@@ -65,7 +65,7 @@ const ListItem = memo(function ListItemComponent<T>({
     >
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h3 className="font-medium">{config.getItemTitle(item)}</h3>
+          <h3 className="font-semibold">{config.getItemTitle(item)}</h3>
           <div className="text-muted-foreground mb-2 flex flex-wrap items-center gap-2 text-xs">
             {config.renderMetadata(item)}
           </div>
@@ -199,8 +199,12 @@ export const createBlogListConfig = (
   getItemTitle: (blog) => blog.title,
   renderMetadata: (blog) => (
     <>
-      <span className="mr-2">{blog.isReleased ? "Released" : "Draft"}</span>
-      <span>{new Date(blog.lastModDate).toLocaleDateString()}</span>
+      <span className="mr-2 font-semibold">
+        {blog.isReleased ? "Released" : "Draft"}
+      </span>
+      <span className="font-semibold">
+        {new Date(blog.lastModDate).toLocaleDateString()}
+      </span>
     </>
   ),
   getActions: (blog) => [
@@ -211,7 +215,7 @@ export const createBlogListConfig = (
     },
     {
       label: "Delete",
-      variant: "destructive",
+      variant: "destructive:outline",
       onClick: () => onDelete(blog),
     },
   ],
@@ -239,7 +243,7 @@ export const createTrashListConfig = (
     },
     {
       label: "Purge",
-      variant: "destructive",
+      variant: "destructive:outline",
       onClick: () => onPurge(item),
     },
   ],

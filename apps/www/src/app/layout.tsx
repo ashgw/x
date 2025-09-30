@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { site_name } from "@ashgw/constants";
+import { siteName } from "@ashgw/constants";
 import {
   createMetadata,
   organizationJsonLd,
@@ -18,7 +18,7 @@ const description = "Building the future.";
 const siteUrl = env.NEXT_PUBLIC_WWW_URL;
 
 export const metadata: Metadata = createMetadata({
-  title: site_name,
+  title: siteName,
   description,
   metadataBase: new URL(siteUrl),
 });

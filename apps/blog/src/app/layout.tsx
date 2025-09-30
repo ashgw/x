@@ -14,14 +14,14 @@ import { DesignSystemProvider } from "@ashgw/design/provider";
 import { TRPCProvider } from "~/trpc/provider";
 import { GoBack } from "./components/pages/root";
 import { StoreProvider } from "./stores";
-import { site_name } from "@ashgw/constants";
+import { siteName } from "@ashgw/constants";
 import { FirstTimeVisitorBanner } from "@ashgw/components";
 
 const siteUrl = env.NEXT_PUBLIC_BLOG_URL;
 
 export const metadata: Metadata = createMetadata({
   metadataBase: new URL(siteUrl),
-  title: site_name,
+  title: siteName,
   description: "Blog",
 });
 

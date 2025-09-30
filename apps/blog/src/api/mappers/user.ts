@@ -1,44 +1,49 @@
-import type { SessionRo, UserRo } from "../models";
-import type { UserWithSessionsQuery } from "../query-helpers/user";
+import type { UserRo } from "../models";
+import type { UserAuthQuery } from "../query-helpers/user";
 import { UserRoleEnum } from "../models";
+import { AppError } from "@ashgw/error";
+import type { SessionAuthQuery } from "../query-helpers/session";
+import { SessionMapper } from "./session";
 
 export class UserMapper {
   public static toUserRo({
-    user: { email, sessions, role, id, name, createdAt },
+    user,
+    session,
   }: {
-    user: UserWithSessionsQuery;
+    user: UserAuthQuery;
+    session: SessionAuthQuery;
   }): UserRo {
     return {
-      id,
-      email,
-      name,
-      createdAt,
-      role: this._mapRole({ role }),
-      sessions: this._mapSessions({
-        sessions,
-      }),
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      createdAt: user.createdAt,
+      emailVerified: user.emailVerified,
+      updatedAt: user.updatedAt,
+      image: user.image ? user.image : undefined,
+      role: this._mapRoleFromAuthQuery({ role: user.role }),
+      twoFactorEnabled: user.twoFactorEnabled ?? false,
+      session: SessionMapper.toRo({ session }),
     };
   }
 
-  private static _mapSessions({
-    sessions,
+  private static _mapRoleFromAuthQuery({
+    role,
   }: {
-    sessions: UserWithSessionsQuery["sessions"];
-  }): SessionRo[] {
-    return sessions.map((session) => ({
-      id: session.id,
-      expiresAt: session.expiresAt,
-      createdAt: session.createdAt,
-    }));
-  }
+    role: string;
+  }): UserRoleEnum {
+    const normalized = role.toLowerCase().trim();
 
-  private static _mapRole({ role }: { role: string }): UserRoleEnum {
-    switch (role) {
-      case "ADMIN":
+    switch (normalized) {
+      case "admin":
         return UserRoleEnum.ADMIN;
-      case "VISITOR":
-      default:
+      case "visitor":
         return UserRoleEnum.VISITOR;
+      default:
+        throw new AppError({
+          code: "INTERNAL",
+          message: "Invalid role type, got: " + role,
+        });
     }
   }
 }

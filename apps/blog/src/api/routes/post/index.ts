@@ -14,7 +14,12 @@ import {
 import { BlogService } from "~/api/services";
 
 export const postRouter = router({
-  getDetailedPublicPost: publicProcedure()
+  getDetailedPublicPost: publicProcedure({
+    limiter: {
+      hits: 7,
+      every: "10s",
+    },
+  })
     .input(postGetSchemaDto)
     .output(postArticleSchemaRo.nullable())
     .query(async ({ input: { slug }, ctx: { db } }) => {
@@ -22,7 +27,12 @@ export const postRouter = router({
       return await blogService.getDetailedPublicPost({ slug });
     }),
 
-  getPublicPostCards: publicProcedure()
+  getPublicPostCards: publicProcedure({
+    limiter: {
+      hits: 7,
+      every: "10s",
+    },
+  })
     .input(z.void())
     .output(z.array(postCardSchemaRo))
     .query(async ({ ctx: { db } }) => {
@@ -30,7 +40,12 @@ export const postRouter = router({
       return await blogService.getPublicPostCards();
     }),
 
-  getAllAdminPosts: adminProcedure()
+  getAllAdminPosts: adminProcedure({
+    limiter: {
+      hits: 5,
+      every: "12s",
+    },
+  })
     .input(z.void())
     .output(z.array(postArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
@@ -38,7 +53,12 @@ export const postRouter = router({
       return await blogService.getAllAdminPosts();
     }),
 
-  createPost: adminProcedure()
+  createPost: adminProcedure({
+    limiter: {
+      hits: 2,
+      every: "30s",
+    },
+  })
     .input(postEditorSchemaDto)
     .output(postArticleSchemaRo)
     .mutation(async ({ input, ctx: { db } }) => {
@@ -46,7 +66,12 @@ export const postRouter = router({
       return await blogService.createPost(input);
     }),
 
-  updatePost: adminProcedure()
+  updatePost: adminProcedure({
+    limiter: {
+      hits: 2,
+      every: "30s",
+    },
+  })
     .input(postUpdateSchemaDto)
     .output(postArticleSchemaRo)
     .mutation(async ({ input: { data, slug }, ctx: { db } }) => {
@@ -54,7 +79,12 @@ export const postRouter = router({
       return await blogService.updatePost({ slug, data });
     }),
 
-  trashPost: adminProcedure()
+  trashPost: adminProcedure({
+    limiter: {
+      hits: 2,
+      every: "30s",
+    },
+  })
     .input(postDeleteSchemaDto)
     .output(z.void())
     .mutation(async ({ input: { slug }, ctx: { db } }) => {
@@ -62,7 +92,12 @@ export const postRouter = router({
       await blogService.trashPost({ originalSlug: slug });
     }),
 
-  getTrashedPosts: adminProcedure()
+  getTrashedPosts: adminProcedure({
+    limiter: {
+      hits: 5,
+      every: "10s",
+    },
+  })
     .input(z.void())
     .output(z.array(trashPostArticleSchemaRo))
     .query(async ({ ctx: { db } }) => {
@@ -70,7 +105,12 @@ export const postRouter = router({
       return await blogService.getTrashedPosts();
     }),
 
-  purgeTrash: adminProcedure()
+  purgeTrash: adminProcedure({
+    limiter: {
+      hits: 3,
+      every: "10s",
+    },
+  })
     .input(z.object({ trashId: z.string().min(1) }))
     .output(z.void())
     .mutation(async ({ input: { trashId }, ctx: { db } }) => {
@@ -78,7 +118,12 @@ export const postRouter = router({
       await blogService.purgeTrash({ trashId });
     }),
 
-  restoreFromTrash: adminProcedure()
+  restoreFromTrash: adminProcedure({
+    limiter: {
+      hits: 5,
+      every: "10s",
+    },
+  })
     .input(z.object({ trashId: z.string().min(1) }))
     .output(z.void())
     .mutation(async ({ input: { trashId }, ctx: { db } }) => {

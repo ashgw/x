@@ -1,96 +1,20 @@
+
 generator client {
-  provider        = "prisma-client-js"
- previewFeatures = ["driverAdapters"]
-  binaryTargets   = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
+  provider               = "prisma-client"
+  output                 = "../src/generated"
+  engineType             = "client"
+  // as of 6.12.0
+  runtime                = "nodejs"
+  // even on vercel we're deploying to node
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  directUrl    = env("DIRECT_URL")
-  relationMode = "prisma"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
-
-
-model Post {
-  slug          String     @id @db.VarChar(255)
-  title         String     @db.VarChar(30)
-  summary       String     @db.VarChar(100)
-  firstModDate  DateTime   @default(now())
-  lastModDate   DateTime   @updatedAt
-  isReleased    Boolean
-  minutesToRead Int        @db.SmallInt
-  tags          String[]   @db.VarChar(255)
-  category      PostCategory
-  mdxText       String     @db.Text
-  viewsCount    Int        @default(0)
-
-  viewWindows   PostViewWindow[]
-
-  @@index([lastModDate])
-  @@index([isReleased, lastModDate])
-}
-
-model TrashPost {
-  id            String       @id @default(cuid())
-  originalSlug  String       @db.VarChar(255)
-  title         String       @db.VarChar(30)
-  summary       String       @db.VarChar(100)
-  firstModDate  DateTime
-  lastModDate   DateTime
-  wasReleased   Boolean
-  minutesToRead Int          @db.SmallInt
-  tags          String[]     @db.VarChar(255)
-  category      PostCategory
-  mdxText       String       @db.Text
-  deletedAt     DateTime     @default(now())
-
-  @@index([originalSlug])
-  @@index([deletedAt])
-}
-
-
-model PostViewWindow {
-  id           String   @id @default(cuid())
-  postSlug     String   @db.VarChar(255)
-  fingerprint  String   @db.VarChar(64)    // hash(slug:ip:ua)
-  bucketStart  DateTime @db.Timestamptz(6) // start of 24h bucket (UTC midnight)
-  post Post @relation(fields: [postSlug], references: [slug], onDelete: Cascade)
-
-  @@unique([postSlug, fingerprint, bucketStart])
-  @@index([bucketStart])
-  @@index([postSlug, bucketStart])
-}
-
-model Upload {
-  key         String       @id @db.VarChar(512)
-  type        UploadType
-  entityType  ResourceType @default(POST)
-  contentType String       @db.VarChar(100)
-  uploadedAt  DateTime     @default(now())
-}
-
-model User {
-  id           String    @id @default(cuid())
-  email        String    @unique @db.VarChar(255)
-  name         String    @db.VarChar(30)
-  passwordHash String    @db.VarChar(1024)
-  role         UserRole  @default(VISITOR)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  sessions     Session[]
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  userId    String   @db.VarChar(255)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-}
-
 
 enum PostCategory {
   SOFTWARE
@@ -111,4 +35,140 @@ enum UploadType {
 enum UserRole {
   ADMIN
   VISITOR
+}
+
+model Post {
+  slug          String       @id
+  title         String
+  summary       String
+  firstModDate  DateTime     @default(now())
+  lastModDate   DateTime     @updatedAt
+  isReleased    Boolean      @default(false)
+  minutesToRead Int
+  tags          String[]
+  category      PostCategory
+  mdxText       String
+  viewsCount    Int          @default(0)
+
+  viewWindows PostViewWindow[]
+
+  @@index([lastModDate])
+  @@index([isReleased, lastModDate])
+}
+
+model TrashPost {
+  id            String       @id @default(cuid())
+  originalSlug  String
+  title         String
+  summary       String
+  firstModDate  DateTime
+  lastModDate   DateTime
+  wasReleased   Boolean
+  minutesToRead Int
+  tags          String[]
+  category      PostCategory
+  mdxText       String
+  deletedAt     DateTime     @default(now())
+
+  @@index([originalSlug])
+  @@index([deletedAt])
+}
+
+model PostViewWindow {
+  id          String   @id @default(cuid())
+  postSlug    String
+  fingerprint String   @db.VarChar(64) // hash(slug:ip:ua) → real fixed length
+  bucketStart DateTime @db.Timestamptz(6) // start of 24h bucket (UTC midnight)
+  post        Post     @relation(fields: [postSlug], references: [slug], onDelete: Cascade)
+
+  @@unique([postSlug, fingerprint, bucketStart])
+  @@index([bucketStart])
+  @@index([postSlug])
+  @@index([postSlug, bucketStart])
+}
+
+model Upload {
+  key         String       @id
+  type        UploadType
+  entityType  ResourceType @default(POST)
+  contentType String
+  uploadedAt  DateTime     @default(now())
+
+  @@index([uploadedAt])
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+  role          UserRole @default(VISITOR)
+
+  sessions Session[]
+  accounts Account[]
+
+  twoFactorEnabled Boolean?    @default(false)
+  twofactors       TwoFactor[]
+
+  @@unique([email])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now()) @updatedAt
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@index([providerId, accountId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@index([identifier])
+  @@index([expiresAt])
+  @@unique([identifier, value])
+}
+
+model TwoFactor {
+  id          String @id
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

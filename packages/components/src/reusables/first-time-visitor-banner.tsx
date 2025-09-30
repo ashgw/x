@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "@ashgw/design/motion";
-import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
+import { useEffect, useState } from "react";
+import { Banner, cn } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
-type Stage = "cookie" | "kWait" | "done";
+type Stage = "init" | "kWait" | "lWait" | "dWait" | "final" | "done";
 
 interface Props {
   className?: string;
 }
+
+const LS_FLOW = "onboard:theme-flow";
+const LS_THEME_INFO = "onboard:theme-info";
 
 function Kbd({
   children,
@@ -21,7 +23,7 @@ function Kbd({
   return (
     <kbd
       className={cn(
-        "inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs font-mono font-medium shadow-sm relative -top-0.5",
+        "relative -top-0.5 inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 font-mono text-xs font-medium shadow-sm",
         className,
       )}
     >
@@ -32,109 +34,83 @@ function Kbd({
 
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
-  const [stage, setStage] = useState<Stage>("cookie");
-  const [consent, setConsent] = useState<"accepted" | "rejected" | null>(null);
 
+  // Always enable analytics
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // If your SDK persists this flag, calling once is fine
+    analytics.opt_in_capturing();
+  }, [analytics]);
 
-    const cookie = localStorage.getItem("privacy:cookie-consent");
-    const themeInfo = localStorage.getItem("onboard:theme-info");
+  const [stage, setStage] = useState<Stage>(() => {
+    if (typeof window === "undefined") return "init";
+    const flow = localStorage.getItem(LS_FLOW);
+    const legacy = localStorage.getItem(LS_THEME_INFO);
+    if (flow === "completed" || legacy === "done") return "done";
+    return "kWait";
+  });
 
-    if (!cookie) {
-      setStage("cookie");
-      setConsent(null);
-    } else if (themeInfo !== "done") {
-      setStage("kWait");
-      setConsent(cookie === "accepted" ? "accepted" : "rejected");
-    } else {
-      setStage("done");
-      setConsent(cookie === "accepted" ? "accepted" : "rejected");
+  // Key handling
+  useEffect(() => {
+    if (stage === "done" || stage === "init") return;
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      const key = e.key.toLowerCase();
+
+      if (stage === "kWait" && key === "k") setStage("lWait");
+      else if (stage === "lWait" && key === "l") setStage("dWait");
+      else if (stage === "dWait" && key === "d") setStage("final");
     }
-  }, []);
 
-  useEffect(() => {
-    if (stage !== "kWait") return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "k") {
-        localStorage.setItem("onboard:theme-info", "done");
-        setStage("done");
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, [stage]);
 
-  const acceptCookies = useCallback(() => {
-    localStorage.setItem("privacy:cookie-consent", "accepted");
-    analytics.opt_in_capturing();
-    setConsent("accepted");
-    setStage("kWait");
-  }, [analytics]);
+  // Final auto-dismiss + persist completion
+  useEffect(() => {
+    if (stage !== "final") return;
+    localStorage.setItem(LS_FLOW, "completed");
+    localStorage.setItem(LS_THEME_INFO, "done");
+    const t = setTimeout(() => setStage("done"), 3000);
+    return () => clearTimeout(t);
+  }, [stage]);
 
-  const rejectCookies = useCallback(() => {
-    localStorage.setItem("privacy:cookie-consent", "rejected");
-    analytics.opt_out_capturing();
-    setConsent("rejected");
-    setStage("kWait");
-  }, [analytics]);
-
-  const cookieBody = "Hmm new here? Got to let you know, I use cookies";
-
-  const kWaitBody =
-    consent === "accepted" ? (
-      <>
-        Great, press <Kbd>K</Kbd> to switch themes
-      </>
-    ) : (
-      <>
-        Anyways, press <Kbd>K</Kbd> to switch themes
-      </>
-    );
-
-  const show = stage === "cookie" || stage === "kWait";
+  const show =
+    stage === "kWait" ||
+    stage === "lWait" ||
+    stage === "dWait" ||
+    stage === "final";
+  if (!show) return null;
 
   return (
-    <AnimatePresence>
-      {show ? (
-        <motion.div
-          key={stage}
-          initial={{ opacity: 0, y: 120, scale: 0.7 }}
-          animate={{ opacity: 1, y: 0, scale: 0.95 }}
-          exit={{ opacity: 0, y: 120, scale: 0.7 }}
-          transition={{ type: "tween", duration: 0.45, ease: "easeOut" }}
-          className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
-        >
-          <SurfaceCard
-            animation="ringGlowPulse"
-            isBlur
-            role="dialog"
-            aria-live="polite"
-            aria-label="First-time visitor banner"
-          >
-            <div className="text-semibold text-dim-400">
-              {stage === "cookie" ? cookieBody : kWaitBody}
-            </div>
+    <Banner
+      open
+      position="bottom-right"
+      instanceKey={stage}
+      className={className}
+      durationMs={320}
+      role="dialog"
+      ariaLabel="Theme onboarding"
+    >
+      <div className="text-semibold text-dim-400">
+        {stage === "kWait" ? (
+          <>
+            Press <Kbd>K</Kbd> to cycle through dark themes.
+          </>
+        ) : stage === "lWait" ? (
+          <>
+            Prefer light? Press <Kbd>L</Kbd> to switch.
+          </>
+        ) : stage === "dWait" ? (
+          <>
+            Press <Kbd>D</Kbd> to return to dark.
+          </>
+        ) : (
+          <>All set. Enjoy!</>
+        )}
+      </div>
 
-            <div className="flex items-center justify-end gap-2">
-              {stage === "cookie" ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={rejectCookies}
-                    className="text-xs"
-                  >
-                    Reject
-                  </Button>
-                  <Button onClick={acceptCookies} className="text-xs">
-                    Accept
-                  </Button>
-                </>
-              ) : null}
-            </div>
-          </SurfaceCard>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+      <div className="mt-3 flex items-center justify-end gap-2" />
+    </Banner>
   );
 }

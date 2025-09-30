@@ -1,8 +1,6 @@
 "use client";
 
-import { motion } from "@ashgw/design/motion";
 import { Crown, User } from "@ashgw/design/icons";
-
 import { Badge } from "@ashgw/design/ui";
 
 import type { UserRo } from "~/api/models";
@@ -12,59 +10,34 @@ interface UserInfoProps {
   user: UserRo;
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
-  },
-};
-
 export function UserInfo({ user }: UserInfoProps) {
   const isAdmin = user.role === UserRoleEnum.ADMIN;
 
   return (
-    <motion.div
-      className="space-y-4"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.1,
-          },
-        },
-      }}
-    >
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
+    <div className="space-y-4">
+      <div>
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
           Email
         </label>
-        <p className="mt-1">{user.email}</p>
-      </motion.div>
+        <p className="mt-1 break-all">{user.email}</p>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
+      <div>
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
           Name
         </label>
         <p className="mt-1">{user.name}</p>
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
+      <div>
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
           Role
         </label>
         <div className="mt-2 flex items-center gap-2">
           <Badge
-            variant={isAdmin ? "outline" : "secondary"}
-            className={`flex items-center gap-1.5 px-3 py-1 ${isAdmin ? "border-yellow-500/70 text-yellow-500" : "text-blue-400"} `}
+            appearance={"outline"}
+            tone={isAdmin ? "warning" : "neutral"}
+            className="flex items-center gap-1.5 px-3 py-1"
           >
             {isAdmin ? (
               <Crown className="h-3.5 w-3.5" />
@@ -79,11 +52,11 @@ export function UserInfo({ user }: UserInfoProps) {
             </span>
           ) : null}
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <label className="text-muted-foreground text-sm font-medium">
-          Member Since
+      <div>
+        <label className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+          Member since
         </label>
         <p className="mt-1">
           {new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -92,7 +65,7 @@ export function UserInfo({ user }: UserInfoProps) {
             day: "numeric",
           })}
         </p>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

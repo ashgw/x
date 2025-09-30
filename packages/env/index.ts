@@ -13,9 +13,7 @@ const clientVars = {
     ),
   SENTRY_DSN: z.string().url(),
   WWW_URL: z.string().url(),
-  WWW_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
   BLOG_URL: z.string().url(),
-  BLOG_GOOGLE_ANALYTICS_ID: z.string().min(7).startsWith("G-"),
   POSTHOG_KEY: z.string().min(20).startsWith("phc_"),
   POSTHOG_HOST: z.string().url(),
   LOGTAIL_INGESTION_TOKEN: z.string().min(20).max(255),
@@ -66,6 +64,9 @@ const serverVars = {
   RESEND_API_KEY: z.string().min(20).startsWith("re_").max(255),
   PERSONAL_EMAIL: z.string().email().max(255),
   QSTASH_TOKEN: z.string().endsWith("=").min(20).max(255),
+  AUTH_ENCRYPTON_KEY: z
+    .string()
+    .length(32, "Auth encryption key must be 32 characters long"),
 };
 
 const serverVarsTuple = envTuple(serverVars);
@@ -95,11 +96,8 @@ export const env = createEnv({
     SENTRY_ORG: process.env.SENTRY_ORG,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
+    AUTH_ENCRYPTON_KEY: process.env.AUTH_ENCRYPTON_KEY,
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
-    NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID:
-      process.env.NEXT_PUBLIC_WWW_GOOGLE_ANALYTICS_ID,
-    NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID:
-      process.env.NEXT_PUBLIC_BLOG_GOOGLE_ANALYTICS_ID,
     NEXT_PUBLIC_WWW_URL: process.env.NEXT_PUBLIC_WWW_URL,
     NEXT_PUBLIC_BLOG_URL: process.env.NEXT_PUBLIC_BLOG_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,

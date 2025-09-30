@@ -9,11 +9,8 @@ function BackContent() {
   const pathname = usePathname();
 
   const handleClick = () => {
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push("/");
-    }
+    if (window.history.length > 1) router.back();
+    else router.push("/");
   };
 
   const strokeWidth = 2;
@@ -22,11 +19,11 @@ function BackContent() {
     <button
       type="button"
       onClick={handleClick}
-      className={`mb-4 ml-2 mt-5 inline-flex items-center hover:text-foreground ${
-        pathname === "/" ? "invisible text-dim-400" : ""
+      className={`mb-4 ml-2 mt-5 inline-flex items-center text-dim-300 transition-colors hover:text-foreground focus:outline-none focus-visible:ring-0 ${
+        pathname === "/" ? "invisible" : ""
       }`}
     >
-      <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-white/10 px-3 py-2 transition-all duration-300 hover:border-white/20 hover:bg-white/5 hover:pr-5 md:scale-125">
+      <div className="hover:-pl-2 group flex items-center gap-0.5 rounded-full border border-border px-3 py-2 transition-all duration-300 hover:border-border/70 hover:bg-foreground/5 hover:pr-5 md:scale-125">
         <ChevronLeft
           className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1 group-hover:brightness-125"
           strokeWidth={strokeWidth}

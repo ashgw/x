@@ -58,7 +58,7 @@ export function LoginPage() {
     onError: (error) => {
       logger.error("Login failed", { error });
       form.setError("root", {
-        message: "Invalid email or password",
+        message: error.message,
       });
     },
   });
@@ -93,13 +93,14 @@ export function LoginPage() {
         </motion.h1>
 
         <motion.p
-          className="text-muted-foreground mb-6 text-sm"
+          className="text-muted-foreground mb-6 text-sm font-semibold"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
           Enter your credentials to access the blog editor
         </motion.p>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
             <motion.div
@@ -147,7 +148,7 @@ export function LoginPage() {
               />
 
               {form.formState.errors.root && (
-                <div className="text-sm text-red-500">
+                <div className="text-sm font-semibold text-destructive">
                   {form.formState.errors.root.message}
                 </div>
               )}
@@ -158,14 +159,6 @@ export function LoginPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => router.push("/editor")}
-                  disabled={loginMutation.isPending}
-                >
-                  Cancel
-                </Button>
                 <Button
                   variant="default"
                   type="submit"

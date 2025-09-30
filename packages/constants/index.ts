@@ -1,7 +1,9 @@
+export const defaultEmail = "no-reply@notify.ashgw.me";
+export const defaultEmailFrom = `ashgw[bot] <${defaultEmail}>`;
 export const ossEmail = "oss@ashgw.me";
-export const repo_source = "https://github.com/ashgw/x";
+export const repoSource = "https://github.com/ashgw/x";
 export const creator = "@rccyx";
-export const site_name = "R C C Y X";
+export const siteName = "R C C Y X";
 
 export const links = {
   keyBase: "https://keybase.io/ashgw",

@@ -15,25 +15,55 @@ import {
 export const router = createRouterWithContext(contract)<GlobalContext>({
   reminder: middleware()
     .use(authed())
-    .use(rateLimiter({ limit: { every: "1s" } }))
+    .use(
+      rateLimiter({
+        kind: "quota",
+        limit: {
+          every: "10s",
+          hits: 2,
+        },
+      }),
+    )
     .route(contract.reminder)(
     async ({ body, headers }) => await reminder({ body, headers }),
   ),
 
+  notify: middleware()
+    .use(
+      rateLimiter({
+        kind: "quota",
+        limit: {
+          every: "10s",
+          hits: 10,
+        },
+      }),
+    )
+    .use(authed())
+    .route(contract.notify)(async ({ body }) => await notify({ body })),
+
   purgeViewWindow: middleware()
-    .use(rateLimiter({ limit: { every: "5s" } }))
+    .use(
+      rateLimiter({
+        kind: "interval",
+        limit: {
+          every: "4s",
+        },
+      }),
+    )
     .use(authed())
     .route(contract.purgeViewWindow)(async () => await purgeViewWindow()),
 
   purgeTrashPosts: middleware()
-    .use(rateLimiter({ limit: { every: "5s" } }))
+    .use(
+      rateLimiter({
+        kind: "interval",
+        limit: {
+          every: "4s",
+        },
+      }),
+    )
     .use(authed())
     .route(contract.purgeTrashPosts)(async () => await purgeTrashPosts()),
-
-  notify: middleware()
-    .use(rateLimiter({ limit: { every: "1s" } }))
-    .use(authed())
-    .route(contract.notify)(async ({ body }) => await notify({ body })),
 
   bootstrap: async ({ query }) =>
     fetchTextFromUpstream({

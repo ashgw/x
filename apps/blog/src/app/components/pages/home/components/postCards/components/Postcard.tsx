@@ -11,7 +11,7 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
     <div className="mx-auto mt-8 w-full max-w-[1280px] px-5 sm:mt-24 sm:px-10">
       <SurfaceCard animation={"glowScale"} size="default">
         <div className="flex flex-col gap-4 lg:gap-6">
-          <div className="text-muted-foreground flex items-center gap-2 px-1 text-sm">
+          <div className="text-muted-foreground flex items-center gap-2 px-1 text-sm font-semibold">
             <span>
               {DateService.formatDate({
                 stringDate: postData.firstModDate.toISOString(),
@@ -32,7 +32,7 @@ export function PostCard({ postData }: { postData: PostCardRo }) {
             <p className="text-dim-300 mt-3 lg:text-xl">{postData.summary}</p>
           </Link>
 
-          <div className="text-dim-400 flex flex-wrap items-center gap-[0.625rem] text-sm">
+          <div className="text-dim-400 flex flex-wrap items-center gap-[0.625rem] text-sm font-semibold">
             {postData.tags.map((tag) => (
               <Button variant="outline:rounded" key={tag}>
                 <Link href={`/tag/${tag}`} key={tag}>
