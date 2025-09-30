@@ -9,15 +9,20 @@ interface Ops {
   every: RlWindow;
 }
 
+const rl = createLimiter({
+  kind: "quota",
+  limit: 10,
+  window: "1s",
+});
+
 export const rateLimiterMiddleware = (input: Ops) =>
   middleware(async ({ ctx, next }) => {
-    const rl = createLimiter({
-      kind: "quota",
-      limit: input.hits,
-      window: input.every,
-    });
-
-    const pass = await rl.allow(getFingerprint({ req: ctx.req }));
+    const pass = await rl
+      .update({
+        limit: input.hits,
+        window: input.every,
+      })
+      .allow(getFingerprint({ req: ctx.req }));
     if (!pass.allowed) {
       throw new TRPCError({
         code: "TOO_MANY_REQUESTS",
