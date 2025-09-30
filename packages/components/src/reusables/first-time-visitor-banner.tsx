@@ -94,7 +94,15 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     if (stage !== "final") return;
     localStorage.setItem(LS_FLOW, "completed");
     localStorage.setItem(LS_THEME_INFO, "done");
-    const t = setTimeout(() => setStage("done"), 3000);
+    // fade out instead of instant unmount
+    const t = setTimeout(() => setStage("closing"), 3000); // show "Enjoy!" for 3s
+    return () => clearTimeout(t);
+  }, [stage]);
+
+  // after closing, mark done
+  useEffect(() => {
+    if (stage !== "closing") return;
+    const t = setTimeout(() => setStage("done"), 320); // match Banner durationMs
     return () => clearTimeout(t);
   }, [stage]);
 
@@ -117,12 +125,8 @@ export function FirstTimeVisitorBanner({ className }: Props) {
   function handleRejectCookies() {
     analytics.opt_out_capturing();
     localStorage.setItem(LS_COOKIE, "rejected");
-    localStorage.setItem(LS_FLOW, "completed");
-    localStorage.setItem(LS_THEME_INFO, "done");
-
-    // Fade out instead of instant unmount
-    setStage("closing");
-    setTimeout(() => setStage("done"), 320); // match Banner durationMs
+    // still continue the normal flow
+    setStage("kWait");
   }
 
   return (
@@ -142,10 +146,10 @@ export function FirstTimeVisitorBanner({ className }: Props) {
           </div>
           <div className="-mt-3 flex items-center justify-end gap-3">
             <Button variant="outline" onClick={handleRejectCookies}>
-              Dismiss
+              Reject
             </Button>
             <Button variant="default" onClick={handleAcceptCookies}>
-              Got it
+              Accept
             </Button>
           </div>
         </>
