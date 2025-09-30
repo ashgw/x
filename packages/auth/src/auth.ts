@@ -8,22 +8,8 @@ import { hash, verify } from "@ashgw/security";
 import { authEndpoints, disableSignUp, sessionExpiry } from "./consts";
 import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js";
-import { send, NotificationType } from "@ashgw/email";
-import { createLimiter } from "limico";
-
-/* -----------------------------------------------------------------------------
- * Rate limiter: 10 requests / 1 minute
- * -------------------------------------------------------------------------- */
-
-const rl = createLimiter({
-  kind: "quota",
-  limit: 20,
-  window: "60s",
-});
-
-/* -----------------------------------------------------------------------------
- * Auth config
- * -------------------------------------------------------------------------- */
+import { send } from "@ashgw/email";
+import { rl } from "./rl";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -164,19 +150,6 @@ export const auth = betterAuth({
       schema: {
         twoFactor: {
           modelName: "TwoFactor",
-        },
-      },
-      otpOptions: {
-        async sendOTP({ user, otp }) {
-          await send.notification.notify({
-            to: user.email,
-            title: "Your security code",
-            subject: "Your security code",
-            type: NotificationType.SERVICE,
-            messageMd:
-              `Use this code to finish signing in: **${otp}**\n\n` +
-              `If you didn’t request this, ignore this email.`,
-          });
         },
       },
     }),
