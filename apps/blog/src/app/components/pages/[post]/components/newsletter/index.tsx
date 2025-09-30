@@ -81,8 +81,7 @@ export function Newsletter() {
                         placeholder="your@email.com"
                       />
                       <Button
-                        variant="default"
-                        shape="rounded"
+                        variant="default:rounded"
                         type="submit"
                         disabled={subscribeMutation.isPending}
                         loading={subscribeMutation.isPending}
