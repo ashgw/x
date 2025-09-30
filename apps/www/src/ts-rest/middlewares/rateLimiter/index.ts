@@ -54,13 +54,25 @@ export function rateLimiter(input: RateLimitOptions) {
   return middlewareFn<GlobalContext, RateLimiterCtx>(async (req, _res) => {
     const pass = await allow(getFingerprint({ req }));
     if (!pass.allowed) {
+      let message: string;
+
+      if (input.kind === "interval") {
+        const seconds = Math.ceil(pass.retryAfterMs / 1000);
+        message = `Too many requests: you must wait ${seconds}s before trying again.`;
+      } else {
+        const seconds = Math.ceil(pass.retryAfterMs / 1000);
+        message =
+          pass.remaining > 0
+            ? `You have ${pass.remaining} requests left in this ${input.limit.every} window.`
+            : `Rate limit exceeded: please wait ${seconds}s until quota refresh.`;
+      }
+
       return middlewareResponse.errors.tooManyRequests({
-        body: {
-          message: `You're limited for the next ${input.limit.every}`,
-        },
-        retryAfterSeconds: pass.retryAfterMs / 1000,
+        body: { message },
+        retryAfterSeconds: Math.max(1, Math.floor(pass.retryAfterMs / 1000)),
       });
     }
+
     return {
       ctx: {
         rl: {
