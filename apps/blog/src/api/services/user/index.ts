@@ -19,7 +19,6 @@ import { SessionMapper, UserMapper } from "~/api/mappers";
 import type { Optional } from "ts-roids";
 import type { TrpcContext } from "~/trpc/context";
 
-// TODO: add logging to the unlogged
 export class UserService {
   private readonly ctx: TrpcContext;
   constructor({ ctx }: { ctx: TrpcContext }) {
