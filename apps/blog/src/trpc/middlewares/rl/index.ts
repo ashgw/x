@@ -17,12 +17,12 @@ const rl = createLimiter({
 
 export const rateLimiterMiddleware = (input: Ops) =>
   middleware(async ({ ctx, next }) => {
-    const pass = await rl
-      .update({
-        limit: input.hits,
-        window: input.every,
-      })
-      .allow(getFingerprint({ req: ctx.req }));
+    rl.update({
+      limit: input.hits,
+      window: input.every,
+    });
+
+    const pass = await rl.allow(getFingerprint({ req: ctx.req }));
     if (!pass.allowed) {
       throw new TRPCError({
         code: "TOO_MANY_REQUESTS",
