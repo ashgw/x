@@ -45,14 +45,25 @@ export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
   const [stage, setStage] = useState<Stage>("init");
 
-  // On mount, resolve stage from localStorage
+  // On mount: read consent, rehydrate PostHog, then resolve stage
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const cookie = localStorage.getItem(LS_COOKIE);
     if (!cookie) {
       setStage("cookie");
       return;
     }
+
+    // Rehydrate analytics consent for returning visitors
+    if (cookie === "accepted") analytics.opt_in_capturing();
+    else if (cookie === "rejected") {
+      // fully opt out if they had previously rejected
+      analytics.opt_out_capturing();
+      // optional: if you ever identified this user, also clear IDs
+      // analytics.reset?.(true);
+    }
+
     const flow = localStorage.getItem(LS_FLOW);
     const legacy = localStorage.getItem(LS_THEME_INFO);
     if (flow === "completed" || legacy === "done") {
@@ -60,7 +71,19 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     } else {
       setStage("kWait");
     }
-  }, []);
+  }, [analytics]);
+
+  // Keep consent in sync across tabs
+  useEffect(() => {
+    function onStorage(e: StorageEvent) {
+      if (e.key !== LS_COOKIE) return;
+      const v = e.newValue;
+      if (v === "accepted") analytics.opt_in_capturing();
+      else if (v === "rejected") analytics.opt_out_capturing();
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [analytics]);
 
   // Key handling for theme flow
   useEffect(() => {
@@ -94,15 +117,14 @@ export function FirstTimeVisitorBanner({ className }: Props) {
     if (stage !== "final") return;
     localStorage.setItem(LS_FLOW, "completed");
     localStorage.setItem(LS_THEME_INFO, "done");
-    // fade out instead of instant unmount
-    const t = setTimeout(() => setStage("closing"), 3000); // show "Enjoy!" for 3s
+    const t = setTimeout(() => setStage("closing"), 3000);
     return () => clearTimeout(t);
   }, [stage]);
 
-  // after closing, mark done
+  // After closing, mark done
   useEffect(() => {
     if (stage !== "closing") return;
-    const t = setTimeout(() => setStage("done"), 320); // match Banner durationMs
+    const t = setTimeout(() => setStage("done"), 320);
     return () => clearTimeout(t);
   }, [stage]);
 
@@ -124,8 +146,9 @@ export function FirstTimeVisitorBanner({ className }: Props) {
 
   function handleRejectCookies() {
     analytics.opt_out_capturing();
+    // optional: if you identify users elsewhere, consider clearing IDs too
+    // analytics.reset?.(true);
     localStorage.setItem(LS_COOKIE, "rejected");
-    // still continue the normal flow
     setStage("kWait");
   }
 
