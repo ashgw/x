@@ -13,6 +13,7 @@ export const userSchemaRo = z.object({
   name: z.string().min(1).max(30).nullable(),
   image: z.string().min(1).max(4096).optional(),
   role: z.nativeEnum(UserRoleEnum),
+  twoFactorEnabled: z.boolean(),
   session: sessionSchemaRo,
 });
 

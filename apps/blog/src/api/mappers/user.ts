@@ -22,6 +22,7 @@ export class UserMapper {
       updatedAt: user.updatedAt,
       image: user.image ? user.image : undefined,
       role: this._mapRoleFromAuthQuery({ role: user.role }),
+      twoFactorEnabled: user.twoFactorEnabled ?? false,
       session: SessionMapper.toRo({ session }),
     };
   }
