@@ -1,1 +1,1 @@
-export { createAuth } from "./auth";
+export { setupAuth } from "./auth";

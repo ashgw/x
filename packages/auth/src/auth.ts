@@ -9,7 +9,6 @@ import { monitor } from "@ashgw/monitor";
 import { nextCookies } from "better-auth/next-js";
 import { send } from "@ashgw/email";
 import { toNextJsHandler } from "better-auth/next-js";
-
 import { createLimiter } from "limico";
 
 const rl = createLimiter({
@@ -18,7 +17,7 @@ const rl = createLimiter({
   window: "60s",
 });
 
-export const createAuth = ({
+export const setupAuth = ({
   trustedProductionOrigins,
   baseURL,
   appName,
