@@ -89,7 +89,7 @@ export function TwoFactorEnableCard() {
   });
 
   return (
-    <SurfaceCard className="w-full">
+    <SurfaceCard className="w-full" animation={"none"}>
       <h2 className="mb-2 text-xl font-semibold">Enable TOTP</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
         We will show the raw secret. Add it to your authenticator or store it
@@ -206,7 +206,7 @@ export function TwoFactorRevealSecretCard() {
   };
 
   return (
-    <SurfaceCard className="w-full">
+    <SurfaceCard className="w-full" animation={"none"}>
       <h2 className="mb-2 text-xl font-semibold">Reveal TOTP secret</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
         If 2FA is already enabled, re enter your password to view the secret
@@ -266,7 +266,7 @@ export function TwoFactorVerifyTotpCard() {
   });
 
   return (
-    <SurfaceCard className="w-full">
+    <SurfaceCard className="w-full" animation={"none"}>
       <h2 className="mb-2 text-xl font-semibold">Verify TOTP</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
         Enter a current code from your authenticator. Optionally trust this
@@ -354,7 +354,7 @@ export function TwoFactorBackupCodesCard() {
   });
 
   return (
-    <SurfaceCard className="w-full">
+    <SurfaceCard className="w-full" animation={"none"}>
       <h2 className="mb-2 text-xl font-semibold">Backup codes</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
         Generate one time codes you can use if you lose access to your
@@ -521,7 +521,7 @@ export function TwoFactorDisableCard() {
   });
 
   return (
-    <SurfaceCard className="w-full">
+    <SurfaceCard className="w-full" animation={"none"}>
       <h2 className="mb-2 text-xl font-semibold">Disable 2FA</h2>
       <p className="text-dim-300 mb-6 text-sm font-semibold">
         Requires your password. This removes TOTP and invalidates existing
