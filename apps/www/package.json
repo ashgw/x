@@ -55,7 +55,7 @@
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "react-hook-form": "catalog:rhf",
-    "sharp": "0.33.2",
+    "sharp": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"
   },

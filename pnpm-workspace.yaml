@@ -27,6 +27,7 @@ catalog:
   superjson: "2.2.1"
   react-hook-form: "7.53.0"
   limico: 2.0.8
+  sharp: 0.33.2 # neede for nextJS
 
 catalogs:
   react-query5:
@@ -53,3 +54,7 @@ catalogs:
 
   rhf:
     "@hookform/resolvers": "3.9.0"
+    "react-hook-form": "7.53.0"
+  mobx:
+    mobx: "6.13.7"
+    mobx-react-lite: "4.1.0"
