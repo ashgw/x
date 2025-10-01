@@ -11,7 +11,7 @@ describe("middlewareResponse.generic edge cases", () => {
     expect(res.status).toBe(204);
   });
 
-  it("200 with JSON object stringifies correctly", () => {
+  it("200 with JSON object stringifies correctly", async () => {
     const res = middlewareResponse.generic({
       status: 200,
       body: { a: 1, b: "x" },
@@ -20,7 +20,7 @@ describe("middlewareResponse.generic edge cases", () => {
     expect(res).toBeInstanceOf(Response);
     expect(res.status).toBe(200);
     expect(res.headers.get("x-test")).toBe("y");
-    const json = res.json();
+    const json = await res.json();
     expect(json).toEqual({ a: 1, b: "x" });
   });
 });
