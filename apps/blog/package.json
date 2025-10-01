@@ -58,6 +58,7 @@
     "react-dom": "catalog:react18",
     "react-hook-form": "catalog:rhf",
     "react-syntax-highlighter": "15.5.0",
+    "react-use": "17.6.0",
     "sharp": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"
