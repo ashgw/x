@@ -18,12 +18,12 @@ import {
 } from "@ashgw/design/ui";
 
 import {
-  twoFactorEnableDtoSchema,
-  twoFactorGetTotpUriDtoSchema,
-  twoFactorVerifyTotpDtoSchema,
-  twoFactorDisableDtoSchema,
-  twoFactorGenerateBackupCodesDtoSchema,
-  twoFactorVerifyBackupCodeDtoSchema,
+  twoFactorEnableSchemaDto,
+  twoFactorGetTotpUriSchemaDto,
+  twoFactorVerifyTotpSchemaDto,
+  twoFactorDisableSchemaDto,
+  twoFactorGenerateBackupCodesSchemaDto,
+  twoFactorVerifyBackupCodeSchemaDto,
 } from "~/api/models";
 
 import type {
@@ -69,7 +69,7 @@ function CopyableRow({ value }: { value: string }) {
 
 export function TwoFactorEnableCard() {
   const form = useForm<TwoFactorEnableDto>({
-    resolver: zodResolver(twoFactorEnableDtoSchema),
+    resolver: zodResolver(twoFactorEnableSchemaDto),
     defaultValues: { password: "" },
     mode: "onChange",
   });
@@ -178,7 +178,7 @@ export function TwoFactorEnableCard() {
 /* Reveal secret (for already enabled) */
 export function TwoFactorRevealSecretCard() {
   const form = useForm<TwoFactorGetTotpUriDto>({
-    resolver: zodResolver(twoFactorGetTotpUriDtoSchema),
+    resolver: zodResolver(twoFactorGetTotpUriSchemaDto),
     defaultValues: { password: "" },
     mode: "onChange",
   });
@@ -252,7 +252,7 @@ export function TwoFactorRevealSecretCard() {
 /* Verify TOTP code */
 export function TwoFactorVerifyTotpCard() {
   const form = useForm<TwoFactorVerifyTotpDto>({
-    resolver: zodResolver(twoFactorVerifyTotpDtoSchema),
+    resolver: zodResolver(twoFactorVerifyTotpSchemaDto),
     defaultValues: { code: "", trustDevice: false },
     mode: "onChange",
   });
@@ -323,7 +323,7 @@ export function TwoFactorVerifyTotpCard() {
 /* Backup codes (generate + verify) */
 export function TwoFactorBackupCodesCard() {
   const genForm = useForm<TwoFactorGenerateBackupCodesDto>({
-    resolver: zodResolver(twoFactorGenerateBackupCodesDtoSchema),
+    resolver: zodResolver(twoFactorGenerateBackupCodesSchemaDto),
     defaultValues: { password: "" },
     mode: "onChange",
   });
@@ -341,7 +341,7 @@ export function TwoFactorBackupCodesCard() {
   );
 
   const verifyForm = useForm<TwoFactorVerifyBackupCodeDto>({
-    resolver: zodResolver(twoFactorVerifyBackupCodeDtoSchema),
+    resolver: zodResolver(twoFactorVerifyBackupCodeSchemaDto),
     defaultValues: { code: "", trustDevice: false, disableSession: false },
     mode: "onChange",
   });
@@ -507,7 +507,7 @@ export function TwoFactorBackupCodesCard() {
 /* Disable 2FA */
 export function TwoFactorDisableCard() {
   const form = useForm<TwoFactorDisableDto>({
-    resolver: zodResolver(twoFactorDisableDtoSchema),
+    resolver: zodResolver(twoFactorDisableSchemaDto),
     defaultValues: { password: "" },
     mode: "onChange",
   });

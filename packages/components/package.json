@@ -5,8 +5,7 @@
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier . --write",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "lint": "tsc --noEmit; eslint ."
   },
   "dependencies": {
     "@ashgw/analytics": "workspace:*",
@@ -21,7 +20,6 @@
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "@types/react": "catalog:react18",
-    "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react18",
     "ts-roids": "catalog:",
