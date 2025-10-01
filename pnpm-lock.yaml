@@ -1128,12 +1128,15 @@ importers:
 
   packages/ts-rest-kit:
     devDependencies:
-      '@ashgw/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@ts-rest/core':
+        specifier: catalog:ts-rest3
+        version: 3.52.1(@types/node@22.14.1)(zod@3.24.3)
+      '@ts-rest/serverless':
+        specifier: catalog:ts-rest3
+        version: 3.52.1(@ts-rest/core@3.52.1(@types/node@22.14.1)(zod@3.24.3))(next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.0.0(react@19.1.0))(react@19.1.0))(zod@3.24.3)
       ts-roids:
         specifier: 'catalog:'
         version: 2.0.0
@@ -15592,6 +15595,11 @@ snapshots:
       '@types/node': 20.16.15
       zod: 3.23.8
 
+  '@ts-rest/core@3.52.1(@types/node@22.14.1)(zod@3.24.3)':
+    optionalDependencies:
+      '@types/node': 22.14.1
+      zod: 3.24.3
+
   '@ts-rest/open-api@3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@anatine/zod-openapi': 1.14.2(openapi3-ts@2.0.2)(zod@3.23.8)
@@ -15614,6 +15622,14 @@ snapshots:
     optionalDependencies:
       next: 14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod: 3.23.8
+
+  '@ts-rest/serverless@3.52.1(@ts-rest/core@3.52.1(@types/node@22.14.1)(zod@3.24.3))(next@14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.0.0(react@19.1.0))(react@19.1.0))(zod@3.24.3)':
+    dependencies:
+      '@ts-rest/core': 3.52.1(@types/node@22.14.1)(zod@3.24.3)
+      itty-router: 5.0.22
+    optionalDependencies:
+      next: 14.2.3(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.0.0(react@19.1.0))(react@19.1.0)
+      zod: 3.24.3
 
   '@tsconfig/node10@1.0.11': {}
 
