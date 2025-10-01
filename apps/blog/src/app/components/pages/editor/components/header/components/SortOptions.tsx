@@ -175,9 +175,7 @@ export function SortOptions({
               <ListChecks className="h-4 w-4" />
               {options.statusFilter !== "all" && (
                 <Badge
-                  appearance={
-                    options.statusFilter === "released" ? "outline" : "outline"
-                  }
+                  appearance={"outline"}
                   className="ml-1 px-1 py-0 text-xs"
                 >
                   {options.statusFilter === "released" ? "Released" : "Draft"}
