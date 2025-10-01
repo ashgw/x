@@ -1,4 +1,4 @@
-s; // TS-REST v3 client + React Query v5 hooks initializer
+// TS-REST v3 client + React Query v5 hooks initializer
 // - initClient: runtime-safe client (supports throwOnUnknownStatus, validateResponse)
 // - initTsrReactQuery: generates typed hooks + providers for React Query v5
 import { initTsrReactQuery } from "@ts-rest/react-query/v5";
