@@ -3,10 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "changelog": "changeset",
+    "changelog:version": "changeset version",
     "clean": "git clean -xdf node_modules",
-    "clean:workspaces": "turbo run clean",
-    "db:push": "turbo -F @ashgw/db push",
-    "db:studio": "turbo -F @ashgw/db studio",
     "deps:check": "syncpack list-mismatches",
     "deps:fix": "syncpack fix-mismatches",
     "deps:format": "syncpack format",
@@ -17,14 +16,10 @@
     "hooks": "husky install",
     "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "postinstall": "pnpm dlx sherif@latest",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
-    "test:unit-integration": "turbo run test:unit-integration",
-    "typecheck": "turbo typecheck",
-    "changelog": "changeset",
-    "changelog:version": "changeset version"
+    "test:unit-integration": "turbo run test:unit-integration"
   },
   "author": {
     "name": "@ashgw",

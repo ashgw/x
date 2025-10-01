@@ -2,29 +2,6 @@
   "name": "@ashgw/db",
   "version": "0.1.1",
   "private": true,
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
-    },
-    "./raw": {
-      "import": "./src/raw.ts",
-      "types": "./src/raw.ts"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "raw": [
-        "src/raw.ts"
-      ],
-      "*": [
-        "src/index.ts"
-      ]
-    }
-  },
   "scripts": {
     "execute": "prisma db execute",
     "format": "prettier . --write",
@@ -64,5 +41,28 @@
     "@types/ws": "^8.18.1",
     "ts-roids": "catalog:",
     "typescript": "catalog:"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./raw": {
+      "types": "./src/raw.ts",
+      "import": "./src/raw.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "raw": [
+        "src/raw.ts"
+      ],
+      "*": [
+        "src/index.ts"
+      ]
+    }
   }
 }

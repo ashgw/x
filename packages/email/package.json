@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev-template": " pnpx react-email dev --dir ./src/templates",
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint .",
-    "dev-template": " pnpx react-email dev --dir ./src/templates",
     "send-test-email": "tsx src/test.ts"
   },
   "dependencies": {
