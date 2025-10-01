@@ -20,6 +20,7 @@
   "devDependencies": {
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
+    "@eslint/js": "9.36.0",
     "@types/eslint": "^8.56.1",
     "@types/eslint__js": "^9.14.0",
     "eslint": "^9.12.0",
