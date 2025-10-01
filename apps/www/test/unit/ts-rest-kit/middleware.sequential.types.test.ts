@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { middleware } from "~/ts-rest-kit";
+import { middleware } from "~/ts-rest-kit/src/next";
 import { initContract } from "@ts-rest/core";
 interface GlobalContext {
   ctx: { requestedAt: Date };

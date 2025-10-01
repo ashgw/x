@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { middlewareResponse } from "~/ts-rest-kit/middleware/response";
+import { middlewareResponse } from "~/ts-rest-kit";
 // local copy of the mapping to avoid internal import reshuffles
 const HTTP_STATUS_BY_CODE = {
   BAD_REQUEST: 400,
@@ -17,7 +17,7 @@ describe("middlewareResponse", () => {
   it("generic returns no-body response when body is undefined", () => {
     const res = middlewareResponse.generic({ status: 204, body: undefined });
     expect(res).toBeInstanceOf(Response);
-    expect((res as Response).status).toBe(204);
+    expect(res.status).toBe(204);
   });
 
   it("generic returns json response when body is provided", async () => {
@@ -26,24 +26,22 @@ describe("middlewareResponse", () => {
       body: { a: 1 as number },
     });
     expect(res).toBeInstanceOf(Response);
-    expect((res as Response).status).toBe(200);
-    const json = (await (res as Response).json()) as { a: number };
+    expect(res.status).toBe(200);
+    const json = (await res.json()) as { a: number };
     expect(json.a).toBe(1);
   });
 
   it("errors.* map codes to default HTTP statuses and include headers", () => {
     const res = middlewareResponse.errors.unauthorized({ message: "no" });
-    expect((res as Response).status).toBe(HTTP_STATUS_BY_CODE.UNAUTHORIZED);
+    expect(res.status).toBe(HTTP_STATUS_BY_CODE.UNAUTHORIZED);
     const bad = middlewareResponse.errors.badRequest({ message: "bad" });
-    expect((bad as Response).status).toBe(HTTP_STATUS_BY_CODE.BAD_REQUEST);
+    expect(bad.status).toBe(HTTP_STATUS_BY_CODE.BAD_REQUEST);
 
     const tmr = middlewareResponse.errors.tooManyRequests({
       body: { message: "slow down" },
       retryAfterSeconds: 7,
     });
-    expect((tmr as Response).status).toBe(
-      HTTP_STATUS_BY_CODE.TOO_MANY_REQUESTS,
-    );
-    expect((tmr as Response).headers.get("Retry-After")).toBe("7");
+    expect(tmr.status).toBe(HTTP_STATUS_BY_CODE.TOO_MANY_REQUESTS);
+    expect(tmr.headers.get("Retry-After")).toBe("7");
   });
 });
