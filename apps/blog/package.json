@@ -47,6 +47,7 @@
     "@trpc/next": "catalog:trpc11",
     "@trpc/react-query": "catalog:trpc11",
     "@trpc/server": "catalog:trpc11",
+    "front-matter": "4.0.2",
     "gsap": "3.12.5",
     "limico": "catalog:",
     "mobx": "catalog:mobx",
