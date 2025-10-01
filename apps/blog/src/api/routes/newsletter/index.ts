@@ -7,8 +7,9 @@ import { NewsletterService } from "~/api/services";
 
 export const newsletterRouter = router({
   subscribe: publicProcedure({
-    limit: {
-      every: "3s",
+    limiter: {
+      hits: 3,
+      every: "10s",
     },
   })
     .input(newsletterSubscribeDtoSchema)

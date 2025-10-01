@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "@ashgw/design/motion";
 import { toast } from "@ashgw/design/ui";
 
 import { logger } from "@ashgw/logger";
@@ -15,171 +14,151 @@ import {
   CardHeader,
   CardTitle,
   Loading,
+  Separator,
 } from "@ashgw/design/ui";
 
-import type { SessionRo } from "~/api/models";
 import { useAuth } from "~/app/hooks/auth";
 import { trpcClientSide } from "~/trpc/callers/client";
 import { ChangePasswordForm } from "./components/ChangePasswordForm";
 import { SessionsList } from "./components/SessionsList";
 import { UserInfo } from "./components/UserInfo";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 20,
-    },
-  },
-};
+import {
+  TwoFactorEnableCard,
+  TwoFactorRevealSecretCard,
+  TwoFactorVerifyTotpCard,
+  TwoFactorBackupCodesCard,
+  TwoFactorDisableCard,
+} from "./components/TwoFactorBlock";
 
 export function ProfilePage() {
   const router = useRouter();
   const { user, isLoading, logout } = useAuth();
-  const [sessions, setSessions] = useState<SessionRo[]>([]);
   const utils = trpcClientSide.useUtils();
 
+  // Perform redirect as a side effect, not during render
   useEffect(() => {
     if (!isLoading && !user) {
       router.push("/login");
     }
-  }, [isLoading, user, router]);
+  }, [isLoading, router, user]);
 
-  useEffect(() => {
-    if (user?.sessions) {
-      setSessions(user.sessions);
-    }
-  }, [user?.sessions]);
+  // While waiting for auth state or redirecting, show nothing/spinner
+  if (!isLoading && !user) {
+    return null;
+  }
+
+  if (isLoading || !user) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
 
   const handleLogout = async () => {
     try {
       await logout();
       await utils.user.me.invalidate();
-      toast.success("Successfully logged out");
-      router.push("/login");
+      toast.success("Logged out");
     } catch (error) {
       logger.error("Logout failed", { error });
-      toast.error("Failed to logout, please try again later");
+      toast.error("Failed to logout");
     }
   };
 
-  if (isLoading || !user) {
-    return (
-      <motion.div
-        className="flex h-[50vh] items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
-        <Loading />
-      </motion.div>
-    );
-  }
-
   return (
-    <AnimatePresence mode="wait">
-      <div className="layout mx-auto max-w-4xl px-4 py-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-6"
-        >
-          {/* Header Section */}
-          <motion.div variants={cardVariants} className="mb-8">
-            <h1 className="mb-2 text-3xl font-bold">Account Settings</h1>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-sm">
-                {user.role}
-              </Badge>
-              <Badge variant="secondary" className="text-sm">
-                Member since {new Date(user.createdAt).toLocaleDateString()}
-              </Badge>
-            </div>
-          </motion.div>
-
-          {/* Main Grid Layout */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Profile Info Card */}
-            <motion.div variants={cardVariants}>
-              <Card className="h-full">
-                <CardHeader className="flex flex-row items-center gap-2">
-                  <div>
-                    <CardTitle>Profile</CardTitle>
-                    <CardDescription>Your account information</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <UserInfo user={user} />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Password Change Card */}
-            <motion.div variants={cardVariants}>
-              <Card className="h-full">
-                <CardHeader className="flex flex-row items-center gap-2">
-                  <div>
-                    <CardTitle>Security</CardTitle>
-                    <CardDescription>Update your password</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ChangePasswordForm />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Sessions Card - Full Width */}
-            <motion.div variants={cardVariants} className="md:col-span-2">
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-2">
-                  <div>
-                    <CardTitle>Sessions</CardTitle>
-                    <CardDescription>
-                      Manage your device sessions
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <SessionsList sessions={sessions} setSessions={setSessions} />
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
-          {/* Logout Button */}
-          <motion.div
-            variants={cardVariants}
-            className="flex justify-end pt-4"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      {/* Page header */}
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Account</h1>
+          <p className="text-muted-foreground text-sm">
+            Profile, security, sessions, and two factor settings
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge appearance="outline" className="text-sm font-semibold">
+            {user.role}
+          </Badge>
+          <Badge appearance="soft" className="text-sm font-semibold">
+            Member since {new Date(user.createdAt).toLocaleDateString()}
+          </Badge>
+          <Button
+            variant="destructive:outline"
+            onClick={handleLogout}
+            className="ml-2"
           >
-            <Button
-              variant="destructive"
-              onClick={handleLogout}
-              className="flex items-center gap-2"
-            >
-              Logout
-            </Button>
-          </motion.div>
-        </motion.div>
+            Logout
+          </Button>
+        </div>
       </div>
-    </AnimatePresence>
+
+      {/* Content grid */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px,1fr]">
+        {/* Sidebar like Supabase */}
+        <Card className="h-max sticky top-4">
+          <CardHeader>
+            <CardTitle className="text-base">Overview</CardTitle>
+            <CardDescription>Quick info</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <UserInfo user={user} />
+          </CardContent>
+        </Card>
+
+        {/* Main content */}
+        <div className="space-y-6">
+          {/* Security */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Security</CardTitle>
+              <CardDescription>Change your password</CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6">
+              <ChangePasswordForm />
+            </CardContent>
+          </Card>
+
+          {/* Sessions */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Sessions</CardTitle>
+              <CardDescription>Manage signed in devices</CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6">
+              <SessionsList currentSessionToken={user.session.token} />
+            </CardContent>
+          </Card>
+
+          {/* Two Factor */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Two Factor Authentication</CardTitle>
+              <CardDescription>
+                Enable TOTP, verify codes, manage backup codes, or disable
+              </CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6 space-y-6">
+              {/* Enable first */}
+              <TwoFactorEnableCard />
+
+              {/* Management */}
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <TwoFactorRevealSecretCard />
+                <TwoFactorVerifyTotpCard />
+                <div className="md:col-span-2">
+                  <TwoFactorBackupCodesCard />
+                </div>
+                <TwoFactorDisableCard />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }

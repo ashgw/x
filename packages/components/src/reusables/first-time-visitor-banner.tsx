@@ -1,15 +1,26 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "@ashgw/design/motion";
-import { Button, SurfaceCard, cn } from "@ashgw/design/ui";
+import { useEffect, useState } from "react";
+import { Banner, cn, Button } from "@ashgw/design/ui";
 import { useAnalytics } from "@ashgw/analytics/client";
 
-type Stage = "cookie" | "kWait" | "done";
+type Stage =
+  | "init"
+  | "cookie"
+  | "kWait"
+  | "lWait"
+  | "dWait"
+  | "final"
+  | "closing"
+  | "done";
 
 interface Props {
   className?: string;
 }
+
+const LS_FLOW = "onboard:theme-flow";
+const LS_THEME_INFO = "onboard:theme-info";
+const LS_COOKIE = "onboard:cookie-consent";
 
 function Kbd({
   children,
@@ -21,7 +32,7 @@ function Kbd({
   return (
     <kbd
       className={cn(
-        "inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 text-xs font-mono font-medium shadow-sm relative -top-0.5",
+        "relative -top-0.5 inline-flex items-center justify-center rounded-md border border-border bg-surface px-1.5 py-0.5 font-mono text-xs font-medium shadow-sm",
         className,
       )}
     >
@@ -32,109 +43,161 @@ function Kbd({
 
 export function FirstTimeVisitorBanner({ className }: Props) {
   const analytics = useAnalytics();
-  const [stage, setStage] = useState<Stage>("cookie");
-  const [consent, setConsent] = useState<"accepted" | "rejected" | null>(null);
+  const [stage, setStage] = useState<Stage>("init");
 
+  // On mount: read consent, rehydrate PostHog, then resolve stage
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const cookie = localStorage.getItem("privacy:cookie-consent");
-    const themeInfo = localStorage.getItem("onboard:theme-info");
-
+    const cookie = localStorage.getItem(LS_COOKIE);
     if (!cookie) {
       setStage("cookie");
-      setConsent(null);
-    } else if (themeInfo !== "done") {
-      setStage("kWait");
-      setConsent(cookie === "accepted" ? "accepted" : "rejected");
-    } else {
-      setStage("done");
-      setConsent(cookie === "accepted" ? "accepted" : "rejected");
+      return;
     }
-  }, []);
 
+    // Rehydrate analytics consent for returning visitors
+    if (cookie === "accepted") analytics.opt_in_capturing();
+    else if (cookie === "rejected") {
+      // fully opt out if they had previously rejected
+      analytics.opt_out_capturing();
+      // optional: if you ever identified this user, also clear IDs
+      // analytics.reset?.(true);
+    }
+
+    const flow = localStorage.getItem(LS_FLOW);
+    const legacy = localStorage.getItem(LS_THEME_INFO);
+    if (flow === "completed" || legacy === "done") {
+      setStage("done");
+    } else {
+      setStage("kWait");
+    }
+  }, [analytics]);
+
+  // Keep consent in sync across tabs
   useEffect(() => {
-    if (stage !== "kWait") return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === "k") {
-        localStorage.setItem("onboard:theme-info", "done");
-        setStage("done");
+    function onStorage(e: StorageEvent) {
+      if (e.key !== LS_COOKIE) return;
+      const v = e.newValue;
+      if (v === "accepted") analytics.opt_in_capturing();
+      else if (v === "rejected") analytics.opt_out_capturing();
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [analytics]);
+
+  // Key handling for theme flow
+  useEffect(() => {
+    if (stage === "done" || stage === "init" || stage === "cookie") return;
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      ) {
+        return;
       }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+      const key = e.key.toLowerCase();
+      if (stage === "kWait" && key === "k") setStage("lWait");
+      else if (stage === "lWait" && key === "l") setStage("dWait");
+      else if (stage === "dWait" && key === "d") setStage("final");
+    }
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, [stage]);
 
-  const acceptCookies = useCallback(() => {
-    localStorage.setItem("privacy:cookie-consent", "accepted");
+  // Persist completion for theme flow
+  useEffect(() => {
+    if (stage !== "final") return;
+    localStorage.setItem(LS_FLOW, "completed");
+    localStorage.setItem(LS_THEME_INFO, "done");
+    const t = setTimeout(() => setStage("closing"), 3000);
+    return () => clearTimeout(t);
+  }, [stage]);
+
+  // After closing, mark done
+  useEffect(() => {
+    if (stage !== "closing") return;
+    const t = setTimeout(() => setStage("done"), 320);
+    return () => clearTimeout(t);
+  }, [stage]);
+
+  const show =
+    stage === "cookie" ||
+    stage === "kWait" ||
+    stage === "lWait" ||
+    stage === "dWait" ||
+    stage === "final" ||
+    stage === "closing";
+  if (!show) return null;
+
+  // Cookie consent handlers
+  function handleAcceptCookies() {
     analytics.opt_in_capturing();
-    setConsent("accepted");
+    localStorage.setItem(LS_COOKIE, "accepted");
     setStage("kWait");
-  }, [analytics]);
+  }
 
-  const rejectCookies = useCallback(() => {
-    localStorage.setItem("privacy:cookie-consent", "rejected");
+  function handleRejectCookies() {
     analytics.opt_out_capturing();
-    setConsent("rejected");
+    // optional: if you identify users elsewhere, consider clearing IDs too
+    // analytics.reset?.(true);
+    localStorage.setItem(LS_COOKIE, "rejected");
     setStage("kWait");
-  }, [analytics]);
-
-  const cookieBody = "Hmm new here? Got to let you know, I use cookies";
-
-  const kWaitBody =
-    consent === "accepted" ? (
-      <>
-        Great, press <Kbd>K</Kbd> to switch themes
-      </>
-    ) : (
-      <>
-        Anyways, press <Kbd>K</Kbd> to switch themes
-      </>
-    );
-
-  const show = stage === "cookie" || stage === "kWait";
+  }
 
   return (
-    <AnimatePresence>
-      {show ? (
-        <motion.div
-          key={stage}
-          initial={{ opacity: 0, y: 120, scale: 0.7 }}
-          animate={{ opacity: 1, y: 0, scale: 0.95 }}
-          exit={{ opacity: 0, y: 120, scale: 0.7 }}
-          transition={{ type: "tween", duration: 0.45, ease: "easeOut" }}
-          className={cn("fixed bottom-6 right-6 z-50 max-w-[390px]", className)}
-        >
-          <SurfaceCard
-            animation="ringGlowPulse"
-            isBlur
-            role="dialog"
-            aria-live="polite"
-            aria-label="First-time visitor banner"
-          >
-            <div className="text-semibold text-dim-400">
-              {stage === "cookie" ? cookieBody : kWaitBody}
-            </div>
-
-            <div className="flex items-center justify-end gap-2">
-              {stage === "cookie" ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={rejectCookies}
-                    className="text-xs"
-                  >
-                    Reject
-                  </Button>
-                  <Button onClick={acceptCookies} className="text-xs">
-                    Accept
-                  </Button>
-                </>
-              ) : null}
-            </div>
-          </SurfaceCard>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+    <Banner
+      open={stage !== "closing"}
+      position="bottom-right"
+      instanceKey={stage}
+      className={className}
+      durationMs={320}
+      role="dialog"
+      ariaLabel={stage === "cookie" ? "Cookie consent" : "Theme onboarding"}
+    >
+      {stage === "cookie" ? (
+        <>
+          <div className="text-semibold text-dim-400">
+            New here? I use cookies to improve your experience.
+          </div>
+          <div className="-mt-3 flex items-center justify-end gap-3">
+            <Button variant="outline" onClick={handleRejectCookies}>
+              Reject
+            </Button>
+            <Button variant="default" onClick={handleAcceptCookies}>
+              Accept
+            </Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="text-semibold text-dim-400">
+            {stage === "kWait" ? (
+              <>
+                Press <Kbd>K</Kbd> to cycle through dark themes.
+              </>
+            ) : stage === "lWait" ? (
+              <>
+                Prefer light? Press <Kbd>L</Kbd> to switch.
+              </>
+            ) : stage === "dWait" ? (
+              <>
+                Press <Kbd>D</Kbd> to return to dark.
+              </>
+            ) : (
+              <>All set. Enjoy!</>
+            )}
+          </div>
+          <div className="mt-3 flex items-center justify-end gap-2" />
+        </>
+      )}
+    </Banner>
   );
 }

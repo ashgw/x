@@ -10,6 +10,8 @@ import { appRouter } from "~/api/router";
 import { createTRPCContext } from "~/trpc/context";
 import { trpcUri } from "~/trpc/endpoint";
 
+export const runtime = "nodejs";
+
 const handler = async (req: NextRequest) => {
   const res = new NextResponse();
 

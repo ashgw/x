@@ -1,10 +1,11 @@
+import { creator } from "@ashgw/constants";
 import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "@ashgw",
-    short_name: "ashgw",
-    description: "AG's personal site",
+    name: creator,
+    short_name: creator,
+    description: `${creator}'s personal site.`,
     start_url: "/",
     display: "standalone",
     background_color: "#21001d",

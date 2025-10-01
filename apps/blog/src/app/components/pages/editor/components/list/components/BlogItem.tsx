@@ -36,10 +36,14 @@ export const BlogItem = memo(
         }}
         className="rounded-md border-b p-3 pb-4 last:border-0 last:pb-0"
       >
-        <h3 className="font-medium">{blog.title}</h3>
-        <div className="text-muted-foreground mb-2 flex text-xs">
-          <span className="mr-2">{blog.isReleased ? "Released" : "Draft"}</span>
-          <span>{new Date(blog.lastModDate).toLocaleDateString()}</span>
+        <h3 className="font-semibold">{blog.title}</h3>
+        <div className="text-muted-foreground mb-2 flex text-xs font-semibold">
+          <span className="mr-2 font-semibold">
+            {blog.isReleased ? "Released" : "Draft"}
+          </span>
+          <span className="font-semibold">
+            {new Date(blog.lastModDate).toLocaleDateString()}
+          </span>
         </div>
         <motion.div
           className="flex flex-wrap gap-2"

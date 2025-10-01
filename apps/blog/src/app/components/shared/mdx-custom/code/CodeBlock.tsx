@@ -83,7 +83,7 @@ export function CodeBlock({
           codeTagProps={{
             style: { background: "transparent" },
           }}
-          className="!m-0 overflow-auto !p-0 text-sm"
+          className="!m-0 overflow-auto !p-0 text-sm font-semibold"
           showLineNumbers={false}
           lineNumberStyle={{
             width: "3.25em",

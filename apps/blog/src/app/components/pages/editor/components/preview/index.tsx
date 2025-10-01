@@ -53,11 +53,13 @@ export function BlogPreview({
           <div className="flex items-center justify-between">
             <H1 id={titleValue || title}>{titleValue || title}</H1>
           </div>
-          <div className="mb-8 flex items-center justify-between text-sm">
+          <div className="mb-8 flex items-center justify-between text-sm font-semibold">
             <div>{formattedDate}</div>
             <div>
               <div className="transition-duration-200">
-                <Badge variant="outline">Preview</Badge>
+                <Badge size={"lg"} appearance={"outline"} tone={"neutral"}>
+                  Preview
+                </Badge>
               </div>
             </div>
           </div>

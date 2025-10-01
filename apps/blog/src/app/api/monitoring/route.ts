@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server";
 import { monitor } from "@ashgw/monitor";
 
+export const runtime = "nodejs";
+
 /**
  * Shared Sentry tunnel endpoint using @ashgw/monitor.
  */

@@ -25,8 +25,8 @@ catalog:
   "@ashgw/ts-env": 1.5.3
   zod: 3.23.8
   superjson: "2.2.1"
-  argon2: "0.44.0"
   react-hook-form: "7.53.0"
+  limico: 2.0.8
 
 catalogs:
   react-query5:
@@ -47,8 +47,9 @@ catalogs:
     "@types/react": ^18.3.11
     "@types/react-dom": ^18.3.1
   prisma6:
-    "@prisma/client": "6.4.1"
-    prisma: "6.4.1"
+    "@prisma/client": "6.16.2"
+    prisma: "6.16.2"
+    "@prisma/adapter-pg": "6.16.2"
 
   rhf:
     "@hookform/resolvers": "3.9.0"

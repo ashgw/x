@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { email, id } from "../shared";
+import { email } from "../shared";
 
 const passwordSchema = z
   .string()
@@ -38,7 +38,7 @@ export const userChangePasswordSchemaDto = z
   });
 
 export const userTerminateSpecificSessionSchemaDto = z.object({
-  sessionId: id,
+  sessionId: z.string().min(1).max(255),
 });
 
 // ========== Types ==========

@@ -6,6 +6,7 @@ const baseConfig = {
   transpilePackages: [
     "@ashgw/design",
     "@ashgw/env",
+    "@ashgw/auth",
     "@ashgw/components",
     "@ashgw/hooks",
     "@ashgw/models",
@@ -20,7 +21,6 @@ const baseConfig = {
     "@ashgw/typescript",
     "@ashgw/db",
     "@ashgw/analytics",
-    "@ashgw/rate-limiter",
     "@ashgw/storage",
   ],
 

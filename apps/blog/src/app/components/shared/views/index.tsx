@@ -48,7 +48,9 @@ export const Views = observer(function Views({
       style={{ display: "inline-flex", alignItems: "center", gap: 4 }}
     >
       <Eye className="h-3 w-3 opacity-70" />
-      <span className="text-sm opacity-70">{formatViews(display)}</span>
+      <span className="text-sm font-semibold opacity-70">
+        {formatViews(display)}
+      </span>
     </span>
   );
 });
