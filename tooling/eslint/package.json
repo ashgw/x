@@ -20,8 +20,8 @@
   "devDependencies": {
     "@ashgw/prettier-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
-    "@types/eslint": "catalog:eslint9",
-    "eslint": "catalog:eslint9",
+    "@types/eslint": "8.56.1",
+    "eslint": "9.12.0",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },

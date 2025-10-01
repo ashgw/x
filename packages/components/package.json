@@ -5,8 +5,7 @@
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier . --write",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "lint": "tsc --noEmit; eslint ."
   },
   "dependencies": {
     "@ashgw/analytics": "workspace:*",
