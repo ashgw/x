@@ -1,6 +1,6 @@
 import { env } from "@ashgw/env";
 import type { EmptyObject } from "ts-roids";
-import { middlewareResponse, middlewareFn } from "~/ts-rest-kit";
+import { middlewareResponse, middlewareFn } from "ts-rest-kit/core";
 import type { GlobalContext } from "~/ts-rest/context";
 
 export function authed() {

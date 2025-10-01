@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import * as kit from "~/ts-rest-kit";
+import * as kit from "ts-rest-kit/core";
 
 describe("public API surface exports", () => {
   const required = [

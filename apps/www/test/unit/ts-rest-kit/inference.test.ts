@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
 import type { TestType } from "ts-roids";
-import type { InferRequest, InferResponses } from "~/ts-rest-kit";
+import type { InferRequest, InferResponses } from "ts-rest-kit/core";
 import { initContract } from "@ts-rest/core";
 
 const c = initContract();

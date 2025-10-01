@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { middlewareFn, middlewareResponse } from "~/ts-rest-kit";
-import type { MiddlewareRequest } from "~/ts-rest-kit";
-import type { GlobalTsrContext } from "~/ts-rest-kit";
+import { middlewareFn, middlewareResponse } from "ts-rest-kit/core";
+import type { MiddlewareRequest } from "ts-rest-kit/core";
+import type { GlobalTsrContext } from "ts-rest-kit/core";
 
 interface G extends GlobalTsrContext {
   ctx: { user?: string };

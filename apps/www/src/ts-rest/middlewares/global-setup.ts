@@ -1,8 +1,8 @@
 import { db } from "@ashgw/db";
 import type { GlobalContext } from "../context";
 import { logger } from "@ashgw/logger";
-import { responseHandlersFn } from "~/ts-rest-kit";
-import { createGlobalRequestMiddleware } from "~/ts-rest-kit/src/next";
+import { responseHandlersFn } from "ts-rest-kit/core";
+import { createGlobalRequestMiddleware } from "ts-rest-kit/next";
 
 const createGlobalContext = createGlobalRequestMiddleware<GlobalContext>(
   (request) => {

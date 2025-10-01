@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
 import type { TestType } from "ts-roids";
-import { httpErrorSchema, createSchemaResponses } from "~/ts-rest-kit";
+import { httpErrorSchema, createSchemaResponses } from "ts-rest-kit/core";
 import { initContract } from "@ts-rest/core";
 const c = initContract();
 

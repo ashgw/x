@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { middlewareResponse } from "~/ts-rest-kit";
+import { middlewareResponse } from "ts-rest-kit/core";
 
 describe("middlewareResponse.generic edge cases", () => {
   it("204 with undefined body yields empty payload", async () => {

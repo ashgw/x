@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { middlewareResponse } from "~/ts-rest-kit";
+import { middlewareResponse } from "ts-rest-kit/core";
 
 describe("middlewareResponse.errors.tooManyRequests", () => {
   it("adds integer Retry-After header and clamps to at least 1", () => {

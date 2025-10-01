@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { middlewareResponse } from "~/ts-rest-kit";
+import { middlewareResponse } from "ts-rest-kit/core";
 // local copy of the mapping to avoid internal import reshuffles
 const HTTP_STATUS_BY_CODE = {
   BAD_REQUEST: 400,

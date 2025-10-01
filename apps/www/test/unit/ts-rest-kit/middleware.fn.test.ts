@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { middlewareFn, responseHandlersFn } from "~/ts-rest-kit";
-import type { MiddlewareRequest, ResponseHandlerRequest } from "~/ts-rest-kit";
+import { middlewareFn, responseHandlersFn } from "ts-rest-kit/core";
+import type {
+  MiddlewareRequest,
+  ResponseHandlerRequest,
+} from "ts-rest-kit/core";
 import { TsRestResponse } from "@ts-rest/serverless/next";
 
 describe("middlewareFn and responseHandlersFn", () => {

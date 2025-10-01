@@ -1,6 +1,6 @@
 import type { EmptyObject } from "ts-roids";
 import { describe, it, expect } from "vitest";
-import { middleware } from "~/ts-rest-kit/src/next";
+import { middleware } from "ts-rest-kit/core/src/next";
 
 describe("sequential middleware immutability", () => {
   it("use() returns a new builder without mutating the original chain", () => {

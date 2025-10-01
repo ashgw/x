@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { rqError } from "~/ts-rest-kit";
+import { rqError } from "ts-rest-kit/core";
 
 describe("rqError", () => {
   it("parses ts-rest shaped error with code/message", () => {
