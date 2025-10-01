@@ -1128,6 +1128,9 @@ importers:
 
   packages/ts-rest-kit:
     devDependencies:
+      '@ashgw/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint
       '@ashgw/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
