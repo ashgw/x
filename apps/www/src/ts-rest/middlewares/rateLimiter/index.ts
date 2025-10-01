@@ -41,7 +41,9 @@ const rlI = createLimiter({
 
 export function rateLimiter(input: RateLimitOptions) {
   if (input.kind === "interval") {
-    rlI.update(input.limit.every);
+    rlI.update({
+      interval: input.limit.every,
+    });
   } else {
     rlQ.update({
       limit: input.limit.hits,
