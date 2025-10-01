@@ -457,6 +457,9 @@ importers:
       superjson:
         specifier: 'catalog:'
         version: 2.2.1
+      ts-rest-kit:
+        specifier: workspace:*
+        version: link:../../packages/ts-rest-kit
       zod:
         specifier: 'catalog:'
         version: 3.23.8

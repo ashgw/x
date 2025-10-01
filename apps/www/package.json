@@ -57,6 +57,7 @@
     "react-hook-form": "catalog:rhf",
     "sharp": "catalog:",
     "superjson": "catalog:",
+    "ts-rest-kit": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
