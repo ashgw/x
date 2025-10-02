@@ -49,7 +49,12 @@ const s = initServer();
 
 const router = s.router(contract, {
   getPokemon: {
-    handler: async ({ params: { id } }) => {
+    handler: async ({ params: { id }, req }) => {
+      logger.info("received request", {
+        ctx: {
+          ...req.app.locals.ctx,
+        },
+      });
       await new Promise((resolve) => setTimeout(resolve, 350));
       return {
         status: 200,
@@ -66,15 +71,7 @@ createExpressEndpoints(contract, router, v1Router, {
   responseValidation: true,
   jsonQuery: true,
   logInitialization: true,
-  globalMiddleware: [
-    createGlobalContext,
-    (req, _res, next) => {
-      req.app.locals.ctx = {
-        db,
-      };
-      next();
-    },
-  ],
+  globalMiddleware: [createGlobalContext],
   requestValidationErrorHandler: (err, req, res, next) => {
     res.status(400).json({
       message: "Validation failed",
