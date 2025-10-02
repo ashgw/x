@@ -6,6 +6,9 @@ on:
 jobs:
   validate-env:
     runs-on: ubuntu-latest
+    env:
+      ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,7 +20,7 @@ jobs:
         uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env
         with:
-          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+          ENV_SERVICE_TOKEN: ${{ env.ENV_SERVICE_TOKEN }}
 
       - name: Validate apps env
         run: pnpm env:validate:app

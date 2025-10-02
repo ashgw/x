@@ -29,7 +29,7 @@ export const ciVars = {
         "Token used to auth with the env service, in this case doppler, doppler is used for app vars, while GH actions are used for CI",
       )
       .describe(
-        "Set in GH action, depending on the environment (development, production, etc), thou shall not fuckup with this one",
+        "Only one set in GH action, depending on the environment (development, production, etc), thou shall not fuckup with this one",
       ),
   ),
   CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ci(
