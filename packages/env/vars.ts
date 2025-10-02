@@ -34,7 +34,7 @@ export const ciVars = {
         "Depending on the environment (development, production, etc), thou shall not fuckup with this one",
       ),
   ),
-  PRODUCTION_CRON_TOKEN: ci(
+  PRODUCTION_NOTIFICATION_TOKEN: ci(
     z
       .string()
       .min(1)
