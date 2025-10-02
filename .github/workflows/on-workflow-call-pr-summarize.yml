@@ -15,13 +15,17 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+          token: ${{ secrets.SUBMODULE_SYNC_PAT }}
+
+      - uses: ./.github/actions/setup-env
+        with:
+          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
 
       - name: Summarize PR
         uses: ashgw/pr-summarizer@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ env.OPENAI_PR_SUMMARIZER_TOKEN }}
           OPENAI_API_MODEL: "gpt-4o"
           exclude: "*.lock,dist/**,*.min.js,*.map"
           max_files: "130"

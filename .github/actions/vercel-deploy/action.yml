@@ -12,7 +12,7 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub token"
     required: true
-  NOTIFY_TOKEN:
+  INTERNAL_NOTIFICATION_TOKEN:
     description: "Notify token"
     required: true
   VERCEL_TOKEN:
@@ -118,7 +118,7 @@ runs:
       if: success()
       uses: ashgw/notify@main
       with:
-        token: ${{ inputs.NOTIFY_TOKEN }}
+        token: ${{ inputs.INTERNAL_NOTIFICATION_TOKEN }}
         title: "Deployment Succeeded"
         message: |
           ### Details
@@ -138,7 +138,7 @@ runs:
       if: failure()
       uses: ashgw/notify@main
       with:
-        token: ${{ inputs.NOTIFY_TOKEN }}
+        token: ${{ inputs.INTERNAL_NOTIFICATION_TOKEN }}
         title: "Deployment Failed"
         message: |
           ### Details

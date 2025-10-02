@@ -50,6 +50,10 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-pr-summarize.yml
     secrets: inherit
 
+  validate-env:
+    uses: ./.github/workflows/on-workflow-call-validate-env.yml
+    secrets: inherit
+
   format:
     uses: ./.github/workflows/on-workflow-call-format.yml
     secrets: inherit
@@ -81,6 +85,7 @@ jobs:
   mergeable:
     if: always()
     needs:
+      - validate-env
       - format
       - lint
       - test

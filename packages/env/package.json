@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "format": "prettier . --write",
-    "lint": "tsc --noEmit; eslint ."
+    "lint": "tsc --noEmit; eslint .",
+    "env:validate:app": "pnpm tsx index.ts",
+    "env:validate:ci": "export VALIDATE_CI=true && pnpm tsx index.ts"
   },
   "dependencies": {
     "@ashgw/ts-env": "catalog:",
@@ -14,6 +16,7 @@
     "@ashgw/eslint-config": "workspace:*",
     "@ashgw/tsconfig": "workspace:*",
     "ts-roids": "catalog:",
+    "tsx": "^4.19.4",
     "typescript": "catalog:"
   },
   "exports": {

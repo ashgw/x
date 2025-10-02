@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  workflow_call:
+
+jobs:
+  validate-env:
+    runs-on: ubuntu-latest
+    env:
+      ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SUBMODULE_SYNC_PAT: ${{ secrets.SUBMODULE_SYNC_PAT }}
+      INTERNAL_NOTIFICATION_TOKEN: ${{ secrets.INTERNAL_NOTIFICATION_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.SUBMODULE_SYNC_PAT }}
+
+      - name: Validate env
+        uses: ./.github/actions/pnpm-install
+      - uses: ./.github/actions/setup-env
+        with:
+          ENV_SERVICE_TOKEN: ${{ env.ENV_SERVICE_TOKEN }}
+
+      - name: Validate apps env
+        run: pnpm env:validate:app
+
+      - name: Validate ci env
+        run: pnpm env:validate:ci

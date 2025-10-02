@@ -15,11 +15,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
-
-      - uses: ./.github/actions/setup-env
-        with:
-          ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_CRON_PRODUCTION_TOKEN }}
+          token: ${{ secrets.SUBMODULE_SYNC_PAT }}
 
       - name: Purge View Window
         shell: bash
@@ -29,7 +25,7 @@ jobs:
         if: success()
         uses: ashgw/notify@main
         with:
-          token: ${{ secrets.NOTIFY_TOKEN }}
+          token: ${{ secrets.INTERNAL_NOTIFICATION_TOKEN }}
 
           title: "Cron Succeeded"
           message: >-
@@ -43,7 +39,7 @@ jobs:
         if: failure()
         uses: ashgw/notify@main
         with:
-          token: ${{ secrets.NOTIFY_TOKEN }}
+          token: ${{ secrets.INTERNAL_NOTIFICATION_TOKEN }}
 
           title: "Cron Failed"
           message: >-
