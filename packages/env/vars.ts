@@ -8,7 +8,9 @@ const ci = <T extends z.ZodTypeAny>(schema: T) =>
 export const ciVars = {
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
   VERCEL_ORG_ID: ci(z.string().min(1).max(64)),
-  TURBO_TOKEN: ci(z.string().min(1).max(64)),
+  TURBO_TOKEN: ci(z.string().min(1).max(64)).describe(
+    "inject these two for automatic caches",
+  ),
   TURBO_TEAM: ci(z.string().min(1).max(64)),
   VERCEL_WWW_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
   VERCEL_BLOG_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
