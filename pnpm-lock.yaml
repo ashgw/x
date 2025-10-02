@@ -424,6 +424,9 @@ importers:
       '@ts-rest/core':
         specifier: catalog:ts-rest3
         version: 3.52.1(@types/node@20.16.15)(zod@3.23.8)
+      '@ts-rest/express':
+        specifier: 3.52.1
+        version: 3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(express@5.1.0)(zod@3.23.8)
       '@ts-rest/open-api':
         specifier: catalog:ts-rest3
         version: 3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(zod@3.23.8)
@@ -5100,6 +5103,16 @@ packages:
     peerDependenciesMeta:
       '@types/node':
         optional: true
+      zod:
+        optional: true
+
+  '@ts-rest/express@3.52.1':
+    resolution: {integrity: sha512-ttVynyJSWYnVzn7FazSFvShD5j3Lq1JsIhSKereV2Z51zxWEQwo35CpCO3Q8rELzkfD9CYoT6eNSBJRlJLogIw==}
+    peerDependencies:
+      '@ts-rest/core': ~3.52.0
+      express: ^4.0.0
+      zod: ^3.22.3
+    peerDependenciesMeta:
       zod:
         optional: true
 
@@ -15790,6 +15803,13 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.14.1
       zod: 3.24.3
+
+  '@ts-rest/express@3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(express@5.1.0)(zod@3.23.8)':
+    dependencies:
+      '@ts-rest/core': 3.52.1(@types/node@20.16.15)(zod@3.23.8)
+      express: 5.1.0
+    optionalDependencies:
+      zod: 3.23.8
 
   '@ts-rest/open-api@3.52.1(@ts-rest/core@3.52.1(@types/node@20.16.15)(zod@3.23.8))(zod@3.23.8)':
     dependencies:

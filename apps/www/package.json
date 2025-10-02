@@ -46,6 +46,7 @@
     "@hookform/resolvers": "catalog:rhf",
     "@tanstack/react-query": "catalog:react-query5",
     "@ts-rest/core": "catalog:ts-rest3",
+    "@ts-rest/express": "3.52.1",
     "@ts-rest/open-api": "catalog:ts-rest3",
     "@ts-rest/react-query": "catalog:ts-rest3",
     "@ts-rest/serverless": "catalog:ts-rest3",
