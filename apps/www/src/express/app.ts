@@ -1,11 +1,27 @@
-import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import express from "express";
+
+export const createGlobalContext = (
+  _req: express.Request,
+  _res: express.Response,
+  _next: express.NextFunction,
+): GlobalContext => {
+  _next();
+  return {
+    ctx: {
+      db,
+      requestedAt: new Date(),
+    },
+  };
+};
+
+import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import bodyParser from "body-parser";
 import { db } from "@ashgw/db";
 import { logger } from "@ashgw/logger";
 import type { GlobalContext } from "~/ts-rest/context";
 
 import { initContract } from "@ts-rest/core";
+
 import { z } from "zod";
 
 const c = initContract();
@@ -51,10 +67,7 @@ createExpressEndpoints(contract, router, v1Router, {
   jsonQuery: true,
   logInitialization: true,
   globalMiddleware: [
-    (req, _res, next) => {
-      createGlobalContext(req, _res);
-      next();
-    },
+    createGlobalContext,
     (req, _res, next) => {
       req.app.locals.ctx = {
         db,
@@ -81,15 +94,3 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   logger.info("Express server running on :3000");
 });
-
-export const createGlobalContext = (
-  _req: express.Request,
-  _res: express.Response,
-): GlobalContext => {
-  return {
-    ctx: {
-      db,
-      requestedAt: new Date(),
-    },
-  };
-};
