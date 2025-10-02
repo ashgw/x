@@ -39,6 +39,7 @@ export const env = createEnv({
     VERCEL_TOKEN: process.env.VERCEL_TOKEN,
     VERCEL_ORG_ID: process.env.VERCEL_ORG_ID,
     VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID,
+    INTERNAL_NOTIFICATION_TOKEN: process.env.INTERNAL_NOTIFICATION_TOKEN,
     TURBO_TEAM: process.env.TURBO_TEAM,
     TURBO_TOKEN: process.env.TURBO_TOKEN,
     VERCEL_WWW_PROJECT_ID: process.env.VERCEL_WWW_PROJECT_ID,
