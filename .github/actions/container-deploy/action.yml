@@ -10,7 +10,7 @@ inputs:
   app_name:
     description: "App name, either 'blog' or 'www' or whatever app you're running"
     required: true
-  NOTIFY_TOKEN:
+  INTERNAL_NOTIFICATION_TOKEN:
     description: "Notify token"
     required: true
   CONTAINER_SERVICE_TOKEN:
@@ -132,7 +132,7 @@ runs:
       if: success()
       uses: ashgw/notify@main
       with:
-        token: ${{ inputs.NOTIFY_TOKEN }}
+        token: ${{ inputs.INTERNAL_NOTIFICATION_TOKEN }}
         title: "Deployment Succeeded"
         message: |
           ### Details
@@ -150,7 +150,7 @@ runs:
       if: failure()
       uses: ashgw/notify@main
       with:
-        token: ${{ inputs.NOTIFY_TOKEN }}
+        token: ${{ inputs.INTERNAL_NOTIFICATION_TOKEN }}
         title: "Deployment Failed"
         message: |
           ### Details
