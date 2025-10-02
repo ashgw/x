@@ -38,14 +38,14 @@ jobs:
         id: vercel-secrets
         run: |
           if [ "${{ inputs.app_name }}" = "blog" ]; then
-            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_BLOG_PROJECT_ID }}" >> $GITHUB_OUTPUT
+            echo "VERCEL_PROJECT_ID=${{ env.VERCEL_BLOG_PROJECT_ID }}" >> $GITHUB_OUTPUT
           else
-            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_WWW_PROJECT_ID }}" >> $GITHUB_OUTPUT
+            echo "VERCEL_PROJECT_ID=${{ env.VERCEL_WWW_PROJECT_ID }}" >> $GITHUB_OUTPUT
           fi
 
           # Common ones
-          echo "VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }}" >> $GITHUB_OUTPUT
-          echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}" >> $GITHUB_OUTPUT
+          echo "VERCEL_ORG_ID=${{ env.VERCEL_ORG_ID }}" >> $GITHUB_OUTPUT
+          echo "VERCEL_TOKEN=${{ env.VERCEL_TOKEN }}" >> $GITHUB_OUTPUT
 
       - uses: ./.github/actions/db-migrate
         with:
@@ -56,7 +56,7 @@ jobs:
           deployment_environment: ${{ inputs.deployment_environment }}
           app_name: ${{ inputs.app_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}
+          NOTIFY_TOKEN: ${{ secrets.PRODUCTION_NOTIFICATION_TOKEN }}
           VERCEL_TOKEN: ${{ steps.vercel-secrets.outputs.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ steps.vercel-secrets.outputs.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ steps.vercel-secrets.outputs.VERCEL_PROJECT_ID }}
