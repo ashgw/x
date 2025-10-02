@@ -45,14 +45,13 @@ jobs:
     uses: ./.github/workflows/on-workflow-call-pr-validate-title.yml
     secrets: inherit
 
-  validate-env:
-    if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/on-workflow-call-validate-env.yml
-    secrets: inherit
-
   summarize-pr:
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/on-workflow-call-pr-summarize.yml
+    secrets: inherit
+
+  validate-env:
+    uses: ./.github/workflows/on-workflow-call-validate-env.yml
     secrets: inherit
 
   format:
