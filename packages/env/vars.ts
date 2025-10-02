@@ -69,15 +69,6 @@ export const ciVars = {
       .max(64)
       .describe("Token used to auth with the container service"),
   ),
-  NOTIFY_TOKEN: ci(
-    z
-      .string()
-      .min(1)
-      .max(64)
-      .describe(
-        "Notify token is used to send notifications to my personal email when stuff happens @see https://github.com/ashgw/notify/",
-      ),
-  ),
 };
 
 export const serverVars = {

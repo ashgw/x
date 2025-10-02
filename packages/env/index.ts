@@ -38,7 +38,6 @@ export const env = createEnv({
     // ci vars
     VERCEL_TOKEN: process.env.VERCEL_TOKEN,
     VERCEL_ORG_ID: process.env.VERCEL_ORG_ID,
-    VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID,
     INTERNAL_NOTIFICATION_TOKEN: process.env.INTERNAL_NOTIFICATION_TOKEN,
     TURBO_TEAM: process.env.TURBO_TEAM,
     TURBO_TOKEN: process.env.TURBO_TOKEN,
@@ -48,7 +47,6 @@ export const env = createEnv({
     ENV_SERVICE_TOKEN: process.env.ENV_SERVICE_TOKEN,
     SUBMODULE_SYNC_PAT: process.env.SUBMODULE_SYNC_PAT,
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-    NOTIFY_TOKEN: process.env.NOTIFY_TOKEN,
     CONTAINER_SERVICE_TOKEN: process.env.CONTAINER_SERVICE_TOKEN,
     // client vars
     NEXT_PUBLIC_CURRENT_ENV: process.env.NEXT_PUBLIC_CURRENT_ENV,
