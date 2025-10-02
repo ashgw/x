@@ -5,8 +5,11 @@
     "topo": {
       "dependsOn": ["^topo"]
     },
-    "env:validate": {
+    "env:validate:app": {
       "cache": false // keep it that way, we don't want to cache this
+    },
+    "env:validate:ci": {
+      "cache": false // same
     },
     "test": {
       "outputs": ["coverage/**", "test-results/**"],
@@ -63,6 +66,7 @@
   "globalEnv": [
     // server vars
     "CI",
+    "VALIDATE_CI",
     "NODE_ENV",
     "KIT_API_KEY",
     "DATABASE_URL",

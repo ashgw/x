@@ -19,5 +19,8 @@ jobs:
         with:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
 
-      - name: Validate env
-        run: pnpm env:validate
+      - name: Validate apps env
+        run: pnpm env:validate:app
+
+      - name: Validate ci env
+        run: pnpm env:validate:ci

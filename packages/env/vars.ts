@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { databaseUrlSchema } from "./schemas";
 
-//  validate only if we're in CI
+//  validate only if the CI validation flag is set (job in CI)
 const ci = <T extends z.ZodTypeAny>(schema: T) =>
-  process.env.CI ? schema : schema.optional();
+  process.env.VALIDATE_CI === "true" ? schema : schema.optional();
 
 export const ciVars = {
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
