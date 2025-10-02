@@ -20,4 +20,4 @@ jobs:
           ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
 
       - name: Validate env
-        run: pnpm validate:env
+        run: pnpm env:validate

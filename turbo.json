@@ -5,6 +5,9 @@
     "topo": {
       "dependsOn": ["^topo"]
     },
+    "env:validate": {
+      "cache": false // keep it that way, we don't want to cache this
+    },
     "test": {
       "outputs": ["coverage/**", "test-results/**"],
       "cache": true

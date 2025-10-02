@@ -5,7 +5,7 @@
   "scripts": {
     "format": "prettier . --write",
     "lint": "tsc --noEmit; eslint .",
-    "validate": "pnpm tsx index.ts"
+    "env:validate": "pnpm tsx index.ts"
   },
   "dependencies": {
     "@ashgw/ts-env": "catalog:",
