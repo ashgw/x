@@ -14,7 +14,7 @@ export const ciVars = {
     z
       .string()
       .min(1)
-      .max(64)
+      .max(128)
       .startsWith("github_pat_")
       .describe("GitHub PAT SOLELY for submodule sync")
       .describe(
