@@ -14,6 +14,19 @@ export const ciVars = {
       .describe("GitHub token (classic)")
       .describe("Stored on Github"),
   ),
+  SUBMODULE_SYNC_PAT: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .startsWith("github_pat_")
+      .describe("GitHub PAT SOLELY for submodule sync")
+      .describe(
+        "GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)",
+      )
+      .describe("Choose contents readonly")
+      .describe("Stored on Github"),
+  ),
   ENV_SERVICE_TOKEN: ci(
     z
       .string()
@@ -52,18 +65,6 @@ export const ciVars = {
       .min(1)
       .max(64)
       .describe("Token used to auth with the container service"),
-  ),
-  SUBMODULE_SYNC_PAT: ci(
-    z
-      .string()
-      .min(1)
-      .max(64)
-      .startsWith("github_pat_")
-      .describe("GitHub PAT SOLELY for submodule sync")
-      .describe(
-        "GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)",
-      )
-      .describe("Choose contents readonly"),
   ),
   NOTIFY_TOKEN: ci(
     z
