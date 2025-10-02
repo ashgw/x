@@ -52,7 +52,7 @@ export const ciVars = {
   TURBO_TEAM: ci(z.string().min(1).max(64)),
   VERCEL_WWW_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
   VERCEL_BLOG_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
-  OPENAI_PR_SUMMARIZER_KEY: ci(
+  OPENAI_PR_SUMMARIZER_TOKEN: ci(
     z
       .string()
       .min(1)
