@@ -36,8 +36,6 @@ export const env = createEnv({
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
     AUTH_ENCRYPTION_KEY: process.env.AUTH_ENCRYPTION_KEY,
     // ci vars
-    TURBO_TOKEN: process.env.TURBO_TOKEN,
-    TURBO_TEAM: process.env.TURBO_TEAM,
     VERCEL_TOKEN: process.env.VERCEL_TOKEN,
     VERCEL_ORG_ID: process.env.VERCEL_ORG_ID,
     VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID,

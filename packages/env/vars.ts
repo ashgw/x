@@ -6,10 +6,6 @@ const ci = <T extends z.ZodTypeAny>(schema: T) =>
   process.env.CI ? schema : schema.optional();
 
 export const ciVars = {
-  TURBO_TOKEN: ci(
-    z.string().min(1).max(64).describe("run `turbo login` to get this token"),
-  ),
-  TURBO_TEAM: ci(z.string().min(1).max(64)),
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
   VERCEL_ORG_ID: ci(z.string().min(1).max(64)),
   VERCEL_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
@@ -31,6 +27,9 @@ export const ciVars = {
       .max(64)
       .describe(
         "Token used to auth with the env service, in this case doppler, doppler is used for app vars, while GH actions are used for CI",
+      )
+      .describe(
+        "Set in GH action, depending on the environment (development, production, etc), thou shall not fuckup with this one",
       ),
   ),
   CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ci(

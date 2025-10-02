@@ -82,8 +82,6 @@
     "PERSONAL_EMAIL",
     "AUTH_ENCRYPTION_KEY",
     // ci vars
-    "TURBO_TOKEN",
-    "TURBO_TEAM",
     "VERCEL_TOKEN",
     "VERCEL_ORG_ID",
     "VERCEL_PROJECT_ID",
