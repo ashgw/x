@@ -25,7 +25,7 @@ jobs:
         if: success()
         uses: ashgw/notify@main
         with:
-          token: ${{ secrets.PRODUCTION_NOTIFICATION_TOKEN }}
+          token: ${{ secrets.INTERNAL_NOTIFICATION_TOKEN }}
 
           title: "Cron Succeeded"
           message: >-
@@ -39,7 +39,7 @@ jobs:
         if: failure()
         uses: ashgw/notify@main
         with:
-          token: ${{ secrets.PRODUCTION_NOTIFICATION_TOKEN }}
+          token: ${{ secrets.INTERNAL_NOTIFICATION_TOKEN }}
 
           title: "Cron Failed"
           message: >-

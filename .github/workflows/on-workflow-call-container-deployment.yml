@@ -37,4 +37,4 @@ jobs:
           app_name: ${{ inputs.app_name}} # only blog for now
           CONTAINER_SERVICE_TOKEN: ${{ env.CONTAINER_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NOTIFY_TOKEN: ${{ secrets.PRODUCTION_NOTIFICATION_TOKEN }}
+          NOTIFY_TOKEN: ${{ secrets.INTERNAL_NOTIFICATION_TOKEN }}

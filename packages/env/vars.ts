@@ -34,12 +34,14 @@ export const ciVars = {
         "Depending on the environment (development, production, etc), thou shall not fuckup with this one",
       ),
   ),
-  PRODUCTION_NOTIFICATION_TOKEN: ci(
+  INTERNAL_NOTIFICATION_TOKEN: ci(
     z
       .string()
       .min(1)
       .max(64)
-      .describe("Hit crons, auto prod, no manual approval needed"),
+      .describe(
+        "Hit my endpoints to notify me @see https://github.com/ashgw/notify/",
+      ),
   ),
   // doppler
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
