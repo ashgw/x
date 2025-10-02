@@ -27,7 +27,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+          token: ${{ secrets.GITHUB_SUBMODULE_SYNC_PAT }}
 
       - uses: ./.github/actions/pnpm-install
       - uses: ./.github/actions/setup-env

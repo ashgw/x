@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+          token: ${{ secrets.GITHUB_SUBMODULE_SYNC_PAT }}
 
       - uses: ./.github/actions/setup-env
         with:
@@ -35,6 +35,6 @@ jobs:
         with:
           deployment_environment: ${{ inputs.deployment_environment }}
           app_name: ${{ inputs.app_name}} # only blog for now
-          CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ${{ secrets.CONTAINER_DEPLOYMENT_SERVICE_TOKEN }}
+          CONTAINER_SERVICE_TOKEN: ${{ secrets.CONTAINER_SERVICE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}

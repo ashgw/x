@@ -12,7 +12,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GH_SUBMODULE_SYNC_PAT }}
+          token: ${{ secrets.GITHUB_SUBMODULE_SYNC_PAT }}
 
       - name: Assign PR to opener
         env:

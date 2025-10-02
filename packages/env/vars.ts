@@ -36,15 +36,23 @@ export const ciVars = {
         "Only one set in GH action, depending on the environment (development, production, etc), thou shall not fuckup with this one",
       ),
   ),
-  CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ci(
+  CONTAINER_SERVICE_TOKEN: ci(
     z
       .string()
       .min(1)
       .max(64)
       .describe("Token used to auth with the container service"),
   ),
-  GH_SUBMODULE_SYNC_PAT: ci(
-    z.string().min(1).max(64).describe("GitHub PAT SOLELY for submodule sync"),
+  GITHUB_SUBMODULE_SYNC_PAT: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe("GitHub PAT SOLELY for submodule sync")
+      .describe(
+        "GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)",
+      )
+      .describe("Choose contents readonly"),
   ),
   GITHUB_TOKEN: ci(
     z.string().min(1).max(64).describe("GitHub token (classic)"),
