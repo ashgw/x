@@ -1,5 +1,5 @@
 import type { DatabaseClient } from "@ashgw/db";
-import type { GlobalTsrContext } from "~/ts-rest-kit";
+import type { GlobalTsrContext } from "ts-rest-kit/core";
 
 export interface GlobalContext extends GlobalTsrContext {
   ctx: {

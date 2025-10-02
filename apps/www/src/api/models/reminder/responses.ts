@@ -1,6 +1,6 @@
 import { z } from "zod";
-import type { InferResponses } from "~/ts-rest-kit";
-import { createSchemaResponses } from "~/ts-rest-kit";
+import type { InferResponses } from "ts-rest-kit/core";
+import { createSchemaResponses } from "ts-rest-kit/core";
 import {
   authedMiddlewareSchemaResponse,
   internalErrorSchemaResponse,

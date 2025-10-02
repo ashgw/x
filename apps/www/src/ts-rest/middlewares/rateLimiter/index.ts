@@ -1,4 +1,4 @@
-import { middlewareResponse, middlewareFn } from "~/ts-rest-kit";
+import { middlewareResponse, middlewareFn } from "ts-rest-kit/core";
 import { createLimiter } from "limico";
 import type { RlWindow } from "limico";
 import type { GlobalContext } from "~/ts-rest/context";
@@ -41,7 +41,9 @@ const rlI = createLimiter({
 
 export function rateLimiter(input: RateLimitOptions) {
   if (input.kind === "interval") {
-    rlI.update(input.limit.every);
+    rlI.update({
+      interval: input.limit.every,
+    });
   } else {
     rlQ.update({
       limit: input.limit.hits,

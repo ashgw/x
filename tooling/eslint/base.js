@@ -10,7 +10,7 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(path.join(import.meta.dirname, "../../.gitignore")),
-  { ignores: ["**/*.config.*"] },
+  { ignores: ["**/*.config.*", "**dist/**"] },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     plugins: {
@@ -33,7 +33,6 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
-
       // Prevent console.* usage even when imported differently
       // use { logger } from "@ashgw/logger"
       "no-restricted-syntax": [
@@ -41,12 +40,12 @@ export default tseslint.config(
         {
           selector: "MemberExpression[object.name='console']",
           message:
-            "Use import { logger } from '@ashgw/analytics' instead of console.*",
+            "Use import { logger } from '@ashgw/logger' instead of console.*",
         },
         {
           selector: "Identifier[name='console']",
           message:
-            "Use import { logger } from '@ashgw/analytics' instead of console",
+            "Use import { logger } from '@ashgw/logger' instead of console",
         },
       ],
       "@typescript-eslint/no-unsafe-assignment": "warn",
