@@ -30,7 +30,7 @@ export const ciVars = {
       .min(1)
       .max(64)
       .describe(
-        "Token used to auth with the env service, in this case doppler",
+        "Token used to auth with the env service, in this case doppler, doppler is used for app vars, while GH actions are used for CI",
       ),
   ),
   CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ci(
