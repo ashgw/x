@@ -1,9 +1,54 @@
+// this is the CI env, tokens that are used in deployments and such & don't really affect how app code runs
 import { z } from "zod";
 import { createEnv } from "@ashgw/ts-env";
 import { colors } from "./colors";
 
 import { envTuple } from "./env-tuple";
 import { databaseUrlSchema } from "./schemas";
+
+export const ciVars = {
+  TURBO_TOKEN: z
+    .string()
+    .min(1)
+    .max(64)
+    .describe("run `turbo login` to get this token"),
+  TURBO_TEAM: z.string().min(1).max(64),
+  VERCEL_TOKEN: z.string().min(1).max(64),
+  VERCEL_ORG_ID: z.string().min(1).max(64),
+  VERCEL_PROJECT_ID: z.string().min(1).max(64).startsWith("prj_"),
+  VERCEL_WWW_PROJECT_ID: z.string().min(1).max(64).startsWith("prj_"),
+  VERCEL_BLOG_PROJECT_ID: z.string().min(1).max(64).startsWith("prj_"),
+  OPENAI_API_KEY: z
+    .string()
+    .min(1)
+    .max(64)
+    .describe(
+      "Used to summarize PRs @see https://github.com/ashgw/pr-summarizer",
+    ),
+  ENV_SERVICE_TOKEN: z
+    .string()
+    .min(1)
+    .max(64)
+    .describe("Token used to auth with the env service, in this case doppler"),
+  CONTAINER_DEPLOYMENT_SERVICE_TOKEN: z
+    .string()
+    .min(1)
+    .max(64)
+    .describe("Token used to auth with the container service"),
+  GH_SUBMODULE_SYNC_PAT: z
+    .string()
+    .min(1)
+    .max(64)
+    .describe("GitHub PAT SOLELY for submodule sync"),
+  GITHUB_TOKEN: z.string().min(1).max(64).describe("GitHub token (classic)"),
+  NOTIFY_TOKEN: z
+    .string()
+    .min(1)
+    .max(64)
+    .describe(
+      "Notify token is used to send notifications to my personal email when stuff happens @see https://github.com/ashgw/notify/",
+    ),
+};
 
 const clientVars = {
   CURRENT_ENV: z
