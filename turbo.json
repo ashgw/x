@@ -58,6 +58,7 @@
   },
   "envMode": "strict",
   "globalEnv": [
+    // server vars
     "CI",
     "NODE_ENV",
     "KIT_API_KEY",
@@ -77,6 +78,21 @@
     "IP_HASH_SALT",
     "PERSONAL_EMAIL",
     "AUTH_ENCRYPTION_KEY",
+    // ci vars
+    "TURBO_TOKEN",
+    "TURBO_TEAM",
+    "VERCEL_TOKEN",
+    "VERCEL_ORG_ID",
+    "VERCEL_PROJECT_ID",
+    "VERCEL_WWW_PROJECT_ID",
+    "VERCEL_BLOG_PROJECT_ID",
+    "OPENAI_API_KEY",
+    "ENV_SERVICE_TOKEN",
+    "GH_SUBMODULE_SYNC_PAT",
+    "GITHUB_TOKEN",
+    "NOTIFY_TOKEN",
+    "CONTAINER_DEPLOYMENT_SERVICE_TOKEN",
+    // client vars
     "NEXT_PUBLIC_WWW_URL",
     "NEXT_PUBLIC_BLOG_URL",
     "NEXT_PUBLIC_SENTRY_DSN",
