@@ -6,48 +6,60 @@ import { colors } from "./colors";
 import { envTuple } from "./env-tuple";
 import { databaseUrlSchema } from "./schemas";
 
+//  validate only if we're in CI
+const ci = <T extends z.ZodTypeAny>(schema: T) =>
+  process.env.CI === "true" ? schema : schema.optional();
+
 export const ciVars = {
-  TURBO_TOKEN: z
-    .string()
-    .min(1)
-    .max(64)
-    .describe("run `turbo login` to get this token"),
-  TURBO_TEAM: z.string().min(1).max(64),
-  VERCEL_TOKEN: z.string().min(1).max(64),
-  VERCEL_ORG_ID: z.string().min(1).max(64),
-  VERCEL_PROJECT_ID: z.string().min(1).max(64).startsWith("prj_"),
-  VERCEL_WWW_PROJECT_ID: z.string().min(1).max(64).startsWith("prj_"),
-  VERCEL_BLOG_PROJECT_ID: z.string().min(1).max(64).startsWith("prj_"),
-  OPENAI_API_KEY: z
-    .string()
-    .min(1)
-    .max(64)
-    .describe(
-      "Used to summarize PRs @see https://github.com/ashgw/pr-summarizer",
-    ),
-  ENV_SERVICE_TOKEN: z
-    .string()
-    .min(1)
-    .max(64)
-    .describe("Token used to auth with the env service, in this case doppler"),
-  CONTAINER_DEPLOYMENT_SERVICE_TOKEN: z
-    .string()
-    .min(1)
-    .max(64)
-    .describe("Token used to auth with the container service"),
-  GH_SUBMODULE_SYNC_PAT: z
-    .string()
-    .min(1)
-    .max(64)
-    .describe("GitHub PAT SOLELY for submodule sync"),
-  GITHUB_TOKEN: z.string().min(1).max(64).describe("GitHub token (classic)"),
-  NOTIFY_TOKEN: z
-    .string()
-    .min(1)
-    .max(64)
-    .describe(
-      "Notify token is used to send notifications to my personal email when stuff happens @see https://github.com/ashgw/notify/",
-    ),
+  TURBO_TOKEN: ci(
+    z.string().min(1).max(64).describe("run `turbo login` to get this token"),
+  ),
+  TURBO_TEAM: ci(z.string().min(1).max(64)),
+  VERCEL_TOKEN: ci(z.string().min(1).max(64)),
+  VERCEL_ORG_ID: ci(z.string().min(1).max(64)),
+  VERCEL_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
+  VERCEL_WWW_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
+  VERCEL_BLOG_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
+  OPENAI_API_KEY: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe(
+        "Used to summarize PRs @see https://github.com/ashgw/pr-summarizer",
+      ),
+  ),
+  ENV_SERVICE_TOKEN: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe(
+        "Token used to auth with the env service, in this case doppler",
+      ),
+  ),
+  CONTAINER_DEPLOYMENT_SERVICE_TOKEN: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe("Token used to auth with the container service"),
+  ),
+  GH_SUBMODULE_SYNC_PAT: ci(
+    z.string().min(1).max(64).describe("GitHub PAT SOLELY for submodule sync"),
+  ),
+  GITHUB_TOKEN: ci(
+    z.string().min(1).max(64).describe("GitHub token (classic)"),
+  ),
+  NOTIFY_TOKEN: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe(
+        "Notify token is used to send notifications to my personal email when stuff happens @see https://github.com/ashgw/notify/",
+      ),
+  ),
 };
 
 const clientVars = {
