@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENV_SERVICE_TOKEN: ${{ secrets.ENV_SERVICE_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4

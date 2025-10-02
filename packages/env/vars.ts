@@ -6,6 +6,28 @@ const ci = <T extends z.ZodTypeAny>(schema: T) =>
   process.env.VALIDATE_CI === "true" ? schema : schema.optional();
 
 export const ciVars = {
+  GITHUB_TOKEN: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe("GitHub token (classic)")
+      .describe("Stored on Github"),
+  ),
+  ENV_SERVICE_TOKEN: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe(
+        "Token used to auth with the env service, in this case doppler, doppler is used for app vars, while GH actions are used for CI",
+      )
+      .describe(
+        "Depending on the environment (development, production, etc), thou shall not fuckup with this one",
+      )
+      .describe("Stored on Github"),
+  ),
+  //
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
   VERCEL_ORG_ID: ci(z.string().min(1).max(64)),
   TURBO_TOKEN: ci(z.string().min(1).max(64)).describe(
@@ -22,18 +44,6 @@ export const ciVars = {
       .startsWith("sk-")
       .describe(
         "Used to summarize PRs @see https://github.com/ashgw/pr-summarizer",
-      ),
-  ),
-  ENV_SERVICE_TOKEN: ci(
-    z
-      .string()
-      .min(1)
-      .max(64)
-      .describe(
-        "Token used to auth with the env service, in this case doppler, doppler is used for app vars, while GH actions are used for CI",
-      )
-      .describe(
-        "Only one set in GH action, depending on the environment (development, production, etc), thou shall not fuckup with this one",
       ),
   ),
   CONTAINER_SERVICE_TOKEN: ci(
@@ -54,9 +64,6 @@ export const ciVars = {
         "GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)",
       )
       .describe("Choose contents readonly"),
-  ),
-  GITHUB_TOKEN: ci(
-    z.string().min(1).max(64).describe("GitHub token (classic)"),
   ),
   NOTIFY_TOKEN: ci(
     z
