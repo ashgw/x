@@ -14,7 +14,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          token: ${{ secrets.GITHUB_SUBMODULE_SYNC_PAT }}
+          token: ${{ secrets.SUBMODULE_SYNC_PAT }}
 
       - name: Validate env
         uses: ./.github/actions/pnpm-install

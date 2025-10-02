@@ -43,11 +43,12 @@ export const ciVars = {
       .max(64)
       .describe("Token used to auth with the container service"),
   ),
-  GITHUB_SUBMODULE_SYNC_PAT: ci(
+  SUBMODULE_SYNC_PAT: ci(
     z
       .string()
       .min(1)
       .max(64)
+      .startsWith("github_pat_")
       .describe("GitHub PAT SOLELY for submodule sync")
       .describe(
         "GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)",
