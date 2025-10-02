@@ -6,13 +6,9 @@ const ci = <T extends z.ZodTypeAny>(schema: T) =>
   process.env.VALIDATE_CI === "true" ? schema : schema.optional();
 
 export const ciVars = {
+  // github
   GITHUB_TOKEN: ci(
-    z
-      .string()
-      .min(1)
-      .max(64)
-      .describe("GitHub token (classic)")
-      .describe("Stored on Github"),
+    z.string().min(1).max(64).describe("GitHub token (classic)"),
   ),
   SUBMODULE_SYNC_PAT: ci(
     z
@@ -24,8 +20,7 @@ export const ciVars = {
       .describe(
         "GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)",
       )
-      .describe("Choose contents readonly")
-      .describe("Stored on Github"),
+      .describe("Choose contents readonly"),
   ),
   ENV_SERVICE_TOKEN: ci(
     z
@@ -37,10 +32,16 @@ export const ciVars = {
       )
       .describe(
         "Depending on the environment (development, production, etc), thou shall not fuckup with this one",
-      )
-      .describe("Stored on Github"),
+      ),
   ),
-  //
+  PRODUCTION_CRON_TOKEN: ci(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .describe("Hit crons, auto prod, no manual approval needed"),
+  ),
+  // doppler
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
   VERCEL_ORG_ID: ci(z.string().min(1).max(64)),
   TURBO_TOKEN: ci(z.string().min(1).max(64)).describe(
