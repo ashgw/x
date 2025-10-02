@@ -17,6 +17,7 @@
     "knip": "knip --production --strict --exclude exports,nsExports,types,nsTypes",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "postinstall": "pnpm dlx sherif@latest",
+    "validate:env": "pnpm dlx tsx packages/env/index.ts",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "test:unit-integration": "turbo run test:unit-integration"
