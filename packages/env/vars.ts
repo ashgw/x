@@ -8,14 +8,14 @@ const ci = <T extends z.ZodTypeAny>(schema: T) =>
 export const ciVars = {
   VERCEL_TOKEN: ci(z.string().min(1).max(64)),
   VERCEL_ORG_ID: ci(z.string().min(1).max(64)),
-  VERCEL_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
   VERCEL_WWW_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
   VERCEL_BLOG_PROJECT_ID: ci(z.string().min(1).max(64).startsWith("prj_")),
-  OPENAI_API_KEY: ci(
+  OPENAI_PR_SUMMARIZER_KEY: ci(
     z
       .string()
       .min(1)
-      .max(64)
+      .max(255)
+      .startsWith("sk-")
       .describe(
         "Used to summarize PRs @see https://github.com/ashgw/pr-summarizer",
       ),
