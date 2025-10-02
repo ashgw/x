@@ -3,7 +3,7 @@ import { databaseUrlSchema } from "./schemas";
 
 //  validate only if we're in CI
 const ci = <T extends z.ZodTypeAny>(schema: T) =>
-  process.env.CI === "true" ? schema : schema.optional();
+  process.env.CI ? schema : schema.optional();
 
 export const ciVars = {
   TURBO_TOKEN: ci(
