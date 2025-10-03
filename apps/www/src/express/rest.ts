@@ -1,5 +1,5 @@
-import express from "express";
-
+import { Router } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { db } from "@ashgw/db";
 import { logger } from "@ashgw/logger";
@@ -45,12 +45,12 @@ const router = s.router(contract, {
   },
 });
 
-export const v1RestRouter = express.Router();
+export const v1RestRouter = Router();
 
 export const createGlobalContext = (
-  _req: express.Request,
-  _res: express.Response,
-  _next: express.NextFunction,
+  _req: Request,
+  _res: Response,
+  _next: NextFunction,
 ): GlobalContext => {
   _next();
   return {
