@@ -1,5 +1,9 @@
 export class DateService {
-  static formatDate({ stringDate }: { stringDate: string }): string {
+  public static get now(): Date {
+    return new Date();
+  }
+
+  public static formatDate({ stringDate }: { stringDate: string }): string {
     if (!stringDate || typeof stringDate !== "string") {
       throw new Error("Invalid date: must be a non-empty string");
     }
@@ -9,7 +13,7 @@ export class DateService {
       : `${stringDate}T00:00:00`;
     const targetDate = new Date(normalizedDateString);
 
-    if (isNaN(targetDate.getTime())) {
+    if (Number.isNaN(targetDate.getTime())) {
       throw new Error("Invalid date format: unable to parse");
     }
 
@@ -53,13 +57,17 @@ export class DateService {
     return `${fullDate} (${relative})`;
   }
 
-  static isSameMonthAndYear({ stringDate }: { stringDate: string }): boolean {
+  public static isSameMonthAndYear({
+    stringDate,
+  }: {
+    stringDate: string;
+  }): boolean {
     if (!stringDate || typeof stringDate !== "string") {
       throw new Error("Invalid date: must be a non-empty string");
     }
 
     const targetDate = new Date(stringDate);
-    if (isNaN(targetDate.getTime())) {
+    if (Number.isNaN(targetDate.getTime())) {
       throw new Error("Invalid date format: unable to parse");
     }
 

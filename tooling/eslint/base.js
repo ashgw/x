@@ -7,8 +7,10 @@ import importPlugin from "eslint-plugin-import";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
 
+// ADD THIS
+import classStructurePlugin from "./class-structure.js";
+
 export default tseslint.config(
-  // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(path.join(import.meta.dirname, "../../.gitignore")),
   { ignores: ["**/*.config.*", "**dist/**"] },
   {
@@ -16,6 +18,8 @@ export default tseslint.config(
     plugins: {
       import: importPlugin,
       turbo: turboPlugin,
+      // ADD THIS
+      "class-structure": classStructurePlugin,
     },
     extends: [
       eslint.configs.recommended,
@@ -25,6 +29,10 @@ export default tseslint.config(
     ],
     rules: {
       ...turboPlugin.configs.recommended.rules,
+
+      // ADD THIS
+      "class-structure/enforce": "error",
+
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
@@ -33,8 +41,6 @@ export default tseslint.config(
           fixStyle: "separate-type-imports",
         },
       ],
-      // Prevent console.* usage even when imported differently
-      // use { logger } from "@ashgw/logger"
       "no-restricted-syntax": [
         "error",
         {
@@ -59,9 +65,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-unnecessary-condition": [
         "error",
-        {
-          allowConstantLoopConditions: true,
-        },
+        { allowConstantLoopConditions: true },
       ],
       "@typescript-eslint/no-non-null-assertion": "error",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
