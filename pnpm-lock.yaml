@@ -6,9 +6,6 @@ settings:
 
 catalogs:
   default:
-    '@ashgw/ts-env':
-      specifier: 1.5.3
-      version: 1.5.3
     '@playwright/test':
       specifier: ^1.40.1
       version: 1.48.2
@@ -901,9 +898,9 @@ importers:
 
   packages/env:
     dependencies:
-      '@ashgw/ts-env':
-        specifier: 'catalog:'
-        version: 1.5.3(zod@3.23.8)
+      envyx:
+        specifier: 1.0.0
+        version: 1.0.0(zod@3.23.8)
       zod:
         specifier: 'catalog:'
         version: 3.23.8
@@ -1038,9 +1035,6 @@ importers:
       '@ashgw/security':
         specifier: workspace:*
         version: link:../security
-      '@ashgw/ts-env':
-        specifier: 'catalog:'
-        version: 1.5.3(zod@4.1.11)
       aws-sdk:
         specifier: 2.1692.0
         version: 2.1692.0
@@ -1278,11 +1272,6 @@ packages:
     peerDependencies:
       openapi3-ts: ^2.0.0 || ^3.0.0
       zod: ^3.20.0
-
-  '@ashgw/ts-env@1.5.3':
-    resolution: {integrity: sha512-hRv+CYbfipl6rnJGy394Lq8L7CEQXsXpBJNQ18a6KhT8s6P5gXPtRwdKOcntFBFlVXl/7I3aQVARFWTtoyPmiQ==}
-    peerDependencies:
-      zod: '>=3.0.0'
 
   '@aws-crypto/crc32@5.2.0':
     resolution: {integrity: sha512-nLbCWqQNgUiwwtFsen1AdzAtvuLRsQS8rYgMuxCrdKf9kOssamGLuPwyTY9wyYblNr9+1XM8v6zoDTPPSIeANg==}
@@ -6768,6 +6757,11 @@ packages:
     resolution: {integrity: sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==}
     engines: {node: '>=6'}
 
+  envyx@1.0.0:
+    resolution: {integrity: sha512-DCSkziRjitPVTsxRhHY5JnXfpjQ2CpZbXmlayywsdKpqxfDCxKGBjhOqUBjARfyNKYRplQZVQLfqcDev8oaLCg==}
+    peerDependencies:
+      zod: '>=3.0.0'
+
   error-ex@1.3.2:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
 
@@ -11120,14 +11114,6 @@ snapshots:
       openapi3-ts: 2.0.2
       ts-deepmerge: 6.2.1
       zod: 3.23.8
-
-  '@ashgw/ts-env@1.5.3(zod@3.23.8)':
-    dependencies:
-      zod: 3.23.8
-
-  '@ashgw/ts-env@1.5.3(zod@4.1.11)':
-    dependencies:
-      zod: 4.1.11
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:
@@ -16163,7 +16149,7 @@ snapshots:
       sirv: 3.0.0
       tinyglobby: 0.2.10
       tinyrainbow: 1.2.0
-      vitest: 2.1.8(@edge-runtime/vm@3.1.7)(@types/node@22.14.1)(@vitest/ui@2.1.8)(terser@5.36.0)
+      vitest: 2.1.8(@edge-runtime/vm@3.1.7)(@types/node@20.16.15)(@vitest/ui@2.1.8)(terser@5.36.0)
 
   '@vitest/utils@2.1.8':
     dependencies:
@@ -17526,6 +17512,10 @@ snapshots:
   entities@4.5.0: {}
 
   env-paths@2.2.1: {}
+
+  envyx@1.0.0(zod@3.23.8):
+    dependencies:
+      zod: 3.23.8
 
   error-ex@1.3.2:
     dependencies:

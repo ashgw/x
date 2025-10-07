@@ -1,10 +1,10 @@
 import tseslint from "typescript-eslint";
 
 /**
- * Whenever`@ashgw/ts-env` is used, apply this rule
+ * Whenever`envyx` is used, apply this rule
  */
 export default tseslint.config(
-  { ignores: ["**/env.ts"] },
+  {ignores: ["**/env.ts"]},
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     rules: {
@@ -29,3 +29,4 @@ export default tseslint.config(
     },
   },
 );
+
