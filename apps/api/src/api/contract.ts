@@ -74,7 +74,7 @@ export const contract = createContract(c)({
 
   bootstrap: {
     method: "GET",
-    path: endpoints.bootstrap,
+    path: endpoints.oss.bootstrap,
     strictStatusCodes: true,
     summary: "Fetch bootstrap script",
     description:
@@ -85,7 +85,7 @@ export const contract = createContract(c)({
 
   gpg: {
     method: "GET",
-    path: endpoints.gpg,
+    path: endpoints.oss.gpg,
     strictStatusCodes: true,
     summary: "Fetch public GPG key",
     description: "Returns my armored public GPG key as plain text.",
@@ -95,7 +95,7 @@ export const contract = createContract(c)({
 
   debion: {
     method: "GET",
-    path: endpoints.debion,
+    path: endpoints.oss.debion,
     strictStatusCodes: true,
     summary: "Fetch Debion setup script",
     description:
@@ -106,7 +106,7 @@ export const contract = createContract(c)({
 
   whisper: {
     method: "GET",
-    path: endpoints.whisper,
+    path: endpoints.oss.whisper,
     strictStatusCodes: true,
     summary: "Fetch Whisper setup script",
     description:
