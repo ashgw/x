@@ -33,7 +33,7 @@ export const contract = createContract(c)({
 
   notify: {
     method: "POST",
-    path: endpoints.notify,
+    path: endpoints.notification,
     strictStatusCodes: true,
     summary: "Send notification",
     description:
@@ -43,9 +43,9 @@ export const contract = createContract(c)({
     responses: notifySchemaResponses,
   },
 
-  purgeViewWindow: {
+  postPurgeViews: {
     method: "DELETE",
-    path: endpoints.purgeViewWindow,
+    path: endpoints.post.purge.views,
     strictStatusCodes: true,
     summary: "Purge view window data",
     description: "Deletes cached or temporary view window data from the blog.",
@@ -53,9 +53,9 @@ export const contract = createContract(c)({
     responses: purgeViewWindowSchemaResponses,
   },
 
-  purgeTrashPosts: {
+  postPurgeTrash: {
     method: "DELETE",
-    path: endpoints.purgeTrashPosts,
+    path: endpoints.post.purge.trash,
     strictStatusCodes: true,
     summary: "Purge trashed posts",
     description: "Permanently deletes all posts currently in the trash bin.",
@@ -63,9 +63,9 @@ export const contract = createContract(c)({
     responses: purgeTrashPostsSchemaResponses,
   },
 
-  healthCheck: {
+  health: {
     method: "GET",
-    path: endpoints.healthCheck,
+    path: endpoints.health,
     strictStatusCodes: true,
     summary: "Health check",
     description: "Simple liveness probe to verify the API is running.",

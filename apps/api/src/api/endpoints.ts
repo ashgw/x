@@ -2,9 +2,9 @@ export const endpoints = {
   reminder: "/reminder",
   notification: "/notification",
   post: {
-    pruge: {
-      purgeViewWindow: "/purge/view-window",
-      purgeTrashPosts: "/purge/trash-posts",
+    purge: {
+      views: "/purge/views",
+      trash: "/purge/trash",
     },
   },
   health: "/health",
