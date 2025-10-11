@@ -1,9 +1,13 @@
 export const endpoints = {
-  reminder: "/reminders",
-  notify: "/notifications",
-  purgeViewWindow: "/purge-view-window",
-  purgeTrashPosts: "/purge-trash-posts",
-  healthCheck: "/health-check",
+  reminder: "/reminder",
+  notification: "/notification",
+  post: {
+    pruge: {
+      purgeViewWindow: "/purge/view-window",
+      purgeTrashPosts: "/purge/trash-posts",
+    },
+  },
+  health: "/health",
   oss: {
     gpg: "/gpg",
     bootstrap: "/bootstrap",

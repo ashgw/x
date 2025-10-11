@@ -1,22 +1,27 @@
+import type { DatabaseClient } from "@ashgw/db";
 import { logger } from "@ashgw/logger";
 import { monitor } from "@ashgw/monitor";
 import type {
   PurgeTrashPostsResponses,
   PurgeViewWindowResponses,
 } from "~/api/models";
-import { db } from "@ashgw/db";
 
 export class PostService {
   private static readonly retentionDays = 30;
   private static readonly retainDays = 2;
+  private readonly db: DatabaseClient;
 
-  async purgeTrashPosts(): Promise<PurgeTrashPostsResponses> {
+  constructor({ db }: { db: DatabaseClient }) {
+    this.db = db;
+  }
+
+  public async purgeTrashPosts(): Promise<PurgeTrashPostsResponses> {
     const cutoff = new Date(
       Date.now() - PostService.retentionDays * 24 * 60 * 60 * 1000,
     );
 
     try {
-      const { count } = await db.trashPost.deleteMany({
+      const { count } = await this.db.trashPost.deleteMany({
         where: { deletedAt: { lt: cutoff } },
       });
 
@@ -37,7 +42,7 @@ export class PostService {
     }
   }
 
-  async purgeViewWindow(): Promise<PurgeViewWindowResponses> {
+  public async purgeViewWindow(): Promise<PurgeViewWindowResponses> {
     // compute cutoff per function run
     const cutoff = new Date(
       Date.now() - 1000 * 60 * 60 * 24 * PostService.retainDays,
@@ -47,7 +52,7 @@ export class PostService {
     });
 
     try {
-      const deleted = await db.postViewWindow.deleteMany({
+      const deleted = await this.db.postViewWindow.deleteMany({
         where: { bucketStart: { lt: cutoff } }, // uses @@index([bucketStart])
       });
 
