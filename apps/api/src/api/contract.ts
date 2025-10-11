@@ -1,7 +1,7 @@
 import { c } from "../ts-rest/root";
 import { createContract } from "ts-rest-kit/core";
 import {
-  healthCheckSchemaResponses,
+  healthSchemaResponses,
   fetchGpgFromUpstreamSchemaResponses,
   fetchTextFromUpstreamQuerySchemaDto,
   purgeViewWindowHeadersSchemaDto,
@@ -69,7 +69,7 @@ export const contract = createContract(c)({
     strictStatusCodes: true,
     summary: "Health check",
     description: "Simple liveness probe to verify the API is running.",
-    responses: healthCheckSchemaResponses,
+    responses: healthSchemaResponses,
   },
 
   bootstrap: {

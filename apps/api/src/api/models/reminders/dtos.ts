@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { notifyBodySchemaDto } from "../notify";
+import { notifyBodySchemaDto } from "../notifications";
 import { authedMiddlewareHeaderSchemaDto } from "../shared";
 import { isoDateTimeSchema } from "./shared";
 import { NotificationType } from "@ashgw/email";

@@ -1,6 +1,6 @@
-import type { HealthCheckResponses } from "~/api/models";
+import type { HealthResponses } from "~/api/models";
 
-export async function healthCheck(): Promise<HealthCheckResponses> {
+export async function healthCheck(): Promise<HealthResponses> {
   await new Promise((r) => setTimeout(r, 1));
 
   return {
