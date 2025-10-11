@@ -9,17 +9,17 @@ import {
   purgeViewWindowSchemaResponses,
   purgeTrashPostsHeadersSchemaDto,
   purgeTrashPostsSchemaResponses,
-  notifyHeadersSchemaDto,
-  notifyBodySchemaDto,
-  notifySchemaResponses,
+  notificationCreateSchemaResponses,
   reminderSchemaResponses,
   reminderHeadersSchemaDto,
   reminderBodySchemaDto,
+  notificationCreateHeadersSchemaDto,
+  notificationCreateBodySchemaDto,
 } from "~/api/models";
 import { endpoints } from "./endpoints";
 
 export const contract = createContract(c)({
-  reminder: {
+  reminderCreate: {
     method: "POST",
     path: endpoints.reminder,
     strictStatusCodes: true,
@@ -31,21 +31,21 @@ export const contract = createContract(c)({
     responses: reminderSchemaResponses,
   },
 
-  notify: {
+  notificationCreate: {
     method: "POST",
     path: endpoints.notification,
     strictStatusCodes: true,
     summary: "Send notification",
     description:
       "Dispatches a system notification using the provided headers and body payload.",
-    headers: notifyHeadersSchemaDto,
-    body: notifyBodySchemaDto,
-    responses: notifySchemaResponses,
+    headers: notificationCreateHeadersSchemaDto,
+    body: notificationCreateBodySchemaDto,
+    responses: notificationCreateSchemaResponses,
   },
 
-  postPurgeViews: {
+  postDeleteViewWindow: {
     method: "DELETE",
-    path: endpoints.post.purge.views,
+    path: endpoints.post.viewWindow,
     strictStatusCodes: true,
     summary: "Purge view window data",
     description: "Deletes cached or temporary view window data from the blog.",
@@ -53,9 +53,9 @@ export const contract = createContract(c)({
     responses: purgeViewWindowSchemaResponses,
   },
 
-  postPurgeTrash: {
+  postDeleteTrash: {
     method: "DELETE",
-    path: endpoints.post.purge.trash,
+    path: endpoints.post.trash,
     strictStatusCodes: true,
     summary: "Purge trashed posts",
     description: "Permanently deletes all posts currently in the trash bin.",

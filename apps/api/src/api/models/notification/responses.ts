@@ -7,11 +7,13 @@ import {
   rateLimiterMiddlewareSchemaResponse,
 } from "~/api/models/shared/responses";
 
-export const notifySchemaResponses = createSchemaResponses({
+export const notificationCreateSchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
   ...authedMiddlewareSchemaResponse,
   ...okSchemaResponse,
   ...internalErrorSchemaResponse,
 });
 
-export type NotifyResponses = InferResponses<typeof notifySchemaResponses>;
+export type NotificationCreateResponses = InferResponses<
+  typeof notificationCreateSchemaResponses
+>;

@@ -2,9 +2,10 @@ import { authedMiddlewareHeaderSchemaDto } from "~/api/models/shared/dtos";
 import { z } from "zod";
 import { NotificationType } from "@ashgw/email";
 
-export const notifyHeadersSchemaDto = authedMiddlewareHeaderSchemaDto;
+export const notificationCreateHeadersSchemaDto =
+  authedMiddlewareHeaderSchemaDto;
 
-export const notifyBodySchemaDto = z
+export const notificationCreateBodySchemaDto = z
   .object({
     to: z
       .string()
@@ -31,5 +32,9 @@ export const notifyBodySchemaDto = z
   })
   .describe("The Email notification to send.");
 
-export type NotifyHeadersDto = z.infer<typeof notifyHeadersSchemaDto>;
-export type NotifyBodyDto = z.infer<typeof notifyBodySchemaDto>;
+export type NotificationCreateHeadersDto = z.infer<
+  typeof notificationCreateHeadersSchemaDto
+>;
+export type NotificationCreateBodyDto = z.infer<
+  typeof notificationCreateBodySchemaDto
+>;
