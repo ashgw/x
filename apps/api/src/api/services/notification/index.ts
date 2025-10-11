@@ -2,7 +2,7 @@ import { logger } from "@ashgw/logger";
 import { monitor } from "@ashgw/monitor";
 import type { NotifyResponses } from "~/api/models";
 import { send } from "@ashgw/email";
-import type { NotifyBodyDto } from "~/api/models/notifications";
+import type { NotifyBodyDto } from "~/api/models/notification";
 import { env } from "@ashgw/env";
 
 export async function notify(input: {
