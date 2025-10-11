@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const fetchTextFromUpstreamQuerySchemaDto = z
+export const ossGetTextQuerySchemaDto = z
   .object({
     revalidateSeconds: z
       .string()
@@ -12,6 +12,4 @@ export const fetchTextFromUpstreamQuerySchemaDto = z
   })
   .passthrough();
 
-export type FetchTextFromUpstreamQueryDto = z.infer<
-  typeof fetchTextFromUpstreamQuerySchemaDto
->;
+export type OssGetTextQueryDto = z.infer<typeof ossGetTextQuerySchemaDto>;

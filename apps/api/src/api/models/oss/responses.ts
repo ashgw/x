@@ -6,22 +6,22 @@ import type { InferResponses } from "ts-rest-kit/core";
 
 // ========== Schemas ==========
 
-const fetchContentFromUpstreamSchemaResponses = createSchemaResponses({
+const upstreamErrorSchemaResponses = createSchemaResponses({
   424: httpErrorSchema
     .upstream()
     .describe("Upstream failed to serve content (e.g. GitHub raw URL error)"),
   ...internalErrorSchemaResponse,
 });
 
-export const fetchTextFromUpstreamSchemaResponses = createSchemaResponses({
+export const ossGetTextSchemaResponses = createSchemaResponses({
   200: c.otherResponse({
     contentType: "text/plain",
     body: z.string().min(1).describe("Raw text body returned by upstream"),
   }),
-  ...fetchContentFromUpstreamSchemaResponses,
+  ...upstreamErrorSchemaResponses,
 });
 
-export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
+export const ossGetGpgSchemaResponses = createSchemaResponses({
   200: c.otherResponse({
     contentType: "application/pgp-keys",
     body: z
@@ -29,15 +29,15 @@ export const fetchGpgFromUpstreamSchemaResponses = createSchemaResponses({
       .min(1)
       .describe("Armored PGP public key block in text format"),
   }),
-  ...fetchContentFromUpstreamSchemaResponses,
+  ...upstreamErrorSchemaResponses,
 });
 
 // ========== Types ==========
 
-export type FetchTextFromUpstreamResponses = InferResponses<
-  typeof fetchTextFromUpstreamSchemaResponses
+export type OssGetTextResponses = InferResponses<
+  typeof ossGetTextSchemaResponses
 >;
 
-export type FetchGpgFromUpstreamResponses = InferResponses<
-  typeof fetchGpgFromUpstreamSchemaResponses
+export type OssGetGpgResponses = InferResponses<
+  typeof ossGetGpgSchemaResponses
 >;

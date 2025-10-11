@@ -1,20 +1,9 @@
 import { c } from "../ts-rest/root";
 import { createContract } from "ts-rest-kit/core";
 import {
-  healthSchemaResponses,
-  fetchGpgFromUpstreamSchemaResponses,
-  fetchTextFromUpstreamQuerySchemaDto,
-  purgeViewWindowHeadersSchemaDto,
-  fetchTextFromUpstreamSchemaResponses,
-  purgeViewWindowSchemaResponses,
-  purgeTrashPostsHeadersSchemaDto,
-  purgeTrashPostsSchemaResponses,
-  notificationCreateSchemaResponses,
-  reminderSchemaResponses,
-  reminderHeadersSchemaDto,
-  reminderBodySchemaDto,
-  notificationCreateHeadersSchemaDto,
-  notificationCreateBodySchemaDto,
+  reminderCreateBodySchemaDto,
+  reminderCreateHeadersSchemaDto,
+  reminderCreateSchemaResponses,
 } from "~/api/models";
 import { endpoints } from "./endpoints";
 
@@ -26,9 +15,9 @@ export const contract = createContract(c)({
     summary: "Create reminder",
     description:
       "Creates a reminder using the provided headers and body payload.",
-    headers: reminderHeadersSchemaDto,
-    body: reminderBodySchemaDto,
-    responses: reminderSchemaResponses,
+    headers: reminderCreateHeadersSchemaDto,
+    body: reminderCreateBodySchemaDto,
+    responses: reminderCreateSchemaResponses,
   },
 
   notificationCreate: {
@@ -49,7 +38,7 @@ export const contract = createContract(c)({
     strictStatusCodes: true,
     summary: "Purge view window data",
     description: "Deletes cached or temporary view window data from the blog.",
-    headers: purgeViewWindowHeadersSchemaDto,
+    headers: postDeleteViewWindowHeadersSchemaDto,
     responses: purgeViewWindowSchemaResponses,
   },
 

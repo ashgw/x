@@ -8,7 +8,7 @@ import {
 } from "~/api/models/shared/responses";
 import { reminderMessageCreatedSchemaRo } from "./ros";
 
-export const reminderSchemaResponses = createSchemaResponses({
+export const reminderCreateSchemaResponses = createSchemaResponses({
   201: z.object({
     created: z.array(reminderMessageCreatedSchemaRo),
   }),
@@ -17,4 +17,6 @@ export const reminderSchemaResponses = createSchemaResponses({
   ...internalErrorSchemaResponse,
 });
 
-export type ReminderResponses = InferResponses<typeof reminderSchemaResponses>;
+export type ReminderCreateResponses = InferResponses<
+  typeof reminderCreateSchemaResponses
+>;

@@ -10,7 +10,7 @@ import {
   fetchTextFromUpstream,
   healthCheck,
   reminder,
-} from "./functions";
+} from "./services";
 
 export const router = createRouterWithContext(contract)<GlobalContext>({
   reminder: middleware()

@@ -7,24 +7,24 @@ import {
   noContentSchemaResponse,
 } from "../shared/responses";
 
-export const purgeTrashPostsSchemaResponses = createSchemaResponses({
+export const postTrashDeleteSchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
   ...authedMiddlewareSchemaResponse,
   ...noContentSchemaResponse,
   ...internalErrorSchemaResponse,
 });
 
-export const purgeViewWindowSchemaResponses = createSchemaResponses({
+export const postViewWindowDeleteSchemaResponses = createSchemaResponses({
   ...rateLimiterMiddlewareSchemaResponse,
   ...authedMiddlewareSchemaResponse,
   ...noContentSchemaResponse,
   ...internalErrorSchemaResponse,
 });
 
-export type PurgeViewWindowResponses = InferResponses<
-  typeof purgeViewWindowSchemaResponses
+export type PostViewWindowDeleteResponses = InferResponses<
+  typeof postViewWindowDeleteSchemaResponses
 >;
 
-export type PurgeTrashPostsResponses = InferResponses<
-  typeof purgeTrashPostsSchemaResponses
+export type PostTrashDeleteResponses = InferResponses<
+  typeof postTrashDeleteSchemaResponses
 >;

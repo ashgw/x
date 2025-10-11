@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { notifyBodySchemaDto } from "../notification";
+import { notificationCreateBodySchemaDto } from "../notification";
 import { authedMiddlewareHeaderSchemaDto } from "../shared";
 import { isoDateTimeSchema } from "./shared";
 import { NotificationType } from "@ashgw/email";
 
-const reminderNotificationSchema = notifyBodySchemaDto
+const reminderNotificationSchema = notificationCreateBodySchemaDto
   .omit({
     to: true,
     subject: true,
@@ -74,7 +74,7 @@ const scheduleMultiAtSchema = z.object({
     ),
 });
 
-export const reminderBodySchemaDto = z
+export const reminderCreateBodySchemaDto = z
   .object({
     schedule: z.discriminatedUnion("kind", [
       scheduleAtSchema,
@@ -85,9 +85,10 @@ export const reminderBodySchemaDto = z
   })
   .describe("The reminder to create.");
 
-export const reminderHeadersSchemaDto = authedMiddlewareHeaderSchemaDto.extend(
-  {},
-);
+export const reminderCreateHeadersSchemaDto =
+  authedMiddlewareHeaderSchemaDto.extend({});
 
-export type ReminderBodyDto = z.infer<typeof reminderBodySchemaDto>;
-export type ReminderHeadersDto = z.infer<typeof reminderHeadersSchemaDto>;
+export type ReminderCreateBodyDto = z.infer<typeof reminderCreateBodySchemaDto>;
+export type ReminderCreateHeadersDto = z.infer<
+  typeof reminderCreateHeadersSchemaDto
+>;

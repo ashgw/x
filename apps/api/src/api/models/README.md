@@ -1,23 +1,16 @@
-# API Models Rules
+# REST models Naming convention
 
-- Per feature: `models/<feature>/{dtos.ts,responses.ts,index.ts}`
-- Shared building blocks: `models/shared/{dtos.ts,responses.ts,index.ts}`
-- Barrel: `models/index.ts` re-exports each feature
+```bash
+<Resource><Action><Ro> => RO types
+<Resource><Action><Query/Path/Body/Headers><Dto> => DTO types
 
-## Naming
+<Resource><Action><Schema><Ro> => RO schema
+<Resource><Action><Query/Path/Body/Headers><Schema><Dto> => DTO schema
 
-- Schema values
-  - Headers: `<Feature>HeadersSchemaDto`
-  - Query: `<Feature>QuerySchemaDto`
-  - Body: `<Feature>BodySchemaDto`
-  - Responses map: `<Feature>SchemaResponses`
-- Types
-  - `<Feature>HeadersDto`, `<Feature>QueryDto`, `<Feature>BodyDto`
-  - `<Feature>Responses` for the inferred union
-- Files
-  - Requests in `dtos.ts`
-  - Response maps in `responses.ts`
-  - Re-exports in `index.ts`
+
+<Resource><Action><SchemaResponses> => Response schemas
+<Resource><Action><Responses> => Response types
+```
 
 ## Schema strictness
 
@@ -27,20 +20,3 @@
 - Use `z.discriminatedUnion('kind', [...])` for polymorphic bodies.
 - Add `.describe()` to every public field and response for docs/openAPI.
 - Headers for protected routes must extend `authedMiddlewareHeaderSchemaDto`.
-
-## Responses
-
-- Build with `createSchemaResponses({ ... })`.
-- Success: `okSchemaResponse` for 200, `noContentSchemaResponse` for 204.
-- Failures to compose when relevant: `rateLimiterMiddlewareSchemaResponse`, `authedMiddlewareSchemaResponse`, `internalErrorSchemaResponse`.
-- Non JSON bodies use `c.otherResponse({ contentType, body })`.
-
-## Exports
-
-- Feature `index.ts` re-exports schemas and types only.
-- Add the feature to `models/index.ts` via `export * from "./<feature>";`.
-
-## Contract and handlers
-
-- Contract routes use these schemas and set `strictStatusCodes: true`.
-- Handlers return `Promise<<Feature>Responses>` exactly.

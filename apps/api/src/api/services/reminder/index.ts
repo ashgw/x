@@ -3,10 +3,10 @@ import { monitor } from "@ashgw/monitor";
 import { env } from "@ashgw/env";
 import { apiV1endpoint } from "~/ts-rest/endpoint";
 import type {
-  ReminderBodyDto,
+  ReminderCreateBodyDto,
   ReminderResponses,
   ReminderMessageCreatedRo,
-  ReminderHeadersDto,
+  ReminderCreateHeadersDto,
 } from "~/api/models";
 import { scheduler } from "@ashgw/scheduler";
 import { endpoints } from "~/api/endpoints";
@@ -17,8 +17,8 @@ export async function reminder({
   body: { schedule },
   headers,
 }: {
-  body: ReminderBodyDto;
-  headers: ReminderHeadersDto;
+  body: ReminderCreateBodyDto;
+  headers: ReminderCreateHeadersDto;
 }): Promise<ReminderResponses> {
   try {
     if (schedule.kind === "at") {

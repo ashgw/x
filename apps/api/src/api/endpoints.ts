@@ -1,3 +1,5 @@
+//EVERY PATH IS RELATIVE TO THE API ROOT & STARTS WITH A SLASH
+
 export const endpoints = {
   reminder: "/reminder",
   notification: "/notification",

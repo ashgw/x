@@ -1,16 +1,20 @@
 import type { z } from "zod";
 import { authedMiddlewareHeaderSchemaDto } from "../shared";
 
-export const purgeViewWindowHeadersSchemaDto =
+// ========== Schemas ==========
+
+export const postViewWindowDeleteHeadersSchemaDto =
   authedMiddlewareHeaderSchemaDto.extend({});
 
-export const purgeTrashPostsHeadersSchemaDto =
+export const postTrashDeleteHeadersSchemaDto =
   authedMiddlewareHeaderSchemaDto.extend({});
 
-export type PurgeTrashPostsHeadersDto = z.infer<
-  typeof purgeTrashPostsHeadersSchemaDto
+// ========== Types ==========
+
+export type PostTrashDeleteHeadersDto = z.infer<
+  typeof postTrashDeleteHeadersSchemaDto
 >;
 
-export type PurgeViewWindowHeadersDto = z.infer<
-  typeof purgeViewWindowHeadersSchemaDto
+export type PostViewWindowDeleteHeadersDto = z.infer<
+  typeof postViewWindowDeleteHeadersSchemaDto
 >;
